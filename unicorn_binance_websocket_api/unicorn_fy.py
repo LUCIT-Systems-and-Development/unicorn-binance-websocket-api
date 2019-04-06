@@ -37,6 +37,12 @@ import logging
 
 
 class UnicornFy(object):
+    """
+    Unify received data from crypto exchanges
+
+    Supported exchanges:
+        - Binance
+    """
     @staticmethod
     def is_json(var):
         try:
@@ -62,6 +68,14 @@ class UnicornFy(object):
 
     @staticmethod
     def binance_websocket(stream_data_json):
+        """
+        unicorn_fy binance raw_stream_data
+
+        :param stream_data_json: The received raw stream data from the Binance websocket
+        :type stream_data_json: json
+
+        :return: dict
+        """
         unicorn_fied_data = False
         logging.debug("UnicornFy->binance_websocket(" + str(stream_data_json) + ")")
         if UnicornFy.is_json(stream_data_json) is False:
@@ -214,7 +228,7 @@ class UnicornFy(object):
                                  'bids': stream_data['data']['b'],
                                  'asks': stream_data['data']['a']}
         elif stream_data['data']['e'] == 'outboundAccountInfo':
-            unicorn_fied_data = {'stream_type': 'userData@arr',
+            unicorn_fied_data = {'stream_type': '!userData@arr',
                                  'event_type': stream_data['data']['e'],
                                  'event_time': stream_data['data']['E'],
                                  'maker_commission_rate': stream_data['data']['m'],
@@ -231,7 +245,7 @@ class UnicornFy(object):
                             'locked': item['l']}
                 unicorn_fied_data['balances'] += [new_item]
         elif stream_data['data']['e'] == 'executionReport':
-            unicorn_fied_data = {'stream_type': 'userData@arr',
+            unicorn_fied_data = {'stream_type': '!userData@arr',
                                  'event_type': stream_data['data']['e'],
                                  'event_time': stream_data['data']['E'],
                                  'symbol': stream_data['data']['s'],
