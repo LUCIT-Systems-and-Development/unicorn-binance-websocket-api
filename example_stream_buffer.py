@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# File: example_userdata_stream.py
+# File: example_stream_buffer.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
