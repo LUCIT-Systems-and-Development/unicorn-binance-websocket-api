@@ -50,7 +50,7 @@ class BinanceWebSocketApiProcessStreams():
         # extracts it from the channel name, makes it upper size and adds it to the returned values.. just print both
         # to see the difference.
         # UnicornFy Website: https://github.com/unicorn-data-analysis/unicorn_fy
-        # UnicornFy Documentation: https://www.unicorn-data.com/unicornfy.html
+        # UnicornFy Documentation: https://www.unicorn-data.com/unicorn_fy.html
         unicorn_fied_stream_data = UnicornFy.binance_websocket(received_stream_data_json)
 
         # Now you can call different methods for different `channels`, here called `event_types`.

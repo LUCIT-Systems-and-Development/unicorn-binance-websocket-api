@@ -5,7 +5,7 @@
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn_fy
-# Documentation: https://www.unicorn-data.com/unicorn-binance-websocket-api.html
+# Documentation: https://www.unicorn-data.com/unicorn_fy.html
 #
 # Author: UNICORN Data Analysis
 #         https://www.unicorn-data.com/
