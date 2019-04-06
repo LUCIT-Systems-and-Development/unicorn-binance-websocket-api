@@ -735,30 +735,33 @@ class BinanceWebSocketApiManager(threading.Thread):
             stream_buffer_row += " \033[1m\033[34mstream_buffer_stored_items: " + str(len(self.stream_buffer)) + "\r\n"
             stream_buffer_row += " stream_buffer_byte_size: " + str(self.get_stream_buffer_byte_size()) + \
                                  " (" + str(self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")\033[0m\r\n"
-        print("===============================================================================================\r\n" +
-              " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
-              " uptime:", str(self.get_human_uptime(time.time() - self.start_time)), "since " +
-              str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d %H:%M:%S')) + "\r\n" +
-              " streams:", str(streams), "\r\n" +
-              " \033[1m\033[32mactive_streams:", str(active_streams), "\033[0m\r\n" +
-              str(crashed_streams_row) +
-              " stopped_streams:", str(stopped_streams), "\r\n" +
-              str(streams_with_stop_request_row) +
-              str(reconnects_row) +
-              str(stream_buffer_row) +
-              " total_receives:", str(self.total_receives), "\r\n"
-              " total_received_bytes:", str(total_received_bytes), "\r\n"
-              " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +
-              " ---------------------------------------------------------------------------------------------\r\n"
-              "              stream_id               | rec_last_sec | rec_per_sec | most_rec_per_sec | recon\r\n"
-              " ---------------------------------------------------------------------------------------------\r\n"
-              " " + str(stream_rows) +
-              "---------------------------------------------------------------------------------------------\r\n"
-              " all_streams_receives                 |\t " + str(self.get_all_receives_last_second()) + "\t     |\t" +
-              str(all_receives_per_second.__round__(2)), "\t   |  " + str(self.most_receives_per_second) + \
-              " \t      | " + str(self.reconnects) + "\r\n"
-              " ---------------------------------------------------------------------------------------------\r\n"                                                                                                                                                                  
-              "===============================================================================================\r\n")
+        try:
+            print("===============================================================================================\r\n" +
+                  " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
+                  " uptime:", str(self.get_human_uptime(time.time() - self.start_time)), "since " +
+                  str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d %H:%M:%S')) + "\r\n" +
+                  " streams:", str(streams), "\r\n" +
+                  " \033[1m\033[32mactive_streams:", str(active_streams), "\033[0m\r\n" +
+                  str(crashed_streams_row) +
+                  " stopped_streams:", str(stopped_streams), "\r\n" +
+                  str(streams_with_stop_request_row) +
+                  str(reconnects_row) +
+                  str(stream_buffer_row) +
+                  " total_receives:", str(self.total_receives), "\r\n"
+                  " total_received_bytes:", str(total_received_bytes), "\r\n"
+                  " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +
+                  " ---------------------------------------------------------------------------------------------\r\n"
+                  "              stream_id               | rec_last_sec | rec_per_sec | most_rec_per_sec | recon\r\n"
+                  " ---------------------------------------------------------------------------------------------\r\n"
+                  " " + str(stream_rows) +
+                  "---------------------------------------------------------------------------------------------\r\n"
+                  " all_streams_receives                 |\t " + str(self.get_all_receives_last_second()) + "\t     |\t" +
+                  str(all_receives_per_second.__round__(2)), "\t   |  " + str(self.most_receives_per_second) + \
+                  " \t      | " + str(self.reconnects) + "\r\n"
+                  " ---------------------------------------------------------------------------------------------\r\n"                                                                                                                                                                  
+                  "===============================================================================================\r\n")
+        except UnboundLocalError:
+            pass
 
     def replace_stream(self, stream_id, new_channels, new_markets):
         """

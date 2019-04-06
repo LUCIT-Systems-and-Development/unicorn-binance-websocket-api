@@ -57,11 +57,6 @@ markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
 # define stream channels
 channels = {'trade', 'kline_1', 'kline_5', 'kline_15', 'kline_30', 'kline_1h', 'kline_12h', 'kline_1w', 'miniTicker'}
 
-
-while True:
-    binance_websocket_api_manager.print_summary()
-    time.sleep(1)
-
 # create and start the stream
 print("please wait 10 seconds!")
 time.sleep(3)
