@@ -17,7 +17,7 @@ on, you have to use the Binance Rest API in combination. Great support for this 
 - 100% auto-reconnect.
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in an separate thread.
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with [python-daemon](https://pypi.org/project/python-daemon/)).
-- If you can not store your data in couse of an offline local database, you can kick back the data to the stream_buffer 
+- If you can not store your data in cause of an offline local database, you can kick back the data to the stream_buffer 
 which stores the receives in the RAM till you are able to process the data in the normal way again.
 - Helpful management features.
 
