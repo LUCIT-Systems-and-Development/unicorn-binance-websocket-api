@@ -45,7 +45,24 @@ class BinanceWebSocketApiProcessStreams(object):
         self.stream_buffer = stream_buffer
 
     def process_stream_data(self, received_stream_data_json):
+        #
+        #  START HERE!
+        #
+        # `received_stream_data_json` contains one record of raw data from the stream
+        # print it and you see the data like its given from Binance, its hard to work with them, because keys of
+        # parameters are changing from stream to stream and they are not self explaining.
+        #
+        # So if you want, you can use the class `UnicornFy`, it converts the json to a dict and prepares the values.
+        # `depth5` for example doesnt include the symbol, but the unicornfied set includes them, because the class
+        # extracts it from the channel name, makes it upper size and adds it to the returned values.. just print both
+        # to see the difference.
+        # UnicornFy Website: https://github.com/unicorn-data-analysis/unicorn_fy
+        # UnicornFy Documentation: https://www.unicorn-data.com/unicornfy.html
         unicorn_fied_stream_data = UnicornFy.binance_websocket(received_stream_data_json)
+
+        # Now you can call different methods for different `channels`, here called `event_types`.
+        # Its up to you if you call the methods in the bottom of this file or to call other classes which do what
+        # ever you want to be done.
         try:
             if unicorn_fied_stream_data['event_type'] == "aggTrade":
                 self.aggtrade(unicorn_fied_stream_data)
