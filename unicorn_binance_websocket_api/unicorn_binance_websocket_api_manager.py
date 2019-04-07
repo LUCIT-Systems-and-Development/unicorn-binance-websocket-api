@@ -692,43 +692,40 @@ class BinanceWebSocketApiManager(threading.Thread):
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print("===============================================================================================\r\n"
                   " exchange:", str(stream_info['exchange']), "\r\n"
-                                                              " stream_id:", str(stream_id), "\r\n"
-                                                                                             " channels:",
-                  str(stream_info['channels']), "\r\n"
-                                                " markets:", str(stream_info['markets']), "\r\n" +
+                  " stream_id:", str(stream_id), "\r\n"
+                  " channels:", str(stream_info['channels']), "\r\n"
+                  " markets:", str(stream_info['markets']), "\r\n" +
                   str(status_row), "\r\n"
-                                   " start_time:", str(stream_info['start_time']), "\r\n"
-                                                                                   " uptime:", str(uptime),
+                  " start_time:", str(stream_info['start_time']), "\r\n"
+                  " uptime:", str(uptime),
                   "since " + str(
                       datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d %H:%M:%S')) + "\r\n" +
                   str(last_static_ping) +
                   str(restart_requests_row) +
                   " reconnects:", str(stream_info['reconnects']), logged_reconnects_row, "\r\n"
-                                                                                         " processed_receives:",
+                  " processed_receives:",
                   str(stream_info['processed_receives_total']), "\r\n"
-                                                                " last_heartbeat:", str(stream_info['last_heartbeat']),
-                  "\r\n"
+                  " last_heartbeat:", str(stream_info['last_heartbeat']), "\r\n"
                   " seconds_to_last_heartbeat:", str(stream_info['seconds_to_last_heartbeat']), "\r\n"
-                                                                                                " stop_request:",
-                  str(stream_info['stop_request']), "\r\n"
-                                                    " has_stopped:", str(stream_info['has_stopped']), "\r\n"
-                                                                                                      " seconds_since_has_stopped:",
+                  " stop_request:", str(stream_info['stop_request']), "\r\n"
+                  " has_stopped:", str(stream_info['has_stopped']), "\r\n"
+                  " seconds_since_has_stopped:",
                   str(stream_info['seconds_since_has_stopped']), "\r\n"
-                                                                 " stream_most_receives_per_second:",
+                  " stream_most_receives_per_second:",
                   str(stream_info['receives_statistic_last_second']['most_receives_per_second']), "\r\n"
-                                                                                                  " stream_receives_per_second:",
+                  " stream_receives_per_second:",
                   str(stream_info['processed_receives_statistic']['stream_receives_per_second'].__round__(3)), "\r\n"
-                                                                                                               " stream_receives_per_minute:",
+                  " stream_receives_per_minute:",
                   str(stream_info['processed_receives_statistic']['stream_receives_per_minute'].__round__(3)), "\r\n"
-                                                                                                               " stream_receives_per_hour:",
+                  " stream_receives_per_hour:",
                   str(stream_info['processed_receives_statistic']['stream_receives_per_hour'].__round__(3)), "\r\n"
-                                                                                                             " stream_receives_per_day:",
+                  " stream_receives_per_day:",
                   str(stream_info['processed_receives_statistic']['stream_receives_per_day'].__round__(3)), "\r\n"
-                                                                                                            " stream_receives_per_month:",
+                  " stream_receives_per_month:",
                   str(stream_info['processed_receives_statistic']['stream_receives_per_month'].__round__(3)), "\r\n"
-                                                                                                              " stream_receives_per_year:",
+                  " stream_receives_per_year:",
                   str(stream_info['processed_receives_statistic']['stream_receives_per_year'].__round__(3)), "\r\n"
-                                                                                                             "===============================================================================================\r\n")
+                  "===============================================================================================\r\n")
         except KeyError:
             self.print_stream_info(stream_id)
 
