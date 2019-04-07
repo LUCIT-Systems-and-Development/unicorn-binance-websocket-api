@@ -1,7 +1,7 @@
 # UNICORN Binance WebSocket API
 A python API to use the Binance Websocket API in a easy, fast, robust and fully-featured way.
 
-The python module UNICORN Binance WebSocket API provides an API to the [Binance Websocket API](https://github.com/binance-exchange/binance-official-api-docs), which supports the 
+The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) provides an API to the [Binance Websocket API](https://github.com/binance-exchange/binance-official-api-docs), which supports the 
 streaming of public streams like trades, kline, ticker and depth, but also the private userData stream which need to be 
 used with a valid api_key and api_secret from the [Binance Exchange](https://www.binance.com/).
 
@@ -15,9 +15,9 @@ on, you have to use the Binance Rest API in combination. Great support for this 
 "[sammchardy/python-binance](https://github.com/sammchardy/python-binance)" provides a websocket client too, so why to use the UNICORN Binance WebSocket API?
 
 - 100% auto-reconnect.
-- Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in an separate thread.
+- Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with [python-daemon](https://pypi.org/project/python-daemon/)).
-- If you can not store your data in cause of an offline local database, you can kick back the data to the stream_buffer 
+- If you can not store your data in cause of a offline local database, you can kick back the data to the stream_buffer 
 which stores the receives in the RAM till you are able to process the data in the normal way again.
 - Helpful management features.
 
