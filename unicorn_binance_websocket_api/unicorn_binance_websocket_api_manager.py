@@ -38,6 +38,7 @@ from datetime import datetime
 import asyncio
 import copy
 import logging
+import platform
 import uuid
 import sys
 import threading
@@ -57,6 +58,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          `data` cointains the raw_stream_data
     :type callback_process_stream_data: function
     """
+
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
         self.stop_manager_request = None
@@ -129,7 +131,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.info("BinanceWebSocketApiManager->_frequent_checks() new instance created with frequent_checks_id=" +
                      str(frequent_checks_id))
         # threaded loop for min 1 check per second
-        while self.stop_manager_request is None and self.frequent_checks_list[frequent_checks_id]['stop_request'] is None:
+        while self.stop_manager_request is None and self.frequent_checks_list[frequent_checks_id][
+            'stop_request'] is None:
             self.frequent_checks_list[frequent_checks_id]['last_heartbeat'] = time.time()
             stream_buffer_size_last_print = 0
             time.sleep(0.8)
@@ -152,27 +155,37 @@ class BinanceWebSocketApiManager(threading.Thread):
                         pass
                     # delete list entries older than `keep_max_received_last_second_entries`
                     delete_index = []
-                    if len(self.stream_list[stream_id]['receives_statistic_last_second']['entries']) > self.keep_max_received_last_second_entries:
+                    if len(self.stream_list[stream_id]['receives_statistic_last_second'][
+                               'entries']) > self.keep_max_received_last_second_entries:
                         for timestamp_key in self.stream_list[stream_id]['receives_statistic_last_second']['entries']:
                             try:
                                 if timestamp_key < current_timestamp - self.keep_max_received_last_second_entries:
                                     delete_index.append(timestamp_key)
                             except ValueError as error_msg:
-                                logging.error("BinanceWebSocketManager->_frequent_checks() timestamp_key=" + str(timestamp_key) +
-                                              " current_timestamp=" + str(current_timestamp) +
-                                              " keep_max_received_last_second_entries=" + str(self.keep_max_received_last_second_entries) +
-                                              " error_msg=" + str(error_msg))
+                                logging.error(
+                                    "BinanceWebSocketManager->_frequent_checks() timestamp_key=" + str(timestamp_key) +
+                                    " current_timestamp=" + str(current_timestamp) + " keep_max_received_last_second_entries=" +
+                                    str(self.keep_max_received_last_second_entries) + " error_msg=" + str(error_msg))
                     for timestamp_key in delete_index:
-                        self.stream_list[stream_id]['receives_statistic_last_second']['entries'].pop(timestamp_key, None)
+                        self.stream_list[stream_id]['receives_statistic_last_second']['entries'].pop(timestamp_key,
+                                                                                                     None)
             # set most_receives_per_second
             try:
                 if int(self.most_receives_per_second) < int(total_most_stream_receives_last_timestamp):
                     self.most_receives_per_second = int(total_most_stream_receives_last_timestamp)
             except ValueError as error_msg:
-                logging.error("BinanceWebSocketManager->_frequent_checks() self.most_receives_per_second=" + str(self.most_receives_per_second) +
-                              " total_most_stream_receives_last_timestamp=" + str(total_most_stream_receives_last_timestamp) +
-                              " total_most_stream_receives_next_to_last_timestamp=" + str(total_most_stream_receives_next_to_last_timestamp) +
-                              " error_msg=" + str(error_msg))
+                logging.error("BinanceWebSocketManager->_frequent_checks() self.most_receives_per_second=" + str(
+                    self.most_receives_per_second) +  " total_most_stream_receives_last_timestamp=" + str(
+                    total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_to_last_timestamp=" + str(
+                    total_most_stream_receives_next_to_last_timestamp) + " error_msg=" + str(error_msg))
+            try:
+                if int(self.most_receives_per_second) < int(total_most_stream_receives_next_to_last_timestamp):
+                    self.most_receives_per_second = int(total_most_stream_receives_next_to_last_timestamp)
+            except ValueError as error_msg:
+                logging.error("BinanceWebSocketManager->_frequent_checks() self.most_receives_per_second=" + str(
+                    self.most_receives_per_second) + " total_most_stream_receives_last_timestamp=" +
+                              str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_to_last_timestamp=" +
+                              str(total_most_stream_receives_next_to_last_timestamp) + " error_msg=" + str(error_msg))
             # control _keepalive_streams for two cases:
             # 1) there should only be one! stop others if necessary:
             found_alive_keepalive_streams = False
@@ -191,7 +204,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             # start with forwarding stream buffer entries if stream buffer has an entry and the last forwarder
             # heartbeat is older than 5 seconds
             try:
-                if len(self.stream_buffer) > 0 and ((self.stream_buffer_forwarder_last_heartbeat+5) < time.time()):
+                if len(self.stream_buffer) > 0 and ((self.stream_buffer_forwarder_last_heartbeat + 5) < time.time()):
                     seconds_to_last_stream_buffer_entry = time.time() - self.last_entry_added_to_stream_buffer
                     if seconds_to_last_stream_buffer_entry > 5:
                         if not self.is_stream_buffer_forwarding():
@@ -210,12 +223,15 @@ class BinanceWebSocketApiManager(threading.Thread):
             if active_stream_list:
                 for stream_id in active_stream_list:
                     if active_stream_list[stream_id]['markets'] == "!userData":
-                        if (active_stream_list[stream_id]['start_time']+(60*20)) < time.time() and (active_stream_list[stream_id]['last_static_ping']+(60*20)) < time.time():
+                        if (active_stream_list[stream_id]['start_time'] + (60 * 20)) < time.time() and (
+                                active_stream_list[stream_id]['last_static_ping'] + (60 * 20)) < time.time():
                             # send ping to websocket server
                             self.websocket_list[stream_id].ping()
                             # keep-alive the listenKey
-                            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'], self.stream_list[stream_id]['api_secret'])
-                            binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
+                            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(
+                                self.stream_list[stream_id]['api_key'], self.stream_list[stream_id]['api_secret'])
+                            binance_websocket_api_restclient.keepalive_listen_key(
+                                self.stream_list[stream_id]['listen_key'])
                             del binance_websocket_api_restclient
                             # set last_static_ping
                             self.stream_list[stream_id]['last_static_ping'] = time.time()
@@ -228,10 +244,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.keepalive_streams_list[keepalive_streams_id] = {'last_heartbeat': None,
                                                              'stop_request': None,
                                                              'has_stopped': False}
-        logging.info("BinanceWebSocketApiManager->_keepalive_streams() new instance created with keepalive_streams_id=" +
-                     str(keepalive_streams_id))
+        logging.info(
+            "BinanceWebSocketApiManager->_keepalive_streams() new instance created with keepalive_streams_id=" +
+            str(keepalive_streams_id))
         # threaded loop to restart crashed streams:
-        while self.stop_manager_request is None and self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
+        while self.stop_manager_request is None and self.keepalive_streams_list[keepalive_streams_id][
+            'stop_request'] is None:
             self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat'] = time.time()
             time.sleep(0.3)
             current_timestamp = time.time()
@@ -364,35 +382,38 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         # how much receives did we have last second?
         all_receives_last_second = 0
-        last_second_timestamp= int(time.time()) - 1
+        last_second_timestamp = int(time.time()) - 1
         for stream_id in self.stream_list:
             try:
-                all_receives_last_second += self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_second_timestamp]
+                all_receives_last_second += self.stream_list[stream_id]['receives_statistic_last_second']['entries'][
+                    last_second_timestamp]
             except KeyError:
                 pass
         return all_receives_last_second
 
     def get_human_bytesize(self, bytes):
-        if bytes > 1024*1024*1024:
-            bytes = str(round(bytes / (1024*1024*1024), 2)) + " gB"
-        elif bytes > 1024*1024:
-            bytes = str(round(bytes / (1024*1024), 1)) + " mB"
+        if bytes > 1024 * 1024 * 1024:
+            bytes = str(round(bytes / (1024 * 1024 * 1024), 2)) + " gB"
+        elif bytes > 1024 * 1024:
+            bytes = str(round(bytes / (1024 * 1024), 1)) + " mB"
         elif bytes > 1024:
             bytes = str(int(bytes / 1024)) + " kB"
         return bytes
 
     def get_human_uptime(self, uptime):
         # formats a timestamp to a human readable output
-        if uptime > (60*60*24):
-            uptime_days = int(uptime / (60*60*24))
-            uptime_hours = int(((uptime - (uptime_days * (60*60*24))) / (60*60)))
-            uptime_minutes = int((uptime - ((uptime_days * (60*60*24)) + (uptime_hours * 60*60))) / 60)
-            uptime_seconds = int(uptime - ((uptime_days * (60*60*24)) + ((uptime_hours * (60*60)) + (uptime_minutes * 60))))
-            uptime = str(uptime_days) + "d:" + str(uptime_hours) + "h:" + str(int(uptime_minutes)) + "m:" + str(int(uptime_seconds)) + "s"
-        elif uptime > (60*60):
-            uptime_hours = int(uptime / (60*60))
-            uptime_minutes = int((uptime - (uptime_hours * (60*60))) / 60)
-            uptime_seconds = int(uptime - ((uptime_hours * (60*60)) + (uptime_minutes * 60)))
+        if uptime > (60 * 60 * 24):
+            uptime_days = int(uptime / (60 * 60 * 24))
+            uptime_hours = int(((uptime - (uptime_days * (60 * 60 * 24))) / (60 * 60)))
+            uptime_minutes = int((uptime - ((uptime_days * (60 * 60 * 24)) + (uptime_hours * 60 * 60))) / 60)
+            uptime_seconds = int(
+                uptime - ((uptime_days * (60 * 60 * 24)) + ((uptime_hours * (60 * 60)) + (uptime_minutes * 60))))
+            uptime = str(uptime_days) + "d:" + str(uptime_hours) + "h:" + str(int(uptime_minutes)) + "m:" + str(
+                int(uptime_seconds)) + "s"
+        elif uptime > (60 * 60):
+            uptime_hours = int(uptime / (60 * 60))
+            uptime_minutes = int((uptime - (uptime_hours * (60 * 60))) / 60)
+            uptime_seconds = int(uptime - ((uptime_hours * (60 * 60)) + (uptime_minutes * 60)))
             uptime = str(uptime_hours) + "h:" + str(int(uptime_minutes)) + "m:" + str(int(uptime_seconds)) + "s"
         elif uptime > 60:
             uptime_minutes = int(uptime / 60)
@@ -471,7 +492,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         if temp_stream_list[stream_id]['has_stopped'] is not False:
             temp_stream_list[stream_id]['seconds_since_has_stopped'] = \
                 int(current_timestamp) - int(self.stream_list[stream_id]['has_stopped'])
-        self.stream_list[stream_id]['processed_receives_statistic'] = self.get_stream_statistic(stream_id)
+        try:
+            self.stream_list[stream_id]['processed_receives_statistic'] = self.get_stream_statistic(stream_id)
+        except ZeroDivisionError:
+            pass
         return temp_stream_list[stream_id]
 
     def get_stream_list(self):
@@ -525,14 +549,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_statistic['stream_receives_per_second'] = stream_receives_per_second
         if stream_statistic['uptime'] > 60:
             stream_statistic['stream_receives_per_minute'] = stream_receives_per_second * 60
-        if stream_statistic['uptime'] > 60*60:
-            stream_statistic['stream_receives_per_hour'] = stream_receives_per_second * 60*60
-        if stream_statistic['uptime'] > 60*60*24:
-            stream_statistic['stream_receives_per_day'] = stream_receives_per_second * 60*60*24
-        if stream_statistic['uptime'] > 60*60*24*30:
-            stream_statistic['stream_receives_per_month'] = stream_receives_per_second * 60*60*24*30
-        if stream_statistic['uptime'] > 60*60*24*30*12:
-            stream_statistic['stream_receives_per_year'] = stream_receives_per_second * 60*60*24*30*12
+        if stream_statistic['uptime'] > 60 * 60:
+            stream_statistic['stream_receives_per_hour'] = stream_receives_per_second * 60 * 60
+        if stream_statistic['uptime'] > 60 * 60 * 24:
+            stream_statistic['stream_receives_per_day'] = stream_receives_per_second * 60 * 60 * 24
+        if stream_statistic['uptime'] > 60 * 60 * 24 * 30:
+            stream_statistic['stream_receives_per_month'] = stream_receives_per_second * 60 * 60 * 24 * 30
+        if stream_statistic['uptime'] > 60 * 60 * 24 * 30 * 12:
+            stream_statistic['stream_receives_per_year'] = stream_receives_per_second * 60 * 60 * 24 * 30 * 12
         return stream_statistic
 
     def get_total_received_bytes(self):
@@ -565,8 +589,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] = 1
         # set the streams `most_receives_per_second` value
         try:
-            if self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp] > self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']:
-                self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second'] = self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp]
+            if self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp] > \
+                    self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']:
+                self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second'] = \
+                self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp]
         except KeyError:
             pass
         # increase `total_receives`
@@ -584,7 +610,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: bool
         """
-        if (self.stream_buffer_forwarder_last_heartbeat+5) > time.time():
+        if (self.stream_buffer_forwarder_last_heartbeat + 5) > time.time():
             return True
         else:
             return False
@@ -614,6 +640,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: bool
         """
         restart_requests_row = ""
+        stream_row_color_prefix = ""
+        stream_row_color_suffix = ""
         last_static_ping = ""
         stream_info = self.get_stream_info(stream_id)
 
@@ -626,17 +654,30 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             logged_reconnects_row = ""
         if "running" in stream_info['status']:
-            stream_row_color = "\033[1m\033[32m"
+            if platform.system() != "Windows":
+                stream_row_color_prefix = "\033[1m\033[32m"
+                stream_row_color_suffix = "\033[0m"
             for reconnect_timestamp in self.stream_list[stream_id]['logged_reconnects']:
                 if (time.time() - reconnect_timestamp) < 2:
-                    stream_row_color = "\033[1m\033[33m"
-            status_row = stream_row_color + " status: " + str(stream_info['status']) + "\033[0m"
+                    if platform.system() != "Windows":
+                        stream_row_color_prefix = "\033[1m\033[33m"
+                        stream_row_color_suffix = "\033[0m"
+            status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "crashed" in stream_info['status']:
-            status_row = " \033[1m\033[31mstatus: " + str(stream_info['status']) + "\033[0m"
+            if platform.system() != "Windows":
+                stream_row_color_prefix = " \033[1m\033[31mstatus: "
+                stream_row_color_suffix = "\033[0m"
+            status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "restarting" in stream_info['status']:
-            status_row = " \033[1m\033[33mstatus: " + str(stream_info['status']) + "\033[0m"
+            if platform.system() != "Windows":
+                stream_row_color_prefix = "\033[1m\033[33m"
+                stream_row_color_suffix = "\033[0m"
+            status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         else:
-            status_row = " \033[1m\033[33mstatus: " + str(stream_info['status']) + "\033[0m"
+            if platform.system() != "Windows":
+                stream_row_color_prefix = "\033[1m\033[33m"
+                stream_row_color_suffix = "\033[0m"
+            status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         try:
             if self.restart_requests[stream_id]['status']:
                 restart_requests_row = " restart_request: " + self.restart_requests[stream_id]['status'] + "\r\n"
@@ -648,29 +689,43 @@ class BinanceWebSocketApiManager(threading.Thread):
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print("===============================================================================================\r\n"
                   " exchange:", str(stream_info['exchange']), "\r\n"
-                  " stream_id:", str(stream_id), "\r\n"
-                  " channels:", str(stream_info['channels']), "\r\n"
-                  " markets:", str(stream_info['markets']), "\r\n" +
+                                                              " stream_id:", str(stream_id), "\r\n"
+                                                                                             " channels:",
+                  str(stream_info['channels']), "\r\n"
+                                                " markets:", str(stream_info['markets']), "\r\n" +
                   str(status_row), "\r\n"
-                  " start_time:", str(stream_info['start_time']), "\r\n"
-                  " uptime:", str(uptime), "since " + str(datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d %H:%M:%S')) + "\r\n" +
+                                   " start_time:", str(stream_info['start_time']), "\r\n"
+                                                                                   " uptime:", str(uptime),
+                  "since " + str(
+                      datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d %H:%M:%S')) + "\r\n" +
                   str(last_static_ping) +
                   str(restart_requests_row) +
-                  " reconnects:", str(stream_info['reconnects']), logged_reconnects_row, "\r\n" 
-                  " processed_receives:", str(stream_info['processed_receives_total']), "\r\n"
-                  " last_heartbeat:", str(stream_info['last_heartbeat']), "\r\n"
+                  " reconnects:", str(stream_info['reconnects']), logged_reconnects_row, "\r\n"
+                                                                                         " processed_receives:",
+                  str(stream_info['processed_receives_total']), "\r\n"
+                                                                " last_heartbeat:", str(stream_info['last_heartbeat']),
+                  "\r\n"
                   " seconds_to_last_heartbeat:", str(stream_info['seconds_to_last_heartbeat']), "\r\n"
-                  " stop_request:", str(stream_info['stop_request']), "\r\n"
-                  " has_stopped:", str(stream_info['has_stopped']), "\r\n"
-                  " seconds_since_has_stopped:", str(stream_info['seconds_since_has_stopped']), "\r\n"
-                  " stream_most_receives_per_second:", str(stream_info['receives_statistic_last_second']['most_receives_per_second']), "\r\n"
-                  " stream_receives_per_second:", str(stream_info['processed_receives_statistic']['stream_receives_per_second'].__round__(3)), "\r\n"
-                  " stream_receives_per_minute:", str(stream_info['processed_receives_statistic']['stream_receives_per_minute'].__round__(3)), "\r\n"       
-                  " stream_receives_per_hour:", str(stream_info['processed_receives_statistic']['stream_receives_per_hour'].__round__(3)), "\r\n"                                                                                                                                  
-                  " stream_receives_per_day:", str(stream_info['processed_receives_statistic']['stream_receives_per_day'].__round__(3)), "\r\n" 
-                  " stream_receives_per_month:", str(stream_info['processed_receives_statistic']['stream_receives_per_month'].__round__(3)), "\r\n" 
-                  " stream_receives_per_year:", str(stream_info['processed_receives_statistic']['stream_receives_per_year'].__round__(3)), "\r\n" 
-                  "===============================================================================================\r\n")
+                                                                                                " stop_request:",
+                  str(stream_info['stop_request']), "\r\n"
+                                                    " has_stopped:", str(stream_info['has_stopped']), "\r\n"
+                                                                                                      " seconds_since_has_stopped:",
+                  str(stream_info['seconds_since_has_stopped']), "\r\n"
+                                                                 " stream_most_receives_per_second:",
+                  str(stream_info['receives_statistic_last_second']['most_receives_per_second']), "\r\n"
+                                                                                                  " stream_receives_per_second:",
+                  str(stream_info['processed_receives_statistic']['stream_receives_per_second'].__round__(3)), "\r\n"
+                                                                                                               " stream_receives_per_minute:",
+                  str(stream_info['processed_receives_statistic']['stream_receives_per_minute'].__round__(3)), "\r\n"
+                                                                                                               " stream_receives_per_hour:",
+                  str(stream_info['processed_receives_statistic']['stream_receives_per_hour'].__round__(3)), "\r\n"
+                                                                                                             " stream_receives_per_day:",
+                  str(stream_info['processed_receives_statistic']['stream_receives_per_day'].__round__(3)), "\r\n"
+                                                                                                            " stream_receives_per_month:",
+                  str(stream_info['processed_receives_statistic']['stream_receives_per_month'].__round__(3)), "\r\n"
+                                                                                                              " stream_receives_per_year:",
+                  str(stream_info['processed_receives_statistic']['stream_receives_per_year'].__round__(3)), "\r\n"
+                                                                                                             "===============================================================================================\r\n")
         except KeyError:
             self.print_stream_info(stream_id)
 
@@ -684,6 +739,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         crashed_streams = 0
         all_receives_per_second = 0.0
         streams_with_stop_request = 0
+        active_streams_row = ""
+        stopped_streams_row = ""
         stream_rows = ""
         crashed_streams_row = ""
         received_bytes_per_x_row = ""
@@ -691,75 +748,110 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_buffer_row = ""
         reconnects_row = ""
         for stream_id in self.stream_list:
-            stream_rows_color = ""
+            stream_row_color_prefix = ""
+            stream_row_color_suffix = ""
             stream_statistic = self.get_stream_statistic(stream_id)
             if self.stream_list[stream_id]['status'] == "running":
                 active_streams += 1
                 all_receives_per_second += stream_statistic['stream_receives_per_second']
                 try:
                     if self.restart_requests[stream_id]['status'] == "restarted":
-                        stream_rows_color = "\033[1m\033[33m"
+                        if platform.system() != "Windows":
+                            stream_row_color_prefix = "\033[1m\033[33m"
+                            stream_row_color_suffix = "\033[0m"
                 except KeyError:
                     pass
                 try:
                     for reconnect_timestamp in self.stream_list[stream_id]['logged_reconnects']:
                         if (time.time() - reconnect_timestamp) < 1:
-                            stream_rows_color = "\033[1m\033[31m"
+                            if platform.system() != "Windows":
+                                stream_row_color_prefix = "\033[1m\033[31m"
+                                stream_row_color_suffix = "\033[0m"
                         elif (time.time() - reconnect_timestamp) < 2:
-                            stream_rows_color = "\033[1m\033[33m"
+                            if platform.system() != "Windows":
+                                stream_row_color_prefix = "\033[1m\033[33m"
+                                stream_row_color_suffix = "\033[0m"
                         elif (time.time() - reconnect_timestamp) < 4:
-                            stream_rows_color = "\033[1m\033[32m"
+                            if platform.system() != "Windows":
+                                stream_row_color_prefix = "\033[1m\033[32m"
+                                stream_row_color_suffix = "\033[0m"
                 except KeyError:
                     pass
             elif self.stream_list[stream_id]['status'] == "stopped":
                 stopped_streams += 1
+                if platform.system() != "Windows":
+                    stream_row_color_prefix = "\033[1m\033[33m"
+                    stream_row_color_suffix = "\033[0m"
             elif "crashed" in self.stream_list[stream_id]['status']:
                 crashed_streams += 1
-                stream_rows_color = "\033[1m\033[31m"
-            stream_rows += stream_rows_color + str(stream_id) + "\033[0m |\t " + str(self.get_stream_receives_last_second(stream_id)) + \
-                           "\t     |\t" + str(stream_statistic['stream_receives_per_second'].__round__(2)) + \
-                           "\t   |  " + str(self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) + \
-                           " \t      | " + stream_rows_color + str(len(self.stream_list[stream_id]['logged_reconnects'])) + "\033[0m" + "\r\n "
+                if platform.system() != "Windows":
+                    stream_row_color_prefix = "\033[1m\033[31m"
+                    stream_row_color_suffix = "\033[0m"
+            stream_rows += stream_row_color_prefix + str(stream_id) + stream_row_color_suffix + " |\t " + str(
+                self.get_stream_receives_last_second(stream_id)) + "\t     |\t" + str(stream_statistic['stream_receives_per_second'].__round__(2)) + \
+                                                                   "\t   |  " + str(self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) + \
+                                                                   " \t      | " + stream_row_color_prefix + str(len(self.stream_list[stream_id]['logged_reconnects'])) + stream_row_color_suffix + "\r\n "
             if self.stream_list[stream_id]['stop_request'] is True and self.stream_list[stream_id]['status'] != "stopped":
                 streams_with_stop_request += 1
         if streams_with_stop_request >= 1:
-            streams_with_stop_request_row = " \033[1m\033[33mstreams_with_stop_request: " + \
-                                            str(streams_with_stop_request) + "\033[0m\r\n"
+            if platform.system() != "Windows":
+                stream_row_color_prefix = "\033[1m\033[33m"
+                stream_row_color_suffix = "\033[0m"
+            streams_with_stop_request_row = stream_row_color_prefix + " streams_with_stop_request: " + \
+                                            str(streams_with_stop_request) + stream_row_color_suffix + "\r\n"
         if crashed_streams >= 1:
-            crashed_streams_row = " \033[1m\033[31mcrashed_streams: " + str(crashed_streams) + "\033[0m\r\n"
-        total_received_bytes = str(self.get_total_received_bytes()) + " (" + str(self.get_human_bytesize(self.get_total_received_bytes())) + ")"
+            if platform.system() != "Windows":
+                stream_row_color_prefix = "\033[1m\033[31m"
+                stream_row_color_suffix = "\033[0m"
+            crashed_streams_row = stream_row_color_prefix + " rashed_streams: " + str(crashed_streams) + stream_row_color_suffix + "\r\n"
+        total_received_bytes = str(self.get_total_received_bytes()) + " (" + str(
+            self.get_human_bytesize(self.get_total_received_bytes())) + ")"
         received_bytes_per_second = self.get_total_received_bytes() / (time.time() - self.start_time)
         received_bytes_per_x_row += str((received_bytes_per_second / 1024).__round__(2)) + " kB/s (per day " + \
-                                    str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60*60*24).__round__(2)) + " gB)"
+                                    str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(
+                                        2)) + " gB)"
         if len(self.stream_buffer) > 0:
-            stream_buffer_row += " \033[1m\033[34mstream_buffer_stored_items: " + str(len(self.stream_buffer)) + "\r\n"
+            if platform.system() != "Windows":
+                stream_row_color_prefix = "\033[1m\033[34m"
+                stream_row_color_suffix = "\033[0m"
+            stream_buffer_row += stream_row_color_prefix + " stream_buffer_stored_items: " + str(len(self.stream_buffer)) + "\r\n"
             stream_buffer_row += " stream_buffer_byte_size: " + str(self.get_stream_buffer_byte_size()) + \
-                                 " (" + str(self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")\033[0m\r\n"
+                                 " (" + str(
+                self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")" + stream_row_color_suffix + "\r\n"
+
+        if platform.system() != "Windows":
+            active_streams_row = " \033[1m\033[32mactive_streams:" + str(active_streams) + "\033[0m\r\n"
+            stopped_streams_row = " \033[1m\033[33mstopped_streams:" + str(stopped_streams) + "\033[0m\r\n"
+        else:
+            active_streams_row = " active_streams:" + str(active_streams) + "\r\n"
+            stopped_streams_row = " stopped_streams:" + str(stopped_streams) + "\r\n"
         try:
-            print("===============================================================================================\r\n" +
-                  " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
-                  " uptime:", str(self.get_human_uptime(time.time() - self.start_time)), "since " +
-                  str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d %H:%M:%S')) + "\r\n" +
-                  " streams:", str(streams), "\r\n" +
-                  " \033[1m\033[32mactive_streams:", str(active_streams), "\033[0m\r\n" +
-                  str(crashed_streams_row) +
-                  " stopped_streams:", str(stopped_streams), "\r\n" +
-                  str(streams_with_stop_request_row) +
-                  str(reconnects_row) +
-                  str(stream_buffer_row) +
-                  " total_receives:", str(self.total_receives), "\r\n"
-                  " total_received_bytes:", str(total_received_bytes), "\r\n"
-                  " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +
-                  " ---------------------------------------------------------------------------------------------\r\n"
-                  "              stream_id               | rec_last_sec | rec_per_sec | most_rec_per_sec | recon\r\n"
-                  " ---------------------------------------------------------------------------------------------\r\n"
-                  " " + str(stream_rows) +
-                  "---------------------------------------------------------------------------------------------\r\n"
-                  " all_streams_receives                 |\t " + str(self.get_all_receives_last_second()) + "\t     |\t" +
-                  str(all_receives_per_second.__round__(2)), "\t   |  " + str(self.most_receives_per_second) + \
-                  " \t      | " + str(self.reconnects) + "\r\n"
-                  " ---------------------------------------------------------------------------------------------\r\n"                                                                                                                                                                  
-                  "===============================================================================================\r\n")
+            print(
+                "===============================================================================================\r\n" +
+                " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
+                " uptime:", str(self.get_human_uptime(time.time() - self.start_time)), "since " +
+                str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d %H:%M:%S')) + "\r\n" +
+                " streams:", str(streams), "\r\n" +
+                str(active_streams_row) +
+                str(crashed_streams_row) +
+                str(stopped_streams_row) +
+                str(streams_with_stop_request_row) +
+                str(reconnects_row) +
+                str(stream_buffer_row) +
+                " total_receives:", str(self.total_receives), "\r\n"
+                " total_received_bytes:", str(total_received_bytes),
+                "\r\n"
+                " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +
+                " ---------------------------------------------------------------------------------------------\r\n"
+                "              stream_id               | rec_last_sec | rec_per_sec | most_rec_per_sec | recon\r\n"
+                " ---------------------------------------------------------------------------------------------\r\n"
+                " " + str(stream_rows) +
+                "---------------------------------------------------------------------------------------------\r\n"
+                " all_streams_receives                 |\t " + str(self.get_all_receives_last_second()) + "\t     |\t" +
+                str(all_receives_per_second.__round__(2)), "\t   |  " + str(self.most_receives_per_second) + \
+                " \t      | " + str(self.reconnects) + "\r\n"
+                " ---------------------------------------------------------------------------------------------\r\n"
+                "===============================================================================================\r\n")
         except UnboundLocalError:
             pass
 
@@ -801,8 +893,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                      ", " + str(self.stream_list[stream_id]['markets']) + ")")
         loop = asyncio.new_event_loop()
         thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id,
-                                  self.stream_list[stream_id]['channels'],
-                                  self.stream_list[stream_id]['markets'], True))
+                                                                           self.stream_list[stream_id]['channels'],
+                                                                           self.stream_list[stream_id]['markets'],
+                                                                           True))
         thread.start()
         return stream_id
 
@@ -871,9 +964,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         for stream_id in self.stream_list:
             self.stop_stream(stream_id)
             if self.stream_list[stream_id]['listen_key'] is not False:
-                logging.info("BinanceWebSocketApiManager->stop_manager_with_all_streams(" + str(stream_id) + ")->delete_listen_key")
+                logging.info("BinanceWebSocketApiManager->stop_manager_with_all_streams(" + str(
+                    stream_id) + ")->delete_listen_key")
                 binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
-                                                                                 self.stream_list[stream_id]['api_secret'])
+                                                                                 self.stream_list[stream_id][
+                                                                                     'api_secret'])
                 binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
                 del binance_websocket_api_restclient
 
