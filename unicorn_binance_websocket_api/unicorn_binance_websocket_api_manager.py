@@ -545,7 +545,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             stream_statistic['uptime'] = time.time() - self.stream_list[stream_id]['start_time']
         else:
             stream_statistic['uptime'] = time.time() - self.stream_list[stream_id]['start_time']
-        stream_receives_per_second = self.stream_list[stream_id]['processed_receives_total'] / stream_statistic['uptime']
+        try:
+            stream_receives_per_second = self.stream_list[stream_id]['processed_receives_total'] / stream_statistic['uptime']
+        except ZeroDivisionError:
+            stream_receives_per_second = 0
         stream_statistic['stream_receives_per_second'] = stream_receives_per_second
         if stream_statistic['uptime'] > 60:
             stream_statistic['stream_receives_per_minute'] = stream_receives_per_second * 60
