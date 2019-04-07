@@ -806,7 +806,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             if platform.system() != "Windows":
                 stream_row_color_prefix = "\033[1m\033[31m"
                 stream_row_color_suffix = "\033[0m"
-            crashed_streams_row = stream_row_color_prefix + " rashed_streams: " + str(crashed_streams) + stream_row_color_suffix + "\r\n"
+            crashed_streams_row = stream_row_color_prefix + " crashed_streams: " + str(crashed_streams) + stream_row_color_suffix + "\r\n"
         total_received_bytes = str(self.get_total_received_bytes()) + " (" + str(
             self.get_human_bytesize(self.get_total_received_bytes())) + ")"
         received_bytes_per_second = self.get_total_received_bytes() / (time.time() - self.start_time)
