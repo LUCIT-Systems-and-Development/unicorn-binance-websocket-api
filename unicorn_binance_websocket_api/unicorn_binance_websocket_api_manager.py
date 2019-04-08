@@ -651,6 +651,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         restart_requests_row = ""
         stream_row_color_prefix = ""
         stream_row_color_suffix = ""
+        status_row = ""
         last_static_ping = ""
         stream_info = self.get_stream_info(stream_id)
 
