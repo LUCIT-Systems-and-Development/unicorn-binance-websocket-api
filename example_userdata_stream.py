@@ -43,8 +43,8 @@ from unicorn_binance_websocket_api_process_streams import BinanceWebSocketApiPro
 logging.getLogger('websockets').setLevel(logging.INFO)
 logging.getLogger('websockets').addHandler(logging.StreamHandler())
 
-binance_api_key = "56UnF5j3k95mPrfEaXjDB3HpZ6NdfZS2Ilcs2eIgzs9engxp4LkXCiF8mwoakvTe"
-binance_api_secret = "Ke7DxbY4YZykR7bYQZZlNXkAZaN8TGyWTIeAEZIz5WKWhAA9zU4wUhycaHifQYHZ"
+binance_api_key = ""
+binance_api_secret = ""
 
 # create instance of BinanceWebSocketApiManager and provide the callback function
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
