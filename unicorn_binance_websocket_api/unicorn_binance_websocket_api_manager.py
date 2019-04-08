@@ -747,11 +747,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_buffer_row = ""
         reconnects_row = ""
         if platform.system() == "Windows":
-            stream_row_space_1 = " |\t "
-            stream_row_space_2 = "\t\t|\t"
+            stream_row_space_1 = " |\t\t"
+            stream_row_space_2 = "\t\t |\t"
             stream_row_space_3 = "\t   |  "
-            stream_row_space_4 = " \t\t\t| "
-            last_row_space_1 = "                   |\t "
+            stream_row_space_4 = " \t\t\t  | "
+            last_row_space_1 = "                 |\t "
         else:
             stream_row_space_1 = " |\t "
             stream_row_space_2 = "\t     |\t"
@@ -845,9 +845,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 " ---------------------------------------------------------------------------------------------\r\n"
                 " " + str(stream_rows) +
                 "---------------------------------------------------------------------------------------------\r\n"
-                " all_streams_receives" + last_row_space_1 + str(self.get_all_receives_last_second()) + "\t     |\t" +
-                str(all_receives_per_second.__round__(2)), "\t   |  " + str(self.most_receives_per_second) + \
-                " \t      | " + str(self.reconnects) + "\r\n"
+                " all_streams_receives" + last_row_space_1 + str(self.get_all_receives_last_second()) + stream_row_space_2 +
+                str(all_receives_per_second.__round__(2)), stream_row_space_3 + str(self.most_receives_per_second) + \
+                stream_row_space_4 + str(self.reconnects) + "\r\n"
                 " ---------------------------------------------------------------------------------------------\r\n"
                 "===============================================================================================\r\n")
         except UnboundLocalError:
