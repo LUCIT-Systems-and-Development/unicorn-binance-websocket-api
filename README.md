@@ -25,6 +25,10 @@ the UNICORN Binance WebSocket API?
 stores the receives in the RAM till you are able to process the data in the normal way again.
 - Helpful management features.
 
+## Installation
+`pip install unicorn-binance-websocket-api`
+https://pypi.org/project/unicorn-binance-websocket-api/
+
 ## Howto: 
 https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html
 
