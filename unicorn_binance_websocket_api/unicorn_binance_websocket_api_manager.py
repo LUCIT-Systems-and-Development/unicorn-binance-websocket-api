@@ -62,6 +62,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
+        self.version = "1.0.1"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
         self._keepalive_streams_restart_request = None
@@ -590,6 +591,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         return self.total_receives
+
+    def get_version(self):
+        """
+        Get the package/module version
+
+        :return: str
+        """
+        return self.version
 
     def increase_processed_receives_statistic(self, stream_id):
         # for every receive we call this method to increase the receives statistics

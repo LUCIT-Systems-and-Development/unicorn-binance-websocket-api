@@ -27,6 +27,7 @@ stores the receives in the RAM till you are able to process the data in the norm
 
 ## Installation
 `pip install unicorn-binance-websocket-api`
+
 https://pypi.org/project/unicorn-binance-websocket-api/
 
 ## Howto: 
@@ -39,4 +40,6 @@ https://www.unicorn-data.com/unicorn-binance-websocket-api.html
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
 
 ## How to report bugs or suggest improvements?
-Please open a new issue: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues
+Please open a new issue: 
+
+https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues

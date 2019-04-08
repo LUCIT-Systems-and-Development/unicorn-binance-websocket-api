@@ -13,6 +13,9 @@ setuptools.setup(
      long_description=long_description,
      long_description_content_type="text/markdown",
      license='MIT License',
+     install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets'],
+     keywords='unicorn-data-analysis, binance, websocket-api, webstream-api, api, binance-websocket, '
+              'binance-webstream, webstream, websocket',
      project_urls={
         'Source': 'https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api',
         'Documentation': 'https://www.unicorn-data.com/unicorn-binance-websocket-api.html',
@@ -27,3 +30,4 @@ setuptools.setup(
          'Topic :: Software Development :: Libraries :: Python Modules',
      ],
 )
+
