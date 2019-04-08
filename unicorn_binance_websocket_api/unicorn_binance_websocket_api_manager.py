@@ -669,7 +669,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     stream_row_color_suffix = "\033[0m"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "crashed" in stream_info['status']:
-            stream_row_color_prefix = " \033[1m\033[31m"
+            stream_row_color_prefix = "\033[1m\033[31m"
             stream_row_color_suffix = "\033[0m"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "restarting" in stream_info['status']:
@@ -741,16 +741,22 @@ class BinanceWebSocketApiManager(threading.Thread):
         active_streams_row = ""
         stopped_streams_row = ""
         stream_rows = ""
-        windows_extra_space_1 = ""
-        windows_extra_space_2 = ""
         crashed_streams_row = ""
         received_bytes_per_x_row = ""
         streams_with_stop_request_row = ""
         stream_buffer_row = ""
         reconnects_row = ""
         if platform.system() == "Windows":
-            windows_extra_space_1 = "\t"
-            windows_extra_space_2 = "\t\t"
+            stream_row_space_1 = "   |\t "
+            stream_row_space_2 = "\t\t|\t"
+            stream_row_space_3 = "\t   |  "
+            stream_row_space_4 = " \t\t\t| "
+        else:
+            stream_row_space_1 = " |\t "
+            stream_row_space_2 = "\t     |\t"
+            stream_row_space_3 = "\t   |  "
+            stream_row_space_4 = " \t      | "
+
         for stream_id in self.stream_list:
             stream_row_color_prefix = ""
             stream_row_color_suffix = ""
@@ -785,10 +791,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 crashed_streams += 1
                 stream_row_color_prefix = "\033[1m\033[31m"
                 stream_row_color_suffix = "\033[0m"
-            stream_rows += stream_row_color_prefix + str(stream_id) + stream_row_color_suffix + " |\t " + str(
-                self.get_stream_receives_last_second(stream_id)) + "\t     |\t" + str(stream_statistic['stream_receives_per_second'].__round__(2)) + windows_extra_space_1 + \
-                                                                   "\t   |  " + str(self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) + windows_extra_space_2 + \
-                                                                   " \t      | " + stream_row_color_prefix + str(len(self.stream_list[stream_id]['logged_reconnects'])) + stream_row_color_suffix + "\r\n "
+            stream_rows += stream_row_color_prefix + str(stream_id) + stream_row_color_suffix + stream_row_space_1 + str(
+                self.get_stream_receives_last_second(stream_id)) + stream_row_space_2 + str(stream_statistic['stream_receives_per_second'].__round__(2)) + \
+                stream_row_space_3 + str(self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) + \
+                stream_row_space_4 + stream_row_color_prefix + str(len(self.stream_list[stream_id]['logged_reconnects'])) + stream_row_color_suffix + "\r\n "
             if self.stream_list[stream_id]['stop_request'] is True and self.stream_list[stream_id]['status'] != "stopped":
                 streams_with_stop_request += 1
         if streams_with_stop_request >= 1:
