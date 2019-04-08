@@ -5,8 +5,9 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='unicorn-binance-websocket-api',
-     version='1.0.0',
-     author="UNICORN Data Analysis, www.unicorn-data.com",
+     version='1.0.1',
+     author="UNICORN Data Analysis",
+     url="https://www.unicorn-data.com",
      author_email="",
      scripts=['unicorn_binance_websocket_api.py'],
      description="A python API to use the Binance Websocket API in a easy, fast, robust and fully-featured way.",
