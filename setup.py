@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='unicorn-binance-websocket-api',
-     version='1.0.1',
+     version='1.0.2',
      author="UNICORN Data Analysis",
      url="https://www.unicorn-data.com",
      author_email="",
@@ -15,8 +15,8 @@ setuptools.setup(
      long_description_content_type="text/markdown",
      license='MIT License',
      install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets'],
-     keywords='unicorn-data-analysis, binance, websocket-api, webstream-api, api, binance-websocket, '
-              'binance-webstream, webstream, websocket',
+     keywords='unicorn-data-analysis, binance, asyncio, asynchronous, concurrent, websocket-api, webstream-api, api, '
+              'binance-websocket, binance-webstream, webstream, websocket',
      project_urls={
         'Source': 'https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api',
         'Documentation': 'https://www.unicorn-data.com/unicorn-binance-websocket-api.html',
