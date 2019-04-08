@@ -751,7 +751,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             stream_row_space_2 = "\t\t |\t"
             stream_row_space_3 = "\t   |  "
             stream_row_space_4 = " \t\t\t  | "
-            last_row_space_1 = "                 |\t "
+            last_row_space_1 = "                 |\t\t"
         else:
             stream_row_space_1 = " |\t "
             stream_row_space_2 = "\t     |\t"
