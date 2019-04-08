@@ -657,27 +657,42 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             logged_reconnects_row = ""
         if "running" in stream_info['status']:
-            if platform.system() != "Windows":
+            if platform.system() == "Windows":
+                stream_row_color_prefix = "<ESC>[92m"
+                stream_row_color_suffix = "[0m"
+            else:
                 stream_row_color_prefix = "\033[1m\033[32m"
                 stream_row_color_suffix = "\033[0m"
             for reconnect_timestamp in self.stream_list[stream_id]['logged_reconnects']:
                 if (time.time() - reconnect_timestamp) < 2:
-                    if platform.system() != "Windows":
+                    if platform.system() == "Windows":
+                        stream_row_color_prefix = "<ESC>[93m"
+                        stream_row_color_suffix = "[0m"
+                    else:
                         stream_row_color_prefix = "\033[1m\033[33m"
                         stream_row_color_suffix = "\033[0m"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "crashed" in stream_info['status']:
-            if platform.system() != "Windows":
+            if platform.system() == "Windows":
+                stream_row_color_prefix = "<ESC>[91m"
+                stream_row_color_suffix = "[0m"
+            else:
                 stream_row_color_prefix = " \033[1m\033[31mstatus: "
                 stream_row_color_suffix = "\033[0m"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "restarting" in stream_info['status']:
-            if platform.system() != "Windows":
+            if platform.system() == "Windows":
+                stream_row_color_prefix = "<ESC>[93m"
+                stream_row_color_suffix = "[0m"
+            else:
                 stream_row_color_prefix = "\033[1m\033[33m"
                 stream_row_color_suffix = "\033[0m"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         else:
-            if platform.system() != "Windows":
+            if platform.system() == "Windows":
+                stream_row_color_prefix = "<ESC>[93m"
+                stream_row_color_suffix = "[0m"
+            else:
                 stream_row_color_prefix = "\033[1m\033[33m"
                 stream_row_color_suffix = "\033[0m"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
@@ -756,7 +771,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 all_receives_per_second += stream_statistic['stream_receives_per_second']
                 try:
                     if self.restart_requests[stream_id]['status'] == "restarted":
-                        if platform.system() != "Windows":
+                        if platform.system() == "Windows":
+                            stream_row_color_prefix = "<ESC>[93m"
+                            stream_row_color_suffix = "[0m"
+                        else:
                             stream_row_color_prefix = "\033[1m\033[33m"
                             stream_row_color_suffix = "\033[0m"
                 except KeyError:
@@ -764,27 +782,42 @@ class BinanceWebSocketApiManager(threading.Thread):
                 try:
                     for reconnect_timestamp in self.stream_list[stream_id]['logged_reconnects']:
                         if (time.time() - reconnect_timestamp) < 1:
-                            if platform.system() != "Windows":
+                            if platform.system() == "Windows":
+                                stream_row_color_prefix = "<ESC>[91m"
+                                stream_row_color_suffix = "[0m"
+                            else:
                                 stream_row_color_prefix = "\033[1m\033[31m"
                                 stream_row_color_suffix = "\033[0m"
                         elif (time.time() - reconnect_timestamp) < 2:
-                            if platform.system() != "Windows":
+                            if platform.system() == "Windows":
+                                stream_row_color_prefix = "<ESC>[93m"
+                                stream_row_color_suffix = "[0m"
+                            else:
                                 stream_row_color_prefix = "\033[1m\033[33m"
                                 stream_row_color_suffix = "\033[0m"
                         elif (time.time() - reconnect_timestamp) < 4:
-                            if platform.system() != "Windows":
+                            if platform.system() == "Windows":
+                                stream_row_color_prefix = "<ESC>[92m"
+                                stream_row_color_suffix = "[0m"
+                            else:
                                 stream_row_color_prefix = "\033[1m\033[32m"
                                 stream_row_color_suffix = "\033[0m"
                 except KeyError:
                     pass
             elif self.stream_list[stream_id]['status'] == "stopped":
                 stopped_streams += 1
-                if platform.system() != "Windows":
+                if platform.system() == "Windows":
+                    stream_row_color_prefix = "<ESC>[93m"
+                    stream_row_color_suffix = "[0m"
+                else:
                     stream_row_color_prefix = "\033[1m\033[33m"
                     stream_row_color_suffix = "\033[0m"
             elif "crashed" in self.stream_list[stream_id]['status']:
                 crashed_streams += 1
-                if platform.system() != "Windows":
+                if platform.system() == "Windows":
+                    stream_row_color_prefix = "<ESC>[91m"
+                    stream_row_color_suffix = "[0m"
+                else:
                     stream_row_color_prefix = "\033[1m\033[31m"
                     stream_row_color_suffix = "\033[0m"
             stream_rows += stream_row_color_prefix + str(stream_id) + stream_row_color_suffix + " |\t " + str(
@@ -794,13 +827,19 @@ class BinanceWebSocketApiManager(threading.Thread):
             if self.stream_list[stream_id]['stop_request'] is True and self.stream_list[stream_id]['status'] != "stopped":
                 streams_with_stop_request += 1
         if streams_with_stop_request >= 1:
-            if platform.system() != "Windows":
+            if platform.system() == "Windows":
+                stream_row_color_prefix = "<ESC>[93m"
+                stream_row_color_suffix = "[0m"
+            else:
                 stream_row_color_prefix = "\033[1m\033[33m"
                 stream_row_color_suffix = "\033[0m"
             streams_with_stop_request_row = stream_row_color_prefix + " streams_with_stop_request: " + \
                                             str(streams_with_stop_request) + stream_row_color_suffix + "\r\n"
         if crashed_streams >= 1:
-            if platform.system() != "Windows":
+            if platform.system() == "Windows":
+                stream_row_color_prefix = "<ESC>[91m"
+                stream_row_color_suffix = "[0m"
+            else:
                 stream_row_color_prefix = "\033[1m\033[31m"
                 stream_row_color_suffix = "\033[0m"
             crashed_streams_row = stream_row_color_prefix + " crashed_streams: " + str(crashed_streams) + stream_row_color_suffix + "\r\n"
@@ -811,7 +850,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                     str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(
                                         2)) + " gB)"
         if len(self.stream_buffer) > 0:
-            if platform.system() != "Windows":
+            if platform.system() == "Windows":
+                stream_row_color_prefix = "<ESC>[94m"
+                stream_row_color_suffix = "[0m"
+            else:
                 stream_row_color_prefix = "\033[1m\033[34m"
                 stream_row_color_suffix = "\033[0m"
             stream_buffer_row += stream_row_color_prefix + " stream_buffer_stored_items: " + str(len(self.stream_buffer)) + "\r\n"
@@ -819,12 +861,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                                  " (" + str(
                 self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")" + stream_row_color_suffix + "\r\n"
 
-        if platform.system() != "Windows":
+        if platform.system() == "Windows":
+            active_streams_row = " <ESC>[92mactive_streams:" + str(active_streams) + "[0m\r\n"
+            stopped_streams_row = " <ESC>[93mstopped_streams:" + str(stopped_streams) + "[0m\r\n"
+        else:
             active_streams_row = " \033[1m\033[32mactive_streams:" + str(active_streams) + "\033[0m\r\n"
             stopped_streams_row = " \033[1m\033[33mstopped_streams:" + str(stopped_streams) + "\033[0m\r\n"
-        else:
-            active_streams_row = " active_streams:" + str(active_streams) + "\r\n"
-            stopped_streams_row = " stopped_streams:" + str(stopped_streams) + "\r\n"
+
+
         try:
             print(
                 "===============================================================================================\r\n" +
