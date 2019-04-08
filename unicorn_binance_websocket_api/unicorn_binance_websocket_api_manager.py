@@ -249,20 +249,25 @@ class BinanceWebSocketApiManager(threading.Thread):
             "BinanceWebSocketApiManager->_keepalive_streams() new instance created with keepalive_streams_id=" +
             str(keepalive_streams_id))
         # threaded loop to restart crashed streams:
-        while self.stop_manager_request is None and self.keepalive_streams_list[keepalive_streams_id][
-            'stop_request'] is None:
+        while self.stop_manager_request is None and self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
             self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat'] = time.time()
             time.sleep(0.3)
-            current_timestamp = time.time()
             # restart streams with a restart_request (status == new)
-            for stream_id in self.restart_requests:
+            temp_restart_requests = copy.deepcopy(self.restart_requests)
+            for stream_id in temp_restart_requests:
+                # find restarts that didnt work
+                if self.restart_requests[stream_id]['status'] == "restarted" and self.restart_requests[stream_id]['last_restart_time']+5 < time.time():
+                    self.restart_requests[stream_id]['status'] = "new"
+                # restart streams with requests
                 if self.restart_requests[stream_id]['status'] == "new":
                     self.restart_stream(stream_id)
                     self.restart_requests[stream_id]['status'] = "restarted"
+                    self.restart_requests[stream_id]['last_restart_time'] = time.time()
                     self.stream_list[stream_id]['status'] = "restarting"
             # control frequent_checks_threads for two cases:
             # 1) there should only be one! stop others if necessary:
             found_alive_frequent_checks = False
+            current_timestamp = time.time()
             for frequent_checks_id in self.frequent_checks_list:
                 try:
                     if (current_timestamp - self.frequent_checks_list[frequent_checks_id]['last_heartbeat']) < 2:
@@ -666,14 +671,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                     stream_row_color_suffix = "\033[0m"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "crashed" in stream_info['status']:
-            stream_row_color_prefix = " \033[1m\033[31mstatus: "
+            stream_row_color_prefix = " \033[1m\033[31m"
             stream_row_color_suffix = "\033[0m"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "restarting" in stream_info['status']:
             stream_row_color_prefix = "\033[1m\033[33m"
             stream_row_color_suffix = "\033[0m"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
-        else:
+        elif "stopped" in stream_info['status']:
             stream_row_color_prefix = "\033[1m\033[33m"
             stream_row_color_suffix = "\033[0m"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
@@ -795,9 +800,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         total_received_bytes = str(self.get_total_received_bytes()) + " (" + str(
             self.get_human_bytesize(self.get_total_received_bytes())) + ")"
         received_bytes_per_second = self.get_total_received_bytes() / (time.time() - self.start_time)
-        received_bytes_per_x_row += str((received_bytes_per_second / 1024).__round__(2)) + " kB/s (per day " + \
-                                    str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(
-                                        2)) + " gB)"
+        received_bytes_per_x_row += str((received_bytes_per_second / 1024).__round__(2)) + " kB/s (per day " + str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(2)) + " gB)"
         if len(self.stream_buffer) > 0:
             stream_row_color_prefix = "\033[1m\033[34m"
             stream_row_color_suffix = "\033[0m"
@@ -806,8 +809,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                  " (" + str(
                 self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")" + stream_row_color_suffix + "\r\n"
 
-        active_streams_row = " \033[1m\033[32mactive_streams:" + str(active_streams) + "\033[0m\r\n"
-        stopped_streams_row = " \033[1m\033[33mstopped_streams:" + str(stopped_streams) + "\033[0m\r\n"
+        active_streams_row = " \033[1m\033[32mactive_streams: " + str(active_streams) + "\033[0m\r\n"
+        stopped_streams_row = " \033[1m\033[33mstopped_streams: " + str(stopped_streams) + "\033[0m\r\n"
 
         try:
             print(

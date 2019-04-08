@@ -107,16 +107,16 @@ class BinanceWebSocketApiConnection(object):
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['status'] = "running"
         except socket.gaierror as error_msg:
             logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                             str(self.channels) + ", " + str(self.markets) + ")" + " --> No internet connection??? "
+                             str(self.channels) + ", " + str(self.markets) + ")" + " --> No internet connection? "
                              ";) - " + str(error_msg))
             self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, (str(error_msg) +
-                                                                          " --> NO INTERNET CONNECTION??? "))
+                                                                          " --> NO INTERNET CONNECTION? "))
             self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
         except websockets.exceptions.InvalidStatusCode as error_msg:
             if "Status code not 101: 414" in str(error_msg):
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg) +
-                                                                              " --> URI too long??? ;)")
+                                                                              " --> URI too long? ;)")
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ")" + " --> URI Too Long? To many "
                                  "streams in on socket? ;) - " + str(error_msg))
