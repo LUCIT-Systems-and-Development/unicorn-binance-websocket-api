@@ -43,7 +43,7 @@ class BinanceWebSocketApiRestclient(object):
                                'key': binance_api_key,
                                'secret': binance_api_secret,
                                'request_headers': {'Accept': 'application/json',
-                                                   'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/1.0.0',
+                                                   'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/latest',
                                                    'X-MBX-APIKEY': str(binance_api_key)}}
         self.listen_key = False
 
@@ -59,7 +59,9 @@ class BinanceWebSocketApiRestclient(object):
         if method == "post":
             request_handler = requests.post(uri, headers=self.BinanceRestApi['request_headers'])
         elif method == "put":
-            request_handler = requests.post(uri, headers=self.BinanceRestApi['request_headers'], data=data)
+            request_handler = requests.put(uri, headers=self.BinanceRestApi['request_headers'], data=data)
+        elif method == "delete":
+            request_handler = requests.delete(uri, headers=self.BinanceRestApi['request_headers'])
         else:
             request_handler = False
         return request_handler.json()
@@ -67,7 +69,10 @@ class BinanceWebSocketApiRestclient(object):
     def delete_listen_key(self, listen_key):
         method = "delete"
         path = "/api/v1/userDataStream"
-        return self._request(method, path, False, {'listenKey': str(listen_key)})
+        try:
+            return self._request(method, path, False, {'listenKey': str(listen_key)})
+        except KeyError:
+            return False
 
     def get_listen_key(self):
         method = "post"
@@ -82,9 +87,8 @@ class BinanceWebSocketApiRestclient(object):
     def keepalive_listen_key(self, listen_key):
         method = "put"
         path = "/api/v1/userDataStream"
-        response = self._request(method, path, False, {'listenKey': str(listen_key)})
         try:
-            return response['listenKey']
+            return self._request(method, path, False, {'listenKey': str(listen_key)})
         except KeyError:
             return False
 

@@ -166,7 +166,3 @@ class BinanceWebSocketApiConnection(object):
         self.handler_binance_websocket_api_manager.increase_processed_receives_statistic(self.stream_id)
         self.handler_binance_websocket_api_manager.set_heartbeat(self.stream_id)
         return received_data
-
-    def pong(self):
-        self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].pong()
-        self.handler_binance_websocket_api_manager.set_heartbeat(self.stream_id)

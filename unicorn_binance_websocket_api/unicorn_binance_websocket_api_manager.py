@@ -39,6 +39,7 @@ import asyncio
 import colorama
 import copy
 import logging
+import platform
 import uuid
 import sys
 import threading
@@ -146,6 +147,15 @@ class BinanceWebSocketApiManager(threading.Thread):
             # count most_receives_per_second total last second
             if active_stream_list:
                 for stream_id in active_stream_list:
+                    # set the streams `most_receives_per_second` value
+                    try:
+                        if self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp] > \
+                                self.stream_list[stream_id]['receives_statistic_last_second'][
+                                    'most_receives_per_second']:
+                            self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second'] = \
+                                self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp]
+                    except KeyError:
+                        pass
                     try:
                         total_most_stream_receives_last_timestamp += self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp]
                     except KeyError:
@@ -156,8 +166,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         pass
                     # delete list entries older than `keep_max_received_last_second_entries`
                     delete_index = []
-                    if len(self.stream_list[stream_id]['receives_statistic_last_second'][
-                               'entries']) > self.keep_max_received_last_second_entries:
+                    if len(self.stream_list[stream_id]['receives_statistic_last_second']['entries']) > self.keep_max_received_last_second_entries:
                         for timestamp_key in self.stream_list[stream_id]['receives_statistic_last_second']['entries']:
                             try:
                                 if timestamp_key < current_timestamp - self.keep_max_received_last_second_entries:
@@ -168,8 +177,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                     " current_timestamp=" + str(current_timestamp) + " keep_max_received_last_second_entries=" +
                                     str(self.keep_max_received_last_second_entries) + " error_msg=" + str(error_msg))
                     for timestamp_key in delete_index:
-                        self.stream_list[stream_id]['receives_statistic_last_second']['entries'].pop(timestamp_key,
-                                                                                                     None)
+                        self.stream_list[stream_id]['receives_statistic_last_second']['entries'].pop(timestamp_key, None)
             # set most_receives_per_second
             try:
                 if int(self.most_receives_per_second) < int(total_most_stream_receives_last_timestamp):
@@ -229,10 +237,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                             # send ping to websocket server
                             self.websocket_list[stream_id].ping()
                             # keep-alive the listenKey
-                            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(
-                                self.stream_list[stream_id]['api_key'], self.stream_list[stream_id]['api_secret'])
-                            binance_websocket_api_restclient.keepalive_listen_key(
-                                self.stream_list[stream_id]['listen_key'])
+                            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'], self.stream_list[stream_id]['api_secret'])
+                            binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
                             del binance_websocket_api_restclient
                             # set last_static_ping
                             self.stream_list[stream_id]['last_static_ping'] = time.time()
@@ -588,22 +594,13 @@ class BinanceWebSocketApiManager(threading.Thread):
     def increase_processed_receives_statistic(self, stream_id):
         # for every receive we call this method to increase the receives statistics
         current_timestamp = int(time.time())
-        last_timestamp = current_timestamp - 1
         # for every received row of data, the stream counts + 1 in to the statistic (average values)
         self.stream_list[stream_id]['processed_receives_total'] += 1
-        # increase for every received row the global received stats for the LAST SECOND
+        # increase for every received row the global received stats for the current second
         try:
             self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] += 1
         except KeyError:
             self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] = 1
-        # set the streams `most_receives_per_second` value
-        try:
-            if self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp] > \
-                    self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']:
-                self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second'] = \
-                self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp]
-        except KeyError:
-            pass
         # increase `total_receives`
         self.total_receives += 1
 
@@ -744,11 +741,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         active_streams_row = ""
         stopped_streams_row = ""
         stream_rows = ""
+        extra_space_1 = ""
+        extra_space_2 = ""
         crashed_streams_row = ""
         received_bytes_per_x_row = ""
         streams_with_stop_request_row = ""
         stream_buffer_row = ""
         reconnects_row = ""
+        if platform.system() == "Windows":
+            extra_space_1 = "  "
+            extra_space_2 = "    "
         for stream_id in self.stream_list:
             stream_row_color_prefix = ""
             stream_row_color_suffix = ""
@@ -784,8 +786,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 stream_row_color_prefix = "\033[1m\033[31m"
                 stream_row_color_suffix = "\033[0m"
             stream_rows += stream_row_color_prefix + str(stream_id) + stream_row_color_suffix + " |\t " + str(
-                self.get_stream_receives_last_second(stream_id)) + "\t     |\t" + str(stream_statistic['stream_receives_per_second'].__round__(2)) + \
-                                                                   "\t   |  " + str(self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) + \
+                self.get_stream_receives_last_second(stream_id)) + "\t     |\t" + str(stream_statistic['stream_receives_per_second'].__round__(2)) + extra_space_1 + \
+                                                                   "\t   |  " + str(self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) + extra_space_2 + \
                                                                    " \t      | " + stream_row_color_prefix + str(len(self.stream_list[stream_id]['logged_reconnects'])) + stream_row_color_suffix + "\r\n "
             if self.stream_list[stream_id]['stop_request'] is True and self.stream_list[stream_id]['status'] != "stopped":
                 streams_with_stop_request += 1
@@ -957,8 +959,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
                                                                                  self.stream_list[stream_id][
                                                                                      'api_secret'])
-                binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
+                resp = binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
                 del binance_websocket_api_restclient
+                i = 0
+                while i < 1000:
+                    print("listenkey resp: " + str(resp))
+                    i += 1
+                    time.sleep(1)
 
     def stop_stream(self, stream_id):
         """
