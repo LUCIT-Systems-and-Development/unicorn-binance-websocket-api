@@ -43,13 +43,17 @@ from unicorn_binance_websocket_api_process_streams import BinanceWebSocketApiPro
 logging.getLogger('websockets').setLevel(logging.INFO)
 logging.getLogger('websockets').addHandler(logging.StreamHandler())
 
+# configure api key and secret
 binance_api_key = ""
 binance_api_secret = ""
 
 # create instance of BinanceWebSocketApiManager and provide the callback function
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
 
+# set api key and secret in api manager
 binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
+
+# create the userData stream
 user_data_stream_id = binance_websocket_api_manager.create_stream('arr', '!userData')
 
 while True:
