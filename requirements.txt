@@ -1,4 +1,5 @@
+colorama
+pathlib
 requests
 websocket-client
 websockets
-pathlib
