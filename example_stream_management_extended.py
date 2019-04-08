@@ -46,7 +46,10 @@ logging.getLogger('websockets').addHandler(logging.StreamHandler())
 # create instance of BinanceWebSocketApiManager and provide the callback function
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
 
+# define markets
 markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'eosusdt'}
+
+# define channels
 channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w', 'miniTicker'}
 
 # create and start some streams
