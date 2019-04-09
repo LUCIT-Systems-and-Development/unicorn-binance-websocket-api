@@ -33,5 +33,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from .unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
-from .unicorn_binance_websocket_api.unicorn_fy import UnicornFy
+from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection import BinanceWebSocketApiConnection
+from unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket import BinanceWebSocketApiSocket
+from unicorn_binance_websocket_api.unicorn_fy import UnicornFy
