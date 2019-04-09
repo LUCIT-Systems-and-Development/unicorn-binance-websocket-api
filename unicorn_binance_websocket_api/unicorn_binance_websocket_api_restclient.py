@@ -39,12 +39,12 @@ import requests
 
 
 class BinanceWebSocketApiRestclient(object):
-    def __init__(self, binance_api_key, binance_api_secret):
+    def __init__(self, binance_api_key, binance_api_secret, unicorn_binance_websocket_api_version):
         self.BinanceRestApi = {'base_uri': "https://api.binance.com/",
                                'key': binance_api_key,
                                'secret': binance_api_secret,
                                'request_headers': {'Accept': 'application/json',
-                                                   'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/latest',
+                                                   'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/' + unicorn_binance_websocket_api_version,
                                                    'X-MBX-APIKEY': str(binance_api_key)}}
         self.listen_key = False
 

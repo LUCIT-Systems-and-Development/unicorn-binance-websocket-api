@@ -12,7 +12,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='unicorn-binance-websocket-api',
-     version='1.0.2',
+     version='1.0.3',
      author="UNICORN Data Analysis",
      url="https://www.unicorn-data.com",
      author_email="",
@@ -32,12 +32,12 @@ setuptools.setup(
      packages=setuptools.find_packages(),
      classifiers=[
          "Programming Language :: Python :: 3.5",
-         "License :: OSI Approved :: MIT",
-         "Office/Business :: Financial :: Investment" 
-         'Intended Audience :: Developers',
+         "Programming Language :: Python :: 3.6",
+         "Programming Language :: Python :: 3.7",
+         "License :: OSI Approved :: MIT License",
          'Intended Audience :: Developers',
          "Operating System :: OS Independent",
-         "Topic :: Office/Business :: Financial :: Investment"
+         "Topic :: Office/Business :: Financial :: Investment",
          'Topic :: Software Development :: Libraries :: Python Modules',
      ],
 )

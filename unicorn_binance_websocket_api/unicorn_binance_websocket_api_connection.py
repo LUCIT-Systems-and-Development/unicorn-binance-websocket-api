@@ -86,7 +86,8 @@ class BinanceWebSocketApiConnection(object):
                 continue
             for market in self.markets:
                 if market == "!userData":
-                    binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.api_key, self.api_secret)
+                    binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.api_key, self.api_secret,
+                                                                                     self.handler_binance_websocket_api_manager.version)
                     self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['listen_key'] = \
                         binance_websocket_api_restclient.get_listen_key()
                     del binance_websocket_api_restclient
@@ -102,7 +103,9 @@ class BinanceWebSocketApiConnection(object):
         uri = self.BinanceWebSocketApi['base_uri'] + str(query)
         logging.debug("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
                       ", " + str(self.markets) + ")" + " connecting to " + uri)
-        self._conn = connect(uri, ping_interval=10, close_timeout=5)
+        self._conn = connect(uri, ping_interval=10, ping_timeout=10, close_timeout=5,
+                             extra_headers={'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/' +
+                                            self.handler_binance_websocket_api_manager.version})
         try:
             self.handler_binance_websocket_api_manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['status'] = "running"
