@@ -68,7 +68,6 @@ time.sleep(3)
 binance_get_multi_stream_id = binance_websocket_api_manager.replace_stream(binance_get_ticker_stream_id, ['trade', 'depth', 'depth_10', 'aggTrade', 'miniTicker'], markets)
 
 while True:
-    binance_websocket_api_manager.print_summary()
     binance_websocket_api_manager.print_stream_info(binance_get_multi_stream_id)
     binance_websocket_api_manager.print_stream_info(binance_get_ticker_stream_id)
     binance_websocket_api_manager.print_stream_info(binance_get_kline_stream_id)
