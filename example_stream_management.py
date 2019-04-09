@@ -62,10 +62,10 @@ binance_get_ticker_stream_id = binance_websocket_api_manager.create_stream("arr"
 binance_get_kline_stream_id = binance_websocket_api_manager.create_stream(['kline_1m', 'kline_5m', 'kline_30m', 'kline_1h', 'kline_15m'], markets)
 binance_get_kline_stream_id = binance_websocket_api_manager.create_stream(['trade'], markets)
 
-time.sleep(3)
+time.sleep(5)
 
 # replace stream 1 with stream 3 (stream 1 will not get stopped till stream 3 received its first data row
-binance_get_multi_stream_id = binance_websocket_api_manager.replace_stream(binance_get_ticker_stream_id, ['trade', 'depth', 'depth_10', 'aggTrade', 'miniTicker'], markets)
+binance_get_multi_stream_id = binance_websocket_api_manager.replace_stream(binance_get_ticker_stream_id, ['trade', 'depth', 'depth10', 'aggTrade', 'miniTicker'], markets)
 
 while True:
     binance_websocket_api_manager.print_stream_info(binance_get_multi_stream_id)

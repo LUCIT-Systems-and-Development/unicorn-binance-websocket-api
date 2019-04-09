@@ -7,7 +7,7 @@ supports the streaming of public streams like trade, kline, ticker and depth, bu
 need to be used with a valid api_key and api_secret from the [Binance Exchange](https://www.binance.com/).
 
 The module requires python 3.5.1 or above, as it depends on pythons latest asyncio features for asynchronous/concurrent 
-processing. The current requirements are listed 
+processing. The current dependencies are listed 
 [here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
