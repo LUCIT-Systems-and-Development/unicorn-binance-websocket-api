@@ -6,6 +6,7 @@
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
 # Documentation: https://www.unicorn-data.com/unicorn-binance-websocket-api.html
+# PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
 # Author: UNICORN Data Analysis
 #         https://www.unicorn-data.com/
