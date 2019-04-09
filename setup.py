@@ -25,9 +25,12 @@ setuptools.setup(
      packages=setuptools.find_packages(),
      classifiers=[
          "Programming Language :: Python :: 3.5",
+         "License :: OSI Approved :: MIT",
+         "Office/Business :: Financial :: Investment" 
          'Intended Audience :: Developers',
-         "License :: OSI Approved :: MIT License",
+         'Intended Audience :: Developers',
          "Operating System :: OS Independent",
+         "Topic :: Office/Business :: Financial :: Investment"
          'Topic :: Software Development :: Libraries :: Python Modules',
      ],
 )
