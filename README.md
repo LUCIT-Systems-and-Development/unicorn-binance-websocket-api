@@ -1,5 +1,5 @@
 # UNICORN Binance WebSocket API
-A python API to use the Binance Websocket API in a easy, fast, robust and fully-featured way.
+A python API to use the Binance Websocket API in a easy, fast, flexible, robust and fully-featured way.
 
 The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) 
 provides an API to the [Binance Websocket API](https://github.com/binance-exchange/binance-official-api-docs), which 
