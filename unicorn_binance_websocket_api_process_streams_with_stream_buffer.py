@@ -87,7 +87,18 @@ class BinanceWebSocketApiProcessStreams(object):
             print("received_data: " + str(received_stream_data_json), "error_msg: " + str(error_msg))
 
     def aggtrade(self, unicorn_fied_stream_data):
-        pass
+        try:
+            conn = psycopg2.connect(host="localhost",
+                                    port=5432,
+                                    user="dbo",
+                                    password="top$ecret",
+                                    database="mareket_data")
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO a_table (c1) VALUES(%s)", unicorn_fied_stream_data)
+        except psycopg2.Error:
+            self.stream_buffer(unicorn_fied_stream_data)
+        except psycopg2.DatabaseError:
+            self.stream_buffer(unicorn_fied_stream_data)
 
     def trade(self, unicorn_fied_stream_data):
         try:
@@ -100,24 +111,26 @@ class BinanceWebSocketApiProcessStreams(object):
             cursor.execute("INSERT INTO a_table (c1) VALUES(%s)", unicorn_fied_stream_data)
         except psycopg2.Error:
             self.stream_buffer(unicorn_fied_stream_data)
+        except psycopg2.DatabaseError:
+            self.stream_buffer(unicorn_fied_stream_data)
 
     def kline(self, unicorn_fied_stream_data):
-        pass
+        self.stream_buffer(unicorn_fied_stream_data)
 
     def miniticker(self, unicorn_fied_stream_data):
-        pass
+        self.stream_buffer(unicorn_fied_stream_data)
 
     def ticker(self, unicorn_fied_stream_data):
-        pass
+        self.stream_buffer(unicorn_fied_stream_data)
 
     def depth(self, unicorn_fied_stream_data):
-        pass
+        self.stream_buffer(unicorn_fied_stream_data)
 
     def outboundAccountInfo(self, unicorn_fied_stream_data):
-        pass
+        self.stream_buffer(unicorn_fied_stream_data)
 
     def executionReport(self, unicorn_fied_stream_data):
-        pass
+        self.stream_buffer(unicorn_fied_stream_data)
 
     def anything_else(self, unicorn_fied_stream_data):
-        pass
+        self.stream_buffer(unicorn_fied_stream_data)

@@ -64,7 +64,6 @@ markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
            'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
            'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth'}
 
-binance_get_trade_stream_id = binance_websocket_api_manager.create_stream(["trade"], markets)
 binance_get_kline_stream_id1 = binance_websocket_api_manager.create_stream(['kline_1m', 'kline_5m'], markets)
 binance_get_kline_stream_id2 = binance_websocket_api_manager.create_stream(['kline_30m', 'kline_1h', 'kline_15m'], markets)
 
