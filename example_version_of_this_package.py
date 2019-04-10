@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# File: pypi_create_wheel.sh
+# File: example_version_of_this_package.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
@@ -33,15 +33,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-security-check() {
-    echo -n "Did you change the version in \`setup.py\`, \`unicorn_binance_websocket_api_manager.py\` and \`latest_release\`? [yes|NO] "
-    local SURE
-    read SURE
-    if [ "$SURE" != "yes" ]; then
-        exit 1
-    fi
-    echo "ok, lets go..."
-}
+from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 
-security-check
-python setup.py bdist_wheel
+# create instance of BinanceWebSocketApiManager
+binance_websocket_api_manager = BinanceWebSocketApiManager()
+
+# get version of the used UNICORN Binance WebSocket API
+if binance_websocket_api_manager.is_update_availabe():
+    print("yes, please upgrade to", binance_websocket_api_manager.get_latest_version(), ", you are on", binance_websocket_api_manager.get_version())
+    # send yourself an email?
+    # make auto update with pip?
+else:
+    print("no,", binance_websocket_api_manager.get_version(), "is the latest version!")
+
+
+

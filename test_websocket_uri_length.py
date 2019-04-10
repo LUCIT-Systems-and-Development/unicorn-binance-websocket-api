@@ -1,0 +1,91 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# File: test_websocket_uri_length.py
+#
+# Part of ‘UNICORN Binance WebSocket API’
+# Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
+# Documentation: https://www.unicorn-data.com/unicorn-binance-websocket-api.html
+# PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
+#
+# Author: UNICORN Data Analysis
+#         https://www.unicorn-data.com/
+#
+# Copyright (c) 2019, UNICORN Data Analysis
+# All rights reserved.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish, dis-
+# tribute, sublicense, and/or sell copies of the Software, and to permit
+# persons to whom the Software is furnished to do so, subject to the fol-
+# lowing conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABIL-
+# ITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+# IN THE SOFTWARE.
+
+from websocket import create_connection
+import websocket
+import time
+
+
+def binance_test_uri_length(query):
+    websocket = create_connection("wss://stream.binance.com:9443/stream?streams=" + query)
+    while True:
+        result = websocket.recv()
+        websocket.close()
+        print("Received '%s'\r\n" % result)
+        break
+
+
+markets = ['bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
+           'neousdt', 'bnbusdt', 'adabtc', 'ethusdt', 'trxbtc', 'trxbtc', 'bchabcbtc', 'ltcbtc', 'xrpbtc',
+           'ontbtc', 'bttusdt', 'eosbtc', 'xlmbtc', 'bttbtc', 'tusdusdt', 'xlmusdt', 'qkcbtc', 'zrxbtc',
+           'neobtc', 'adaeth', 'icxusdt', 'btctusd', 'icxbtc', 'btcusdc', 'wanbtc', 'zecbtc', 'wtcbtc',
+           'batbtc', 'adabnb', 'etcusdt', 'qtumusdt', 'xmrbtc', 'trxeth', 'adatusd', 'trxxrp', 'trxbnb',
+           'dashbtc', 'rvnbnb', 'bchabctusd', 'etcbtc', 'bnbeth', 'ethpax', 'nanobtc', 'xembtc', 'xrpbnb',
+           'bchabcpax', 'xrpeth', 'bttbnb', 'ltcbnb', 'agibtc', 'zrxusdt', 'xlmbnb', 'ltceth', 'eoseth',
+           'ltctusd', 'polybnb', 'scbtc', 'steembtc', 'trxtusd', 'npxseth', 'kmdbtc', 'polybtc', 'gasbtc',
+           'engbtc', 'zileth', 'xlmeth', 'eosbnb', 'xrppax', 'lskbtc', 'npxsbtc', 'xmrusdt', 'ltcpax', 'xmrusdt',
+           'ethtusd', 'batusdt', 'mcobtc', 'neoeth', 'bntbtc', 'eostusd', 'lrcbtc', 'funbtc', 'zecusdt',
+           'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
+           'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth']
+
+channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
+
+streams = []
+for market in markets:
+    for channel in channels:
+        streams.append(market + "@" + channel)
+
+print("generated stream items:", len(streams), "\r\n")
+
+query = ""
+round = 0
+start_testing = int(input("start at round: "))
+print("")
+for stream in streams:
+    if round < len(streams):
+        query += stream + "/"
+        if round >= start_testing:
+            print("round:", round)
+            try:
+                binance_test_uri_length(query)
+            except websocket._exceptions.WebSocketBadStatusException as error_msg:
+                print("error_msg:", error_msg)
+                print("query length:", str(len(query)))
+                print("query:")
+                print(query)
+                if "Large" in str(error_msg):
+                    exit(0)
+            time.sleep(11)
+        round += 1

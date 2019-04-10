@@ -42,6 +42,7 @@ import copy
 import logging
 import platform
 import uuid
+import requests
 import sys
 import threading
 import time
@@ -63,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.0.3.dev"
+        self.version = "1.1.0"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
         self._keepalive_streams_restart_request = None
@@ -437,6 +438,19 @@ class BinanceWebSocketApiManager(threading.Thread):
             uptime = str(int(uptime)) + " seconds"
         return uptime
 
+    def get_latest_version(self):
+        """
+        Get the version of the latest available release
+
+        :return: str or False
+        """
+        try:
+            respond = requests.get('https://raw.githubusercontent.com/unicorn-data-analysis/unicorn-binance-websocket-api/master/_api/latest_release')
+            latest_version = str(respond.text)
+            return latest_version
+        except:
+            return False
+
     def get_most_receives_per_second(self):
         """
         Get the highest total receives per second value
@@ -646,6 +660,17 @@ class BinanceWebSocketApiManager(threading.Thread):
             return True
         else:
             return False
+
+    def is_update_availabe(self):
+        """
+        Is a new release of this package available?
+
+        :return: bool
+        """
+        if self.get_latest_version() == self.get_version():
+            return False
+        else:
+            return True
 
     def print_stream_info(self, stream_id):
         """
