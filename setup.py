@@ -45,7 +45,7 @@ setuptools.setup(
      url="https://www.unicorn-data.com",
      author_email="",
      scripts=['unicorn_binance_websocket_api.py'],
-     description="A python API to use the Binance Websocket API in a easy, fast, robust and fully-featured way.",
+     description="A python API to use the Binance Websocket API in a easy, fast, flexible, robust and fully-featured way.",
      long_description=long_description,
      long_description_content_type="text/markdown",
      license='MIT License',
