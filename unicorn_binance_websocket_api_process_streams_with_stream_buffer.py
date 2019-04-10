@@ -96,23 +96,16 @@ class BinanceWebSocketApiProcessStreams(object):
             cursor = conn.cursor()
             cursor.execute("INSERT INTO a_table (c1) VALUES(%s)", unicorn_fied_stream_data)
         except psycopg2.Error:
+            # catchin this excpetion works only well on linux, not on windows :/
+            # writing to stream_buffer works ...
             self.stream_buffer(unicorn_fied_stream_data)
         except psycopg2.DatabaseError:
+            # catchin this excpetion works only well on linux, not on windows :/
+            # writing to stream_buffer works ...
             self.stream_buffer(unicorn_fied_stream_data)
 
     def trade(self, unicorn_fied_stream_data):
-        try:
-            conn = psycopg2.connect(host="localhost",
-                                    port=5432,
-                                    user="dbo",
-                                    password="top$ecret",
-                                    database="mareket_data")
-            cursor = conn.cursor()
-            cursor.execute("INSERT INTO a_table (c1) VALUES(%s)", unicorn_fied_stream_data)
-        except psycopg2.Error:
-            self.stream_buffer(unicorn_fied_stream_data)
-        except psycopg2.DatabaseError:
-            self.stream_buffer(unicorn_fied_stream_data)
+        self.stream_buffer(unicorn_fied_stream_data)
 
     def kline(self, unicorn_fied_stream_data):
         self.stream_buffer(unicorn_fied_stream_data)
