@@ -314,6 +314,26 @@ class BinanceWebSocketApiManager(threading.Thread):
         # add received bytes to the total received bytes statistic
         self.total_received_bytes += int(size)
 
+    def create_stream(self, channels, markets):
+        """
+        Create a websocket stream
+
+        :param channels: provide the channels you wish to stream
+        :type channels: str or tuple
+
+        :param markets: provide the markets you wish to stream
+        :type markets: str or tuple
+
+        :return: stream_id
+        """
+        # create a stream
+        logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets) + ")")
+        stream_id = uuid.uuid4()
+        loop = asyncio.new_event_loop()
+        thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels, markets))
+        thread.start()
+        return stream_id
+
     def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False):
         """
         Create a websocket URI
@@ -323,6 +343,15 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param markets: provide the markets to create the URI
         :type markets: str or tuple
+
+        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :type stream_id: uuid
+
+        :param api_key: provide a valid Binance API key
+        :type api_key: str
+
+        :param api_secret: provide a valid Binance API secret
+        :type api_secret: str
 
         :return: str
         """
@@ -374,26 +403,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                     query += market + "@" + channel + "/"
         uri = self.websocket_base_uri + str(query)
         return uri
-
-    def create_stream(self, channels, markets):
-        """
-        Create a websocket stream
-
-        :param channels: provide the channels you wish to stream
-        :type channels: str or tuple
-
-        :param markets: provide the markets you wish to stream
-        :type markets: str or tuple
-
-        :return: stream_id
-        """
-        # create a stream
-        logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets) + ")")
-        stream_id = uuid.uuid4()
-        loop = asyncio.new_event_loop()
-        thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels, markets))
-        thread.start()
-        return stream_id
 
     def delete_stream_from_stream_list(self, stream_id):
         """
@@ -693,6 +702,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get the length of the generated websocket URI
 
+        :param channels: provide the channels to create the URI
+        :type channels: str or tuple
+
+        :param markets: provide the markets to create the URI
+        :type markets: str or tuple
+
         :return: int
         """
         uri = self.create_websocket_uri(channels, markets)
@@ -760,7 +775,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def is_websocket_uri_length_valid(self, channels, markets):
         """
-        Is a the websocket URI length valid?
+        Is the websocket URI length valid?
 
         :return: bool
         """
