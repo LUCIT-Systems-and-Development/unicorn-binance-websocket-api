@@ -71,7 +71,7 @@ print("generated stream items:", len(streams), "\r\n")
 
 query = ""
 round = 0
-#start_testing = int(input("start at round: "))
+#start_testing = int(input("start at round (try 484): "))
 start_testing = 484
 if start_testing != "":
     for stream in streams:
@@ -87,7 +87,7 @@ if start_testing != "":
                     print("query:")
                     print(query)
                     if "Large" in str(error_msg):
-                        print("found too long URI!")
+                        print("\r\nfound too long URI!")
                         break
                 time.sleep(11)
             round += 1
