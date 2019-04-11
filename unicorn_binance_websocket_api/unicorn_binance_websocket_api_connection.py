@@ -33,7 +33,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from .unicorn_binance_websocket_api_restclient import BinanceWebSocketApiRestclient
 from websockets import connect
 import copy
 import logging
@@ -47,60 +46,13 @@ class BinanceWebSocketApiConnection(object):
         self.handler_binance_websocket_api_manager = handler_binance_websocket_api_manager
         self.api_key = copy.deepcopy(self.handler_binance_websocket_api_manager.api_key)
         self.api_secret = copy.deepcopy(self.handler_binance_websocket_api_manager.api_secret)
-        self.BinanceWebSocketApi = {'base_uri': "wss://stream.binance.com:9443/"}
         self.channels = copy.deepcopy(channels)
         self.markets = copy.deepcopy(markets)
         self.stream_id = copy.deepcopy(stream_id)
 
     async def __aenter__(self):
         # inherited start method
-        if type(self.channels) is str:
-            self.channels = [self.channels]
-        if type(self.markets) is str:
-            self.markets = [self.markets]
-        if len(self.channels) == 1:
-            if "arr" in self.channels:
-                query = "ws/"
-            else:
-                query = "stream?streams="
-        else:
-            query = "stream?streams="
-        for channel in self.channels:
-            if channel == "!ticker":
-                logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
-                              "Unfortunatly Binance only stream it in a single stream socket! "
-                              "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!ticker\"]) to initiate "
-                              "an extra connection.")
-                continue
-            if channel == "!miniTicker":
-                logging.error("Can not create 'arr@!miniTicker' in a multi channel socket! "
-                              "Unfortunatly Binance only stream it in a single stream socket! ./"
-                              "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) to "
-                              "initiate an extra connection.")
-                continue
-            if channel == "!userData":
-                logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
-                              "Unfortunatly Binance only stream it in a single stream socket! ./"
-                              "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
-                              "initiate an extra connection.")
-                continue
-            for market in self.markets:
-                if market == "!userData":
-                    binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.api_key, self.api_secret,
-                                                                                     self.handler_binance_websocket_api_manager.version)
-                    self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['listen_key'] = \
-                        binance_websocket_api_restclient.get_listen_key()
-                    del binance_websocket_api_restclient
-                    if self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['listen_key']:
-                        query += str(self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['listen_key'])
-                    else:
-                        error_msg = "Can not acquire a valid listen_key from binance! Did you provide a valid api_key and api_secret?"
-                        logging.error(error_msg)
-                        self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
-                        sys.exit(1)
-                else:
-                    query += market + "@" + channel + "/"
-        uri = self.BinanceWebSocketApi['base_uri'] + str(query)
+        uri = self.handler_binance_websocket_api_manager.create_websocket_uri(self.channels, self.markets, self.stream_id, self.api_key, self.api_secret)
         logging.debug("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
                       ", " + str(self.markets) + ")" + " connecting to " + uri)
         self._conn = connect(uri, ping_interval=10, ping_timeout=10, close_timeout=5,

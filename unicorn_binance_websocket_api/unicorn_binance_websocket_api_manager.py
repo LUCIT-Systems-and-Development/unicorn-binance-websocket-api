@@ -64,7 +64,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.0"
+        self.version = "1.0.2.dev"
+        self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
         self._keepalive_streams_restart_request = None
@@ -260,7 +261,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         # threaded loop to restart crashed streams:
         while self.stop_manager_request is None and self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
             self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat'] = time.time()
-            time.sleep(0.3)
+            time.sleep(1)
             # restart streams with a restart_request (status == new)
             temp_restart_requests = copy.deepcopy(self.restart_requests)
             for stream_id in temp_restart_requests:
@@ -312,6 +313,67 @@ class BinanceWebSocketApiManager(threading.Thread):
     def add_total_received_bytes(self, size):
         # add received bytes to the total received bytes statistic
         self.total_received_bytes += int(size)
+
+    def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False):
+        """
+        Create a websocket URI
+
+        :param channels: provide the channels to create the URI
+        :type channels: str or tuple
+
+        :param markets: provide the markets to create the URI
+        :type markets: str or tuple
+
+        :return: str
+        """
+        if type(channels) is str:
+            channels = [channels]
+        if type(markets) is str:
+            markets = [markets]
+        if len(channels) == 1:
+            if "arr" in channels:
+                query = "ws/"
+            else:
+                query = "stream?streams="
+        else:
+            query = "stream?streams="
+        for channel in channels:
+            if channel == "!ticker":
+                logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
+                              "Unfortunatly Binance only stream it in a single stream socket! "
+                              "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!ticker\"]) to initiate "
+                              "an extra connection.")
+                continue
+            if channel == "!miniTicker":
+                logging.error("Can not create 'arr@!miniTicker' in a multi channel socket! "
+                              "Unfortunatly Binance only stream it in a single stream socket! ./"
+                              "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) to "
+                              "initiate an extra connection.")
+                continue
+            if channel == "!userData":
+                logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
+                              "Unfortunatly Binance only stream it in a single stream socket! ./"
+                              "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
+                              "initiate an extra connection.")
+                continue
+            for market in markets:
+                if market == "!userData":
+                    if stream_id is not False:
+                        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key, api_secret, self.version)
+                        self.stream_list[stream_id]['listen_key'] = \
+                            binance_websocket_api_restclient.get_listen_key()
+                        del binance_websocket_api_restclient
+                        if self.stream_list[stream_id]['listen_key']:
+                            query += str(self.stream_list[stream_id]['listen_key'])
+                        else:
+                            error_msg = "Can not acquire a valid listen_key from binance! Did you provide a valid api_key and api_secret?"
+                            logging.error(error_msg)
+                            self.stream_is_crashing(stream_id, error_msg)
+                            sys.exit(1)
+                else:
+                    query += market + "@" + channel + "/"
+        uri = self.websocket_base_uri + str(query)
+        return uri
 
     def create_stream(self, channels, markets):
         """
@@ -438,17 +500,29 @@ class BinanceWebSocketApiManager(threading.Thread):
             uptime = str(int(uptime)) + " seconds"
         return uptime
 
+    def get_latest_release_info(self):
+        """
+        Get infos about the latest available release
+
+        :return: dict or False
+        """
+        try:
+            respond = requests.get('https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest')
+            latest_release_info = respond.json()
+            return latest_release_info
+        except:
+            return False
+
     def get_latest_version(self):
         """
         Get the version of the latest available release
 
         :return: str or False
         """
-        try:
-            respond = requests.get('https://raw.githubusercontent.com/unicorn-data-analysis/unicorn-binance-websocket-api/master/_api/latest_release')
-            latest_version = str(respond.text)
-            return latest_version
-        except:
+        latest_release_info = self.get_latest_release_info()
+        if latest_release_info:
+            return latest_release_info["tag_name"]
+        else:
             return False
 
     def get_most_receives_per_second(self):
@@ -615,6 +689,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.version
 
+    def get_websocket_uri_length(self, channels, markets):
+        """
+        Get the length of the generated websocket URI
+
+        :return: int
+        """
+        uri = self.create_websocket_uri(channels, markets)
+        return len(uri)
+
     def increase_processed_receives_statistic(self, stream_id):
         # for every receive we call this method to increase the receives statistics
         current_timestamp = int(time.time())
@@ -667,15 +750,27 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: bool
         """
-        if self.get_latest_version() == self.get_version():
+        installed_version = self.get_version()
+        if ".dev" in installed_version:
+            installed_version = installed_version[:-4]
+        if self.get_latest_version() == installed_version:
             return False
         else:
             return True
 
-    def is_uri_length_valid(self, channels, markets):
-        #TODO
-        pass
+    def is_websocket_uri_length_valid(self, channels, markets):
+        """
+        Is a the websocket URI length valid?
 
+        :return: bool
+        """
+        uri = self.create_websocket_uri(channels, markets)
+        # a test with https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
+        # indicates that the allowed max length of an URI to binance websocket server is 8004 signs.
+        if len(uri) >= 8004:
+            return False
+        else:
+            return True
 
     def print_stream_info(self, stream_id):
         """

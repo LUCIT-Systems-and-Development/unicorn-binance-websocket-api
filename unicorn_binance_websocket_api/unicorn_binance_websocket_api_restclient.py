@@ -33,6 +33,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
+import copy
 import hashlib
 import hmac
 import requests
@@ -40,32 +41,35 @@ import requests
 
 class BinanceWebSocketApiRestclient(object):
     def __init__(self, binance_api_key, binance_api_secret, unicorn_binance_websocket_api_version):
-        self.BinanceRestApi = {'base_uri': "https://api.binance.com/",
-                               'key': binance_api_key,
-                               'secret': binance_api_secret,
-                               'request_headers': {'Accept': 'application/json',
-                                                   'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/' + unicorn_binance_websocket_api_version,
-                                                   'X-MBX-APIKEY': str(binance_api_key)}}
+        self.api_key = copy.deepcopy(binance_api_key)
+        self.api_secret = copy.deepcopy(binance_api_secret)
+        self.unicorn_binance_websocket_api_version = unicorn_binance_websocket_api_version
+        self.restful_base_uri = "https://api.binance.com/"
         self.listen_key = False
 
     def _get_signature(self, data):
-        hmac_signature = hmac.new(self.BinanceRestApi['secret'].encode('utf-8'), data.encode('utf-8'), hashlib.sha256)
+        hmac_signature = hmac.new(self.api_secret.encode('utf-8'), data.encode('utf-8'), hashlib.sha256)
         return hmac_signature.hexdigest()
 
     def _request(self, method, path, query=False, data=False):
+        requests_headers = {'Accept': 'application/json',
+                            'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/' + self.unicorn_binance_websocket_api_version,
+                            'X-MBX-APIKEY': str(self.api_key)}
         if query is not False:
-            uri = self.BinanceRestApi['base_uri'] + path + "?" + query
+            uri = self.restful_base_uri + path + "?" + query
         else:
-            uri = self.BinanceRestApi['base_uri'] + path
+            uri = self.restful_base_uri + path
         if method == "post":
-            request_handler = requests.post(uri, headers=self.BinanceRestApi['request_headers'])
+            request_handler = requests.post(uri, headers=requests_headers)
         elif method == "put":
-            request_handler = requests.put(uri, headers=self.BinanceRestApi['request_headers'], data=data)
+            request_handler = requests.put(uri, headers=requests_headers, data=data)
         elif method == "delete":
-            request_handler = requests.delete(uri, headers=self.BinanceRestApi['request_headers'])
+            request_handler = requests.delete(uri, headers=requests_headers)
         else:
             request_handler = False
-        return request_handler.json()
+        respond = request_handler.json()
+        request_handler.close()
+        return respond
 
     def delete_listen_key(self, listen_key):
         method = "delete"

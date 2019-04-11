@@ -50,8 +50,36 @@ binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiPr
 # define markets
 markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'eosusdt'}
 
+markets_mega_list = ['bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
+                     'neousdt', 'bnbusdt', 'adabtc', 'ethusdt', 'trxbtc', 'trxbtc', 'bchabcbtc', 'ltcbtc', 'xrpbtc',
+                     'ontbtc', 'bttusdt', 'eosbtc', 'xlmbtc', 'bttbtc', 'tusdusdt', 'xlmusdt', 'qkcbtc', 'zrxbtc',
+                     'neobtc', 'adaeth', 'icxusdt', 'btctusd', 'icxbtc', 'btcusdc', 'wanbtc', 'zecbtc', 'wtcbtc',
+                     'batbtc', 'adabnb', 'etcusdt', 'qtumusdt', 'xmrbtc', 'trxeth', 'adatusd', 'trxxrp', 'trxbnb',
+                     'dashbtc', 'rvnbnb', 'bchabctusd', 'etcbtc', 'bnbeth', 'ethpax', 'nanobtc', 'xembtc', 'xrpbnb',
+                     'bchabcpax', 'xrpeth', 'bttbnb', 'ltcbnb', 'agibtc', 'zrxusdt', 'xlmbnb', 'ltceth', 'eoseth',
+                     'ltctusd', 'polybnb', 'scbtc', 'steembtc', 'trxtusd', 'npxseth', 'kmdbtc', 'polybtc', 'gasbtc',
+                     'engbtc', 'zileth', 'xlmeth', 'eosbnb', 'xrppax', 'lskbtc', 'npxsbtc', 'xmrusdt', 'ltcpax', 'xmrusdt',
+                     'ethtusd', 'batusdt', 'mcobtc', 'neoeth', 'bntbtc', 'eostusd', 'lrcbtc', 'funbtc', 'zecusdt',
+                     'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
+                     'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth']
+
 # define channels
 channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w', 'miniTicker'}
+
+# to establish a connection to a websocket server, the client has to call an URI. this URI must not be longer then 8004
+# signs, if you want to get an active connection to a Binance webstream.
+# https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
+if binance_websocket_api_manager.is_websocket_uri_length_valid(channels, markets):
+    print("URI with `markets` length is valid!")
+else:
+    print("URI with `markets` length is too long!")
+
+if binance_websocket_api_manager.is_websocket_uri_length_valid(channels, markets_mega_list):
+    print("URI with `markets_mega_list` length is valid!")
+else:
+    print("URI with `markets_mega_list` length is too long!")
+
+print("############################################################################################################\r\n")
 
 # create and start some streams
 first_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
