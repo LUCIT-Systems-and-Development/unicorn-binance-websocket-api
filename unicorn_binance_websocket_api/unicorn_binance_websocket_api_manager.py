@@ -613,7 +613,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_stream_list(self):
         """
-        Get the list of all streams
+        Get a list of all streams
         :return: set
         """
         # get the stream list
