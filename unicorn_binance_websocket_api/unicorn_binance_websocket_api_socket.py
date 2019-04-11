@@ -38,6 +38,7 @@ from .unicorn_binance_websocket_api_connection import BinanceWebSocketApiConnect
 import logging
 import websockets
 import sys
+import time
 
 
 class BinanceWebSocketApiSocket(object):
@@ -70,6 +71,12 @@ class BinanceWebSocketApiSocket(object):
                         # "Illegal format ws or stream" - wrong channel or market describer?
                         print("It is not possible to restore this connection! The parameter to start it are not valid!"
                               "Wrong market or channel describer?")
+                        websocket.close()
+                        self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
+                        time.sleep(1)
+                        self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+                        sys.exit(1)
+                    if "WebSocket connection is closed: code = 1006" in str(error_msg):
                         websocket.close()
                         self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
                         sys.exit(1)

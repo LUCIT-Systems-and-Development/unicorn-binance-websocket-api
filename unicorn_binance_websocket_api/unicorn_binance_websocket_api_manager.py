@@ -236,8 +236,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             if active_stream_list:
                 for stream_id in active_stream_list:
                     if active_stream_list[stream_id]['markets'] == "!userData":
-                        if (active_stream_list[stream_id]['start_time'] + (60 * 20)) < time.time() and (
-                                active_stream_list[stream_id]['last_static_ping'] + (60 * 20)) < time.time():
+                        if (active_stream_list[stream_id]['start_time'] + (60 * 30)) < time.time() and (
+                                active_stream_list[stream_id]['last_static_ping'] + (60 * 30)) < time.time():
                             # send ping to websocket server
                             self.websocket_list[stream_id].ping()
                             # keep-alive the listenKey
