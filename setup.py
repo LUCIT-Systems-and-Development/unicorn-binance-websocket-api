@@ -40,7 +40,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='unicorn-binance-websocket-api',
-     version='1.1.0',
+     version='1.1.1',
      author="UNICORN Data Analysis",
      url="https://www.unicorn-data.com",
      author_email="",
