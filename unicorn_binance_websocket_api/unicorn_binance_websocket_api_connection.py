@@ -83,7 +83,6 @@ class BinanceWebSocketApiConnection(object):
             if "Status code not 101: 400" in str(error_msg):
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))
-                self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
                 time.sleep(1)
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
