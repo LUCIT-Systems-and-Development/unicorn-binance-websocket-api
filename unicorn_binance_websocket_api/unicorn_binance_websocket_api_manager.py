@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.1.dev"
+        self.version = "1.1.2.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
@@ -240,7 +240,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                             # send ping to websocket server
                             self.websocket_list[stream_id].ping()
                             # keep-alive the listenKey
-                            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'], self.stream_list[stream_id]['api_secret'])
+                            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
+                                                                                             self.stream_list[stream_id]['api_secret'],
+                                                                                             self.get_version())
                             binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
                             del binance_websocket_api_restclient
                             # set last_static_ping
@@ -387,9 +389,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             for market in markets:
                 if market == "!userData":
                     if stream_id is not False:
-                        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key, api_secret, self.version)
-                        self.stream_list[stream_id]['listen_key'] = \
-                            binance_websocket_api_restclient.get_listen_key()
+                        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key,
+                                                                                         api_secret,
+                                                                                         self.get_version())
+                        self.stream_list[stream_id]['listen_key'] = binance_websocket_api_restclient.get_listen_key()
                         del binance_websocket_api_restclient
                         if self.stream_list[stream_id]['listen_key']:
                             query += str(self.stream_list[stream_id]['listen_key'])
