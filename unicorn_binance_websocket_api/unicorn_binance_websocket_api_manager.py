@@ -672,6 +672,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return True
 
+    def is_uri_length_valid(self, channels, markets):
+        #TODO
+        pass
+
+
     def print_stream_info(self, stream_id):
         """
         Print all infos about a specific stream, helps debugging :)
