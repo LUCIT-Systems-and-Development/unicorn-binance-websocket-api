@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.2.dev"
+        self.version = "1.1.5"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
@@ -390,7 +390,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if market == "!userData":
                     if stream_id is not False:
                         # only execute this code block with a provided stream_id
-                        query += self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
+                        listen_key = self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
+                        if listen_key:
+                            query += str(listen_key)
+                            uri = self.websocket_base_uri + str(query)
+                            return uri
+                        else:
+                            return False
                     else:
                         error_msg = "Can not acquire a valid listen_key from binance! Did you provide a valid api_key and api_secret?"
                         logging.error(error_msg)
@@ -399,40 +405,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                     query += market + "@" + channel + "/"
         uri = self.websocket_base_uri + str(query)
         return uri
-
-    def get_listen_key_from_restclient(self, stream_id, api_key, api_secret):
-        """
-        Get a new or cached listen_key
-
-        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring the Binance listenKey)
-        :type stream_id: uuid
-
-        :param api_key: provide a valid Binance API key
-        :type api_key: str
-
-        :param api_secret: provide a valid Binance API secret
-        :type api_secret: str
-
-        :return: str or False
-        """
-        active_stream_list = self.get_active_stream_list()
-        if active_stream_list:
-            if (active_stream_list[stream_id]['start_time'] + (60 * 30)) > time.time() and (
-                    active_stream_list[stream_id]['last_static_ping'] + (60 * 30)) > time.time():
-                # listen_key is not older than 30 min
-                return self.stream_list[stream_id]['listen_key']
-        # no cached listen_key or listen_key is older than 30 min
-        # acquire a new listen_key:
-        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key, api_secret, self.get_version())
-        listen_key = binance_websocket_api_restclient.get_listen_key()
-        del binance_websocket_api_restclient
-        if listen_key:
-            # save and return the valid listen_key
-            self.stream_list[stream_id]['listen_key'] = str(listen_key)
-            return self.stream_list[stream_id]['listen_key']
-        else:
-            # no valid listen_key
-            return False
 
     def delete_stream_from_stream_list(self, stream_id):
         """
@@ -563,6 +535,43 @@ class BinanceWebSocketApiManager(threading.Thread):
             return latest_release_info["tag_name"]
         else:
             return False
+
+    def get_listen_key_from_restclient(self, stream_id, api_key, api_secret):
+        """
+        Get a new or cached listen_key
+
+        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring the Binance listenKey)
+        :type stream_id: uuid
+
+        :param api_key: provide a valid Binance API key
+        :type api_key: str
+
+        :param api_secret: provide a valid Binance API secret
+        :type api_secret: str
+
+        :return: str or False
+        """
+        if (self.stream_list[stream_id]['start_time'] + (60 * 30)) > time.time() or (self.stream_list[stream_id]['last_static_ping'] + (60 * 30)) > time.time():
+            # listen_key is not older than 30 min
+            if self.stream_list[stream_id]['listen_key'] is not False:
+                return self.stream_list[stream_id]['listen_key']
+        # no cached listen_key or listen_key is older than 30 min
+        # acquire a new listen_key:
+        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key, api_secret, self.get_version())
+        listen_key = binance_websocket_api_restclient.get_listen_key()
+        del binance_websocket_api_restclient
+        if listen_key:
+            # save and return the valid listen_key
+            self.stream_list[stream_id]['listen_key'] = str(listen_key)
+            return self.stream_list[stream_id]['listen_key']
+        else:
+            # no valid listen_key
+            logging.critical("BinanceWebSocketApiManager->get_listen_key_from_restclient(" + str(stream_id) + ")" + " - NO INTERNET CONNECTION?"
+                             ";)")
+            self.stream_is_crashing(stream_id, str(" - NO INTERNET CONNECTION?"))
+            time.sleep(0.5)
+            self.set_restart_request(stream_id)
+            sys.exit(1)
 
     def get_most_receives_per_second(self):
         """

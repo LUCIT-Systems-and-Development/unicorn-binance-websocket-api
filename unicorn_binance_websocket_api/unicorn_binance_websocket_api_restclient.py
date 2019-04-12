@@ -36,7 +36,9 @@
 import copy
 import hashlib
 import hmac
+import logging
 import requests
+import socket
 
 
 class BinanceWebSocketApiRestclient(object):
@@ -59,14 +61,21 @@ class BinanceWebSocketApiRestclient(object):
             uri = self.restful_base_uri + path + "?" + query
         else:
             uri = self.restful_base_uri + path
-        if method == "post":
-            request_handler = requests.post(uri, headers=requests_headers)
-        elif method == "put":
-            request_handler = requests.put(uri, headers=requests_headers, data=data)
-        elif method == "delete":
-            request_handler = requests.delete(uri, headers=requests_headers)
-        else:
-            request_handler = False
+        try:
+            if method == "post":
+                request_handler = requests.post(uri, headers=requests_headers)
+            elif method == "put":
+                request_handler = requests.put(uri, headers=requests_headers, data=data)
+            elif method == "delete":
+                request_handler = requests.delete(uri, headers=requests_headers)
+            else:
+                request_handler = False
+        except requests.exceptions.ConnectionError as error_msg:
+            logging.critical("BinanceWebSocketApiRestclient->_request() - error_msg: " + str(error_msg))
+            return False
+        except socket.gaierror as error_msg:
+            logging.critical("BinanceWebSocketApiRestclient->_request() - error_msg: " + str(error_msg))
+            return False
         respond = request_handler.json()
         request_handler.close()
         return respond
@@ -78,6 +87,8 @@ class BinanceWebSocketApiRestclient(object):
             return self._request(method, path, False, {'listenKey': str(listen_key)})
         except KeyError:
             return False
+        except TypeError:
+            return False
 
     def get_listen_key(self):
         method = "post"
@@ -88,6 +99,8 @@ class BinanceWebSocketApiRestclient(object):
             return self.listen_key
         except KeyError:
             return False
+        except TypeError:
+            return False
 
     def keepalive_listen_key(self, listen_key):
         method = "put"
@@ -95,5 +108,7 @@ class BinanceWebSocketApiRestclient(object):
         try:
             return self._request(method, path, False, {'listenKey': str(listen_key)})
         except KeyError:
+            return False
+        except TypeError:
             return False
 
