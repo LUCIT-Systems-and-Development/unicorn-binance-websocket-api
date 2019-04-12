@@ -55,7 +55,8 @@ class BinanceWebSocketApiRestclient(object):
 
     def _request(self, method, path, query=False, data=False):
         requests_headers = {'Accept': 'application/json',
-                            'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/' + self.unicorn_binance_websocket_api_version,
+                            'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/' +
+                                          self.unicorn_binance_websocket_api_version,
                             'X-MBX-APIKEY': str(self.api_key)}
         if query is not False:
             uri = self.restful_base_uri + path + "?" + query

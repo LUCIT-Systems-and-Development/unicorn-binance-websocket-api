@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.5.dev"
+        self.version = "1.1.6.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
@@ -177,8 +177,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                             except ValueError as error_msg:
                                 logging.error(
                                     "BinanceWebSocketManager->_frequent_checks() timestamp_key=" + str(timestamp_key) +
-                                    " current_timestamp=" + str(current_timestamp) + " keep_max_received_last_second_entries=" +
-                                    str(self.keep_max_received_last_second_entries) + " error_msg=" + str(error_msg))
+                                    " current_timestamp=" + str(current_timestamp) + " keep_max_received_last_second_"
+                                    "entries=" + str(self.keep_max_received_last_second_entries) + " error_msg=" +
+                                    str(error_msg))
                     for timestamp_key in delete_index:
                         self.stream_list[stream_id]['receives_statistic_last_second']['entries'].pop(timestamp_key, None)
             # set most_receives_per_second
@@ -186,17 +187,19 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if int(self.most_receives_per_second) < int(total_most_stream_receives_last_timestamp):
                     self.most_receives_per_second = int(total_most_stream_receives_last_timestamp)
             except ValueError as error_msg:
-                logging.error("BinanceWebSocketManager->_frequent_checks() self.most_receives_per_second=" + str(
-                    self.most_receives_per_second) +  " total_most_stream_receives_last_timestamp=" + str(
-                    total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_to_last_timestamp=" + str(
-                    total_most_stream_receives_next_to_last_timestamp) + " error_msg=" + str(error_msg))
+                logging.error("BinanceWebSocketManager->_frequent_checks() self.most_receives_per_second"
+                              "=" + str(self.most_receives_per_second) +  " total_most_stream_receives_last_timestamp"
+                              "=" + str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_"
+                              "to_last_timestamp=" + str(total_most_stream_receives_next_to_last_timestamp) + " error_"
+                              "msg=" + str(error_msg))
             try:
                 if int(self.most_receives_per_second) < int(total_most_stream_receives_next_to_last_timestamp):
                     self.most_receives_per_second = int(total_most_stream_receives_next_to_last_timestamp)
             except ValueError as error_msg:
                 logging.error("BinanceWebSocketManager->_frequent_checks() self.most_receives_per_second=" + str(
                     self.most_receives_per_second) + " total_most_stream_receives_last_timestamp=" +
-                              str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_to_last_timestamp=" +
+                              str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_to_"
+                                                                               "last_timestamp=" +
                               str(total_most_stream_receives_next_to_last_timestamp) + " error_msg=" + str(error_msg))
             # control _keepalive_streams for two cases:
             # 1) there should only be one! stop others if necessary:
@@ -260,14 +263,16 @@ class BinanceWebSocketApiManager(threading.Thread):
             "BinanceWebSocketApiManager->_keepalive_streams() new instance created with keepalive_streams_id=" +
             str(keepalive_streams_id))
         # threaded loop to restart crashed streams:
-        while self.stop_manager_request is None and self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
+        while self.stop_manager_request is None and \
+                self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
             self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat'] = time.time()
             time.sleep(1)
             # restart streams with a restart_request (status == new)
             temp_restart_requests = copy.deepcopy(self.restart_requests)
             for stream_id in temp_restart_requests:
                 # find restarts that didnt work
-                if self.restart_requests[stream_id]['status'] == "restarted" and self.restart_requests[stream_id]['last_restart_time']+5 < time.time():
+                if self.restart_requests[stream_id]['status'] == "restarted" and \
+                        self.restart_requests[stream_id]['last_restart_time']+5 < time.time():
                     self.restart_requests[stream_id]['status'] = "new"
                 # restart streams with requests
                 if self.restart_requests[stream_id]['status'] == "new":
@@ -297,9 +302,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Kick back data to the stream_buffer
 
-        If it is not possible to process received stream data (for example, the database is restarting, so its not possible
-        to save the data), you can return the data back into the stream_buffer. After a few seconds you stopped writing
-        data back to the stream_buffer, the BinanceWebSocketApiManager starts flushing back the data to normal
+        If it is not possible to process received stream data (for example, the database is restarting, so its not
+        possible to save the data), you can return the data back into the stream_buffer. After a few seconds you stopped
+        writing data back to the stream_buffer, the BinanceWebSocketApiManager starts flushing back the data to normal
         processing.
 
         :param stream_data: the data you want to write back to the buffer
@@ -392,15 +397,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                         # only execute this code block with a provided stream_id
                         listen_key = self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
                         if listen_key:
-                            query += str(listen_key)
-                            uri = self.websocket_base_uri + str(query)
+                            uri = self.websocket_base_uri + "ws/" + str(listen_key)
                             return uri
                         else:
                             return False
-                    else:
-                        error_msg = "Can not acquire a valid listen_key from binance! Did you provide a valid api_key and api_secret?"
-                        logging.error(error_msg)
-                        self.stream_is_crashing(stream_id, error_msg)
                 else:
                     query += market + "@" + channel + "/"
         uri = self.websocket_base_uri + str(query)
@@ -518,7 +518,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: dict or False
         """
         try:
-            respond = requests.get('https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest')
+            respond = requests.get('https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/'
+                                   'releases/latest')
             latest_release_info = respond.json()
             return latest_release_info
         except:
@@ -538,9 +539,9 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_listen_key_from_restclient(self, stream_id, api_key, api_secret):
         """
-        Get a new or cached listen_key
+        Get a new or cached (<30m) listen_key
 
-        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring the Binance listenKey)
+        :param stream_id: provide a stream_id
         :type stream_id: uuid
 
         :param api_key: provide a valid Binance API key
@@ -551,7 +552,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: str or False
         """
-        if (self.stream_list[stream_id]['start_time'] + (60 * 30)) > time.time() or (self.stream_list[stream_id]['last_static_ping'] + (60 * 30)) > time.time():
+        if (self.stream_list[stream_id]['start_time'] + (60 * 30)) > time.time() or \
+                (self.stream_list[stream_id]['last_static_ping'] + (60 * 30)) > time.time():
             # listen_key is not older than 30 min
             if self.stream_list[stream_id]['listen_key'] is not False:
                 return self.stream_list[stream_id]['listen_key']
@@ -566,12 +568,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             return self.stream_list[stream_id]['listen_key']
         else:
             # no valid listen_key
-            logging.critical("BinanceWebSocketApiManager->get_listen_key_from_restclient(" + str(stream_id) + ")" + " - NO INTERNET CONNECTION?"
-                             ";)")
-            self.stream_is_crashing(stream_id, str(" - NO INTERNET CONNECTION?"))
-            time.sleep(0.5)
-            self.set_restart_request(stream_id)
-            sys.exit(1)
+            return False
 
     def get_most_receives_per_second(self):
         """
