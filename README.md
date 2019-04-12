@@ -41,6 +41,9 @@ https://www.unicorn-data.com/unicorn-binance-websocket-api.html
 ## Project, code and downloads: 
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
 
+## Wiki
+https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
+
 ## How to report bugs or suggest improvements?
 Please open a new issue: 
 
