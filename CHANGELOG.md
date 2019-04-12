@@ -9,3 +9,5 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Reset "has_stopped" attr from "stream_list" after a conncection restart
 - Modiefied docstrings descriptions
 - Tabs in print_summary() on windows
+- Adding 30 min cache for Binance "listenKey" from rest api to avoid weight costs and hammering the Binance API on a 
+flapping network connection

@@ -231,7 +231,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     logging.debug("stream_buffer_byte_size: " + str(self.get_stream_buffer_byte_size()) + " (" +
                                   str(self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")")
                     stream_buffer_size_last_print = time.time()
-            # send ping and keepalive for `userData` streams every 20 minutes
+            # send ping and keepalive for `userData` streams every 30 minutes
             if active_stream_list:
                 for stream_id in active_stream_list:
                     if active_stream_list[stream_id]['markets'] == "!userData":
@@ -389,22 +389,50 @@ class BinanceWebSocketApiManager(threading.Thread):
             for market in markets:
                 if market == "!userData":
                     if stream_id is not False:
-                        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key,
-                                                                                         api_secret,
-                                                                                         self.get_version())
-                        self.stream_list[stream_id]['listen_key'] = binance_websocket_api_restclient.get_listen_key()
-                        del binance_websocket_api_restclient
-                        if self.stream_list[stream_id]['listen_key']:
-                            query += str(self.stream_list[stream_id]['listen_key'])
-                        else:
-                            error_msg = "Can not acquire a valid listen_key from binance! Did you provide a valid api_key and api_secret?"
-                            logging.error(error_msg)
-                            self.stream_is_crashing(stream_id, error_msg)
-                            sys.exit(1)
+                        # only execute this code block with a provided stream_id
+                        query += self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
+                    else:
+                        error_msg = "Can not acquire a valid listen_key from binance! Did you provide a valid api_key and api_secret?"
+                        logging.error(error_msg)
+                        self.stream_is_crashing(stream_id, error_msg)
                 else:
                     query += market + "@" + channel + "/"
         uri = self.websocket_base_uri + str(query)
         return uri
+
+    def get_listen_key_from_restclient(self, stream_id, api_key, api_secret):
+        """
+        Get a new or cached listen_key
+
+        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring the Binance listenKey)
+        :type stream_id: uuid
+
+        :param api_key: provide a valid Binance API key
+        :type api_key: str
+
+        :param api_secret: provide a valid Binance API secret
+        :type api_secret: str
+
+        :return: str or False
+        """
+        active_stream_list = self.get_active_stream_list()
+        if active_stream_list:
+            if (active_stream_list[stream_id]['start_time'] + (60 * 30)) > time.time() and (
+                    active_stream_list[stream_id]['last_static_ping'] + (60 * 30)) > time.time():
+                # listen_key is not older than 30 min
+                return self.stream_list[stream_id]['listen_key']
+        # no cached listen_key or listen_key is older than 30 min
+        # acquire a new listen_key:
+        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key, api_secret, self.get_version())
+        listen_key = binance_websocket_api_restclient.get_listen_key()
+        del binance_websocket_api_restclient
+        if listen_key:
+            # save and return the valid listen_key
+            self.stream_list[stream_id]['listen_key'] = str(listen_key)
+            return self.stream_list[stream_id]['listen_key']
+        else:
+            # no valid listen_key
+            return False
 
     def delete_stream_from_stream_list(self, stream_id):
         """
