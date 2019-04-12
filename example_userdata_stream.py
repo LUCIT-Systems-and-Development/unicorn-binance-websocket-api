@@ -57,6 +57,7 @@ binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_ap
 # create the userData stream
 user_data_stream_id = binance_websocket_api_manager.create_stream('arr', '!userData')
 
+# monitor the stream
 while True:
     binance_websocket_api_manager.print_stream_info(user_data_stream_id)
     binance_websocket_api_manager.print_summary()

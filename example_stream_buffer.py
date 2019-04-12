@@ -67,6 +67,7 @@ markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
 binance_get_kline_stream_id1 = binance_websocket_api_manager.create_stream(['kline_1m', 'kline_5m'], markets)
 binance_get_kline_stream_id2 = binance_websocket_api_manager.create_stream(['kline_30m', 'kline_1h', 'kline_15m'], markets)
 
+# monitor the stream
 while True:
     binance_websocket_api_manager.print_summary()
     time.sleep(1)
