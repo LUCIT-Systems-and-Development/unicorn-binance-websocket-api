@@ -62,6 +62,7 @@ class BinanceWebSocketApiConnection(object):
         try:
             self.handler_binance_websocket_api_manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['status'] = "running"
+            self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['has_stopped'] = False
         except socket.gaierror as error_msg:
             logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ")" + " --> No internet connection? "
