@@ -6,6 +6,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.1.2.dev (development stage)
 ### fix
-- reset "has_stopped" attr from stream_list after a conncection restart
+- reset "has_stopped" attr from "stream_list" after a conncection restart
 - modiefied docstrings descriptions
-- tabs in print_summary on windows
+- tabs in print_summary() on windows
