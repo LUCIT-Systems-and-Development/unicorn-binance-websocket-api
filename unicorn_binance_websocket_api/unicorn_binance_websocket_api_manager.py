@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.8.dev"
+        self.version = "1.1.9.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
@@ -402,7 +402,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                         else:
                             return False
                 else:
-                    query += market.lower() + "@" + channel + "/"
+                    if market == "!userData" or market == "!miniTicker":
+                        query += market + "@" + channel + "/"
+                    else:
+                        query += market.lower() + "@" + channel + "/"
         uri = self.websocket_base_uri + str(query)
         return uri
 
@@ -975,6 +978,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 stopped_streams += 1
                 stream_row_color_prefix = "\033[1m\033[33m"
                 stream_row_color_suffix = "\033[0m"
+            elif self.stream_list[stream_id]['status'] == "restarting":
+                stopped_streams += 1
+                stream_row_color_prefix = "\033[1m\033[33m"
+                stream_row_color_suffix = "\033[0m"
             elif "crashed" in self.stream_list[stream_id]['status']:
                 crashed_streams += 1
                 stream_row_color_prefix = "\033[1m\033[31m"
@@ -1189,6 +1196,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         # streams report with this call their shutdowns
         logging.debug("BinanceWebSocketApiManager->stream_is_stopping(" + str(stream_id) + ")")
         self.stream_list[stream_id]['has_stopped'] = time.time()
+        self.stream_list[stream_id]['stop_request'] = None
         self.stream_list[stream_id]['status'] = "stopped"
 
     def wait_till_stream_has_started(self, stream_id):

@@ -4,9 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.8.dev (development stage/unreleased)
-### Todo
-- dev_test_full.py invalid streams become zombies 
+## 1.1.9.dev (development stage/unreleased)
+
+## 1.1.9
+### Fixed
+- !miniTicker and !userData didnt work in cause of lower case all currencies. added an exception for them.
 
 ## 1.1.8
 ### Added

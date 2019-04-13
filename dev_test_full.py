@@ -48,6 +48,7 @@ logging.getLogger('websockets').setLevel(logging.DEBUG)
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
 
 print("testing ws/ single streams")
+
 print("\r\n========================================== Starting ticker all ========================================\r\n")
 ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])
 time.sleep(6)
@@ -57,7 +58,7 @@ print("\r\n=========================================== Stopped ticker all ======
 
 print("\r\n========================================= Starting !miniticker ========================================\r\n")
 miniticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])
-time.sleep(6)
+time.sleep(5)
 binance_websocket_api_manager.stop_stream(miniticker_stream_id)
 time.sleep(2)
 print("\r\n======================================== Stopped !miniticker  =========================================\r\n")
@@ -185,9 +186,9 @@ time.sleep(2)
 print("\r\n================================== Stopped multi multi socket  ========================================\r\n")
 
 # print summary
+time.sleep(3)
 binance_websocket_api_manager.print_summary()
-
 print("\r\n=============================== Stopping BinanceWebSocketManager ======================================\r\n")
 binance_websocket_api_manager.stop_manager_with_all_streams()
-time.sleep(10)
+time.sleep(7)
 print("finished!")
