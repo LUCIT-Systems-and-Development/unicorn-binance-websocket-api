@@ -15,17 +15,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - pypi_install_packaging_tools.sh
 ### Changed
 - README.md
-- Removed 2nd argument binance_websocket_api_manager.stream_is_stopping()
+- Removed 2nd argument from binance_websocket_api_manager.stream_is_stopping()
 ### Fixed
-- tabs in print_summary() for windows platform
-- fixing format errors from auto reformat in unicorn_binance_websocket_api_connection
+- Tabs in print_summary() for windows platform
+- Fixing format errors from auto reformat in unicorn_binance_websocket_api_connection
 
 ## 1.1.7 failed build
 
 ## 1.1.6
 ### Fixed
-- catching "ssl.SSLError" BinanceWebSocketApiConnection.receive()
-- improvment of reconnect on invalid URI caused by no network issue and a missing listen_key from Binance
+- Catching "ssl.SSLError" BinanceWebSocketApiConnection.receive()
+- Improvment of reconnect on invalid URI caused by no network issue and a missing listen_key from Binance
 
 ## 1.1.5
 ### Added
