@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.6.dev"
+        self.version = "1.1.8.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
@@ -402,7 +402,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         else:
                             return False
                 else:
-                    query += market + "@" + channel + "/"
+                    query += market.lower() + "@" + channel + "/"
         uri = self.websocket_base_uri + str(query)
         return uri
 

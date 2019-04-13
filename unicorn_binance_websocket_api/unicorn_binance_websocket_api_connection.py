@@ -55,24 +55,17 @@ class BinanceWebSocketApiConnection(object):
     async def __aenter__(self):
         # inherited start method
         if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id):
-            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id, "binance_websocket_api_conne"
-                                                                                          "ction->await._conn.__aenter"
-                                                                                          "__(): is_stop_request")
-            logging.debug("binance_websocket_api_connection->is_stop_request(" + str(self.stream_id) + ")")
+            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             sys.exit(0)
         uri = self.handler_binance_websocket_api_manager.create_websocket_uri(self.channels, self.markets,
                                                                               self.stream_id, self.api_key,
                                                                               self.api_secret)
         if uri is False:
             # cant get a valid URI, so this stream has to crash
+            error_msg = "No valid URI! Did you provide valid api_key and api_secret? No internet connection?"
             logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                             str(self.channels) + ", " + str(self.markets) + ") - No valid URI! Did you provide valid"
-                                                                             "api_key and api_secret? No internet "
-                                                                             "connection?")
-            self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, "No valid URI! Did you "
-                                                                                          "provide valid api_key and "
-                                                                                          "api_secret? No internet "
-                                                                                          "connection?")
+                             str(self.channels) + ", " + str(self.markets) + ") - " + error_msg)
+            self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
             time.sleep(0.5)
             self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
@@ -123,6 +116,14 @@ class BinanceWebSocketApiConnection(object):
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                 sys.exit(1)
+        except websockets.exceptions.ConnectionClosed as error_msg:
+            logging.info("BinanceWebSocketApiSocket->await._conn.__aenter__(" + str(self.stream_id) + ", " +
+                         str(self.channels) + ", " + str(self.markets) + ") Exception ConnectionClosed "
+                                                                         "Info: " + str(error_msg))
+            if "WebSocket connection is closed: code = 1006" in str(error_msg):
+                self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
+                sys.exit(1)
         return self
 
     async def __aexit__(self, *args, **kwargs):
@@ -144,9 +145,7 @@ class BinanceWebSocketApiConnection(object):
 
     def close(self):
         # used to close the stream
-        self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id, "binance_websocket_api_"
-                                                                      "connection->__aexit__(*args, **kwargs): "
-                                                                      "ConnectionClosed")
+        self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
         logging.debug("binance_websocket_api_connection->close(" + str(self.stream_id) + ")")
         self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
         sys.exit(0)

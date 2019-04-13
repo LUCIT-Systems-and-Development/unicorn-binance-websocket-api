@@ -47,14 +47,14 @@ logging.getLogger('websockets').addHandler(logging.StreamHandler())
 # create instance of BinanceWebSocketApiManager and provide the callback function
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
 
-markets = {'bnbbtc', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt', 'neousdt'}
+markets = {'BNBBTC', 'RVNBTC', 'LTCUSDT', 'ADAUSDT', 'EOSUSDT', 'NEOUSDT'}
 
 print("TESTING WRONG CHANNEL FORMAT")
 trade_stream_id1 = binance_websocket_api_manager.create_stream("trade", markets)
 time.sleep(5)
 binance_websocket_api_manager.stop_stream(trade_stream_id1)
 print("TESTING WRONG MARKET FORMAT")
-trade_stream_id2 = binance_websocket_api_manager.create_stream(["trade"], "bnbbtc")
+trade_stream_id2 = binance_websocket_api_manager.create_stream(["trade"], "BNBBTC")
 time.sleep(5)
 binance_websocket_api_manager.stop_stream(trade_stream_id2)
 print("TESTING !ticker and !miniTicker in multi stream")
@@ -71,7 +71,7 @@ print("TESTING UNKNOWN MARKET")
 trade_stream_id4 = binance_websocket_api_manager.create_stream(["trade"], "unicorn-data")
 time.sleep(5)
 print("TESTING UNKNOWN CHANNEL")
-trade_stream_id5 = binance_websocket_api_manager.create_stream(["unicorn-data"], "bnbbtc")
+trade_stream_id5 = binance_websocket_api_manager.create_stream(["unicorn-data"], "BNBBTC")
 
 print("\r\ntrade_stream_list:")
 print(binance_websocket_api_manager.get_stream_list())

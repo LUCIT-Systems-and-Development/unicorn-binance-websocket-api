@@ -189,4 +189,5 @@ binance_websocket_api_manager.print_summary()
 
 print("\r\n=============================== Stopping BinanceWebSocketManager ======================================\r\n")
 binance_websocket_api_manager.stop_manager_with_all_streams()
+time.sleep(10)
 print("finished!")
