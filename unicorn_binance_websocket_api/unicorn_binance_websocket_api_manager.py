@@ -271,15 +271,18 @@ class BinanceWebSocketApiManager(threading.Thread):
             temp_restart_requests = copy.deepcopy(self.restart_requests)
             for stream_id in temp_restart_requests:
                 # find restarts that didnt work
-                if self.restart_requests[stream_id]['status'] == "restarted" and \
-                        self.restart_requests[stream_id]['last_restart_time']+5 < time.time():
-                    self.restart_requests[stream_id]['status'] = "new"
-                # restart streams with requests
-                if self.restart_requests[stream_id]['status'] == "new":
-                    self.restart_stream(stream_id)
-                    self.restart_requests[stream_id]['status'] = "restarted"
-                    self.restart_requests[stream_id]['last_restart_time'] = time.time()
-                    self.stream_list[stream_id]['status'] = "restarting"
+                try:
+                    if self.restart_requests[stream_id]['status'] == "restarted" and \
+                            self.restart_requests[stream_id]['last_restart_time']+5 < time.time():
+                        self.restart_requests[stream_id]['status'] = "new"
+                    # restart streams with requests
+                    if self.restart_requests[stream_id]['status'] == "new":
+                        self.restart_stream(stream_id)
+                        self.restart_requests[stream_id]['status'] = "restarted"
+                        self.restart_requests[stream_id]['last_restart_time'] = time.time()
+                        self.stream_list[stream_id]['status'] = "restarting"
+                except KeyError:
+                    pass
             # control frequent_checks_threads for two cases:
             # 1) there should only be one! stop others if necessary:
             found_alive_frequent_checks = False
