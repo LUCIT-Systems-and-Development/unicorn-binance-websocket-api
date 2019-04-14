@@ -36,6 +36,7 @@
 import copy
 import hashlib
 import hmac
+import json
 import logging
 import requests
 import socket
@@ -97,9 +98,9 @@ class BinanceWebSocketApiRestclient(object):
         response = self._request(method, path)
         try:
             self.listen_key = response['listenKey']
-            return self.listen_key
+            return response
         except KeyError:
-            return False
+            return response
         except TypeError:
             return False
 
@@ -112,4 +113,5 @@ class BinanceWebSocketApiRestclient(object):
             return False
         except TypeError:
             return False
+
 

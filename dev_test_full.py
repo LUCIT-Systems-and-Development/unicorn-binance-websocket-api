@@ -97,7 +97,7 @@ print("\r\n======================================== Stopped ticker BNB/BTC =====
 
 print("\r\n========================================== Starting miniticker ========================================\r\n")
 miniticker_stream_id = binance_websocket_api_manager.create_stream(["miniTicker"], markets)
-time.sleep(4)
+time.sleep(5)
 binance_websocket_api_manager.stop_stream(miniticker_stream_id)
 time.sleep(2)
 print("\r\n========================================= Stopped miniticker  =========================================\r\n")
@@ -180,15 +180,20 @@ print("\r\n=================================== Starting multi multi socket =====
 channels = {'trade', 'kline_1', 'kline_5', 'kline_15', 'kline_30', 'kline_1h', 'kline_12h', 'kline_1w',
                 'miniTicker', 'depth20', '!miniTicker', '!ticker'}
 multi_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
-time.sleep(3)
+time.sleep(4)
 binance_websocket_api_manager.stop_stream(multi_multi_stream_id)
 time.sleep(2)
 print("\r\n================================== Stopped multi multi socket  ========================================\r\n")
 
 # print summary
-time.sleep(3)
 binance_websocket_api_manager.print_summary()
 print("\r\n=============================== Stopping BinanceWebSocketManager ======================================\r\n")
 binance_websocket_api_manager.stop_manager_with_all_streams()
 time.sleep(7)
+
+stream_list = binance_websocket_api_manager.get_stream_list()
+
+for stream_id in stream_list:
+    binance_websocket_api_manager.print_stream_info(stream_id)
+    time.sleep(3.5)
 print("finished!")

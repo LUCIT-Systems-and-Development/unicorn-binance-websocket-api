@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.9.dev"
+        self.version = "1.1.10.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
@@ -395,9 +395,19 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if market == "!userData":
                     if stream_id is not False:
                         # only execute this code block with a provided stream_id
-                        listen_key = self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
-                        if listen_key:
-                            uri = self.websocket_base_uri + "ws/" + str(listen_key)
+                        response = self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
+                        try:
+                            if response['code'] == -2014:
+                                return response
+                            else:
+                                logging.critical("Found new error code from restclient: " + str(response))
+                                return response
+                        except KeyError:
+                            pass
+                        except TypeError:
+                            pass
+                        if response:
+                            uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
                             return uri
                         else:
                             return False
@@ -563,12 +573,18 @@ class BinanceWebSocketApiManager(threading.Thread):
         # no cached listen_key or listen_key is older than 30 min
         # acquire a new listen_key:
         binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key, api_secret, self.get_version())
-        listen_key = binance_websocket_api_restclient.get_listen_key()
+        response = binance_websocket_api_restclient.get_listen_key()
         del binance_websocket_api_restclient
-        if listen_key:
+        if response:
             # save and return the valid listen_key
-            self.stream_list[stream_id]['listen_key'] = str(listen_key)
-            return self.stream_list[stream_id]['listen_key']
+            try:
+                self.stream_list[stream_id]['listen_key'] = str(response['listenKey'])
+                return response
+            except KeyError:
+                # no valid listen_key, but a response from endpoint
+                return response
+            except TypeError:
+                return response
         else:
             # no valid listen_key
             return False
@@ -690,6 +706,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.stream_list[stream_id]['status'] == "running":
             stream_statistic['uptime'] = time.time() - self.stream_list[stream_id]['start_time']
         elif self.stream_list[stream_id]['status'] == "stopped":
+            stream_statistic['uptime'] = self.stream_list[stream_id]['has_stopped'] - self.stream_list[stream_id]['start_time']
+        elif "crashed" in self.stream_list[stream_id]['status']:
             stream_statistic['uptime'] = self.stream_list[stream_id]['has_stopped'] - self.stream_list[stream_id]['start_time']
         elif self.stream_list[stream_id]['status'] == "restarting":
             stream_statistic['uptime'] = time.time() - self.stream_list[stream_id]['start_time']
@@ -923,12 +941,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         streams = len(self.stream_list)
         active_streams = 0
-        stopped_streams = 0
         crashed_streams = 0
+        restarting_streams = 0
+        stopped_streams = 0
+        active_streams_row = ""
+        restarting_streams_row = ""
+        stopped_streams_row = ""
         all_receives_per_second = 0.0
         streams_with_stop_request = 0
-        active_streams_row = ""
-        stopped_streams_row = ""
         stream_rows = ""
         crashed_streams_row = ""
         received_bytes_per_x_row = ""
@@ -947,7 +967,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             stream_row_space_3 = "\t   |  "
             stream_row_space_4 = " \t      | "
             last_row_space_1 = "                 |\t "
-
         for stream_id in self.stream_list:
             stream_row_color_prefix = ""
             stream_row_color_suffix = ""
@@ -979,7 +998,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 stream_row_color_prefix = "\033[1m\033[33m"
                 stream_row_color_suffix = "\033[0m"
             elif self.stream_list[stream_id]['status'] == "restarting":
-                stopped_streams += 1
+                restarting_streams += 1
                 stream_row_color_prefix = "\033[1m\033[33m"
                 stream_row_color_suffix = "\033[0m"
             elif "crashed" in self.stream_list[stream_id]['status']:
@@ -990,7 +1009,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.get_stream_receives_last_second(stream_id)) + stream_row_space_2 + str(stream_statistic['stream_receives_per_second'].__round__(2)) + \
                 stream_row_space_3 + str(self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) + \
                 stream_row_space_4 + stream_row_color_prefix + str(len(self.stream_list[stream_id]['logged_reconnects'])) + stream_row_color_suffix + "\r\n "
-            if self.stream_list[stream_id]['stop_request'] is True and self.stream_list[stream_id]['status'] != "stopped":
+            if self.is_stop_request(stream_id) is True and self.stream_list[stream_id]['status'] == "running":
                 streams_with_stop_request += 1
         if streams_with_stop_request >= 1:
             stream_row_color_prefix = "\033[1m\033[33m"
@@ -1014,9 +1033,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                                      " (" + str(
                     self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")" + stream_row_color_suffix + "\r\n"
 
-            active_streams_row = " \033[1m\033[32mactive_streams: " + str(active_streams) + "\033[0m\r\n"
-            stopped_streams_row = " \033[1m\033[33mstopped_streams: " + str(stopped_streams) + "\033[0m\r\n"
-
+            if active_streams > 0:
+                active_streams_row = " \033[1m\033[32mactive_streams: " + str(active_streams) + "\033[0m\r\n"
+            if restarting_streams > 0:
+                restarting_streams_row = " \033[1m\033[33mrestarting_streams: " + str(restarting_streams) + "\033[0m\r\n"
+            if stopped_streams > 0:
+                stopped_streams_row = " \033[1m\033[33mstopped_streams: " + str(stopped_streams) + "\033[0m\r\n"
             try:
                 print(
                     "===============================================================================================\r\n" +
@@ -1026,6 +1048,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " streams:", str(streams), "\r\n" +
                     str(active_streams_row) +
                     str(crashed_streams_row) +
+                    str(restarting_streams_row) +
                     str(stopped_streams_row) +
                     str(streams_with_stop_request_row) +
                     str(reconnects_row) +
@@ -1161,15 +1184,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logging.info("BinanceWebSocketApiManager->stop_manager_with_all_streams(" + str(
                     stream_id) + ")->delete_listen_key")
                 binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
-                                                                                 self.stream_list[stream_id][
-                                                                                     'api_secret'])
-                resp = binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
+                                                                                 self.stream_list[stream_id]['api_secret'])
+                binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
                 del binance_websocket_api_restclient
-                i = 0
-                while i < 1000:
-                    print("listenkey resp: " + str(resp))
-                    i += 1
-                    time.sleep(1)
 
     def stop_stream(self, stream_id):
         """
@@ -1182,6 +1199,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         # stop a specific stream by stream_id
         logging.info("BinanceWebSocketApiManager->stop_stream(" + str(stream_id) + ")")
+        try:
+            del self.restart_requests[stream_id]
+        except KeyError:
+            pass
         self.stream_list[stream_id]['stop_request'] = True
 
     def stream_is_crashing(self, stream_id, error_msg=False):
@@ -1196,7 +1217,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         # streams report with this call their shutdowns
         logging.debug("BinanceWebSocketApiManager->stream_is_stopping(" + str(stream_id) + ")")
         self.stream_list[stream_id]['has_stopped'] = time.time()
-        self.stream_list[stream_id]['stop_request'] = None
         self.stream_list[stream_id]['status'] = "stopped"
 
     def wait_till_stream_has_started(self, stream_id):

@@ -4,7 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.9.dev (development stage/unreleased)
+## 1.1.10.dev (development stage/unreleased)
+
+## 1.1.10
+### Fixed
+- del restart request in stop_stream()
+### Added
+- restarting streams row to print_summary()
+- show active restarting and stopped streams only if not 0
+- error message handling for userData streams
+- reconnect depends from disconnect reason now (network or api-settings)
 
 ## 1.1.9
 ### Fixed
