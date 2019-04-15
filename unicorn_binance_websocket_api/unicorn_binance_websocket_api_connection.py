@@ -128,8 +128,6 @@ class BinanceWebSocketApiConnection(object):
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
-                #time.sleep(0.5)
-                #self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                 sys.exit(1)
             else:
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
