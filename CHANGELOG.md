@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.11.dev (development stage/unreleased)
+## 1.1.12.dev (development stage/unreleased)
+
+## 1.1.12
 ### Fixed
 - KeyError in unicorn_binance_websocket_api_connection.py error exception 414
 - UnicornFy was very buggy with ticker and miniTicker handling
