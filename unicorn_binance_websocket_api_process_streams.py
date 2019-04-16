@@ -64,9 +64,9 @@ class BinanceWebSocketApiProcessStreams():
                 BinanceWebSocketApiProcessStreams.trade(unicorn_fied_stream_data)
             elif unicorn_fied_stream_data['event_type'] == "kline":
                 BinanceWebSocketApiProcessStreams.kline(unicorn_fied_stream_data)
-            elif unicorn_fied_stream_data['event_type'] == "miniTicker":
+            elif unicorn_fied_stream_data['event_type'] == "24hrMiniTicker":
                 BinanceWebSocketApiProcessStreams.miniticker(unicorn_fied_stream_data)
-            elif unicorn_fied_stream_data['event_type'] == "ticker":
+            elif unicorn_fied_stream_data['event_type'] == "24hrTicker":
                 BinanceWebSocketApiProcessStreams.ticker(unicorn_fied_stream_data)
             elif unicorn_fied_stream_data['event_type'] == "depth":
                 BinanceWebSocketApiProcessStreams.miniticker(unicorn_fied_stream_data)

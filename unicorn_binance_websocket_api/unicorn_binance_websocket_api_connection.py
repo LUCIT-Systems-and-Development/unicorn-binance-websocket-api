@@ -115,7 +115,10 @@ class BinanceWebSocketApiConnection(object):
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ")" + " - URI Too Long? To many "
                                  "streams in on socket? ;) - " + str(error_msg))
-                self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+                try:
+                    self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+                except KeyError:
+                    pass
                 sys.exit(1)
             elif "Status code not 101: 400" in str(error_msg):
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +

@@ -81,11 +81,14 @@ class UnicornFy(object):
         if UnicornFy.is_json(stream_data_json) is False:
             return stream_data_json
         stream_data = json.loads(stream_data_json)
+
         try:
             if stream_data[0]['e'] == "24hrMiniTicker":
-                stream_data = {'data': stream_data[0]}
+                stream_data = {'data': {'e': "24hrMiniTicker"},
+                               'items': stream_data}
             elif stream_data[0]['e'] == "24hrTicker":
-                stream_data = {'data': stream_data[0]}
+                stream_data = {'data': {'e': "24hrTicker"},
+                               'items': stream_data}
         except KeyError:
             pass
         try:
@@ -173,14 +176,33 @@ class UnicornFy(object):
                 stream_data['stream'] = '!miniTicker@arr'
             unicorn_fied_data = {'stream_type': stream_data['stream'],
                                  'event_type': stream_data['data']['e'],
-                                 'event_time': stream_data['data']['E'],
-                                 'symbol': stream_data['data']['s'],
-                                 'close_price': stream_data['data']['c'],
-                                 'open_price': stream_data['data']['o'],
-                                 'high_price': stream_data['data']['h'],
-                                 'low_price': stream_data['data']['l'],
-                                 'taker_by_base_asset_volume': stream_data['data']['v'],
-                                 'taker_by_quote_asset_volume': stream_data['data']['q']}
+                                 'data': []}
+
+            try:
+                for item in stream_data['items']:
+                    data = {'stream_type': stream_data['stream'],
+                            'event_type': item['e'],
+                            'event_time': item['E'],
+                            'symbol': item['s'],
+                            'close_price': item['c'],
+                            'open_price': item['o'],
+                            'high_price': item['h'],
+                            'low_price': item['l'],
+                            'taker_by_base_asset_volume': item['v'],
+                            'taker_by_quote_asset_volume': item['q']}
+                    unicorn_fied_data['data'].append(data)
+            except KeyError:
+                data = {'stream_type': stream_data['stream'],
+                        'event_type': stream_data['data']['e'],
+                        'event_time': stream_data['data']['E'],
+                        'symbol': stream_data['data']['s'],
+                        'close_price': stream_data['data']['c'],
+                        'open_price': stream_data['data']['o'],
+                        'high_price': stream_data['data']['h'],
+                        'low_price': stream_data['data']['l'],
+                        'taker_by_base_asset_volume': stream_data['data']['v'],
+                        'taker_by_quote_asset_volume': stream_data['data']['q']}
+                unicorn_fied_data['data'].append(data)
         elif stream_data['data']['e'] == '24hrTicker':
             try:
                 if stream_data['stream']:
@@ -189,28 +211,60 @@ class UnicornFy(object):
                 stream_data['stream'] = '!ticker@arr'
             unicorn_fied_data = {'stream_type': stream_data['stream'],
                                  'event_type': stream_data['data']['e'],
-                                 'event_time': stream_data['data']['E'],
-                                 'symbol': stream_data['data']['s'],
-                                 'price_change': stream_data['data']['p'],
-                                 'price_change_percent': stream_data['data']['P'],
-                                 'weighted_average_price': stream_data['data']['w'],
-                                 'trade_before_24h_window': stream_data['data']['x'],
-                                 'last_price': stream_data['data']['c'],
-                                 'last_quantity': stream_data['data']['Q'],
-                                 'best_bid_price': stream_data['data']['b'],
-                                 'best_bid_quantity': stream_data['data']['B'],
-                                 'best_ask_price': stream_data['data']['a'],
-                                 'best_ask_quantity': stream_data['data']['A'],
-                                 'open_price': stream_data['data']['o'],
-                                 'high_price': stream_data['data']['h'],
-                                 'low_price': stream_data['data']['l'],
-                                 'total_traded_base_asset_volume': stream_data['data']['v'],
-                                 'total_traded_quote_asset_volume': stream_data['data']['q'],
-                                 'statistics_open_time': stream_data['data']['O'],
-                                 'statistics_close_time': stream_data['data']['C'],
-                                 'first_trade_id': stream_data['data']['F'],
-                                 'last_trade_id': stream_data['data']['L'],
-                                 'total_nr_of_trades': stream_data['data']['n']}
+                                 'data': []}
+            try:
+                for item in stream_data['items']:
+                    data = {'stream_type': stream_data['stream'],
+                            'event_type': item['e'],
+                            'event_time': item['E'],
+                            'symbol': item['s'],
+                            'price_change': item['p'],
+                            'price_change_percent': item['P'],
+                            'weighted_average_price': item['w'],
+                            'trade_before_24h_window': item['x'],
+                            'last_price': item['c'],
+                            'last_quantity': item['Q'],
+                            'best_bid_price': item['b'],
+                            'best_bid_quantity': item['B'],
+                            'best_ask_price': item['a'],
+                            'best_ask_quantity': item['A'],
+                            'open_price': item['o'],
+                            'high_price': item['h'],
+                            'low_price': item['l'],
+                            'total_traded_base_asset_volume': item['v'],
+                            'total_traded_quote_asset_volume': item['q'],
+                            'statistics_open_time': item['O'],
+                            'statistics_close_time': item['C'],
+                            'first_trade_id': item['F'],
+                            'last_trade_id': item['L'],
+                            'total_nr_of_trades': item['n']}
+                    unicorn_fied_data['data'].append(data)
+            except KeyError:
+                data = {'stream_type': stream_data['stream'],
+                        'event_type': stream_data['data']['e'],
+                        'event_time': stream_data['data']['E'],
+                        'symbol': stream_data['data']['s'],
+                        'price_change': stream_data['data']['p'],
+                        'price_change_percent': stream_data['data']['P'],
+                        'weighted_average_price': stream_data['data']['w'],
+                        'trade_before_24h_window': stream_data['data']['x'],
+                        'last_price': stream_data['data']['c'],
+                        'last_quantity': stream_data['data']['Q'],
+                        'best_bid_price': stream_data['data']['b'],
+                        'best_bid_quantity': stream_data['data']['B'],
+                        'best_ask_price': stream_data['data']['a'],
+                        'best_ask_quantity': stream_data['data']['A'],
+                        'open_price': stream_data['data']['o'],
+                        'high_price': stream_data['data']['h'],
+                        'low_price': stream_data['data']['l'],
+                        'total_traded_base_asset_volume': stream_data['data']['v'],
+                        'total_traded_quote_asset_volume': stream_data['data']['q'],
+                        'statistics_open_time': stream_data['data']['O'],
+                        'statistics_close_time': stream_data['data']['C'],
+                        'first_trade_id': stream_data['data']['F'],
+                        'last_trade_id': stream_data['data']['L'],
+                        'total_nr_of_trades': stream_data['data']['n']}
+                unicorn_fied_data['data'].append(data)
         elif stream_data['data']['e'] == 'depth':
             unicorn_fied_data = {'stream_type': stream_data['stream'],
                                  'event_type': stream_data['data']['e'],
