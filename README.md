@@ -51,3 +51,7 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues
 If you report a bug, try first the latest release via [download](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases) 
 or with `pip install unicorn-binance-websocket-api --upgrade`. If the issue still exists, provide the error trace, OS 
 and python version and explain how to reproduce the error. A demo script is appreciated.
+
+## Contributing
+UNICORN Binance WebSocket API is an open source project which welcomes contributions which can be anything from simple 
+documentation fixes to new features. To contribute, fork the project on [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)  and send a pull request.
