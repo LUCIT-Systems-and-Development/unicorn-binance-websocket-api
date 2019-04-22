@@ -64,8 +64,8 @@ class BinanceWebSocketApiConnection(object):
             # cant get a valid URI, so this stream has to crash
             error_msg = "Probably no internet connection?"
             logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                             str(self.channels) + ", " + str(self.markets) + ") - " + error_msg)
-            self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
+                             str(self.channels) + ", " + str(self.markets) + ") - " + str(error_msg))
+            self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
             time.sleep(0.5)
             self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
@@ -123,20 +123,20 @@ class BinanceWebSocketApiConnection(object):
             elif "Status code not 101: 400" in str(error_msg):
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))
-                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
-                time.sleep(0.5)
+                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str (error_msg))
+                time.sleep(5)
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                 sys.exit(1)
             elif "Status code not 101: 500" in str(error_msg):
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))
-                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
+                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
                 sys.exit(1)
             else:
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))
                 self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
-                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
+                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                 sys.exit(1)
         except websockets.exceptions.ConnectionClosed as error_msg:
@@ -145,7 +145,7 @@ class BinanceWebSocketApiConnection(object):
                                                                          "Info: " + str(error_msg))
             if "WebSocket connection is closed: code = 1006" in str(error_msg):
                 self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
-                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
+                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
                 sys.exit(1)
         return self
 
@@ -179,7 +179,7 @@ class BinanceWebSocketApiConnection(object):
             received_data = await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].recv()
         except ssl.SSLError as error_msg:
             logging.debug("binance_websocket_api_connection->close(" + str(self.stream_id) + ") - error_msg:" +
-                          error_msg)
+                          str(error_msg))
         try:
             if self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]['status'] == "restarted":
                 self.handler_binance_websocket_api_manager.increase_reconnect_counter(self.stream_id)

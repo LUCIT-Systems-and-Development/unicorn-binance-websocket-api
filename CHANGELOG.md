@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.12.dev (development stage/unreleased)
+## 1.1.13.dev (development stage/unreleased)
+
+## 1.1.13
+### Changed
+- changed the waiting time before setting a restart request on 400 error to 5 seconds in connection class
+### Fixed
+- replaced tabs in print_summary() with blanks
 
 ## 1.1.12
 ### Fixed
@@ -16,13 +22,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - KeyError in unicorn_binance_websocket_api_manager.py
 
 ## 1.1.10
-### Fixed
-- del restart request in stop_stream()
 ### Added
 - restarting streams row to print_summary()
 - show active restarting and stopped streams only if not 0
 - error message handling for userData streams
 - reconnect depends from disconnect reason now (network or api-settings)
+### Fixed
+- del restart request in stop_stream()
 
 ## 1.1.9
 ### Fixed

@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.12.dev"
+        self.version = "1.1.13"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
@@ -253,6 +253,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                             self.set_heartbeat(stream_id)
                             logging.info("sent keepalive ping for stream_id=" + str(stream_id))
         sys.exit(0)
+
+    def _fill_up_space(self, demand_of_chars, string):
+        blanks_pre = ""
+        blanks_post = ""
+        demand_of_blanks = demand_of_chars - len(str(string)) - 1
+        while len(blanks_pre) < demand_of_blanks:
+            blanks_pre += " "
+            blanks_post = " "
+        return blanks_pre + str(string) + blanks_post
 
     def _keepalive_streams(self):
         keepalive_streams_id = time.time()
@@ -958,18 +967,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         streams_with_stop_request_row = ""
         stream_buffer_row = ""
         reconnects_row = ""
-        if platform.system() == "Windows":
-            stream_row_space_1 = " |\t"
-            stream_row_space_2 = "\t\t\t |\t"
-            stream_row_space_3 = "\t   |\t"
-            stream_row_space_4 = "\t\t\t  |\t"
-            last_row_space_1 = "                 |\t"
-        else:
-            stream_row_space_1 = " |\t "
-            stream_row_space_2 = "\t     |\t"
-            stream_row_space_3 = "\t   |  "
-            stream_row_space_4 = " \t      | "
-            last_row_space_1 = "                 |\t "
         for stream_id in self.stream_list:
             stream_row_color_prefix = ""
             stream_row_color_suffix = ""
@@ -1008,10 +1005,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 crashed_streams += 1
                 stream_row_color_prefix = "\033[1m\033[31m"
                 stream_row_color_suffix = "\033[0m"
-            stream_rows += stream_row_color_prefix + str(stream_id) + stream_row_color_suffix + stream_row_space_1 + str(
-                self.get_stream_receives_last_second(stream_id)) + stream_row_space_2 + str(stream_statistic['stream_receives_per_second'].__round__(2)) + \
-                stream_row_space_3 + str(self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) + \
-                stream_row_space_4 + stream_row_color_prefix + str(len(self.stream_list[stream_id]['logged_reconnects'])) + stream_row_color_suffix + "\r\n "
+            stream_rows += stream_row_color_prefix + str(stream_id) + stream_row_color_suffix + " |" + \
+                self._fill_up_space(14, self.get_stream_receives_last_second(stream_id)) + "|" + \
+                self._fill_up_space(13, stream_statistic['stream_receives_per_second'].__round__(2)) + "|" + \
+                self._fill_up_space(18, self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) + "|" + \
+                stream_row_color_prefix + \
+                self._fill_up_space(8, len(self.stream_list[stream_id]['logged_reconnects'])) + \
+                stream_row_color_suffix + "\r\n "
             if self.is_stop_request(stream_id) is True and self.stream_list[stream_id]['status'] == "running":
                 streams_with_stop_request += 1
         if streams_with_stop_request >= 1:
@@ -1061,13 +1061,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                     "\r\n"
                     " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +
                     " ---------------------------------------------------------------------------------------------\r\n"
-                    "              stream_id               | rec_last_sec | rec_per_sec | most_rec_per_sec | recon\r\n"
+                    "              stream_id               | rec_last_sec | rec_per_sec | most_rec_per_sec | reconn\r\n"
                     " ---------------------------------------------------------------------------------------------\r\n"
                     " " + str(stream_rows) +
                     "---------------------------------------------------------------------------------------------\r\n"
-                    " all_streams_receives" + last_row_space_1 + str(self.get_all_receives_last_second()) + stream_row_space_2 +
-                    str(all_receives_per_second.__round__(2)), stream_row_space_3 + str(self.most_receives_per_second) + \
-                    stream_row_space_4 + str(self.reconnects) + "\r\n"
+                    " all_streams_receives                 |" +
+                    self._fill_up_space(14, self.get_all_receives_last_second()) + "|" + \
+                    self._fill_up_space(13, all_receives_per_second.__round__(2)) + "|" + \
+                    self._fill_up_space(18, self.most_receives_per_second) + "|" + \
+                    self._fill_up_space(8, self.reconnects) + "\r\n"
                     " ---------------------------------------------------------------------------------------------\r\n"
                     "===============================================================================================\r\n")
             except UnboundLocalError:
