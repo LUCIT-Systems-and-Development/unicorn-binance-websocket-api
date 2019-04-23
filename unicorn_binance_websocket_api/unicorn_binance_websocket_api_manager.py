@@ -218,7 +218,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             # start with forwarding stream buffer entries if stream buffer has an entry and the last forwarder
             # heartbeat is older than 5 seconds
             try:
-                if len(self.stream_buffer) > 0 and ((self.stream_buffer_forwarder_last_heartbeat + 5) < time.time()):
+                if len(self.stream_buffer) > 0 and ((self.stream_buffer_forwarder_last_heartbeat + 10) < time.time()):
                     seconds_to_last_stream_buffer_entry = time.time() - self.last_entry_added_to_stream_buffer
                     if seconds_to_last_stream_buffer_entry > 5:
                         if not self.is_stream_buffer_forwarding():
@@ -457,18 +457,22 @@ class BinanceWebSocketApiManager(threading.Thread):
             logging.info("setting lock for stream_buffer_forwarder_id=" + str(stream_buffer_forwarder_id))
             time.sleep(2)
             if self.stream_buffer_forwarder_id == stream_buffer_forwarder_id:
-                logging.info("stream_buffer is starting with flushing back stream_data to normal processing!")
+                logging.info("stream_buffer is starting with flushing back " + len(self.stream_buffer) + " messages to "
+                             "stream_data to normal processing!")
                 self.stream_buffer_forwarder_last_heartbeat = time.time()
                 stream_buffer = copy.deepcopy(self.stream_buffer)
+                counter = 0
                 for stream_data in stream_buffer:
                     self.stream_buffer_forwarder_last_heartbeat = time.time()
                     self.callback_process_stream_data(stream_data)
                     try:
                         self.stream_buffer.remove(stream_data)
+                        counter += 1
                     except ValueError:
                         pass
                     self.stream_buffer_byte_size -= sys.getsizeof(stream_data)
-                logging.info("stream_buffer is empty now, all stream_data flushed back to normal processing!")
+                logging.info("stream_buffer is empty now, all stream_data (" + str(counter) + " messages) flushed back "
+                             "to normal processing!")
 
     def get_active_stream_list(self):
         """
