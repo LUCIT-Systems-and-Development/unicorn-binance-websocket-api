@@ -123,10 +123,11 @@ class BinanceWebSocketApiConnection(object):
             elif "Status code not 101: 400" in str(error_msg):
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))
-                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str (error_msg))
-                time.sleep(5)
-                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
-                sys.exit(1)
+                # Test!!! This block is deactivated and `async def __aexit__(self, *args, **kwargs):` is now doing the job...
+                #self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str (error_msg))
+                #time.sleep(5)
+                #self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+                #sys.exit(1)
             elif "Status code not 101: 500" in str(error_msg):
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))
@@ -161,7 +162,10 @@ class BinanceWebSocketApiConnection(object):
                              "ConnectionClosed - " + str(error_msg))
         finally:
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
-            self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+            try:
+                self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+            except KeyError:
+                pass
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(0)
