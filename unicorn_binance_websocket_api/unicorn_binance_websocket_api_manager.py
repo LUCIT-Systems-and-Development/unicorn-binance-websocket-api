@@ -408,7 +408,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         # only execute this code block with a provided stream_id
                         response = self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
                         try:
-                            if response['code'] == -2014:
+                            if response['code'] == -2014 or response['code'] == -2015:
                                 return response
                             else:
                                 logging.critical("Found new error code from restclient: " + str(response))

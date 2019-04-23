@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - updated the "update" methods in manager class (error handling while no internet connection)
 - trying other behaviour on `400 - bad request' error 
+- added handling for -2015 error from get_listen_key_from_restclient in create_websocket_uri
 
 ## 1.1.13
 ### Changed
