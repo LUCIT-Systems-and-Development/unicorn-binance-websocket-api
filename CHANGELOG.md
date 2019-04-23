@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.1.14.dev (development stage/unreleased)
 - streambuffer logging logs item nrs now
+- added two mac os specific exceptions to connection class
 
 ## 1.1.14
 ### Fixed
