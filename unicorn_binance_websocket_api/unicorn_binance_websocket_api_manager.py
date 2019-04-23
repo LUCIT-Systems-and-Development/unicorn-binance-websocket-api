@@ -418,7 +418,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                         except TypeError:
                             pass
                         if response:
-                            uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
+                            try:
+                                uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
+                            except KeyError:
+                                return False
                             return uri
                         else:
                             return False
