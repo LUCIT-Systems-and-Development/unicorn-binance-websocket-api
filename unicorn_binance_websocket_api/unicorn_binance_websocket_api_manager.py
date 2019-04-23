@@ -559,7 +559,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         if latest_release_info:
             return latest_release_info["tag_name"]
         else:
-            return False
+            return "not available"
 
     def get_listen_key_from_restclient(self, stream_id, api_key, api_secret):
         """
@@ -837,6 +837,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         if ".dev" in installed_version:
             installed_version = installed_version[:-4]
         if self.get_latest_version() == installed_version:
+            return False
+        elif self.get_latest_version() == "not available":
             return False
         else:
             return True
