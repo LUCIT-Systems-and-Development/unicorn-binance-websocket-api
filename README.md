@@ -54,4 +54,4 @@ and python version and explain how to reproduce the error. A demo script is appr
 
 ## Contributing
 UNICORN Binance WebSocket API is an open source project which welcomes contributions which can be anything from simple 
-documentation fixes to new features. To contribute, fork the project on [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)  and send a pull request.
+documentation fixes to new features. To contribute, fork the project on [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) and send a pull request.
