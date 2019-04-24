@@ -63,7 +63,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.19.dev"
+        self.version = "1.1.20"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
@@ -997,7 +997,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             received_bytes_per_second = self.get_total_received_bytes() / (time.time() - self.start_time)
             received_bytes_per_x_row += str((received_bytes_per_second / 1024).__round__(2)) + " kB/s (per day " + str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(2)) + " gB)"
-            if len(self.stream_buffer) > 0:
+            if len(self.stream_buffer) > 50:
                 stream_row_color_prefix = "\033[1m\033[34m"
                 stream_row_color_suffix = "\033[0m"
                 stream_buffer_row += stream_row_color_prefix + " stream_buffer_stored_items: " + str(len(self.stream_buffer)) + "\r\n"
