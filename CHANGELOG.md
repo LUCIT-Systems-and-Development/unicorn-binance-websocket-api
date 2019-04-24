@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.14.dev (development stage/unreleased)
-- streambuffer logging logs item nrs now
-- added two mac os specific exceptions to connection class
+## 1.1.15.dev (development stage/unreleased)
+
+## 1.1.15
+### Changed 
+- stream_buffer logging: log amount of items in buffer
+### Fixed
+- added two mac os specific exceptions to connection class for better reconnect management
 
 ## 1.1.14
 ### Fixed

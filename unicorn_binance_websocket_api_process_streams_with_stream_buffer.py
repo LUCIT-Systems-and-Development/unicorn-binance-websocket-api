@@ -96,11 +96,11 @@ class BinanceWebSocketApiProcessStreams(object):
             cursor = conn.cursor()
             cursor.execute("INSERT INTO a_table (c1) VALUES(%s)", unicorn_fied_stream_data)
         except psycopg2.Error:
-            # catchin this excpetion works only well on linux, not on windows :/
+            # catching this excpetion works only well on linux, not on windows :/
             # writing to stream_buffer works ...
             self.stream_buffer(unicorn_fied_stream_data)
         except psycopg2.DatabaseError:
-            # catchin this excpetion works only well on linux, not on windows :/
+            # catching this excpetion works only well on linux, not on windows :/
             # writing to stream_buffer works ...
             self.stream_buffer(unicorn_fied_stream_data)
 
