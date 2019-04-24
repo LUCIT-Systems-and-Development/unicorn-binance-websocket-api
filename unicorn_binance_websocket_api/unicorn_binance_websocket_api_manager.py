@@ -308,8 +308,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_data: the data you want to write back to the buffer
         :type stream_data: raw stream_data or unicorn_fied stream data
         """
-        if len(self.stream_buffer) == 0:
-            logging.info("stream_buffer activated")
         self.stream_buffer.append(stream_data)
         self.last_entry_added_to_stream_buffer = time.time()
         self.stream_buffer_byte_size += sys.getsizeof(stream_data)
