@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.15.dev (development stage/unreleased)
+## 1.1.16.dev (development stage/unreleased)
+
+## 1.1.16
+### Changed 
+- stream_buffer logging: log amount of items in buffer
 
 ## 1.1.15
 ### Changed 
