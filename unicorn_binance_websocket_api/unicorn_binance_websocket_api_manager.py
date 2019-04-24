@@ -63,7 +63,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.15.dev"
+        self.version = "1.1.15"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
