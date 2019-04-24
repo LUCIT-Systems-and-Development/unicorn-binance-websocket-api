@@ -457,8 +457,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             logging.info("setting lock for stream_buffer_forwarder_id=" + str(stream_buffer_forwarder_id))
             time.sleep(2)
             if self.stream_buffer_forwarder_id == stream_buffer_forwarder_id:
-                logging.info("stream_buffer is starting with flushing back " + len(self.stream_buffer) + " messages to "
-                             "stream_data to normal processing!")
+                logging.info("stream_buffer is starting with flushing back " + str(len(self.stream_buffer)) +
+                             " messages to stream_data to normal processing!")
                 self.stream_buffer_forwarder_last_heartbeat = time.time()
                 stream_buffer = copy.deepcopy(self.stream_buffer)
                 counter = 0
