@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.16.dev (development stage/unreleased)
+## 1.1.17.dev (development stage/unreleased)
+
+## 1.1.17
+### Changed
+- rewrite of keepalive and frequentchecks restarts
 
 ## 1.1.16
 ### Changed 
