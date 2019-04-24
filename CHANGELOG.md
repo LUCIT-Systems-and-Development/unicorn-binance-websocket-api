@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.18.dev (development stage/unreleased)
+## 1.1.19.dev (development stage/unreleased)
+
+## 1.1.19
+### Change
+- renamed get_stream_data_from_stream_buffer to pop_stream_data_from_stream_buffer 
+### Fixed 
+- IndexError in pop_stream_data_from_stream_buffer
 
 ## 1.1.18
 ### Removed

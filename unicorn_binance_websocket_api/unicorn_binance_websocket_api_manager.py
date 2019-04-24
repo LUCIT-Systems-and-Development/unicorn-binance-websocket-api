@@ -63,7 +63,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.18.dev"
+        self.version = "1.1.19"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
@@ -616,14 +616,18 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.stream_buffer_byte_size
 
-    def get_stream_data_from_stream_buffer(self):
+    def pop_stream_data_from_stream_buffer(self):
         """
-        Get oldest entry from stream_buffer (FIFO stack)
+        Get oldest entry from stream_buffer and remove from stack (FIFO stack)
 
-        :return: stream_data (set)
+        :return: stream_data (set) or False
         """
-        stream_data = self.stream_buffer.pop()
-        return stream_data
+        try:
+            stream_data = self.stream_buffer.pop()
+            self.stream_buffer_byte_size -= sys.getsizeof(stream_data)
+            return stream_data
+        except IndexError:
+            return False
 
     def get_stream_info(self, stream_id):
         """
@@ -1043,15 +1047,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 pass
         except ZeroDivisionError:
             pass
-
-    def remove_stream_data_from_stream_buffer(self, stream_data):
-        """
-        Remove specific entry from stream_buffer
-
-        :param stream_data: stream_data to remove from stream_buffer
-        :type stream_data: set
-        """
-        self.stream_buffer.remove(stream_data)
 
     def replace_stream(self, stream_id, new_channels, new_markets):
         """
