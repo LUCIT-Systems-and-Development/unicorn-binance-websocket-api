@@ -332,7 +332,7 @@ class UnicornFy(object):
                                  'cumulative_quote_asset_transacted_quantity': stream_data['data']['Z'],
                                  'last_quote_asset_transacted_quantity': stream_data['data']['Y']}
         if unicorn_fied_data is False:
-            logging.error("unknown data stream detected in module `unicorn_fy`: please report to "
+            logging.error("detected unknown data stream format in module `unicorn_fy`: please report to "
                           "https://www.unicorn-data.com " + str(stream_data))
         unicorn_fied_version = ['binance', '1.0']
         unicorn_fied_data['unicorn_fied'] = unicorn_fied_version

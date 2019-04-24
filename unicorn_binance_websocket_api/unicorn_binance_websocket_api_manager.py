@@ -63,7 +63,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, callback_process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.1.17.dev"
+        self.version = "1.1.18"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
@@ -74,7 +74,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.frequent_checks_list = {}
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
-        self.last_entry_added_to_stream_buffer = 0
         self.most_receives_per_second = 0
         self.reconnects = 0
         self.restart_requests = {}
@@ -82,8 +81,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.start_time = time.time()
         self.stream_buffer = []
         self.stream_buffer_byte_size = 0
-        self.stream_buffer_forwarder_id = None
-        self.stream_buffer_forwarder_last_heartbeat = 0
+        self.last_entry_added_to_stream_buffer = 0
         self.stream_list = {}
         self.total_received_bytes = 0
         self.total_receives = 0
@@ -218,24 +216,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             # start a new one, if there isnt one
             if found_alive_keepalive_streams is False:
                 self._keepalive_streams_restart_request = True
-            # start forwarding stream buffer entries if stream buffer has an entry and the last forwarder
-            # heartbeat is older than 10 seconds
-            try:
-                if len(self.stream_buffer) > 0 and ((self.stream_buffer_forwarder_last_heartbeat + 10) < time.time()):
-                    seconds_to_last_stream_buffer_entry = time.time() - self.last_entry_added_to_stream_buffer
-                    if seconds_to_last_stream_buffer_entry > 5:
-                        if not self.is_stream_buffer_forwarding():
-                            thread_keepalive_streams = threading.Thread(target=self._forward_stream_buffer_data)
-                            thread_keepalive_streams.start()
-            except TypeError:
-                pass
-            # print stream buffer size every 10 seconds to logfile if greater than 0
-            if self.get_stream_buffer_byte_size() > 0:
-                seconds_to_last_stream_buffer_size_print = time.time() - stream_buffer_size_last_print
-                if seconds_to_last_stream_buffer_size_print > 10:
-                    logging.debug("stream_buffer_byte_size: " + str(self.get_stream_buffer_byte_size()) + " (" +
-                                  str(self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")")
-                    stream_buffer_size_last_print = time.time()
             # send ping and keepalive for `userData` streams every 30 minutes
             if active_stream_list:
                 for stream_id in active_stream_list:
@@ -455,32 +435,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.debug("deleting " + str(stream_id) + " from stream_list")
         return self.stream_list.pop(stream_id, False)
 
-    def _forward_stream_buffer_data(self):
-        self.stream_buffer_forwarder_last_heartbeat = time.time()
-        logging.info("started new stream_buffer_forwarder")
-        stream_buffer_forwarder_id = uuid.uuid4()
-        self.stream_buffer_forwarder_id = stream_buffer_forwarder_id
-        if self.stream_buffer_forwarder_id == stream_buffer_forwarder_id:
-            logging.info("setting lock for stream_buffer_forwarder_id=" + str(stream_buffer_forwarder_id))
-            time.sleep(2)
-            if self.stream_buffer_forwarder_id == stream_buffer_forwarder_id:
-                logging.info("stream_buffer is starting with flushing back " + str(len(self.stream_buffer)) +
-                             " messages to stream_data to normal processing!")
-                self.stream_buffer_forwarder_last_heartbeat = time.time()
-                stream_buffer = copy.deepcopy(self.stream_buffer)
-                counter = 0
-                for stream_data in stream_buffer:
-                    self.stream_buffer_forwarder_last_heartbeat = time.time()
-                    self.callback_process_stream_data(stream_data)
-                    try:
-                        self.stream_buffer.remove(stream_data)
-                        counter += 1
-                    except ValueError:
-                        pass
-                    self.stream_buffer_byte_size -= sys.getsizeof(stream_data)
-                logging.info("stream_buffer is empty now, all stream_data (" + str(counter) + " messages) flushed back "
-                             "to normal processing!")
-
     def get_active_stream_list(self):
         """
         Get a list of all active streams
@@ -662,6 +616,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.stream_buffer_byte_size
 
+    def get_stream_data_from_stream_buffer(self):
+        """
+        Get oldest entry from stream_buffer (FIFO stack)
+
+        :return: stream_data (set)
+        """
+        stream_data = self.stream_buffer.pop()
+        return stream_data
+
     def get_stream_info(self, stream_id):
         """
         Get infos about a specific stream
@@ -813,17 +776,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['logged_reconnects'].append(time.time())
         self.stream_list[stream_id]['reconnects'] += 1
         self.reconnects += 1
-
-    def is_stream_buffer_forwarding(self):
-        """
-        Is the stream_buffer forwarding the stored data?
-
-        :return: bool
-        """
-        if (self.stream_buffer_forwarder_last_heartbeat + 5) > time.time():
-            return True
-        else:
-            return False
 
     def is_stop_request(self, stream_id):
         """
@@ -1091,6 +1043,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                 pass
         except ZeroDivisionError:
             pass
+
+    def remove_stream_data_from_stream_buffer(self, stream_data):
+        """
+        Remove specific entry from stream_buffer
+
+        :param stream_data: stream_data to remove from stream_buffer
+        :type stream_data: set
+        """
+        self.stream_buffer.remove(stream_data)
 
     def replace_stream(self, stream_id, new_channels, new_markets):
         """

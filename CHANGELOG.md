@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.17.dev (development stage/unreleased)
+## 1.1.18.dev (development stage/unreleased)
+
+## 1.1.18
+### Removed
+- _forward_stream_buffer_data: system change - no pushing anymore, its better to buffer everything and run a import class
+ in a separate thread, that is able to reconnect to the database
 
 ## 1.1.17
 ### Changed
