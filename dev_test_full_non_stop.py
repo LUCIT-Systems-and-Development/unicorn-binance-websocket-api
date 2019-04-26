@@ -37,7 +37,6 @@ from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import 
 import logging
 import time
 import threading
-import traceback
 import os
 
 # https://docs.python.org/3/library/logging.html#logging-levels
@@ -48,8 +47,8 @@ logging.getLogger('websockets').setLevel(logging.ERROR)
 # create instance of BinanceWebSocketApiManager and catch every unhandled error and log
 try:
     binance_websocket_api_manager = BinanceWebSocketApiManager()
-except Exception as e:
-    logging.critical(traceback.format_exc())
+except Exception:
+    logging.critical("ATTENTION! Unexpected error", exc_info=True)
 
 
 ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])
@@ -90,7 +89,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
                 # remove # to activate the print function:
                 #print(oldest_stream_data_from_stream_buffer)
                 pass
-            except:
+            except Exception:
                 # not able to process the data? write it back to the stream_buffer
                 binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
 
