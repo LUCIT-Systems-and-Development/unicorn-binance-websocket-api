@@ -40,7 +40,7 @@ binance_websocket_api_manager = BinanceWebSocketApiManager()
 
 # get version of the used UNICORN Binance WebSocket API
 if binance_websocket_api_manager.is_update_availabe():
-    print("yes, please upgrade to " + binance_websocket_api_manager.get_latest_version() + ", you are on", binance_websocket_api_manager.get_version())
+    print("please upgrade to " + binance_websocket_api_manager.get_latest_version() + ", you are on", binance_websocket_api_manager.get_version())
 
     latest_release_info = binance_websocket_api_manager.get_latest_release_info()
     if latest_release_info:
@@ -50,7 +50,7 @@ if binance_websocket_api_manager.is_update_availabe():
         print("release info:")
         print(latest_release_info["body"])
 else:
-    print("no,", binance_websocket_api_manager.get_version(), "is the latest version!")
+    print(binance_websocket_api_manager.get_version(), "is the latest version!")
 
 
 binance_websocket_api_manager.stop_manager_with_all_streams()

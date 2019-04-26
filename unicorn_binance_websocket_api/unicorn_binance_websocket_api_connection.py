@@ -180,11 +180,12 @@ class BinanceWebSocketApiConnection(object):
                              "ConnectionClosed - " + str(error_msg))
         finally:
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
-            try:
-                self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
-            except KeyError:
-                pass
+            #try:
+            #    self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+            #except KeyError:
+            #    pass
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
+                time.sleep(2)
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(0)
 

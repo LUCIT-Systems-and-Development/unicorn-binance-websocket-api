@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 #
-# File: example_userdata_stream.py
+# File: pypi_create_test_wheel.sh
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
@@ -33,24 +33,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
-import logging
+security-check() {
+    echo -n "Did you change the version in \`test_setup.py\` and \`unicorn_binance_websocket_api_manager.py\`? [yes|NO] "
+    local SURE
+    read SURE
+    if [ "$SURE" != "yes" ]; then
+        exit 1
+    fi
+    echo "ok, lets go..."
+}
 
-# import class to process stream data
-from unicorn_binance_websocket_api_process_streams import BinanceWebSocketApiProcessStreams
-
-# https://docs.python.org/3/library/logging.html#logging-levels
-logging.getLogger('websockets').setLevel(logging.INFO)
-logging.getLogger('websockets').addHandler(logging.StreamHandler())
-
-# create instance of BinanceWebSocketApiManager and provide the function for stream processing
-binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
-
-# define channels
-channels = {'trade'}
-
-# define markets
-markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'eosusdt'}
-
-# create stream
-trade_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+security-check
+python test_setup.py bdist_wheel

@@ -55,22 +55,27 @@ class BinanceWebSocketApiManager(threading.Thread):
     https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
     https://github.com/binance-exchange/binance-official-api-docs/blob/master/user-data-stream.md
 
-    :param callback_process_stream_data: Provide a function/method to process the received webstream data. The function
-                                         will be called with with one variable like `callback_function(data)` where
-                                         `data` cointains the raw_stream_data
-    :type callback_process_stream_data: function
+    :param process_stream_data: Provide a function/method to process the received webstream data. The function
+                                will be called with one variable like `process_stream_data(data)` where
+                                data` cointains the raw_stream_data
+    :type process_stream_data: function
     """
 
-    def __init__(self, callback_process_stream_data=False):
+    def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
         self.version = "1.1.20.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
+        if process_stream_data is False:
+            # no special method to process stream data provided, so we use write_to_stream_buffer:
+            self.process_stream_data = self.add_to_stream_buffer
+        else:
+            # use the provided method to process stream data:
+            self.process_stream_data = process_stream_data
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
         self._keepalive_streams_restart_request = None
         self.api_key = False
         self.api_secret = False
-        self.callback_process_stream_data = callback_process_stream_data
         self.frequent_checks_list = {}
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
@@ -86,6 +91,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.total_received_bytes = 0
         self.total_receives = 0
         self.websocket_list = {}
+        # colorama unifies color support on all terminals (linux, mac, windows)
         colorama.init()
 
     def _add_socket_to_socket_list(self, stream_id, channels, markets):

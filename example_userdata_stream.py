@@ -48,7 +48,7 @@ logging.getLogger('websockets').addHandler(logging.StreamHandler())
 binance_api_key = ""
 binance_api_secret = ""
 
-# create instance of BinanceWebSocketApiManager and provide the callback function
+# create instance of BinanceWebSocketApiManager and provide the function for stream processing
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
 
 # set api key and secret in api manager

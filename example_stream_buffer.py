@@ -33,23 +33,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
+from __future__ import print_function
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import logging
 import time
-
-# import class to process the stream data
-from unicorn_binance_websocket_api_process_streams_with_stream_buffer import BinanceWebSocketApiProcessStreams
+import threading
 
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.getLogger('websockets').setLevel(logging.INFO)
 logging.getLogger('websockets').addHandler(logging.StreamHandler())
 
-# create instance of BinanceWebSocketApiManager and provide the callback function
-callback_for_streams_from_binance = BinanceWebSocketApiProcessStreams()
-binance_websocket_api_manager = BinanceWebSocketApiManager(callback_for_streams_from_binance.process_stream_data)
-
-# provide the stream_buffer handler to the callback_object:
-callback_for_streams_from_binance.set_stream_buffer(binance_websocket_api_manager.add_to_stream_buffer)
+# create instance of BinanceWebSocketApiManager
+binance_websocket_api_manager = BinanceWebSocketApiManager()
 
 markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
            'neousdt', 'bnbusdt', 'adabtc', 'ethusdt', 'trxbtc', 'trxbtc', 'bchabcbtc', 'ltcbtc', 'xrpbtc',
@@ -67,7 +62,40 @@ markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
 binance_get_kline_stream_id1 = binance_websocket_api_manager.create_stream(['kline_1m', 'kline_5m'], markets)
 binance_get_kline_stream_id2 = binance_websocket_api_manager.create_stream(['kline_30m', 'kline_1h', 'kline_15m'], markets)
 
+
+def print_summary():
+    while True:
+        binance_websocket_api_manager.print_summary()
+        time.sleep(1)
+
+
+def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
+    print("waiting 30 seconds, then we start flushing the stream_buffer")
+    time.sleep(30)
+    while True:
+        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+        if oldest_stream_data_from_stream_buffer is False:
+            time.sleep(0.01)
+        else:
+            try:
+                # remove # to activate the print function:
+                #print(oldest_stream_data_from_stream_buffer)
+                pass
+            except:
+                # not able to process the data? write it back to the stream_buffer
+                binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
+
+
+# start a worker process to process to move the received stream_data from the stream_buffer to a print function
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread.start()
+
+time.sleep(5)
+
 # monitor the stream
-while True:
-    binance_websocket_api_manager.print_summary()
-    time.sleep(1)
+monitor_thread = threading.Thread(target=print_summary)
+monitor_thread.start()
+
+
+
+
