@@ -4,11 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.20.dev (development stage/unreleased)
+## 1.2.0.dev (development stage/unreleased)
+## 1.2.0
 ### Changed
 - if no method is provided to BinanceWebSocketApiManager when creating the instance, then all data will be written to 
 the stream_buffer.
-- comment in examples
+- comments and code in examples
 
 ## 1.1.20
 ### Changed
