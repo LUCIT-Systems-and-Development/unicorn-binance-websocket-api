@@ -63,12 +63,6 @@ binance_get_kline_stream_id1 = binance_websocket_api_manager.create_stream(['kli
 binance_get_kline_stream_id2 = binance_websocket_api_manager.create_stream(['kline_30m', 'kline_1h', 'kline_15m'], markets)
 
 
-def print_summary():
-    while True:
-        binance_websocket_api_manager.print_summary()
-        time.sleep(1)
-
-
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     print("waiting 30 seconds, then we start flushing the stream_buffer")
     time.sleep(30)
@@ -92,10 +86,6 @@ worker_thread.start()
 
 time.sleep(5)
 
-# monitor the stream
-monitor_thread = threading.Thread(target=print_summary)
-monitor_thread.start()
-
-
-
-
+while True:
+    binance_websocket_api_manager.print_summary()
+    time.sleep(1)

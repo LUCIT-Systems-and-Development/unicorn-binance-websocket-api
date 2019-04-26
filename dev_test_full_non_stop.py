@@ -36,16 +36,14 @@
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import logging
 import time
-
-# import class to process stream data
-from unicorn_binance_websocket_api_process_streams_without_output import BinanceWebSocketApiProcessStreams
+import threading
 
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.getLogger('websockets').addHandler(logging.StreamHandler())
 logging.getLogger('websockets').setLevel(logging.CRITICAL)
 
 # create instance of BinanceWebSocketApiManager and provide the function for stream processing
-binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
+binance_websocket_api_manager = BinanceWebSocketApiManager()
 
 
 ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])
@@ -73,6 +71,29 @@ channels = {'trade', 'kline_1', 'kline_5', 'kline_15', 'kline_30', 'kline_1h', '
                 'miniTicker', 'depth20', '!miniTicker', '!ticker'}
 multi_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 
+
+def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
+    print("waiting 30 seconds, then we start flushing the stream_buffer")
+    time.sleep(30)
+    while True:
+        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+        if oldest_stream_data_from_stream_buffer is False:
+            time.sleep(0.01)
+        else:
+            try:
+                # remove # to activate the print function:
+                #print(oldest_stream_data_from_stream_buffer)
+                pass
+            except:
+                # not able to process the data? write it back to the stream_buffer
+                binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
+
+
+# start a worker process to move the received stream_data from the stream_buffer to a print function
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread.start()
+
+# show an overview
 while True:
     binance_websocket_api_manager.print_summary()
     time.sleep(1)
