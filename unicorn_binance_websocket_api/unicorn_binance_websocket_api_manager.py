@@ -57,7 +57,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     :param process_stream_data: Provide a function/method to process the received webstream data. The function
                                 will be called with one variable like `process_stream_data(data)` where
-                                data` cointains the raw_stream_data
+                                data` cointains the raw_stream_data. If not provided, the raw stream_data will get
+                                stored in the stream_buffer.
     :type process_stream_data: function
     """
 
@@ -624,7 +625,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get oldest entry from stream_buffer and remove from stack (FIFO stack)
 
-        :return: stream_data (set) or False
+        :return: raw_stream_data (set) or False
         """
         try:
             stream_data = self.stream_buffer.pop()
