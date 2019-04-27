@@ -196,18 +196,19 @@ class BinanceWebSocketApiConnection(object):
         # method to catch the data from the stream
         try:
             received_data = await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].recv()
+            try:
+                if self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]['status'] == "restarted":
+                    self.handler_binance_websocket_api_manager.increase_reconnect_counter(self.stream_id)
+                    del self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]
+            except KeyError:
+                pass
+            self.handler_binance_websocket_api_manager.increase_processed_receives_statistic(self.stream_id)
+            self.handler_binance_websocket_api_manager.set_heartbeat(self.stream_id)
+            return received_data
         except ssl.SSLError as error_msg:
             logging.debug("binance_websocket_api_connection->receive(" + str(self.stream_id) + ") - error_msg:" +
                           str(error_msg))
         except KeyError as error_msg:
             logging.debug("binance_websocket_api_connection->receive(" + str(self.stream_id) + ") - error_msg:" +
                           str(error_msg))
-        try:
-            if self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]['status'] == "restarted":
-                self.handler_binance_websocket_api_manager.increase_reconnect_counter(self.stream_id)
-                del self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]
-        except KeyError:
-            pass
-        self.handler_binance_websocket_api_manager.increase_processed_receives_statistic(self.stream_id)
-        self.handler_binance_websocket_api_manager.set_heartbeat(self.stream_id)
-        return received_data
+
