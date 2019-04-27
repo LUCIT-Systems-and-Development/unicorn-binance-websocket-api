@@ -199,6 +199,9 @@ class BinanceWebSocketApiConnection(object):
         except ssl.SSLError as error_msg:
             logging.debug("binance_websocket_api_connection->close(" + str(self.stream_id) + ") - error_msg:" +
                           str(error_msg))
+        except KeyError as error_msg:
+            logging.debug("binance_websocket_api_connection->close(" + str(self.stream_id) + ") - error_msg:" +
+                          str(error_msg))
         try:
             if self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]['status'] == "restarted":
                 self.handler_binance_websocket_api_manager.increase_reconnect_counter(self.stream_id)
