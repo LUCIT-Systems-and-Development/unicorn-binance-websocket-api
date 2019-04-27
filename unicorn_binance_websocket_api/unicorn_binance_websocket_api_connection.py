@@ -171,11 +171,11 @@ class BinanceWebSocketApiConnection(object):
             await self._conn.__aexit__(*args, **kwargs)
         except AttributeError as error_msg:
             logging.critical("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
-                             "ConnectionClosed - " + str(error_msg))
+                             "AttributeError - " + str(error_msg))
         except websockets.exceptions.ConnectionClosed as error_msg:
             logging.critical("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                              "ConnectionClosed - " + str(error_msg))
-        #finally:
+        finally:
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             #try:
             #    self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
