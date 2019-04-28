@@ -36,10 +36,9 @@
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import logging
 import time
+import threading
 import os
 
-# import class to process the stream data
-from unicorn_binance_websocket_api_process_streams import BinanceWebSocketApiProcessStreams
 
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(filename=os.path.basename(__file__) + '.log')
@@ -50,8 +49,8 @@ logging.getLogger('websockets').addHandler(logging.StreamHandler())
 binance_api_key = ""
 binance_api_secret = ""
 
-# create instance of BinanceWebSocketApiManager and provide the function for stream processing
-binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
+# create instance of BinanceWebSocketApiManager
+binance_websocket_api_manager = BinanceWebSocketApiManager()
 
 # set api key and secret in api manager
 binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
@@ -59,8 +58,24 @@ binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_ap
 # create the userData stream
 user_data_stream_id = binance_websocket_api_manager.create_stream('arr', '!userData')
 
-# get the binance api status (used_weight, last status_code and timestamp of the last update
-time.sleep(3)
+def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
+    while True:
+        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+        if oldest_stream_data_from_stream_buffer is False:
+            time.sleep(0.01)
+        else:
+            try:
+                # remove # to activate the print function:
+                #print(oldest_stream_data_from_stream_buffer)
+                pass
+            except Exception:
+                # not able to process the data? write it back to the stream_buffer
+                binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
+
+
+# start a worker process to move the received stream_data from the stream_buffer to a print function
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread.start()
 
 # monitor the stream
 while True:
