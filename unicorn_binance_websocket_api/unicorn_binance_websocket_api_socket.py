@@ -65,13 +65,10 @@ class BinanceWebSocketApiSocket(object):
                         self.handler_binance_websocket_api_manager.add_total_received_bytes(sys.getsizeof(received_stream_data_json))
                         self.handler_binance_websocket_api_manager.process_stream_data(received_stream_data_json)
                 except websockets.exceptions.ConnectionClosed as error_msg:
-                    logging.info("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
+                    logging.critical("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") Exception ConnectionClosed "
                                      "Info: " + str(error_msg))
                     if "WebSocket connection is closed: code = 1008" in str(error_msg):
-                        # "Illegal format ws or stream" - wrong channel or market describer?
-                        print("It is not possible to restore this connection! The parameter to start it are not valid!"
-                              "Wrong market or channel describer?")
                         websocket.close()
                         self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
                         time.sleep(1)
@@ -85,7 +82,7 @@ class BinanceWebSocketApiSocket(object):
                     self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                     sys.exit(1)
                 except AttributeError as error_msg:
-                    logging.critical("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
-                                     str(self.channels) + ", " + str(self.markets) + ") Exception AttributeError Info:"
-                                     " " + str(error_msg))
+                    logging.error("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
+                                  str(self.channels) + ", " + str(self.markets) + ") Exception AttributeError Info: " +
+                                  str(error_msg))
                     break

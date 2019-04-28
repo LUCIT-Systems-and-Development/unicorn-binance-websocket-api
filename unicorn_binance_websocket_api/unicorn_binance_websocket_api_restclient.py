@@ -36,19 +36,20 @@
 import copy
 import hashlib
 import hmac
-import json
 import logging
 import requests
 import socket
+import time
 
 
 class BinanceWebSocketApiRestclient(object):
-    def __init__(self, binance_api_key, binance_api_secret, unicorn_binance_websocket_api_version):
+    def __init__(self, binance_api_key, binance_api_secret, unicorn_binance_websocket_api_version, binance_api_status):
         self.api_key = copy.deepcopy(binance_api_key)
         self.api_secret = copy.deepcopy(binance_api_secret)
         self.unicorn_binance_websocket_api_version = unicorn_binance_websocket_api_version
         self.restful_base_uri = "https://api.binance.com/"
         self.listen_key = False
+        self.binance_api_status = binance_api_status
 
     def _get_signature(self, data):
         hmac_signature = hmac.new(self.api_secret.encode('utf-8'), data.encode('utf-8'), hashlib.sha256)
@@ -78,11 +79,24 @@ class BinanceWebSocketApiRestclient(object):
         except socket.gaierror as error_msg:
             logging.critical("BinanceWebSocketApiRestclient->_request() - error_msg: " + str(error_msg))
             return False
+        if request_handler.status_code == "418":
+            logging.critical("BinanceWebSocketApiRestclient->_request() received status_code 418 from binance! You got"
+                             "banned from the binance api! Read this: https://github.com/binance-exchange/binance-"
+                             "official-api-docs/blob/master/rest-api.md#limits")
+        elif request_handler.status_code == "429":
+            logging.critical("BinanceWebSocketApiRestclient->_request() received status_code 429 from binance! Back off"
+                             "or you are going to get banned! Read this: https://github.com/binance-exchange/binance-"
+                             "official-api-docs/blob/master/rest-api.md#limits")
+
         respond = request_handler.json()
+        self.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
+        self.binance_api_status['timestamp'] = time.time()
+        self.binance_api_status['status_code'] = request_handler.status_code
         request_handler.close()
         return respond
 
     def delete_listen_key(self, listen_key):
+        logging.debug("BinanceWebSocketApiRestclient->delete_listen_key(" + str(listen_key) + ")")
         method = "delete"
         path = "/api/v1/userDataStream"
         try:
@@ -93,6 +107,7 @@ class BinanceWebSocketApiRestclient(object):
             return False
 
     def get_listen_key(self):
+        logging.debug("BinanceWebSocketApiRestclient->get_listen_key()")
         method = "post"
         path = "/api/v1/userDataStream"
         response = self._request(method, path)
@@ -105,6 +120,7 @@ class BinanceWebSocketApiRestclient(object):
             return False
 
     def keepalive_listen_key(self, listen_key):
+        logging.debug("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(listen_key) + ")")
         method = "put"
         path = "/api/v1/userDataStream"
         try:
@@ -113,5 +129,3 @@ class BinanceWebSocketApiRestclient(object):
             return False
         except TypeError:
             return False
-
-

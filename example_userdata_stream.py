@@ -59,6 +59,9 @@ binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_ap
 # create the userData stream
 user_data_stream_id = binance_websocket_api_manager.create_stream('arr', '!userData')
 
+# get the binance api status (used_weight, last status_code and timestamp of the last update
+time.sleep(3)
+
 # monitor the stream
 while True:
     binance_websocket_api_manager.print_stream_info(user_data_stream_id)

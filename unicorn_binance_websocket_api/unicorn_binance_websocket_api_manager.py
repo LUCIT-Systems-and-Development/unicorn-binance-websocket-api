@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.2.0.dev"
+        self.version = "1.2.1.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -92,6 +92,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.total_received_bytes = 0
         self.total_receives = 0
         self.websocket_list = {}
+        self.binance_api_status = {'weight': None,
+                                   'timestamp': 0,
+                                   'status_code': None}
         # colorama unifies color support on all terminals (linux, mac, windows)
         colorama.init()
 
@@ -234,7 +237,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                             # keep-alive the listenKey
                             binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
                                                                                              self.stream_list[stream_id]['api_secret'],
-                                                                                             self.get_version())
+                                                                                             self.get_version(),
+                                                                                             self.binance_api_status)
                             binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
                             del binance_websocket_api_restclient
                             # set last_static_ping
@@ -556,7 +560,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return self.stream_list[stream_id]['listen_key']
         # no cached listen_key or listen_key is older than 30 min
         # acquire a new listen_key:
-        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key, api_secret, self.get_version())
+        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key, api_secret, self.get_version(),
+                                                                         self.binance_api_status)
         response = binance_websocket_api_restclient.get_listen_key()
         del binance_websocket_api_restclient
         if response:
@@ -743,6 +748,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         return self.total_receives
+
+    def get_binance_api_status(self):
+        """
+        Get used_weight, last status_code and the timestamp of last status update
+
+        :return: dict
+        """
+        return self.binance_api_status
 
     def get_version(self):
         """
@@ -939,6 +952,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         streams_with_stop_request = 0
         stream_rows = ""
         crashed_streams_row = ""
+        binance_api_status_row = ""
         received_bytes_per_x_row = ""
         streams_with_stop_request_row = ""
         stream_buffer_row = ""
@@ -1003,7 +1017,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.get_human_bytesize(self.get_total_received_bytes())) + ")"
         try:
             received_bytes_per_second = self.get_total_received_bytes() / (time.time() - self.start_time)
-            received_bytes_per_x_row += str((received_bytes_per_second / 1024).__round__(2)) + " kB/s (per day " + str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(2)) + " gB)"
+            received_bytes_per_x_row += str((received_bytes_per_second / 1024).__round__(2)) + " kB/s (per day " + \
+                                        str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(2)) + " gB)"
             if len(self.stream_buffer) > 50:
                 stream_row_color_prefix = "\033[1m\033[34m"
                 stream_row_color_suffix = "\033[0m"
@@ -1018,6 +1033,20 @@ class BinanceWebSocketApiManager(threading.Thread):
                 restarting_streams_row = " \033[1m\033[33mrestarting_streams: " + str(restarting_streams) + "\033[0m\r\n"
             if stopped_streams > 0:
                 stopped_streams_row = " \033[1m\033[33mstopped_streams: " + str(stopped_streams) + "\033[0m\r\n"
+            if self.binance_api_status['weight'] is not None:
+                if self.binance_api_status['status_code'] == 401:
+                    binance_api_status_code = "\033[1m\033[33m" + self.binance_api_status['status_code'] + "\033[0m"
+                elif self.binance_api_status['status_code'] == 418:
+                    binance_api_status_code = "\033[1m\033[31m" + self.binance_api_status['status_code'] + "\033[0m"
+                elif self.binance_api_status['status_code'] == 429:
+                    binance_api_status_code = "\033[1m\033[33m" + self.binance_api_status['status_code'] + "\033[0m"
+                else:
+                    binance_api_status_code = self.binance_api_status['status_code']
+                binance_api_status_row = " binance_api_status: used_weight=" + str(self.binance_api_status['weight']) + \
+                                         ", status_code=" + str(binance_api_status_code) + " (last update " + \
+                                         str(datetime.utcfromtimestamp(
+                                             self.binance_api_status['timestamp']).strftime('%Y-%m-%d %H:%M:%S')) + \
+                                         ")\r\n"
             try:
                 print(
                     "===============================================================================================\r\n" +
@@ -1033,9 +1062,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                     str(reconnects_row) +
                     str(stream_buffer_row) +
                     " total_receives:", str(self.total_receives), "\r\n"
-                    " total_received_bytes:", str(total_received_bytes),
-                    "\r\n"
+                    " total_received_bytes:", str(total_received_bytes), "\r\n"
                     " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +
+                    str(binance_api_status_row) +
                     " ---------------------------------------------------------------------------------------------\r\n"
                     "              stream_id               | rec_last_sec | rec_per_sec | most_rec_per_sec | reconn\r\n"
                     " ---------------------------------------------------------------------------------------------\r\n"
@@ -1165,7 +1194,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logging.info("BinanceWebSocketApiManager->stop_manager_with_all_streams(" + str(
                     stream_id) + ")->delete_listen_key")
                 binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
-                                                                                 self.stream_list[stream_id]['api_secret'])
+                                                                                 self.stream_list[stream_id]['api_secret'],
+                                                                                 self.get_version(),
+                                                                                 self.used_weight)
                 binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
                 del binance_websocket_api_restclient
 

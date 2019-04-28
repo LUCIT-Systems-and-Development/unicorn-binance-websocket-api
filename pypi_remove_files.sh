@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 #
-# File: pypi_upload_wheel.sh
+# File: pypi_remove_files.sh
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
@@ -32,13 +32,7 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-#
-# create this file:
-# ~/.pypirc
-#[distutils]
-#index-servers=pypi
-#[pypi]
-#repository = https://upload.pypi.org/legacy/
-#username = unicorn_data_analysis
 
-python -m twine upload dist/*
+rm ./build -r
+rm ./dist -r
+rm ./unicorn_binance_websocket_api.egg-info

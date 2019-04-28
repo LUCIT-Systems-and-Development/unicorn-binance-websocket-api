@@ -50,32 +50,50 @@ try:
 except Exception:
     logging.critical("ATTENTION! Unexpected error", exc_info=True)
 
+# set api key and secret for userData stream
+binance_api_key = ""
+binance_api_secret = ""
+binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
+userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
 
 ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])
 miniticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])
-userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
-markets = {'bnbbtc'}
-aggtrade_stream_id = binance_websocket_api_manager.create_stream(["aggTrade"], markets)
-trade_stream_id = binance_websocket_api_manager.create_stream(["trade"], markets)
-kline_1m_stream_id = binance_websocket_api_manager.create_stream(["kline_1m"], markets)
-ticker_bnbbtc_stream_id = binance_websocket_api_manager.create_stream(["ticker"], markets)
-miniticker_stream_id = binance_websocket_api_manager.create_stream(["miniTicker"], markets)
-kline_5m_stream_id = binance_websocket_api_manager.create_stream(["kline_5m"], markets)
-depth5_stream_id = binance_websocket_api_manager.create_stream(["depth10"], markets)
-depth_stream_id = binance_websocket_api_manager.create_stream(["depth"], markets)
-markets = {'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt', 'neousdt'}
-aggtrade_stream_id = binance_websocket_api_manager.create_stream(["aggTrade"], markets)
-trade_stream_id = binance_websocket_api_manager.create_stream(["trade"], markets)
-kline_1m_stream_id = binance_websocket_api_manager.create_stream(["kline_1m"], markets)
-ticker_bnbbtc_stream_id = binance_websocket_api_manager.create_stream(["ticker"], markets)
-miniticker_stream_id = binance_websocket_api_manager.create_stream(["miniTicker"], markets)
-kline_5m_stream_id = binance_websocket_api_manager.create_stream(["kline_5m"], markets)
-depth5_stream_id = binance_websocket_api_manager.create_stream(["depth5"], markets)
-depth_stream_id = binance_websocket_api_manager.create_stream(["depth"], markets)
-channels = {'trade', 'kline_1', 'kline_5', 'kline_15', 'kline_30', 'kline_1h', 'kline_12h', 'kline_1w',
-                'miniTicker', 'depth20', '!miniTicker', '!ticker'}
-multi_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 
+markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
+           'neousdt', 'bnbusdt', 'adabtc', 'ethusdt', 'trxbtc', 'trxbtc', 'bchabcbtc', 'ltcbtc', 'xrpbtc',
+           'ontbtc', 'bttusdt', 'eosbtc', 'xlmbtc', 'bttbtc', 'tusdusdt', 'xlmusdt', 'qkcbtc', 'zrxbtc',
+           'neobtc', 'adaeth', 'icxusdt', 'btctusd', 'icxbtc', 'btcusdc', 'wanbtc', 'zecbtc', 'wtcbtc',
+           'batbtc', 'adabnb', 'etcusdt', 'qtumusdt', 'xmrbtc', 'trxeth', 'adatusd', 'trxxrp', 'trxbnb',
+           'dashbtc', 'rvnbnb', 'bchabctusd', 'etcbtc', 'bnbeth', 'ethpax', 'nanobtc', 'xembtc', 'xrpbnb',
+           'bchabcpax', 'xrpeth', 'bttbnb', 'ltcbnb', 'agibtc', 'zrxusdt', 'xlmbnb', 'ltceth', 'eoseth',
+           'ltctusd', 'polybnb', 'scbtc', 'steembtc', 'trxtusd', 'npxseth', 'kmdbtc', 'polybtc', 'gasbtc',
+           'engbtc', 'zileth', 'xlmeth', 'eosbnb', 'xrppax', 'lskbtc', 'npxsbtc', 'xmrusdt', 'ltcpax', 'xmrusdt',
+           'ethtusd', 'batusdt', 'mcobtc', 'neoeth', 'bntbtc', 'eostusd', 'lrcbtc', 'funbtc', 'zecusdt',
+           'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
+           'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth'}
+
+binance_websocket_api_manager.create_stream(["aggTrade"], markets)
+binance_websocket_api_manager.create_stream(["trade"], markets)
+binance_websocket_api_manager.create_stream(["kline_1m"], markets)
+binance_websocket_api_manager.create_stream(["kline_5m"], markets)
+binance_websocket_api_manager.create_stream(["kline_15m"], markets)
+binance_websocket_api_manager.create_stream(["kline_1h"], markets)
+binance_websocket_api_manager.create_stream(["kline_12h"], markets)
+binance_websocket_api_manager.create_stream(["kline_1w"], markets)
+binance_websocket_api_manager.create_stream(["ticker"], markets)
+binance_websocket_api_manager.create_stream(["miniTicker"], markets)
+binance_websocket_api_manager.create_stream(["depth"], markets)
+binance_websocket_api_manager.create_stream(["depth5"], markets)
+binance_websocket_api_manager.create_stream(["depth10"], markets)
+binance_websocket_api_manager.create_stream(["depth20"], markets)
+binance_websocket_api_manager.create_stream(["aggTrade"], markets)
+
+markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
+           'neousdt', 'bnbusdt', 'adabtc', 'ethusdt', 'trxbtc', 'trxbtc', 'bchabcbtc', 'ltcbtc', 'xrpbtc',
+           'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb'}
+channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w',
+            'miniTicker', 'depth20', '!miniTicker', '!ticker'}
+binance_websocket_api_manager.create_stream(channels, markets)
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     print("waiting 30 seconds, then we start flushing the stream_buffer")

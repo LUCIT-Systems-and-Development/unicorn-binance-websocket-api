@@ -4,7 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.2.0.dev (development stage/unreleased)
+## 1.2.1.dev (development stage/unreleased)
+## 1.2.1
+### Added 
+- handling for status_code and used_weight from the binance REST Api (used for listen_key) - see `get_binance_api_status()`
+### Fixing
+- reconnect issues
+### Changing 
+- log levels
+
 ## 1.2.0
 ### Changed
 - if no method is provided to BinanceWebSocketApiManager when creating the instance, then all data will be written to 
