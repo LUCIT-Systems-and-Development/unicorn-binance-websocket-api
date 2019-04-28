@@ -751,7 +751,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_binance_api_status(self):
         """
-        Get used_weight, last status_code and the timestamp of last status update
+        Get used_weight, last status_code and the timestamp of the last status update
 
         :return: dict
         """
