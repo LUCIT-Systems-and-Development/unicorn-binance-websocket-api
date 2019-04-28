@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.2.2.dev (development stage/unreleased)
+### Changed
+- rewrite coloring for status_code in print_summary
+
 ## 1.2.2
 ### Fixing 
 - TypeError in print_summary()

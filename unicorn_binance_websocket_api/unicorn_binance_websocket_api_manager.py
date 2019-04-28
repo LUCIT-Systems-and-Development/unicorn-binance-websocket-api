@@ -1034,14 +1034,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             if stopped_streams > 0:
                 stopped_streams_row = " \033[1m\033[33mstopped_streams: " + str(stopped_streams) + "\033[0m\r\n"
             if self.binance_api_status['weight'] is not None:
-                if self.binance_api_status['status_code'] == 401:
-                    binance_api_status_code = "\033[1m\033[33m" + str(self.binance_api_status['status_code']) + "\033[0m"
+                if self.binance_api_status['status_code'] == 200:
+                    binance_api_status_code = str(self.binance_api_status['status_code'])
                 elif self.binance_api_status['status_code'] == 418:
                     binance_api_status_code = "\033[1m\033[31m" + str(self.binance_api_status['status_code']) + "\033[0m"
-                elif self.binance_api_status['status_code'] == 429:
-                    binance_api_status_code = "\033[1m\033[33m" + str(self.binance_api_status['status_code']) + "\033[0m"
                 else:
-                    binance_api_status_code = self.binance_api_status['status_code']
+                    binance_api_status_code = "\033[1m\033[33m" + str(self.binance_api_status['status_code']) + "\033[0m"
                 binance_api_status_row = " binance_api_status: used_weight=" + str(self.binance_api_status['weight']) + \
                                          ", status_code=" + str(binance_api_status_code) + " (last update " + \
                                          str(datetime.utcfromtimestamp(
