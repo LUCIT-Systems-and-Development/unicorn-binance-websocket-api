@@ -40,7 +40,7 @@ security-check() {
     if [ "$SURE" != "yes" ]; then
         exit 1
     fi
-    echo "ok, lets go..."
+    echo "ok, lets go ..."
 }
 
 security-check
