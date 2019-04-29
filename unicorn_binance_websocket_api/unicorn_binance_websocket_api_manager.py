@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.2.4.dev"
+        self.version = "1.2.5.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -119,6 +119,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'logged_reconnects': [],
                                        'last_static_ping_listen_key': 0,
                                        'listen_key': False,
+                                       'listen_key_cache_time': 30 * 60,
                                        'processed_receives_statistic': {}}
         logging.debug("BinanceWebSocketApiManager->_add_socket_to_socket_list(" +
                       str(stream_id) + ", " + str(channels) + ", " + str(markets) + ")")
@@ -229,13 +230,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             # send keepalive for `!userData` streams every 30 minutes
             if active_stream_list:
                 for stream_id in active_stream_list:
-                    # we are seeking for "!userData" which has to be a single stream, so it must be found in
-                    # the first element of 'markets':
-                    for market in active_stream_list[stream_id]['markets']:
-                        break
-                    if market == "!userData":
-                        if (active_stream_list[stream_id]['start_time'] + (60*30)) < time.time() and (
-                                active_stream_list[stream_id]['last_static_ping_listen_key'] + (60*30)) < time.time():
+                    if active_stream_list[stream_id]['markets'] == "!userData":
+                        if (active_stream_list[stream_id]['start_time'] + active_stream_list[stream_id]['listen_key_cache_time']) \
+                                < time.time() and (active_stream_list[stream_id]['last_static_ping_listen_key'] +
+                                                   active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
                             # keep-alive the listenKey
                             binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
                                                                                              self.stream_list[stream_id]['api_secret'],
@@ -301,7 +299,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             for frequent_checks_id in self.frequent_checks_list:
                 try:
                     if (current_timestamp - self.frequent_checks_list[frequent_checks_id]['last_heartbeat']) < 2:
-                      found_alive_frequent_checks = True
+                        found_alive_frequent_checks = True
                 except TypeError:
                     pass
             # 2) start a new one, if there isnt one
@@ -574,8 +572,9 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: str or False
         """
-        if (self.stream_list[stream_id]['start_time'] + (60 * 30)) > time.time() or \
-                (self.stream_list[stream_id]['last_static_ping_listen_key'] + (60 * 30)) > time.time():
+        if (self.stream_list[stream_id]['start_time'] + self.stream_list[stream_id]['listen_key_cache_time']) > \
+                time.time() or (self.stream_list[stream_id]['last_static_ping_listen_key'] +
+                                self.stream_list[stream_id]['listen_key_cache_time']) > time.time():
             # listen_key is not older than 30 min
             if self.stream_list[stream_id]['listen_key'] is not False:
                 response = {'listenKey': self.stream_list[stream_id]['listen_key']}
@@ -885,7 +884,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logged_reconnects_row = "\r\n logged_reconnects: "
             row_prefix = ""
             for timestamp in self.stream_list[stream_id]['logged_reconnects']:
-                logged_reconnects_row += row_prefix + datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+                logged_reconnects_row += row_prefix + datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S UTC')
                 row_prefix = ", "
         else:
             logged_reconnects_row = ""
@@ -925,7 +924,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             binance_api_status_row = " binance_api_status: used_weight=" + str(self.binance_api_status['weight']) + \
                                      ", status_code=" + str(binance_api_status_code) + " (last update " + \
                                      str(datetime.utcfromtimestamp(
-                                         self.binance_api_status['timestamp']).strftime('%Y-%m-%d %H:%M:%S')) + \
+                                         self.binance_api_status['timestamp']).strftime('%Y-%m-%d %H:%M:%S UTC')) + \
                                      ")\r\n"
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
@@ -938,7 +937,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                   " start_time:", str(stream_info['start_time']), "\r\n"
                   " uptime:", str(uptime),
                   "since " + str(
-                      datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d %H:%M:%S')) + "\r\n" +
+                      datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d %H:%M:%S UTC')) + "\r\n" +
                   " reconnects:", str(stream_info['reconnects']), logged_reconnects_row, "\r\n" +
                   str(restart_requests_row) +
                   str(binance_api_status_row) +
@@ -1076,14 +1075,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                 binance_api_status_row = " binance_api_status: used_weight=" + str(self.binance_api_status['weight']) + \
                                          ", status_code=" + str(binance_api_status_code) + " (last update " + \
                                          str(datetime.utcfromtimestamp(
-                                             self.binance_api_status['timestamp']).strftime('%Y-%m-%d %H:%M:%S')) + \
+                                             self.binance_api_status['timestamp']).strftime('%Y-%m-%d %H:%M:%S UTC')) + \
                                          ")\r\n"
             try:
                 print(
                     "===============================================================================================\r\n" +
                     " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
                     " uptime:", str(self.get_human_uptime(time.time() - self.start_time)), "since " +
-                    str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d %H:%M:%S')) + "\r\n" +
+                    str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d %H:%M:%S UTC')) + "\r\n" +
                     " streams:", str(streams), "\r\n" +
                     str(active_streams_row) +
                     str(crashed_streams_row) +
