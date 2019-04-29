@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.2.3"
+        self.version = "1.2.3.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -432,6 +432,23 @@ class BinanceWebSocketApiManager(threading.Thread):
                         query += market.lower() + "@" + channel + "/"
         uri = self.websocket_base_uri + str(query)
         return uri
+
+    def delete_listen_key_by_stream_id(self, stream_id):
+        """
+        Delete a binance listen_key from a specific !userData stream
+
+        :param stream_id: id of a !userData stream
+        :type stream_id: uuid
+        """
+        if self.stream_list[stream_id]['listen_key'] is not False:
+            logging.info("BinanceWebSocketApiManager->stop_manager_with_all_streams(" + str(
+                stream_id) + ")->delete_listen_key")
+            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
+                                                                             self.stream_list[stream_id]['api_secret'],
+                                                                             self.get_version(),
+                                                                             self.used_weight)
+            binance_websocket_api_restclient.delete_listen_key(self.stream_list[stream_id]['listen_key'])
+            del binance_websocket_api_restclient
 
     def delete_stream_from_stream_list(self, stream_id):
         """
@@ -1193,15 +1210,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         # delete listenKeys
         for stream_id in self.stream_list:
             self.stop_stream(stream_id)
-            if self.stream_list[stream_id]['listen_key'] is not False:
-                logging.info("BinanceWebSocketApiManager->stop_manager_with_all_streams(" + str(
-                    stream_id) + ")->delete_listen_key")
-                binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
-                                                                                 self.stream_list[stream_id]['api_secret'],
-                                                                                 self.get_version(),
-                                                                                 self.used_weight)
-                binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
-                del binance_websocket_api_restclient
 
     def stop_stream(self, stream_id):
         """
