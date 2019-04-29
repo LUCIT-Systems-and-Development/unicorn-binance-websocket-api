@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.2.5.dev (development stage/unreleased)
+## 1.2.6.dev (development stage/unreleased)
+
+## 1.2.6
+### Fixed
+- `markets` in keepalive listen_key can come as str or as list and the routine only handled it as list, now str gets 
+converted to list to keep the function working
 
 ## 1.2.5
 ### Added 
