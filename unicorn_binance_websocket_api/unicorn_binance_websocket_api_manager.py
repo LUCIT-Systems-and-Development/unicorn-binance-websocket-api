@@ -673,8 +673,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             temp_stream_list = copy.deepcopy(self.stream_list)
         except RuntimeError:
-            # This should solve a bug of a changing dict during runtime
-            # Solution: make a recursive call, till it works :)
             return self.get_stream_info(stream_id)
         if temp_stream_list[stream_id]['last_heartbeat'] is not None:
             temp_stream_list[stream_id]['seconds_to_last_heartbeat'] = \
@@ -878,6 +876,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         restart_requests_row = ""
         stream_row_color_prefix = ""
         stream_row_color_suffix = ""
+        binance_api_status_row = ""
         status_row = ""
         last_static_ping_listen_key = ""
         stream_info = self.get_stream_info(stream_id)
@@ -892,23 +891,23 @@ class BinanceWebSocketApiManager(threading.Thread):
             logged_reconnects_row = ""
         if "running" in stream_info['status']:
             stream_row_color_prefix = "\033[1m\033[32m"
-            stream_row_color_suffix = "\033[0m"
+            stream_row_color_suffix = "\033[0m\r\n"
             for reconnect_timestamp in self.stream_list[stream_id]['logged_reconnects']:
                 if (time.time() - reconnect_timestamp) < 2:
                     stream_row_color_prefix = "\033[1m\033[33m"
-                    stream_row_color_suffix = "\033[0m"
+                    stream_row_color_suffix = "\033[0m\r\n"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "crashed" in stream_info['status']:
             stream_row_color_prefix = "\033[1m\033[31m"
-            stream_row_color_suffix = "\033[0m"
+            stream_row_color_suffix = "\033[0m\r\n"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "restarting" in stream_info['status']:
             stream_row_color_prefix = "\033[1m\033[33m"
-            stream_row_color_suffix = "\033[0m"
+            stream_row_color_suffix = "\033[0m\r\n"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "stopped" in stream_info['status']:
             stream_row_color_prefix = "\033[1m\033[33m"
-            stream_row_color_suffix = "\033[0m"
+            stream_row_color_suffix = "\033[0m\r\n"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         try:
             if self.restart_requests[stream_id]['status']:
@@ -917,6 +916,17 @@ class BinanceWebSocketApiManager(threading.Thread):
             pass
         if self.stream_list[stream_id]['markets'] == "!userData":
             last_static_ping_listen_key = " last_static_ping_listen_key: " + str(self.stream_list[stream_id]['last_static_ping_listen_key']) + "\r\n"
+            if self.binance_api_status['status_code'] == 200:
+                binance_api_status_code = str(self.binance_api_status['status_code'])
+            elif self.binance_api_status['status_code'] == 418:
+                binance_api_status_code = "\033[1m\033[31m" + str(self.binance_api_status['status_code']) + "\033[0m"
+            else:
+                binance_api_status_code = "\033[1m\033[33m" + str(self.binance_api_status['status_code']) + "\033[0m"
+            binance_api_status_row = " binance_api_status: used_weight=" + str(self.binance_api_status['weight']) + \
+                                     ", status_code=" + str(binance_api_status_code) + " (last update " + \
+                                     str(datetime.utcfromtimestamp(
+                                         self.binance_api_status['timestamp']).strftime('%Y-%m-%d %H:%M:%S')) + \
+                                     ")\r\n"
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print("===============================================================================================\r\n"
@@ -924,22 +934,23 @@ class BinanceWebSocketApiManager(threading.Thread):
                   " stream_id:", str(stream_id), "\r\n"
                   " channels:", str(stream_info['channels']), "\r\n"
                   " markets:", str(stream_info['markets']), "\r\n" +
-                  str(status_row), "\r\n"
+                  str(status_row) +
                   " start_time:", str(stream_info['start_time']), "\r\n"
                   " uptime:", str(uptime),
                   "since " + str(
                       datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d %H:%M:%S')) + "\r\n" +
-                  str(last_static_ping_listen_key) +
+                  " reconnects:", str(stream_info['reconnects']), logged_reconnects_row, "\r\n" +
                   str(restart_requests_row) +
-                  " reconnects:", str(stream_info['reconnects']), logged_reconnects_row, "\r\n"
-                  " processed_receives:",
-                  str(stream_info['processed_receives_total']), "\r\n"
+                  str(binance_api_status_row) +
+                  str(last_static_ping_listen_key) +
                   " last_heartbeat:", str(stream_info['last_heartbeat']), "\r\n"
                   " seconds_to_last_heartbeat:", str(stream_info['seconds_to_last_heartbeat']), "\r\n"
                   " stop_request:", str(stream_info['stop_request']), "\r\n"
                   " has_stopped:", str(stream_info['has_stopped']), "\r\n"
                   " seconds_since_has_stopped:",
                   str(stream_info['seconds_since_has_stopped']), "\r\n"
+                  " processed_receives:",
+                  str(stream_info['processed_receives_total']), "\r\n" +
                   " stream_most_receives_per_second:",
                   str(stream_info['receives_statistic_last_second']['most_receives_per_second']), "\r\n"
                   " stream_receives_per_second:",

@@ -25,7 +25,9 @@ the UNICORN Binance WebSocket API?
 [python-daemon](https://pypi.org/project/python-daemon/)).
 - If you can not store your data on an offline local database, you can kick back the data to the stream_buffer which 
 stores the receives in the RAM till you are able to process the data in the normal way again.
-- Helpful management features.
+- Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
+`get_stream_statistic`, `is_websocket_uri_length_valid()`, `replace_stream()`, `wait_till_stream_has_started()` and many
+more, explore them [here](https://www.unicorn-data.com/unicorn-binance-websocket-api.html#binance_websocket_api_docu).
 
 ## Installation
 `pip install unicorn-binance-websocket-api`

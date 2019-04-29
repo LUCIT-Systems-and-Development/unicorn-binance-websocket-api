@@ -44,9 +44,8 @@ logging.basicConfig(filename=os.path.basename(__file__) + '.log')
 logging.getLogger('websockets').addHandler(logging.StreamHandler())
 logging.getLogger('websockets').setLevel(logging.ERROR)
 
-# create instance of BinanceWebSocketApiManager and catch every unhandled error and log it
+# create instance of BinanceWebSocketApiManager
 binance_websocket_api_manager = BinanceWebSocketApiManager()
-
 
 # set api key and secret for userData stream
 binance_api_key = ""
