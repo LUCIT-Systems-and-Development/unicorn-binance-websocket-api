@@ -4,20 +4,25 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.2.2.dev (development stage/unreleased)
+## 1.2.3.dev (development stage/unreleased)
+
+## 1.2.3
 ### Changed
 - rewrite coloring for status_code in print_summary
+- ping_interval from None to 20 seconds
+### Fixed
+- listen_key keepalive didnt work propper
 
 ## 1.2.2
-### Fixing 
+### Fixed
 - TypeError in print_summary()
 
 ## 1.2.1
 ### Added 
 - handling for status_code and used_weight from the binance REST Api (used for listen_key) - see `get_binance_api_status()`
-### Fixing
+### Fixed
 - reconnect issues
-### Changing 
+### Changed
 - log levels
 
 ## 1.2.0

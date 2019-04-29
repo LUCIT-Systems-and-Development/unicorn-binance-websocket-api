@@ -44,11 +44,9 @@ logging.basicConfig(filename=os.path.basename(__file__) + '.log')
 logging.getLogger('websockets').addHandler(logging.StreamHandler())
 logging.getLogger('websockets').setLevel(logging.ERROR)
 
-# create instance of BinanceWebSocketApiManager and catch every unhandled error and log
-try:
-    binance_websocket_api_manager = BinanceWebSocketApiManager()
-except Exception:
-    logging.critical("ATTENTION! Unexpected error", exc_info=True)
+# create instance of BinanceWebSocketApiManager and catch every unhandled error and log it
+binance_websocket_api_manager = BinanceWebSocketApiManager()
+
 
 # set api key and secret for userData stream
 binance_api_key = ""
@@ -95,6 +93,7 @@ channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h
             'miniTicker', 'depth20', '!miniTicker', '!ticker'}
 binance_websocket_api_manager.create_stream(channels, markets)
 
+
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     print("waiting 30 seconds, then we start flushing the stream_buffer")
     time.sleep(30)
@@ -119,4 +118,5 @@ worker_thread.start()
 # show an overview
 while True:
     binance_websocket_api_manager.print_summary()
+    #binance_websocket_api_manager.print_stream_info(userdata_stream_id)
     time.sleep(1)

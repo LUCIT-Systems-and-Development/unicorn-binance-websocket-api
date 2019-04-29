@@ -58,6 +58,7 @@ binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_ap
 # create the userData stream
 user_data_stream_id = binance_websocket_api_manager.create_stream('arr', '!userData')
 
+
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     while True:
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()

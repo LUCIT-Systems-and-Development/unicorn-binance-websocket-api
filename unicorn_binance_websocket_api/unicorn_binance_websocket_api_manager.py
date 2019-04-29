@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.2.2.dev"
+        self.version = "1.2.3"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -117,7 +117,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'has_stopped': False,
                                        'reconnects': 0,
                                        'logged_reconnects': [],
-                                       'last_static_ping': 0,
+                                       'last_static_ping_listen_key': 0,
                                        'listen_key': False,
                                        'processed_receives_statistic': {}}
         logging.debug("BinanceWebSocketApiManager->_add_socket_to_socket_list(" +
@@ -226,14 +226,16 @@ class BinanceWebSocketApiManager(threading.Thread):
             # start a new one, if there isnt one
             if found_alive_keepalive_streams is False:
                 self._keepalive_streams_restart_request = True
-            # send ping and keepalive for `userData` streams every 30 minutes
+            # send keepalive for `!userData` streams every 30 minutes
             if active_stream_list:
                 for stream_id in active_stream_list:
-                    if active_stream_list[stream_id]['markets'] == "!userData":
-                        if (active_stream_list[stream_id]['start_time'] + (60 * 30)) < time.time() and (
-                                active_stream_list[stream_id]['last_static_ping'] + (60 * 30)) < time.time():
-                            # send ping to websocket server
-                            self.websocket_list[stream_id].ping()
+                    # we are seeking for "!userData" which has to be a single stream, so it must be found in
+                    # the first element of 'markets':
+                    for market in active_stream_list[stream_id]['markets']:
+                        break
+                    if market == "!userData":
+                        if (active_stream_list[stream_id]['start_time'] + (60*30)) < time.time() and (
+                                active_stream_list[stream_id]['last_static_ping_listen_key'] + (60*30)) < time.time():
                             # keep-alive the listenKey
                             binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
                                                                                              self.stream_list[stream_id]['api_secret'],
@@ -241,10 +243,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                                                              self.binance_api_status)
                             binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
                             del binance_websocket_api_restclient
-                            # set last_static_ping
-                            self.stream_list[stream_id]['last_static_ping'] = time.time()
+                            # set last_static_ping_listen_key
+                            self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
                             self.set_heartbeat(stream_id)
-                            logging.info("sent keepalive ping for stream_id=" + str(stream_id))
+                            logging.info("sent listen_key keepalive ping for stream_id=" + str(stream_id))
         sys.exit(0)
 
     def _fill_up_space(self, demand_of_chars, string):
@@ -416,9 +418,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                         if response:
                             try:
                                 uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
+                                return uri
                             except KeyError:
                                 return False
-                            return uri
+                            except TypeError:
+                                return False
                         else:
                             return False
                 else:
@@ -523,7 +527,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    'releases/latest')
             latest_release_info = respond.json()
             return latest_release_info
-        except:
+        except Exception:
             return False
 
     def get_latest_version(self):
@@ -554,10 +558,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: str or False
         """
         if (self.stream_list[stream_id]['start_time'] + (60 * 30)) > time.time() or \
-                (self.stream_list[stream_id]['last_static_ping'] + (60 * 30)) > time.time():
+                (self.stream_list[stream_id]['last_static_ping_listen_key'] + (60 * 30)) > time.time():
             # listen_key is not older than 30 min
             if self.stream_list[stream_id]['listen_key'] is not False:
-                return self.stream_list[stream_id]['listen_key']
+                response = {'listenKey': self.stream_list[stream_id]['listen_key']}
+                return response
         # no cached listen_key or listen_key is older than 30 min
         # acquire a new listen_key:
         binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key, api_secret, self.get_version(),
@@ -857,7 +862,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_row_color_prefix = ""
         stream_row_color_suffix = ""
         status_row = ""
-        last_static_ping = ""
+        last_static_ping_listen_key = ""
         stream_info = self.get_stream_info(stream_id)
 
         if len(self.stream_list[stream_id]['logged_reconnects']) > 0:
@@ -894,7 +899,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             pass
         if self.stream_list[stream_id]['markets'] == "!userData":
-            last_static_ping = " last_static_ping: " + str(self.stream_list[stream_id]['last_static_ping']) + "\r\n"
+            last_static_ping_listen_key = " last_static_ping_listen_key: " + str(self.stream_list[stream_id]['last_static_ping_listen_key']) + "\r\n"
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print("===============================================================================================\r\n"
@@ -907,7 +912,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                   " uptime:", str(uptime),
                   "since " + str(
                       datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d %H:%M:%S')) + "\r\n" +
-                  str(last_static_ping) +
+                  str(last_static_ping_listen_key) +
                   str(restart_requests_row) +
                   " reconnects:", str(stream_info['reconnects']), logged_reconnects_row, "\r\n"
                   " processed_receives:",

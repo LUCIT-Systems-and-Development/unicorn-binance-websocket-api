@@ -38,8 +38,10 @@ from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import 
 import logging
 import time
 import threading
+import os
 
-# https://docs.python.org/3/library/logging.html#logging-levels
+# https://docs.python.org/3/library/logging.html
+logging.basicConfig(filename=os.path.basename(__file__) + '.log')
 logging.getLogger('websockets').setLevel(logging.INFO)
 logging.getLogger('websockets').addHandler(logging.StreamHandler())
 

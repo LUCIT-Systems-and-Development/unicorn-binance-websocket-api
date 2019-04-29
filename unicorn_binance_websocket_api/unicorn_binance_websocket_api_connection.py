@@ -85,7 +85,7 @@ class BinanceWebSocketApiConnection(object):
             pass
         logging.debug("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
                       ", " + str(self.markets) + ")" + " connecting to " + str(uri))
-        self._conn = connect(uri, ping_interval=None, close_timeout=5,
+        self._conn = connect(uri, ping_interval=20, close_timeout=10,
                              extra_headers={'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/' +
                                             self.handler_binance_websocket_api_manager.version})
         try:
