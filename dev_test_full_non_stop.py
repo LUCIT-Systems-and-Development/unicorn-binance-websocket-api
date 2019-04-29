@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# File: dev_test_full.py
+# File: dev_test_full_non_stop.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
