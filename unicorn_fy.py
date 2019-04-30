@@ -152,7 +152,7 @@ class UnicornFy(object):
                                  'event_time': stream_data['data']['E'],
                                  'symbol': stream_data['data']['s'],
                                  'kline': {'kline_start_time': stream_data['data']['k']['t'],
-                                           'kline_close_time': stream_data['data']['k']['t'],
+                                           'kline_close_time': stream_data['data']['k']['T'],
                                            'symbol': stream_data['data']['k']['s'],
                                            'interval': stream_data['data']['k']['i'],
                                            'first_trade_id': stream_data['data']['f'],
@@ -334,7 +334,7 @@ class UnicornFy(object):
         if unicorn_fied_data is False:
             logging.error("detected unknown data stream format in module `unicorn_fy`: please report to "
                           "https://www.unicorn-data.com " + str(stream_data))
-        unicorn_fied_version = ['binance', '1.0']
+        unicorn_fied_version = ['binance', '0.0.1']
         unicorn_fied_data['unicorn_fied'] = unicorn_fied_version
         logging.debug("UnicornFy->binance(" + str(unicorn_fied_data) + ")")
         return unicorn_fied_data

@@ -33,7 +33,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from unicorn_binance_websocket_api.unicorn_fy import UnicornFy
+from unicorn_fy import UnicornFy
 
 
 class BinanceWebSocketApiProcessStreams():
