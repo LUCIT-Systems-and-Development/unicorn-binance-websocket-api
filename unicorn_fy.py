@@ -3,9 +3,10 @@
 #
 # File: unicorn_fy.py
 #
-# Part of ‘UNICORN Binance WebSocket API’
+# Part of ‘UnicornFy’
 # Project website: https://github.com/unicorn-data-analysis/unicorn_fy
 # Documentation: https://www.unicorn-data.com/unicorn_fy.html
+# PyPI: https://pypi.org/project/unicorn-fy/
 #
 # Author: UNICORN Data Analysis
 #         https://www.unicorn-data.com/

@@ -39,7 +39,6 @@ import logging
 import socket
 import ssl
 import sys
-import time
 import websockets
 
 
@@ -53,7 +52,6 @@ class BinanceWebSocketApiConnection(object):
         self.stream_id = copy.deepcopy(stream_id)
 
     async def __aenter__(self):
-        # inherited start method
         if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id):
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             sys.exit(0)
@@ -104,15 +102,14 @@ class BinanceWebSocketApiConnection(object):
                           str(error_msg))
         except OSError as error_msg:
             logging.error("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                             str(self.channels) + ", " + str(self.markets) + ")" + " - OSError "
-                             "- " + str(error_msg))
+                          str(self.channels) + ", " + str(self.markets) + ")" + " - OSError "
+                          "- " + str(error_msg))
         except socket.gaierror as error_msg:
             logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ")" + " - No internet connection? "
                              "- " + str(error_msg))
             self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, (str(error_msg) +
                                                                           " - No internet connection?"))
-            time.sleep(0.5)
             self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
         except websockets.exceptions.InvalidStatusCode as error_msg:
@@ -153,16 +150,21 @@ class BinanceWebSocketApiConnection(object):
         return self
 
     async def __aexit__(self, *args, **kwargs):
-        # inherited exit function
         try:
             await self._conn.__aexit__(*args, **kwargs)
         except AttributeError as error_msg:
-            logging.critical("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
+            logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                              "AttributeError - " + str(error_msg))
+            try:
+                self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+                logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
+                                 "AttributeError - close() - done!")
+            except KeyError as error_msg:
+                logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
+                                 "KeyError - " + str(error_msg))
         except websockets.exceptions.ConnectionClosed as error_msg:
             logging.critical("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                              "ConnectionClosed - " + str(error_msg))
-        finally:
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
@@ -188,12 +190,16 @@ class BinanceWebSocketApiConnection(object):
             self.handler_binance_websocket_api_manager.increase_processed_receives_statistic(self.stream_id)
             self.handler_binance_websocket_api_manager.set_heartbeat(self.stream_id)
             return received_data
+        except RuntimeError as error_msg:
+            logging.debug("binance_websocket_api_connection->receive(" +
+                             str(self.stream_id) + ") - RuntimeError - error_msg: " + str(error_msg))
+            sys.exit(1)
         except ssl.SSLError as error_msg:
-            logging.debug("binance_websocket_api_connection->receive(" + str(self.stream_id) + ") - error_msg:" +
-                          str(error_msg))
+            logging.debug("binance_websocket_api_connection->receive(" +
+                          str(self.stream_id) + ") - ssl.SSLError - error_msg: " + str(error_msg))
         except KeyError as error_msg:
-            logging.debug("binance_websocket_api_connection->receive(" + str(self.stream_id) + ") - error_msg:" +
-                          str(error_msg))
+            logging.debug("binance_websocket_api_connection->receive(" +
+                          str(self.stream_id) + ") - KeyError - error_msg: " + str(error_msg))
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
