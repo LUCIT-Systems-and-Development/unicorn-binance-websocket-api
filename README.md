@@ -34,7 +34,8 @@ more, explore them [here](https://www.unicorn-data.com/unicorn-binance-websocket
 
 https://pypi.org/project/unicorn-binance-websocket-api/
 
-Note: UnicornFy is no longer part of this package! Please go to https://github.com/unicorn-data-analysis/unicorn_fy
+Note: UnicornFy is no longer part of this package! Please visit https://github.com/unicorn-data-analysis/unicorn_fy for
+further information.
 
 ## Howto: 
 https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html
