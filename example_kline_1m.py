@@ -60,6 +60,6 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             print(oldest_stream_data_from_stream_buffer)
 
 
-# start a worker process to process to move the received stream_data from the stream_buffer to a print function
+# start a worker process (or more) to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
