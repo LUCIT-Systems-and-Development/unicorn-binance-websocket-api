@@ -71,18 +71,18 @@ class BinanceWebSocketApiSocket(object):
                     if "WebSocket connection is closed: code = 1008" in str(error_msg):
                         websocket.close()
                         self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
-                        time.sleep(1)
                         self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                         sys.exit(1)
-                    if "WebSocket connection is closed: code = 1006" in str(error_msg):
-                        websocket.close()
+                    elif "WebSocket connection is closed: code = 1006" in str(error_msg):
                         self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
+                        self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                         sys.exit(1)
-                    self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
-                    self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
-                    sys.exit(1)
+                    else:
+                        self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
+                        self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+                        sys.exit(1)
                 except AttributeError as error_msg:
-                    logging.error("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
+                    logging.debug("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
                                   str(self.channels) + ", " + str(self.markets) + ") Exception AttributeError Info: " +
                                   str(error_msg))
                     break

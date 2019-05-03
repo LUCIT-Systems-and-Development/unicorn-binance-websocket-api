@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.2.6.dev"
+        self.version = "1.2.7"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -146,9 +146,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         for frequent_checks_instance in self.frequent_checks_list:
             if frequent_checks_instance != frequent_checks_id:
                 if (self.keepalive_streams_list[frequent_checks_instance]['last_heartbeat'] + 3) > time.time():
-                    logging.info(
-                        "BinanceWebSocketApiManager->_frequent_checks() found an other living instance, so i stopp" +
-                        str(frequent_checks_id))
+                    logging.info("BinanceWebSocketApiManager->_frequent_checks() found an other living instance, "
+                                 "so i stop" + str(frequent_checks_id))
                     sys.exit(1)
         # threaded loop for min 1 check per second
         while self.stop_manager_request is None and self.frequent_checks_list[frequent_checks_id][

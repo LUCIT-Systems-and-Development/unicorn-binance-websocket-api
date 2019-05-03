@@ -4,11 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.2.6.dev (development stage/unreleased)
+## 1.2.7.dev (development stage/unreleased)
+
+## 1.2.7
 ### Fixed
 - Bug in class UnicornFy: kline_close_time had the value kline_start_time
 ### Changed
 - Moved UnicornFy from UNICORN Binance WebSocket API to its own [repository](https://github.com/unicorn-data-analysis/unicorn_fy) 
+- connection handling (improved)
 
 ## 1.2.6
 ### Fixed
