@@ -8,7 +8,7 @@ provides an API to the [Binance Websocket API](https://github.com/binance-exchan
 supports the streaming of public streams like trade, kline, ticker and depth, but also the private userData stream which 
 need to be used with a valid api_key and api_secret from the [Binance Exchange](https://www.binance.com/).
 
-The module requires python 3.5.1 or above, as it depends on pythons latest asyncio features for asynchronous/concurrent 
+The module requires python 3.5.3 or above, as it depends on pythons latest asyncio features for asynchronous/concurrent 
 processing. The current dependencies are listed 
 [here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
@@ -33,6 +33,8 @@ more, explore them [here](https://www.unicorn-data.com/unicorn-binance-websocket
 `pip install unicorn-binance-websocket-api`
 
 https://pypi.org/project/unicorn-binance-websocket-api/
+
+Note: UnicornFy is no longer part of this package! Please go to https://github.com/unicorn-data-analysis/unicorn_fy
 
 ## Howto: 
 https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html
