@@ -50,8 +50,8 @@ class BinanceWebSocketApiProcessStreams():
         # `depth5` for example doesnt include the symbol, but the unicornfied set includes them, because the class
         # extracts it from the channel name, makes it upper size and adds it to the returned values.. just print both
         # to see the difference.
-        # UnicornFy Website: https://github.com/unicorn-data-analysis/unicorn_fy
-        # UnicornFy Documentation: https://www.unicorn-data.com/unicorn_fy.html
+        # Github: https://github.com/unicorn-data-analysis/unicorn_fy
+        # PyPI: https://pypi.org/project/unicorn-fy/
         unicorn_fied_stream_data = UnicornFy.binance_websocket(received_stream_data_json)
 
         # Now you can call different methods for different `channels`, here called `event_types`.
