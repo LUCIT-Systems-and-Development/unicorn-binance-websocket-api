@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# File: example_trade_stream.py
+# File: dev_trade_stream.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
@@ -34,23 +34,13 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
-import logging
 
 # import class to process stream data
 from unicorn_binance_websocket_api_process_streams import BinanceWebSocketApiProcessStreams
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
-# https://docs.python.org/3/library/logging.html#logging-levels
-logging.getLogger('websockets').setLevel(logging.INFO)
-logging.getLogger('websockets').addHandler(logging.StreamHandler())
 
-# create instance of BinanceWebSocketApiManager and provide the function for stream processing
+# create an instance of BinanceWebSocketApiManager and provide the function for stream processing
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
 
-# define channels
-channels = {'trade'}
-
-# define markets
-markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'eosusdt'}
-
 # create stream
-trade_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+trade_stream_id = binance_websocket_api_manager.create_stream('trade', 'btcusdt')
