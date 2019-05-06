@@ -40,7 +40,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='unicorn-binance-websocket-api-development',
-     version='1.1.20.3',
+     version='1.2.7.0',
      author="UNICORN Data Analysis",
      url="https://www.unicorn-data.com",
      scripts=['unicorn_binance_websocket_api.py'],
@@ -55,7 +55,7 @@ setuptools.setup(
         'Wiki': 'https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki',
         'Source': 'https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api',
      },
-     python_requires='>=3.5.1',
+     python_requires='>=3.5.3',
      packages=setuptools.find_packages(),
      classifiers=[
          "Development Status :: 4 - Beta",

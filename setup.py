@@ -57,7 +57,7 @@ setuptools.setup(
         'Wiki': 'https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki',
         'Source': 'https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api',
      },
-     python_requires='>=3.5.1',
+     python_requires='>=3.5.3',
      packages=setuptools.find_packages(),
      classifiers=[
          "Development Status :: 5 - Production/Stable",
