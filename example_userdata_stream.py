@@ -41,9 +41,11 @@ import os
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(filename=os.path.basename(__file__) + '.log')
-logging.getLogger('websockets').setLevel(logging.INFO)
-logging.getLogger('websockets').addHandler(logging.StreamHandler())
+logging.basicConfig(filename=os.path.basename(__file__) + '.log',
+                    format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
+                    style="{")
+logging.getLogger('unicorn-log').setLevel(logging.INFO)
+logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 
 # configure api key and secret
 binance_api_key = ""

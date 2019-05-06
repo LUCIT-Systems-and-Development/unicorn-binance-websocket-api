@@ -41,8 +41,8 @@ import time
 from unicorn_binance_websocket_api_process_streams import BinanceWebSocketApiProcessStreams
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.getLogger('websockets').setLevel(logging.INFO)
-logging.getLogger('websockets').addHandler(logging.StreamHandler())
+logging.getLogger('unicorn-log').setLevel(logging.INFO)
+logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 
 # create instance of BinanceWebSocketApiManager and provide the function for stream processing
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)

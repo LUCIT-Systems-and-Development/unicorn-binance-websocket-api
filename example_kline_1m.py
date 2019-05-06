@@ -41,9 +41,11 @@ import threading
 import os
 
 # https://docs.python.org/3/library/logging.html
-logging.basicConfig(filename=os.path.basename(__file__) + '.log')
-logging.getLogger('websockets').setLevel(logging.INFO)
-logging.getLogger('websockets').addHandler(logging.StreamHandler())
+logging.basicConfig(filename=os.path.basename(__file__) + '.log',
+                    format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
+                    style="{")
+logging.getLogger('unicorn-log').setLevel(logging.INFO)
+logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 
 # create instance of BinanceWebSocketApiManager
 binance_websocket_api_manager = BinanceWebSocketApiManager()
@@ -57,9 +59,11 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
         else:
+            from unicorn_fy import UnicornFy
+            oldest_stream_data_from_stream_buffer = UnicornFy.binance_websocket(oldest_stream_data_from_stream_buffer)
             print(oldest_stream_data_from_stream_buffer)
 
 
-# start a worker process (or more) to move the received stream_data from the stream_buffer to a print function
+# start one worker process (or more) to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
