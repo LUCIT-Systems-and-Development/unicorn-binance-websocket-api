@@ -150,8 +150,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                  "so i stop" + str(frequent_checks_id))
                     sys.exit(1)
         # threaded loop for min 1 check per second
-        while self.stop_manager_request is None and self.frequent_checks_list[frequent_checks_id][
-            'stop_request'] is None:
+        while self.stop_manager_request is None and self.frequent_checks_list[frequent_checks_id]['stop_request'] \
+                is None:
             self.frequent_checks_list[frequent_checks_id]['last_heartbeat'] = time.time()
             stream_buffer_size_last_print = 0
             time.sleep(0.8)
@@ -1102,7 +1102,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " ---------------------------------------------------------------------------------------------\r\n"
                     " " + str(stream_rows) +
                     "---------------------------------------------------------------------------------------------\r\n"
-                    " all_streams_receives                 |" +
+                    " all_stream_receives                  |" +
                     self._fill_up_space(14, self.get_all_receives_last_second()) + "|" + \
                     self._fill_up_space(13, all_receives_per_second.__round__(2)) + "|" + \
                     self._fill_up_space(18, self.most_receives_per_second) + "|" + \
