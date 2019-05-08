@@ -1098,14 +1098,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +
                     str(binance_api_status_row) +
                     " ---------------------------------------------------------------------------------------------\r\n"
-                    "              stream_id               | rec_last_sec | rec_per_sec | most_rec_per_sec | reconn\r\n"
+                    "              stream_id               | rec_last_sec | rec_per_sec | most_rec_per_sec | recon\r\n"
                     " ---------------------------------------------------------------------------------------------\r\n"
                     " " + str(stream_rows) +
                     "---------------------------------------------------------------------------------------------\r\n"
-                    " all_stream_receives                  |" +
-                    self._fill_up_space(14, self.get_all_receives_last_second()) + "|" + \
-                    self._fill_up_space(13, all_receives_per_second.__round__(2)) + "|" + \
-                    self._fill_up_space(18, self.most_receives_per_second) + "|" + \
+                    " all_streams                          |" +
+                    self._fill_up_space(14, self.get_all_receives_last_second()) + "|" +
+                    self._fill_up_space(13, all_receives_per_second.__round__(2)) + "|" +
+                    self._fill_up_space(18, self.most_receives_per_second) + "|" +
                     self._fill_up_space(8, self.reconnects) + "\r\n"
                     " ---------------------------------------------------------------------------------------------\r\n"
                     "===============================================================================================\r\n")
