@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.2.7.dev (development stage/unreleased)
 ### Fixed
 - Typo in text in print_summary()
+- KeyError in manager class row 148
 
 ## 1.2.7
 ### Fixed

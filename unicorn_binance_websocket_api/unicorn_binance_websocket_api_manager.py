@@ -145,15 +145,19 @@ class BinanceWebSocketApiManager(threading.Thread):
                      str(frequent_checks_id))
         for frequent_checks_instance in self.frequent_checks_list:
             if frequent_checks_instance != frequent_checks_id:
-                if (self.keepalive_streams_list[frequent_checks_instance]['last_heartbeat'] + 3) > time.time():
-                    logging.info("BinanceWebSocketApiManager->_frequent_checks() found an other living instance, "
-                                 "so i stop" + str(frequent_checks_id))
-                    sys.exit(1)
+                try:
+                    if (self.keepalive_streams_list[frequent_checks_instance]['last_heartbeat'] + 3) > time.time():
+                        logging.info("BinanceWebSocketApiManager->_frequent_checks() found an other living instance, "
+                                     "so i stop" + str(frequent_checks_id))
+                        sys.exit(1)
+                except KeyError:
+                    logging.debug("BinanceWebSocketApiManager->_frequent_checks() - Info: KeyError "
+                                  "" + str(frequent_checks_id))
+
         # threaded loop for min 1 check per second
         while self.stop_manager_request is None and self.frequent_checks_list[frequent_checks_id]['stop_request'] \
                 is None:
             self.frequent_checks_list[frequent_checks_id]['last_heartbeat'] = time.time()
-            stream_buffer_size_last_print = 0
             time.sleep(0.8)
             current_timestamp = int(time.time())
             last_timestamp = current_timestamp - 1
