@@ -3,6 +3,8 @@
 # UNICORN Binance WebSocket API
 A python API to use the Binance Websocket API in a easy, fast, flexible, robust and fully-featured way.
 
+![demo_gif](https://s3.gifyu.com/images/unicorn_binance_websocket_api_demo.gif)
+
 The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) 
 provides an API to the [Binance Websocket API](https://github.com/binance-exchange/binance-official-api-docs), which 
 supports the streaming of public streams like trade, kline, ticker and depth, but also the private userData stream which 
