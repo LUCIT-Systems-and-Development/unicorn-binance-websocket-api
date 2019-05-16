@@ -15,11 +15,9 @@ processing. The current dependencies are listed
 [here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
-on, you have to use the Binance Rest API in combination. Great support for this offers the package 
-[sammchardy/python-binance](https://github.com/sammchardy/python-binance).
+on, you have to use the Binance Rest API in combination. 
 
-"[sammchardy/python-binance](https://github.com/sammchardy/python-binance)" provides a websocket client too, so why use 
-the UNICORN Binance WebSocket API?
+Why use the UNICORN Binance WebSocket API?
 
 - 100% auto-reconnect.
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
