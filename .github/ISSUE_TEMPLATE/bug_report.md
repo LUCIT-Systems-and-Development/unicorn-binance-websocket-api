@@ -37,7 +37,7 @@ Check this or we will delete your issue. (fill in the checkbox with an X like so
 - [ ] Linux (include flavour)
 
 #### Python Version Requirement
-- [ ] I am using Python 3.5.1 or above
+- [ ] I am using Python 3.5.3 or above
 
 #### Exact Python Version?
 ```
