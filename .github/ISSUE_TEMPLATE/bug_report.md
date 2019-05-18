@@ -31,6 +31,9 @@ Check this or we will delete your issue. (fill in the checkbox with an X like so
 - [ ] Are you using the module on a VPS or other Cloud hosting?
 - [ ] If so, have you tried running the code on your local machine?
 
+#### Hardware
+- [ ] Raspberry Pi
+
 #### Operating System? (include version)
 - [ ] macOS
 - [ ] Windows
