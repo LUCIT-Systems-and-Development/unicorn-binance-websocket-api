@@ -37,7 +37,6 @@ from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import 
 
 # import class to process stream data
 from unicorn_binance_websocket_api_process_streams import BinanceWebSocketApiProcessStreams
-binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
 
 # create an instance of BinanceWebSocketApiManager and provide the function for stream processing
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
