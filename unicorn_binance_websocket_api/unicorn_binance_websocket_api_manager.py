@@ -864,7 +864,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         uri = self.create_websocket_uri(channels, markets)
         # a test with https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
-        # indicates that the allowed max length of an URI to binance websocket server is 8004 signs.
+        # indicates that the allowed max length of an URI to binance websocket server is 8004 characters.
         if len(uri) >= 8004:
             return False
         else:
