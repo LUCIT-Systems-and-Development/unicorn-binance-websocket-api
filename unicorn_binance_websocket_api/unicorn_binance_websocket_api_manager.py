@@ -1086,7 +1086,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 print(
                     "===============================================================================================\r\n" +
-                    " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
+                    " exchange:", str(self.stream_list[stream_id]['exchange']), "(lib " + str(self.version) + ")\r\n" +
                     " uptime:", str(self.get_human_uptime(time.time() - self.start_time)), "since " +
                     str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d, %H:%M:%S UTC')) + "\r\n" +
                     " streams:", str(streams), "\r\n" +
