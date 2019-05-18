@@ -52,5 +52,4 @@ if binance_websocket_api_manager.is_update_availabe():
 else:
     print(binance_websocket_api_manager.get_version(), "is the latest version!")
 
-
 binance_websocket_api_manager.stop_manager_with_all_streams()
