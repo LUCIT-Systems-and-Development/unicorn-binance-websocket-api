@@ -23,11 +23,9 @@ Why to use the UNICORN Binance WebSocket API?
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
 [python-daemon](https://pypi.org/project/python-daemon/)).
-- If you can not store your data on an offline local database, you can kick back the data to the stream_buffer which 
-stores the receives in the RAM till you are able to process the data in the normal way again.
+- If you can not store your data in cause of a temporary technical issue, you can kick back the data to the stream_buffer which stores the receives in the RAM till you are able to process the data in the normal way again.
 - Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
-`get_stream_statistic()`, `is_websocket_uri_length_valid()`, `replace_stream()`, `wait_till_stream_has_started()` and many
-more, explore them [here](https://www.unicorn-data.com/unicorn-binance-websocket-api.html#binance_websocket_api_docu).
+`get_stream_statistic()`, `is_websocket_uri_length_valid()`, `replace_stream()`, `wait_till_stream_has_started()` and many more, explore them [here](https://www.unicorn-data.com/unicorn-binance-websocket-api.html#binance_websocket_api_docu).
 
 ## Installation
 `pip install unicorn-binance-websocket-api`
@@ -53,9 +51,7 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
 Please open a new issue:
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues
 
-If you report a bug, try first the latest release via [download](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases) 
-or with `pip install unicorn-binance-websocket-api --upgrade`. If the issue still exists, provide the error trace, OS 
-and python version and explain how to reproduce the error. A demo script is appreciated.
+First try the latest release via [download](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases) or with `pip install unicorn-binance-websocket-api --upgrade`. If the issue still exists, provide the error trace, OS and python version and explain how to reproduce the error. A demo script is appreciated.
 
 ## Contributing
 UNICORN Binance WebSocket API is an open source project which welcomes contributions which can be anything from simple 
