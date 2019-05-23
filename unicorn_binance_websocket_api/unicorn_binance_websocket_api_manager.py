@@ -81,6 +81,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
         self.most_receives_per_second = 0
+        self.monitoring_total_received_bytes = 0
+        self.monitoring_total_receives = 0
         self.reconnects = 0
         self.restart_requests = {}
         self.start()
@@ -88,6 +90,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_buffer = []
         self.stream_buffer_byte_size = 0
         self.last_entry_added_to_stream_buffer = 0
+        self.last_monitoring_check = time.time()
         self.stream_list = {}
         self.total_received_bytes = 0
         self.total_receives = 0
@@ -505,6 +508,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                 pass
         return all_receives_last_second
 
+    def get_binance_api_status(self):
+        """
+        Get used_weight, last status_code and the timestamp of the last status update
+
+        :return: dict
+        """
+        return self.binance_api_status
+
     def get_human_bytesize(self, bytes):
         if bytes > 1024 * 1024 * 1024:
             bytes = str(round(bytes / (1024 * 1024 * 1024), 2)) + " gB"
@@ -645,6 +656,63 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.start_time
 
+    def get_monitoring_status(self):
+        """
+        Get status and perfdata to monitor and collect metrics
+
+        status: OK, WARNING, CRITICAL, UNKNOWN
+        perfdata:
+        - nr of streams
+        - average receives per second since last status check
+        - average speed per second since last status check
+        - received giga byte since start
+        - stream_buffer size
+
+        :return: str
+        """
+
+        active_streams = 0
+        crashed_streams = 0
+        restarting_streams = 0
+        stopped_streams = 0
+        timestamp = time.time()
+        time_period = timestamp - self.last_monitoring_check
+        status = "OK"
+
+        for stream_id in self.stream_list:
+            if self.stream_list[stream_id]['status'] == "running":
+                active_streams += 1
+            elif self.stream_list[stream_id]['status'] == "stopped":
+                stopped_streams += 1
+            elif self.stream_list[stream_id]['status'] == "restarting":
+                restarting_streams += 1
+            elif "crashed" in self.stream_list[stream_id]['status']:
+                crashed_streams += 1
+        if crashed_streams > 0:
+            status = "CRITICAL"
+        elif restarting_streams > 0:
+            status = "WARNING"
+
+        average_receives_per_second = (self.total_receives - self.monitoring_total_receives) / time_period
+        average_speed_per_second = int(((self.total_received_bytes - self.monitoring_total_received_bytes) / time_period) / 1024)
+        total_received_mb = int(self.get_total_received_bytes() / (1024 * 1024))
+        stream_buffer_items = str(len(self.stream_buffer))
+        stream_buffer_mb = int(self.get_stream_buffer_byte_size() / (1024 * 1024))
+
+        check_message = "BINANCE WEBSOCKETS " + status + ": O:" + str(active_streams) + " / R:" + \
+                        str(restarting_streams) + " / C:" + str(crashed_streams) + " | " \
+                        "receives_per_second=" + str(int(average_receives_per_second)) + ";;;0 " \
+                        "kb_per_second=" + str(average_speed_per_second) + ";;;0 " \
+                        "received_mb=" + str(total_received_mb) + ";;;0 " \
+                        "stream_buffer_mb=" + str(stream_buffer_mb) + ";;;0 " \
+                        "stream_buffer_items=" + str(stream_buffer_items) + ";;;0"
+
+        self.monitoring_total_receives = self.total_receives
+        self.monitoring_total_received_bytes = self.total_received_bytes
+        self.last_monitoring_check = timestamp
+
+        return check_message
+
     def get_stream_buffer_byte_size(self):
         """
         Get the current byte size of the stream_buffer
@@ -652,19 +720,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         return self.stream_buffer_byte_size
-
-    def pop_stream_data_from_stream_buffer(self):
-        """
-        Get oldest entry from stream_buffer and remove from stack (FIFO stack)
-
-        :return: raw_stream_data (set) or False
-        """
-        try:
-            stream_data = self.stream_buffer.pop()
-            self.stream_buffer_byte_size -= sys.getsizeof(stream_data)
-            return stream_data
-        except IndexError:
-            return False
 
     def get_stream_info(self, stream_id):
         """
@@ -774,13 +829,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.total_receives
 
-    def get_binance_api_status(self):
-        """
-        Get used_weight, last status_code and the timestamp of the last status update
-
-        :return: dict
-        """
-        return self.binance_api_status
 
     def get_version(self):
         """
@@ -869,6 +917,19 @@ class BinanceWebSocketApiManager(threading.Thread):
             return False
         else:
             return True
+
+    def pop_stream_data_from_stream_buffer(self):
+        """
+        Get oldest entry from stream_buffer and remove from stack (FIFO stack)
+
+        :return: raw_stream_data (set) or False
+        """
+        try:
+            stream_data = self.stream_buffer.pop()
+            self.stream_buffer_byte_size -= sys.getsizeof(stream_data)
+            return stream_data
+        except IndexError:
+            return False
 
     def print_stream_info(self, stream_id):
         """
