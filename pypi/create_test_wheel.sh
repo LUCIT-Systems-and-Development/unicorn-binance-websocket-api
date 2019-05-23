@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 #
-# File: pypi_remove_files.sh
+# File: pypi/create_test_wheel.sh
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
@@ -33,6 +33,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-rm ./build -r
-rm ./dist -r
-rm ./unicorn_binance_websocket_api.egg-info -r
+security-check() {
+    echo -n "Did you change the version in \`test_setup.py\` and \`unicorn_binance_websocket_api_manager.py\`? [yes|NO] "
+    local SURE
+    read SURE
+    if [ "$SURE" != "yes" ]; then
+        exit 1
+    fi
+    echo "ok, lets go..."
+}
+
+security-check
+python ../test_setup.py bdist_wheel
