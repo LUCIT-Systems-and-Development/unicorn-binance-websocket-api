@@ -34,9 +34,12 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
-import time
+import json
 import logging
 import os
+import time
+import threading
+
 
 # https://docs.python.org/3/library/logging.html
 logging.basicConfig(filename=os.path.basename(__file__) + '.log',
@@ -71,7 +74,19 @@ binance_websocket_api_manager.create_stream(["kline_1h"], markets)
 binance_websocket_api_manager.create_stream(["kline_12h"], markets)
 binance_websocket_api_manager.create_stream(["kline_1w"], markets)
 
-while True:
-    monitoring_status_nagios_icinga = binance_websocket_api_manager.get_monitoring_status_icinga()
-    print(monitoring_status_nagios_icinga)
-    time.sleep(10)
+
+def report_websocket_status(binance_manager):
+    # get the status from the binance_websocket_api_manager and write it to a json file every 60 seconds
+    while True:
+        status = binance_manager.get_monitoring_status_icinga()
+        with open('./binance_websocket_status.json', 'w') as fp:
+            json.dump(status, fp)
+        time.sleep(60)
+
+
+# start monitoring status report
+thread = threading.Thread(target=report_websocket_status, args=(binance_websocket_api_manager,))
+thread.start()
+
+print("./binance_websocket_status.json will get refreshed every 60 seconds! so the tools/check_binance_websocket_api_"
+      "manager is able to pick it up and deliver it to the icinga daemon!")

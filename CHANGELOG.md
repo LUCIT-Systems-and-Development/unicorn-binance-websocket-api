@@ -5,8 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.3.1.dev (development stage/unreleased)
+### Added
+- example_monitoring.py and tools/check_binance_websocket_api_manager
 
 ## 1.3.1
+### Changed
+- changing output of get_monitoring_status_icinga
+
+## 1.3.0
 ### Added
 - get_monitoring_status_icinga() in manager class
 
