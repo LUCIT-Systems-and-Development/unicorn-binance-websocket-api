@@ -656,17 +656,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.start_time
 
-    def get_monitoring_status(self):
+    def get_monitoring_status_icinga(self):
         """
-        Get status and perfdata to monitor and collect metrics
+        Get status and perfdata to monitor and collect metrics with icinga
 
-        status: OK, WARNING, CRITICAL, UNKNOWN
+        status: OK, WARNING, CRITICAL
         perfdata:
-        - nr of streams
         - average receives per second since last status check
         - average speed per second since last status check
         - received giga byte since start
         - stream_buffer size
+        - stream_buffer items
 
         :return: str
         """
@@ -700,7 +700,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_buffer_mb = int(self.get_stream_buffer_byte_size() / (1024 * 1024))
 
         check_message = "BINANCE WEBSOCKETS " + status + ": O:" + str(active_streams) + " / R:" + \
-                        str(restarting_streams) + " / C:" + str(crashed_streams) + " | " \
+                        str(restarting_streams) + " / C:" + str(crashed_streams) + " / S:" + str(stopped_streams) + \
+                        " | " + \
                         "receives_per_second=" + str(int(average_receives_per_second)) + ";;;0 " \
                         "kb_per_second=" + str(average_speed_per_second) + ";;;0 " \
                         "received_mb=" + str(total_received_mb) + ";;;0 " \

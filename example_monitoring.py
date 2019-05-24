@@ -72,6 +72,6 @@ binance_websocket_api_manager.create_stream(["kline_12h"], markets)
 binance_websocket_api_manager.create_stream(["kline_1w"], markets)
 
 while True:
-    monitoring_status_nagios_icinga = binance_websocket_api_manager.get_monitoring_status()
+    monitoring_status_nagios_icinga = binance_websocket_api_manager.get_monitoring_status_icinga()
     print(monitoring_status_nagios_icinga)
     time.sleep(10)
