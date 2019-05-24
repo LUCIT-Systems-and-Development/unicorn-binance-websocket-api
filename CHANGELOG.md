@@ -4,9 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.3.1.dev (development stage/unreleased)
+## 1.3.2.dev (development stage/unreleased)
+
+## 1.3.2
 ### Added
 - example_monitoring.py and tools/check_binance_websocket_api_manager
+- get_monitoring_status_icinga tests for available updates and changes the `return_code` to WARNING if an update is 
+available. but i recognized an API ban from github in cause of too many requests. i have to extend it ...
+### Changed
+- get_monitoring_status_icinga: changed `status` dict node to `return_code`
 
 ## 1.3.1
 ### Changed

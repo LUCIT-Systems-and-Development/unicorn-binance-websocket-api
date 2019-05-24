@@ -81,12 +81,13 @@ def report_websocket_status(binance_manager):
         status = binance_manager.get_monitoring_status_icinga()
         with open('./binance_websocket_status.json', 'w') as fp:
             json.dump(status, fp)
-        time.sleep(60)
+        time.sleep(20)
 
 
 # start monitoring status report
 thread = threading.Thread(target=report_websocket_status, args=(binance_websocket_api_manager,))
 thread.start()
 
-print("./binance_websocket_status.json will get refreshed every 60 seconds! so the tools/check_binance_websocket_api_"
-      "manager is able to pick it up and deliver it to the icinga daemon!")
+print("./binance_websocket_status.json will get refreshed every 20 seconds! so the tools/check_binance_websocket_api_"
+      "manager check_command is able to pick it up and deliver it to the icinga daemon! the check_command returns "
+      "UNKOWN if the file is older than 60 seconds...")

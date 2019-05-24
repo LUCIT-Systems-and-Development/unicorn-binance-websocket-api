@@ -36,13 +36,14 @@
 import json
 import time
 
+
 filename = "binance_websocket_status.json"
 
 with open(filename) as file:
     status = json.loads(file.read())
-    if status['time'] > (time.time() - 120):
+    if status['time'] > (time.time() - 60):
         print(status['text'])
-        exit(status['status'])
+        exit(status['return_code'])
     else:
         print("BINANCE WEBSOCKETS - UNKNOWN!!")
         exit(3)

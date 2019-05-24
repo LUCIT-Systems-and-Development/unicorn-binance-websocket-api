@@ -64,7 +64,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.3.1.dev"
+        self.version = "1.3.2.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -570,9 +570,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         latest_release_info = self.get_latest_release_info()
         if latest_release_info:
-            return latest_release_info["tag_name"]
+            try:
+                return latest_release_info["tag_name"]
+            except KeyError:
+                return "unkown"
         else:
-            return "not available"
+            return "unknown"
 
     def get_listen_key_from_restclient(self, stream_id, api_key, api_secret):
         """
@@ -673,12 +676,13 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         active_streams = 0
         crashed_streams = 0
-        restarting_streams = 0
+        status_text = "OK"
         stopped_streams = 0
         timestamp = time.time()
         time_period = timestamp - self.last_monitoring_check
-        status_text = "OK"
-        status_nr = 0
+        restarting_streams = 0
+        return_code = 0
+        update_msg = ""
 
         for stream_id in self.stream_list:
             if self.stream_list[stream_id]['status'] == "running":
@@ -691,18 +695,24 @@ class BinanceWebSocketApiManager(threading.Thread):
                 crashed_streams += 1
         if crashed_streams > 0:
             status_text = "CRITICAL"
-            status_nr = 1
+            return_code = 2
         elif restarting_streams > 0:
             status_text = "WARNING"
-            status_nr = 2
+            return_code = 1
+
+       # if self.is_update_availabe():
+       #     update_msg = " - Update " + str(self.get_latest_version()) + " available!"
+       #     status_text = "WARNING"
+       #     return_code = 1
 
         average_receives_per_second = (self.total_receives - self.monitoring_total_receives) / time_period
-        average_speed_per_second = int(((self.total_received_bytes - self.monitoring_total_received_bytes) / time_period) / 1024)
+        average_speed_per_second = int(((self.total_received_bytes - self.monitoring_total_received_bytes) /
+                                        time_period) / 1024)
         total_received_mb = int(self.get_total_received_bytes() / (1024 * 1024))
         stream_buffer_items = str(len(self.stream_buffer))
-        stream_buffer_mb = int(self.get_stream_buffer_byte_size() / (1024 * 1024))
+        stream_buffer_mb = self.get_stream_buffer_byte_size() / (1024 * 1024)
 
-        check_message = "BINANCE WEBSOCKETS " + status_text + ": O:" + str(active_streams) + " / R:" + \
+        check_message = "BINANCE WEBSOCKETS - " + status_text + update_msg + ": O:" + str(active_streams) + " / R:" + \
                         str(restarting_streams) + " / C:" + str(crashed_streams) + " / S:" + str(stopped_streams) + \
                         " | " + \
                         "receives_per_second=" + str(int(average_receives_per_second)) + ";;;0 " \
@@ -713,7 +723,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         status = {'text': check_message,
                   'time': int(time.time()),
-                  'status': status_nr}
+                  'return_code': return_code}
 
         self.monitoring_total_receives = self.total_receives
         self.monitoring_total_received_bytes = self.total_received_bytes
