@@ -718,7 +718,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         "receives_per_second=" + str(int(average_receives_per_second)) + ";;;0 " \
                         "kb_per_second=" + str(average_speed_per_second) + ";;;0 " \
                         "received_mb=" + str(total_received_mb) + ";;;0 " \
-                        "stream_buffer_mb=" + str(stream_buffer_mb) + ";;;0 " \
+                        "stream_buffer_mb=" + str(int(stream_buffer_mb)) + ";;;0 " \
                         "stream_buffer_items=" + str(stream_buffer_items) + ";;;0"
 
         status = {'text': check_message,
