@@ -48,6 +48,33 @@ logging.basicConfig(filename=os.path.basename(__file__) + '.log',
 logging.getLogger('unicorn-log').setLevel(logging.INFO)
 logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 
+
+def report_websocket_status(binance_manager):
+    # get the status from the binance_websocket_api_manager and write it to a json file every 60 seconds
+    while True:
+        status = binance_manager.get_monitoring_status_icinga()
+        with open('./binance_websocket_status.json', 'w') as fp:
+            json.dump(status, fp)
+        time.sleep(20)
+
+
+def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
+    print("waiting 30 seconds, then we start flushing the stream_buffer")
+    time.sleep(30)
+    while True:
+        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+        if oldest_stream_data_from_stream_buffer is False:
+            time.sleep(0.01)
+        else:
+            try:
+                # remove # to activate the print function:
+                #print(oldest_stream_data_from_stream_buffer)
+                pass
+            except Exception:
+                # not able to process the data? write it back to the stream_buffer
+                binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
+
+
 # create instance of BinanceWebSocketApiManager and provide the function for stream processing
 binance_websocket_api_manager = BinanceWebSocketApiManager()
 
@@ -93,15 +120,9 @@ channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h
             'miniTicker', 'depth20'}
 binance_websocket_api_manager.create_stream(channels, markets)
 
-
-def report_websocket_status(binance_manager):
-    # get the status from the binance_websocket_api_manager and write it to a json file every 60 seconds
-    while True:
-        status = binance_manager.get_monitoring_status_icinga()
-        with open('./binance_websocket_status.json', 'w') as fp:
-            json.dump(status, fp)
-        time.sleep(20)
-
+# start a worker process to process to move the received stream_data from the stream_buffer to a print function
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread.start()
 
 # start monitoring status report
 thread = threading.Thread(target=report_websocket_status, args=(binance_websocket_api_manager,))
