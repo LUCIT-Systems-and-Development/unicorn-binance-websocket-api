@@ -52,6 +52,9 @@ logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 binance_websocket_api_manager = BinanceWebSocketApiManager()
 
 # create streams
+ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])
+miniticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])
+
 markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
            'neousdt', 'bnbusdt', 'adabtc', 'ethusdt', 'trxbtc', 'trxbtc', 'bchabcbtc', 'ltcbtc', 'xrpbtc',
            'ontbtc', 'bttusdt', 'eosbtc', 'xlmbtc', 'bttbtc', 'tusdusdt', 'xlmusdt', 'qkcbtc', 'zrxbtc',
@@ -73,6 +76,22 @@ binance_websocket_api_manager.create_stream(["kline_15m"], markets)
 binance_websocket_api_manager.create_stream(["kline_1h"], markets)
 binance_websocket_api_manager.create_stream(["kline_12h"], markets)
 binance_websocket_api_manager.create_stream(["kline_1w"], markets)
+binance_websocket_api_manager.create_stream(["ticker"], markets)
+binance_websocket_api_manager.create_stream(["miniTicker"], markets)
+binance_websocket_api_manager.create_stream(["depth"], markets)
+binance_websocket_api_manager.create_stream(["depth5"], markets)
+binance_websocket_api_manager.create_stream(["depth10"], markets)
+binance_websocket_api_manager.create_stream(["depth20"], markets)
+binance_websocket_api_manager.create_stream(["aggTrade"], markets)
+
+markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
+           'neobtc', 'adaeth', 'icxusdt', 'btctusd', 'icxbtc', 'btcusdc', 'wanbtc', 'zecbtc', 'wtcbtc',
+           'batbtc', 'adabnb', 'etcusdt', 'qtumusdt', 'xmrbtc', 'trxeth', 'adatusd', 'trxxrp', 'trxbnb',
+           'ltctusd', 'polybnb', 'scbtc', 'steembtc', 'trxtusd', 'npxseth', 'kmdbtc', 'polybtc', 'gasbtc',
+           'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb'}
+channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w',
+            'miniTicker', 'depth20'}
+binance_websocket_api_manager.create_stream(channels, markets)
 
 
 def report_websocket_status(binance_manager):
@@ -91,3 +110,8 @@ thread.start()
 print("./binance_websocket_status.json will get refreshed every 20 seconds! so the tools/check_binance_websocket_api_"
       "manager check_command is able to pick it up and deliver it to the icinga daemon! the check_command returns "
       "UNKOWN if the file is older than 60 seconds...")
+
+# show an overview
+while True:
+    binance_websocket_api_manager.print_summary()
+    time.sleep(1)
