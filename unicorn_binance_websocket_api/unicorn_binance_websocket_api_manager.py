@@ -39,12 +39,14 @@ from datetime import datetime
 import asyncio
 import colorama
 import copy
+import json
 import logging
-import uuid
 import requests
+import socket
 import sys
 import threading
 import time
+import uuid
 
 
 class BinanceWebSocketApiManager(threading.Thread):
@@ -91,6 +93,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_buffer_byte_size = 0
         self.last_entry_added_to_stream_buffer = 0
         self.last_monitoring_check = time.time()
+        self.last_update_check_github = {'timestamp': time.time(),
+                                         'status': None}
         self.stream_list = {}
         self.total_received_bytes = 0
         self.total_receives = 0
@@ -356,6 +360,25 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread.start()
         return stream_id
 
+    def _create_monitoring_socket_server(self, host, port):
+        status_json = json.dumps(self.get_monitoring_status_icinga())
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.bind((host, port))
+            s.listen()
+            conn, addr = s.accept()
+            with conn:
+                conn.send(status_json)
+                print('Connected by', addr)
+                while True:
+                    data = conn.recv(1024)
+                    if not data:
+                        break
+                    conn.sendall(data)
+
+    def create_monitoring_socket_server(self, host='127.0.0.1', port=64201):
+        thread = threading.Thread(target=self._create_monitoring_socket_server, args=(host, port))
+        thread.start()
+
     def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False):
         """
         Create a websocket URI
@@ -564,16 +587,19 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_latest_version(self):
         """
-        Get the version of the latest available release
+        Get the version of the latest available release (cache time 1 hour)
 
         :return: str or False
         """
-        latest_release_info = self.get_latest_release_info()
-        if latest_release_info:
+        # Do a fresh request if status is None or last timestamp is older 1 hour
+        if self.last_update_check_github['status'] is None or \
+                (self.last_update_check_github['timestamp']+(60*60) < time.time()):
+            self.last_update_check_github['status'] = self.get_latest_release_info()
+        if self.last_update_check_github['status']:
             try:
-                return latest_release_info["tag_name"]
+                return self.last_update_check_github['status']["tag_name"]
             except KeyError:
-                return "unkown"
+                return "unknown"
         else:
             return "unknown"
 
@@ -664,12 +690,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         Get status and perfdata to monitor and collect metrics with icinga
 
         status: OK, WARNING, CRITICAL
+            WARNING: on restarts, available updates
+            CRITICAL: crashed streams
+
         perfdata:
         - average receives per second since last status check
         - average speed per second since last status check
         - received giga byte since start
         - stream_buffer size
         - stream_buffer items
+        - reconnects
 
         :return: str
         """
@@ -693,17 +723,18 @@ class BinanceWebSocketApiManager(threading.Thread):
                 restarting_streams += 1
             elif "crashed" in self.stream_list[stream_id]['status']:
                 crashed_streams += 1
+
+        if self.is_update_availabe():
+            update_msg = " - Update " + str(self.get_latest_version()) + " available!"
+            status_text = "WARNING"
+            return_code = 1
+
         if crashed_streams > 0:
             status_text = "CRITICAL"
             return_code = 2
         elif restarting_streams > 0:
             status_text = "WARNING"
             return_code = 1
-
-       # if self.is_update_availabe():
-       #     update_msg = " - Update " + str(self.get_latest_version()) + " available!"
-       #     status_text = "WARNING"
-       #     return_code = 1
 
         average_receives_per_second = (self.total_receives - self.monitoring_total_receives) / time_period
         average_speed_per_second = int(((self.total_received_bytes - self.monitoring_total_received_bytes) /
@@ -712,14 +743,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_buffer_items = str(len(self.stream_buffer))
         stream_buffer_mb = self.get_stream_buffer_byte_size() / (1024 * 1024)
 
-        check_message = "BINANCE WEBSOCKETS - " + status_text + update_msg + ": O:" + str(active_streams) + " / R:" + \
-                        str(restarting_streams) + " / C:" + str(crashed_streams) + " / S:" + str(stopped_streams) + \
-                        " | " + \
+        check_message = "BINANCE WEBSOCKETS - " + status_text + ": O:" + str(active_streams) + "/R:" + \
+                        str(restarting_streams) + "/C:" + str(crashed_streams) + "/S:" + str(stopped_streams) + \
+                        update_msg + " | " + \
                         "receives_per_second=" + str(int(average_receives_per_second)) + ";;;0 " \
                         "kb_per_second=" + str(average_speed_per_second) + ";;;0 " \
                         "received_mb=" + str(total_received_mb) + ";;;0 " \
                         "stream_buffer_mb=" + str(int(stream_buffer_mb)) + ";;;0 " \
-                        "stream_buffer_items=" + str(stream_buffer_items) + ";;;0"
+                        "stream_buffer_items=" + str(stream_buffer_items) + ";;;0 " \
+                        "reconnects=" + str(self.reconnects) + ";;;0 "
 
         status = {'text': check_message,
                   'time': int(time.time()),
@@ -1073,7 +1105,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         received_bytes_per_x_row = ""
         streams_with_stop_request_row = ""
         stream_buffer_row = ""
-        reconnects_row = ""
         for stream_id in self.stream_list:
             stream_row_color_prefix = ""
             stream_row_color_suffix = ""
@@ -1174,7 +1205,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                     str(restarting_streams_row) +
                     str(stopped_streams_row) +
                     str(streams_with_stop_request_row) +
-                    str(reconnects_row) +
                     str(stream_buffer_row) +
                     " total_receives:", str(self.total_receives), "\r\n"
                     " total_received_bytes:", str(total_received_bytes), "\r\n"
