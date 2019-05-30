@@ -35,14 +35,16 @@
 
 from .unicorn_binance_websocket_api_socket import BinanceWebSocketApiSocket
 from .unicorn_binance_websocket_api_restclient import BinanceWebSocketApiRestclient
+from .unicorn_binance_websocket_api_restserver import BinanceWebSocketApiRestServer
 from datetime import datetime
+from flask import Flask
+from flask_restful import Api
 import asyncio
 import colorama
 import copy
-import json
 import logging
+import os
 import requests
-import socket
 import sys
 import threading
 import time
@@ -87,7 +89,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.monitoring_total_receives = 0
         self.reconnects = 0
         self.restart_requests = {}
-        self.start()
         self.start_time = time.time()
         self.stream_buffer = []
         self.stream_buffer_byte_size = 0
@@ -102,7 +103,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.binance_api_status = {'weight': None,
                                    'timestamp': 0,
                                    'status_code': None}
-        # colorama unifies color support on all terminals (linux, mac, windows)
+        self.start()
         colorama.init()
 
     def _add_socket_to_socket_list(self, stream_id, channels, markets):
@@ -131,6 +132,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.debug("BinanceWebSocketApiManager->_add_socket_to_socket_list(" +
                       str(stream_id) + ", " + str(channels) + ", " + str(markets) + ")")
 
+    def _start_monitoring_api(self, host, port, ssl_context):
+        os.environ["WERKZEUG_RUN_MAIN"] = "true"
+        app = Flask(__name__)
+        api = Api(app)
+        api.add_resource(BinanceWebSocketApiRestServer, "/status/<string:format>",
+                         resource_class_kwargs={'handler_binance_websocket_api_manager': self})
+        app.run(debug=False, host=host, port=port, ssl_context=ssl_context)
+
     def _create_stream_thread(self, loop, stream_id, channels, markets, restart=False):
         # co function of self.create_stream to create a thread for the socket and to manage the coroutine
         if restart is False:
@@ -144,7 +153,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def _frequent_checks(self):
         frequent_checks_id = time.time()
-        counter = 0
         self.frequent_checks_list[frequent_checks_id] = {'last_heartbeat': 0,
                                                          'stop_request': None,
                                                          'has_stopped': False}
@@ -360,23 +368,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread.start()
         return stream_id
 
-    def _create_monitoring_socket_server(self, host, port):
-        status_json = json.dumps(self.get_monitoring_status_icinga())
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind((host, port))
-            s.listen()
-            conn, addr = s.accept()
-            with conn:
-                conn.send(status_json)
-                print('Connected by', addr)
-                while True:
-                    data = conn.recv(1024)
-                    if not data:
-                        break
-                    conn.sendall(data)
-
-    def create_monitoring_socket_server(self, host='127.0.0.1', port=64201):
-        thread = threading.Thread(target=self._create_monitoring_socket_server, args=(host, port))
+    def start_monitoring_api(self, host='127.0.0.1', port=64201, ssl_context='adhoc'):
+        thread = threading.Thread(target=self._start_monitoring_api, args=(host, port, ssl_context))
         thread.start()
 
     def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False):
@@ -684,6 +677,72 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: timestamp
         """
         return self.start_time
+
+    def get_monitoring_status_plain(self):
+        """
+        Get status and perfdata to monitor and collect metrics with icinga
+
+        status: OK, WARNING, CRITICAL
+            WARNING: on restarts, available updates
+            CRITICAL: crashed streams
+
+        perfdata:
+        - average receives per second since last status check
+        - average speed per second since last status check
+        - received giga byte since start
+        - stream_buffer size
+        - stream_buffer items
+        - reconnects
+
+        :return: str
+        """
+
+        result = {}
+        result['active_streams'] = 0
+        result['crashed_streams'] = 0
+        result['restarting_streams'] = 0
+        result['return_code'] = 0
+        result['status_text'] = "OK"
+        result['stopped_streams'] = 0
+        result['timestamp'] = time.time()
+        result['update_msg'] = ""
+        time_period = result['timestamp'] - self.last_monitoring_check
+
+        for stream_id in self.stream_list:
+            if self.stream_list[stream_id]['status'] == "running":
+                result['active_streams'] += 1
+            elif self.stream_list[stream_id]['status'] == "stopped":
+                result['stopped_streams'] += 1
+            elif self.stream_list[stream_id]['status'] == "restarting":
+                result['restarting_streams'] += 1
+            elif "crashed" in self.stream_list[stream_id]['status']:
+                result['crashed_streams'] += 1
+
+        if self.is_update_availabe():
+            result['update_msg'] = " - Update " + str(self.get_latest_version()) + " available!"
+            result['status_text'] = "WARNING"
+            result['return_code'] = 1
+
+        if result['crashed_streams'] > 0:
+            result['status_text'] = "CRITICAL"
+            result['return_code'] = 2
+        elif result['restarting_streams'] > 0:
+            result['status_text'] = "WARNING"
+            result['return_code'] = 1
+
+        result['average_receives_per_second'] = (self.total_receives - self.monitoring_total_receives) / time_period
+        result['average_speed_per_second'] = int(((self.total_received_bytes - self.monitoring_total_received_bytes) /
+                                                  time_period) / 1024)
+        result['total_received_mb'] = int(self.get_total_received_bytes() / (1024 * 1024))
+        result['stream_buffer_items'] = str(len(self.stream_buffer))
+        result['stream_buffer_mb'] = self.get_stream_buffer_byte_size() / (1024 * 1024)
+        result['reconnects'] = self.reconnects
+
+        self.monitoring_total_receives = self.total_receives
+        self.monitoring_total_received_bytes = self.total_received_bytes
+        self.last_monitoring_check = result['timestamp']
+
+        return result
 
     def get_monitoring_status_icinga(self):
         """

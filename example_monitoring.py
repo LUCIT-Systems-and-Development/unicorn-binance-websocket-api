@@ -34,14 +34,12 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
-import json
 import logging
 import os
 import time
 import threading
 
 
-# https://docs.python.org/3/library/logging.html
 logging.basicConfig(filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
@@ -49,18 +47,8 @@ logging.getLogger('unicorn-log').setLevel(logging.INFO)
 logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 
 
-def report_websocket_status(binance_manager):
-    # get the status from the binance_websocket_api_manager and write it to a json file every 60 seconds
-    while True:
-        status = binance_manager.get_monitoring_status_icinga()
-        with open('./binance_websocket_status.json', 'w') as fp:
-            json.dump(status, fp)
-        time.sleep(20)
-
-
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
-    print("waiting 30 seconds, then we start flushing the stream_buffer")
-    time.sleep(30)
+    time.sleep(60)
     while True:
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         if oldest_stream_data_from_stream_buffer is False:
@@ -124,17 +112,9 @@ binance_websocket_api_manager.create_stream(channels, markets)
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
 
-# start monitoring status report
-thread = threading.Thread(target=report_websocket_status, args=(binance_websocket_api_manager,))
-thread.start()
+# start a socket server to report the current status to tools/icinga/check_binance_websocket_manager which can be used
+# as a check_command for nagios/icinga
+binance_websocket_api_manager.start_monitoring_api()
 
-binance_websocket_api_manager.create_monitoring_socket_server()
-
-print("./binance_websocket_status.json will get refreshed every 20 seconds! so the tools/check_binance_websocket_api_"
-      "manager check_command is able to pick it up and deliver it to the icinga daemon! the check_command returns "
-      "UNKOWN if the file is older than 60 seconds...")
-
-# show an overview
-while True:
-    binance_websocket_api_manager.print_summary()
-    time.sleep(1)
+print("18 websockets started! now run './tools/icinga/check_binance_websocket_api_manager', but dont close this "
+      "execution!")

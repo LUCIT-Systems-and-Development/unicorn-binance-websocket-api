@@ -7,7 +7,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.3.2.dev (development stage/unreleased)
 ### Added
 - get_monitoring_status_icinga: reconnects and update check
-- create_monitoring_socket_server
+- start_monitoring_api
+- 1 hour cache for release checks on github
+### Rewrite
+- ./tools/icinga/check_binance_websocket_api_manager (check_command for ICINGA)
+### Changed 
+- example_monitoring.py
 
 ## 1.3.2
 ### Added

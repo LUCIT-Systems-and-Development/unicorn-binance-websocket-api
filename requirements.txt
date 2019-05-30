@@ -1,4 +1,6 @@
 colorama
+flask
+flask_restful
 pathlib
 requests
 websocket-client

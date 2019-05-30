@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# File: tools/check_binance_websocket_api_manager
+# File: unicorn_binance_websocket_api/unicorn_binance_websocket_api_restserver.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
@@ -33,17 +33,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-import json
-import time
+from flask_restful import Resource
 
 
-filename = "binance_websocket_status.json"
+class BinanceWebSocketApiRestServer(Resource):
+    def __init__(self, handler_binance_websocket_api_manager):
+        self.handler_binance_websocket_api_manager = handler_binance_websocket_api_manager
 
-with open(filename) as file:
-    status = json.loads(file.read())
-    if status['time'] > (time.time() - 60):
-        print(status['text'])
-        exit(status['return_code'])
-    else:
-        print("BINANCE WEBSOCKETS - UNKNOWN!!")
-        exit(3)
+    def get(self, format):
+        if format == "icinga":
+            return self.handler_binance_websocket_api_manager.get_monitoring_status_icinga(), 200
+        else:
+            return "service not found", 404
