@@ -3,7 +3,7 @@
 
 Requirements are listed in [requirements.txt](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/requirements.txt)
 
-This command is written in python 3 and depends on the monitoring API service of [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) which needs to get started with 'binance_websocket_api_manager.start_monitoring_api()'. Run 'example_monitoring.py' to see an example!
+This command is written in python 3 and depends on the monitoring API service of [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) which needs to get started with 'binance_websocket_api_manager.start_monitoring_api()'. Run '[example_monitoring.py](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_monitoring.py)' to see an example!
 
 Run './check_binance_websocket_api_manager -h' for further information!
 
