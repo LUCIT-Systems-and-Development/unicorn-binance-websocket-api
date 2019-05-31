@@ -726,7 +726,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 result['restarting_streams'] += 1
             elif "crashed" in self.stream_list[stream_id]['status']:
                 result['crashed_streams'] += 1
-        if self.is_update_availabe():
+        if self.is_update_availabe() and str(self.get_latest_version()) != "unknown":
             result['update_msg'] = "Update " + str(self.get_latest_version()) + " available!"
             result['status_text'] = "WARNING"
             result['return_code'] = 1
