@@ -41,7 +41,7 @@ import urllib3
 
 
 def status_unkown():
-    print("BINANCE WEBSOCKETS - UNKNOWN!!")
+    print("BINANCE WEBSOCKETS - UNKNOWN: not connected to monitoring API service!")
     exit(3)
 
 
@@ -60,7 +60,7 @@ parser.add_argument('-V', '--version', dest='version', help='print version infor
 parsed_args = parser.parse_args()
 
 if parsed_args.version is True:
-    print("check_binance_websocket_api_manager 0.1.0 for ICINGA/Nagios by UNICORN Data Analysis 2019")
+    print("check_binance_websocket_api_manager 0.1.1 for ICINGA/Nagios by UNICORN Data Analysis 2019")
     exit(0)
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
