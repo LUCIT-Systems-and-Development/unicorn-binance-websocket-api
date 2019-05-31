@@ -9,11 +9,12 @@ Run './check_binance_websocket_api_manager -h' for further information!
 
 Download the latest stable release from https://exchange.icinga.com/bithon/check_binance_websocket_api_manager
 
-status: OK, WARNING, CRITICAL
+## Status
+OK, WARNING or CRITICAL
 - WARNING: on restarts, available updates
 - CRITICAL: crashed streams
 
-perfdata:
+## Perfdata
 - average receives per second since last status check
 - average speed per second since last status check
 - received giga byte since start
