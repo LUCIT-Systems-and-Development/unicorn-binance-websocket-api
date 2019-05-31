@@ -9,6 +9,7 @@ Run './check_binance_websocket_api_manager -h' for further information!
 
 Download the latest stable release from https://exchange.icinga.com/bithon/check_binance_websocket_api_manager
 
+## Monitoring
 ### Status
 OK, WARNING or CRITICAL
 - WARNING: on restarts, available updates
