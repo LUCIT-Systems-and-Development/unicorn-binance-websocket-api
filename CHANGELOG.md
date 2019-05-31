@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.3.2.dev (development stage/unreleased)
 ### Added
 - get_monitoring_status_icinga: reconnects and update check
+- get_monitoring_status_plain
 - start_monitoring_api
 - 1 hour cache for release checks on github
 ### Rewrite

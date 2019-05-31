@@ -680,7 +680,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_monitoring_status_plain(self):
         """
-        Get status and perfdata to monitor and collect metrics with icinga
+        Get plain status and perfdata
 
         status: OK, WARNING, CRITICAL
             WARNING: on restarts, available updates
@@ -694,9 +694,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         - stream_buffer items
         - reconnects
 
-        :return: str
+        :return: dict
         """
-
         result = {}
         result['active_streams'] = 0
         result['crashed_streams'] = 0
@@ -707,7 +706,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         result['timestamp'] = time.time()
         result['update_msg'] = ""
         time_period = result['timestamp'] - self.last_monitoring_check
-
         for stream_id in self.stream_list:
             if self.stream_list[stream_id]['status'] == "running":
                 result['active_streams'] += 1
@@ -717,19 +715,16 @@ class BinanceWebSocketApiManager(threading.Thread):
                 result['restarting_streams'] += 1
             elif "crashed" in self.stream_list[stream_id]['status']:
                 result['crashed_streams'] += 1
-
         if self.is_update_availabe():
-            result['update_msg'] = " - Update " + str(self.get_latest_version()) + " available!"
+            result['update_msg'] = "Update " + str(self.get_latest_version()) + " available!"
             result['status_text'] = "WARNING"
             result['return_code'] = 1
-
         if result['crashed_streams'] > 0:
             result['status_text'] = "CRITICAL"
             result['return_code'] = 2
         elif result['restarting_streams'] > 0:
             result['status_text'] = "WARNING"
             result['return_code'] = 1
-
         result['average_receives_per_second'] = (self.total_receives - self.monitoring_total_receives) / time_period
         result['average_speed_per_second'] = int(((self.total_received_bytes - self.monitoring_total_received_bytes) /
                                                   time_period) / 1024)
@@ -737,16 +732,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         result['stream_buffer_items'] = str(len(self.stream_buffer))
         result['stream_buffer_mb'] = self.get_stream_buffer_byte_size() / (1024 * 1024)
         result['reconnects'] = self.reconnects
-
         self.monitoring_total_receives = self.total_receives
         self.monitoring_total_received_bytes = self.total_received_bytes
         self.last_monitoring_check = result['timestamp']
-
         return result
 
     def get_monitoring_status_icinga(self):
         """
-        Get status and perfdata to monitor and collect metrics with icinga
+        Get status and perfdata to monitor and collect metrics with ICINGA/Nagios
 
         status: OK, WARNING, CRITICAL
             WARNING: on restarts, available updates
@@ -760,66 +753,21 @@ class BinanceWebSocketApiManager(threading.Thread):
         - stream_buffer items
         - reconnects
 
-        :return: str
+        :return: dict
         """
-
-        active_streams = 0
-        crashed_streams = 0
-        status_text = "OK"
-        stopped_streams = 0
-        timestamp = time.time()
-        time_period = timestamp - self.last_monitoring_check
-        restarting_streams = 0
-        return_code = 0
-        update_msg = ""
-
-        for stream_id in self.stream_list:
-            if self.stream_list[stream_id]['status'] == "running":
-                active_streams += 1
-            elif self.stream_list[stream_id]['status'] == "stopped":
-                stopped_streams += 1
-            elif self.stream_list[stream_id]['status'] == "restarting":
-                restarting_streams += 1
-            elif "crashed" in self.stream_list[stream_id]['status']:
-                crashed_streams += 1
-
-        if self.is_update_availabe():
-            update_msg = " - Update " + str(self.get_latest_version()) + " available!"
-            status_text = "WARNING"
-            return_code = 1
-
-        if crashed_streams > 0:
-            status_text = "CRITICAL"
-            return_code = 2
-        elif restarting_streams > 0:
-            status_text = "WARNING"
-            return_code = 1
-
-        average_receives_per_second = (self.total_receives - self.monitoring_total_receives) / time_period
-        average_speed_per_second = int(((self.total_received_bytes - self.monitoring_total_received_bytes) /
-                                        time_period) / 1024)
-        total_received_mb = int(self.get_total_received_bytes() / (1024 * 1024))
-        stream_buffer_items = str(len(self.stream_buffer))
-        stream_buffer_mb = self.get_stream_buffer_byte_size() / (1024 * 1024)
-
-        check_message = "BINANCE WEBSOCKETS - " + status_text + ": O:" + str(active_streams) + "/R:" + \
-                        str(restarting_streams) + "/C:" + str(crashed_streams) + "/S:" + str(stopped_streams) + \
-                        update_msg + " | " + \
-                        "receives_per_second=" + str(int(average_receives_per_second)) + ";;;0 " \
-                        "kb_per_second=" + str(average_speed_per_second) + ";;;0 " \
-                        "received_mb=" + str(total_received_mb) + ";;;0 " \
-                        "stream_buffer_mb=" + str(int(stream_buffer_mb)) + ";;;0 " \
-                        "stream_buffer_items=" + str(stream_buffer_items) + ";;;0 " \
-                        "reconnects=" + str(self.reconnects) + ";;;0 "
-
+        result = self.get_monitoring_status_plain()
+        check_message = "BINANCE WEBSOCKETS - " + result['status_text'] + ": O:" + str(result['active_streams']) + \
+                        "/R:" + str(result['restarting_streams']) + "/C:" + str(result['crashed_streams']) + "/S:" + \
+                        str(result['stopped_streams']) + result['update_msg'] + " | " + \
+                        "receives_per_second=" + str(int(result['average_receives_per_second'])) + ";;;0 " \
+                        "kb_per_second=" + str(result['average_speed_per_second']) + ";;;0 " \
+                        "received_mb=" + str(result['total_received_mb']) + ";;;0 " \
+                        "stream_buffer_mb=" + str(int(result['stream_buffer_mb'])) + ";;;0 " \
+                        "stream_buffer_items=" + str(result['stream_buffer_items']) + ";;;0 " \
+                        "reconnects=" + str(result['reconnects']) + ";;;0 "
         status = {'text': check_message,
-                  'time': int(time.time()),
-                  'return_code': return_code}
-
-        self.monitoring_total_receives = self.total_receives
-        self.monitoring_total_received_bytes = self.total_received_bytes
-        self.last_monitoring_check = timestamp
-
+                  'time': int(result['timestamp']),
+                  'return_code': result['return_code']}
         return status
 
     def get_stream_buffer_byte_size(self):
