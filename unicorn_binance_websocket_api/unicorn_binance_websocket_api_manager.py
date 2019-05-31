@@ -756,6 +756,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: dict
         """
         result = self.get_monitoring_status_plain()
+        if len(result['update_msg']) > 0:
+            result['update_msg'] = " - " + result['update_msg']
         check_message = "BINANCE WEBSOCKETS - " + result['status_text'] + ": O:" + str(result['active_streams']) + \
                         "/R:" + str(result['restarting_streams']) + "/C:" + str(result['crashed_streams']) + "/S:" + \
                         str(result['stopped_streams']) + result['update_msg'] + " | " + \
