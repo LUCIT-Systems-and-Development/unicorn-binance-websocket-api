@@ -46,7 +46,7 @@ setuptools.setup(
      scripts=['unicorn_binance_websocket_api.py'],
      description="Development package in testing stage! Please use https://pypi.org/project/unicorn-binance-websocket-api/",
      license='MIT License',
-     install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets'],
+     install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets', 'flask_restful', 'cheroot'],
      keywords='unicorn-data-analysis, binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
               'binance-websocket, binance-webstream, webstream, websocket, api',
      project_urls={

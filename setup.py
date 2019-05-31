@@ -48,7 +48,7 @@ setuptools.setup(
      long_description=long_description,
      long_description_content_type="text/markdown",
      license='MIT License',
-     install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets'],
+     install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets', 'flask_restful', 'cheroot'],
      keywords='unicorn-data-analysis, binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
               'binance-websocket, binance-webstream, webstream, websocket, api',
      project_urls={
