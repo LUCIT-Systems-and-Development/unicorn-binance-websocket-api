@@ -1,5 +1,5 @@
 # check_binance_websocket_api_manager
-ICINGA/Nagios check_command '[check_binance_websocket_api_manager](https://exchange.icinga.com/bithon/check_binance_websocket_api_manager)' for the [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api).
+[ICINGA](https://icinga.com)/Nagios check_command '[check_binance_websocket_api_manager](https://exchange.icinga.com/bithon/check_binance_websocket_api_manager)' for the [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api).
 
 This commands depends on the monitoring API service of [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) which needs to get started with 'binance_websocket_api_manager.start_monitoring_api()'. Run 'example_monitoring.py' to see an example!
 
