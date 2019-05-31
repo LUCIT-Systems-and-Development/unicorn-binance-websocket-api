@@ -36,6 +36,7 @@
 from .unicorn_binance_websocket_api_socket import BinanceWebSocketApiSocket
 from .unicorn_binance_websocket_api_restclient import BinanceWebSocketApiRestclient
 from .unicorn_binance_websocket_api_restserver import BinanceWebSocketApiRestServer
+from cheroot import wsgi
 from datetime import datetime
 from flask import Flask
 from flask_restful import Api
@@ -43,7 +44,6 @@ import asyncio
 import colorama
 import copy
 import logging
-import os
 import requests
 import sys
 import threading
@@ -85,6 +85,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
         self.most_receives_per_second = 0
+        self.monitoring_api_server = False
         self.monitoring_total_received_bytes = 0
         self.monitoring_total_receives = 0
         self.reconnects = 0
@@ -131,14 +132,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'processed_receives_statistic': {}}
         logging.debug("BinanceWebSocketApiManager->_add_socket_to_socket_list(" +
                       str(stream_id) + ", " + str(channels) + ", " + str(markets) + ")")
-
-    def _start_monitoring_api(self, host, port, ssl_context):
-        os.environ["WERKZEUG_RUN_MAIN"] = "true"
-        app = Flask(__name__)
-        api = Api(app)
-        api.add_resource(BinanceWebSocketApiRestServer, "/status/<string:format>",
-                         resource_class_kwargs={'handler_binance_websocket_api_manager': self})
-        app.run(debug=False, host=host, port=port, ssl_context=ssl_context)
 
     def _create_stream_thread(self, loop, stream_id, channels, markets, restart=False):
         # co function of self.create_stream to create a thread for the socket and to manage the coroutine
@@ -328,6 +321,19 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self._frequent_checks_restart_request = True
         sys.exit(0)
 
+    def _start_monitoring_api(self, host, port, ssl_context):
+        logging.info("starting monitoring API server ...")
+        app = Flask(__name__)
+        api = Api(app)
+        api.add_resource(BinanceWebSocketApiRestServer, "/status/<string:statusformat>",
+                         resource_class_kwargs={'handler_binance_websocket_api_manager': self})
+        try:
+            dispatcher = wsgi.PathInfoDispatcher({'/': app})
+            self.monitoring_api_server = wsgi.WSGIServer((host, port), dispatcher)
+            self.monitoring_api_server.start()
+        except RuntimeError as error_msg:
+            logging.error("monitoring API server is going down! - info: " + str(error_msg))
+
     def add_to_stream_buffer(self, stream_data):
         """
         Kick back data to the stream_buffer
@@ -367,10 +373,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels, markets))
         thread.start()
         return stream_id
-
-    def start_monitoring_api(self, host='127.0.0.1', port=64201, ssl_context='adhoc'):
-        thread = threading.Thread(target=self._start_monitoring_api, args=(host, port, ssl_context))
-        thread.start()
 
     def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False):
         """
@@ -662,25 +664,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.keep_max_received_last_second_entries
 
-    def get_reconnects(self):
+    def get_monitoring_status_icinga(self):
         """
-        Get the number of total reconnects
-
-        :return: int
-        """
-        return self.reconnects
-
-    def get_start_time(self):
-        """
-        Get the start_time of the  BinanceWebSocketApiManager instance
-
-        :return: timestamp
-        """
-        return self.start_time
-
-    def get_monitoring_status_plain(self):
-        """
-        Get plain status and perfdata
+        Get status and perfdata to monitor and collect metrics with ICINGA/Nagios
 
         status: OK, WARNING, CRITICAL
             WARNING: on restarts, available updates
@@ -693,6 +679,31 @@ class BinanceWebSocketApiManager(threading.Thread):
         - stream_buffer size
         - stream_buffer items
         - reconnects
+
+        :return: dict (text, time, return_code)
+        """
+        result = self.get_monitoring_status_plain()
+        if len(result['update_msg']) > 0:
+            result['update_msg'] = " - " + result['update_msg']
+        check_message = "BINANCE WEBSOCKETS - " + result['status_text'] + ": O:" + str(result['active_streams']) + \
+                        "/R:" + str(result['restarting_streams']) + "/C:" + str(result['crashed_streams']) + "/S:" + \
+                        str(result['stopped_streams']) + result['update_msg'] + " | " + "receives_per_second=" + \
+                        str(int(result['average_receives_per_second'])) + ";;;0 kb_per_second=" + \
+                        str(result['average_speed_per_second']) + ";;;0 " \
+                        "received_mb=" + str(result['total_received_mb']) + ";;;0 stream_buffer_mb=" + \
+                        str(int(result['stream_buffer_mb'])) + ";;;0 stream_buffer_items=" + \
+                        str(result['stream_buffer_items']) + ";;;0 reconnects=" + str(result['reconnects']) + ";;;0"
+        status = {'text': check_message,
+                  'time': int(result['timestamp']),
+                  'return_code': result['return_code']}
+        return status
+
+    def get_monitoring_status_plain(self):
+        """
+        Get plain monitoring status data:
+        active_streams, crashed_streams, restarting_streams, stopped_streams, return_code, status_text,
+        timestamp, update_msg, average_receives_per_second, average_speed_per_second, total_received_mb,
+        stream_buffer_items, stream_buffer_mb, reconnects
 
         :return: dict
         """
@@ -731,46 +742,27 @@ class BinanceWebSocketApiManager(threading.Thread):
         result['total_received_mb'] = int(self.get_total_received_bytes() / (1024 * 1024))
         result['stream_buffer_items'] = str(len(self.stream_buffer))
         result['stream_buffer_mb'] = self.get_stream_buffer_byte_size() / (1024 * 1024)
-        result['reconnects'] = self.reconnects
-        self.monitoring_total_receives = self.total_receives
-        self.monitoring_total_received_bytes = self.total_received_bytes
+        result['reconnects'] = self.get_reconnects()
+        self.monitoring_total_receives = self.get_total_receives()
+        self.monitoring_total_received_bytes = self.get_total_received_bytes()
         self.last_monitoring_check = result['timestamp']
         return result
 
-    def get_monitoring_status_icinga(self):
+    def get_reconnects(self):
         """
-        Get status and perfdata to monitor and collect metrics with ICINGA/Nagios
+        Get the number of total reconnects
 
-        status: OK, WARNING, CRITICAL
-            WARNING: on restarts, available updates
-            CRITICAL: crashed streams
-
-        perfdata:
-        - average receives per second since last status check
-        - average speed per second since last status check
-        - received giga byte since start
-        - stream_buffer size
-        - stream_buffer items
-        - reconnects
-
-        :return: dict
+        :return: int
         """
-        result = self.get_monitoring_status_plain()
-        if len(result['update_msg']) > 0:
-            result['update_msg'] = " - " + result['update_msg']
-        check_message = "BINANCE WEBSOCKETS - " + result['status_text'] + ": O:" + str(result['active_streams']) + \
-                        "/R:" + str(result['restarting_streams']) + "/C:" + str(result['crashed_streams']) + "/S:" + \
-                        str(result['stopped_streams']) + result['update_msg'] + " | " + \
-                        "receives_per_second=" + str(int(result['average_receives_per_second'])) + ";;;0 " \
-                        "kb_per_second=" + str(result['average_speed_per_second']) + ";;;0 " \
-                        "received_mb=" + str(result['total_received_mb']) + ";;;0 " \
-                        "stream_buffer_mb=" + str(int(result['stream_buffer_mb'])) + ";;;0 " \
-                        "stream_buffer_items=" + str(result['stream_buffer_items']) + ";;;0 " \
-                        "reconnects=" + str(result['reconnects']) + ";;;0 "
-        status = {'text': check_message,
-                  'time': int(result['timestamp']),
-                  'return_code': result['return_code']}
-        return status
+        return self.reconnects
+
+    def get_start_time(self):
+        """
+        Get the start_time of the  BinanceWebSocketApiManager instance
+
+        :return: timestamp
+        """
+        return self.start_time
 
     def get_stream_buffer_byte_size(self):
         """
@@ -887,7 +879,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         return self.total_receives
-
 
     def get_version(self):
         """
@@ -1335,6 +1326,19 @@ class BinanceWebSocketApiManager(threading.Thread):
     def set_restart_request(self, stream_id):
         self.restart_requests[stream_id] = {'status': "new"}
 
+    def start_monitoring_api(self, host='127.0.0.1', port=64201, ssl_context='adhoc'):
+        """
+        Start the monitorint API server
+
+        :param host: host name or ip address (default: 127.0.0.1
+        :type host: str
+
+        :param port: port number (default: 64201)
+        :type port: int
+        """
+        thread = threading.Thread(target=self._start_monitoring_api, args=(host, port, ssl_context))
+        thread.start()
+
     def stop_manager_with_all_streams(self):
         """
         Stop the BinanceWebSocketApiManager with all streams and management threads
@@ -1344,6 +1348,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         # delete listenKeys
         for stream_id in self.stream_list:
             self.stop_stream(stream_id)
+        # stop monitoring API services
+        self.stop_monitoring_api()
+
+    def stop_monitoring_api(self):
+        """
+        Stop the monitoring API service
+        """
+        try:
+            self.monitoring_api_server.stop()
+        except AttributeError as error_msg:
+            logging.debug("can not execute self.monitoring_api_server.stop() - info: " + str(error_msg))
 
     def stop_stream(self, stream_id):
         """

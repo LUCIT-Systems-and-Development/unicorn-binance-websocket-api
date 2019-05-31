@@ -48,8 +48,10 @@ logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
-    time.sleep(60)
+    time.sleep(10)
     while True:
+        if binance_websocket_api_manager.stop_manager_request is not None:
+            exit(0)
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
@@ -109,11 +111,12 @@ channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h
 binance_websocket_api_manager.create_stream(channels, markets)
 
 # start a worker process to process to move the received stream_data from the stream_buffer to a print function
+term_thread = 0
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
 
-# start a socket server to report the current status to tools/icinga/check_binance_websocket_manager which can be used
-# as a check_command for nagios/icinga
+# start a restful api server to report the current status to 'tools/icinga/check_binance_websocket_manager' which can be
+# used as a check_command for ICINGA/Nagios
 binance_websocket_api_manager.start_monitoring_api()
 
 print("18 websockets started! now run './tools/icinga/check_binance_websocket_api_manager', but dont close this "

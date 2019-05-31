@@ -40,8 +40,8 @@ class BinanceWebSocketApiRestServer(Resource):
     def __init__(self, handler_binance_websocket_api_manager):
         self.handler_binance_websocket_api_manager = handler_binance_websocket_api_manager
 
-    def get(self, format):
-        if format == "icinga":
+    def get(self, statusformat):
+        if statusformat == "icinga":
             return self.handler_binance_websocket_api_manager.get_monitoring_status_icinga(), 200
         else:
             return "service not found", 404

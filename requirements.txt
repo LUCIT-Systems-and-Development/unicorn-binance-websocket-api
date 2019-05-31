@@ -1,3 +1,5 @@
+cheroot
+cherrypy
 colorama
 flask
 flask_restful

@@ -40,13 +40,22 @@ import textwrap
 import urllib3
 
 
+def status_unkown():
+    print("BINANCE WEBSOCKETS - UNKNOWN!!")
+    exit(3)
+
+
 parser = ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                         description=textwrap.dedent("ICINGA/Nagios compatible check_command for the Binance Websocket"
                                                     " API Manager https://github.com/unicorn-data-analysis/unicorn-"
-                                                    "binance-websocket-api"))
-parser.add_argument('-H', '--hostname', dest='hostname', help='host name or ip address (default: 127.0.0.1',
+                                                    "binance-websocket-api\r\n\r\nexamples:\r\n./check_binance_"
+                                                    "websocket_api_manager\r\n./check_binance_websocket_api_manager "
+                                                    "-H 192.168.1.10 -P 5000\r\n./check_binance_websocket_api_manager"
+                                                    " -V"))
+parser.add_argument('-H', '--hostname', dest='hostname', help='host name or ip address (default: 127.0.0.1)',
                     default="127.0.0.1")
 parser.add_argument('-P', '--port', dest='port', help='port number (default: 64201)', default=64201)
+parser.add_argument('-S', '--ssl', dest='ssl', help='use https prefix instead of http', action="store_true")
 parser.add_argument('-V', '--version', dest='version', help='print version information', action="store_true")
 parsed_args = parser.parse_args()
 
@@ -56,17 +65,18 @@ if parsed_args.version is True:
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+if parsed_args.ssl is True:
+    protocol = "https"
+else:
+    protocol = "http"
+
 try:
-    respond = requests.get('https://' + str(parsed_args.hostname) + ':' + str(parsed_args.port) + '/status/icinga', verify=False)
-
+    respond = requests.get(protocol + '://' + str(parsed_args.hostname) + ':' + str(parsed_args.port) + '/status/icinga', verify=False)
     status = respond.json()
-
     if status['text']:
         print(status['text'])
         exit(status['return_code'])
     else:
-        print("BINANCE WEBSOCKETS - UNKNOWN!!")
-        exit(3)
+        status_unkown()
 except requests.exceptions.ConnectionError:
-    print("BINANCE WEBSOCKETS - UNKNOWN!!")
-    exit(3)
+    status_unkown()

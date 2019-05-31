@@ -38,7 +38,6 @@ from .unicorn_binance_websocket_api_connection import BinanceWebSocketApiConnect
 import logging
 import websockets
 import sys
-import time
 
 
 class BinanceWebSocketApiSocket(object):
