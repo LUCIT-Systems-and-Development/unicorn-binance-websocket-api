@@ -9,4 +9,16 @@ Run './check_binance_websocket_api_manager -h' for further information!
 
 Download the latest stable release from https://exchange.icinga.com/bithon/check_binance_websocket_api_manager
 
+status: OK, WARNING, CRITICAL
+- WARNING: on restarts, available updates
+- CRITICAL: crashed streams
+
+perfdata:
+- average receives per second since last status check
+- average speed per second since last status check
+- received giga byte since start
+- stream_buffer size
+- stream_buffer items
+- reconnects
+
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
