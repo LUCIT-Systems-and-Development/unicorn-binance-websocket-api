@@ -36,6 +36,7 @@
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import logging
 import os
+import sys
 import time
 import threading
 
@@ -51,7 +52,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     time.sleep(10)
     while True:
         if binance_websocket_api_manager.stop_manager_request is not None:
-            exit(0)
+            sys.exit(0)
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
@@ -118,6 +119,9 @@ worker_thread.start()
 # start a restful api server to report the current status to 'tools/icinga/check_binance_websocket_manager' which can be
 # used as a check_command for ICINGA/Nagios
 binance_websocket_api_manager.start_monitoring_api()
+
+# if you like to not only listen on localhost use 'host="0.0.0.0"'
+# binance_websocket_api_manager.start_monitoring_api(host="0.0.0.0")
 
 print("18 websockets started! now run './tools/icinga/check_binance_websocket_api_manager', but dont close this "
       "execution!")

@@ -13,7 +13,7 @@ Read the [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](
 
 ## Monitoring
 ### Status
-OK, WARNING or CRITICAL
+OK, WARNING, CRITICAL or UNKOWN
 - WARNING: on restarts, available updates
 - CRITICAL: crashed streams
 
