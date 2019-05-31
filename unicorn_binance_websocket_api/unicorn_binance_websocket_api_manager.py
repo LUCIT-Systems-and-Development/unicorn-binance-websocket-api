@@ -958,11 +958,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Is the websocket URI length valid?
 
+        A test with https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
+        indicates that the allowed max length of an URI to binance websocket server is 8004 characters.
+
         :return: bool
         """
         uri = self.create_websocket_uri(channels, markets)
-        # a test with https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
-        # indicates that the allowed max length of an URI to binance websocket server is 8004 characters.
         if len(uri) >= 8004:
             return False
         else:
@@ -1330,7 +1331,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Start the monitorint API server
 
-        :param host: host name or ip address (default: 127.0.0.1
+        :param host: host name or ip address (default: 127.0.0.1)
         :type host: str
 
         :param port: port number (default: 64201)

@@ -9,6 +9,8 @@ Run './check_binance_websocket_api_manager -h' for further information!
 
 Download the latest stable release from https://exchange.icinga.com/bithon/check_binance_websocket_api_manager
 
+Read the [Howto: Monitoring UNICORN Binance WebSocket API Manager with Icinga2](https://www.unicorn-data.com/blog/article-details/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2.html) to learn, how you can connect your application with ICINGA2
+
 ## Monitoring
 ### Status
 OK, WARNING or CRITICAL
