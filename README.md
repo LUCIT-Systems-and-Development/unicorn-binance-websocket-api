@@ -19,7 +19,7 @@ on, you have to use the [Binance Rest API](https://github.com/binance-exchange/b
 
 Why to use the UNICORN Binance WebSocket API?
 
-- 100% auto-reconnect.
+- 100% auto-reconnect!
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
 [python-daemon](https://pypi.org/project/python-daemon/)).
