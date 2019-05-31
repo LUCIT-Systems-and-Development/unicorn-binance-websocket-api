@@ -26,7 +26,7 @@ Why to use the UNICORN Binance WebSocket API?
 - If you can not store your data in cause of a temporary technical issue, you can kick back the data to the stream_buffer which stores the receives in the RAM till you are able to process the data in the normal way again.
 - Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
 `get_stream_statistic()`, `is_websocket_uri_length_valid()`, `replace_stream()`, `wait_till_stream_has_started()` and many more, explore them [here](https://www.unicorn-data.com/unicorn-binance-websocket-api.html#binance_websocket_api_docu).
-- Monitoring API and a [check_command](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/README.md) for ICINGA/Nagios ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
+- Monitoring API service and a [check_command](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/README.md) for ICINGA/Nagios ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
 
 ## Installation
 `pip install unicorn-binance-websocket-api`
