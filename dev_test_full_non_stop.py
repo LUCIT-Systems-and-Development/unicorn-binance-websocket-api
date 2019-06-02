@@ -98,8 +98,6 @@ binance_websocket_api_manager.create_stream(channels, markets)
 
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
-    print("waiting 30 seconds, then we start flushing the stream_buffer")
-    time.sleep(30)
     while True:
         if binance_websocket_api_manager.is_manager_stopping():
             exit(0)
