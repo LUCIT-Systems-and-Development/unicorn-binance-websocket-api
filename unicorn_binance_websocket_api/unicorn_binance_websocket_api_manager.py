@@ -738,7 +738,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         elif result['restarting_streams'] > 0:
             result['status_text'] = "WARNING"
             result['return_code'] = 1
-        result['average_receives_per_second'] = (self.total_receives - self.monitoring_total_receives) / time_period
+        result['average_receives_per_second'] = ((self.total_receives - self.monitoring_total_receives) /
+                                                 time_period).__round__(2)
         result['average_speed_per_second'] = (((self.total_received_bytes - self.monitoring_total_received_bytes) /
                                                time_period) / 1024).__round__(2)
         result['total_received_mb'] = (self.get_total_received_bytes() / (1024 * 1024)).__round__(2)
@@ -748,7 +749,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.monitoring_total_receives = self.get_total_receives()
         self.monitoring_total_received_bytes = self.get_total_received_bytes()
         self.last_monitoring_check = result['timestamp']
-        result['uptime'] = ((result['timestamp'] - self.start_time) / (60*60*24)).__round__(2)  # days ...
+        result['uptime'] = ((result['timestamp'] - self.start_time) / (60*60*24)).__round__(2)
         return result
 
     def get_reconnects(self):

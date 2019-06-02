@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.3.6.dev (development stage/unreleased)
+### Changed
+- added round received items to 2 decimals instead of 0
+
 ## 1.3.6
 - wrong version in manager class ...
 
