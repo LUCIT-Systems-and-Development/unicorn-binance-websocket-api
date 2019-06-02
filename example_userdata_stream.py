@@ -63,7 +63,7 @@ user_data_stream_id = binance_websocket_api_manager.create_stream('arr', '!userD
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     while True:
-        if binance_websocket_api_manager.stop_manager_request is not None:
+        if binance_websocket_api_manager.is_manager_stopping():
             exit(0)
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         if oldest_stream_data_from_stream_buffer is False:

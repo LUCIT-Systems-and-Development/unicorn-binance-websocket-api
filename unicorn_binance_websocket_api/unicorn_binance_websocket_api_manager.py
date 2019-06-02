@@ -68,7 +68,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.3.4.dev"
+        self.version = "1.3.5.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -664,7 +664,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.keep_max_received_last_second_entries
 
-    def get_monitoring_status_icinga(self):
+    def get_monitoring_status_icinga(self, **kwargs):
         """
         Get status and perfdata to monitor and collect metrics with ICINGA/Nagios
 
@@ -679,6 +679,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         - stream_buffer size
         - stream_buffer items
         - reconnects
+        - uptime
 
         :return: dict (text, time, return_code)
         """
@@ -692,7 +693,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                         str(result['average_speed_per_second']) + ";;;0 " \
                         "received_mb=" + str(result['total_received_mb']) + ";;;0 stream_buffer_mb=" + \
                         str(int(result['stream_buffer_mb'])) + ";;;0 stream_buffer_items=" + \
-                        str(result['stream_buffer_items']) + ";;;0 reconnects=" + str(result['reconnects']) + ";;;0"
+                        str(result['stream_buffer_items']) + ";;;0 reconnects=" + str(result['reconnects']) + ";;;0 " \
+                        "uptime_days=" + str(result['uptime']) + ";;;0"
         status = {'text': check_message,
                   'time': int(result['timestamp']),
                   'return_code': result['return_code']}
@@ -703,7 +705,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Get plain monitoring status data:
         active_streams, crashed_streams, restarting_streams, stopped_streams, return_code, status_text,
         timestamp, update_msg, average_receives_per_second, average_speed_per_second, total_received_mb,
-        stream_buffer_items, stream_buffer_mb, reconnects
+        stream_buffer_items, stream_buffer_mb, reconnects, uptime
 
         :return: dict
         """
@@ -737,15 +739,16 @@ class BinanceWebSocketApiManager(threading.Thread):
             result['status_text'] = "WARNING"
             result['return_code'] = 1
         result['average_receives_per_second'] = (self.total_receives - self.monitoring_total_receives) / time_period
-        result['average_speed_per_second'] = int(((self.total_received_bytes - self.monitoring_total_received_bytes) /
-                                                  time_period) / 1024)
-        result['total_received_mb'] = int(self.get_total_received_bytes() / (1024 * 1024))
+        result['average_speed_per_second'] = (((self.total_received_bytes - self.monitoring_total_received_bytes) /
+                                               time_period) / 1024).__round__(2)
+        result['total_received_mb'] = (self.get_total_received_bytes() / (1024 * 1024)).__round__(2)
         result['stream_buffer_items'] = str(len(self.stream_buffer))
-        result['stream_buffer_mb'] = self.get_stream_buffer_byte_size() / (1024 * 1024)
+        result['stream_buffer_mb'] = (self.get_stream_buffer_byte_size() / (1024 * 1024)).__round__(2)
         result['reconnects'] = self.get_reconnects()
         self.monitoring_total_receives = self.get_total_receives()
         self.monitoring_total_received_bytes = self.get_total_received_bytes()
         self.last_monitoring_check = result['timestamp']
+        result['uptime'] = ((result['timestamp'] - self.start_time) / (60*60*24)).__round__(2)  # days ...
         return result
 
     def get_reconnects(self):
@@ -922,6 +925,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['reconnects'] += 1
         self.reconnects += 1
 
+    def is_manager_stopping(self):
+        """
+        Returns `True` if the manager has a stop request, 'False' if not.
+
+        :return: bool
+        """
+        if self.stop_manager_request is None:
+            return False
+        else:
+            return True
+
     def is_stop_request(self, stream_id):
         """
         Has a specific stream a stop_request?
@@ -933,7 +947,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.debug("BinanceWebSocketApiManager->is_stop_request(" + str(stream_id) + ")")
         if self.stream_list[stream_id]['stop_request'] is True:
             return True
-        elif self.stop_manager_request is True:
+        elif self.is_manager_stopping():
             return True
         else:
             return False

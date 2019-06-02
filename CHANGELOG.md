@@ -4,9 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.3.4.dev (development stage/unreleased)
+## 1.3.5.dev (development stage/unreleased)
+
+## 1.3.5
 ### Added
-- TODO.md file
+- is_manager_stopping()
 ### Fixed
 - is_update_available returns False if github API is not available.
 

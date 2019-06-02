@@ -51,7 +51,7 @@ logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     time.sleep(10)
     while True:
-        if binance_websocket_api_manager.stop_manager_request is not None:
+        if binance_websocket_api_manager.is_manager_stopping():
             sys.exit(0)
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         if oldest_stream_data_from_stream_buffer is False:

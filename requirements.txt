@@ -1,5 +1,6 @@
 cheroot
 colorama
+flask
 flask_restful
 pathlib
 requests
