@@ -25,5 +25,6 @@ OK, WARNING, CRITICAL or UNKOWN
 - stream_buffer size
 - stream_buffer items
 - reconnects since start
+- uptime
 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
