@@ -120,7 +120,8 @@ worker_thread.start()
 binance_websocket_api_manager.start_monitoring_api()
 
 # if you like to not only listen on localhost use 'host="0.0.0.0"'
-# binance_websocket_api_manager.start_monitoring_api(host="0.0.0.0")
+# for a specific port do 'port=80'
+# binance_websocket_api_manager.start_monitoring_api(host="0.0.0.0", port=80)
 
 print("18 websockets started! now run './tools/icinga/check_binance_websocket_api_manager', but dont close this "
       "execution!")
