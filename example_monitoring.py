@@ -111,7 +111,6 @@ channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h
 binance_websocket_api_manager.create_stream(channels, markets)
 
 # start a worker process to process to move the received stream_data from the stream_buffer to a print function
-term_thread = 0
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
 
