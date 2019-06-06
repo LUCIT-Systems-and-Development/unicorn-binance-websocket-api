@@ -2,9 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
+The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
+[Semantic Versioning](http://semver.org/).
 
-## 1.3.6.dev (development stage/unreleased)
+## 1.3.8.dev (development stage/unreleased)
+
+## 1.3.8
+### Added
+- `get_stream_buffer_length()` by DaWe35 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/pull/12
+### Fixed
+- the `stream_buffer` FIFO stack was a LIFO stack (Thanks to DaWe35 for recognizing and fixing this issue 
+https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/pull/12)
+- `get_stream_buffer_byte_size` returns now the real size of the stream_buffer
+
+## 1.3.7
 ### Changed
 - added round received items to 2 decimals instead of 0
 

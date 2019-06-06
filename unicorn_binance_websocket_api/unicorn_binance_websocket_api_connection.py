@@ -154,14 +154,14 @@ class BinanceWebSocketApiConnection(object):
             await self._conn.__aexit__(*args, **kwargs)
         except AttributeError as error_msg:
             logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
-                             "AttributeError - " + str(error_msg))
+                          "AttributeError - " + str(error_msg))
             try:
                 self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
                 logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
-                                 "AttributeError - close() - done!")
+                              "AttributeError - close() - done!")
             except KeyError as error_msg:
                 logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
-                                 "KeyError - " + str(error_msg))
+                              "KeyError - " + str(error_msg))
         except websockets.exceptions.ConnectionClosed as error_msg:
             logging.critical("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                              "ConnectionClosed - " + str(error_msg))
@@ -192,7 +192,7 @@ class BinanceWebSocketApiConnection(object):
             return received_data
         except RuntimeError as error_msg:
             logging.debug("binance_websocket_api_connection->receive(" +
-                             str(self.stream_id) + ") - RuntimeError - error_msg: " + str(error_msg))
+                          str(self.stream_id) + ") - RuntimeError - error_msg: " + str(error_msg))
             sys.exit(1)
         except ssl.SSLError as error_msg:
             logging.debug("binance_websocket_api_connection->receive(" +

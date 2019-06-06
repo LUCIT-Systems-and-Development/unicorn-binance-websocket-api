@@ -68,7 +68,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.3.7.dev"
+        self.version = "1.3.8"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -92,7 +92,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.restart_requests = {}
         self.start_time = time.time()
         self.stream_buffer = []
-        self.stream_buffer_byte_size = 0
         self.last_entry_added_to_stream_buffer = 0
         self.last_monitoring_check = time.time()
         self.last_update_check_github = {'timestamp': time.time(),
@@ -348,7 +347,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         self.stream_buffer.append(stream_data)
         self.last_entry_added_to_stream_buffer = time.time()
-        self.stream_buffer_byte_size += sys.getsizeof(stream_data)
 
     def add_total_received_bytes(self, size):
         # add received bytes to the total received bytes statistic
@@ -774,7 +772,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: int
         """
-        return self.stream_buffer_byte_size
+        return sys.getsizeof(self.stream_buffer)
 
     def get_stream_buffer_length(self):
         """
@@ -1000,7 +998,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         try:
             stream_data = self.stream_buffer.pop(0)
-            self.stream_buffer_byte_size -= sys.getsizeof(stream_data)
             return stream_data
         except IndexError:
             return False
@@ -1191,10 +1188,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             received_bytes_per_second = self.get_total_received_bytes() / (time.time() - self.start_time)
             received_bytes_per_x_row += str((received_bytes_per_second / 1024).__round__(2)) + " kB/s (per day " + \
                                         str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(2)) + " gB)"
-            if len(self.stream_buffer) > 50:
+            if self.get_stream_buffer_length() > 50:
                 stream_row_color_prefix = "\033[1m\033[34m"
                 stream_row_color_suffix = "\033[0m"
-                stream_buffer_row += stream_row_color_prefix + " stream_buffer_stored_items: " + str(len(self.stream_buffer)) + "\r\n"
+                stream_buffer_row += stream_row_color_prefix + " stream_buffer_stored_items: " + str(self.get_stream_buffer_length()) + "\r\n"
                 stream_buffer_row += " stream_buffer_byte_size: " + str(self.get_stream_buffer_byte_size()) + \
                                      " (" + str(
                     self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")" + stream_row_color_suffix + "\r\n"
