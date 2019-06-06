@@ -11,7 +11,7 @@
 # UNICORN Binance WebSocket API
 A python API to use the Binance Websocket API in a easy, fast, flexible, robust and fully-featured way.
 
-Create a multiplex websocket connection to Binance with just 3 lines of code:
+### Create a multiplex websocket connection to Binance with just 3 lines of code:
 ```
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 
