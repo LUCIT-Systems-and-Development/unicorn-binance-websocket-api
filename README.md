@@ -1,11 +1,12 @@
 ![GitHub release](https://img.shields.io/github/release/unicorn-data-analysis/unicorn-binance-websocket-api.svg) 
+![GitHub](https://img.shields.io/github/license/unicorn-data-analysis/unicorn-binance-websocket-api.svg?color=blue) 
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg) 
 ![code coverage 100%](https://img.shields.io/badge/coverage-100%25-brightgreen.svg) 
 ![PyPI - Status](https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg) 
 ![PyPI - yes](https://img.shields.io/badge/PyPI-yes-brightgreen.svg) 
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg) 
-![PyPI - Downloads](https://img.shields.io/pypi/dm/unicorn-binance-websocket-api.svg)
-![GitHub](https://img.shields.io/github/license/unicorn-data-analysis/unicorn-binance-websocket-api.svg) 
+![PyPI - Downloads](https://img.shields.io/pypi/dm/unicorn-binance-websocket-api.svg?color=orange)
+
 
 # UNICORN Binance WebSocket API
 A python API to use the Binance Websocket API in a easy, fast, flexible, robust and fully-featured way.
