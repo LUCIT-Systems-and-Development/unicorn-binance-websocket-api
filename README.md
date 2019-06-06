@@ -19,6 +19,7 @@ binance_websocket_api_manager = BinanceWebSocketApiManager()
 binance_websocket_api_manager.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
 
+### Description
 The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) 
 provides an API to the [Binance Websocket API](https://github.com/binance-exchange/binance-official-api-docs), which 
 supports the streaming of public streams like trade, kline, ticker and depth, but also the private userData stream which 
@@ -32,8 +33,7 @@ Be aware that the Binance websocket API just offers to receive data. If you woul
 on, you have to use the [Binance Rest API](https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md) 
 in combination. 
 
-Why to use the UNICORN Binance WebSocket API?
-
+What are the benefits of the UNICORN Binance WebSocket API?
 - 100% auto-reconnect!
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
@@ -48,11 +48,6 @@ and a [check_command](https://github.com/unicorn-data-analysis/unicorn-binance-w
 for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_manager)/Nagios 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
 
-## Example
-https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py
-
-![demo_gif](https://s3.gifyu.com/images/unicorn_binance_websocket_api_demo.gif)
-
 ## Installation
 `pip install unicorn-binance-websocket-api`
 
@@ -60,6 +55,11 @@ https://pypi.org/project/unicorn-binance-websocket-api/
 
 Note: UnicornFy is no longer part of this package! Please visit https://github.com/unicorn-data-analysis/unicorn_fy for
 further information.
+
+## Example
+https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py
+
+![demo_gif](https://s3.gifyu.com/images/unicorn_binance_websocket_api_demo.gif)
 
 ## Howto: 
 https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html
