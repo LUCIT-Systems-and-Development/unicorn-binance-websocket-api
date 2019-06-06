@@ -747,7 +747,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         result['total_received_mb'] = (self.get_total_received_bytes() / (1024 * 1024)).__round__(2)
         result['stream_buffer_items'] = str(self.get_stream_buffer_length())
         result['stream_buffer_mb'] = (self.get_stream_buffer_byte_size() / (1024 * 1024)).__round__(2)
-        result['stream_buffer_length'] = (self.get_stream_buffer_length())
         result['reconnects'] = self.get_reconnects()
         self.monitoring_total_receives = self.get_total_receives()
         self.monitoring_total_received_bytes = self.get_total_received_bytes()
