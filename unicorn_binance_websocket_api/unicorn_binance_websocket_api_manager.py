@@ -93,7 +93,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.start_time = time.time()
         self.stream_buffer = []
         self.stream_buffer_byte_size = 0
-        self.stream_buffer_length = 0
         self.last_entry_added_to_stream_buffer = 0
         self.last_monitoring_check = time.time()
         self.last_update_check_github = {'timestamp': time.time(),
@@ -350,7 +349,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_buffer.append(stream_data)
         self.last_entry_added_to_stream_buffer = time.time()
         self.stream_buffer_byte_size += sys.getsizeof(stream_data)
-        self.stream_buffer_length += 1
 
     def add_total_received_bytes(self, size):
         # add received bytes to the total received bytes statistic
@@ -784,10 +782,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: int
         """
-        #return len(self.stream_buffer) #I think this is slower, because len() always checks the whole buffer
-        return self.stream_buffer_length
-
-
+        return len(self.stream_buffer)
 
     def get_stream_info(self, stream_id):
         """
@@ -1006,7 +1001,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             stream_data = self.stream_buffer.pop(0)
             self.stream_buffer_byte_size -= sys.getsizeof(stream_data)
-            self.stream_buffer_length -= 1
             return stream_data
         except IndexError:
             return False
