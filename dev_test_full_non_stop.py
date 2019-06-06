@@ -39,6 +39,17 @@ import time
 import threading
 import os
 
+
+def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
+    time.sleep(30)
+    while True:
+        if binance_websocket_api_manager.is_manager_stopping():
+            exit(0)
+        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+        if oldest_stream_data_from_stream_buffer is False:
+            time.sleep(0.01)
+
+
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
@@ -96,25 +107,6 @@ channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h
             'miniTicker', 'depth20'}
 binance_websocket_api_manager.create_stream(channels, markets)
 
-
-def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
-    time.sleep(30)
-    while True:
-        if binance_websocket_api_manager.is_manager_stopping():
-            exit(0)
-        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
-        if oldest_stream_data_from_stream_buffer is False:
-            time.sleep(0.01)
-        else:
-            try:
-                # remove # to activate the print function:
-                #print(oldest_stream_data_from_stream_buffer)
-                pass
-            except Exception:
-                # not able to process the data? write it back to the stream_buffer
-                binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
-
-
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
@@ -122,5 +114,4 @@ worker_thread.start()
 # show an overview
 while True:
     binance_websocket_api_manager.print_summary()
-    #binance_websocket_api_manager.print_stream_info(userdata_stream_id)
     time.sleep(1)
