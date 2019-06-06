@@ -1,5 +1,4 @@
 ![GitHub release](https://img.shields.io/github/release/unicorn-data-analysis/unicorn-binance-websocket-api.svg) 
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/unicorn-data-analysis/unicorn-binance-websocket-api.svg) 
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg) 
 ![code coverage 100%](https://img.shields.io/badge/coverage-100%25-brightgreen.svg) 
 ![PyPI - Status](https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg) 
