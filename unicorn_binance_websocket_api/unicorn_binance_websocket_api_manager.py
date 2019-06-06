@@ -743,7 +743,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         result['average_speed_per_second'] = (((self.total_received_bytes - self.monitoring_total_received_bytes) /
                                                time_period) / 1024).__round__(2)
         result['total_received_mb'] = (self.get_total_received_bytes() / (1024 * 1024)).__round__(2)
-        result['stream_buffer_items'] = str(len(self.stream_buffer))
+        result['stream_buffer_items'] = str(self.get_stream_buffer_length())
         result['stream_buffer_mb'] = (self.get_stream_buffer_byte_size() / (1024 * 1024)).__round__(2)
         result['reconnects'] = self.get_reconnects()
         self.monitoring_total_receives = self.get_total_receives()
@@ -775,6 +775,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         return self.stream_buffer_byte_size
+
+    def get_stream_buffer_length(self):
+        """
+        Get the current number of data in the stream_buffer
+
+        :return: int
+        """
+        return len(self.stream_buffer)
 
     def get_stream_info(self, stream_id):
         """
@@ -991,7 +999,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: raw_stream_data (set) or False
         """
         try:
-            stream_data = self.stream_buffer.pop()
+            stream_data = self.stream_buffer.pop(0)
             self.stream_buffer_byte_size -= sys.getsizeof(stream_data)
             return stream_data
         except IndexError:
