@@ -1004,7 +1004,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: raw_stream_data (set) or False
         """
         try:
-            stream_data = self.stream_buffer.pop()
+            stream_data = self.stream_buffer.pop(0)
             self.stream_buffer_byte_size -= sys.getsizeof(stream_data)
             self.stream_buffer_length -= 1
             return stream_data
