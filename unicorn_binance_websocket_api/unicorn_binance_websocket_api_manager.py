@@ -776,7 +776,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_stream_buffer_length(self):
         """
-        Get the current number of data in the stream_buffer
+        Get the current number of items in the stream_buffer
 
         :return: int
         """
