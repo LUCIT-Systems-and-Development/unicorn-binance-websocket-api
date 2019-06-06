@@ -11,7 +11,13 @@
 # UNICORN Binance WebSocket API
 A python API to use the Binance Websocket API in a easy, fast, flexible, robust and fully-featured way.
 
-![demo_gif](https://s3.gifyu.com/images/unicorn_binance_websocket_api_demo.gif)
+## Create a multiplex websocket connection to Binance with just 3 lines of code:
+```
+from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+
+binance_websocket_api_manager = BinanceWebSocketApiManager()
+binance_websocket_api_manager.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
+```
 
 The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) 
 provides an API to the [Binance Websocket API](https://github.com/binance-exchange/binance-official-api-docs), which 
@@ -41,6 +47,11 @@ many more, explore them [here](https://www.unicorn-data.com/unicorn-binance-webs
 and a [check_command](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/) 
 for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_manager)/Nagios 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
+
+## Example
+https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py
+
+![demo_gif](https://s3.gifyu.com/images/unicorn_binance_websocket_api_demo.gif)
 
 ## Installation
 `pip install unicorn-binance-websocket-api`
