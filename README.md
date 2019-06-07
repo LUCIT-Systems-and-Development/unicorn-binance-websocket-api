@@ -55,6 +55,7 @@ further information.
 `pip install unicorn-binance-websocket-api --upgrade`
 ### From source of the latest release with PIP from [Github](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)
 #### Linux, macOS, ...
+Run this in bash:
 ```
 LATEST=$(curl -s https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')
 pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/$LATEST.tar.gz --upgrade
