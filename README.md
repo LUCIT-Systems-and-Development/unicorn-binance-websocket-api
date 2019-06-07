@@ -66,7 +66,8 @@ Use the below command with the version (such as 1.3.8) you determined [here](htt
 ### From the latest source (dev-stage) with PIP from [Github](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)
 `pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/tarball/master --upgrade`
 
-### Conda environment, Virtualenv or plain download use:
+### [Conda environment](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html), [Virtualenv](https://virtualenv.pypa.io/en/latest/) or plain [python](https://docs.python.org/2/install/)
+Download the latest release (or clone the latest repository) and use:
 - ./environment.yml
 - ./requirements.txt
 - ./setup.py
