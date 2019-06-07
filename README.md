@@ -49,7 +49,7 @@ for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_mana
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
 
 ## Installation and upgrade
-Please note: UnicornFy is not longer part of this package! Please visit https://github.com/unicorn-data-analysis/unicorn_fy for
+Please note: UnicornFy is not longer part of this package, visit https://github.com/unicorn-data-analysis/unicorn_fy for
 further information.
 ### From latest wheel with PIP from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
 `pip install unicorn-binance-websocket-api --upgrade`
@@ -67,7 +67,9 @@ Use the below command with the version (such as 1.3.8) you determined [here](htt
 `pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/tarball/master --upgrade`
 
 ### [Conda environment](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html), [Virtualenv](https://virtualenv.pypa.io/en/latest/) or plain [python](https://docs.python.org/2/install/)
-Download the latest release (or clone the latest repository) and use:
+Download the [latest release](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest) 
+or the [current master branch](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/master.zip)
+ and use:
 - ./environment.yml
 - ./requirements.txt
 - ./setup.py
