@@ -667,8 +667,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         Get status and perfdata to monitor and collect metrics with ICINGA/Nagios
 
         status: OK, WARNING, CRITICAL
-            WARNING: on restarts, available updates
-            CRITICAL: crashed streams
+        - WARNING: on restarts, available updates
+        - CRITICAL: crashed streams
 
         perfdata:
         - average receives per second since last status check
