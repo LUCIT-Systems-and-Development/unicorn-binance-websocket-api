@@ -48,13 +48,28 @@ and a [check_command](https://github.com/unicorn-data-analysis/unicorn-binance-w
 for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_manager)/Nagios 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
 
-## Installation
-`pip install unicorn-binance-websocket-api`
-
-https://pypi.org/project/unicorn-binance-websocket-api/
-
-Note: UnicornFy is no longer part of this package! Please visit https://github.com/unicorn-data-analysis/unicorn_fy for
+## Installation and upgrade
+Please note: UnicornFy is not longer part of this package! Please visit https://github.com/unicorn-data-analysis/unicorn_fy for
 further information.
+### From latest wheel with PIP from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
+`pip install unicorn-binance-websocket-api --upgrade`
+### From source of the latest release with PIP from [Github](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)
+#### Linux, macOS, ...
+```
+LATEST=$(curl -s https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')
+pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/$LATEST.tar.gz --upgrade
+```
+#### Windows
+Use the below command with the version (such as 1.3.8) you determined [here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest):
+
+`pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/1.3.8.tar.gz --upgrade`
+### From the latest source (dev-stage) with PIP from [Github](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)
+`pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/tarball/master --upgrade`
+
+### Conda environment, Virtualenv or plain download use:
+- ./environment.yml
+- ./requirements.txt
+- ./setup.py
 
 ## Example
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py
