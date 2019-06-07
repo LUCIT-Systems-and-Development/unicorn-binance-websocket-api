@@ -48,7 +48,7 @@ and a [check_command](https://github.com/unicorn-data-analysis/unicorn-binance-w
 for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_manager)/Nagios 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
 
-## Installation and upgrade
+## Installation and Upgrade
 Please note: UnicornFy is not longer part of this package, visit https://github.com/unicorn-data-analysis/unicorn_fy for
 further information.
 ### A wheel of the latest release with PIP from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
@@ -86,13 +86,13 @@ https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocke
 ## Documentation: 
 https://www.unicorn-data.com/unicorn-binance-websocket-api.html
 
-## Project, code and downloads: 
+## Project, Code and Downloads: 
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
 
 ## Wiki
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
 
-## How to report bugs or suggest improvements?
+## How to report Bugs or suggest Improvements?
 First try the latest release via [download](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases) 
 or with `pip install unicorn-binance-websocket-api --upgrade`. If the issue still exists, provide the error trace, OS 
 and python version and explain how to reproduce the error. A demo script is appreciated.
