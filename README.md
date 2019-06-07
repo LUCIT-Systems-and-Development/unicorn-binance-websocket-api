@@ -51,7 +51,7 @@ for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_mana
 ## Installation and upgrade
 Please note: UnicornFy is not longer part of this package, visit https://github.com/unicorn-data-analysis/unicorn_fy for
 further information.
-### From latest wheel with PIP from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
+### A wheel of the latest release with PIP from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
 `pip install unicorn-binance-websocket-api --upgrade`
 ### From source of the latest release with PIP from [Github](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)
 #### Linux, macOS, ...
