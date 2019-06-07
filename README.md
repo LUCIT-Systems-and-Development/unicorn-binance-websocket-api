@@ -74,7 +74,7 @@ or the [current master branch](https://github.com/unicorn-data-analysis/unicorn-
 - ./requirements.txt
 - ./setup.py
 
-## Example
+## Demo
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py
 
 ![demo_gif](https://s3.gifyu.com/images/unicorn_binance_websocket_api_demo.gif)
