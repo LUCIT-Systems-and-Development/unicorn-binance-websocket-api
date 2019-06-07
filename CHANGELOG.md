@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.3.8.dev (development stage/unreleased)
+### Changed
+- Docstrings for `markets` and `channels` to support: str, tuple, list, set
 
 ## 1.3.8
 ### Added

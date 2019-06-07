@@ -357,10 +357,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         Create a websocket stream
 
         :param channels: provide the channels you wish to stream
-        :type channels: str or tuple
+        :type channels: str, tuple, list, set
 
         :param markets: provide the markets you wish to stream
-        :type markets: str or tuple
+        :type markets: str, tuple, list, set
 
         :return: stream_id
         """
@@ -377,10 +377,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         Create a websocket URI
 
         :param channels: provide the channels to create the URI
-        :type channels: str or tuple
+        :type channels: str, tuple, list, set
 
         :param markets: provide the markets to create the URI
-        :type markets: str or tuple
+        :type markets: str, tuple, list, set
 
         :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
         :type stream_id: uuid
@@ -903,10 +903,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         Get the length of the generated websocket URI
 
         :param channels: provide the channels to create the URI
-        :type channels: str or tuple
+        :type channels: str, tuple, list, set
 
         :param markets: provide the markets to create the URI
-        :type markets: str or tuple
+        :type markets: str, tuple, list, set
 
         :return: int
         """
@@ -1260,10 +1260,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: uuid
 
         :param new_channels: the new channel list for the stream
-        :type new_channels: str or tuple
+        :type new_channels: str, tuple, list, set
 
         :param new_markets: the new markets list for the stream
-        :type new_markets: str or tuple
+        :type new_markets: str, tuple, list, set
 
         :return: new stream_id
         """
@@ -1349,7 +1349,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def start_monitoring_api(self, host='127.0.0.1', port=64201, ssl_context='adhoc'):
         """
-        Start the monitorint API server
+        Start the monitoring API server
 
         :param host: host name or ip address (default: 127.0.0.1)
         :type host: str
