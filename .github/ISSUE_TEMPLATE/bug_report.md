@@ -54,7 +54,7 @@ Include here the response of 'pip --version' or 'pip3 --version'
 
 #### UNICORN Binance WebSocket API Version?
 ```
-Did you upgrade to the latest version with `pip install unicorn-binance-websocket-api --upgrade`?
+Did you upgrade to the latest release version with `pip install unicorn-binance-websocket-api --upgrade`?
 ```
 
 #### Description of your issue
