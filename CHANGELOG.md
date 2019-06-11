@@ -5,9 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.3.8.dev (development stage/unreleased)
+## 1.3.9.dev (development stage/unreleased)
+
+## 1.3.9
 ### Changed
 - Docstrings for `markets` and `channels` to support: str, tuple, list, set
+- Fine tuning of perfdata output in `get_monitoring_status_plain()` and `get_monitoring_status_icinga()`
 
 ## 1.3.8
 ### Added

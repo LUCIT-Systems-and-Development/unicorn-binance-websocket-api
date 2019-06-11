@@ -56,10 +56,7 @@ further information.
 ### From source of the latest release with PIP from [Github](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)
 #### Linux, macOS, ...
 Run in bash:
-```
-LATEST=$(curl -s https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')
-pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/$LATEST.tar.gz --upgrade
-```
+`pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
 #### Windows
 Use the below command with the version (such as 1.3.8) you determined [here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest):
 

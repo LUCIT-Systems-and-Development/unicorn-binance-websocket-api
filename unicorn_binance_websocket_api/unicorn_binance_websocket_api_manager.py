@@ -68,7 +68,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.3.8.dev"
+        self.version = "1.3.9.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -673,7 +673,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         perfdata:
         - average receives per second since last status check
         - average speed per second since last status check
-        - received giga byte since start
+        - received megabyte since start
         - stream_buffer size
         - stream_buffer items
         - reconnects
@@ -687,12 +687,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         check_message = "BINANCE WEBSOCKETS - " + result['status_text'] + ": O:" + str(result['active_streams']) + \
                         "/R:" + str(result['restarting_streams']) + "/C:" + str(result['crashed_streams']) + "/S:" + \
                         str(result['stopped_streams']) + result['update_msg'] + " | " + "receives_per_second=" + \
-                        str(int(result['average_receives_per_second'])) + ";;;0 kb_per_second=" + \
-                        str(result['average_speed_per_second']) + ";;;0 " \
-                        "received_mb=" + str(result['total_received_mb']) + ";;;0 stream_buffer_mb=" + \
-                        str(int(result['stream_buffer_mb'])) + ";;;0 stream_buffer_items=" + \
-                        str(result['stream_buffer_items']) + ";;;0 reconnects=" + str(result['reconnects']) + ";;;0 " \
-                        "uptime_days=" + str(result['uptime']) + ";;;0"
+                        str(result['average_receives_per_second']) + ";;;0 kb_per_second=" + \
+                        str(result['average_speed_per_second']) + "KB;;;0 " \
+                        "received_mb=" + str(result['total_received_mb']) + "MB;;;0 stream_buffer_mb=" + \
+                        str(result['stream_buffer_mb']) + "MB;;;0 stream_buffer_items=" + \
+                        str(result['stream_buffer_items']) + ";;;0 reconnects=" + str(result['reconnects']) + "c;;;0 " \
+                        "uptime_days=" + str(result['uptime']) + "c;;;0"
         status = {'text': check_message,
                   'time': int(result['timestamp']),
                   'return_code': result['return_code']}
@@ -742,12 +742,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                time_period) / 1024).__round__(2)
         result['total_received_mb'] = (self.get_total_received_bytes() / (1024 * 1024)).__round__(2)
         result['stream_buffer_items'] = str(self.get_stream_buffer_length())
-        result['stream_buffer_mb'] = (self.get_stream_buffer_byte_size() / (1024 * 1024)).__round__(2)
+        result['stream_buffer_mb'] = (self.get_stream_buffer_byte_size() / (1024 * 1024)).__round__(4)
         result['reconnects'] = self.get_reconnects()
         self.monitoring_total_receives = self.get_total_receives()
         self.monitoring_total_received_bytes = self.get_total_received_bytes()
         self.last_monitoring_check = result['timestamp']
-        result['uptime'] = ((result['timestamp'] - self.start_time) / (60*60*24)).__round__(2)
+        result['uptime'] = ((result['timestamp'] - self.start_time) / (60*60*24)).__round__(3)
         return result
 
     def get_reconnects(self):

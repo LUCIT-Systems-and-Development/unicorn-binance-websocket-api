@@ -28,3 +28,6 @@ OK, WARNING, CRITICAL or UNKOWN
 - uptime
 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
+
+## TODO
+- implement individual warning and criticial status for specific metrics (http://nagios-plugins.org/doc/guidelines.html)
