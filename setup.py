@@ -44,12 +44,13 @@ setuptools.setup(
      author="UNICORN Data Analysis",
      url="https://www.unicorn-data.com",
      scripts=['unicorn_binance_websocket_api.py'],
-     description="A python API to use the Binance Websocket API in a easy, fast, flexible, robust and fully-featured way.",
+     description="A python API to use the Binance Websocket API in a easy, fast, flexible, "
+                 "robust and fully-featured way.",
      long_description=long_description,
      long_description_content_type="text/markdown",
      license='MIT License',
-     install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets', 'flask_restful', 'cheroot',
-                       'flask'],
+     install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets>=7.0', 'flask_restful',
+                       'cheroot', 'flask'],
      keywords='unicorn-data-analysis, binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
               'binance-websocket, binance-webstream, webstream, websocket, api',
      project_urls={
