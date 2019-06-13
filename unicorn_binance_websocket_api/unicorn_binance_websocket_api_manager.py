@@ -687,10 +687,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         check_message = "BINANCE WEBSOCKETS - " + result['status_text'] + ": O:" + str(result['active_streams']) + \
                         "/R:" + str(result['restarting_streams']) + "/C:" + str(result['crashed_streams']) + "/S:" + \
                         str(result['stopped_streams']) + result['update_msg'] + " | " + "receives_per_second=" + \
-                        str(result['average_receives_per_second']) + ";;;0 kb_per_second=" + \
-                        str(result['average_speed_per_second']) + "KB;;;0 " \
-                        "received_mb=" + str(result['total_received_mb']) + "MB;;;0 stream_buffer_mb=" + \
-                        str(result['stream_buffer_mb']) + "MB;;;0 stream_buffer_items=" + \
+                        str(result['average_receives_per_second']) + ";;;0 transfer_rate_per_second=" + \
+                        str(result['average_speed_per_second']) + "KB;;;0 " + " total_received_length=" + \
+                        str(result['total_received_length']) + "total_received_size=" + \
+                        str(result['total_received_mb']) + "MB;;;0 stream_buffer_size=" + \
+                        str(result['stream_buffer_mb']) + "MB;;;0 stream_buffer_length=" + \
                         str(result['stream_buffer_items']) + ";;;0 reconnects=" + str(result['reconnects']) + "c;;;0 " \
                         "uptime_days=" + str(result['uptime']) + "c;;;0"
         status = {'text': check_message,
@@ -741,6 +742,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         result['average_speed_per_second'] = (((self.total_received_bytes - self.monitoring_total_received_bytes) /
                                                time_period) / 1024).__round__(2)
         result['total_received_mb'] = (self.get_total_received_bytes() / (1024 * 1024)).__round__(2)
+        result['total_received_length'] = self.total_receives
         result['stream_buffer_items'] = str(self.get_stream_buffer_length())
         result['stream_buffer_mb'] = (self.get_stream_buffer_byte_size() / (1024 * 1024)).__round__(4)
         result['reconnects'] = self.get_reconnects()
