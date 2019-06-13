@@ -686,10 +686,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             result['update_msg'] = " - " + result['update_msg']
         check_message = "BINANCE WEBSOCKETS - " + result['status_text'] + ": O:" + str(result['active_streams']) + \
                         "/R:" + str(result['restarting_streams']) + "/C:" + str(result['crashed_streams']) + "/S:" + \
-                        str(result['stopped_streams']) + result['update_msg'] + " | " + "receives_per_second=" + \
+                        str(result['stopped_streams']) + result['update_msg'] + " | " + "average_receives_per_second=" + \
                         str(result['average_receives_per_second']) + ";;;0 transfer_rate_per_second=" + \
                         str(result['average_speed_per_second']) + "KB;;;0 " + " total_received_length=" + \
-                        str(result['total_received_length']) + "total_received_size=" + \
+                        str(result['total_received_length']) + "c;;;0 total_received_size=" + \
                         str(result['total_received_mb']) + "MB;;;0 stream_buffer_size=" + \
                         str(result['stream_buffer_mb']) + "MB;;;0 stream_buffer_length=" + \
                         str(result['stream_buffer_items']) + ";;;0 reconnects=" + str(result['reconnects']) + "c;;;0 " \
