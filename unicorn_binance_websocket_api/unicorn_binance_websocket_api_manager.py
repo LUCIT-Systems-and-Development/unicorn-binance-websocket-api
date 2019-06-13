@@ -448,11 +448,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 return False
                         else:
                             return False
-                else:
-                    if market == "!userData" or market == "!miniTicker":
-                        query += market + "@" + channel + "/"
                     else:
-                        query += market.lower() + "@" + channel + "/"
+                        return False
+                else:
+                    query += market.lower() + "@" + channel + "/"
         uri = self.websocket_base_uri + str(query)
         return uri
 
