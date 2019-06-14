@@ -365,12 +365,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: stream_id
         """
         # create a stream
-        logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets) + ")")
-        stream_id = uuid.uuid4()
-        loop = asyncio.new_event_loop()
-        thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels, markets))
-        thread.start()
-        return stream_id
+        if !self.is_websocket_uri_length_valid():
+            print('The allowed max length of an URI to binance websocket server is 8004 characters')
+            return False
+        else:
+            logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets) + ")")
+            stream_id = uuid.uuid4()
+            loop = asyncio.new_event_loop()
+            thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels, markets))
+            thread.start()
+            return stream_id
 
     def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False):
         """
