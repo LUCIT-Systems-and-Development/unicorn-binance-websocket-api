@@ -9,4 +9,4 @@ dependencies:
   - pathlib
   - requests
   - websocket-client
-  - websockets
+  - websockets>=7.0
