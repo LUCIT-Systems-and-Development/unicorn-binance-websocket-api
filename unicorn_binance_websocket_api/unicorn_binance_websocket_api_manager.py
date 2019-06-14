@@ -365,8 +365,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: stream_id
         """
         # create a stream
-        if !self.is_websocket_uri_length_valid():
-            print('The allowed max length of an URI to binance websocket server is 8004 characters')
+        if not self.is_websocket_uri_length_valid(channels, markets):
+            print("ERROR: the allowed max length of an URI to binance websocket server is 8004 characters")
+            logging.critical("the allowed max length of an URI to binance websocket server is 8004 characters")
             return False
         else:
             logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets) + ")")
