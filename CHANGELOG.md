@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.3.10.dev (development stage/unreleased)
+### Fixed
+- removed space from `total_received_length` in `get_monitoring_status_icinga()`
 
 ## 1.3.10
 ### Added
