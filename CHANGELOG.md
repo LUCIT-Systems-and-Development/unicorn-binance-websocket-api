@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Changed
 - create_stream() returns False if websocket URL is to long
 ### Fixed
-- ´is_websocket_uri_length_valid()` to work with !userData on the pre test in `create_stream()` without api secrets
+- `is_websocket_uri_length_valid()` to work with !userData on the pre test in `create_stream()` without api secrets
 
 ## 1.3.9
 ### Changed
