@@ -3,7 +3,6 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg) 
 ![code coverage 100%](https://img.shields.io/badge/coverage-100%25-brightgreen.svg) 
 ![PyPI - Status](https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg) 
-![PyPI - yes](https://img.shields.io/badge/PyPI-yes-brightgreen.svg?color=orange) 
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel&color=orange) 
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/unicorn-binance-websocket-api.svg?label=PyPI%20downloads&color=orange)
 
