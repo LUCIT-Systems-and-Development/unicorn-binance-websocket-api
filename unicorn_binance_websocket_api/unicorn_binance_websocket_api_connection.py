@@ -34,6 +34,7 @@
 # IN THE SOFTWARE.
 
 from websockets import connect
+import asyncio
 import copy
 import logging
 import socket
@@ -200,6 +201,14 @@ class BinanceWebSocketApiConnection(object):
         except KeyError as error_msg:
             logging.debug("binance_websocket_api_connection->receive(" +
                           str(self.stream_id) + ") - KeyError - error_msg: " + str(error_msg))
+            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
+            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
+                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+            sys.exit(0)
+        except asyncio.base_futures.InvalidStateError as error_msg:
+            logging.critical("binance_websocket_api_connection->receive(" +
+                             str(self.stream_id) + ") - asyncio.base_futures.InvalidStateError - error_msg: " +
+                             str(error_msg))
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
