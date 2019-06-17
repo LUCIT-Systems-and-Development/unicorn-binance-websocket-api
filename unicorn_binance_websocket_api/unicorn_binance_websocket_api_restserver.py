@@ -37,11 +37,12 @@ from flask_restful import Resource
 
 
 class BinanceWebSocketApiRestServer(Resource):
-    def __init__(self, handler_binance_websocket_api_manager):
+    def __init__(self, handler_binance_websocket_api_manager, warn_on_update=True):
         self.handler_binance_websocket_api_manager = handler_binance_websocket_api_manager
+        self.warn_on_update = warn_on_update
 
     def get(self, statusformat):
         if statusformat == "icinga":
-            return self.handler_binance_websocket_api_manager.get_monitoring_status_icinga(), 200
+            return self.handler_binance_websocket_api_manager.get_monitoring_status_icinga(warn_on_update=self.warn_on_update), 200
         else:
             return "service not found", 404

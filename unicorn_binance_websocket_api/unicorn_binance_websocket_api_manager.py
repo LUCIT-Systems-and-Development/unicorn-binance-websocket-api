@@ -68,7 +68,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.3.10.dev"
+        self.version = "1.3.1.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -320,12 +320,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self._frequent_checks_restart_request = True
         sys.exit(0)
 
-    def _start_monitoring_api(self, host, port, ssl_context):
+    def _start_monitoring_api(self, host, port, warn_on_update):
         logging.info("starting monitoring API server ...")
         app = Flask(__name__)
         api = Api(app)
         api.add_resource(BinanceWebSocketApiRestServer, "/status/<string:statusformat>",
-                         resource_class_kwargs={'handler_binance_websocket_api_manager': self})
+                         resource_class_kwargs={'handler_binance_websocket_api_manager': self,
+                                                'warn_on_update': warn_on_update})
         try:
             dispatcher = wsgi.PathInfoDispatcher({'/': app})
             self.monitoring_api_server = wsgi.WSGIServer((host, port), dispatcher)
@@ -1380,7 +1381,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def set_restart_request(self, stream_id):
         self.restart_requests[stream_id] = {'status': "new"}
 
-    def start_monitoring_api(self, host='127.0.0.1', port=64201, ssl_context='adhoc'):
+    def start_monitoring_api(self, host='127.0.0.1', port=64201, warn_on_update=True):
         """
         Start the monitoring API server
 
@@ -1390,7 +1391,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param port: port number (default: 64201)
         :type port: int
         """
-        thread = threading.Thread(target=self._start_monitoring_api, args=(host, port, ssl_context))
+        thread = threading.Thread(target=self._start_monitoring_api, args=(host, port, warn_on_update))
         thread.start()
 
     def stop_manager_with_all_streams(self):

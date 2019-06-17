@@ -116,6 +116,7 @@ worker_thread.start()
 
 # start a restful api server to report the current status to 'tools/icinga/check_binance_websocket_manager' which can be
 # used as a check_command for ICINGA/Nagios
+#binance_websocket_api_manager.start_monitoring_api(warn_on_update=False)
 binance_websocket_api_manager.start_monitoring_api()
 
 # if you like to not only listen on localhost use 'host="0.0.0.0"'
