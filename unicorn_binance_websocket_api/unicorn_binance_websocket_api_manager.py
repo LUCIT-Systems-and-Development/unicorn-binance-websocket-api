@@ -1023,12 +1023,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         except IndexError:
             return False
 
-    def print_stream_info(self, stream_id):
+    def print_stream_info(self, stream_id, add_string=""):
         """
         Print all infos about a specific stream, helps debugging :)
 
         :param stream_id: id of a stream
         :type stream_id: uuid
+        :param add_string: text to add to the output
+        :type add_string: str
         :return: bool
         """
         restart_requests_row = ""
@@ -1038,7 +1040,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         status_row = ""
         last_static_ping_listen_key = ""
         stream_info = self.get_stream_info(stream_id)
-
+        if len(add_string) > 0:
+            add_string = str(add_string) + "\r\n"
         if len(self.stream_list[stream_id]['logged_reconnects']) > 0:
             logged_reconnects_row = "\r\n logged_reconnects: "
             row_prefix = ""
@@ -1088,7 +1091,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print("===============================================================================================\r\n"
-                  " exchange:", str(stream_info['exchange']), "\r\n"
+                  " exchange:", str(stream_info['exchange']), "\r\n" +
+                  str(add_string) +
                   " stream_id:", str(stream_id), "\r\n"
                   " channels:", str(stream_info['channels']), "\r\n"
                   " markets:", str(stream_info['markets']), "\r\n" +
@@ -1119,17 +1123,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                   str(stream_info['processed_receives_statistic']['stream_receives_per_hour'].__round__(3)), "\r\n"
                   " stream_receives_per_day:",
                   str(stream_info['processed_receives_statistic']['stream_receives_per_day'].__round__(3)), "\r\n"
-                  " stream_receives_per_month:",
-                  str(stream_info['processed_receives_statistic']['stream_receives_per_month'].__round__(3)), "\r\n"
-                  " stream_receives_per_year:",
-                  str(stream_info['processed_receives_statistic']['stream_receives_per_year'].__round__(3)), "\r\n"
                   "===============================================================================================\r\n")
         except KeyError:
             self.print_stream_info(stream_id)
 
-    def print_summary(self):
+    def print_summary(self, add_string=""):
         """
         Print an overview of all streams
+        :param add_string: text to add to the output
+        :type add_string: str
         """
         streams = len(self.stream_list)
         active_streams = 0
@@ -1147,6 +1149,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         received_bytes_per_x_row = ""
         streams_with_stop_request_row = ""
         stream_buffer_row = ""
+        if len(add_string) > 0:
+            add_string = str(add_string) + "\r\n"
         for stream_id in self.stream_list:
             stream_row_color_prefix = ""
             stream_row_color_suffix = ""
@@ -1252,6 +1256,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " total_received_bytes:", str(total_received_bytes), "\r\n"
                     " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +
                     str(binance_api_status_row) +
+                    str(add_string) +
                     " ---------------------------------------------------------------------------------------------\r\n"
                     "              stream_id               | rec_last_sec | rec_per_sec | most_rec_per_sec | recon\r\n"
                     " ---------------------------------------------------------------------------------------------\r\n"

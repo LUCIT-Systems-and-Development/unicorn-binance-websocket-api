@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.3.10.dev (development stage/unreleased)
 ### Added 
 - logging on failure in `create_stream()`
+- `add_string` for `print_summary()` and `print_stream_info()`
 ### Fixed
 - removed space from `total_received_length` in `get_monitoring_status_icinga()`
 
