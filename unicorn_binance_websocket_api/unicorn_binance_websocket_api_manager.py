@@ -673,9 +673,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.keep_max_received_last_second_entries
 
-    def get_monitoring_status_icinga(self, **kwargs):
+    def get_monitoring_status_icinga(self, warn_on_update=True):
         """
         Get status and perfdata to monitor and collect metrics with ICINGA/Nagios
+
+        :param warn_on_update: set to `False` to disable warning
+        :type warn_on_update: bool
 
         status: OK, WARNING, CRITICAL
         - WARNING: on restarts, available updates
@@ -692,7 +695,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: dict (text, time, return_code)
         """
-        result = self.get_monitoring_status_plain()
+        result = self.get_monitoring_status_plain(warn_on_update=warn_on_update)
         if len(result['update_msg']) > 0:
             result['update_msg'] = " - " + result['update_msg']
         check_message = "BINANCE WEBSOCKETS - " + result['status_text'] + ": O:" + str(result['active_streams']) + \
@@ -710,12 +713,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                   'return_code': result['return_code']}
         return status
 
-    def get_monitoring_status_plain(self):
+    def get_monitoring_status_plain(self, warn_on_update=True):
         """
         Get plain monitoring status data:
         active_streams, crashed_streams, restarting_streams, stopped_streams, return_code, status_text,
         timestamp, update_msg, average_receives_per_second, average_speed_per_second, total_received_mb,
         stream_buffer_items, stream_buffer_mb, reconnects, uptime
+
+        :param warn_on_update: set to `False` to disable warning
+        :type warn_on_update: bool
 
         :return: dict
         """
@@ -740,8 +746,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 result['crashed_streams'] += 1
         if self.is_update_availabe():
             result['update_msg'] = "Update " + str(self.get_latest_version()) + " available!"
-            result['status_text'] = "WARNING"
-            result['return_code'] = 1
+            if warn_on_update is True:
+                result['status_text'] = "WARNING"
+                result['return_code'] = 1
         if result['crashed_streams'] > 0:
             result['status_text'] = "CRITICAL"
             result['return_code'] = 2
