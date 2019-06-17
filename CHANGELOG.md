@@ -5,12 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.3.9.dev (development stage/unreleased)
+## 1.3.10.dev (development stage/unreleased)
+
+## 1.3.10
 ### Added
 - exception for `asyncio.base_futures.InvalidStateError` https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/18
 ### Changed
 - create_stream() returns False if websocket URL is to long
-
+### Fixed
+- ´is_websocket_uri_length_valid()` to work with !userData on the pre test in `create_stream()` without api secrets
 
 ## 1.3.9
 ### Changed

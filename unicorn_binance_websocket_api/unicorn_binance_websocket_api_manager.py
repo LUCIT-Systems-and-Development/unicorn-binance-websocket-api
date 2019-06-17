@@ -68,7 +68,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False):
         threading.Thread.__init__(self)
-        self.version = "1.3.9.dev"
+        self.version = "1.3.10.dev"
         self.websocket_base_uri = "wss://stream.binance.com:9443/"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -362,14 +362,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param markets: provide the markets you wish to stream
         :type markets: str, tuple, list, set
 
-        :return: stream_id
+        :return: stream_id or False
         """
+
         # create a stream
+        stream_id = uuid.uuid4()
         if not self.is_websocket_uri_length_valid(channels, markets):
             return False
         else:
             logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets) + ")")
-            stream_id = uuid.uuid4()
             loop = asyncio.new_event_loop()
             thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels, markets))
             thread.start()
@@ -444,20 +445,23 @@ class BinanceWebSocketApiManager(threading.Thread):
                         if response:
                             try:
                                 uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
+                                print(1)
                                 return uri
                             except KeyError:
+                                print(2)
                                 return False
                             except TypeError:
+                                print(3)
                                 return False
                         else:
+                            print(4)
                             return False
                     else:
                         return False
+                elif market == "!miniTicker":
+                    query += market + "@" + channel + "/"
                 else:
-                    if market == "!miniTicker":
-                        query += market + "@" + channel + "/"
-                    else:
-                        query += market.lower() + "@" + channel + "/"
+                    query += market.lower() + "@" + channel + "/"
         uri = self.websocket_base_uri + str(query)
         return uri
 
@@ -991,6 +995,14 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: bool
         """
+        # we know the length for a single !userData is valid (this avoids extra handling's of stream_id,
+        # api_key and api_secret)
+        if isinstance(markets, str):
+            markets = [markets]
+        if len(markets) == 1 and "!userData" in markets:
+            return True
+
+        # do a regular test
         uri = self.create_websocket_uri(channels, markets)
         if len(uri) >= 8004:
             return False
