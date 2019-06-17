@@ -1041,7 +1041,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         last_static_ping_listen_key = ""
         stream_info = self.get_stream_info(stream_id)
         if len(add_string) > 0:
-            add_string = str(add_string) + "\r\n"
+            add_string = " " + str(add_string) + "\r\n"
         if len(self.stream_list[stream_id]['logged_reconnects']) > 0:
             logged_reconnects_row = "\r\n logged_reconnects: "
             row_prefix = ""
@@ -1150,7 +1150,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         streams_with_stop_request_row = ""
         stream_buffer_row = ""
         if len(add_string) > 0:
-            add_string = str(add_string) + "\r\n"
+            add_string = " " + str(add_string) + "\r\n"
         for stream_id in self.stream_list:
             stream_row_color_prefix = ""
             stream_row_color_suffix = ""
