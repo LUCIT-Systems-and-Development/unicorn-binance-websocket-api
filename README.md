@@ -73,6 +73,9 @@ or the [current master branch](https://github.com/unicorn-data-analysis/unicorn-
 - ./requirements.txt
 - ./setup.py
 
+## Changelog
+https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/CHANGELOG.md
+
 ## Demo
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py
 
@@ -91,6 +94,8 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
 
 ## How to report Bugs or suggest Improvements?
+[List of new planned features](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+
 First try the latest release via [download](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest) 
 or with `pip install unicorn-binance-websocket-api --upgrade`. If the issue still exists, provide the error trace, OS 
 and python version and explain how to reproduce the error. A demo script is appreciated.

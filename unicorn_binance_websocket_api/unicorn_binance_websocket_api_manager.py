@@ -64,6 +64,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 data` cointains the raw_stream_data. If not provided, the raw stream_data will get
                                 stored in the stream_buffer.
     :type process_stream_data: function
+    :param exchange: Select binance.com or binance.je (default: binance.com)
+    :type exchange: str
+
     """
 
     def __init__(self, process_stream_data=False, exchange="binance.com"):
@@ -80,6 +83,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
         elif self.exchange == "binance.je":
             self.websocket_base_uri = "wss://stream.binance.je:9443/"
+        else:
+            self.websocket_base_uri = "wss://stream.binance.com:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
         self._keepalive_streams_restart_request = None
