@@ -57,13 +57,13 @@ logging.basicConfig(filename=os.path.basename(__file__) + '.log',
 logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 logging.getLogger('unicorn-log').setLevel(logging.INFO)
 
-# create instance of BinanceWebSocketApiManager
+# create instance of BinanceWebSocketApiManager for Binance Jersy
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.je")
 
 # set api key and secret for userData stream
-binance_api_key = ""
-binance_api_secret = ""
-binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
+binance_je_api_key = ""
+binance_je_api_secret = ""
+binance_websocket_api_manager.set_private_api_config(binance_je_api_key, binance_je_api_secret)
 userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
 
 ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])

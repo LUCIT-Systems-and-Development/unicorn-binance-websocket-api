@@ -47,19 +47,6 @@ logging.basicConfig(filename=os.path.basename(__file__) + '.log',
 logging.getLogger('unicorn-log').setLevel(logging.INFO)
 logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 
-# configure api key and secret
-binance_api_key = ""
-binance_api_secret = ""
-
-# create instance of BinanceWebSocketApiManager
-binance_websocket_api_manager = BinanceWebSocketApiManager()
-
-# set api key and secret in api manager
-binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
-
-# create the userData stream
-user_data_stream_id = binance_websocket_api_manager.create_stream('arr', '!userData')
-
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     while True:
@@ -72,12 +59,35 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             print(oldest_stream_data_from_stream_buffer)
 
 
+# configure api key and secret for binance.com
+binance_com_api_key = ""
+binance_com_api_secret = ""
+
+# configure api key and secret for binance.je
+binance_je_api_key = ""
+binance_je_api_secret = ""
+
+# create instances of BinanceWebSocketApiManager
+binance_com_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
+binance_je_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.je")
+
+# set api key and secret in api manager
+binance_com_websocket_api_manager.set_private_api_config(binance_com_api_key, binance_com_api_secret)
+binance_je_websocket_api_manager.set_private_api_config(binance_je_api_key, binance_je_api_secret)
+
+# create the userData streams
+binance_com_user_data_stream_id = binance_com_websocket_api_manager.create_stream('arr', '!userData')
+binance_je_user_data_stream_id = binance_je_websocket_api_manager.create_stream('arr', '!userData')
+
 # start a worker process to move the received stream_data from the stream_buffer to a print function
-worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_com_user_data_stream_id,))
+worker_thread.start()
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_je_user_data_stream_id,))
 worker_thread.start()
 
-# monitor the stream
+# monitor the streams
 while True:
-    binance_websocket_api_manager.print_stream_info(user_data_stream_id)
-    binance_websocket_api_manager.print_summary()
+    binance_com_websocket_api_manager.print_stream_info(binance_com_user_data_stream_id)
+    binance_com_websocket_api_manager.print_summary()
+    binance_je_websocket_api_manager.print_summary()
     time.sleep(1)

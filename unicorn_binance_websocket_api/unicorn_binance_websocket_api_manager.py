@@ -112,7 +112,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def _add_socket_to_socket_list(self, stream_id, channels, markets):
         # create a list entry for new sockets
-        self.stream_list[stream_id] = {'exchange': "binance",
+        self.stream_list[stream_id] = {'exchange': self.exchange,
                                        'stream_id': copy.deepcopy(stream_id),
                                        'channels': copy.deepcopy(channels),
                                        'markets': copy.deepcopy(markets),

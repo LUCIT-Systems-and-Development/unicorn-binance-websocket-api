@@ -10,12 +10,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - logging on failure in `create_stream()`
 - `add_string` in `print_summary()` and `print_stream_info()`
 - `warn_on_update` in `get_monitoring_status_icinga()`, `get_monitoring_status_plain()` and `start_monitoring_api()`
+- support for binance jersy https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/21
 ### Fixed
-- removed space from `total_received_length` in `get_monitoring_status_icinga()` to avoid 'no data' error in Icinga
+- removed space from `total_received_length` in `get_monitoring_status_icinga()` to avoid 'no data' error in ICINGA
+### Changed
+- show the used exchange in `print_summary()` and `print_stream_info()`
 
 ## 1.3.10
 ### Added
-- exception for `asyncio.base_futures.InvalidStateError` https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/18
+- exception for `asyncio.base_futures.InvalidStateError` by DaWe35 
+https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/18
 ### Changed
 - create_stream() returns False if websocket URL is to long
 ### Fixed
