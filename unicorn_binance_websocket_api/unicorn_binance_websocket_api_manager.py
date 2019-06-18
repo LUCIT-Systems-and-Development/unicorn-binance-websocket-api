@@ -59,6 +59,9 @@ class BinanceWebSocketApiManager(threading.Thread):
     https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
     https://github.com/binance-exchange/binance-official-api-docs/blob/master/user-data-stream.md
 
+    https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md
+    https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md
+
     :param process_stream_data: Provide a function/method to process the received webstream data. The function
                                 will be called with one variable like `process_stream_data(data)` where
                                 data` cointains the raw_stream_data. If not provided, the raw stream_data will get
