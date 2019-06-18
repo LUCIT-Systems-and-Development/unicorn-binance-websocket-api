@@ -11,6 +11,8 @@ Download the latest stable release from https://exchange.icinga.com/bithon/check
 
 Read the [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.unicorn-data.com/blog/article-details/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2.html) to learn, how you can connect your application with ICINGA2
 
+Use `binance_websocket_api_manager.start_monitoring_api(warn_on_update=False)` to disable the WARNING status on available updates.
+
 ## Monitoring
 ### Status
 OK, WARNING, CRITICAL or UNKOWN
@@ -21,10 +23,11 @@ OK, WARNING, CRITICAL or UNKOWN
 ### Perfdata
 - average receives per second since last status check
 - average speed per second since last status check
-- received mb since start
-- stream_buffer size
+- total received bytes since start
+- total received length since start
+- stream_buffer length
 - stream_buffer items
-- reconnects since start
+- reconnects
 - uptime
 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
