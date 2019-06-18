@@ -21,9 +21,9 @@ binance_websocket_api_manager.create_stream(['trade', 'kline_1m'], ['btcusdt', '
 ## Description
 The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) 
 provides an API to the [Binance Websocket API](https://github.com/binance-exchange/binance-official-api-docs) of 
-[Binance](https://www.binance.com) and [Binance Jersey](https://www.binance.je/), which 
-supports the streaming of public streams like trade, kline, ticker and depth, but also the private userData stream which 
-need to be used with a valid api_key and api_secret from the [Binance Exchange](https://www.binance.com/).
+[Binance](https://www.binance.com) and [Binance Jersey](https://www.binance.je/), which supports the streaming of 
+public streams like trade, kline, ticker and depth, but also the private userData stream which need to be used with a 
+valid api_key and api_secret from the Binance Exchange https://www.binance.com or https://www.binance.je.
 
 The module requires python 3.5.3 or above, as it depends on pythons latest asyncio features for asynchronous/concurrent 
 processing. The current dependencies are listed 
