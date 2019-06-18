@@ -49,8 +49,8 @@ for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_mana
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
 
 If you like the project, please ![star](https://s3.gifyu.com/images/stard237b3003af9f9a9.png) it on 
-[GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)! If you use 
-`UNICORN Binance WebSocket API` in your project, let us know on Twitter 
+[GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)! If you use the
+UNICORN Binance WebSocket API in your project, let us know on Twitter 
 [@unicorn_data](https://twitter.com/unicorn_data)!
 
 ## Installation and Upgrade
@@ -101,8 +101,8 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/mast
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
 
 ## How to report Bugs or suggest Improvements?
-[List of new planned features](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 
-click ![thumbs-up](https://s3.gifyu.com/images/tu.png) if you need one of them
+[List of planned features](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 
+click ![thumbs-up](https://s3.gifyu.com/images/tu.png) if you need one of them!
 
 Before you report a bug, [try the latest release](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS 
 and python version and explain how to reproduce the error. A demo script is appreciated.
