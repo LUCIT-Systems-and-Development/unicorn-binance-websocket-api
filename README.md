@@ -30,8 +30,7 @@ processing. The current dependencies are listed
 [here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
-on, you have to use the [Binance Rest API](https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md) 
-in combination. 
+on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), [je](https://github.com/binance-jersey/binance-official-api-docs/)) in combination. 
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect!
