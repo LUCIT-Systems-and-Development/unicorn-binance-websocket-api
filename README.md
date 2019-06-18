@@ -100,7 +100,7 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
 Before you report a bug, please [try the latest release](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS 
 and python version and explain how to reproduce the error. A demo script is appreciated.
 
-Please open a new issue:
+If you dont find an issue related to your topic, please open a new issue:
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues
 
 ## Contributing

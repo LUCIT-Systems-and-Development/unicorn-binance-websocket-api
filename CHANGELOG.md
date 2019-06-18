@@ -13,10 +13,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `add_string` in `print_summary()` and `print_stream_info()`
 - `warn_on_update` in `get_monitoring_status_icinga()`, `get_monitoring_status_plain()` and `start_monitoring_api()`
 - support for binance jersey https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/21
+- show the used exchange in `print_summary()` and `print_stream_info()`
 ### Fixed
 - removed space from `total_received_length` in `get_monitoring_status_icinga()` to avoid 'no data' error in ICINGA
-### Changed
-- show the used exchange in `print_summary()` and `print_stream_info()`
 
 ## 1.3.10
 ### Added
