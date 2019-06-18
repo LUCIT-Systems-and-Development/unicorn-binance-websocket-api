@@ -43,11 +43,16 @@ import time
 
 
 class BinanceWebSocketApiRestclient(object):
-    def __init__(self, binance_api_key, binance_api_secret, unicorn_binance_websocket_api_version, binance_api_status):
+    def __init__(self, exchange, binance_api_key, binance_api_secret, unicorn_binance_websocket_api_version,
+                 binance_api_status):
+        self.exchange = exchange
         self.api_key = copy.deepcopy(binance_api_key)
         self.api_secret = copy.deepcopy(binance_api_secret)
         self.unicorn_binance_websocket_api_version = unicorn_binance_websocket_api_version
-        self.restful_base_uri = "https://api.binance.com/"
+        if self.exchange == "binance.com":
+            self.restful_base_uri = "https://api.binance.com/"
+        elif self.exchange == "binance.je":
+            self.restful_base_uri = "https://api.binance.je/"
         self.listen_key = False
         self.binance_api_status = binance_api_status
 

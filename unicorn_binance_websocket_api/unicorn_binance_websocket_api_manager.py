@@ -66,16 +66,20 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type process_stream_data: function
     """
 
-    def __init__(self, process_stream_data=False):
+    def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
-        self.version = "1.3.1.dev"
-        self.websocket_base_uri = "wss://stream.binance.com:9443/"
+        self.version = "1.3.10.dev"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
         else:
             # use the provided method to process stream data:
             self.process_stream_data = process_stream_data
+        self.exchange = exchange
+        if self.exchange == "binance.com":
+            self.websocket_base_uri = "wss://stream.binance.com:9443/"
+        elif self.exchange == "binance.je":
+            self.websocket_base_uri = "wss://stream.binance.je:9443/"
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
         self._keepalive_streams_restart_request = None
@@ -248,7 +252,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                     < time.time() and (active_stream_list[stream_id]['last_static_ping_listen_key'] +
                                                        active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
                                 # keep-alive the listenKey
-                                binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
+                                binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.exchange,
+                                                                                                 self.stream_list[stream_id]['api_key'],
                                                                                                  self.stream_list[stream_id]['api_secret'],
                                                                                                  self.get_version(),
                                                                                                  self.binance_api_status)
@@ -448,16 +453,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                         if response:
                             try:
                                 uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
-                                print(1)
                                 return uri
                             except KeyError:
-                                print(2)
                                 return False
                             except TypeError:
-                                print(3)
                                 return False
                         else:
-                            print(4)
                             return False
                     else:
                         return False
@@ -478,7 +479,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.stream_list[stream_id]['listen_key'] is not False:
             logging.info("BinanceWebSocketApiManager->stop_manager_with_all_streams(" + str(
                 stream_id) + ")->delete_listen_key")
-            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.stream_list[stream_id]['api_key'],
+            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.exchange,
+                                                                             self.stream_list[stream_id]['api_key'],
                                                                              self.stream_list[stream_id]['api_secret'],
                                                                              self.get_version(),
                                                                              self.used_weight)
@@ -632,8 +634,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return response
         # no cached listen_key or listen_key is older than 30 min
         # acquire a new listen_key:
-        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(api_key, api_secret, self.get_version(),
-                                                                         self.binance_api_status)
+        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.exchange, api_key, api_secret,
+                                                                         self.get_version(), self.binance_api_status)
         response = binance_websocket_api_restclient.get_listen_key()
         del binance_websocket_api_restclient
         if response:
