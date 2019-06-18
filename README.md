@@ -34,7 +34,7 @@ on, you have to use the [Binance Rest API](https://github.com/binance-exchange/b
 in combination. 
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
-- 100% auto-reconnect!
+- Fully managed websockets and 100% auto-reconnect!
 - Supported exchanges: [Binance](https://www.binance.com) and [Binance Jersey](https://www.binance.je/)
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
@@ -74,9 +74,6 @@ or the [current master branch](https://github.com/unicorn-data-analysis/unicorn-
 - ./requirements.txt
 - ./setup.py
 
-## Changelog
-https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/CHANGELOG.md
-
 ## Demo
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py
 
@@ -91,14 +88,16 @@ https://www.unicorn-data.com/unicorn-binance-websocket-api.html
 ## Project, Code and Downloads: 
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
 
+## Changelog
+https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/CHANGELOG.md
+
 ## Wiki
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
 
 ## How to report Bugs or suggest Improvements?
 [List of new planned features](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
 
-First try the latest release via [download](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest) 
-or with `pip install unicorn-binance-websocket-api --upgrade`. If the issue still exists, provide the error trace, OS 
+Before you report a bug, please [try the latest release](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS 
 and python version and explain how to reproduce the error. A demo script is appreciated.
 
 Please open a new issue:
