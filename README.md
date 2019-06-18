@@ -88,7 +88,7 @@ https://www.unicorn-data.com/unicorn-binance-websocket-api.html
 ## Project, Code and Downloads: 
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
 
-## Changelog
+## Change Log
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/CHANGELOG.md
 
 ## Wiki
