@@ -95,7 +95,8 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/mast
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
 
 ## How to report Bugs or suggest Improvements?
-[List of new planned features](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+[List of new planned features](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 
+click ![thumbs-up](https://s3.gifyu.com/images/tu.png) if you need one of them
 
 Before you report a bug, [try the latest release](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS 
 and python version and explain how to reproduce the error. A demo script is appreciated.
@@ -107,5 +108,7 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues
 UNICORN Binance WebSocket API is an open source project which welcomes contributions which can be anything from simple 
 documentation fixes to new features. To contribute, fork the project on 
 [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) and send a pull request.
+
+If you like this project please give it a ![star](https://s3.gifyu.com/images/stard237b3003af9f9a9.png)!
 
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
