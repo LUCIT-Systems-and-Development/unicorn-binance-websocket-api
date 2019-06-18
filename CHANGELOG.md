@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.3.10.dev (development stage/unreleased)
+## 1.4.0.dev (development stage/unreleased)
+
+## 1.4.0
 ### Added 
 - logging on failure in `create_stream()`
 - `add_string` in `print_summary()` and `print_stream_info()`
