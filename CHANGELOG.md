@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added 
 - logging on failure in `create_stream()`
 - `add_string` in `print_summary()` and `print_stream_info()`
-- `warn_on_update` in `get_monitoring_status_icinga()`, `get_monitoring_status_plain()` and all the methods in the chain
+- `warn_on_update` in `get_monitoring_status_icinga()`, `get_monitoring_status_plain()` and `start_monitoring_api()`
 ### Fixed
 - removed space from `total_received_length` in `get_monitoring_status_icinga()` to avoid 'no data' error in Icinga
 

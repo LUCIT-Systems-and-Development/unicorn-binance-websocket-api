@@ -678,7 +678,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get status and perfdata to monitor and collect metrics with ICINGA/Nagios
 
-        :param warn_on_update: set to `False` to disable warning
+        :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
 
         status: OK, WARNING, CRITICAL
@@ -688,9 +688,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         perfdata:
         - average receives per second since last status check
         - average speed per second since last status check
-        - received megabyte since start
+        - total received bytes since start
+        - total received length since start
         - stream_buffer size
-        - stream_buffer items
+        - stream_buffer length
         - reconnects
         - uptime
 
@@ -721,7 +722,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         timestamp, update_msg, average_receives_per_second, average_speed_per_second, total_received_mb,
         stream_buffer_items, stream_buffer_mb, reconnects, uptime
 
-        :param warn_on_update: set to `False` to disable warning
+        :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
 
         :return: dict
@@ -1390,6 +1391,9 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param port: port number (default: 64201)
         :type port: int
+
+        :param warn_on_update: set to `False` to disable the update warning
+        :type warn_on_update: bool
         """
         thread = threading.Thread(target=self._start_monitoring_api, args=(host, port, warn_on_update))
         thread.start()
