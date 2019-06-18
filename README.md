@@ -8,7 +8,7 @@
 
 
 # UNICORN Binance WebSocket API
-A python API to use the Binance Websocket API in a easy, fast, flexible, robust and fully-featured way.
+A python API to use the Binance Websocket API`s in a easy, fast, flexible, robust and fully-featured way.
 
 ### Create a multiplex websocket connection to Binance with just 3 lines of code:
 ```
@@ -48,9 +48,10 @@ and a [check_command](https://github.com/unicorn-data-analysis/unicorn-binance-w
 for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_manager)/Nagios 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
 
-If you like the project, please [star it](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/stargazers) 
-on GitHub! Watch the project on GitHub for updates. If you use UNICORN Binance WebSocket API in your app, let us know on 
-Twitter [@unicorn_data](https://twitter.com/unicorn_data)
+If you like the project, please ![star it](https://s3.gifyu.com/images/stard237b3003af9f9a9.png) on 
+[GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)! If you use 
+`UNICORN Binance WebSocket API` in your project, let us know on Twitter 
+[@unicorn_data](https://twitter.com/unicorn_data)
 
 ## Installation and Upgrade
 Please note: UnicornFy is not longer part of this package, visit https://github.com/unicorn-data-analysis/unicorn_fy for
