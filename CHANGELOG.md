@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.4.0.dev (development stage/unreleased)
+### Added 
+- exchange name to icinga status msg
 
 ## 1.4.0
 ### Added 
