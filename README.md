@@ -48,6 +48,10 @@ and a [check_command](https://github.com/unicorn-data-analysis/unicorn-binance-w
 for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_manager)/Nagios 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
 
+If you like the project, please [star it](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) on 
+GitHub! Watch the project on GitHub for updates. If you use UNICORN Binance WebSocket API in your app, let us know on 
+Twitter [@unicorn_data](https://twitter.com/unicorn_data)
+
 ## Installation and Upgrade
 Please note: UnicornFy is not longer part of this package, visit https://github.com/unicorn-data-analysis/unicorn_fy for
 further information.
@@ -107,7 +111,5 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues
 UNICORN Binance WebSocket API is an open source project which welcomes contributions which can be anything from simple 
 documentation fixes to new features. To contribute, fork the project on 
 [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) and send a pull request.
-
-If you like this project please give it a ![star](https://s3.gifyu.com/images/stard237b3003af9f9a9.png)!
 
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
