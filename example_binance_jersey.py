@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_binance_jersy.py
+# File: example_binance_jersey.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
@@ -57,7 +57,7 @@ logging.basicConfig(filename=os.path.basename(__file__) + '.log',
 logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 logging.getLogger('unicorn-log').setLevel(logging.INFO)
 
-# create instance of BinanceWebSocketApiManager for Binance Jersy
+# create instance of BinanceWebSocketApiManager for Binance Jersey
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.je")
 
 # set api key and secret for userData stream

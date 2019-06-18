@@ -34,6 +34,7 @@ in combination.
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - 100% auto-reconnect!
+- Supported exchanges: [Binance](https://www.binance.com) and [Binance Jersey](https://www.binance.je/)
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
 [python-daemon](https://pypi.org/project/python-daemon/)).
