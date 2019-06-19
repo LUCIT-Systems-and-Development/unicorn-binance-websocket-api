@@ -11,8 +11,6 @@ Download the latest stable release from https://exchange.icinga.com/bithon/check
 
 Read the [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.unicorn-data.com/blog/article-details/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2.html) to learn, how you can connect your application with ICINGA2
 
-Use `binance_websocket_api_manager.start_monitoring_api(warn_on_update=False)` to disable the WARNING status on available updates.
-
 ## Monitoring
 ### Status
 OK, WARNING, CRITICAL or UNKOWN
@@ -31,6 +29,10 @@ OK, WARNING, CRITICAL or UNKOWN
 - uptime
 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
+
+## Parameter
+Use `binance_websocket_api_manager.start_monitoring_api(warn_on_update=False)` to disable the WARNING status on 
+available updates.
 
 ## TODO
 - implement individual warning and criticial status for specific metrics (http://nagios-plugins.org/doc/guidelines.html)
