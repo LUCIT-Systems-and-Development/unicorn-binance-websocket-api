@@ -100,7 +100,7 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/mast
 ## Wiki
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
 
-## Update Notifications
+## Receive Update Notifications
 To receive notifications on available updates you can ![watch](https://s3.gifyu.com/images/github_watch.png) the 
 repository on [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api), write your 
 [own script](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py) 
