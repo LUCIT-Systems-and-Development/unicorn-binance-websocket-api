@@ -52,6 +52,9 @@ Include here the response of 'python --version' or 'python3 --version'
 Include here the response of 'pip --version' or 'pip3 --version'
 ```
 
+#### Dependencies
+Run `pip freeze > pip_freeze.txt` and upload the file.
+
 #### UNICORN Binance WebSocket API Version?
 ```
 Did you upgrade to the latest release version with `pip install unicorn-binance-websocket-api --upgrade`?
