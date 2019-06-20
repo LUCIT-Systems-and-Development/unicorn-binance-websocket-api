@@ -53,7 +53,7 @@ Include here the response of 'pip --version' or 'pip3 --version'
 ```
 
 #### Dependencies
-Run `pip freeze > pip_freeze.txt` and upload the file.
+Run `pip list > pip_list.txt` and upload the file.
 
 #### UNICORN Binance WebSocket API Version?
 ```
