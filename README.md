@@ -32,7 +32,7 @@ processing. The current dependencies are listed
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
 on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), [je](https://github.com/binance-jersey/binance-official-api-docs/)) in combination. 
 
-### What are the benefits of the UNICORN Binance WebSocket API?
+### What are the benefits of the [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)?
 - Fully managed websockets and 100% auto-reconnect!
 - Supported exchanges: [Binance](https://www.binance.com) and [Binance Jersey](https://www.binance.je/)
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
@@ -50,7 +50,7 @@ for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_mana
 
 If you like the project, please ![star](https://s3.gifyu.com/images/stard237b3003af9f9a9.png) it on 
 [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)! If you use the
-UNICORN Binance WebSocket API in your project, let us know on Twitter 
+[UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) in your project, let us know on Twitter 
 [@unicorn_data](https://twitter.com/unicorn_data)!
 
 ## Installation and Upgrade
@@ -118,8 +118,9 @@ If you dont find an issue related to your topic, please open a new issue:
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues
 
 ## Contributing
-UNICORN Binance WebSocket API is an open source project which welcomes contributions which can be anything from simple 
-documentation fixes to new features. To contribute, fork the project on 
-[GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) and send a pull request.
+[UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) is an open 
+source project which welcomes contributions which can be anything from simple documentation fixes to new features. To 
+contribute, fork the project on [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) and 
+send a pull request.
 
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
