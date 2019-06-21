@@ -53,21 +53,23 @@ import uuid
 
 class BinanceWebSocketApiManager(threading.Thread):
     """
-    A python API to handle the Binance websocket API
+    A python API to use the Binance Websocket API`s (com, je) in a easy, fast, flexible, robust and fully-featured way.
 
-    Binance websocket API documentation:
+    Binance.com websocket API documentation:
     https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
     https://github.com/binance-exchange/binance-official-api-docs/blob/master/user-data-stream.md
-
+    Binance.je websocket API documentation:
     https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md
     https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md
+    Binance.org websocket API documentation:
+    https://docs.binance.org/api-reference/dex-api/ws-connection.html
 
     :param process_stream_data: Provide a function/method to process the received webstream data. The function
                                 will be called with one variable like `process_stream_data(data)` where
                                 data` cointains the raw_stream_data. If not provided, the raw stream_data will get
                                 stored in the stream_buffer.
     :type process_stream_data: function
-    :param exchange: Select binance.com or binance.je (default: binance.com)
+    :param exchange: Select binance.com, binance.je, binance.org or binance.org-testnet (default: binance.com)
     :type exchange: str
 
     """
@@ -83,11 +85,22 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.process_stream_data = process_stream_data
         self.exchange = exchange
         if self.exchange == "binance.com":
+            # Binance: www.binance.com
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
         elif self.exchange == "binance.je":
+            # Binance Jersey: www.binance.je
             self.websocket_base_uri = "wss://stream.binance.je:9443/"
+        elif self.exchange == "binance.org":
+            # Binance Chain: www.binance.org
+            self.websocket_base_uri = "wss://dex.binance.org"
+        elif self.exchange == "binance.org-testnet":
+            # Binance Chain Testnet: www.binance.org
+            self.websocket_base_uri = "wss://testnet-dex.binance.org/api/"
         else:
-            self.websocket_base_uri = "wss://stream.binance.com:9443/"
+            # Unknown Exchange
+            error_msg = "Unknown exchange '" + str(self.exchange) + "'"
+            logging.critical(error_msg)
+            raise ValueError(error_msg)
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
         self._keepalive_streams_restart_request = None
@@ -140,7 +153,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'last_static_ping_listen_key': 0,
                                        'listen_key': False,
                                        'listen_key_cache_time': 30 * 60,
-                                       'processed_receives_statistic': {}}
+                                       'processed_receives_statistic': {},
+                                       'transfer_rate_per_second': {'bytes': {}, 'speed': 0}}
         logging.debug("BinanceWebSocketApiManager->_add_socket_to_socket_list(" +
                       str(stream_id) + ", " + str(channels) + ", " + str(markets) + ")")
 
@@ -190,8 +204,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     # set the streams `most_receives_per_second` value
                     try:
                         if self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp] > \
-                                self.stream_list[stream_id]['receives_statistic_last_second'][
-                                    'most_receives_per_second']:
+                                self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']:
                             self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second'] = \
                                 self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp]
                     except KeyError:
@@ -204,7 +217,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                         total_most_stream_receives_next_to_last_timestamp += self.stream_list[stream_id]['receives_statistic_last_second']['entries'][next_to_last_timestamp]
                     except KeyError:
                         pass
+
                     # delete list entries older than `keep_max_received_last_second_entries`
+                    # receives_statistic_last_second
                     delete_index = []
                     if len(self.stream_list[stream_id]['receives_statistic_last_second']['entries']) > self.keep_max_received_last_second_entries:
                         for timestamp_key in self.stream_list[stream_id]['receives_statistic_last_second']['entries']:
@@ -219,6 +234,22 @@ class BinanceWebSocketApiManager(threading.Thread):
                                     str(error_msg))
                     for timestamp_key in delete_index:
                         self.stream_list[stream_id]['receives_statistic_last_second']['entries'].pop(timestamp_key, None)
+                    # transfer_rate_per_second
+                    delete_index = []
+                    if len(self.stream_list[stream_id]['transfer_rate_per_second']['bytes']) > self.keep_max_received_last_second_entries:
+                        for timestamp_key in self.stream_list[stream_id]['transfer_rate_per_second']['bytes']:
+                            try:
+                                if timestamp_key < current_timestamp - self.keep_max_received_last_second_entries:
+                                    delete_index.append(timestamp_key)
+                            except ValueError as error_msg:
+                                logging.error(
+                                    "BinanceWebSocketManager->_frequent_checks() timestamp_key=" + str(timestamp_key) +
+                                    " current_timestamp=" + str(current_timestamp) + " keep_max_received_last_second_"
+                                    "entries=" + str(self.keep_max_received_last_second_entries) + " error_msg=" +
+                                    str(error_msg))
+                    for timestamp_key in delete_index:
+                        self.stream_list[stream_id]['transfer_rate_per_second']['bytes'].pop(timestamp_key, None)
+
             # set most_receives_per_second
             try:
                 if int(self.most_receives_per_second) < int(total_most_stream_receives_last_timestamp):
@@ -334,7 +365,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         sys.exit(0)
 
     def _start_monitoring_api(self, host, port, warn_on_update):
-        logging.info("starting monitoring API server ...")
+        logging.info("starting monitoring API service ...")
         app = Flask(__name__)
         api = Api(app)
         api.add_resource(BinanceWebSocketApiRestServer, "/status/<string:statusformat>",
@@ -345,7 +376,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.monitoring_api_server = wsgi.WSGIServer((host, port), dispatcher)
             self.monitoring_api_server.start()
         except RuntimeError as error_msg:
-            logging.error("monitoring API server is going down! - info: " + str(error_msg))
+            logging.error("monitoring API service is going down! - info: " + str(error_msg))
 
     def add_to_stream_buffer(self, stream_data):
         """
@@ -452,7 +483,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             if response['code'] == -2014 or response['code'] == -2015:
                                 return response
                             else:
-                                logging.critical("Found new error code from restclient: " + str(response))
+                                logging.critical("Received unknown error code from rest client: " + str(response))
                                 return response
                         except KeyError:
                             pass
@@ -473,7 +504,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 elif market == "!miniTicker":
                     query += market + "@" + channel + "/"
                 else:
-                    query += market.lower() + "@" + channel + "/"
+                    if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
+                        query += market.upper() + "@" + channel + "/"
+                    else:
+                        query += market.lower() + "@" + channel + "/"
         uri = self.websocket_base_uri + str(query)
         return uri
 
@@ -554,13 +588,38 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.binance_api_status
 
-    def get_human_bytesize(self, bytes):
+    def get_current_receiving_speed(self, stream_id):
+        """
+        Get the receiving speed in kB/s of the last second in Bytes
+
+        :return: int
+        """
+        current_timestamp = int(time.time())
+        last_timestamp = current_timestamp - 1
+        # calculate the transfer rate of the last second in Bytes
+        try:
+            if self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][last_timestamp] > 0:
+                self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = \
+                    self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][last_timestamp]
+        except TypeError:
+            pass
+        except KeyError:
+            pass
+        try:
+            current_receiving_speed = self.stream_list[stream_id]['transfer_rate_per_second']['speed']
+        except KeyError:
+            current_receiving_speed = 0
+        return current_receiving_speed
+
+    def get_human_bytesize(self, bytes, suffix=""):
         if bytes > 1024 * 1024 * 1024:
-            bytes = str(round(bytes / (1024 * 1024 * 1024), 2)) + " gB"
+            bytes = str(round(bytes / (1024 * 1024 * 1024), 2)) + " gB" + suffix
         elif bytes > 1024 * 1024:
-            bytes = str(round(bytes / (1024 * 1024), 1)) + " mB"
+            bytes = str(round(bytes / (1024 * 1024), 2)) + " mB" + suffix
         elif bytes > 1024:
-            bytes = str(int(bytes / 1024)) + " kB"
+            bytes = str(round(bytes / 1024, 2)) + " kB" + suffix
+        else:
+            bytes = str(bytes) + " B" + suffix
         return bytes
 
     def get_human_uptime(self, uptime):
@@ -714,7 +773,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         str(result['active_streams']) + \
                         "/R:" + str(result['restarting_streams']) + "/C:" + str(result['crashed_streams']) + "/S:" + \
                         str(result['stopped_streams']) + result['update_msg'] + " | " + "average_receives_per_second=" + \
-                        str(result['average_receives_per_second']) + ";;;0 transfer_rate_per_second=" + \
+                        str(result['average_receives_per_second']) + ";;;0 current_receiving_speed_per_second=" + \
                         str(result['average_speed_per_second']) + "KB;;;0" + " total_received_length=" + \
                         str(result['total_received_length']) + "c;;;0 total_received_size=" + \
                         str(result['total_received_mb']) + "MB;;;0 stream_buffer_size=" + \
@@ -946,6 +1005,18 @@ class BinanceWebSocketApiManager(threading.Thread):
         uri = self.create_websocket_uri(channels, markets)
         return len(uri)
 
+    def increase_received_bytes_per_second(self, stream_id, size):
+        current_timestamp = int(time.time())
+        try:
+            if self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][current_timestamp]:
+                pass
+        except KeyError:
+            self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][current_timestamp] = 0
+        try:
+            self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][current_timestamp] += size
+        except KeyError:
+            pass
+
     def increase_processed_receives_statistic(self, stream_id):
         # for every receive we call this method to increase the receives statistics
         current_timestamp = int(time.time())
@@ -1059,6 +1130,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         binance_api_status_row = ""
         status_row = ""
         last_static_ping_listen_key = ""
+        last_timestamp = int(time.time()) - 1
         stream_info = self.get_stream_info(stream_id)
         if len(add_string) > 0:
             add_string = " " + str(add_string) + "\r\n"
@@ -1095,6 +1167,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 restart_requests_row = " restart_request: " + self.restart_requests[stream_id]['status'] + "\r\n"
         except KeyError:
             pass
+
         if self.stream_list[stream_id]['markets'] == "!userData":
             last_static_ping_listen_key = " last_static_ping_listen_key: " + str(self.stream_list[stream_id]['last_static_ping_listen_key']) + "\r\n"
             if self.binance_api_status['status_code'] == 200:
@@ -1108,10 +1181,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                                      str(datetime.utcfromtimestamp(
                                          self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
                                      ")\r\n"
+        current_receiving_speed = str(self.get_human_bytesize(self.get_current_receiving_speed(stream_id), "/s"))
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print("===============================================================================================\r\n"
-                  " exchange:", str(stream_info['exchange']), "\r\n" +
+                  " exchange:", str(self.stream_list[stream_id]['exchange']), "(lib " + str(self.version) + ")\r\n" +
                   str(add_string) +
                   " stream_id:", str(stream_id), "\r\n"
                   " channels:", str(stream_info['channels']), "\r\n"
@@ -1131,6 +1205,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                   " has_stopped:", str(stream_info['has_stopped']), "\r\n"
                   " seconds_since_has_stopped:",
                   str(stream_info['seconds_since_has_stopped']), "\r\n"
+                  " current_receiving_speed:", str(current_receiving_speed), "\r\n" +
                   " processed_receives:",
                   str(stream_info['processed_receives_total']), "\r\n" +
                   " stream_most_receives_per_second:",
@@ -1162,6 +1237,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         restarting_streams_row = ""
         stopped_streams_row = ""
         all_receives_per_second = 0.0
+        current_receiving_speed = 0
         streams_with_stop_request = 0
         stream_rows = ""
         crashed_streams_row = ""
@@ -1174,6 +1250,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         for stream_id in self.stream_list:
             stream_row_color_prefix = ""
             stream_row_color_suffix = ""
+            current_receiving_speed += self.get_current_receiving_speed(stream_id)
             stream_statistic = self.get_stream_statistic(stream_id)
             if self.stream_list[stream_id]['status'] == "running":
                 active_streams += 1
@@ -1272,6 +1349,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     str(stopped_streams_row) +
                     str(streams_with_stop_request_row) +
                     str(stream_buffer_row) +
+                    " current_receiving_speed:", str(self.get_human_bytesize(current_receiving_speed, "/s")), "\r\n" +
                     " total_receives:", str(self.total_receives), "\r\n"
                     " total_received_bytes:", str(total_received_bytes), "\r\n"
                     " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +

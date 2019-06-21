@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.4.0.dev (development stage/unreleased)
 ### Added 
 - exchange name to icinga status msg
+- binance_manager init: throw exception for unknown exchanges
+- get_current_receiving_speed()
+- exchange name and lib version to print_stream_info()
+- current_receiving_speed() to print_summary() and print_stream_info()
 
 ## 1.4.0
 ### Added 

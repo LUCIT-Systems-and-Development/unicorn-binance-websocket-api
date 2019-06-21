@@ -87,6 +87,8 @@ class BinanceWebSocketApiConnection(object):
         self._conn = connect(uri, ping_interval=20, close_timeout=10,
                              extra_headers={'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/' +
                                             self.handler_binance_websocket_api_manager.version})
+
+        print(uri)
         try:
             self.handler_binance_websocket_api_manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['status'] = "running"
@@ -180,17 +182,22 @@ class BinanceWebSocketApiConnection(object):
 
     async def receive(self):
         # method to catch the data from the stream
+        self.handler_binance_websocket_api_manager.set_heartbeat(self.stream_id)
         try:
-            received_data = await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].recv()
+            received_data_json = await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].recv()
             try:
                 if self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]['status'] == "restarted":
                     self.handler_binance_websocket_api_manager.increase_reconnect_counter(self.stream_id)
                     del self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]
             except KeyError:
                 pass
-            self.handler_binance_websocket_api_manager.increase_processed_receives_statistic(self.stream_id)
-            self.handler_binance_websocket_api_manager.set_heartbeat(self.stream_id)
-            return received_data
+            if received_data_json is not None:
+                size = sys.getsizeof(received_data_json)
+                self.handler_binance_websocket_api_manager.increase_processed_receives_statistic(self.stream_id)
+                self.handler_binance_websocket_api_manager.add_total_received_bytes(size)
+                self.handler_binance_websocket_api_manager.increase_received_bytes_per_second(self.stream_id,
+                                                                                              size)
+            return received_data_json
         except RuntimeError as error_msg:
             logging.debug("binance_websocket_api_connection->receive(" +
                           str(self.stream_id) + ") - RuntimeError - error_msg: " + str(error_msg))
@@ -213,3 +220,7 @@ class BinanceWebSocketApiConnection(object):
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(0)
+
+    async def send(self, data):
+        # method to send data to the endpoint
+        received_data = await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].send(data)

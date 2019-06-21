@@ -105,7 +105,7 @@ markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
            'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb'}
 channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w',
             'miniTicker', 'depth20'}
-binance_websocket_api_manager.create_stream(channels, markets)
+id = binance_websocket_api_manager.create_stream(channels, markets)
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
@@ -114,4 +114,5 @@ worker_thread.start()
 # show an overview
 while True:
     binance_websocket_api_manager.print_summary()
+    #binance_websocket_api_manager.print_stream_info(id)
     time.sleep(1)

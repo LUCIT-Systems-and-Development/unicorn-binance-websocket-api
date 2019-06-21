@@ -61,7 +61,6 @@ class BinanceWebSocketApiSocket(object):
                 try:
                     received_stream_data_json = await websocket.receive()
                     if received_stream_data_json is not None:
-                        self.handler_binance_websocket_api_manager.add_total_received_bytes(sys.getsizeof(received_stream_data_json))
                         self.handler_binance_websocket_api_manager.process_stream_data(received_stream_data_json)
                 except websockets.exceptions.ConnectionClosed as error_msg:
                     logging.critical("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +

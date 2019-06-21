@@ -100,12 +100,16 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/mast
 ## Wiki
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
 
-## Receive Update Notifications
+## Receive Notifications
 To receive notifications on available updates you can ![watch](https://s3.gifyu.com/images/github_watch.png) the 
 repository on [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api), write your 
 [own script](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py) 
 with using `binance_websocket_api_manager.is_update_availabe()` or you use the 
 [monitoring API service](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/).
+
+To receive news (like inspection windows/maintenance) about the Binance API`s subscribe to their telegram groups: 
+https://t.me/binance_api_english
+https://t.me/BinanceDEXchange
 
 ## How to report Bugs or suggest Improvements?
 [List of planned features](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 

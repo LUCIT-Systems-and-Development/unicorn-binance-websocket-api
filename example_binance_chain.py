@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_binance_jersey.py
+# File: example_binance_chain.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
@@ -57,39 +57,15 @@ logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 logging.getLogger('unicorn-log').setLevel(logging.INFO)
 
 # create instance of BinanceWebSocketApiManager for Binance Jersey
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.je")
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org-testnet")
 
-# set api key and secret for userData stream
-binance_je_api_key = ""
-binance_je_api_secret = ""
-binance_websocket_api_manager.set_private_api_config(binance_je_api_key, binance_je_api_secret)
-userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
+#ticker_all_stream_id = binance_websocket_api_manager.create_stream(["$all"], ["allTickers"])
+#miniticker_stream_id = binance_websocket_api_manager.create_stream(["$all"], ["allMiniTickers"])
 
-ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])
-miniticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])
+markets = {'BNB_BTC'}
 
-markets = {'bnbeur', 'bnbgbp', 'ethgbp', 'etheur', 'btceur', 'btcgbp'}
-
-binance_websocket_api_manager.create_stream(["aggTrade"], markets)
-binance_websocket_api_manager.create_stream(["trade"], markets)
-binance_websocket_api_manager.create_stream(["kline_1m"], markets)
-binance_websocket_api_manager.create_stream(["kline_5m"], markets)
-binance_websocket_api_manager.create_stream(["kline_15m"], markets)
-binance_websocket_api_manager.create_stream(["kline_1h"], markets)
-binance_websocket_api_manager.create_stream(["kline_12h"], markets)
-binance_websocket_api_manager.create_stream(["kline_1w"], markets)
-binance_websocket_api_manager.create_stream(["ticker"], markets)
-binance_websocket_api_manager.create_stream(["miniTicker"], markets)
-binance_websocket_api_manager.create_stream(["depth"], markets)
-binance_websocket_api_manager.create_stream(["depth5"], markets)
-binance_websocket_api_manager.create_stream(["depth10"], markets)
-binance_websocket_api_manager.create_stream(["depth20"], markets)
-binance_websocket_api_manager.create_stream(["aggTrade"], markets)
-
-
-channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w',
-            'miniTicker', 'depth20'}
-binance_websocket_api_manager.create_stream(channels, markets)
+id = binance_websocket_api_manager.create_stream(["trades"], markets)
+#binance_websocket_api_manager.create_stream(["kline_1h"], markets)
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
@@ -98,4 +74,5 @@ worker_thread.start()
 # show an overview
 while True:
     binance_websocket_api_manager.print_summary()
+    binance_websocket_api_manager.print_stream_info(id)
     time.sleep(1)
