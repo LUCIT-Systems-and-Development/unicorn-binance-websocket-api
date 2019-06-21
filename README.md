@@ -32,7 +32,7 @@ processing. The current dependencies are listed
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
 on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), [je](https://github.com/binance-jersey/binance-official-api-docs/)) in combination. 
 
-### What are the benefits of the [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)?
+### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect!
 - Supported exchanges: [Binance](https://www.binance.com) and [Binance Jersey](https://www.binance.je/)
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
@@ -109,7 +109,7 @@ with using `binance_websocket_api_manager.is_update_availabe()` or you use the
 
 ## How to report Bugs or suggest Improvements?
 [List of planned features](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 
-click ![thumbs-up](https://s3.gifyu.com/images/tu.png) if you need one of them!
+click ![thumbs-up](https://s3.gifyu.com/images/tu.png) if you need one of them or suggest a new feature!
 
 Before you report a bug, [try the latest release](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS 
 and python version and explain how to reproduce the error. A demo script is appreciated.
