@@ -92,7 +92,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.websocket_base_uri = "wss://stream.binance.je:9443/"
         elif self.exchange == "binance.org":
             # Binance Chain: www.binance.org
-            self.websocket_base_uri = "wss://dex.binance.org"
+            self.websocket_base_uri = "wss://dex.binance.org/api/"
         elif self.exchange == "binance.org-testnet":
             # Binance Chain Testnet: www.binance.org
             self.websocket_base_uri = "wss://testnet-dex.binance.org/api/"
@@ -448,6 +448,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             channels = [channels]
         if type(markets) is str:
             markets = [markets]
+
         if len(channels) == 1:
             if "arr" in channels:
                 query = "ws/"
@@ -455,6 +456,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 query = "stream?streams="
         else:
             query = "stream?streams="
+
+        if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
+            query = "ws/"
         for channel in channels:
             if channel == "!ticker":
                 logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
@@ -501,11 +505,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                             return False
                     else:
                         return False
-                elif market == "!miniTicker":
-                    query += market + "@" + channel + "/"
+                elif market == "$all" or market == "!miniTicker":
+                    query += market + "@" + channel
+                elif market == "all" or market == "allMiniTickers" or market == "allTickers":
+                    query += channel + "@" + market
                 else:
                     if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
-                        query += market.upper() + "@" + channel + "/"
+                        query += market.upper() + "@" + channel
                     else:
                         query += market.lower() + "@" + channel + "/"
         uri = self.websocket_base_uri + str(query)

@@ -15,7 +15,8 @@ logging.getLogger('unicorn-log').setLevel(logging.DEBUG)
 
 
 def binance_stream_trades():
-    websocket = create_connection("wss://testnet-dex.binance.org/api/ws/$all@allMiniTickers")
+    websocket = create_connection("wss://dex.binance.org/api/ws/RAVEN-F66_BNB@trades")
+    #websocket = create_connection("wss://testnet-dex.binance.org/api/ws/$all@allMiniTickers")
     while True:
         result = websocket.recv()
         print("Received trade '%s'" % result)

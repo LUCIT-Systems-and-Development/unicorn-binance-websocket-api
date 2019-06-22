@@ -57,12 +57,12 @@ logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 logging.getLogger('unicorn-log').setLevel(logging.INFO)
 
 # create instance of BinanceWebSocketApiManager for Binance Jersey
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org-testnet")
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org")
 
-#ticker_all_stream_id = binance_websocket_api_manager.create_stream(["$all"], ["allTickers"])
-#miniticker_stream_id = binance_websocket_api_manager.create_stream(["$all"], ["allMiniTickers"])
+ticker_all_stream_id = binance_websocket_api_manager.create_stream(["allTickers"], ["$all"])
+miniticker_stream_id = binance_websocket_api_manager.create_stream(["$all"], ["allMiniTickers"])
 
-markets = {'BNB_BTC'}
+markets = {'RAVEN-F66_BNB'}
 
 id = binance_websocket_api_manager.create_stream(["trades"], markets)
 #binance_websocket_api_manager.create_stream(["kline_1h"], markets)

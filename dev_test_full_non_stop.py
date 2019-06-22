@@ -66,7 +66,7 @@ binance_api_secret = ""
 binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
 userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
 
-ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])
+ticker_all_stream_id = binance_websocket_api_manager.create_stream(["!ticker"], ["arr"])
 miniticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])
 
 markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
