@@ -8,7 +8,7 @@
 
 
 # UNICORN Binance WebSocket API
-A python API to use the Binance Websocket API`s in a easy, fast, flexible, robust and fully-featured way.
+A python API to use the Binance Websocket API in a easy, fast, flexible, robust and fully-featured way.
 
 ### Create a multiplex websocket connection to Binance with just 3 lines of code:
 ```
@@ -48,11 +48,6 @@ and a [check_command](https://github.com/unicorn-data-analysis/unicorn-binance-w
 for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_manager)/Nagios 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
 
-If you like the project, please ![star](https://s3.gifyu.com/images/stard237b3003af9f9a9.png) it on 
-[GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)! If you use the
-[UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) in your project, let us know on Twitter 
-[@unicorn_data](https://twitter.com/unicorn_data)!
-
 ## Installation and Upgrade
 Please note: UnicornFy is not longer part of this package, visit https://github.com/unicorn-data-analysis/unicorn_fy for
 further information.
@@ -68,8 +63,6 @@ Use the below command with the version (such as 1.3.8) you determined [here](htt
 
 `pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/1.3.8.tar.gz --upgrade`
 ### From the latest source (dev-stage) with PIP from [Github](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)
-This is not a release version and can not be considered to be stable!
-
 `pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/tarball/master --upgrade`
 
 ### [Conda environment](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html), [Virtualenv](https://virtualenv.pypa.io/en/latest/) or plain [python](https://docs.python.org/2/install/)
@@ -100,31 +93,21 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/mast
 ## Wiki
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
 
-## Receive Notifications
-To receive notifications on available updates you can ![watch](https://s3.gifyu.com/images/github_watch.png) the 
-repository on [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api), write your 
-[own script](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py) 
-with using `binance_websocket_api_manager.is_update_availabe()` or you use the 
-[monitoring API service](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/).
-
-To receive news (like inspection windows/maintenance) about the Binance API`s subscribe to their telegram groups: 
-- https://t.me/binance_api_english
-- https://t.me/BinanceDEXchange
-
 ## How to report Bugs or suggest Improvements?
-[List of planned features](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 
-click ![thumbs-up](https://s3.gifyu.com/images/tu.png) if you need one of them or suggest a new feature!
+[List of new planned features](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 
+just click ![thumbs-up](https://s3.gifyu.com/images/tu.png) if you need one of them!
 
 Before you report a bug, [try the latest release](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS 
 and python version and explain how to reproduce the error. A demo script is appreciated.
 
-If you dont find an issue related to your topic, please open a new issue:
+If you dont find an issue related to your topic, please open a new:
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues
 
 ## Contributing
-[UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) is an open 
-source project which welcomes contributions which can be anything from simple documentation fixes to new features. To 
-contribute, fork the project on [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) and 
-send a pull request.
+UNICORN Binance WebSocket API is an open source project which welcomes contributions which can be anything from simple 
+documentation fixes to new features. To contribute, fork the project on 
+[GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) and send a pull request.
+
+If you like this project please give it a ![star](https://s3.gifyu.com/images/stard237b3003af9f9a9.png)!
 
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
