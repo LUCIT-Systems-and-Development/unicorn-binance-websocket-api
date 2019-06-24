@@ -505,9 +505,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                             return False
                     else:
                         return False
-                elif market == "$all" or market == "!miniTicker":
+                elif market == "$all" or market == "!miniTicker" or market == "!ticker":
                     query += market + "@" + channel
                 elif market == "all" or market == "allMiniTickers" or market == "allTickers":
+                    query += channel + "@" + market
+                elif "!ticker" in channel or "!miniTicker" in channel or "!userData" in channel:
                     query += channel + "@" + market
                 else:
                     if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
