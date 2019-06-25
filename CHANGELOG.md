@@ -13,6 +13,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - exchange name and lib version to print_stream_info()
 - current_receiving_speed() to print_summary() and print_stream_info()
 
+### Changed 
+- rewrite create_websocket_url(): 
+1. a multiplex socket now returns false if it includes a single stream type like !userData, !Ticker or !miniTicker
+2. added support for binance.org Binance Chain DEX
+
 ## 1.4.0
 ### Added 
 - logging on failure in `create_stream()`

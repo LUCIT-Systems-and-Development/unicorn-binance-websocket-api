@@ -444,12 +444,14 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: str or False
         """
+
+        dex_single_stream_url_created = False
+
         if type(channels) is str:
             channels = [channels]
         if type(markets) is str:
             markets = [markets]
 
-        # handle single sockets
         if len(channels) == 1 and len(markets) == 1:
             if "!userData" in channels or "!userData" in markets:
                 if stream_id is not False:
@@ -477,39 +479,64 @@ class BinanceWebSocketApiManager(threading.Thread):
                         return False
                 else:
                     return False
-            elif "arr" in channels:
+            elif "arr" in channels or "$all" in markets:
                 return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
-            elif "arr" in markets:
+            elif "arr" in markets or "$all" in channels:
                 return self.websocket_base_uri + "ws/" + channels[0] + "@" + markets[0]
-            else:
-                query = "stream?streams="
+
+        if self.exchange == "binance.org":
+            # DEX multiplex sockets must get established as single stream and then subscribe/unsubscribe
+            query = "ws/"
         else:
             query = "stream?streams="
 
         for channel in channels:
-            # Test if !ticker, !miniTicker or !userDAta is part of multiplex stream and break current round of `for`
+            # Test if !ticker, !miniTicker or !userDAta is part of multiplex stream and return False
             if channel == "!ticker":
                 logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
-                              "Unfortunatly Binance only stream it in a single stream socket! "
+                              "Unfortunately Binance only stream it in a single stream socket! "
                               "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!ticker\"]) to initiate "
                               "an extra connection.")
-                continue
+                return False
             if channel == "!miniTicker":
                 logging.error("Can not create 'arr@!miniTicker' in a multi channel socket! "
-                              "Unfortunatly Binance only stream it in a single stream socket! ./"
+                              "Unfortunately Binance only stream it in a single stream socket! ./"
                               "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) to "
                               "initiate an extra connection.")
-                continue
+                return False
             if channel == "!userData":
                 logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
-                              "Unfortunatly Binance only stream it in a single stream socket! ./"
+                              "Unfortunately Binance only stream it in a single stream socket! ./"
                               "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
                               "initiate an extra connection.")
-                continue
+                return False
 
             for market in markets:
-                if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
+                if market == "!ticker":
+                    logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
+                                  "Unfortunately Binance only stream it in a single stream socket! "
+                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!ticker\"]) to "
+                                  "initiate an extra connection.")
+                    return False
+                if market == "!miniTicker":
+                    logging.error("Can not create 'arr@!miniTicker' in a multi channel socket! "
+                                  "Unfortunatly Binance only stream it in a single stream socket! ./"
+                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) to "
+                                  "initiate an extra connection.")
+                    return False
+                if market == "!userData":
+                    logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
+                                  "Unfortunatly Binance only stream it in a single stream socket! ./"
+                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
+                                  "initiate an extra connection.")
+                    return False
+
+                if self.exchange == "binance.org" and dex_single_stream_url_created is False:
+                    dex_single_stream_url_created = True
                     query += market.upper() + "@" + channel
+                elif self.exchange == "binance.org" and dex_single_stream_url_created is True:
+                    # build the payload
+                    pass
                 else:
                     query += market.lower() + "@" + channel + "/"
 

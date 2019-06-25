@@ -87,8 +87,6 @@ class BinanceWebSocketApiConnection(object):
         self._conn = connect(uri, ping_interval=20, close_timeout=10,
                              extra_headers={'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/' +
                                             self.handler_binance_websocket_api_manager.version})
-
-        print(uri)
         try:
             self.handler_binance_websocket_api_manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['status'] = "running"
