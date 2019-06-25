@@ -449,17 +449,45 @@ class BinanceWebSocketApiManager(threading.Thread):
         if type(markets) is str:
             markets = [markets]
 
-        if len(channels) == 1:
-            if "arr" in channels:
-                query = "ws/"
+        # handle single sockets
+        if len(channels) == 1 and len(markets) == 1:
+            if "!userData" in channels or "!userData" in markets:
+                if stream_id is not False:
+                    # only execute this code block with a provided stream_id
+                    response = self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
+                    try:
+                        if response['code'] == -2014 or response['code'] == -2015:
+                            return response
+                        else:
+                            logging.critical("Received unknown error code from rest client: " + str(response))
+                            return response
+                    except KeyError:
+                        pass
+                    except TypeError:
+                        pass
+                    if response:
+                        try:
+                            uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
+                            return uri
+                        except KeyError:
+                            return False
+                        except TypeError:
+                            return False
+                    else:
+                        return False
+                else:
+                    return False
+            elif "arr" in channels:
+                return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
+            elif "arr" in markets:
+                return self.websocket_base_uri + "ws/" + channels[0] + "@" + markets[0]
             else:
                 query = "stream?streams="
         else:
             query = "stream?streams="
 
-        if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
-            query = "ws/"
         for channel in channels:
+            # Test if !ticker, !miniTicker or !userDAta is part of multiplex stream and break current round of `for`
             if channel == "!ticker":
                 logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
                               "Unfortunatly Binance only stream it in a single stream socket! "
@@ -478,46 +506,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                               "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
                               "initiate an extra connection.")
                 continue
+
             for market in markets:
-                if market == "!userData":
-                    if stream_id is not False:
-                        # only execute this code block with a provided stream_id
-                        response = self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
-                        try:
-                            if response['code'] == -2014 or response['code'] == -2015:
-                                return response
-                            else:
-                                logging.critical("Received unknown error code from rest client: " + str(response))
-                                return response
-                        except KeyError:
-                            pass
-                        except TypeError:
-                            pass
-                        if response:
-                            try:
-                                uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
-                                return uri
-                            except KeyError:
-                                return False
-                            except TypeError:
-                                return False
-                        else:
-                            return False
-                    else:
-                        return False
-                elif market == "$all" or market == "!miniTicker" or market == "!ticker":
-                    query += market + "@" + channel
-                elif market == "all" or market == "allMiniTickers" or market == "allTickers":
-                    query += channel + "@" + market
-                elif "!ticker" in channel or "!miniTicker" in channel or "!userData" in channel:
-                    query += channel + "@" + market
+                if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
+                    query += market.upper() + "@" + channel
                 else:
-                    if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
-                        query += market.upper() + "@" + channel
-                    else:
-                        query += market.lower() + "@" + channel + "/"
-        uri = self.websocket_base_uri + str(query)
-        return uri
+                    query += market.lower() + "@" + channel + "/"
+
+        return self.websocket_base_uri + str(query)
 
     def delete_listen_key_by_stream_id(self, stream_id):
         """
