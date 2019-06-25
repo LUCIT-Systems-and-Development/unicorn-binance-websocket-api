@@ -35,13 +35,14 @@
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import unittest
+import uuid
 
 
 class TestBinanceManager(unittest.TestCase):
 
     def setUp(self):
-        self.binance_com_api_key = "aaaa"
-        self.binance_com_api_secret = "bbbb"
+        self.binance_com_api_key = ""
+        self.binance_com_api_secret = ""
 
         self.binance_websocket_api_manager_com = BinanceWebSocketApiManager(exchange="binance.com")
         self.binance_websocket_api_manager_je = BinanceWebSocketApiManager(exchange="binance.je")
@@ -58,36 +59,39 @@ class TestBinanceManager(unittest.TestCase):
 
     def test_create_uri_ticker_regular_com(self):
         self.assertEqual(self.binance_websocket_api_manager_com.create_websocket_uri(["!ticker"], ["arr"]),
-                         'wss://stream.binance.com:9443/ws/!ticker@arr/')
+                         'wss://stream.binance.com:9443/ws/!ticker@arr')
 
     def test_create_uri_ticker_reverse_com(self):
         self.assertEqual(self.binance_websocket_api_manager_com.create_websocket_uri(["arr"], ["!ticker"]),
-                         'wss://stream.binance.com:9443/ws/!ticker@arr/')
+                         'wss://stream.binance.com:9443/ws/!ticker@arr')
 
     def test_create_uri_userdata_regular_com_false(self):
-        self.assertFalse(self.binance_websocket_api_manager_com.create_websocket_uri(["!userData"], ["arr"]),
-                         'wss://stream.binance.com:9443/ws/!userData@arr/')
+        self.assertFalse(self.binance_websocket_api_manager_com.create_websocket_uri(["!userData"], ["arr"]))
 
     def test_create_uri_userdata_reverse_com_false(self):
-        self.assertFalse(self.binance_websocket_api_manager_com.create_websocket_uri(["arr"], ["!userData"]),
-                         'wss://stream.binance.com:9443/ws/!userData@arr/')
+        self.assertFalse(self.binance_websocket_api_manager_com.create_websocket_uri(["arr"], ["!userData"]))
 
     def test_create_uri_userdata_regular_com(self):
-        self.binance_websocket_api_manager_com.set_private_api_config(self.binance_com_api_key,
-                                                                      self.binance_com_api_secret)
-
-        self.assertEqual(self.binance_websocket_api_manager_com.create_websocket_uri(["!userData"], ["arr"]),
-                         'wss://stream.binance.com:9443/ws/!userData@arr/')
+        stream_id = uuid.uuid4()
+        self.binance_websocket_api_manager_com._add_socket_to_socket_list(stream_id, ["!userData"], ["arr"])
+        self.assertRegex(self.binance_websocket_api_manager_com.create_websocket_uri(["!userData"], ["arr"],
+                                                                                     stream_id,
+                                                                                     self.binance_com_api_key,
+                                                                                     self.binance_com_api_secret),
+                         r'wss://stream.binance.com:9443/ws/.')
 
     def test_create_uri_userdata_reverse_com(self):
-        self.binance_websocket_api_manager_com.set_private_api_config(self.binance_com_api_key,
-                                                                      self.binance_com_api_secret)
-        self.assertEqual(self.binance_websocket_api_manager_com.create_websocket_uri(["arr"], ["!userData"]),
-                         'wss://stream.binance.com:9443/ws/!userData@arr/')
+        stream_id = uuid.uuid4()
+        self.binance_websocket_api_manager_com._add_socket_to_socket_list(stream_id, ["arr"], ["!userData"])
+        self.assertRegex(self.binance_websocket_api_manager_com.create_websocket_uri(["arr"], ["!userData"],
+                                                                                     stream_id,
+                                                                                     self.binance_com_api_key,
+                                                                                     self.binance_com_api_secret),
+                         r'wss://stream.binance.com:9443/ws/.')
 
     def test_create_uri_single_regular_com(self):
         self.assertEqual(self.binance_websocket_api_manager_com.create_websocket_uri(["trade"], ["bnbbtc"]),
-                         'wss://stream.binance.com:9443/ws/bnbbtc@trade/')
+                         'wss://stream.binance.com:9443/stream?streams=bnbbtc@trade/')
 
     def test_create_uri_multi_regular_com(self):
         self.assertEqual(self.binance_websocket_api_manager_com.create_websocket_uri(['trade', 'kline_1'],
