@@ -59,13 +59,21 @@ logging.getLogger('unicorn-log').setLevel(logging.INFO)
 # create instance of BinanceWebSocketApiManager for Binance Jersey
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org")
 
-ticker_all_stream_id = binance_websocket_api_manager.create_stream(["allTickers"], ["$all"])
-miniticker_stream_id = binance_websocket_api_manager.create_stream(["$all"], ["allMiniTickers"])
+binance_websocket_api_manager.create_stream(["allTickers"], ["$all"])
+binance_websocket_api_manager.create_stream(["$all"], ["allMiniTickers"])
+binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
+# build userData support ...
 
-markets = {'RAVEN-F66_BNB'}
 
-id = binance_websocket_api_manager.create_stream(["trades"], markets)
-#binance_websocket_api_manager.create_stream(["kline_1h"], markets)
+binance_websocket_api_manager.create_stream(["trades"], 'RAVEN-F66_BNB')
+binance_websocket_api_manager.create_stream(["marketDepth"], 'RAVEN-F66_BNB')
+binance_websocket_api_manager.create_stream(["kline_1h"], 'RAVEN-F66_BNB')
+binance_websocket_api_manager.create_stream(["ticker"], 'RAVEN-F66_BNB')
+binance_websocket_api_manager.create_stream(["miniTicker"], 'RAVEN-F66_BNB')
+
+markets = {'RAVEN-F66_BNB', 'ANKR-E97_BNB', 'AWC-986_BNB', 'COVA-218_BNB'}
+# build multiplex support ...
+
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
@@ -74,5 +82,4 @@ worker_thread.start()
 # show an overview
 while True:
     binance_websocket_api_manager.print_summary()
-    binance_websocket_api_manager.print_stream_info(id)
     time.sleep(1)
