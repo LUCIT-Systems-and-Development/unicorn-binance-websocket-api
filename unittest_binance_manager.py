@@ -107,6 +107,10 @@ class TestBinanceComManager(unittest.TestCase):
                          'wss://stream.binance.com:9443/stream?streams=bnbbtc@trade/ethbtc@trade/'
                          'bnbbtc@kline_1/ethbtc@kline_1/')
 
+    def test_create_uri_multi_with_ticker_com(self):
+        self.assertFalse(self.binance_com_websocket_api_manager.create_websocket_uri(['trade', 'kline_1', '!ticker'],
+                                                                                     ['bnbbtc', 'ethbtc']))
+
     def tearDown(self):
         self.binance_com_websocket_api_manager.stop_manager_with_all_streams()
 
@@ -176,6 +180,10 @@ class TestBinanceJeManager(unittest.TestCase):
                          'wss://stream.binance.je:9443/stream?streams=bnbbtc@trade/ethbtc@trade/'
                          'bnbbtc@kline_1/ethbtc@kline_1/')
 
+    def test_create_uri_multi_with_miniTicker_je(self):
+        self.assertFalse(self.binance_je_websocket_api_manager.create_websocket_uri(['trade', 'kline_1', '!miniTicker'],
+                                                                                    ['bnbbtc', 'ethbtc']))
+
     def tearDown(self):
         self.binance_je_websocket_api_manager.stop_manager_with_all_streams()
 
@@ -229,7 +237,6 @@ class TestBinanceOrgManager(unittest.TestCase):
     def test_create_uri_single_miniTicker_org(self):
         self.assertEqual(self.binance_org_websocket_api_manager.create_websocket_uri(["miniTicker"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@miniTicker')
-
 
     def tearDown(self):
         self.binance_org_websocket_api_manager.stop_manager_with_all_streams()

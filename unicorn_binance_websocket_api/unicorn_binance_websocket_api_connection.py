@@ -40,6 +40,7 @@ import logging
 import socket
 import ssl
 import sys
+import time
 import websockets
 
 
@@ -128,6 +129,13 @@ class BinanceWebSocketApiConnection(object):
             elif "Status code not 101: 400" in str(error_msg):
                 logging.error("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                               str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))
+            elif "Status code not 101: 429" in str(error_msg):
+                logging.error("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
+                              str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))
+                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
+                time.sleep(5)
+                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+                sys.exit(1)
             elif "Status code not 101: 500" in str(error_msg):
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))

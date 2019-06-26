@@ -56,7 +56,7 @@ logging.basicConfig(filename=os.path.basename(__file__) + '.log',
 logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 logging.getLogger('unicorn-log').setLevel(logging.INFO)
 
-# create instance of BinanceWebSocketApiManager for Binance Jersey
+# create instance of BinanceWebSocketApiManager for Binance Chain DEX
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org")
 
 binance_websocket_api_manager.create_stream(["allTickers"], ["$all"])
@@ -65,11 +65,16 @@ binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
 # build userData support ...
 
 
-binance_websocket_api_manager.create_stream(["trades"], 'RAVEN-F66_BNB')
-binance_websocket_api_manager.create_stream(["marketDepth"], 'RAVEN-F66_BNB')
-binance_websocket_api_manager.create_stream(["kline_1h"], 'RAVEN-F66_BNB')
-binance_websocket_api_manager.create_stream(["ticker"], 'RAVEN-F66_BNB')
-binance_websocket_api_manager.create_stream(["miniTicker"], 'RAVEN-F66_BNB')
+if binance_websocket_api_manager.get_exchange() == "binance.org":
+    markets = 'RAVEN-F66_BNB'
+elif binance_websocket_api_manager.get_exchange() == "binance.org-testnet":
+    markets = 'ZCB-F00_BNB'
+
+binance_websocket_api_manager.create_stream(["trades"], markets)
+binance_websocket_api_manager.create_stream(["marketDepth"], markets)
+binance_websocket_api_manager.create_stream(["kline_1h"], markets)
+binance_websocket_api_manager.create_stream(["ticker"], markets)
+binance_websocket_api_manager.create_stream(["miniTicker"], markets)
 
 markets = {'RAVEN-F66_BNB', 'ANKR-E97_BNB', 'AWC-986_BNB', 'COVA-218_BNB'}
 # build multiplex support ...

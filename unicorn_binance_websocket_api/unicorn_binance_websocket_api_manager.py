@@ -642,6 +642,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             current_receiving_speed = 0
         return current_receiving_speed
 
+    def get_exchange(self):
+        return self.exchange
+
     def get_human_bytesize(self, bytes, suffix=""):
         if bytes > 1024 * 1024 * 1024:
             bytes = str(round(bytes / (1024 * 1024 * 1024), 2)) + " gB" + suffix

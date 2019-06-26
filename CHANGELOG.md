@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - get_current_receiving_speed()
 - exchange name and lib version to print_stream_info()
 - current_receiving_speed() to print_summary() and print_stream_info()
+- get_exchange()
 
 ### Changed 
 - rewrite create_websocket_url(): 

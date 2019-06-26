@@ -14,27 +14,37 @@ A python API to use the Binance Websocket API`s in a easy, fast, flexible, robus
 ```
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 
-binance_websocket_api_manager = BinanceWebSocketApiManager()
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
 binance_websocket_api_manager.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
 
 ## Description
 The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) 
 provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs) 
-and [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/) and supports the streaming of 
-public streams like trade, kline, ticker and depth, but also the private userData stream which need to be used with a 
-valid api_key and api_secret from the Binance Exchange https://www.binance.com or https://www.binance.je.
+, [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
+[Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
+[Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports the streaming of 
+public streams like trade, kline, ticker, depth and blockheight, but also the private userData stream which need to be 
+used with a valid api_key and api_secret from the Binance Exchange https://www.binance.com or https://www.binance.je - 
+on the DEX you need a user address from the Binance DEX https://www.binance.org or https://testnet.binance.org
 
 The module requires python 3.5.3 or above, as it depends on pythons latest asyncio features for asynchronous/concurrent 
 processing. The current dependencies are listed 
 [here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
-on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), [je](https://github.com/binance-jersey/binance-official-api-docs/)) in combination. 
+on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), 
+[je](https://github.com/binance-jersey/binance-official-api-docs/), 
+[org](https://docs.binance.org/api-reference/dex-api/paths.html)) in combination. 
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect!
-- Supported exchanges: [Binance](https://www.binance.com) and [Binance Jersey](https://www.binance.je/)
+- Supported exchanges: 
+    * [Binance](https://www.binance.com)
+    * [Binance Jersey](https://www.binance.je)  
+    * [Binance DEX](https://www.binance.org) (integration in progress)
+    * [Binance DEX testnet](https://testnet.binance.org) (integration in progress)
+
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
 [python-daemon](https://pypi.org/project/python-daemon/)).
