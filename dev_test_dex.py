@@ -76,7 +76,7 @@ binance_dex_user_address = ""
 binance_websocket_api_manager.create_stream('orders', binance_dex_user_address)
 binance_websocket_api_manager.create_stream('accounts', binance_dex_user_address)
 binance_websocket_api_manager.create_stream('transfers', binance_dex_user_address)
-user_address_multi_stream_id = binance_websocket_api_manager.create_stream(['orders', 'transfers'],
+user_address_multi_stream_id = binance_websocket_api_manager.create_stream(['orders', 'transfers', 'accounts'],
                                                                            binance_dex_user_address)
 markets = 'RAVEN-F66_BNB'
 binance_websocket_api_manager.create_stream(["trades"], markets)

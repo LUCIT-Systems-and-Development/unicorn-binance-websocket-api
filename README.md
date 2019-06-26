@@ -43,8 +43,8 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 - Supported exchanges: 
     * [Binance](https://www.binance.com)
     * [Binance Jersey](https://www.binance.je)  
-    * [Binance DEX](https://www.binance.org) (integration in progress)
-    * [Binance DEX testnet](https://testnet.binance.org) (integration in progress)
+    * [Binance DEX](https://www.binance.org) *beta*
+    * [Binance DEX testnet](https://testnet.binance.org) *beta*
 
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
