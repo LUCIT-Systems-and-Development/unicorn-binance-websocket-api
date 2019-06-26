@@ -238,10 +238,43 @@ class TestBinanceOrgManager(unittest.TestCase):
         self.assertEqual(self.binance_org_websocket_api_manager.create_websocket_uri(["miniTicker"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@miniTicker')
 
-    def test_create_uri_multi_je(self):
+    def test_create_uri_multi_org(self):
         self.assertEqual(self.binance_org_websocket_api_manager.create_websocket_uri(['trades', 'kline_1h'],
                                                                                      ['RAVEN-F66_BNB', 'ANKR-E97_BNB']),
-                         'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@trades')
+                         'wss://dex.binance.org/api/ws')
+
+        stream_id = self.binance_org_websocket_api_manager.create_stream(['trades', 'kline_1h'],
+                                                                  ['RAVEN-F66_BNB', 'ANKR-E97_BNB'])
+        self.assertEqual(str(self.binance_org_websocket_api_manager.stream_list[stream_id]["payload"]),
+                         "[{'method': 'subscribe', 'topic': 'trades', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}, "
+                         "{'method': 'subscribe', 'topic': 'kline_1h', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}]")
+
+    def test_create_uri_user_address_orders_single_org(self):
+        self.assertEqual(
+            self.binance_org_websocket_api_manager.create_websocket_uri('orders',
+                                                                        'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'),
+            'wss://dex.binance.org/api/ws/bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
+
+    def test_create_uri_user_address_accounts_single_org(self):
+        self.assertEqual(
+            self.binance_org_websocket_api_manager.create_websocket_uri('accounts',
+                                                                        'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'),
+            'wss://dex.binance.org/api/ws/bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
+
+    def test_create_uri_user_address_transfers_single_org(self):
+        self.assertEqual(
+            self.binance_org_websocket_api_manager.create_websocket_uri('transfers',
+                                                                        'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'),
+            'wss://dex.binance.org/api/ws/bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
+
+    def test_create_uri_user_address_multi_org(self):
+        stream_id = self.binance_org_websocket_api_manager.create_stream(['orders', 'transfers', 'accounts'],
+                                                                         'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
+        self.assertEqual(str(self.binance_org_websocket_api_manager.stream_list[stream_id]["payload"]),
+                         "[{'method': 'subscribe', 'topic': 'orders', 'userAddress': 'bnb1v566f3avl2ud5z0jepazsrguzkj3"
+                         "67snlx4jm6'}, {'method': 'subscribe', 'topic': 'transfers', 'userAddress': 'bnb1v566f3avl2ud"
+                         "5z0jepazsrguzkj367snlx4jm6'}, {'method': 'subscribe', 'topic': 'accounts', 'userAddress': 'b"
+                         "nb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}]")
 
     def tearDown(self):
         self.binance_org_websocket_api_manager.stop_manager_with_all_streams()

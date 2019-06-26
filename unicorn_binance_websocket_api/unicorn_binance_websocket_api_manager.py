@@ -44,6 +44,7 @@ import asyncio
 import colorama
 import copy
 import logging
+import re
 import requests
 import sys
 import threading
@@ -106,6 +107,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self._keepalive_streams_restart_request = None
         self.api_key = False
         self.api_secret = False
+        self.dex_user_address = False
         self.frequent_checks_list = {}
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
@@ -137,8 +139,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'stream_id': copy.deepcopy(stream_id),
                                        'channels': copy.deepcopy(channels),
                                        'markets': copy.deepcopy(markets),
+                                       'payload': False,
                                        'api_key': copy.deepcopy(self.api_key),
                                        'api_secret': copy.deepcopy(self.api_secret),
+                                       'dex_user_address': copy.deepcopy(self.dex_user_address),
                                        'status': 'starting',
                                        'start_time': time.time(),
                                        'processed_receives_total': 0,
@@ -445,7 +449,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: str or False
         """
 
-        dex_single_stream_url_created = False
+        payload = []
 
         if type(channels) is str:
             channels = [channels]
@@ -455,7 +459,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         if len(channels) == 1 and len(markets) == 1:
             if "!userData" in channels or "!userData" in markets:
                 if stream_id is not False:
-                    # only execute this code block with a provided stream_id
                     response = self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
                     try:
                         if response['code'] == -2014 or response['code'] == -2015:
@@ -483,10 +486,25 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
             elif "arr" in markets or "$all" in channels:
                 return self.websocket_base_uri + "ws/" + channels[0] + "@" + markets[0]
+            elif self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
+                if re.match(r'[a-zA-Z0-9]{41,43}', markets[0]) is not None:
+                    add_payload = {"method": "subscribe",
+                                   "topic": channels[0],
+                                   "userAddress": markets[0]}
+                    payload.append(add_payload)
+                    if stream_id:
+                        self.stream_list[stream_id]['payload'] = payload
+                    return self.websocket_base_uri + "ws/" + markets[0]
+                else:
+                    return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
 
         if self.exchange == "binance.org":
             # DEX multiplex sockets must get established as single stream and then subscribe/unsubscribe
-            query = "ws/"
+            # Even its mentioned here
+            # https://docs.binance.org/api-reference/dex-api/ws-connection.html#method-1-connect-with-stream-names-in-the-url
+            # the url wss://dex.binance.org/api/stream?streams=<symbol>@trades/<symbol>@marketDepth doesnt get a valid
+            # connection on DEX websockets ...
+            query = "ws"
         else:
             query = "stream?streams="
 
@@ -511,36 +529,32 @@ class BinanceWebSocketApiManager(threading.Thread):
                               "initiate an extra connection.")
                 return False
 
-            for market in markets:
-                if market == "!ticker":
-                    logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
-                                  "Unfortunately Binance only stream it in a single stream socket! "
-                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!ticker\"]) to "
-                                  "initiate an extra connection.")
-                    return False
-                if market == "!miniTicker":
-                    logging.error("Can not create 'arr@!miniTicker' in a multi channel socket! "
-                                  "Unfortunatly Binance only stream it in a single stream socket! ./"
-                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) to "
-                                  "initiate an extra connection.")
-                    return False
-                if market == "!userData":
-                    logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
-                                  "Unfortunatly Binance only stream it in a single stream socket! ./"
-                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
-                                  "initiate an extra connection.")
-                    return False
+            if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
+                self.create_payload(stream_id, channel, markets)
+            else:
+                for market in markets:
+                    if market == "!ticker":
+                        logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
+                                      "Unfortunately Binance only stream it in a single stream socket! "
+                                      "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!ticker\"]) to "
+                                      "initiate an extra connection.")
+                        return False
+                    if market == "!miniTicker":
+                        logging.error("Can not create 'arr@!miniTicker' in a multi channel socket! "
+                                      "Unfortunatly Binance only stream it in a single stream socket! ./"
+                                      "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) "
+                                      "to initiate an extra connection.")
+                        return False
+                    if market == "!userData":
+                        logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
+                                      "Unfortunatly Binance only stream it in a single stream socket! ./"
+                                      "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
+                                      "initiate an extra connection.")
+                        return False
 
-                if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
-                    if dex_single_stream_url_created is False:
-                        dex_single_stream_url_created = True
-                        query += market.upper() + "@" + channel
-                    else:
-                        # create payload
-                        pass
-                else:
                     query += market.lower() + "@" + channel + "/"
-
+        if stream_id:
+            self.stream_list[stream_id]['payload'] = payload
         return self.websocket_base_uri + str(query)
 
     def delete_listen_key_by_stream_id(self, stream_id):
@@ -622,13 +636,12 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_current_receiving_speed(self, stream_id):
         """
-        Get the receiving speed in kB/s of the last second in Bytes
+        Get the receiving speed of the last second in Bytes
 
         :return: int
         """
         current_timestamp = int(time.time())
         last_timestamp = current_timestamp - 1
-        # calculate the transfer rate of the last second in Bytes
         try:
             if self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][last_timestamp] > 0:
                 self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = \
@@ -657,7 +670,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             bytes = str(bytes) + " B" + suffix
         return bytes
 
-    def get_human_uptime(self, uptime):
+    @staticmethod
+    def get_human_uptime(uptime):
         # formats a timestamp to a human readable output
         if uptime > (60 * 60 * 24):
             uptime_days = int(uptime / (60 * 60 * 24))
@@ -680,7 +694,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             uptime = str(int(uptime)) + " seconds"
         return uptime
 
-    def get_latest_release_info(self):
+    @staticmethod
+    def get_latest_release_info():
         """
         Get infos about the latest available release
 
@@ -1118,11 +1133,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Is the websocket URI length valid?
 
+        Binance DEX is using the subscribe methods, so this function must not get used with them!
+
         A test with https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
         indicates that the allowed max length of an URI to binance websocket server is 8004 characters.
 
         :return: bool
         """
+        # binance DEX doesnt have the payload in the URI, it can be transmitted through the socket connection
+        if self.exchange != "binance.org" or self.exchange != "binance.org-testnet":
+            return True
+
         # we know the length for a single !userData is valid (this avoids extra handling's of stream_id,
         # api_key and api_secret)
         if isinstance(markets, str):
@@ -1164,8 +1185,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_row_color_suffix = ""
         binance_api_status_row = ""
         status_row = ""
+        payload_row = ""
         last_static_ping_listen_key = ""
-        last_timestamp = int(time.time()) - 1
+        #last_timestamp = int(time.time()) - 1
         stream_info = self.get_stream_info(stream_id)
         if len(add_string) > 0:
             add_string = " " + str(add_string) + "\r\n"
@@ -1173,7 +1195,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             logged_reconnects_row = "\r\n logged_reconnects: "
             row_prefix = ""
             for timestamp in self.stream_list[stream_id]['logged_reconnects']:
-                logged_reconnects_row += row_prefix + datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d, %H:%M:%S UTC')
+                logged_reconnects_row += row_prefix + \
+                                         datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d, %H:%M:%S UTC')
                 row_prefix = ", "
         else:
             logged_reconnects_row = ""
@@ -1204,7 +1227,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             pass
 
         if self.stream_list[stream_id]['markets'] == "!userData":
-            last_static_ping_listen_key = " last_static_ping_listen_key: " + str(self.stream_list[stream_id]['last_static_ping_listen_key']) + "\r\n"
+            last_static_ping_listen_key = " last_static_ping_listen_key: " + \
+                                          str(self.stream_list[stream_id]['last_static_ping_listen_key']) + "\r\n"
             if self.binance_api_status['status_code'] == 200:
                 binance_api_status_code = str(self.binance_api_status['status_code'])
             elif self.binance_api_status['status_code'] == 418:
@@ -1217,6 +1241,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
                                      ")\r\n"
         current_receiving_speed = str(self.get_human_bytesize(self.get_current_receiving_speed(stream_id), "/s"))
+        if self.stream_list[stream_id]["payload"]:
+            payload_row = " payload: " + str(self.stream_list[stream_id]["payload"]) + "\r\n"
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print("===============================================================================================\r\n"
@@ -1225,11 +1251,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                   " stream_id:", str(stream_id), "\r\n"
                   " channels:", str(stream_info['channels']), "\r\n"
                   " markets:", str(stream_info['markets']), "\r\n" +
+                  str(payload_row) +
                   str(status_row) +
                   " start_time:", str(stream_info['start_time']), "\r\n"
                   " uptime:", str(uptime),
                   "since " + str(
-                      datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + "\r\n" +
+                      datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d, %H:%M:%S UTC')) +
+                  "\r\n" +
                   " reconnects:", str(stream_info['reconnects']), logged_reconnects_row, "\r\n" +
                   str(restart_requests_row) +
                   str(binance_api_status_row) +
@@ -1490,6 +1518,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.api_key = binance_api_key
         self.api_secret = binance_api_secret
 
+    def set_private_dex_config(self, binance_dex_user_address):
+        """
+        Set binance_dex_user_address
+
+        This settings are needed to to stream user address specific orders, account updates and transfers
+
+        :param binance_dex_user_address: The Binance DEX userAddress
+        :type binance_dex_user_address: str
+        """
+        self.dex_user_address = binance_dex_user_address
+
     def set_heartbeat(self, stream_id):
         # set heartbeat for a specific thread (should only be done by the stream itself)
         logging.debug("BinanceWebSocketApiManager->set_heartbeat(" + str(stream_id) + ")")
@@ -1573,6 +1612,36 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.debug("BinanceWebSocketApiManager->stream_is_stopping(" + str(stream_id) + ")")
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "stopped"
+
+    def create_payload(self, stream_id, channels, markets):
+        payload = []
+        for channel in channels:
+            add_payload = {"method": "subscribe",
+                           "topic": channel}
+            markets_temp = copy.deepcopy(markets)
+            for market in markets_temp:
+                if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
+                    if self.stream_list[stream_id]['dex_user_address'] is False:
+                        self.stream_list[stream_id]['dex_user_address'] = market
+                        markets.remove(market)
+            try:
+                if self.stream_list[stream_id]["dex_user_address"] is not False:
+                    add_payload["userAddress"] = self.stream_list[stream_id]["dex_user_address"]
+            except KeyError:
+                pass
+            if markets:
+                symbols = []
+                for market in markets:
+                    symbols.append(market)
+                add_payload["symbols"] = symbols
+            payload.append(add_payload)
+        return payload
+
+    def subscribe_to_stream(self, stream_id, channels, markets):
+        logging.debug("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ")")
+
+    def unsubscribe_from_stream(self, stream_id, channels, markets):
+        logging.debug("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ")")
 
     def wait_till_stream_has_started(self, stream_id):
         """

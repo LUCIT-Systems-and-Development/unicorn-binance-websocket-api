@@ -36,6 +36,7 @@
 from websockets import connect
 import asyncio
 import copy
+import json
 import logging
 import socket
 import ssl
@@ -92,6 +93,11 @@ class BinanceWebSocketApiConnection(object):
             self.handler_binance_websocket_api_manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['status'] = "running"
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['has_stopped'] = False
+            try:
+                for payload in self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
+                    await self.send(json.dumps(payload, ensure_ascii=False))
+            except TypeError:
+                pass
             try:
                 if self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]['status'] == "restarted":
                     self.handler_binance_websocket_api_manager.increase_reconnect_counter(self.stream_id)
@@ -229,4 +235,4 @@ class BinanceWebSocketApiConnection(object):
 
     async def send(self, data):
         # method to send data to the endpoint
-        received_data = await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].send(data)
+        await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].send(data)

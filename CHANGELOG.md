@@ -13,11 +13,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - exchange name and lib version to print_stream_info()
 - current_receiving_speed() to print_summary() and print_stream_info()
 - get_exchange()
+- set_private_dex_config()
+- subscribe_to_stream()
+- unsubscribe_from_stream()
 
 ### Changed 
 - rewrite create_websocket_url(): 
-1. a multiplex socket now returns false if it includes a single stream type like !userData, !Ticker or !miniTicker
-2. added support for binance.org Binance Chain DEX
+    1. a multiplex socket now returns false if it includes a single stream type like !userData, !Ticker or !miniTicker
+    2. added support for binance.org Binance Chain DEX
+- is_websocket_uri_length_valid() now always returns True for DEX websockets
 
 ## 1.4.0
 ### Added 
