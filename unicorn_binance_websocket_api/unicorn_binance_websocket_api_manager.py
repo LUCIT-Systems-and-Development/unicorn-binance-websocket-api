@@ -44,6 +44,7 @@ import asyncio
 import colorama
 import copy
 import logging
+import json
 import re
 import requests
 import sys
@@ -498,40 +499,40 @@ class BinanceWebSocketApiManager(threading.Thread):
                 else:
                     return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
 
-        if self.exchange == "binance.org":
+        if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
             # DEX multiplex sockets must get established as single stream and then subscribe/unsubscribe
             # Even its mentioned here
             # https://docs.binance.org/api-reference/dex-api/ws-connection.html#method-1-connect-with-stream-names-in-the-url
             # the url wss://dex.binance.org/api/stream?streams=<symbol>@trades/<symbol>@marketDepth doesnt get a valid
             # connection on DEX websockets ...
             query = "ws"
+            if stream_id:
+                payload = self.create_payload(stream_id, channels, markets, "subscribe")
+                self.stream_list[stream_id]['payload'] = payload
+            return self.websocket_base_uri + str(query)
         else:
             query = "stream?streams="
+            for channel in channels:
+                # Test if !ticker, !miniTicker or !userDAta is part of multiplex stream and return False
+                if channel == "!ticker":
+                    logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
+                                  "Unfortunately Binance only stream it in a single stream socket! "
+                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!ticker\"]) to "
+                                  "initiate an extra connection.")
+                    return False
+                if channel == "!miniTicker":
+                    logging.error("Can not create 'arr@!miniTicker' in a multi channel socket! "
+                                  "Unfortunately Binance only stream it in a single stream socket! ./"
+                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) to "
+                                  "initiate an extra connection.")
+                    return False
+                if channel == "!userData":
+                    logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
+                                  "Unfortunately Binance only stream it in a single stream socket! ./"
+                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
+                                  "initiate an extra connection.")
+                    return False
 
-        for channel in channels:
-            # Test if !ticker, !miniTicker or !userDAta is part of multiplex stream and return False
-            if channel == "!ticker":
-                logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
-                              "Unfortunately Binance only stream it in a single stream socket! "
-                              "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!ticker\"]) to initiate "
-                              "an extra connection.")
-                return False
-            if channel == "!miniTicker":
-                logging.error("Can not create 'arr@!miniTicker' in a multi channel socket! "
-                              "Unfortunately Binance only stream it in a single stream socket! ./"
-                              "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) to "
-                              "initiate an extra connection.")
-                return False
-            if channel == "!userData":
-                logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
-                              "Unfortunately Binance only stream it in a single stream socket! ./"
-                              "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
-                              "initiate an extra connection.")
-                return False
-
-            if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
-                self.create_payload(stream_id, channel, markets)
-            else:
                 for market in markets:
                     if market == "!ticker":
                         logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
@@ -553,9 +554,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         return False
 
                     query += market.lower() + "@" + channel + "/"
-        if stream_id:
-            self.stream_list[stream_id]['payload'] = payload
-        return self.websocket_base_uri + str(query)
+            return self.websocket_base_uri + str(query)
 
     def delete_listen_key_by_stream_id(self, stream_id):
         """
@@ -1613,10 +1612,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "stopped"
 
-    def create_payload(self, stream_id, channels, markets):
+    def create_payload(self, stream_id, channels, markets, method):
         payload = []
         for channel in channels:
-            add_payload = {"method": "subscribe",
+            add_payload = {"method": method,
                            "topic": channel}
             markets_temp = copy.deepcopy(markets)
             for market in markets_temp:
@@ -1633,15 +1632,64 @@ class BinanceWebSocketApiManager(threading.Thread):
                 symbols = []
                 for market in markets:
                     symbols.append(market)
-                add_payload["symbols"] = symbols
+                if re.match(r'[a-zA-Z0-9]{41,43}', market) is None:
+                    add_payload["symbols"] = symbols
             payload.append(add_payload)
         return payload
 
     def subscribe_to_stream(self, stream_id, channels, markets):
-        logging.debug("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ")")
+        logging.debug("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + " " + str(channels) + " " +
+                      str(markets))
+        if type(channels) is str:
+            channels = [channels]
+        if type(markets) is str:
+            markets = [markets]
+
+        if type(self.stream_list[stream_id]['channels']) is str:
+            self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels']]
+        if type(self.stream_list[stream_id]['markets']) is str:
+            self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets']]
+
+        payload = self.create_payload(stream_id, channels, markets, "subscribe")
+        try:
+            self.websocket_list[stream_id].send(json.dumps(payload, ensure_ascii=False))
+        except KeyError:
+            return False
+        self.stream_list[stream_id]['channels'] = list(set(self.stream_list[stream_id]['channels'] + channels))
+        self.stream_list[stream_id]['markets'] = list(set(self.stream_list[stream_id]['markets'] + markets))
+        self.stream_list[stream_id]['payload'] = self.create_payload(stream_id,
+                                                                     self.stream_list[stream_id]['channels'],
+                                                                     self.stream_list[stream_id]['markets'],
+                                                                     "subscribe")
+        return True
 
     def unsubscribe_from_stream(self, stream_id, channels, markets):
-        logging.debug("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ")")
+        logging.debug("BinanceWebSocketApiManager->unsubscribe_from_stream(" + str(stream_id) + " " + str(channels) +
+                      " " + str(markets))
+        if type(channels) is str:
+            channels = [channels]
+        if type(markets) is str:
+            markets = [markets]
+
+        if type(self.stream_list[stream_id]['channels']) is str:
+            self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels']]
+        if type(self.stream_list[stream_id]['markets']) is str:
+            self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets']]
+
+        payload = self.create_payload(stream_id, channels, markets, "unsubscribe")
+        try:
+            self.websocket_list[stream_id].send(json.dumps(payload, ensure_ascii=False))
+        except KeyError:
+            return False
+        for channel in channels:
+            self.stream_list[stream_id]['channels'].remove(channel)
+        for market in markets:
+            if re.match(r'[a-zA-Z0-9]{41,43}', market) is None:
+                self.stream_list[stream_id]['markets'].remove(market)
+        self.stream_list[stream_id]['payload'] = self.create_payload(stream_id,
+                                                                     self.stream_list[stream_id]['channels'],
+                                                                     self.stream_list[stream_id]['markets'],
+                                                                     "subscribe")
 
     def wait_till_stream_has_started(self, stream_id):
         """
