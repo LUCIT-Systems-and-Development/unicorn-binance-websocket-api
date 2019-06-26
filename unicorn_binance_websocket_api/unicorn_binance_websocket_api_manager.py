@@ -531,12 +531,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                                   "initiate an extra connection.")
                     return False
 
-                if self.exchange == "binance.org" and dex_single_stream_url_created is False:
-                    dex_single_stream_url_created = True
-                    query += market.upper() + "@" + channel
-                elif self.exchange == "binance.org" and dex_single_stream_url_created is True:
-                    # build the payload
-                    pass
+                if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
+                    if dex_single_stream_url_created is False:
+                        dex_single_stream_url_created = True
+                        query += market.upper() + "@" + channel
+                    else:
+                        # create payload
+                        pass
                 else:
                     query += market.lower() + "@" + channel + "/"
 

@@ -57,7 +57,7 @@ logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 logging.getLogger('unicorn-log').setLevel(logging.INFO)
 
 # create instance of BinanceWebSocketApiManager for Binance Chain DEX
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org")
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org-testnet")
 
 binance_websocket_api_manager.create_stream(["allTickers"], ["$all"])
 binance_websocket_api_manager.create_stream(["$all"], ["allMiniTickers"])
@@ -68,7 +68,7 @@ binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
 if binance_websocket_api_manager.get_exchange() == "binance.org":
     markets = 'RAVEN-F66_BNB'
 elif binance_websocket_api_manager.get_exchange() == "binance.org-testnet":
-    markets = 'ZCB-F00_BNB'
+    markets = 'RBX-C58_BNB'
 
 binance_websocket_api_manager.create_stream(["trades"], markets)
 binance_websocket_api_manager.create_stream(["marketDepth"], markets)

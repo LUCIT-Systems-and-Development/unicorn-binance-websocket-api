@@ -102,13 +102,13 @@ class TestBinanceComManager(unittest.TestCase):
                          'wss://stream.binance.com:9443/stream?streams=bnbbtc@trade/')
 
     def test_create_uri_multi_com(self):
-        self.assertEqual(self.binance_com_websocket_api_manager.create_websocket_uri(['trade', 'kline_1'],
+        self.assertEqual(self.binance_com_websocket_api_manager.create_websocket_uri(['trade', 'kline_1h'],
                                                                                      ['bnbbtc', 'ethbtc']),
                          'wss://stream.binance.com:9443/stream?streams=bnbbtc@trade/ethbtc@trade/'
-                         'bnbbtc@kline_1/ethbtc@kline_1/')
+                         'bnbbtc@kline_1h/ethbtc@kline_1h/')
 
     def test_create_uri_multi_with_ticker_com(self):
-        self.assertFalse(self.binance_com_websocket_api_manager.create_websocket_uri(['trade', 'kline_1', '!ticker'],
+        self.assertFalse(self.binance_com_websocket_api_manager.create_websocket_uri(['trade', 'kline_1h', '!ticker'],
                                                                                      ['bnbbtc', 'ethbtc']))
 
     def tearDown(self):
@@ -153,9 +153,9 @@ class TestBinanceJeManager(unittest.TestCase):
         stream_id = uuid.uuid4()
         self.binance_je_websocket_api_manager._add_socket_to_socket_list(stream_id, ["!userData"], ["arr"])
         self.assertRegex(self.binance_je_websocket_api_manager.create_websocket_uri(["!userData"], ["arr"],
-                                                                                     stream_id,
-                                                                                     self.binance_je_api_key,
-                                                                                     self.binance_je_api_secret),
+                                                                                    stream_id,
+                                                                                    self.binance_je_api_key,
+                                                                                    self.binance_je_api_secret),
                          r'wss://stream.binance.je:9443/ws/.')
 
     def test_create_uri_userdata_reverse_je(self):
@@ -165,9 +165,9 @@ class TestBinanceJeManager(unittest.TestCase):
         stream_id = uuid.uuid4()
         self.binance_je_websocket_api_manager._add_socket_to_socket_list(stream_id, ["arr"], ["!userData"])
         self.assertRegex(self.binance_je_websocket_api_manager.create_websocket_uri(["arr"], ["!userData"],
-                                                                                     stream_id,
-                                                                                     self.binance_je_api_key,
-                                                                                     self.binance_je_api_secret),
+                                                                                    stream_id,
+                                                                                    self.binance_je_api_key,
+                                                                                    self.binance_je_api_secret),
                          r'wss://stream.binance.je:9443/ws/.')
 
     def test_create_uri_single_je(self):
@@ -175,13 +175,13 @@ class TestBinanceJeManager(unittest.TestCase):
                          'wss://stream.binance.je:9443/stream?streams=bnbbtc@trade/')
 
     def test_create_uri_multi_je(self):
-        self.assertEqual(self.binance_je_websocket_api_manager.create_websocket_uri(['trade', 'kline_1'],
+        self.assertEqual(self.binance_je_websocket_api_manager.create_websocket_uri(['trade', 'kline_1h'],
                                                                                      ['bnbbtc', 'ethbtc']),
                          'wss://stream.binance.je:9443/stream?streams=bnbbtc@trade/ethbtc@trade/'
-                         'bnbbtc@kline_1/ethbtc@kline_1/')
+                         'bnbbtc@kline_1h/ethbtc@kline_1h/')
 
     def test_create_uri_multi_with_miniTicker_je(self):
-        self.assertFalse(self.binance_je_websocket_api_manager.create_websocket_uri(['trade', 'kline_1', '!miniTicker'],
+        self.assertFalse(self.binance_je_websocket_api_manager.create_websocket_uri(['trade', 'kline_1h', '!miniTicker'],
                                                                                     ['bnbbtc', 'ethbtc']))
 
     def tearDown(self):
@@ -237,6 +237,11 @@ class TestBinanceOrgManager(unittest.TestCase):
     def test_create_uri_single_miniTicker_org(self):
         self.assertEqual(self.binance_org_websocket_api_manager.create_websocket_uri(["miniTicker"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@miniTicker')
+
+    def test_create_uri_multi_je(self):
+        self.assertEqual(self.binance_org_websocket_api_manager.create_websocket_uri(['trades', 'kline_1h'],
+                                                                                     ['RAVEN-F66_BNB', 'ANKR-E97_BNB']),
+                         'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@trades')
 
     def tearDown(self):
         self.binance_org_websocket_api_manager.stop_manager_with_all_streams()
