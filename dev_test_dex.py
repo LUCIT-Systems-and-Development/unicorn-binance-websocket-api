@@ -68,7 +68,7 @@ worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, ar
 worker_thread.start()
 
 # userAddress streams
-binance_dex_user_address = ""
+binance_dex_user_address = "bnb1z5veqyuv97nrlrn5pa0rr90mdzvkwsqtf3s7uq"
 id = binance_websocket_api_manager.create_stream('orders', binance_dex_user_address)
 binance_websocket_api_manager.create_stream('accounts', binance_dex_user_address)
 binance_websocket_api_manager.create_stream('transfers', binance_dex_user_address)
@@ -89,10 +89,16 @@ binance_websocket_api_manager.create_stream(["miniTicker"], markets)
 
 markets = ['RAVEN-F66_BNB', 'ANKR-E97_BNB', 'AWC-986_BNB', 'COVA-218_BNB', 'BCPT-95A_BNB', 'WISH-2D5_BNB',
            'MITH-C76_BNB', 'BNB_BTCB-1DE', 'BNB_USDSB-1AC', 'BTCB-1DE_USDSB-1AC']
-channels = ['trades', 'kline_1m', 'kline_5m', 'kline_15m', 'marketDepth', 'ticker', 'miniTicker', 'marketDiff']
+channels = ['trades']
+#channels = ['kline_1m', 'kline_5m', 'kline_15m', 'marketDepth', 'ticker', 'miniTicker', 'marketDiff', 'trades']
 multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
-
-
+if binance_websocket_api_manager.wait_till_stream_has_started(multiplex_stream_id):
+    binance_websocket_api_manager.print_stream_info(multiplex_stream_id)
+    time.sleep(1)
+    binance_websocket_api_manager.subscribe_to_stream(multiplex_stream_id,
+                                                      channels=['kline_1m', 'kline_5m', 'kline_15m', 'marketDepth',
+                                                                'ticker', 'miniTicker', 'marketDiff'])
 while True:
     binance_websocket_api_manager.print_summary()
+    binance_websocket_api_manager.print_stream_info(multiplex_stream_id)
     time.sleep(1)

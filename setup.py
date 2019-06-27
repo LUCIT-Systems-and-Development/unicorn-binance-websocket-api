@@ -40,7 +40,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='unicorn-binance-websocket-api',
-     version='1.4.0',
+     version='1.5.0',
      author="UNICORN Data Analysis",
      url="https://www.unicorn-data.com",
      scripts=['unicorn_binance_websocket_api.py'],
@@ -52,7 +52,7 @@ setuptools.setup(
      install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets>=7.0', 'flask_restful',
                        'cheroot', 'flask'],
      keywords='unicorn-data-analysis, binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
-              'binance-websocket, binance-webstream, webstream, websocket, api',
+              'binance-websocket, binance-webstream, webstream, websocket, api, binance-jersey, binance-dex',
      project_urls={
         'Howto': 'https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html',
         'Documentation': 'https://www.unicorn-data.com/unicorn-binance-websocket-api.html',

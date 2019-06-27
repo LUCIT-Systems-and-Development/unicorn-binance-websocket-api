@@ -17,8 +17,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - current_receiving_speed to print_summary() and print_stream_info()
 - get_exchange()
 - set_private_dex_config()
-- subscribe_to_stream()
-- unsubscribe_from_stream()
+- subscribe_to_stream() *dont use in productive! Its not clean and will change behaviour*
+- unsubscribe_from_stream() *dont use in productive! Its not clean and will change behaviour*
 - _create_payload()
 
 ### Changed 

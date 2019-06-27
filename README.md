@@ -61,6 +61,7 @@ stream_buffer which stores the receives in the RAM till you are able to process 
 and a [check_command](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/) 
 for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_manager)/Nagios 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
+- Excessively tested on Linux, Mac and Windows
 
 If you like the project, please ![star](https://s3.gifyu.com/images/stard237b3003af9f9a9.png) it on 
 [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)! If you use the
