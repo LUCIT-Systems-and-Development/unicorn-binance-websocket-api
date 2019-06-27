@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.5.0.dev (development stage/unreleased)
+## Todo
+- subscribe_to_stream() and unsubsribe_from_stream() fix!
 
 ## 1.5.0
 ### Added 
