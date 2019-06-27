@@ -25,10 +25,11 @@ provides an API to the Binance Websocket API`s of [Binance](https://github.com/b
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
 [Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports the streaming of 
 public streams like trade, kline, ticker, depth and blockheight, but also the private userData stream which need to be 
-used with a valid api_key and api_secret from the Binance Exchange [www.binance.com](https://www.binance.com) or 
-[www.binance.je](https://www.binance.je) - for the DEX you need a user address from 
-[www.binance.org](https://www.binance.org) or [testnet.binance.org](https://testnet.binance.org) and you can 
-[get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
+used with a valid api_key and api_secret from the Binance Exchange 
+[www.binance.com](https://www.binance.com/userCenter/createApi.html) or 
+[www.binance.je](https://www.binance.je/userCenter/createApi.html) - for the DEX you need a user address from 
+[www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create) 
+and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
 The module requires python 3.5.3 or above, as it depends on pythons latest asyncio features for asynchronous/concurrent 
 processing. The current dependencies are listed 
@@ -98,13 +99,13 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/mast
 
 ![demo_gif](https://s3.gifyu.com/images/unicorn_binance_websocket_api_demo.gif)
 
-## Howto: 
+## Howto
 https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html
 
-## Documentation: 
+## Documentation
 https://www.unicorn-data.com/unicorn-binance-websocket-api.html
 
-## Project, Code and Downloads: 
+## Source, Downloads, Examples, ...
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
 
 ## Change Log
@@ -121,6 +122,7 @@ with using `binance_websocket_api_manager.is_update_availabe()` or you use the
 [monitoring API service](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/).
 
 To receive news (like inspection windows/maintenance) about the Binance API`s subscribe to their telegram groups: 
+- https://t.me/binance_api_announcements
 - https://t.me/binance_api_english
 - https://t.me/BinanceDEXchange
 
