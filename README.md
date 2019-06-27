@@ -42,10 +42,10 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect!
 - Supported exchanges: 
-    * [Binance](https://www.binance.com)
-    * [Binance Jersey](https://www.binance.je)  
-    * [Binance DEX](https://www.binance.org) *beta*
-    * [Binance DEX testnet](https://testnet.binance.org) *beta*
+    * [Binance](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com")`
+    * [Binance Jersey](https://www.binance.je) `BinanceWebSocketApiManager(exchange="binance.je")`
+    * [Binance DEX](https://www.binance.org) `BinanceWebSocketApiManager(exchange="binance.org")`
+    * [Binance DEX testnet](https://testnet.binance.org) `BinanceWebSocketApiManager(exchange="binance.org-testnet")`
 
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
@@ -53,8 +53,9 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 - If you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
 stream_buffer which stores the receives in the RAM till you are able to process the data in the normal way again.
 - Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
-`get_stream_statistic()`, `is_websocket_uri_length_valid()`, `replace_stream()`, `wait_till_stream_has_started()` and 
-many more, explore them [here](https://www.unicorn-data.com/unicorn-binance-websocket-api.html#binance_websocket_api_docu).
+`get_stream_statistic()`, `is_websocket_uri_length_valid()`, `replace_stream()`, `wait_till_stream_has_started()`, 
+`get_current_receiving_speed()` and many more, explore them 
+[here](https://www.unicorn-data.com/unicorn-binance-websocket-api.html#binance_websocket_api_docu).
 - [Monitoring API service](https://www.unicorn-data.com/blog/article-details/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2.html) 
 and a [check_command](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/) 
 for [ICINGA](https://exchange.icinga.com/bithon/check_binance_websocket_api_manager)/Nagios 

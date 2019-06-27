@@ -163,29 +163,82 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.debug("BinanceWebSocketApiManager->_add_socket_to_socket_list(" +
                       str(stream_id) + ", " + str(channels) + ", " + str(markets) + ")")
 
-    def _create_payload(self, stream_id, channels, markets, method):
+    '''
+        def _create_payload(self, stream_id, channels, markets, method):
+            payload = []
+            for channel in channels:
+                add_payload = {"method": method,
+                               "topic": channel}
+                markets_temp = copy.deepcopy(markets)
+                for market in markets_temp:
+                    if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
+                        if self.stream_list[stream_id]['dex_user_address'] is False:
+                            self.stream_list[stream_id]['dex_user_address'] = market
+                            markets.remove(market)
+                try:
+                    if self.stream_list[stream_id]["dex_user_address"] is not False:
+                        add_payload["address"] = self.stream_list[stream_id]["dex_user_address"]
+                except KeyError:
+                    pass
+                if markets:
+                    symbols = []
+                    for market in markets:
+                        symbols.append(market)
+                    if re.match(r'[a-zA-Z0-9]{41,43}', market) is None:
+                        add_payload["symbols"] = symbols
+                payload.append(add_payload)
+            return payload
+    '''
+
+    def _create_payload(self, stream_id, method, channels=False, markets=False, ):
         payload = []
-        for channel in channels:
-            add_payload = {"method": method,
-                           "topic": channel}
-            markets_temp = copy.deepcopy(markets)
-            for market in markets_temp:
-                if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
-                    if self.stream_list[stream_id]['dex_user_address'] is False:
-                        self.stream_list[stream_id]['dex_user_address'] = market
-                        markets.remove(market)
-            try:
-                if self.stream_list[stream_id]["dex_user_address"] is not False:
-                    add_payload["address"] = self.stream_list[stream_id]["dex_user_address"]
-            except KeyError:
+        if method == "subscribe":
+            if len(self.stream_list[stream_id]['channels']) > 0:
                 pass
+            if len(self.stream_list[stream_id]['markets']) > 0:
+                pass
+            for channel in channels:
+                add_payload = {"method": method,
+                               "topic": channel}
+                markets_temp = copy.deepcopy(markets)
+                for market in markets_temp:
+                    if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
+                        if self.stream_list[stream_id]['dex_user_address'] is False:
+                            self.stream_list[stream_id]['dex_user_address'] = market
+                            markets.remove(market)
+                try:
+                    if self.stream_list[stream_id]["dex_user_address"] is not False:
+                        add_payload["address"] = self.stream_list[stream_id]["dex_user_address"]
+                except KeyError:
+                    pass
+                if markets:
+                    symbols = []
+                    for market in markets:
+                        symbols.append(market)
+                    if re.match(r'[a-zA-Z0-9]{41,43}', market) is None:
+                        add_payload["symbols"] = symbols
+                payload.append(add_payload)
+        elif method == "unsubscribe":
             if markets:
-                symbols = []
-                for market in markets:
-                    symbols.append(market)
-                if re.match(r'[a-zA-Z0-9]{41,43}', market) is None:
-                    add_payload["symbols"] = symbols
-            payload.append(add_payload)
+                # ready
+                add_payload = {"method": method}
+                markets_temp = copy.deepcopy(markets)
+                for market in markets_temp:
+                    if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
+                        if self.stream_list[stream_id]['dex_user_address'] is False:
+                            self.stream_list[stream_id]['dex_user_address'] = market
+                            markets.remove(market)
+                add_payload["symbols"] = markets
+                payload.append(add_payload)
+            if channels:
+                # ready
+                for channel in channels:
+                    add_payload = {"method": method,
+                                   "topic": channel}
+                    payload.append(add_payload)
+        else:
+            logging.critical("For `method` please use `subscribe` or `unsubscribe`!")
+            return False
         return payload
 
     def _create_stream_thread(self, loop, stream_id, channels, markets, restart=False):
@@ -547,7 +600,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             # connection on DEX websockets ...
             query = "ws"
             if stream_id:
-                payload = self._create_payload(stream_id, channels, markets, "subscribe")
+                payload = self._create_payload(stream_id, "subscribe", channels=channels, markets=markets)
                 self.stream_list[stream_id]['payload'] = payload
             return self.websocket_base_uri + str(query)
         else:
@@ -1750,7 +1803,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             logging.critical(
                 "BinanceWebSocketApiManager->unsubscribe_from_stream(" + str(stream_id) + " " + str(channels) + " " +
-                str(markets) + " - Critical: not able to send unsubscription msg through websocket!!")
+                str(markets) + " - Critical: not able to send unsubscribe msg through websocket!!")
             return False
         for channel in channels:
             self.stream_list[stream_id]['channels'].remove(channel)
