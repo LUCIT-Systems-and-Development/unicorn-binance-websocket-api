@@ -8,7 +8,7 @@
 
 
 # UNICORN Binance WebSocket API
-A python API to use the Binance Websocket API's (com, jersey, dex) in a easy, fast, flexible, robust and fully-featured way.
+A python API to use the Binance Websocket API's (com, jersey, dex/chain) in a easy, fast, flexible, robust and fully-featured way.
 
 ### Create a multiplex websocket connection to Binance with just 3 lines of code:
 ```
@@ -102,6 +102,8 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/mast
 
 ## Howto
 https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html
+
+https://www.unicorn-data.com/blog/article-details/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2.html
 
 ## Documentation
 https://www.unicorn-data.com/unicorn-binance-websocket-api.html
