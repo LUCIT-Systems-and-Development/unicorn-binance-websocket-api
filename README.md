@@ -27,7 +27,8 @@ provides an API to the Binance Websocket API`s of [Binance](https://github.com/b
 public streams like trade, kline, ticker, depth and blockheight, but also the private userData stream which need to be 
 used with a valid api_key and api_secret from the Binance Exchange [www.binance.com](https://www.binance.com) or 
 [www.binance.je](https://www.binance.je) - for the DEX you need a user address from 
-[www.binance.org](https://www.binance.org) or [testnet.binance.org](https://testnet.binance.org).
+[www.binance.org](https://www.binance.org) or [testnet.binance.org](https://testnet.binance.org) and you can 
+[get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
 The module requires python 3.5.3 or above, as it depends on pythons latest asyncio features for asynchronous/concurrent 
 processing. The current dependencies are listed 

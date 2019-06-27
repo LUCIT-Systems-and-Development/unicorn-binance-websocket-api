@@ -58,7 +58,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 
 # create instance of BinanceWebSocketApiManager for Binance Chain DEX
 # use `exchange="binance.org-testnet"` for testnet mode
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org")
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org-testnet")
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
@@ -73,7 +73,7 @@ binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
 if binance_websocket_api_manager.get_exchange() == "binance.org":
     binance_dex_user_address = ""
 elif binance_websocket_api_manager.get_exchange() == "binance.org-testnet":
-    binance_dex_user_address = ""
+    binance_dex_user_address = "tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7"
 binance_websocket_api_manager.create_stream('orders', binance_dex_user_address)
 binance_websocket_api_manager.create_stream('accounts', binance_dex_user_address)
 binance_websocket_api_manager.create_stream('transfers', binance_dex_user_address)
@@ -83,9 +83,6 @@ if binance_websocket_api_manager.wait_till_stream_has_started(user_address_multi
     binance_websocket_api_manager.subscribe_to_stream(user_address_multi_stream_id,
                                                       'accounts',
                                                       binance_dex_user_address)
-    binance_websocket_api_manager.unsubscribe_from_stream(user_address_multi_stream_id,
-                                                          'transfers',
-                                                          binance_dex_user_address)
 # single streams
 if binance_websocket_api_manager.get_exchange() == "binance.org":
     markets = 'RAVEN-F66_BNB'

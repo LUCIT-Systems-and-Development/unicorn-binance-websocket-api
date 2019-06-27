@@ -271,9 +271,9 @@ class TestBinanceOrgManager(unittest.TestCase):
         stream_id = self.binance_org_websocket_api_manager.create_stream(['orders', 'transfers', 'accounts'],
                                                                          'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
         self.assertEqual(str(self.binance_org_websocket_api_manager.stream_list[stream_id]["payload"]),
-                         "[{'method': 'subscribe', 'topic': 'orders', 'userAddress': 'bnb1v566f3avl2ud5z0jepazsrguzkj3"
-                         "67snlx4jm6'}, {'method': 'subscribe', 'topic': 'transfers', 'userAddress': 'bnb1v566f3avl2ud"
-                         "5z0jepazsrguzkj367snlx4jm6'}, {'method': 'subscribe', 'topic': 'accounts', 'userAddress': 'b"
+                         "[{'method': 'subscribe', 'topic': 'orders', 'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj3"
+                         "67snlx4jm6'}, {'method': 'subscribe', 'topic': 'transfers', 'address': 'bnb1v566f3avl2ud"
+                         "5z0jepazsrguzkj367snlx4jm6'}, {'method': 'subscribe', 'topic': 'accounts', 'address': 'b"
                          "nb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}]")
 
     def tearDown(self):

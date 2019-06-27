@@ -77,5 +77,5 @@ while True:
     binance_websocket_api_manager.print_stream_info(binance_get_multi_stream_id)
     binance_websocket_api_manager.print_stream_info(binance_get_ticker_stream_id)
     binance_websocket_api_manager.print_stream_info(binance_get_kline_stream_id)
-    binance_websocket_api_manager.print_summary()
+    binance_websocket_api_manager.print_summary(add_string="custom text: YOUR TEXT HERE ;)")
     time.sleep(1)

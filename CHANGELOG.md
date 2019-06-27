@@ -6,16 +6,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.4.0.dev (development stage/unreleased)
+
+## 1.5.0
 ### Added 
+- support for binance.org and testnet.binance.org websockets
 - exchange name to icinga status msg
 - binance_manager init: throw exception for unknown exchanges
 - get_current_receiving_speed()
 - exchange name and lib version to print_stream_info()
-- current_receiving_speed() to print_summary() and print_stream_info()
+- current_receiving_speed to print_summary() and print_stream_info()
 - get_exchange()
 - set_private_dex_config()
 - subscribe_to_stream()
 - unsubscribe_from_stream()
+- _create_payload()
 
 ### Changed 
 - rewrite create_websocket_url(): 
@@ -25,6 +29,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.4.0
 ### Added 
+- support for binance.je (Binance Jersey) websockets
 - logging on failure in `create_stream()`
 - `add_string` in `print_summary()` and `print_stream_info()`
 - `warn_on_update` in `get_monitoring_status_icinga()`, `get_monitoring_status_plain()` and `start_monitoring_api()`

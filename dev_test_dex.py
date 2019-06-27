@@ -56,7 +56,8 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
         else:
-            print(oldest_stream_data_from_stream_buffer)
+            pass
+            #print(oldest_stream_data_from_stream_buffer)
 
 
 # create instance of BinanceWebSocketApiManager for Binance Chain DEX
@@ -68,12 +69,12 @@ worker_thread.start()
 
 # userAddress streams
 binance_dex_user_address = ""
-binance_websocket_api_manager.create_stream('orders', binance_dex_user_address)
+id = binance_websocket_api_manager.create_stream('orders', binance_dex_user_address)
 binance_websocket_api_manager.create_stream('accounts', binance_dex_user_address)
 binance_websocket_api_manager.create_stream('transfers', binance_dex_user_address)
 user_address_multi_stream_id = binance_websocket_api_manager.create_stream(['orders', 'transfers', 'accounts'],
                                                                            binance_dex_user_address)
-'''
+
 binance_websocket_api_manager.create_stream(["allTickers"], ["$all"])
 binance_websocket_api_manager.create_stream(["allMiniTickers"], ["$all"])
 binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
@@ -90,4 +91,8 @@ markets = ['RAVEN-F66_BNB', 'ANKR-E97_BNB', 'AWC-986_BNB', 'COVA-218_BNB', 'BCPT
            'MITH-C76_BNB', 'BNB_BTCB-1DE', 'BNB_USDSB-1AC', 'BTCB-1DE_USDSB-1AC']
 channels = ['trades', 'kline_1m', 'kline_5m', 'kline_15m', 'marketDepth', 'ticker', 'miniTicker', 'marketDiff']
 multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
-'''
+
+
+while True:
+    binance_websocket_api_manager.print_summary()
+    time.sleep(1)
