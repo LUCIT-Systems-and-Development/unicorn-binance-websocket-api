@@ -79,10 +79,11 @@ binance_websocket_api_manager.create_stream('accounts', binance_dex_user_address
 binance_websocket_api_manager.create_stream('transfers', binance_dex_user_address)
 user_address_multi_stream_id = binance_websocket_api_manager.create_stream(['orders', 'transfers'],
                                                                            binance_dex_user_address)
-if binance_websocket_api_manager.wait_till_stream_has_started(user_address_multi_stream_id):
-    binance_websocket_api_manager.subscribe_to_stream(user_address_multi_stream_id,
-                                                      'accounts',
-                                                      binance_dex_user_address)
+# subscribe is going to be rewritten
+#if binance_websocket_api_manager.wait_till_stream_has_started(user_address_multi_stream_id):
+#    binance_websocket_api_manager.subscribe_to_stream(user_address_multi_stream_id,
+#                                                      'accounts',
+#                                                      binance_dex_user_address)
 
 # single streams
 if binance_websocket_api_manager.get_exchange() == "binance.org":
