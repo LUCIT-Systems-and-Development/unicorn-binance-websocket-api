@@ -101,9 +101,8 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/mast
 ![demo_gif](https://s3.gifyu.com/images/unicorn_binance_websocket_api_demo.gif)
 
 ## Howto
-https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html
-
-https://www.unicorn-data.com/blog/article-details/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2.html
+- [Howto: UNICORN Binance WebSocket API](https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html)
+- [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.unicorn-data.com/blog/article-details/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2.html)
 
 ## Documentation
 https://www.unicorn-data.com/unicorn-binance-websocket-api.html
