@@ -94,7 +94,7 @@ channels = ['trades']
 multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 if binance_websocket_api_manager.wait_till_stream_has_started(multiplex_stream_id):
     binance_websocket_api_manager.print_stream_info(multiplex_stream_id)
-    time.sleep(1)
+    time.sleep(5)
 
     # TODO: doenst work :/
     binance_websocket_api_manager.subscribe_to_stream(multiplex_stream_id,

@@ -722,7 +722,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_exchange(self):
         """
-        Get used exchange like "binance.com" or "binance.org-testnet"
+        Get the name of the used exchange like "binance.com" or "binance.org-testnet"
 
         :return: str
         """
@@ -1200,7 +1200,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Is the websocket URI length valid?
 
-        Binance DEX is using the subscribe methods, so this function must not get used with them!
+        Binance DEX is using the subscribe methods, so this function must not get used with them and will always return!
+        `False`
 
         A test with https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
         indicates that the allowed max length of an URI to binance websocket server is 8004 characters.
@@ -1594,7 +1595,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Set binance_dex_user_address
 
         Is going to be the default user_address, once the websocket is created with this default value, its not possible
-        to change it. If you plan to use different user_address its recomendet to not use this method! Just provide the
+        to change it. If you plan to use different user_address its recommended to not use this method! Just provide the
         user_address with create_stream() in the market parameter.
         """
         self.dex_user_address = binance_dex_user_address

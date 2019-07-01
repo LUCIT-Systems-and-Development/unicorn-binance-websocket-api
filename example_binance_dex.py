@@ -56,6 +56,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
 
+
 # create instance of BinanceWebSocketApiManager for Binance Chain DEX
 # use `exchange="binance.org-testnet"` for testnet mode
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org-testnet")
@@ -79,7 +80,7 @@ binance_websocket_api_manager.create_stream('accounts', binance_dex_user_address
 binance_websocket_api_manager.create_stream('transfers', binance_dex_user_address)
 user_address_multi_stream_id = binance_websocket_api_manager.create_stream(['orders', 'transfers'],
                                                                            binance_dex_user_address)
-# subscribe is going to be rewritten
+# subscribe is going to be rewritten, dont use for now!
 #if binance_websocket_api_manager.wait_till_stream_has_started(user_address_multi_stream_id):
 #    binance_websocket_api_manager.subscribe_to_stream(user_address_multi_stream_id,
 #                                                      'accounts',
