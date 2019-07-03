@@ -53,6 +53,8 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 [python-daemon](https://pypi.org/project/python-daemon/)).
 - If you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
 stream_buffer which stores the receives in the RAM till you are able to process the data in the normal way again.
+- Compatible with [UnicornFy](https://github.com/unicorn-data-analysis/unicorn_fy) to convert received raw data from
+API endpoints into well-formed dictionaries. 
 - Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
 `get_stream_statistic()`, `is_websocket_uri_length_valid()`, `replace_stream()`, `wait_till_stream_has_started()`, 
 `get_current_receiving_speed()` and many more, explore them 
