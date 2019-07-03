@@ -10,6 +10,7 @@ please follow it in all your interactions with the project.
 ## Pull Request Process
 
 1. Discuss with owners
-2. Fork and contribute
-3. Fulfill and confirm requirements of the pull request
-4. Trigger the pull request
+2. Fork
+3. Contribute
+4. Fulfill and confirm requirements of the pull request
+5. Trigger the pull request
