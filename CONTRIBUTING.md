@@ -12,3 +12,4 @@ please follow it in all your interactions with the project.
 1. Discuss with owners
 2. Fork and contribute
 3. Fulfill and confirm requirements of the pull request
+4. Trigger the pull request
