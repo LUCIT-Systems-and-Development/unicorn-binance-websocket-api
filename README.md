@@ -141,7 +141,9 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues
 ## Contributing
 [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) is an open 
 source project which welcomes contributions which can be anything from simple documentation fixes to new features. To 
-contribute, fork the project on [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) and 
-send a pull request. Start the unittest with `./unittest_binance_manager` (depends on pytest - `pip install -U pytest`).
+contribute follow 
+[this guide](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/CONTRIBUTING.md).
+ 
+Start the unittest with `./unittest_binance_manager` (depends on pytest - `pip install -U pytest`).
 
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
