@@ -138,6 +138,8 @@ and python version and explain how to reproduce the error. A demo script is appr
 If you dont find an issue related to your topic, please open a new issue:
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues
 
+For informations on reporting a security bug please follow https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/security/policy
+
 ## Contributing
 [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) is an open 
 source project which welcomes contributions which can be anything from simple documentation fixes to new features. To 
