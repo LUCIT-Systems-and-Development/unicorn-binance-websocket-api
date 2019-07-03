@@ -10,4 +10,5 @@ please follow it in all your interactions with the project.
 ## Pull Request Process
 
 1. Explain your changes and your reason for this update.
-2. Add testunits to unittest.py and be shure all tests running well!
+2. Add testunits to unittest.py and be shure all tests running well! Start the unittest with 
+`./unittest_binance_manager` (depends on pytest - `pip install -U pytest`).
