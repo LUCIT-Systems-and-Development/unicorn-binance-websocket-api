@@ -14,7 +14,7 @@ Read the [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](
 ## Monitoring
 ### Status
 OK, WARNING, CRITICAL or UNKOWN
-- WARNING: on restarts, available updates
+- WARNING: on restarts, available updates (UNICORN Binance WebSocket API and UnicornFy)
 - CRITICAL: crashed streams
 - UNKOWN: the check_command is not able to connect to the monitoring API services
 
