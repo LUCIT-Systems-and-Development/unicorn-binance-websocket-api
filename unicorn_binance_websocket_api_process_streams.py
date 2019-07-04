@@ -34,11 +34,12 @@
 # IN THE SOFTWARE.
 
 from unicorn_fy import UnicornFy
+import logging
 
 
-class BinanceWebSocketApiProcessStreams():
+class BinanceWebSocketApiProcessStreams(object):
     @staticmethod
-    def process_stream_data(received_stream_data_json):
+    def process_stream_data(received_stream_data_json, exchange="binance.com"):
         #
         #  START HERE!
         #
@@ -52,7 +53,12 @@ class BinanceWebSocketApiProcessStreams():
         # to see the difference.
         # Github: https://github.com/unicorn-data-analysis/unicorn_fy
         # PyPI: https://pypi.org/project/unicorn-fy/
-        unicorn_fied_stream_data = UnicornFy.binance_websocket(received_stream_data_json)
+        if exchange == "binance.com":
+            unicorn_fied_stream_data = UnicornFy.binance_com_websocket(received_stream_data_json)
+        elif exchange == "binance.je":
+            unicorn_fied_stream_data = UnicornFy.binance_je_websocket(received_stream_data_json)
+        else:
+            logging.error("Not a valid exchange: " + str(exchange))
 
         # Now you can call different methods for different `channels`, here called `event_types`.
         # Its up to you if you call the methods in the bottom of this file or to call other classes which do what

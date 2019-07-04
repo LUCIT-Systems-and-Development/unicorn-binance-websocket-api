@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # File: unicorn_fy.py
@@ -35,6 +35,8 @@
 
 import json
 import logging
+import time
+import requests
 
 
 class UnicornFy(object):
@@ -44,6 +46,12 @@ class UnicornFy(object):
     Supported exchanges:
         - Binance
     """
+    VERSION = "0.1.1.dev"
+
+    def __init__(self):
+        self.last_update_check_github = {'timestamp': time.time(),
+                                         'status': None}
+
     @staticmethod
     def is_json(var):
         try:
@@ -68,19 +76,53 @@ class UnicornFy(object):
             return variable
 
     @staticmethod
-    def binance_websocket(stream_data_json):
+    def binance_org_websocket(stream_data_json):
         """
-        unicorn_fy binance raw_stream_data
+        unicorn_fy binance.org (incl testnet) raw_stream_data
 
         :param stream_data_json: The received raw stream data from the Binance websocket
         :type stream_data_json: json
 
         :return: dict
         """
+        return stream_data_json
+
+    @staticmethod
+    def binance_com_websocket(stream_data_json):
+        """
+        unicorn_fy binance.com raw_stream_data
+
+        :param stream_data_json: The received raw stream data from the Binance websocket
+        :type stream_data_json: json
+
+        :return: dict
+        """
+        return UnicornFy.binance_websocket(stream_data_json, show_deprecated_warning=False)
+
+    @staticmethod
+    def binance_je_websocket(stream_data_json):
+        """
+        unicorn_fy binance.je (Jersey) raw_stream_data
+
+        :param stream_data_json: The received raw stream data from the Binance websocket
+        :type stream_data_json: json
+
+        :return: dict
+        """
+        return UnicornFy.binance_websocket(stream_data_json, show_deprecated_warning=False)
+
+    @staticmethod
+    def binance_websocket(stream_data_json, show_deprecated_warning=True):
         unicorn_fied_data = False
+
         logging.debug("UnicornFy->binance_websocket(" + str(stream_data_json) + ")")
+        if show_deprecated_warning is True:
+            logging.warning("Using `UnicornFy.binance_websocket()` is deprecated, use "
+                            "`UnicornFy.binance_com_websocket()` or `UnicornFy.binance_je_websocket()` instead!")
+
         if UnicornFy.is_json(stream_data_json) is False:
             return stream_data_json
+
         stream_data = json.loads(stream_data_json)
 
         try:
@@ -335,7 +377,65 @@ class UnicornFy(object):
         if unicorn_fied_data is False:
             logging.error("detected unknown data stream format in module `unicorn_fy`: please report to "
                           "https://www.unicorn-data.com " + str(stream_data))
-        unicorn_fied_version = ['binance', '0.1.2']
+        unicorn_fied_version = ['binance', UnicornFy.VERSION]
         unicorn_fied_data['unicorn_fied'] = unicorn_fied_version
         logging.debug("UnicornFy->binance(" + str(unicorn_fied_data) + ")")
         return unicorn_fied_data
+
+    @staticmethod
+    def get_latest_release_info():
+        """
+        Get infos about the latest available release
+
+        :return: dict or False
+        """
+        try:
+            respond = requests.get('https://api.github.com/repos/unicorn-data-analysis/unicorn_fy/releases/latest')
+            return respond.json()
+        except Exception:
+            return False
+
+    @staticmethod
+    def get_version():
+        """
+        Get the package/module version
+
+        :return: str
+        """
+        return UnicornFy.VERSION
+
+    def get_latest_version(self):
+        """
+        Get the version of the latest available release (cache time 1 hour)
+
+        :return: str or False
+        """
+        # Do a fresh request if status is None or last timestamp is older 1 hour
+        if self.last_update_check_github['status'] is None or \
+                (self.last_update_check_github['timestamp'] + (60 * 60) < time.time()):
+            self.last_update_check_github['status'] = self.get_latest_release_info()
+        if self.last_update_check_github['status']:
+            try:
+                return self.last_update_check_github['status']["tag_name"]
+            except KeyError:
+                return "unknown"
+        else:
+            return "unknown"
+
+    def is_update_availabe(self):
+        """
+        Is a new release of this package available?
+
+        :return: bool
+        """
+        installed_version = self.get_version()
+        latest_version = self.get_latest_version()
+        if ".dev" in installed_version:
+            installed_version = installed_version[:-4]
+        if latest_version == installed_version:
+            return False
+        elif latest_version == "unknown":
+            return False
+        else:
+            return True
+
