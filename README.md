@@ -123,7 +123,7 @@ To receive notifications on available updates you can ![watch](https://s3.gifyu.
 repository on [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api), write your 
 [own script](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py) 
 with using `binance_websocket_api_manager.is_update_availabe()` or you use the 
-[monitoring API service](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/).
+[monitoring API service](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service).
 
 To receive news (like inspection windows/maintenance) about the Binance API`s subscribe to their telegram groups: 
 - https://t.me/binance_api_announcements
