@@ -46,7 +46,7 @@ class UnicornFy(object):
     Supported exchanges:
         - Binance
     """
-    VERSION = "0.1.1.dev"
+    VERSION = "0.2.0.dev"
 
     def __init__(self):
         self.last_update_check_github = {'timestamp': time.time(),
@@ -97,7 +97,7 @@ class UnicornFy(object):
 
         :return: dict
         """
-        return UnicornFy.binance_websocket(stream_data_json, show_deprecated_warning=False)
+        return UnicornFy.binance_websocket(stream_data_json, exchange="binance.com", show_deprecated_warning=False)
 
     @staticmethod
     def binance_je_websocket(stream_data_json):
@@ -109,10 +109,10 @@ class UnicornFy(object):
 
         :return: dict
         """
-        return UnicornFy.binance_websocket(stream_data_json, show_deprecated_warning=False)
+        return UnicornFy.binance_websocket(stream_data_json, exchange="binance.je", show_deprecated_warning=False)
 
     @staticmethod
-    def binance_websocket(stream_data_json, show_deprecated_warning=True):
+    def binance_websocket(stream_data_json, exchange="binance", show_deprecated_warning=True):
         unicorn_fied_data = False
 
         logging.debug("UnicornFy->binance_websocket(" + str(stream_data_json) + ")")
@@ -377,7 +377,7 @@ class UnicornFy(object):
         if unicorn_fied_data is False:
             logging.error("detected unknown data stream format in module `unicorn_fy`: please report to "
                           "https://www.unicorn-data.com " + str(stream_data))
-        unicorn_fied_version = ['binance', UnicornFy.VERSION]
+        unicorn_fied_version = [exchange, UnicornFy.VERSION]
         unicorn_fied_data['unicorn_fied'] = unicorn_fied_version
         logging.debug("UnicornFy->binance(" + str(unicorn_fied_data) + ")")
         return unicorn_fied_data
