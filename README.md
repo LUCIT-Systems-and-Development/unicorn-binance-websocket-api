@@ -60,7 +60,7 @@ API endpoints into well-formed python dictionaries.
 `get_current_receiving_speed()` and many more, explore them 
 [here](https://www.unicorn-data.com/unicorn-binance-websocket-api.html#binance_websocket_api_docu).
 - [Monitoring API service](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
-and a [check_command](https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api) 
+and a [check_command](https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api.py) 
 for [ICINGA](https://exchange.icinga.com/bithon/check_unicorn_monitoring_api)/Nagios 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
 - Excessively tested on Linux, Mac and Windows
