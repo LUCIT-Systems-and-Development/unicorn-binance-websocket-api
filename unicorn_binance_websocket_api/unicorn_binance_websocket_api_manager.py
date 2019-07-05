@@ -423,7 +423,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.info("starting monitoring API service ...")
         app = Flask(__name__)
         api = Api(app)
-        api.add_resource(BinanceWebSocketApiRestServer, "/status/<string:statusformat>",
+        api.add_resource(BinanceWebSocketApiRestServer, "/status/<string:statusformat>/<string:checkcommandversion>",
                          resource_class_kwargs={'handler_binance_websocket_api_manager': self,
                                                 'warn_on_update': warn_on_update})
         try:
