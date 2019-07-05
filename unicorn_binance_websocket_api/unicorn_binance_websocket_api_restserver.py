@@ -42,8 +42,9 @@ class BinanceWebSocketApiRestServer(Resource):
         self.warn_on_update = warn_on_update
 
     def get(self, statusformat, checkcommandversion):
-        print("haha", str(checkcommandversion))
         if statusformat == "icinga":
-            return self.handler_binance_websocket_api_manager.get_monitoring_status_icinga(warn_on_update=self.warn_on_update), 200
+            return self.handler_binance_websocket_api_manager.get_monitoring_status_icinga(check_command_version=checkcommandversion,
+                                                                                           warn_on_update=self.warn_on_update), \
+                   200
         else:
             return "service not found", 404

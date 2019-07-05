@@ -860,9 +860,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.keep_max_received_last_second_entries
 
-    def get_monitoring_status_icinga(self, warn_on_update=True):
+    def get_monitoring_status_icinga(self, check_command_version=False, warn_on_update=True):
         """
         Get status and perfdata to monitor and collect metrics with ICINGA/Nagios
+
+        :param check_command_version: is the version of the calling check_command
+        (https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api)
+        :type check_command_version: str
 
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
@@ -883,7 +887,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: dict (text, time, return_code)
         """
-        result = self.get_monitoring_status_plain(warn_on_update=warn_on_update)
+        result = self.get_monitoring_status_plain(check_command_version=check_command_version,
+                                                  warn_on_update=warn_on_update)
         if len(result['update_msg']) > 0:
             result['update_msg'] = " - " + result['update_msg']
         check_message = "BINANCE WEBSOCKETS (" + self.exchange + ") - " + result['status_text'] + ": O:" + \
@@ -902,12 +907,16 @@ class BinanceWebSocketApiManager(threading.Thread):
                   'return_code': result['return_code']}
         return status
 
-    def get_monitoring_status_plain(self, warn_on_update=True):
+    def get_monitoring_status_plain(self, check_command_version=False, warn_on_update=True):
         """
         Get plain monitoring status data:
         active_streams, crashed_streams, restarting_streams, stopped_streams, return_code, status_text,
         timestamp, update_msg, average_receives_per_second, average_speed_per_second, total_received_mb,
         stream_buffer_items, stream_buffer_mb, reconnects, uptime
+
+        :param check_command_version: is the version of the calling check_command
+        (https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api)
+        :type check_command_version: str
 
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool

@@ -60,6 +60,9 @@ logging.getLogger('unicorn-log').setLevel(logging.INFO)
 # create instance of BinanceWebSocketApiManager
 binance_websocket_api_manager = BinanceWebSocketApiManager()
 
+print("starting monitoring api!")
+binance_websocket_api_manager.start_monitoring_api()
+
 # set api key and secret for userData stream
 binance_api_key = ""
 binance_api_secret = ""
