@@ -82,8 +82,7 @@ Run in bash:
 `pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
 #### Windows
 Use the below command with the version (such as 1.3.8) you determined 
-[here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest) and 
-![here](https://img.shields.io/github/release/unicorn-data-analysis/unicorn-binance-websocket-api.svg) :
+[here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest):
 
 `pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/1.3.8.tar.gz --upgrade`
 ### From the latest source (dev-stage) with PIP from [Github](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)
