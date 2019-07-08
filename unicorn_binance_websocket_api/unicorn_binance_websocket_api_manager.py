@@ -78,7 +78,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
-        self.version = "1.6.0.dev"
+        self.version = "1.6.1"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
@@ -987,10 +987,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         except ModuleNotFoundError:
             logging.debug("UnicornFy not installed!")
             is_update_available_unicorn_fy = False
+        except AttributeError:
+            logging.error("UnicornFy outdated!")
+            is_update_available_unicorn_fy = True
         if check_command_version:
             is_update_available_check_command = self.is_update_availabe_check_command(check_command_version=check_command_version)
         else:
-            is_update_available_check_command = False
+            is_update_available_check_command = True
         for stream_id in self.stream_list:
             stream_restarts_last_hour = 0
             for reconnect in self.stream_list[stream_id]['logged_reconnects']:
