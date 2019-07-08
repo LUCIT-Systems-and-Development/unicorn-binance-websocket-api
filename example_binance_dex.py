@@ -61,6 +61,9 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 # use `exchange="binance.org-testnet"` for testnet mode
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org-testnet")
 
+print("starting monitoring api!")
+binance_websocket_api_manager.start_monitoring_api()
+
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
@@ -71,6 +74,7 @@ binance_websocket_api_manager.create_stream(["allMiniTickers"], ["$all"])
 binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
 
 # userAddress streams
+binance_dex_user_address = ""
 if binance_websocket_api_manager.get_exchange() == "binance.org":
     binance_dex_user_address = ""
 elif binance_websocket_api_manager.get_exchange() == "binance.org-testnet":
