@@ -78,7 +78,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
-        self.version = "1.6.0"
+        self.version = "1.6.0.dev"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
@@ -1058,9 +1058,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             result['return_code'] = 1
             result['status_msg'] = " Restart rate per stream last hour: " + \
                                    str(result['highest_restart_per_stream_last_hour'])
-        elif result['restarting_streams'] > 0:
-            result['status_text'] = "WARNING"
-            result['return_code'] = 1
 
         # Perfdata
         result['average_receives_per_second'] = ((self.total_receives - self.monitoring_total_receives) /
