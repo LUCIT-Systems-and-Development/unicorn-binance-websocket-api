@@ -123,5 +123,6 @@ binance_websocket_api_manager.start_monitoring_api()
 # for a specific port do 'port=80'
 # binance_websocket_api_manager.start_monitoring_api(host="0.0.0.0", port=80)
 
-print("18 websockets started! now download and run "
-      "https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api, but dont close this execution!")
+print("18 websockets started!")
+print("Continue here: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/"
+      "UNICORN-Monitoring-API-Service")

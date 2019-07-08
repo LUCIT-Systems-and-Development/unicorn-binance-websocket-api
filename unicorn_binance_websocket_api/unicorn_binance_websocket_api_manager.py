@@ -38,7 +38,7 @@ from .unicorn_binance_websocket_api_restclient import BinanceWebSocketApiRestcli
 from .unicorn_binance_websocket_api_restserver import BinanceWebSocketApiRestServer
 from cheroot import wsgi
 from datetime import datetime
-from flask import Flask
+from flask import Flask, redirect
 from flask_restful import Api
 import asyncio
 import colorama
@@ -124,6 +124,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.last_monitoring_check = time.time()
         self.last_update_check_github = {'timestamp': time.time(),
                                          'status': None}
+        self.last_update_check_github_check_command = {'timestamp': time.time(),
+                                                       'status': None}
         self.stream_list = {}
         self.total_received_bytes = 0
         self.total_receives = 0
@@ -422,8 +424,19 @@ class BinanceWebSocketApiManager(threading.Thread):
     def _start_monitoring_api(self, host, port, warn_on_update):
         logging.info("starting monitoring API service ...")
         app = Flask(__name__)
+
+        @app.route('/')
+        @app.route('/status/')
+        def redirect_to_wiki():
+            logging.debug("Visit https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/UNICORN-"
+                          "Monitoring-API-Service for further information!")
+            return redirect("https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/"
+                            "UNICORN-Monitoring-API-Service", code=302)
+
         api = Api(app)
-        api.add_resource(BinanceWebSocketApiRestServer, "/status/<string:statusformat>/<string:checkcommandversion>",
+        api.add_resource(BinanceWebSocketApiRestServer,
+                         "/status/<string:statusformat>/",
+                         "/status/<string:statusformat>/<string:checkcommandversion>",
                          resource_class_kwargs={'handler_binance_websocket_api_manager': self,
                                                 'warn_on_update': warn_on_update})
         try:
@@ -776,6 +789,18 @@ class BinanceWebSocketApiManager(threading.Thread):
         except Exception:
             return False
 
+    def get_latest_release_info_check_command(self):
+        """
+        Get infos about the latest available `check_unicorn_monitoring_api` release
+        :return: dict or False
+        """
+        try:
+            respond = requests.get('https://api.github.com/repos/unicorn-data-analysis/check_unicorn_monitoring_api/'
+                                   'releases/latest')
+            return respond.json()
+        except Exception:
+            return False
+
     def get_latest_version(self):
         """
         Get the version of the latest available release (cache time 1 hour)
@@ -789,6 +814,23 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.last_update_check_github['status']:
             try:
                 return self.last_update_check_github['status']["tag_name"]
+            except KeyError:
+                return "unknown"
+        else:
+            return "unknown"
+
+    def get_latest_version_check_command(self):
+        """
+        Get the version of the latest available `check_unicorn_monitoring_api` release (cache time 1 hour)
+        :return: str or False
+        """
+        # Do a fresh request if status is None or last timestamp is older 1 hour
+        if self.last_update_check_github_check_command['status'] is None or \
+                (self.last_update_check_github_check_command['timestamp'] + (60 * 60) < time.time()):
+            self.last_update_check_github_check_command['status'] = self.get_latest_release_info_check_command()
+        if self.last_update_check_github_check_command['status']:
+            try:
+                return self.last_update_check_github_check_command['status']["tag_name"]
             except KeyError:
                 return "unknown"
         else:
@@ -889,16 +931,18 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         result = self.get_monitoring_status_plain(check_command_version=check_command_version,
                                                   warn_on_update=warn_on_update)
-        if len(result['update_msg']) > 0:
-            result['update_msg'] = " - " + result['update_msg']
+        if len(result['update_msg']) > 0 or len(result['status_msg']) > 0:
+            text_msg = " -" + str(result['status_msg']) + str(result['update_msg'])
+        else:
+            text_msg = ""
         check_message = "BINANCE WEBSOCKETS (" + self.exchange + ") - " + result['status_text'] + ": O:" + \
                         str(result['active_streams']) + \
                         "/R:" + str(result['restarting_streams']) + "/C:" + str(result['crashed_streams']) + "/S:" + \
-                        str(result['stopped_streams']) + result['update_msg'] + " | " + "average_receives_per_second=" + \
-                        str(result['average_receives_per_second']) + ";;;0 current_receiving_speed_per_second=" + \
-                        str(result['average_speed_per_second']) + "KB;;;0" + " total_received_length=" + \
-                        str(result['total_received_length']) + "c;;;0 total_received_size=" + \
-                        str(result['total_received_mb']) + "MB;;;0 stream_buffer_size=" + \
+                        str(result['stopped_streams']) + text_msg + " | " + \
+                        "average_receives_per_second=" + str(result['average_receives_per_second']) + \
+                        ";;;0 current_receiving_speed_per_second=" + str(result['average_speed_per_second']) + \
+                        "KB;;;0 total_received_length=" + str(result['total_received_length']) + "c;;;0 total_" \
+                        "received_size=" + str(result['total_received_mb']) + "MB;;;0 stream_buffer_size=" + \
                         str(result['stream_buffer_mb']) + "MB;;;0 stream_buffer_length=" + \
                         str(result['stream_buffer_items']) + ";;;0 reconnects=" + str(result['reconnects']) + "c;;;0 " \
                         "uptime_days=" + str(result['uptime']) + "c;;;0"
@@ -927,12 +971,33 @@ class BinanceWebSocketApiManager(threading.Thread):
         result['active_streams'] = 0
         result['crashed_streams'] = 0
         result['restarting_streams'] = 0
+        result['highest_restart_per_stream_last_hour'] = 0
         result['return_code'] = 0
         result['status_text'] = "OK"
+        result['status_msg'] = ""
         result['stopped_streams'] = 0
         result['timestamp'] = time.time()
         result['update_msg'] = ""
         time_period = result['timestamp'] - self.last_monitoring_check
+        timestamp_last_hour = time.time() - (60*60)
+        try:
+            from unicorn_fy.unicorn_fy import UnicornFy
+            unicorn_fy = UnicornFy()
+            is_update_available_unicorn_fy = unicorn_fy.is_update_availabe()
+        except ModuleNotFoundError:
+            logging.debug("UnicornFy not installed!")
+            is_update_available_unicorn_fy = False
+        if check_command_version:
+            is_update_available_check_command = self.is_update_availabe_check_command(check_command_version=check_command_version)
+        else:
+            is_update_available_check_command = False
+        for stream_id in self.stream_list:
+            stream_restarts_last_hour = 0
+            for reconnect in self.stream_list[stream_id]['logged_reconnects']:
+                if reconnect > timestamp_last_hour:
+                    stream_restarts_last_hour += 1
+            if stream_restarts_last_hour > result['highest_restart_per_stream_last_hour']:
+                result['highest_restart_per_stream_last_hour'] = stream_restarts_last_hour
         for stream_id in self.stream_list:
             if self.stream_list[stream_id]['status'] == "running":
                 result['active_streams'] += 1
@@ -942,17 +1007,62 @@ class BinanceWebSocketApiManager(threading.Thread):
                 result['restarting_streams'] += 1
             elif "crashed" in self.stream_list[stream_id]['status']:
                 result['crashed_streams'] += 1
-        if self.is_update_availabe():
-            result['update_msg'] = "Update " + str(self.get_latest_version()) + " available!"
+        if self.is_update_availabe() and is_update_available_unicorn_fy and is_update_available_check_command:
+            result['update_msg'] = " Update available: UNICORN Binance WebSocket API, UnicornFy and " \
+                                   "check_unicorn_monitoring_api!"
             if warn_on_update is True:
                 result['status_text'] = "WARNING"
                 result['return_code'] = 1
-        if result['crashed_streams'] > 0:
+        elif self.is_update_availabe() and is_update_available_unicorn_fy:
+            result['update_msg'] = " Update available: UNICORN Binance WebSocket API and UnicornFy"
+            if warn_on_update is True:
+                result['status_text'] = "WARNING"
+                result['return_code'] = 1
+        elif self.is_update_availabe() and is_update_available_check_command:
+            result['update_msg'] = " Update available: UNICORN Binance WebSocket API and check_unicorn_monitoring_api!"
+            if warn_on_update is True:
+                result['status_text'] = "WARNING"
+                result['return_code'] = 1
+        elif is_update_available_unicorn_fy and is_update_available_check_command:
+            result['update_msg'] = " Update available: UnicornFy and check_unicorn_monitoring_api!"
+            if warn_on_update is True:
+                result['status_text'] = "WARNING"
+                result['return_code'] = 1
+        elif self.is_update_availabe():
+            result['update_msg'] = " Update " + str(self.get_latest_version()) + " available!"
+            if warn_on_update is True:
+                result['status_text'] = "WARNING"
+                result['return_code'] = 1
+        elif is_update_available_unicorn_fy:
+            result['update_msg'] = " Update UnicornFy " + str(unicorn_fy.get_latest_version()) + " available!"
+            if warn_on_update is True:
+                result['status_text'] = "WARNING"
+                result['return_code'] = 1
+        elif is_update_available_check_command:
+            result['update_msg'] = " Update `check_unicorn_monitoring_api` " + \
+                                   str(self.get_latest_version_check_command()) + " available!"
+            if warn_on_update is True:
+                result['status_text'] = "WARNING"
+                result['return_code'] = 1
+
+        if result['highest_restart_per_stream_last_hour'] >= 10:
             result['status_text'] = "CRITICAL"
             result['return_code'] = 2
+            result['status_msg'] = " Restart rate per stream last hour: " + \
+                                   str(result['highest_restart_per_stream_last_hour'])
+        elif result['crashed_streams'] > 0:
+            result['status_text'] = "CRITICAL"
+            result['return_code'] = 2
+        elif result['highest_restart_per_stream_last_hour'] >= 3:
+            result['status_text'] = "WARNING"
+            result['return_code'] = 1
+            result['status_msg'] = " Restart rate per stream last hour: " + \
+                                   str(result['highest_restart_per_stream_last_hour'])
         elif result['restarting_streams'] > 0:
             result['status_text'] = "WARNING"
             result['return_code'] = 1
+
+        # Perfdata
         result['average_receives_per_second'] = ((self.total_receives - self.monitoring_total_receives) /
                                                  time_period).__round__(2)
         result['average_speed_per_second'] = (((self.total_received_bytes - self.monitoring_total_received_bytes) /
@@ -1201,6 +1311,22 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.get_latest_version() == installed_version:
             return False
         elif self.get_latest_version() == "unknown":
+            return False
+        else:
+            return True
+
+    def is_update_availabe_check_command(self, check_command_version=False):
+        """
+        Is a new release of `check_unicorn_monitoring_api` available?
+        :return: bool
+        """
+        installed_version = check_command_version
+        latest_version = self.get_latest_version_check_command()
+        if ".dev" in installed_version:
+            installed_version = installed_version[:-4]
+        if latest_version == installed_version:
+            return False
+        elif latest_version == "unknown":
             return False
         else:
             return True

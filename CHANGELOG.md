@@ -6,9 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.5.0.dev (development stage/unreleased)
-## Removed
+## Added
+- is_update_availabe_check_command()
+- get_latest_version_check_command()
+- get_latest_release_info_check_command()
+# Changed
+- get_monitoring_status_plain()
+- get_monitoring_status_icinga()
+- _start_monitoring_api()
+## Removed!
 - https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/ 
-to https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api
+(to https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api)
 
 ## 1.5.0
 ### Added 
@@ -24,7 +32,6 @@ to https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api
 - unsubscribe_from_stream() - **(dont use in productive! Its not clean and will get rewritten and maybe change change 
 behaviour)**
 - _create_payload()
-
 ### Changed 
 - rewrite create_websocket_url(): 
     1. a multiplex socket now returns false if it includes a single stream type like !userData, !Ticker or !miniTicker
