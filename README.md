@@ -24,8 +24,8 @@ provides an API to the Binance Websocket API`s of [Binance](https://github.com/b
 , [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
 [Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports the streaming of 
-public streams like trade, kline, ticker, depth and blockheight, but also the private userData streams which needs to be 
-used with a valid api_key and api_secret from the Binance Exchange 
+all public streams like trade, kline, ticker, depth and blockheight and also all private userData streams which needs 
+to be used with a valid api_key and api_secret from the Binance Exchange 
 [www.binance.com](https://www.binance.com/userCenter/createApi.html) or 
 [www.binance.je](https://www.binance.je/userCenter/createApi.html) - for the DEX you need a user address from 
 [www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create) 
@@ -54,7 +54,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 - If you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
 stream_buffer which stores the receives in the RAM till you are able to process the data in the normal way again.
 - Compatible with [UnicornFy](https://github.com/unicorn-data-analysis/unicorn_fy) to convert received raw data from
-API endpoints into well-formed python dictionaries. 
+crypto API endpoints into well-formed python dictionaries. 
 - Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
 `get_stream_statistic()`, `is_websocket_uri_length_valid()`, `replace_stream()`, `wait_till_stream_has_started()`, 
 `get_current_receiving_speed()` and many more, explore them 
@@ -81,7 +81,9 @@ Run in bash:
 
 `pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
 #### Windows
-Use the below command with the version (such as 1.3.8) you determined [here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest):
+Use the below command with the version (such as 1.3.8) you determined 
+[here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest) and 
+![here](https://img.shields.io/github/release/unicorn-data-analysis/unicorn-binance-websocket-api.svg) :
 
 `pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/1.3.8.tar.gz --upgrade`
 ### From the latest source (dev-stage) with PIP from [Github](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)
@@ -100,7 +102,7 @@ or the [current master branch](https://github.com/unicorn-data-analysis/unicorn-
 ## Demo
 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py
 
-![demo_gif](https://s3.gifyu.com/images/unicorn_binance_websocket_api_demo.gif)
+![demo_gif](https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif)
 
 ## Howto
 - [Howto: UNICORN Binance WebSocket API](https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html)
