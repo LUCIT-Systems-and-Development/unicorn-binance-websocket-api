@@ -17,6 +17,11 @@ from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import 
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
 binance_websocket_api_manager.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
+And 2 more lines to print them:
+```
+while True:
+    print(binance_websocket_api_manager.pop_stream_data_from_stream_buffer())
+```
 
 ## Description
 The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) 
