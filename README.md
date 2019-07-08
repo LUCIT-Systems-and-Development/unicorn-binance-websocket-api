@@ -6,7 +6,6 @@
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel&color=orange) 
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/unicorn-binance-websocket-api.svg?label=PyPI%20downloads&color=orange)
 
-
 # UNICORN Binance WebSocket API
 A python API to use the Binance Websocket API's (com, jersey, dex/chain) in a easy, fast, flexible, robust and fully-featured way.
 
@@ -22,6 +21,7 @@ binance_websocket_api_manager.create_stream(['trade', 'kline_1m'], ['btcusdt', '
 while True:
     print(binance_websocket_api_manager.pop_stream_data_from_stream_buffer())
 ```
+Thats it! 
 
 ## Description
 The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) 
