@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - is_update_availabe_check_command()
 - get_latest_version_check_command()
 - get_latest_release_info_check_command()
-# Changed
+## Changed
 - get_monitoring_status_plain()
 - get_monitoring_status_icinga()
 - _start_monitoring_api()
