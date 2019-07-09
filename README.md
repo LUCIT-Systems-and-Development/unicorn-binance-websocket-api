@@ -16,7 +16,7 @@ from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import 
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
 binance_websocket_api_manager.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
-### And 4 more lines to print them:
+### And 4 more lines to print the receives:
 ```
 while True:
     oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
