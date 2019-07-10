@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.6.1.dev (development stage/unreleased)
+## Fix
+- 'except websockets.exceptions.InvalidStatusCode as error_msg:' in connnection line 97 with restart
+- 'except KeyError:' in connection line 162
 
 # 1.6.1
 ## Fix

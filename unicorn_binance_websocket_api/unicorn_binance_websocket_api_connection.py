@@ -94,6 +94,14 @@ class BinanceWebSocketApiConnection(object):
             try:
                 for payload in self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
                     await self.send(json.dumps(payload, ensure_ascii=False))
+            except websockets.exceptions.InvalidStatusCode as error_msg:
+                if "HTTP 429" in str(error_msg):
+                    logging.error("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
+                                  ", " + str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))
+                    self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
+                    time.sleep(2)
+                    self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+                    sys.exit(1)
             except TypeError:
                 pass
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['status'] = "running"
@@ -151,7 +159,10 @@ class BinanceWebSocketApiConnection(object):
             else:
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ") " + str(error_msg))
-                self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+                try:
+                    self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+                except KeyError:
+                    pass
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                 sys.exit(1)
