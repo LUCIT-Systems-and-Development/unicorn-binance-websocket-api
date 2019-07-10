@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.6.2.dev (development stage/unreleased)
+## Fix
+- 'except websockets.exceptions.InvalidStatusCode as error_msg:' moved to right place 
 
 ## 1.6.2
 ## Fix
