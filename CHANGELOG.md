@@ -8,28 +8,28 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.6.3.dev (development stage/unreleased)
 
 ## 1.6.3
-## Fix
+### Fix
 - 'except websockets.exceptions.InvalidStatusCode as error_msg:' moved to right place 
 
 ## 1.6.2
-## Fix
+### Fix
 - 'except websockets.exceptions.InvalidStatusCode as error_msg:' in connnection line 97 with restart
 - 'except KeyError:' in connection line 162
 
-# 1.6.1
-## Fix
+## 1.6.1
+### Fix
 - get_monitoring_status_plain(): exception for outdated UnicornFy
 
-# 1.6.0
-## Added
+## 1.6.0
+### Added
 - is_update_availabe_check_command()
 - get_latest_version_check_command()
 - get_latest_release_info_check_command()
-## Changed
+### Changed
 - get_monitoring_status_plain()
 - get_monitoring_status_icinga()
 - _start_monitoring_api()
-## Removed!
+### Removed!
 - https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/ 
 (to https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api)
 
