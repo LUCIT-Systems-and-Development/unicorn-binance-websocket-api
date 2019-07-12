@@ -24,7 +24,7 @@ while True:
         print(oldest_stream_data_from_stream_buffer)
 ```
 
-### To convert the raw webstream data into well-formed python dictionaries use [UnicornFy](https://github.com/unicorn-data-analysis/unicorn_fy):
+### Convert received raw webstream data into well-formed python dictionaries with [UnicornFy](https://github.com/unicorn-data-analysis/unicorn_fy):
 ```
 unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_stream_data_from_stream_buffer)
 ```
