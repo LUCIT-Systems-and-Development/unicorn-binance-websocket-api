@@ -78,7 +78,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
-        self.version = "1.6.3.dev"
+        self.version = "1.6.4.dev"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
@@ -294,16 +294,19 @@ class BinanceWebSocketApiManager(threading.Thread):
                     # transfer_rate_per_second
                     delete_index = []
                     if len(self.stream_list[stream_id]['transfer_rate_per_second']['bytes']) > self.keep_max_received_last_second_entries:
-                        for timestamp_key in self.stream_list[stream_id]['transfer_rate_per_second']['bytes']:
-                            try:
-                                if timestamp_key < current_timestamp - self.keep_max_received_last_second_entries:
-                                    delete_index.append(timestamp_key)
-                            except ValueError as error_msg:
-                                logging.error(
-                                    "BinanceWebSocketManager->_frequent_checks() timestamp_key=" + str(timestamp_key) +
-                                    " current_timestamp=" + str(current_timestamp) + " keep_max_received_last_second_"
-                                    "entries=" + str(self.keep_max_received_last_second_entries) + " error_msg=" +
-                                    str(error_msg))
+                        try:
+                            for timestamp_key in self.stream_list[stream_id]['transfer_rate_per_second']['bytes']:
+                                try:
+                                    if timestamp_key < current_timestamp - self.keep_max_received_last_second_entries:
+                                        delete_index.append(timestamp_key)
+                                except ValueError as error_msg:
+                                    logging.error(
+                                        "BinanceWebSocketManager->_frequent_checks() timestamp_key=" + str(timestamp_key) +
+                                        " current_timestamp=" + str(current_timestamp) + " keep_max_received_last_second_"
+                                        "entries=" + str(self.keep_max_received_last_second_entries) + " error_msg=" +
+                                        str(error_msg))
+                        except RuntimeError as error_msg:
+                            logging.debug("Catched RuntimeError: " + str(error_msg))
                     for timestamp_key in delete_index:
                         self.stream_list[stream_id]['transfer_rate_per_second']['bytes'].pop(timestamp_key, None)
 
@@ -939,6 +942,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         str(result['active_streams']) + \
                         "/R:" + str(result['restarting_streams']) + "/C:" + str(result['crashed_streams']) + "/S:" + \
                         str(result['stopped_streams']) + text_msg + " | " + \
+                        "active streams=" + str(result['active_streams']) + ";;;0 " + \
                         "average_receives_per_second=" + str(result['average_receives_per_second']) + \
                         ";;;0 current_receiving_speed_per_second=" + str(result['average_speed_per_second']) + \
                         "KB;;;0 total_received_length=" + str(result['total_received_length']) + "c;;;0 total_" \

@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.6.3.dev (development stage/unreleased)
+## 1.6.4.dev (development stage/unreleased)
+
+## 1.6.4
+### Added
+- amount of active streams to icinga status msg
+### Fix
+- RuntimeError in _frequent_checks
 
 ## 1.6.3
 ### Fix
