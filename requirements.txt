@@ -5,4 +5,4 @@ flask_restful
 pathlib
 requests
 websocket-client
-websockets>=7.0
+websockets==7.0
