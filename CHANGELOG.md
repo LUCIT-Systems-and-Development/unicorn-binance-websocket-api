@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.6.4.dev (development stage/unreleased)
+## 1.6.5.dev (development stage/unreleased)
+
+## 1.6.5
+### Fixed
+- 'websockets>=7.0' to 'websockets==7.0': Websockets 8 is released and it seems to be not compatible
 
 ## 1.6.4
 ### Added
