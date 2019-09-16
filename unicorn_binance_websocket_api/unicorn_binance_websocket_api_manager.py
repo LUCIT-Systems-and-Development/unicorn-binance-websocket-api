@@ -635,7 +635,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         return False
 
                     query += market.lower() + "@" + channel + "/"
-            return self.websocket_base_uri + str(query)
+            return self.websocket_base_uri + str(query[:-1])
 
     def delete_listen_key_by_stream_id(self, stream_id):
         """

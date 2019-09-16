@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.6.5.dev (development stage/unreleased)
+## 1.6.6.dev (development stage/unreleased)
+
+## 1.6.6
+### Fixed
+- Trailing / is no longer accepted by the endpoints: 
+https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/31
 
 ## 1.6.5
 ### Fixed
