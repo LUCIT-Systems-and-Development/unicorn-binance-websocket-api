@@ -7,7 +7,7 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/unicorn-binance-websocket-api.svg?label=PyPI%20downloads&color=orange)
 
 # UNICORN Binance WebSocket API
-A python API to use the Binance Websocket API's (com, jersey, dex/chain) in a easy, fast, flexible, robust and fully-featured way.
+A python API to use the Binance Websocket API's (com, jersey, us, dex/chain) in a easy, fast, flexible, robust and fully-featured way.
 
 ### Create a multiplex websocket connection to Binance with just 3 lines of code:
 ```
@@ -52,6 +52,7 @@ processing. The current dependencies are listed
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
 on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), 
 [je](https://github.com/binance-jersey/binance-official-api-docs/), 
+[us](https://github.com/binance-us/binance-official-api-docs/), 
 [org](https://docs.binance.org/api-reference/dex-api/paths.html)) in combination. 
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
