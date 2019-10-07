@@ -57,6 +57,8 @@ class BinanceWebSocketApiProcessStreams(object):
             unicorn_fied_stream_data = UnicornFy.binance_com_websocket(received_stream_data_json)
         elif exchange == "binance.je":
             unicorn_fied_stream_data = UnicornFy.binance_je_websocket(received_stream_data_json)
+        elif exchange == "binance.us":
+            unicorn_fied_stream_data = UnicornFy.binance_us_websocket(received_stream_data_json)
         else:
             logging.error("Not a valid exchange: " + str(exchange))
 

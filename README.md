@@ -34,12 +34,14 @@ Thats it!
 The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) 
 provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs) 
 , [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
+[Binance US](https://github.com/binance-us/binance-official-api-docs), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
 [Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports the streaming of 
 all public streams like trade, kline, ticker, depth and blockheight and also all private userData streams which needs 
 to be used with a valid api_key and api_secret from the Binance Exchange 
-[www.binance.com](https://www.binance.com/userCenter/createApi.html) or 
-[www.binance.je](https://www.binance.je/userCenter/createApi.html) - for the DEX you need a user address from 
+[www.binance.com](https://www.binance.com/userCenter/createApi.html), 
+[www.binance.je](https://www.binance.je/userCenter/createApi.html)  or 
+[www.binance.us](https://www.binance.us/userCenter/createApi.html) - for the DEX you need a user address from 
 [www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create) 
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
@@ -57,6 +59,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 - Supported exchanges: 
     * [Binance](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com")`
     * [Binance Jersey](https://www.binance.je) `BinanceWebSocketApiManager(exchange="binance.je")`
+    * [Binance US](https://www.binance.us) `BinanceWebSocketApiManager(exchange="binance.us")`
     * [Binance DEX](https://www.binance.org) `BinanceWebSocketApiManager(exchange="binance.org")`
     * [Binance DEX testnet](https://testnet.binance.org) `BinanceWebSocketApiManager(exchange="binance.org-testnet")`
 

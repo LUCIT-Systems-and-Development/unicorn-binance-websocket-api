@@ -112,6 +112,19 @@ class UnicornFy(object):
         return UnicornFy.binance_websocket(stream_data_json, exchange="binance.je", show_deprecated_warning=False)
 
     @staticmethod
+    def binance_us_websocket(stream_data_json):
+        """
+        unicorn_fy binance.us (US) raw_stream_data
+
+        :param stream_data_json: The received raw stream data from the Binance websocket
+        :type stream_data_json: json
+
+        :return: dict
+        """
+        return UnicornFy.binance_websocket(stream_data_json, exchange="binance.us", show_deprecated_warning=False)
+
+
+    @staticmethod
     def binance_websocket(stream_data_json, exchange="binance", show_deprecated_warning=True):
         unicorn_fied_data = False
 

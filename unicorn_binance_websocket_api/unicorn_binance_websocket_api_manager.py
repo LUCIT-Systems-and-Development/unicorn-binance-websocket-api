@@ -63,6 +63,9 @@ class BinanceWebSocketApiManager(threading.Thread):
     Binance.je websocket API documentation:
     https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md
     https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md
+    Binance.us websocket API documentation:
+    https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md
+    https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md
     Binance.org websocket API documentation:
     https://docs.binance.org/api-reference/dex-api/ws-connection.html
 
@@ -71,14 +74,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 data` cointains the raw_stream_data. If not provided, the raw stream_data will get
                                 stored in the stream_buffer.
     :type process_stream_data: function
-    :param exchange: Select binance.com, binance.je, binance.org or binance.org-testnet (default: binance.com)
+    :param exchange: Select binance.com, binance.je, binance.us, binance.org or binance.org-testnet (default: binance.com)
     :type exchange: str
 
     """
 
     def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
-        self.version = "1.6.6.dev"
+        self.version = "1.7.0"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
@@ -92,6 +95,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         elif self.exchange == "binance.je":
             # Binance Jersey: www.binance.je
             self.websocket_base_uri = "wss://stream.binance.je:9443/"
+        elif self.exchange == "binance.us":
+            # Binance Jersey: www.binance.us
+            self.websocket_base_uri = "wss://stream.binance.us:9443/"
         elif self.exchange == "binance.org":
             # Binance Chain: www.binance.org
             self.websocket_base_uri = "wss://dex.binance.org/api/"
