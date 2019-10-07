@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.7.0
 ## Added 
-- binance.us websocket support
+- binance.us websocket support and [example_binance_us.py](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_binance_us.py)
 
 ## 1.6.6
 ### Fixed
