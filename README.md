@@ -145,6 +145,7 @@ with using `binance_websocket_api_manager.is_update_availabe()` or you use the
 To receive news (like inspection windows/maintenance) about the Binance API`s subscribe to their telegram groups: 
 - https://t.me/binance_api_announcements
 - https://t.me/binance_api_english
+- https://t.me/BinanceExchange
 - https://t.me/Binance_Jersey
 - https://t.me/Binance_USA
 - https://t.me/BinanceDEXchange
