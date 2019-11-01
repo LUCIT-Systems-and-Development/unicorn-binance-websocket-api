@@ -38,6 +38,7 @@ import hashlib
 import hmac
 import logging
 import requests
+import simplejson
 import socket
 import time
 
@@ -51,6 +52,8 @@ class BinanceWebSocketApiRestclient(object):
         self.unicorn_binance_websocket_api_version = unicorn_binance_websocket_api_version
         if self.exchange == "binance.com":
             self.restful_base_uri = "https://api.binance.com/"
+        elif self.exchange == "binance.com-futures":
+            self.restful_base_uri = "https://fapi.binance.com/"
         elif self.exchange == "binance.je":
             self.restful_base_uri = "https://api.binance.je/"
         elif self.exchange == "binance.us":
@@ -95,7 +98,11 @@ class BinanceWebSocketApiRestclient(object):
                              "or you are going to get banned! Read this: https://github.com/binance-exchange/binance-"
                              "official-api-docs/blob/master/rest-api.md#limits")
 
-        respond = request_handler.json()
+        try:
+            respond = request_handler.json()
+        except simplejson.errors.JSONDecodeError as error_msg:
+            logging.critical(str(error_msg))
+            return False
         self.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
         self.binance_api_status['timestamp'] = time.time()
         self.binance_api_status['status_code'] = request_handler.status_code

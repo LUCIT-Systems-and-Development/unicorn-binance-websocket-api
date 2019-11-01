@@ -55,11 +55,13 @@ import uuid
 
 class BinanceWebSocketApiManager(threading.Thread):
     """
-    A python API to use the Binance Websocket API`s (com, je) in a easy, fast, flexible, robust and fully-featured way.
+    A python API to use the Binance Websocket API`s (com, com-futures, jersey, us, dex/chain+testnet) in a easy, fast,
+    flexible, robust and fully-featured way.
 
     Binance.com websocket API documentation:
     https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
     https://github.com/binance-exchange/binance-official-api-docs/blob/master/user-data-stream.md
+    https://binance-docs.github.io/apidocs/futures/en/#symbol-order-book-ticker-market_data
     Binance.je websocket API documentation:
     https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md
     https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md
@@ -81,7 +83,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
-        self.version = "1.7.0.dev"
+        self.version = "1.8.0.dev"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
@@ -92,6 +94,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.exchange == "binance.com":
             # Binance: www.binance.com
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
+        elif self.exchange == "binance.com-futures":
+            # Binance Futures: www.binance.com
+            self.websocket_base_uri = "wss://fstream.binance.com/"
         elif self.exchange == "binance.je":
             # Binance Jersey: www.binance.je
             self.websocket_base_uri = "wss://stream.binance.je:9443/"
@@ -558,6 +563,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 else:
                     logging.debug("Error: Can not create websocket URI!")
                     return False
+            elif "!bookTicker" in channels or "!bookTicker" in markets:
+                return self.websocket_base_uri + "ws/!bookTicker"
             elif "arr" in channels or "$all" in markets:
                 return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
             elif "arr" in markets or "$all" in channels:
@@ -613,6 +620,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                                   "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) to "
                                   "initiate an extra connection.")
                     return False
+                if channel == "!bookTicker":
+                    logging.error("Can not create 'arr@!bookTicker' in a multi channel socket! "
+                                  "Unfortunately Binance only stream it in a single stream socket! ./"
+                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!bookTicker\"]) to "
+                                  "initiate an extra connection.")
+                    return False
                 if channel == "!userData":
                     logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
                                   "Unfortunately Binance only stream it in a single stream socket! ./"
@@ -631,6 +644,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                         logging.error("Can not create 'arr@!miniTicker' in a multi channel socket! "
                                       "Unfortunatly Binance only stream it in a single stream socket! ./"
                                       "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) "
+                                      "to initiate an extra connection.")
+                        return False
+                    if market == "!bookTicker":
+                        logging.error("Can not create 'arr@!bookTicker' in a multi channel socket! "
+                                      "Unfortunatly Binance only stream it in a single stream socket! ./"
+                                      "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!bookTicker\"]) "
                                       "to initiate an extra connection.")
                         return False
                     if market == "!userData":

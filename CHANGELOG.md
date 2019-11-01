@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.7.0.dev (development stage/unreleased)
+## 1.8.0.dev (development stage/unreleased)
+
+## 1.8.0
+## Added 
+- binance.com Futures websocket support and [example_binance_futures.py](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_binance_futures.py) and [example_bookticker.py](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_bookticker.py) ([issue#32](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/32))
 
 ## 1.7.0
 ## Added 

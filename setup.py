@@ -40,19 +40,20 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='unicorn-binance-websocket-api',
-     version='1.7.0',
+     version='1.8.0-dev',
      author="UNICORN Data Analysis",
      url="https://www.unicorn-data.com",
      scripts=['unicorn_binance_websocket_api.py'],
-     description="A python API to use the Binance Websocket API in a easy, fast, flexible, "
-                 "robust and fully-featured way.",
+     description="A python API to use the Binance Websocket API's (com, com-futures, jersey, us, dex/chain+testnet) in "
+                 "a easy, fast, flexible, robust and fully-featured way.",
      long_description=long_description,
      long_description_content_type="text/markdown",
      license='MIT License',
      install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets==7.0', 'flask_restful',
-                       'cheroot', 'flask'],
+                       'cheroot', 'flask', 'simplejson'],
      keywords='unicorn-data-analysis, binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
-              'binance-websocket, binance-webstream, webstream, websocket, api, binance-jersey, binance-dex',
+              'binance-websocket, binance-webstream, webstream, websocket, api, binance-jersey, binance-dex, '
+              'binance-futures',
      project_urls={
         'Howto': 'https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html',
         'Documentation': 'https://www.unicorn-data.com/unicorn-binance-websocket-api.html',

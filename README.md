@@ -7,7 +7,7 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/unicorn-binance-websocket-api.svg?label=PyPI%20downloads&color=orange)
 
 # UNICORN Binance WebSocket API
-A python API to use the Binance Websocket API's (com, jersey, us, dex/chain) in a easy, fast, flexible, robust and fully-featured way.
+A python API to use the Binance Websocket API's (com, com-futures, jersey, us, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.
 
 ### Create a multiplex websocket connection to Binance with just 3 lines of code:
 ```
@@ -33,12 +33,13 @@ Thats it!
 ## Description
 The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) 
 provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs) 
-, [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
+, [Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams), 
+[Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
 [Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports the streaming of 
-all public streams like trade, kline, ticker, depth and blockheight and also all private userData streams which needs 
-to be used with a valid api_key and api_secret from the Binance Exchange 
+all public streams like trade, kline, ticker, depth, !bookTicker and blockheight and also all private userData streams 
+which needs to be used with a valid api_key and api_secret from the Binance Exchange 
 [www.binance.com](https://www.binance.com/userCenter/createApi.html), 
 [www.binance.je](https://www.binance.je/userCenter/createApi.html)  or 
 [www.binance.us](https://www.binance.us/userCenter/createApi.html) - for the DEX you need a user address from 
@@ -59,6 +60,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 - Fully managed websockets and 100% auto-reconnect!
 - Supported exchanges: 
     * [Binance](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com")`
+    * [Binance Futures](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com-futures")`
     * [Binance Jersey](https://www.binance.je) `BinanceWebSocketApiManager(exchange="binance.je")`
     * [Binance US](https://www.binance.us) `BinanceWebSocketApiManager(exchange="binance.us")`
     * [Binance DEX](https://www.binance.org) `BinanceWebSocketApiManager(exchange="binance.org")`

@@ -8,5 +8,6 @@ dependencies:
   - flask_restful
   - pathlib
   - requests
+  - simplejson
   - websocket-client
   - websockets==7.0
