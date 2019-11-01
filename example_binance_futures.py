@@ -70,9 +70,7 @@ userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!use
 
 bookticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!bookTicker"])
 
-
 markets = {'btcusdt', 'eosusdt', 'ethusdt'}
-
 binance_websocket_api_manager.create_stream(["aggTrade"], markets)
 binance_websocket_api_manager.create_stream(["markPrice"], markets)
 binance_websocket_api_manager.create_stream(["kline_1m"], markets)
@@ -90,7 +88,6 @@ binance_websocket_api_manager.create_stream(["depth5"], markets)
 binance_websocket_api_manager.create_stream(["depth5@100ms"], markets)
 binance_websocket_api_manager.create_stream(["depth10"], markets)
 binance_websocket_api_manager.create_stream(["depth20"], markets)
-
 
 channels = {'aggTrade', 'markPrice' 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h',
             'miniTicker', 'depth20@100ms', 'bookTicker', 'kline_1w@250ms'}
