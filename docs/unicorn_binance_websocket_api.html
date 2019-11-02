@@ -103,14 +103,14 @@ flexible, robust and fully-featured way.</p>
 <p>Binance.com websocket API documentation:
 <a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md">https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md</a>
 <a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/user-data-stream.md">https://github.com/binance-exchange/binance-official-api-docs/blob/master/user-data-stream.md</a>
-<a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#symbol-order-book-ticker-market_data">https://binance-docs.github.io/apidocs/futures/en/#symbol-order-book-ticker-market_data</a>
-Binance.je websocket API documentation:
+<a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#symbol-order-book-ticker-market_data">https://binance-docs.github.io/apidocs/futures/en/#symbol-order-book-ticker-market_data</a></p>
+<p>Binance.je websocket API documentation:
 <a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md">https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md</a>
-<a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md">https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md</a>
-Binance.us websocket API documentation:
+<a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md">https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md</a></p>
+<p>Binance.us websocket API documentation:
 <a class="reference external" href="https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md">https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md</a>
-<a class="reference external" href="https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md">https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md</a>
-Binance.org websocket API documentation:
+<a class="reference external" href="https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md">https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md</a></p>
+<p>Binance.org websocket API documentation:
 <a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">https://docs.binance.org/api-reference/dex-api/ws-connection.html</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -393,17 +393,11 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>check_command_version</strong> – is the version of the calling check_command</td>
-</tr>
-</tbody>
-</table>
-<p>(<a class="reference external" href="https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api">https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api</a>)
-:type check_command_version: str</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>check_command_version</strong> (<em>str</em>) – is the version of the calling check_command (<a class="reference external" href="https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api">https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api</a>)</li>
+<li><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -440,19 +434,14 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>check_command_version</strong> – is the version of the calling check_command</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>check_command_version</strong> (<em>str</em>) – is the version of the calling check_command (<a class="reference external" href="https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api">https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api</a>)</li>
+<li><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</li>
+</ul>
+</td>
 </tr>
-</tbody>
-</table>
-<p>(<a class="reference external" href="https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api">https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api</a>)
-:type check_command_version: str</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dict</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict</p>
+</td>
 </tr>
 </tbody>
 </table>
