@@ -19,4 +19,4 @@
 # pip install recommonmark
 # add 'recommonmark' to extentions in conf.py
 
-make html
+make html -d

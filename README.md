@@ -128,16 +128,15 @@ https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/maste
 - [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.unicorn-data.com/blog/article-details/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2.html)
 
 ## Documentation
-https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api
+[https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api)
 
 ## Source, Downloads, Examples, ...
-https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
-
+[https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
 ## Change Log
-https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CHANGELOG.md
+[https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CHANGELOG.md](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CHANGELOG.md)
 
 ## Wiki
-https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki
+[https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki)
 
 ## Receive Notifications
 To receive notifications on available updates you can ![watch](https://s3.gifyu.com/images/github_watch.png) the 
@@ -147,12 +146,12 @@ with using `binance_websocket_api_manager.is_update_availabe()` or you use the
 [monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service).
 
 To receive news (like inspection windows/maintenance) about the Binance API`s subscribe to their telegram groups: 
-- https://t.me/binance_api_announcements
-- https://t.me/binance_api_english
-- https://t.me/BinanceExchange
-- https://t.me/Binance_Jersey
-- https://t.me/Binance_USA
-- https://t.me/BinanceDEXchange
+- [https://t.me/binance_api_announcements](https://t.me/binance_api_announcements)
+- [https://t.me/binance_api_english](https://t.me/binance_api_english)
+- [https://t.me/BinanceExchange](https://t.me/BinanceExchange)
+- [https://t.me/Binance_Jersey](https://t.me/Binance_Jersey)
+- [https://t.me/Binance_USA](https://t.me/Binance_USA)
+- [https://t.me/BinanceDEXchange](https://t.me/BinanceDEXchange)
 
 ## How to report Bugs or suggest Improvements?
 [List of planned features](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 
