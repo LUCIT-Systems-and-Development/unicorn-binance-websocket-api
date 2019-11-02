@@ -1,0 +1,91 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #dddddd;
+}
+table.docutils tr {
+  color: #3e3f3a;
+  background-color: #fff ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #dddddd;
+}
+table.docutils tbody + tbody {
+  border-color: #dddddd;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #dddddd;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: #ffffff;
+  background-color: #e48353;
+  border-color: #e48353;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: #ffffff;
+  background-color: #c9605a;
+  border-color: #c9605a;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: #ffffff;
+  background-color: #e48353;
+  border-color: #e48353;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: #ffffff;
+  background-color: #9fbe5b;
+  border-color: #9fbe5b;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: #ffffff;
+  background-color: #55abda;
+  border-color: #55abda;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #dddddd;
+}

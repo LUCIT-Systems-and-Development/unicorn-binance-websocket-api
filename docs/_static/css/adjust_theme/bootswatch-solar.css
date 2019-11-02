@@ -1,0 +1,155 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #1c1e22;
+}
+table.docutils tr {
+  color: #839496;
+  background-color: #002b36 ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #1c1e22;
+}
+table.docutils tbody + tbody {
+  border-color: #1c1e22;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #1c1e22;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #fa9500;
+  border-color: #eb6500;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #f05e57;
+  border-color: #ef4b60;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #fa9500;
+  border-color: #eb6500;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #468847;
+  border-color: #5ec65d;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #56C0E0;
+  border-color: #31ced9;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #1c1e22;
+}
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #1c1e22 !important;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #1c1e22;
+ border-top: 1px solid #1c1e22;
+ border-bottom: 1px solid #1c1e22;
+}
+
+
+/* Field-list
+   ---------------------------------------------------------*/
+
+table.field-list {
+  background-color: #272B30;
+}
+
+/* Citation
+   ---------------------------------------------------------*/
+
+table.citation{
+  background-color: #272B30;
+}
+
+/* Footnote
+   ---------------------------------------------------------*/
+
+table.footnote {
+  background-color: #272B30;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+  background-color: #1c1e22;
+  border-color: #0b0b0d;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   color: #c8c8c8;
+}
+ul.sp-localtoc ul a:hover{
+   background-color: #272b2e;
+   color: #ffffff;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #c8c8c8;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   background-color: #272b2e;
+   color: #ffffff;
+}

@@ -92,11 +92,11 @@ class BinanceWebSocketApiRestclient(object):
         if request_handler.status_code == "418":
             logging.critical("BinanceWebSocketApiRestclient->_request() received status_code 418 from binance! You got"
                              "banned from the binance api! Read this: https://github.com/binance-exchange/binance-"
-                             "official-api-docs/blob/master/rest-api.md#limits")
+                             "official-api-sphinx/blob/master/rest-api.md#limits")
         elif request_handler.status_code == "429":
             logging.critical("BinanceWebSocketApiRestclient->_request() received status_code 429 from binance! Back off"
                              "or you are going to get banned! Read this: https://github.com/binance-exchange/binance-"
-                             "official-api-docs/blob/master/rest-api.md#limits")
+                             "official-api-sphinx/blob/master/rest-api.md#limits")
 
         try:
             respond = request_handler.json()

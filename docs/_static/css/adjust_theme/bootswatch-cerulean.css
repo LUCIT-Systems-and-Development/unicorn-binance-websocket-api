@@ -1,0 +1,118 @@
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #dddddd;
+}
+table.docutils tr {
+  color: #555;
+  background-color: #fff ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #dddddd;
+}
+table.docutils tbody + tbody {
+  border-color: #dddddd;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #dddddd;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: ;
+  background-color: ;
+  border-color: ;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: ;
+  background-color: ;
+  border-color: ;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: ;
+  background-color: ;
+  border-color: ;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: ;
+  background-color: ;
+  border-color: ;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: ;
+  background-color: ;
+  border-color: ;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #dddddd;
+}
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #eeeeee !important;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+  background-color: #eeeeee;
+  border: 1px solid #eeeeee;
+  box-shadow: none;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #eeeeee;
+ border-top: 1px solid #eeeeee;
+ border-bottom: 1px solid #eeeeee;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   color: #ffffff;
+}
+ul.sp-localtoc ul a:hover{
+   background-color: #178acc;
+   color: #ffffff;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #ffffff;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   background-color: #022f5a;
+   color: #ffffff;
+}

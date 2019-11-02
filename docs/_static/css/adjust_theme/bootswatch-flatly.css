@@ -1,0 +1,126 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #ecf0f1;
+}
+table.docutils tr {
+  color: #2c3e50;
+  background-color: #fff ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #ecf0f1;
+}
+table.docutils tbody + tbody {
+  border-color: #ecf0f1;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #ecf0f1;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: #ffffff;
+  background-color: #ec9B00;
+  border-color: #ec9B00;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: #ffffff;
+  background-color: #dd4838;
+  border-color: #dd4838;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: #ffffff;
+  background-color: #ec9B00;
+  border-color: #ec9B00;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: #ffffff;
+  background-color: #40bc9c;
+  border-color: #40bc9c;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: #ffffff;
+  background-color: #4b99dc;
+  border-color: #4b99dc;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #ecf0f1;
+}
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #ecf0f1 !important;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #ecf0f1;
+ border-top: 1px solid #ecf0f1;
+ border-bottom: 1px solid #ecf0f1;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   color: #ffffff;
+}
+ul.sp-localtoc ul a:hover{
+   background-color: transparent;
+   color: #00bc8c;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #ffffff;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   background-color: transparent;
+   color: #2c3e50;
+}

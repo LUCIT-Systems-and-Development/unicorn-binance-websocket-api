@@ -1,0 +1,71 @@
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: {{ table_border_color }};
+}
+table.docutils tr {
+  color: {{ table_color }};
+  background-color: {{ table_background_color }} ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: {{ table_border_color }};
+}
+table.docutils tbody + tbody {
+  border-color: {{ table_border_color }};
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: {{ table_border_color }};
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: {{ warning_color }};
+  background-color: {{ warning_background_color }};
+  border-color: {{ warning_border_color }};
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: {{ danger_color }};
+  background-color: {{ danger_background_color }};
+  border-color: {{ danger_border_color }};
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: {{ warning_color }};
+  background-color: {{ warning_background_color }};
+  border-color: {{ warning_border_color }};
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: {{ note_color }};
+  background-color: {{ note_background_color }};
+  border-color: {{ note_border_color }};
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: {{ hint_color }};
+  background-color: {{ hint_background_color }};
+  border-color: {{ hint_border_color }};
+}
+
+div.topic {
+  background-color: {{ table_oddrow_color }};
+  border-color: {{ table_border_color }};
+}

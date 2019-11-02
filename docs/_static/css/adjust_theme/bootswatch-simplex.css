@@ -1,0 +1,133 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #dddddd;
+}
+table.docutils tr {
+  color: #777;
+  background-color: #fcfcfc ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #dddddd;
+}
+table.docutils tbody + tbody {
+  border-color: #dddddd;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #dddddd;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: #ffffff;
+  background-color: #9c43a1;
+  border-color: #9c43a1;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: #ffffff;
+  background-color: #d88400;
+  border-color: #d88400;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: #ffffff;
+  background-color: #9c43a1;
+  border-color: #9c43a1;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: #ffffff;
+  background-color: #439500;
+  border-color: #439500;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: #ffffff;
+  background-color: #0099d1;
+  border-color: #0099d1;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #dddddd;
+}
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #dddddd !important;
+}
+ 
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #dddddd;
+ border-top: 1px solid #dddddd;
+ border-bottom: 1px solid #dddddd;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+  background-color: #f4f4f4;
+  border: none;
+  box-shadow: none;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   color: #333333;
+}
+ul.sp-localtoc ul a:hover{
+   color: #d9230f;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #ffffff;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   color: #fac0ba;
+}

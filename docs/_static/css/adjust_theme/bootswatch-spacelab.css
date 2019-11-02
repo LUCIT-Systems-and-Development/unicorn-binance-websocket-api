@@ -1,0 +1,144 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #dddddd;
+}
+table.docutils tr {
+  color: #666;
+  background-color: #fff ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #dddddd;
+}
+table.docutils tbody + tbody {
+  border-color: #dddddd;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #dddddd;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: #ffffff;
+  background-color: #d47500;
+  border-color: #c54c00;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: #ffffff;
+  background-color: #cd0200;
+  border-color: #be001e;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: #ffffff;
+  background-color: #d47500;
+  border-color: #c54c00;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: #ffffff;
+  background-color: #3cb521;
+  border-color: #4b9f1d;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: #ffffff;
+  background-color: #3399f3;
+  border-color: #11adf1;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #dddddd;
+}
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #eeeeee !important;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #eeeeee;
+ border-top: 1px solid #eeeeee;
+ border-bottom: 1px solid #eeeeee;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+  background-color: #eeeeee;
+  border: none;
+  box-shadow: none;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   color: #777777;
+}
+ul.sp-localtoc ul a:hover{
+   color: #3399f3;
+   -webkit-transition: color ease-in-out .2s;
+   transition: color ease-in-out .2s;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #c8c8c8;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   color: #ffffff;
+   -webkit-transition: color ease-in-out .2s;
+   transition: color ease-in-out .2s;
+}
+
+/* Etc
+   ---------------------------------------------------------*/
+
+div.navbar-inner ul.pull-right li a{
+    font-size: 12px;
+}

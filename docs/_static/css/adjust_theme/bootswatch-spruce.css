@@ -1,0 +1,108 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+div.navbar-inner ul.pull-right li a{
+    font-size: 15px;
+}
+
+@media (max-width: 480px) {
+    a.brand {
+        line-height: 25px;
+    }
+}
+
+table.docutils th.head {
+    background-color: #015b4e;
+color: #fff;
+}
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #999999;
+}
+table.docutils tr {
+  color: #555;
+  background-color: #fff ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #999999;
+}
+table.docutils tbody + tbody {
+  border-color: #999999;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #999999;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: #ffffff;
+  background-color: #f26522;
+  border-color: #f13614;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: #ffffff;
+  background-color: #d14432;
+  border-color: #c72d35;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: #ffffff;
+  background-color: #f26522;
+  border-color: #f13614;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: #ffffff;
+  background-color: #24c00b;
+  border-color: #3aa80a;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: #ffffff;
+  background-color: #185af9;
+  border-color: #066ee7;
+}
+
+div.topic {
+  background-color: #eaeaea;;
+  border-color: #999999;
+}

@@ -1,0 +1,134 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #357279;
+}
+table.docutils tr {
+  color: #fff;
+  background-color: #108a93 ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #357279;
+}
+table.docutils tbody + tbody {
+  border-color: #357279;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #357279;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #df6e1e;
+  border-color: #df6e1e;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #d5b321;
+  border-color: #d5b321;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #df6e1e;
+  border-color: #df6e1e;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #48ca3b;
+  border-color: #48ca3b;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: #4d3a7d;
+  border-color: #4d3a7d;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #357279;
+}
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #00747d !important;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+  background-color: #00747d;
+  border: none;
+  box-shadow: none;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #00747d;
+ border-top: 1px solid #00747d;
+ border-bottom: 1px solid #00747d;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   color: #ffffff;
+}
+ul.sp-localtoc ul a:hover{
+   background-color: #d92432;
+   color: #ffffff;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #ffffff;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   background-color: #e5c953;
+   color: #ffffff;
+}

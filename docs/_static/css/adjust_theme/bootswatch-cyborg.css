@@ -1,0 +1,145 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #222222;
+}
+table.docutils tr {
+  color: #888;
+  background-color: #060606 ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #222222;
+}
+table.docutils tbody + tbody {
+  border-color: #222222;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #222222;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: #eeeeee;
+  background-color: #666666;
+  border-color: transparent;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: #eeeeee;
+  background-color: #cc0000;
+  border-color: transparent;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: #eeeeee;
+  background-color: #666666;
+  border-color: transparent;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: #eeeeee;
+  background-color: #5c8a00;
+  border-color: #transparent;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: #ffffff;
+  background-color: #007399;
+  border-color: transparent;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #222222;
+}
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #282828 !important;
+}
+
+/* Field-list
+   ---------------------------------------------------------*/
+
+table.field-list {
+  background-color: #060606;
+}
+
+/* Citation
+   ---------------------------------------------------------*/
+
+table.citation{
+  background-color: #060606;
+}
+
+/* Footnote
+   ---------------------------------------------------------*/
+
+table.footnote {
+  background-color: #060606;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+  background-color: #222222;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #282828;
+ border-top: 1px solid #282828;
+ border-bottom: 1px solid #282828;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a:hover{
+   color: #ffffff;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   color: #ffffff;
+}

@@ -100,8 +100,8 @@ html_static_path = ['_static']
 #
 # The default sidebars (for documents that don't match any pattern) are
 # defined by theme itself.  Builtin themes are using these templates by
-# default: ``['localtoc.html', 'relations.html', 'sourcelink.html',
-# 'searchbox.html']``.
+# default: ``['localtoc.docs', 'relations.docs', 'sourcelink.docs',
+# 'searchbox.docs']``.
 #
 # html_sidebars = {}
 
@@ -178,7 +178,7 @@ epub_title = project
 # epub_uid = ''
 
 # A list of files that should not be packed into the epub file.
-epub_exclude_files = ['search.html']
+epub_exclude_files = ['search.docs']
 
 
 # -- Extension configuration -------------------------------------------------

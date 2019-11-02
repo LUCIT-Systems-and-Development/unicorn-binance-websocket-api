@@ -1,0 +1,145 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #dddddd;
+}
+table.docutils tr {
+  color: #333;
+  background-color: #fff ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #dddddd;
+}
+table.docutils tbody + tbody {
+  border-color: #dddddd;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #dddddd;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: #ffffff;
+  background-color: #f2ae43;
+  border-color: #f2ae43;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: #ffffff;
+  background-color: #db524b;
+  border-color: #db524b;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: #ffffff;
+  background-color: #f2ae43;
+  border-color: #f2ae43;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: #ffffff;
+  background-color: #39af40;
+  border-color: #39af40;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: #ffffff;
+  background-color: #56C0E0;
+  border-color: #56C0E0;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #dddddd;
+}
+
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #eeeeee !important;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #eeeeee;
+ border-top: 1px solid #eeeeee;
+ border-bottom: 1px solid #eeeeee;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+  background-color: #f7f7f7;
+  border-color: #eeeeee;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   margin-left: 7px;
+   margin-right: 7px;
+   border: 1px solid transparent;
+   border-radius: 4px;
+   color: #4582ec;
+}
+ul.sp-localtoc ul a:hover{
+   border-color: #dddddd;
+   color: #4582ec;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #333333;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   color: #333333;
+}
+
+
+/* Etc
+   ---------------------------------------------------------*/
+
+div.navbar-inner ul.pull-right li a{
+    font-size: 15px;
+}

@@ -1,0 +1,194 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table.docutils {
+  border-color: #4d5d6d;
+}
+table.docutils tr {
+  color: #ebebeb;
+  background-color: #2b3e50 ;
+}
+table.docutils th,
+table.docutils td
+{
+  border-color: #4d5d6d;
+}
+table.docutils tbody + tbody {
+  border-color: #4d5d6d;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-color: #4d5d6d;
+}
+
+/* -- admonition -- */
+div.admonition {
+  color: #ffffff;
+  background-color: #f2ae43;
+  border-color: #f2ae43;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: #ffffff;
+  background-color: #db524b;
+  border-color: #db524b;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+  color: #ffffff;
+  background-color: #f2ae43;
+  border-color: #f2ae43;
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: #ffffff;
+  background-color: #58b957;
+  border-color: #58b957;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: #ffffff;
+  background-color: #56c0e0;
+  border-color: #56c0e0;
+}
+
+div.topic {
+  background-color: ;
+  border-color: #4d5d6d;
+}
+
+/* Heading
+   ---------------------------------------------------------*/
+
+h2, h3, h4, h5, h6 {
+ border-bottom: 1px solid #4d5d6d !important;
+}
+
+/* Genindex
+   ---------------------------------------------------------*/
+
+div.genindex-jumpbox {
+ color: #4d5d6d;
+ border-top: 1px solid #4d5d6d;
+ border-bottom: 1px solid #4d5d6d;
+}
+
+/* Contents
+   ---------------------------------------------------------*/
+
+div.contents {
+  background-color: #4d5d6d;
+  border: none;
+  box-shadow: none;
+}
+
+/* Smartphone Local Toc
+   ---------------------------------------------------------*/
+
+ul.sp-localtoc ul a{
+   font-size: 12px;
+   color: #ebebeb;
+}
+ul.sp-localtoc ul a:hover{
+   color: #ebebeb;
+   background-color: #485563;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #ebebeb;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   color: #ebebeb;
+   background-color: #c85e17;
+}
+
+/* Code
+   ---------------------------------------------------------*/
+
+code, pre {
+    padding:0 3px 2px;
+    font-family:Menlo,Monaco,Consolas,"Courier New",monospace;
+    font-size:12px;
+    color:#3a3f44;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+}
+code{
+    padding:2px 4px;
+    color:#d14;
+    background-color:#f7f7f9;
+    border:1px solid #e1e1e8;
+    white-space:nowrap;
+}
+pre{
+    display:block;
+    padding:10px;
+    margin:0 0 10.5px;
+    font-size:13px;
+    line-height:21px;
+    word-break:break-all;
+    word-wrap:break-word;
+    white-space:pre;
+    white-space:pre-wrap;
+    background-color:#f5f5f5;
+    border:1px solid #ccc;
+    border:1px solid rgba(0, 0, 0, 0.15);
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+}
+pre.prettyprint{
+    margin-bottom:21px;
+}
+pre code{
+    padding:0;
+    color:inherit;
+    white-space:pre;
+    white-space:pre-wrap;
+    background-color:transparent;
+    border:0;
+}
+
+div.navbar-inner ul.pull-right li a{
+    font-size: 15px;
+}
+
+
+@media (max-width: 480px) {
+  a.brand {
+      line-height: 30px;
+  }
+}

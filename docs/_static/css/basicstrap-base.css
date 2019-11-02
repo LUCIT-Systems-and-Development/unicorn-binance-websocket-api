@@ -1,0 +1,381 @@
+@import url("../basic.css");
+
+
+/* Table
+   ---------------------------------------------------------*/
+
+table {
+  border: 0;
+  max-width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0 !important;
+}
+
+table.docutils {
+  width: 100%;
+  margin-bottom: 20px;
+  border: 1px solid #dddddd;
+  border-collapse: separate;
+  *border-collapse: collapse;
+  border-left: 0;
+  border-right: 0;
+}
+
+table.docutils tr {
+  color: #333;
+  background-color: #fff;
+}
+
+table.docutils th {
+  font-weight: bold;
+}
+table.docutils th,
+table.docutils td
+{
+  padding: 8px;
+  line-height: 20px;
+  text-align: left;
+  vertical-align: top;
+  border: none;
+  border-spacing: 0 !important;
+  border-collapse: none;
+  border-top: 1px solid #dddddd;
+}
+table.docutils caption + thead tr:first-child th,
+table.docutils caption + tbody tr:first-child th,
+table.docutils caption + tbody tr:first-child td,
+table.docutils colgroup + thead tr:first-child th,
+table.docutils colgroup + tbody tr:first-child th,
+table.docutils colgroup + tbody tr:first-child td,
+table.docutils thead:first-child tr:first-child th,
+table.docutils tbody:first-child tr:first-child th,
+table.docutils tbody:first-child tr:first-child td {
+  border-top: 0;
+}
+table.docutils thead th {
+  vertical-align: bottom;
+}
+table.docutils tbody + tbody {
+  border-top: 2px solid #dddddd;
+}
+
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-top: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+  border-right: none;
+}
+table.table-bordered > thead > tr > th,
+table.table-bordered > tbody > tr > th,
+table.table-bordered > tfoot > tr > th,
+table.table-bordered > thead > tr > td,
+table.table-bordered > tbody > tr > td,
+table.table-bordered > tfoot > tr > td {
+  border-left: none;
+  border-bottom-width: 0;
+}
+
+/* Highlight Table
+   ---------------------------------------------------------*/
+
+.highlighttable {
+  width: 100%;
+}
+
+.highlighttable .code pre {
+  font-size: 12px;
+}
+
+.highlighttable .code {
+  max-width: 0;
+}
+
+.highlighttable .linenos {
+    width: 1%;
+}
+.highlighttable .linenos pre {
+    word-break: normal;
+    font-size: 12px;
+}
+
+.literal-block-wrapper {
+ padding: 0;
+}
+
+
+div.highlight {
+  background: none;
+}
+
+/* Field-list
+   ---------------------------------------------------------*/
+
+table.field-list {
+  width: auto;
+  border: none;
+}
+
+/* Citation
+   ---------------------------------------------------------*/
+
+table.citation{
+    width: auto;
+    margin-bottom: 0;
+    border: none;
+}
+table.citation td.label {
+  font-size: 100%;
+  display: block;
+  line-height: normal;
+  background: inherit;
+}
+
+/* Footnote
+   ---------------------------------------------------------*/
+
+a.footnote-reference {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+table.footnote td.label {
+  font-size: 100%;
+  display: block;
+  line-height: normal;
+  background: inherit;
+}
+
+table.footnote {
+  width: auto;
+  margin-bottom: 0px;
+  border: none;
+}
+
+
+/* Footer
+   ---------------------------------------------------------*/
+
+footer {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  padding: 0px;
+  padding-left: auto;
+  padding-right: auto;
+}
+
+/*  Sidebar
+    ------------------------------------------------------- */
+div.sidebar {
+  border: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  width: 100%;
+  float: none;
+}
+
+div.sidebar ul:second-child {
+  color: red;
+  background-color: #000 !important;
+  list-style: none !important;
+}
+
+/* Definition lists
+   ----------------------------------------------------------- */
+
+dl dd {
+ padding-left: 1em;
+}
+
+/* Admonition styles
+   ----------------------------------------------------------- */
+div.admonition {
+  padding: 0.5em 2.5em 0.5em 1em;
+  margin-bottom: 20px;
+  color: #c09853;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  background-color: #fcf8e3;
+  border: 1px solid #fbeed5;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+div.admonition p {
+  padding: 0;
+}
+
+div.admonition p.admonition-title {
+  margin: 0;
+  padding: 0.1em 0 0.1em 0;
+  font-weight: bold;
+}
+
+div.admonition ul, div.admonition ol {
+  padding: 0.1em 0.5em 0.5em 2em;
+}
+
+/* -- danger, error -- */
+div.danger,
+div.error {
+  color: #b94a48;
+  background-color: #f2dede;
+  border-color: #eed3d7;
+}
+
+/* -- warning, caution, attention -- */
+div.warning,
+div.caution,
+div.attention {
+}
+
+div.warning table.docutils,
+div.warning table.docutils th,
+div.warning table.docutils td,
+div.caution table.docutils,
+div.caution table.docutils th,
+div.caution table.docutils td,
+div.attention table.docutils,
+div.attention table.docutils th,
+div.attention table.docutils td {
+}
+
+div.warning blockquote,
+div.caution blockquote,
+div.attention blockquote {
+}
+
+/* -- note, important -- */
+div.note,
+div.important {
+  color: #468847;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+/* -- hint, tip -- */
+div.hint,
+div.tip {
+  color: #3a87ad;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+
+
+
+/* Etc
+   ----------------------------------------------------------- */
+
+div.figure-round img {
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+}
+
+div.figure-polaroid img{
+  padding: 4px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+div.figure-circle img {
+  -webkit-border-radius: 500px;
+     -moz-border-radius: 500px;
+          border-radius: 500px;
+}
+
+a.headerlink {
+ font-size: 60% !important;
+ padding-left: 5px;
+}
+
+/*
+#searchbox .search-query {
+  width: 60%;
+}
+*/
+
+div.topic {
+  min-height: 20px;
+  padding: 9px;
+  margin-bottom: 20px;
+
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+}
+
+ul.sp-localtoc {
+   list-style: none;
+   padding: 0;
+}
+ul.sp-localtoc ul{
+   list-style: none;
+   padding-left: 0;
+}
+ul.sp-localtoc ul a{
+   padding-left: 15px;
+   padding-top:7px;
+   padding-bottom:7px;
+   display: block;
+   text-decoration: none;
+   color: #777777;
+}
+ul.sp-localtoc ul a:hover{
+   color: #555555;
+}
+ul.sp-localtoc ul ul{
+   list-style: none;
+}
+ul.sp-localtoc ul ul a{
+   padding-left: 25px;
+}
+ul.sp-localtoc ul ul ul a{
+   padding-left: 35px;
+}
+ul.sp-localtoc ul ul ul ul a{
+   padding-left: 45px;
+}
+ul.sp-localtoc ul ul ul ul ul a{
+   padding-left: 55px;
+}
+ul.sp-localtoc ul ul ul ul ul a{
+   padding-left: 65px;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #999999;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   color: #ffffff;
+}
+
+
+div.footer-relbar {
+  margin-top:10px;
+}
+
+div.sidebar ul {
+    list-style: none;
+    padding-left: 10px;
+}
+div.sidebar ul ul {
+    list-style: initial;
+    padding-left: 40px;
+}
+div.sidebar p.topless {
+    padding-left: 10px;
+}

@@ -1,0 +1,74 @@
+@import url("nature.css");
+
+div.related {
+    background-color: #0168b5; /* official CoR-Lab blue*/
+}
+
+div.related a {
+    color: #bcceed;
+}
+
+div.sphinxsidebar {
+    width: 320px;
+}
+
+div.bodywrapper {
+    margin: 0px 0px 0px 320px;
+}
+
+table.contentstable p.biglink a {
+    font-size: 1.3em;
+}
+
+table.contentstable p.icon {
+    float: left;
+    margin-right: 8px;
+}
+
+table.contentstable p.icon img {
+    width: 48px;
+    height: 48px;
+}
+
+div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6 {
+    background-color: #bcceed;
+}
+
+div.important {
+    background-color: #ffffe0;
+    border: 1px solid #ccc;
+}
+
+a {
+    color: #0168b5; /* official CoR-Lab blue*/
+}
+
+.samp em, .file em {
+    background-color: #ffe0e0;
+}
+
+table.citation {
+    border-left: none;
+    width: 100%;
+}
+
+.citation .label {
+    width: 20%;
+}
+
+/* Alternative switcher */
+
+.multi {
+    border: 1px dashed #ccc;
+    padding: 10px;
+}
+
+.multi .switcher {
+    font-size: small;
+    font-style: italic;
+}
+
+img.switchicon {
+    vertical-align: middle;
+    padding-right: 10px;
+}
