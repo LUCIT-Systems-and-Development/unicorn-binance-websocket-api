@@ -42,7 +42,7 @@ setuptools.setup(
      name='unicorn-binance-websocket-api',
      version='1.8.0-dev',
      author="Oliver Zehentleitner",
-     url="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api",
+     url="https://about.me/oliver-zehentleitner/",
      scripts=['unicorn_binance_websocket_api.py'],
      description="A python API to use the Binance Websocket API's (com, com-futures, jersey, us, dex/chain+testnet) in "
                  "a easy, fast, flexible, robust and fully-featured way.",
@@ -55,7 +55,7 @@ setuptools.setup(
               'binance-websocket, binance-webstream, webstream, websocket, api, binance-jersey, binance-dex, '
               'binance-futures',
      project_urls={
-        'Howto': 'https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html',
+        'Howto': 'https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/',
         'Documentation': 'https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/',
         'Wiki': 'https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki',
         'Source': 'https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api',
