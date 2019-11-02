@@ -122,7 +122,7 @@ https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/maste
 ![demo_gif](https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif)
 
 ## Howto
-- [Howto: UNICORN Binance WebSocket API](https://www.unicorn-data.com/blog/article-details/howto-unicorn-binance-websocket-api.html)
+- [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
 - [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.unicorn-data.com/blog/article-details/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2.html)
 
 ## Documentation
