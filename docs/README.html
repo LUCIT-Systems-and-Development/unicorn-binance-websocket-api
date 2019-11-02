@@ -66,8 +66,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <p><img alt="GitHub release" src="https://img.shields.io/github/release/unicorn-data-analysis/unicorn-binance-websocket-api.svg" />
-<img alt="GitHub" src="https://img.shields.io/github/license/unicorn-data-analysis/unicorn-binance-websocket-api.svg?color=blue" />
+  <p><img alt="GitHub release" src="https://img.shields.io/github/release/oliver-zehentleitner/unicorn-binance-websocket-api.svg" />
+<img alt="GitHub" src="https://img.shields.io/github/license/oliver-zehentleitner/unicorn-binance-websocket-api.svg?color=blue" />
 <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg" />
 <img alt="code coverage 100%" src="https://img.shields.io/badge/coverage-100%25-brightgreen.svg" />
 <img alt="PyPI - Status" src="https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg" />
@@ -96,14 +96,14 @@
 <p>Thats it!</p>
 </div>
 <div class="section" id="convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">
-<h2>Convert received raw webstream data into well-formed python dictionaries with <a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn_fy">UnicornFy</a>:<a class="headerlink" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy" title="Permalink to this headline">¶</a></h2>
+<h2>Convert received raw webstream data into well-formed python dictionaries with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a>:<a class="headerlink" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unicorn_fied_stream_data</span> <span class="o">=</span> <span class="n">UnicornFy</span><span class="o">.</span><span class="n">binance_com_websocket</span><span class="p">(</span><span class="n">oldest_stream_data_from_stream_buffer</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>The python module <a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api">UNICORN Binance WebSocket API</a>
+<p>The python module <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">UNICORN Binance WebSocket API</a>
 provides an API to the Binance Websocket API`s of <a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs">Binance</a>
 , <a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams">Binance Futures</a>,
 <a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/">Binance Jersey</a>,
@@ -119,7 +119,7 @@ which needs to be used with a valid api_key and api_secret from the Binance Exch
 and you can <a class="reference external" href="https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account">get funds</a> for the testnet.</p>
 <p>The module requires python 3.5.3 or above, as it depends on pythons latest asyncio features for asynchronous/concurrent
 processing. The current dependencies are listed
-<a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/requirements.txt">here</a>.</p>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/requirements.txt">here</a>.</p>
 <p>Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so
 on, you have to use the Binance Rest API (<a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs">com</a>,
 <a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/">je</a>,
@@ -144,55 +144,55 @@ on, you have to use the Binance Rest API (<a class="reference external" href="ht
 <a class="reference external" href="https://pypi.org/project/python-daemon/">python-daemon</a>).</p></li>
 <li><p>If you can not store your data in cause of a temporary technical issue, you can kick back the data to the
 stream_buffer which stores the receives in the RAM till you are able to process the data in the normal way again.</p></li>
-<li><p>Compatible with <a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn_fy">UnicornFy</a> to convert received raw data from
+<li><p>Compatible with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> to convert received raw data from
 crypto API endpoints into well-formed python dictionaries.</p></li>
 <li><p>Helpful management features like <code class="docutils literal notranslate"><span class="pre">get_binance_api_status()</span></code>, <code class="docutils literal notranslate"><span class="pre">get_stream_info()</span></code>, <code class="docutils literal notranslate"><span class="pre">get_stream_list()</span></code>,
 <code class="docutils literal notranslate"><span class="pre">get_stream_statistic()</span></code>, <code class="docutils literal notranslate"><span class="pre">is_websocket_uri_length_valid()</span></code>, <code class="docutils literal notranslate"><span class="pre">replace_stream()</span></code>, <code class="docutils literal notranslate"><span class="pre">wait_till_stream_has_started()</span></code>,
 <code class="docutils literal notranslate"><span class="pre">get_current_receiving_speed()</span></code> and many more, explore them
-<a class="reference external" href="https://www.unicorn-data.com/unicorn-binance-websocket-api.html#binance_websocket_api_docu">here</a>.</p></li>
-<li><p><a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service">Monitoring API service</a>
-and a <a class="reference external" href="https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api.py">check_command</a>
+<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/">here</a>.</p></li>
+<li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service">Monitoring API service</a>
+and a <a class="reference external" href="https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api.py">check_command</a>
 for <a class="reference external" href="https://exchange.icinga.com/bithon/check_unicorn_monitoring_api">ICINGA</a>/Nagios
 <img alt="icinga2-demo" src="https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png" /></p></li>
 <li><p>Excessively tested on Linux, Mac and Windows</p></li>
 </ul>
 <p>If you like the project, please <img alt="star" src="https://s3.gifyu.com/images/stard237b3003af9f9a9.png" /> it on
-<a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api">GitHub</a>! If you use the
-<a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api">UNICORN Binance WebSocket API</a> in your project,
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">GitHub</a>! If you use the
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">UNICORN Binance WebSocket API</a> in your project,
 let us know on Twitter <a class="reference external" href="https://twitter.com/unicorn_data">&#64;unicorn_data</a>!</p>
 </div>
 </div>
 <div class="section" id="installation-and-upgrade">
 <h2>Installation and Upgrade<a class="headerlink" href="#installation-and-upgrade" title="Permalink to this headline">¶</a></h2>
-<p>Please note: UnicornFy is not longer part of this package, visit https://github.com/unicorn-data-analysis/unicorn_fy for
+<p>Please note: UnicornFy is not longer part of this package, visit https://github.com/oliver-zehentleitner/unicorn_fy for
 further information.</p>
 <div class="section" id="a-wheel-of-the-latest-release-with-pip-from-pypi">
 <h3>A wheel of the latest release with PIP from <a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/">PyPI</a><a class="headerlink" href="#a-wheel-of-the-latest-release-with-pip-from-pypi" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">unicorn-binance-websocket-api</span> <span class="pre">--upgrade</span></code></p>
 </div>
 <div class="section" id="from-source-of-the-latest-release-with-pip-from-github">
-<h3>From source of the latest release with PIP from <a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api">Github</a><a class="headerlink" href="#from-source-of-the-latest-release-with-pip-from-github" title="Permalink to this headline">¶</a></h3>
+<h3>From source of the latest release with PIP from <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">Github</a><a class="headerlink" href="#from-source-of-the-latest-release-with-pip-from-github" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="linux-macos">
 <h4>Linux, macOS, …<a class="headerlink" href="#linux-macos" title="Permalink to this headline">¶</a></h4>
 <p>Run in bash:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/$(curl</span> <span class="pre">-s</span> <span class="pre">https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">-oP</span> <span class="pre">'&quot;tag_name&quot;:</span> <span class="pre">&quot;\K(.*)(?=&quot;)').tar.gz</span> <span class="pre">--upgrade</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/$(curl</span> <span class="pre">-s</span> <span class="pre">https://api.github.com/repos/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">-oP</span> <span class="pre">'&quot;tag_name&quot;:</span> <span class="pre">&quot;\K(.*)(?=&quot;)').tar.gz</span> <span class="pre">--upgrade</span></code></p>
 </div>
 <div class="section" id="windows">
 <h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h4>
 <p>Use the below command with the version (such as 1.3.8) you determined
-<a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest">here</a>:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/1.3.8.tar.gz</span> <span class="pre">--upgrade</span></code></p>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest">here</a>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.3.8.tar.gz</span> <span class="pre">--upgrade</span></code></p>
 </div>
 </div>
 <div class="section" id="from-the-latest-source-dev-stage-with-pip-from-github">
-<h3>From the latest source (dev-stage) with PIP from <a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api">Github</a><a class="headerlink" href="#from-the-latest-source-dev-stage-with-pip-from-github" title="Permalink to this headline">¶</a></h3>
+<h3>From the latest source (dev-stage) with PIP from <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">Github</a><a class="headerlink" href="#from-the-latest-source-dev-stage-with-pip-from-github" title="Permalink to this headline">¶</a></h3>
 <p>This is not a release version and can not be considered to be stable!</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/tarball/master</span> <span class="pre">--upgrade</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/tarball/master</span> <span class="pre">--upgrade</span></code></p>
 </div>
 <div class="section" id="conda-environment-virtualenv-or-plain-python">
 <h3><a class="reference external" href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Conda environment</a>, <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">Virtualenv</a> or plain <a class="reference external" href="https://docs.python.org/2/install/">python</a><a class="headerlink" href="#conda-environment-virtualenv-or-plain-python" title="Permalink to this headline">¶</a></h3>
-<p>Download the <a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest">latest release</a>
-or the <a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/master.zip">current master branch</a>
+<p>Download the <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest">latest release</a>
+or the <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/master.zip">current master branch</a>
 and use:</p>
 <ul class="simple">
 <li><p>./environment.yml</p></li>
@@ -203,7 +203,7 @@ and use:</p>
 </div>
 <div class="section" id="demo">
 <h2>Demo<a class="headerlink" href="#demo" title="Permalink to this headline">¶</a></h2>
-<p>https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py</p>
+<p>https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py</p>
 <p><img alt="demo_gif" src="https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif" /></p>
 </div>
 <div class="section" id="howto">
@@ -215,27 +215,27 @@ and use:</p>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p>https://www.unicorn-data.com/unicorn-binance-websocket-api.html</p>
+<p>https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api</p>
 </div>
 <div class="section" id="source-downloads-examples">
 <h2>Source, Downloads, Examples, …<a class="headerlink" href="#source-downloads-examples" title="Permalink to this headline">¶</a></h2>
-<p>https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api</p>
+<p>https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api</p>
 </div>
 <div class="section" id="change-log">
 <h2>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h2>
-<p>https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/CHANGELOG.md</p>
+<p>https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CHANGELOG.md</p>
 </div>
 <div class="section" id="wiki">
 <h2>Wiki<a class="headerlink" href="#wiki" title="Permalink to this headline">¶</a></h2>
-<p>https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki</p>
+<p>https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki</p>
 </div>
 <div class="section" id="receive-notifications">
 <h2>Receive Notifications<a class="headerlink" href="#receive-notifications" title="Permalink to this headline">¶</a></h2>
 <p>To receive notifications on available updates you can <img alt="watch" src="https://s3.gifyu.com/images/github_watch.png" /> the
-repository on <a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api">GitHub</a>, write your
-<a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py">own script</a>
+repository on <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">GitHub</a>, write your
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py">own script</a>
 with using <code class="docutils literal notranslate"><span class="pre">binance_websocket_api_manager.is_update_availabe()</span></code> or you use the
-<a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service">monitoring API service</a>.</p>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service">monitoring API service</a>.</p>
 <p>To receive news (like inspection windows/maintenance) about the Binance API`s subscribe to their telegram groups:</p>
 <ul class="simple">
 <li><p>https://t.me/binance_api_announcements</p></li>
@@ -248,20 +248,20 @@ with using <code class="docutils literal notranslate"><span class="pre">binance_
 </div>
 <div class="section" id="how-to-report-bugs-or-suggest-improvements">
 <h2>How to report Bugs or suggest Improvements?<a class="headerlink" href="#how-to-report-bugs-or-suggest-improvements" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement">List of planned features</a> -
+<p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement">List of planned features</a> -
 click <img alt="thumbs-up" src="https://s3.gifyu.com/images/tu.png" /> if you need one of them or suggest a new feature!</p>
-<p>Before you report a bug, <a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api#installation-and-upgrade">try the latest release</a>. If the issue still exists, provide the error trace, OS
+<p>Before you report a bug, <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api#installation-and-upgrade">try the latest release</a>. If the issue still exists, provide the error trace, OS
 and python version and explain how to reproduce the error. A demo script is appreciated.</p>
 <p>If you dont find an issue related to your topic, please open a new issue:
-https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues</p>
-<p><a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/security/policy">Report a security bug!</a></p>
+https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues</p>
+<p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/security/policy">Report a security bug!</a></p>
 </div>
 <div class="section" id="contributing">
 <h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api">UNICORN Binance WebSocket API</a> is an open
+<p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">UNICORN Binance WebSocket API</a> is an open
 source project which welcomes contributions which can be anything from simple documentation fixes to new features. To
 contribute follow
-<a class="reference external" href="https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/CONTRIBUTING">this guide</a>.</p>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CONTRIBUTING">this guide</a>.</p>
 <p>We <img alt="love" src="https://s3.gifyu.com/images/heartae002231c41d8a80.png" /> open source!</p>
 </div>
 </div>

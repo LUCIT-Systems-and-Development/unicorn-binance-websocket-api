@@ -4,14 +4,14 @@
 # File: example_stream_management_extended.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
-# Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
-# Documentation: https://www.unicorn-data.com/unicorn-binance-websocket-api.html
+# Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
+# Documentation: https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
-# Author: UNICORN Data Analysis
-#         https://www.unicorn-data.com/
+# Author: Oliver Zehentleitner
+#         https://about.me/oliver-zehentleitner
 #
-# Copyright (c) 2019, UNICORN Data Analysis
+# Copyright (c) 2019, Oliver Zehentleitner
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -70,7 +70,7 @@ channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h
 
 # to establish a connection to a websocket server, the client has to call an URI. this URI must not be longer then 8004
 # signs, if you want to get an active connection to a Binance webstream.
-# https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
+# https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
 if binance_websocket_api_manager.is_websocket_uri_length_valid(channels, markets):
     print("URI with `markets` length is valid!")
 else:

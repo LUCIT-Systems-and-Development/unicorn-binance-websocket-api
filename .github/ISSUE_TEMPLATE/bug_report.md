@@ -9,7 +9,7 @@ assignees: bithon
 
 <!--
 Before opening a new issue, please ensure:
-- YOU HAVE READ THE ISSUE GUIDELINES! -> https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/Issue-Guidelines
+- YOU HAVE READ THE ISSUE GUIDELINES! -> https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Issue-Guidelines
 - You search for existing bugs/feature requests
 - Remove extraneous template details
 - Do not prefix title with type of issue (Feature Request, Bug, etc.) The appropriate labels will be added during triage.
@@ -57,7 +57,7 @@ Run `pip list > pip_list.txt` and upload the file.
 ```
 Did you upgrade to the latest release version with `pip install unicorn-binance-websocket-api --upgrade`?
 
-Please control what version you are using with this script and post the output: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/get_used_module_version.py
+Please control what version you are using with this script and post the output: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/get_used_module_version.py
 ```
 
 #### Description of your issue

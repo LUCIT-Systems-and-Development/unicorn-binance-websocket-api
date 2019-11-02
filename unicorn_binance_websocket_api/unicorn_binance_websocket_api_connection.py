@@ -4,14 +4,14 @@
 # File: unicorn_binance_websocket_api/unicorn_binance_websocket_api_connection.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
-# Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
-# Documentation: https://www.unicorn-data.com/unicorn-binance-websocket-api.html
+# Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
+# Documentation: https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
-# Author: UNICORN Data Analysis
-#         https://www.unicorn-data.com/
+# Author: Oliver Zehentleitner
+#         https://about.me/oliver-zehentleitner
 #
-# Copyright (c) 2019, UNICORN Data Analysis
+# Copyright (c) 2019, Oliver Zehentleitner
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -87,7 +87,7 @@ class BinanceWebSocketApiConnection(object):
         logging.debug("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
                       ", " + str(self.markets) + ")" + " connecting to " + str(uri))
         self._conn = connect(uri, ping_interval=20, close_timeout=10,
-                             extra_headers={'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/' +
+                             extra_headers={'User-Agent': 'oliver-zehentleitner/unicorn-binance-websocket-api/' +
                                             self.handler_binance_websocket_api_manager.version})
         try:
             try:
@@ -240,7 +240,7 @@ class BinanceWebSocketApiConnection(object):
         except asyncio.base_futures.InvalidStateError as error_msg:
             logging.critical("binance_websocket_api_connection->receive(" +
                              str(self.stream_id) + ") - asyncio.base_futures.InvalidStateError - error_msg: " +
-                             str(error_msg) + " - Extra info: https://github.com/unicorn-data-analysis/unicorn-binance-"
+                             str(error_msg) + " - Extra info: https://github.com/oliver-zehentleitner/unicorn-binance-"
                                               "websocket-api/issues/18 - open an own issue if needed!")
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:

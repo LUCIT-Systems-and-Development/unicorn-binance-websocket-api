@@ -4,14 +4,14 @@
 # File: unicorn_binance_websocket_api/unicorn_binance_websocket_api_manager.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
-# Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
-# Documentation: https://www.unicorn-data.com/unicorn-binance-websocket-api.html
+# Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
+# Documentation: https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
-# Author: UNICORN Data Analysis
-#         https://www.unicorn-data.com/
+# Author: Oliver Zehentleitner
+#         https://about.me/oliver-zehentleitner
 #
-# Copyright (c) 2019, UNICORN Data Analysis
+# Copyright (c) 2019, Oliver Zehentleitner
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -445,9 +445,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         @app.route('/')
         @app.route('/status/')
         def redirect_to_wiki():
-            logging.debug("Visit https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/UNICORN-"
+            logging.debug("Visit https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-"
                           "Monitoring-API-Service for further information!")
-            return redirect("https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/"
+            return redirect("https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/"
                             "UNICORN-Monitoring-API-Service", code=302)
 
         api = Api(app)
@@ -813,7 +813,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: dict or False
         """
         try:
-            respond = requests.get('https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/'
+            respond = requests.get('https://api.github.com/repos/oliver-zehentleitner/unicorn-binance-websocket-api/'
                                    'releases/latest')
             latest_release_info = respond.json()
             return latest_release_info
@@ -826,7 +826,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: dict or False
         """
         try:
-            respond = requests.get('https://api.github.com/repos/unicorn-data-analysis/check_unicorn_monitoring_api/'
+            respond = requests.get('https://api.github.com/repos/oliver-zehentleitner/check_unicorn_monitoring_api/'
                                    'releases/latest')
             return respond.json()
         except Exception:
@@ -937,7 +937,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get status and perfdata to monitor and collect metrics with ICINGA/Nagios
 
-        :param check_command_version: is the version of the calling check_command (https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api)
+        :param check_command_version: is the version of the calling check_command (https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api)
         :type check_command_version: str
 
         :param warn_on_update: set to `False` to disable the update warning
@@ -989,7 +989,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         timestamp, update_msg, average_receives_per_second, average_speed_per_second, total_received_mb,
         stream_buffer_items, stream_buffer_mb, reconnects, uptime
 
-        :param check_command_version: is the version of the calling check_command (https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api)
+        :param check_command_version: is the version of the calling check_command (https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api)
         :type check_command_version: str
 
         :param warn_on_update: set to `False` to disable the update warning
@@ -1368,7 +1368,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Binance DEX is using the subscribe methods, so this function must not get used with them and will always return!
         `False`
 
-        A test with https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
+        A test with https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
         indicates that the allowed max length of an URI to binance websocket server is 8004 characters.
 
         :return: bool

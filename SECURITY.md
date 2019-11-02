@@ -9,7 +9,7 @@ This document outlines security procedures and general policies for the
 
 ## Reporting a Bug
 
-The `unicorn-data-analysis` team and community take all security bugs in `unicorn-binance-websocket-api` seriously.
+The `oliver-zehentleitner` team and community take all security bugs in `unicorn-binance-websocket-api` seriously.
 Thank you for improving the security of `unicorn-binance-websocket-api`. We appreciate your 
 efforts and responsible disclosure and will make every effort to acknowledge your contributions.
 

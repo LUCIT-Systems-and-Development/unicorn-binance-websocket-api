@@ -1,5 +1,5 @@
-![GitHub release](https://img.shields.io/github/release/unicorn-data-analysis/unicorn-binance-websocket-api.svg) 
-![GitHub](https://img.shields.io/github/license/unicorn-data-analysis/unicorn-binance-websocket-api.svg?color=blue) 
+![GitHub release](https://img.shields.io/github/release/oliver-zehentleitner/unicorn-binance-websocket-api.svg) 
+![GitHub](https://img.shields.io/github/license/oliver-zehentleitner/unicorn-binance-websocket-api.svg?color=blue) 
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg) 
 ![code coverage 100%](https://img.shields.io/badge/coverage-100%25-brightgreen.svg) 
 ![PyPI - Status](https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg) 
@@ -26,14 +26,14 @@ while True:
 
 Thats it! 
 
-### Convert received raw webstream data into well-formed python dictionaries with [UnicornFy](https://github.com/unicorn-data-analysis/unicorn_fy):
+### Convert received raw webstream data into well-formed python dictionaries with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy):
 ```
 unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_stream_data_from_stream_buffer)
 ```
 
 
 ## Description
-The python module [UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) 
+The python module [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) 
 provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs) 
 , [Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams), 
 [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
@@ -50,7 +50,7 @@ and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding
 
 The module requires python 3.5.3 or above, as it depends on pythons latest asyncio features for asynchronous/concurrent 
 processing. The current dependencies are listed 
-[here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/requirements.txt).
+[here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
 on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), 
@@ -73,53 +73,53 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 [python-daemon](https://pypi.org/project/python-daemon/)).
 - If you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
 stream_buffer which stores the receives in the RAM till you are able to process the data in the normal way again.
-- Compatible with [UnicornFy](https://github.com/unicorn-data-analysis/unicorn_fy) to convert received raw data from
+- Compatible with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy) to convert received raw data from
 crypto API endpoints into well-formed python dictionaries. 
 - Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
 `get_stream_statistic()`, `is_websocket_uri_length_valid()`, `replace_stream()`, `wait_till_stream_has_started()`, 
 `get_current_receiving_speed()` and many more, explore them 
-[here](https://www.unicorn-data.com/unicorn-binance-websocket-api.html#binance_websocket_api_docu).
-- [Monitoring API service](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
-and a [check_command](https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api.py) 
+[here](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/).
+- [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
+and a [check_command](https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api.py) 
 for [ICINGA](https://exchange.icinga.com/bithon/check_unicorn_monitoring_api)/Nagios 
 ![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
 - Excessively tested on Linux, Mac and Windows
 
 If you like the project, please ![star](https://s3.gifyu.com/images/stard237b3003af9f9a9.png) it on 
-[GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)! If you use the
-[UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) in your project,
+[GitHub](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)! If you use the
+[UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) in your project,
  let us know on Twitter [@unicorn_data](https://twitter.com/unicorn_data)!
 
 ## Installation and Upgrade
-Please note: UnicornFy is not longer part of this package, visit https://github.com/unicorn-data-analysis/unicorn_fy for
+Please note: UnicornFy is not longer part of this package, visit https://github.com/oliver-zehentleitner/unicorn_fy for
 further information.
 ### A wheel of the latest release with PIP from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
 `pip install unicorn-binance-websocket-api --upgrade`
-### From source of the latest release with PIP from [Github](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)
+### From source of the latest release with PIP from [Github](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
 #### Linux, macOS, ...
 Run in bash:
 
-`pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
+`pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
 #### Windows
 Use the below command with the version (such as 1.3.8) you determined 
-[here](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest):
+[here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest):
 
-`pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/1.3.8.tar.gz --upgrade`
-### From the latest source (dev-stage) with PIP from [Github](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api)
+`pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.3.8.tar.gz --upgrade`
+### From the latest source (dev-stage) with PIP from [Github](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
 This is not a release version and can not be considered to be stable!
 
-`pip install https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/tarball/master --upgrade`
+`pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/tarball/master --upgrade`
 
 ### [Conda environment](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html), [Virtualenv](https://virtualenv.pypa.io/en/latest/) or plain [python](https://docs.python.org/2/install/)
-Download the [latest release](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/releases/latest) 
-or the [current master branch](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/archive/master.zip)
+Download the [latest release](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest) 
+or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/master.zip)
  and use:
 - ./environment.yml
 - ./requirements.txt
 - ./setup.py
 
 ## Demo
-https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py
+https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py
 
 ![demo_gif](https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif)
 
@@ -128,23 +128,23 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/mast
 - [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.unicorn-data.com/blog/article-details/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2.html)
 
 ## Documentation
-https://www.unicorn-data.com/unicorn-binance-websocket-api.html
+https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api
 
 ## Source, Downloads, Examples, ...
-https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
+https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
 
 ## Change Log
-https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/CHANGELOG.md
+https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CHANGELOG.md
 
 ## Wiki
-https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki
+https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki
 
 ## Receive Notifications
 To receive notifications on available updates you can ![watch](https://s3.gifyu.com/images/github_watch.png) the 
-repository on [GitHub](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api), write your 
-[own script](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py) 
+repository on [GitHub](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api), write your 
+[own script](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py) 
 with using `binance_websocket_api_manager.is_update_availabe()` or you use the 
-[monitoring API service](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service).
+[monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service).
 
 To receive news (like inspection windows/maintenance) about the Binance API`s subscribe to their telegram groups: 
 - https://t.me/binance_api_announcements
@@ -155,21 +155,21 @@ To receive news (like inspection windows/maintenance) about the Binance API`s su
 - https://t.me/BinanceDEXchange
 
 ## How to report Bugs or suggest Improvements?
-[List of planned features](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 
+[List of planned features](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 
 click ![thumbs-up](https://s3.gifyu.com/images/tu.png) if you need one of them or suggest a new feature!
 
-Before you report a bug, [try the latest release](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS 
+Before you report a bug, [try the latest release](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS 
 and python version and explain how to reproduce the error. A demo script is appreciated.
 
 If you dont find an issue related to your topic, please open a new issue:
-https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues
+https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues
 
-[Report a security bug!](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/security/policy)
+[Report a security bug!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/security/policy)
 
 ## Contributing
-[UNICORN Binance WebSocket API](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api) is an open 
+[UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) is an open 
 source project which welcomes contributions which can be anything from simple documentation fixes to new features. To 
 contribute follow 
-[this guide](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/CONTRIBUTING.md).
+[this guide](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CONTRIBUTING.md).
  
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!

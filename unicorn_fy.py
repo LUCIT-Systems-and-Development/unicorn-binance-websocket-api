@@ -4,14 +4,14 @@
 # File: unicorn_fy.py
 #
 # Part of ‘UnicornFy’
-# Project website: https://github.com/unicorn-data-analysis/unicorn_fy
+# Project website: https://github.com/oliver-zehentleitner/unicorn_fy
 # Documentation: https://www.unicorn-data.com/unicorn_fy.html
 # PyPI: https://pypi.org/project/unicorn-fy/
 #
-# Author: UNICORN Data Analysis
-#         https://www.unicorn-data.com/
+# Author: Oliver Zehentleitner
+#         https://about.me/oliver-zehentleitner
 #
-# Copyright (c) 2019, UNICORN Data Analysis
+# Copyright (c) 2019, Oliver Zehentleitner
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -389,7 +389,7 @@ class UnicornFy(object):
                                  'last_quote_asset_transacted_quantity': stream_data['data']['Y']}
         if unicorn_fied_data is False:
             logging.error("detected unknown data stream format in module `unicorn_fy`: please report to "
-                          "https://www.unicorn-data.com " + str(stream_data))
+                          "https://github.com/oliver-zehentleitner/unicorn_fy/issues " + str(stream_data))
         unicorn_fied_version = [exchange, UnicornFy.VERSION]
         unicorn_fied_data['unicorn_fied'] = unicorn_fied_version
         logging.debug("UnicornFy->binance(" + str(unicorn_fied_data) + ")")
@@ -403,7 +403,7 @@ class UnicornFy(object):
         :return: dict or False
         """
         try:
-            respond = requests.get('https://api.github.com/repos/unicorn-data-analysis/unicorn_fy/releases/latest')
+            respond = requests.get('https://api.github.com/repos/oliver-zehentleitner/unicorn_fy/releases/latest')
             return respond.json()
         except Exception:
             return False

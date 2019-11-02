@@ -4,14 +4,14 @@
 # File: unicorn_binance_websocket_api/unicorn_binance_websocket_api_restclient.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
-# Project website: https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api
-# Documentation: https://www.unicorn-data.com/unicorn-binance-websocket-api.html
+# Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
+# Documentation: https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
-# Author: UNICORN Data Analysis
-#         https://www.unicorn-data.com/
+# Author: Oliver Zehentleitner
+#         https://about.me/oliver-zehentleitner
 #
-# Copyright (c) 2019, UNICORN Data Analysis
+# Copyright (c) 2019, Oliver Zehentleitner
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -67,7 +67,7 @@ class BinanceWebSocketApiRestclient(object):
 
     def _request(self, method, path, query=False, data=False):
         requests_headers = {'Accept': 'application/json',
-                            'User-Agent': 'unicorn-data-analysis/unicorn-binance-websocket-api/' +
+                            'User-Agent': 'oliver-zehentleitner/unicorn-binance-websocket-api/' +
                                           self.unicorn_binance_websocket_api_version,
                             'X-MBX-APIKEY': str(self.api_key)}
         if query is not False:

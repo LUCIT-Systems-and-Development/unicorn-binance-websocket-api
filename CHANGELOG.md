@@ -9,16 +9,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.8.0
 ## Added 
-- binance.com Futures websocket support and [example_binance_futures.py](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_binance_futures.py) and [example_bookticker.py](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_bookticker.py) ([issue#32](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/32))
+- binance.com Futures websocket support and [example_binance_futures.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_futures.py) and [example_bookticker.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_bookticker.py) ([issue#32](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/32))
 
 ## 1.7.0
 ## Added 
-- binance.us websocket support and [example_binance_us.py](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/example_binance_us.py) ([issue#22](https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/22))
+- binance.us websocket support and [example_binance_us.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_us.py) ([issue#22](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/22))
 
 ## 1.6.6
 ### Fixed
 - Trailing / is no longer accepted by the endpoints: 
-https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/31
+https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/31
 
 ## 1.6.5
 ### Fixed
@@ -53,8 +53,8 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/31
 - get_monitoring_status_icinga()
 - _start_monitoring_api()
 ### Removed!
-- https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/blob/master/tools/icinga/ 
-(to https://github.com/unicorn-data-analysis/check_unicorn_monitoring_api)
+- https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/icinga/ 
+(to https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api)
 
 ## 1.5.0
 ### Added 
@@ -82,7 +82,7 @@ behaviour)**
 - logging on failure in `create_stream()`
 - `add_string` in `print_summary()` and `print_stream_info()`
 - `warn_on_update` in `get_monitoring_status_icinga()`, `get_monitoring_status_plain()` and `start_monitoring_api()`
-- support for binance jersey https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/21
+- support for binance jersey https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/21
 - show the used exchange in `print_summary()` and `print_stream_info()`
 ### Fixed
 - removed space from `total_received_length` in `get_monitoring_status_icinga()` to avoid 'no data' error in ICINGA
@@ -90,7 +90,7 @@ behaviour)**
 ## 1.3.10
 ### Added
 - exception for `asyncio.base_futures.InvalidStateError` by DaWe35 
-https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/18
+https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/18
 ### Changed
 - create_stream() returns False if websocket URL is to long
 ### Fixed
@@ -103,10 +103,10 @@ https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/issues/18
 
 ## 1.3.8
 ### Added
-- `get_stream_buffer_length()` by DaWe35 https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/pull/12
+- `get_stream_buffer_length()` by DaWe35 https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/12
 ### Fixed
 - the `stream_buffer` FIFO stack was a LIFO stack (Thanks to DaWe35 for recognizing and fixing this issue 
-https://github.com/unicorn-data-analysis/unicorn-binance-websocket-api/pull/12)
+https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/12)
 - `get_stream_buffer_byte_size` returns now the real size of the stream_buffer
 
 ## 1.3.7
@@ -165,7 +165,7 @@ available. but i recognized an API ban from github in cause of too many requests
 ### Fixed
 - Bug in class UnicornFy: kline_close_time had the value kline_start_time
 ### Changed
-- Moved UnicornFy from UNICORN Binance WebSocket API to its own [repository](https://github.com/unicorn-data-analysis/unicorn_fy) 
+- Moved UnicornFy from UNICORN Binance WebSocket API to its own [repository](https://github.com/oliver-zehentleitner/unicorn_fy) 
 - connection handling (improved)
 
 ## 1.2.6
