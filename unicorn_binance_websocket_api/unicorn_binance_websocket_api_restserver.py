@@ -37,11 +37,31 @@ from flask_restful import Resource
 
 
 class BinanceWebSocketApiRestServer(Resource):
+    """
+    Provide a REST API server
+
+    :param handler_binance_websocket_api_manager: Provide the handler of the binance_websocket_api_manager
+    :type handler_binance_websocket_api_manager: function
+    :param warn_on_update: set to 'False' to avoid a warning on available updates
+    :type warn_on_update: bool
+    """
     def __init__(self, handler_binance_websocket_api_manager, warn_on_update=True):
         self.handler_binance_websocket_api_manager = handler_binance_websocket_api_manager
         self.warn_on_update = warn_on_update
 
     def get(self, statusformat, checkcommandversion=False):
+        """
+        Get the status of the 'UNICORN Binance WebSocket API Manager'
+
+        :param statusformat: Choose the format for the export (e.g. 'icinga'
+        :type statusformat: str
+
+        :param checkcommandversion: Control if there is a new version of the check_command available!
+        :type checkcommandversion: bool
+
+        :return: status message of 'UNICORN Binance WebSocket API Manager'
+        :rtype: list (status string, http status code)
+        """
         if statusformat == "icinga":
             return self.handler_binance_websocket_api_manager.get_monitoring_status_icinga(check_command_version=checkcommandversion,
                                                                                            warn_on_update=self.warn_on_update), \

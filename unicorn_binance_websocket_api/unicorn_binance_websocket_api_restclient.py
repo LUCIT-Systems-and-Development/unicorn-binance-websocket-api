@@ -62,10 +62,37 @@ class BinanceWebSocketApiRestclient(object):
         self.binance_api_status = binance_api_status
 
     def _get_signature(self, data):
+        """
+        Get the signature of 'data'
+
+        :param data: the data you want to sign
+        :type data: str
+
+        :return: signature
+        :rtype: str
+        """
         hmac_signature = hmac.new(self.api_secret.encode('utf-8'), data.encode('utf-8'), hashlib.sha256)
         return hmac_signature.hexdigest()
 
     def _request(self, method, path, query=False, data=False):
+        """
+        Do the request
+
+        :param method: choose the method to use (post, put or delete)
+        :type method: str
+
+        :param path: choose the path to use
+        :type path: str
+
+        :param query: choose the query to use
+        :type query: str
+
+        :param data: the payload for the post method
+        :type data: str
+
+        :return: the response
+        :rtype: str or False
+        """
         requests_headers = {'Accept': 'application/json',
                             'User-Agent': 'oliver-zehentleitner/unicorn-binance-websocket-api/' +
                                           self.unicorn_binance_websocket_api_version,
@@ -110,6 +137,15 @@ class BinanceWebSocketApiRestclient(object):
         return respond
 
     def delete_listen_key(self, listen_key):
+        """
+        Delete a specific listen key
+
+        :param listen_key: the listenkey you want to delete
+        :type listen_key: str
+
+        :return: the response
+        :rtype: str or False
+        """
         logging.debug("BinanceWebSocketApiRestclient->delete_listen_key(" + str(listen_key) + ")")
         method = "delete"
         path = "/api/v1/userDataStream"
@@ -121,6 +157,12 @@ class BinanceWebSocketApiRestclient(object):
             return False
 
     def get_listen_key(self):
+        """
+        Request a valid listen_key from binance
+
+        :return: listen_key
+        :rtype: str or False
+        """
         logging.debug("BinanceWebSocketApiRestclient->get_listen_key()")
         method = "post"
         path = "/api/v1/userDataStream"
@@ -134,6 +176,15 @@ class BinanceWebSocketApiRestclient(object):
             return False
 
     def keepalive_listen_key(self, listen_key):
+        """
+        Delete a specific listen key
+
+        :param listen_key: the listenkey you want to keepalive
+        :type listen_key: str
+
+        :return: the response
+        :rtype: str or False
+        """
         logging.debug("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(listen_key) + ")")
         method = "put"
         path = "/api/v1/userDataStream"
