@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # pip install sphinx
 # mkdir sphinx
 # cd sphinx
@@ -13,5 +15,8 @@
 # pip install python_docs_theme
 ## edit source/conf.py:
 # html_theme = 'python_docs_theme'
+
+# pip install recommonmark
+# add 'recommonmark' to extentions in conf.py
 
 make html
