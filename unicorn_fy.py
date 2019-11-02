@@ -5,8 +5,8 @@
 #
 # Part of ‘UnicornFy’
 # Project website: https://github.com/oliver-zehentleitner/unicorn_fy
-# Documentation: https://www.unicorn-data.com/unicorn_fy.html
-# PyPI: https://pypi.org/project/unicorn-fy/
+# Documentation: https://oliver-zehentleitner.github.io/unicorn_fy
+# PyPI: https://pypi.org/project/unicorn-fy
 #
 # Author: Oliver Zehentleitner
 #         https://about.me/oliver-zehentleitner
