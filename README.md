@@ -86,9 +86,7 @@ for [ICINGA](https://exchange.icinga.com/bithon/check_unicorn_monitoring_api)/Na
 - Excessively tested on Linux, Mac and Windows
 
 If you like the project, please ![star](https://s3.gifyu.com/images/stard237b3003af9f9a9.png) it on 
-[GitHub](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)! If you use the
-[UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) in your project,
- let us know on Twitter [@unicorn_data](https://twitter.com/unicorn_data)!
+[GitHub](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)!
 
 ## Installation and Upgrade
 Please note: UnicornFy is not longer part of this package, visit https://github.com/oliver-zehentleitner/unicorn_fy for
