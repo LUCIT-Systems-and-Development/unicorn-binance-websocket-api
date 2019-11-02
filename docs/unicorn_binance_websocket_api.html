@@ -874,17 +874,50 @@ user_address with create_stream() in the market parameter.</p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.delete_listen_key">
 <code class="sig-name descname">delete_listen_key</code><span class="sig-paren">(</span><em class="sig-param">listen_key</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.delete_listen_key" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Delete a specific listen key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>listen_key</strong> (<em>str</em>) – the listenkey you want to delete</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the response</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str or False</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.get_listen_key">
 <code class="sig-name descname">get_listen_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.get_listen_key" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Request a valid listen_key from binance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>listen_key</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str or False</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.keepalive_listen_key">
 <code class="sig-name descname">keepalive_listen_key</code><span class="sig-paren">(</span><em class="sig-param">listen_key</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.keepalive_listen_key" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Delete a specific listen key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>listen_key</strong> (<em>str</em>) – the listenkey you want to keepalive</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the response</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str or False</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -895,10 +928,34 @@ user_address with create_stream() in the market parameter.</p>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_restserver.BinanceWebSocketApiRestServer">
 <em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_restserver.</code><code class="sig-name descname">BinanceWebSocketApiRestServer</code><span class="sig-paren">(</span><em class="sig-param">handler_binance_websocket_api_manager</em>, <em class="sig-param">warn_on_update=True</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restserver.BinanceWebSocketApiRestServer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
+<p>Provide a REST API server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handler_binance_websocket_api_manager</strong> (<em>function</em>) – Provide the handler of the binance_websocket_api_manager</p></li>
+<li><p><strong>warn_on_update</strong> (<em>bool</em>) – set to ‘False’ to avoid a warning on available updates</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_restserver.BinanceWebSocketApiRestServer.get">
 <code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">statusformat</em>, <em class="sig-param">checkcommandversion=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restserver.BinanceWebSocketApiRestServer.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get the status of the ‘UNICORN Binance WebSocket API Manager’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>statusformat</strong> (<em>str</em>) – Choose the format for the export (e.g. ‘icinga’</p></li>
+<li><p><strong>checkcommandversion</strong> (<em>bool</em>) – Control if there is a new version of the check_command available!</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>status message of ‘UNICORN Binance WebSocket API Manager’</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list (status string, http status code)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_restserver.BinanceWebSocketApiRestServer.methods">
