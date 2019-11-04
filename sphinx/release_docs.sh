@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-cp build/html/* ../docs -R
+
+rm ../docs
+mv build/html ../docs
