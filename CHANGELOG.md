@@ -5,14 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.8.0.dev (development stage/unreleased)
+## 1.8.1.dev (development stage/unreleased)
+
+## 1.8.1
+### Changed
+- moved docs to github pages
 
 ## 1.8.0
-## Added 
+### Added 
 - binance.com Futures websocket support and [example_binance_futures.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_futures.py) and [example_bookticker.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_bookticker.py) ([issue#32](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/32))
 
 ## 1.7.0
-## Added 
+### Added 
 - binance.us websocket support and [example_binance_us.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_us.py) ([issue#22](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/22))
 
 ## 1.6.6
