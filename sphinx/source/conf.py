@@ -82,7 +82,10 @@ pygments_style = None
 #html_theme = 'bootstrap-astropy'
 #html_theme = 'nature'
 #html_theme = 'classic'
-html_theme = 'python_docs_theme'
+
+html_theme = 'python_docs_theme_technopathy'
+html_context = {'github_repo_url': 'https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api',
+                'github_repo_name': project}
 
 
 # Theme options are theme-specific and customize the look and feel of a theme

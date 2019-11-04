@@ -22,6 +22,14 @@ div.related:first-child {
     border-bottom: 1px solid #ccc;
 }
 
+.flex.container {
+	display: flex;
+}
+
+.fill-width {
+	flex: 1;
+}
+
 .inline-search {
     display: inline;
 }
@@ -133,10 +141,6 @@ div.body tt.xref, div.body a tt, div.body code.xref, div.body a code {
     font-weight: normal;
 }
 
-.deprecated {
-    border-radius: 3px;
-}
-
 table.docutils {
     border: 1px solid #ddd;
     min-width: 20%;
@@ -192,3 +196,6 @@ div.footer a:hover {
     background: none !important;
 }
 
+dl > dt span ~ em {
+    font-family: monospace, sans-serif;
+}
