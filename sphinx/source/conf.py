@@ -84,8 +84,9 @@ pygments_style = None
 #html_theme = 'classic'
 
 html_theme = 'python_docs_theme_technopathy'
-html_context = {'github_repo_url': 'https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api',
-                'github_repo_name': project}
+html_context = {'github_user_name': 'oliver-zehentleitner',
+                'github_repo_name': 'unicorn-binance-websocket-api',
+                'project_name': project}
 
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -108,7 +109,6 @@ html_static_path = ['_static']
 # 'searchbox.docs']``.
 #
 # html_sidebars = {}
-
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
