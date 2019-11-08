@@ -4,7 +4,7 @@ body {
     background-color: white;
     margin-left: 1em;
     margin-right: 1em;
-    font-size: 17px;
+    font-size: 1.125em;
 }
 
 div.related {
@@ -45,7 +45,7 @@ div.sphinxsidebar {
     background-color: #eeeeee;
     border-radius: 5px;
     line-height: 130%;
-    font-size: 14px;
+    font-size: .875em;
 }
 
 div.sphinxsidebar h3, div.sphinxsidebar h4 {
@@ -68,7 +68,7 @@ form.inline-search input,
 div.sphinxsidebar input {
     font-family: 'Lucida Grande',Arial,sans-serif;
     border: 1px solid #999999;
-    font-size: 14px;
+    font-size: .875em;
     border-radius: 3px;
 }
 
@@ -78,10 +78,12 @@ div.sphinxsidebar input[type=text] {
 
 div.body {
     padding: 0 0 0 1.2em;
+    max-width: 100%;
 }
 
 div.body p {
     line-height: 140%;
+    text-align: left;
 }
 
 div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6 {
@@ -127,7 +129,7 @@ div.body a:hover {
 
 tt, code, pre {
     font-family: monospace, sans-serif;
-    font-size: 14px;
+    font-size: .875em;
 }
 
 div.body tt, div.body code {
@@ -135,7 +137,7 @@ div.body tt, div.body code {
 }
 
 div.body tt.descname, div.body code.descname {
-    font-size: 14px;
+    font-size: .875em;
 }
 
 div.body tt.xref, div.body a tt, div.body code.xref, div.body a code {
