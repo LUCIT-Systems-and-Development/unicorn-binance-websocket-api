@@ -5,6 +5,7 @@ body {
     margin-left: 1em;
     margin-right: 1em;
     font-size: 1.125em;
+    line-height: 1.4;
 }
 
 div.related {
@@ -44,7 +45,7 @@ form.inline-search input[type="submit"] {
 div.sphinxsidebar {
     background-color: #eeeeee;
     border-radius: 5px;
-    line-height: 130%;
+    line-height: 1.5;
     font-size: .875em;
 }
 
@@ -69,6 +70,7 @@ div.sphinxsidebar input {
     font-family: 'Lucida Grande',Arial,sans-serif;
     border: 1px solid #999999;
     font-size: .875em;
+    line-height: 1.5;
     border-radius: 3px;
 }
 
@@ -130,6 +132,7 @@ div.body a:hover {
 tt, code, pre {
     font-family: monospace, sans-serif;
     font-size: .875em;
+    line-height: 1.5;
 }
 
 div.body tt, div.body code {
@@ -138,6 +141,7 @@ div.body tt, div.body code {
 
 div.body tt.descname, div.body code.descname {
     font-size: .875em;
+    line-height: 1.5;
 }
 
 div.body tt.xref, div.body a tt, div.body code.xref, div.body a code {
