@@ -4,6 +4,7 @@ body {
     background-color: white;
     margin-left: 1em;
     margin-right: 1em;
+    font-size: 17px;
 }
 
 div.related {
@@ -44,7 +45,7 @@ div.sphinxsidebar {
     background-color: #eeeeee;
     border-radius: 5px;
     line-height: 130%;
-    font-size: smaller;
+    font-size: 14px;
 }
 
 div.sphinxsidebar h3, div.sphinxsidebar h4 {
@@ -67,7 +68,7 @@ form.inline-search input,
 div.sphinxsidebar input {
     font-family: 'Lucida Grande',Arial,sans-serif;
     border: 1px solid #999999;
-    font-size: smaller;
+    font-size: 14px;
     border-radius: 3px;
 }
 
@@ -126,7 +127,7 @@ div.body a:hover {
 
 tt, code, pre {
     font-family: monospace, sans-serif;
-    font-size: 96.5%;
+    font-size: 14px;
 }
 
 div.body tt, div.body code {
@@ -134,7 +135,7 @@ div.body tt, div.body code {
 }
 
 div.body tt.descname, div.body code.descname {
-    font-size: 120%;
+    font-size: 14px;
 }
 
 div.body tt.xref, div.body a tt, div.body code.xref, div.body a code {
