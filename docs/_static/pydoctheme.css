@@ -261,7 +261,7 @@ dl > dt span ~ em {
 
 
 
-@media screen and (max-width: 875px) {
+@media screen and (max-width: 1024px) {
 
     body {
         margin: 0;
