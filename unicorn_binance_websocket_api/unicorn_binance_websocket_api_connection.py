@@ -249,4 +249,7 @@ class BinanceWebSocketApiConnection(object):
 
     async def send(self, data):
         # method to send data to the endpoint
-        await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].send(data)
+        try:
+            await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].send(data)
+        except KeyError:
+            pass

@@ -75,7 +75,7 @@ binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
 
 # userAddress streams
 binance_dex_user_address = ""
-if binance_websocket_api_manager.get_exchange() == "binance.org":
+if binance_websocket_api_manager.get_exchange() == "binance.org-test":
     binance_dex_user_address = ""
 elif binance_websocket_api_manager.get_exchange() == "binance.org-testnet":
     binance_dex_user_address = "tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7"
@@ -84,6 +84,7 @@ binance_websocket_api_manager.create_stream('accounts', binance_dex_user_address
 binance_websocket_api_manager.create_stream('transfers', binance_dex_user_address)
 user_address_multi_stream_id = binance_websocket_api_manager.create_stream(['orders', 'transfers'],
                                                                            binance_dex_user_address)
+
 # subscribe is going to be rewritten, dont use for now!
 #if binance_websocket_api_manager.wait_till_stream_has_started(user_address_multi_stream_id):
 #    binance_websocket_api_manager.subscribe_to_stream(user_address_multi_stream_id,
@@ -106,9 +107,9 @@ if binance_websocket_api_manager.get_exchange() == "binance.org":
     channels = ['trades', 'kline_1m', 'kline_5m', 'kline_15m', 'marketDepth', 'ticker', 'miniTicker', 'marketDiff']
     markets = ['RAVEN-F66_BNB', 'ANKR-E97_BNB', 'AWC-986_BNB', 'COVA-218_BNB', 'BCPT-95A_BNB', 'WISH-2D5_BNB',
                'MITH-C76_BNB', 'BNB_BTCB-1DE', 'BNB_USDSB-1AC', 'BTCB-1DE_USDSB-1AC']
-    multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+    #multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 
 while True:
     binance_websocket_api_manager.print_summary()
-    binance_websocket_api_manager.print_stream_info(user_address_multi_stream_id)
+    #binance_websocket_api_manager.print_stream_info(user_address_multi_stream_id)
     time.sleep(1)
