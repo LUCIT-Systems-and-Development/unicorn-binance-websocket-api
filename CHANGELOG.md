@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.8.1.dev (development stage/unreleased)
+## 1.8.2.dev (development stage/unreleased)
+
+## 1.8.2
+### Fixed
+- Errors when creating private DEX streams: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/34
 
 ## 1.8.1
 ### Changed
