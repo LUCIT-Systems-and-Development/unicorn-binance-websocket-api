@@ -823,6 +823,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def get_latest_release_info_check_command(self):
         """
         Get infos about the latest available `check_unicorn_monitoring_api` release
+        
         :return: dict or False
         """
         try:
@@ -853,6 +854,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def get_latest_version_check_command(self):
         """
         Get the version of the latest available `check_unicorn_monitoring_api` release (cache time 1 hour)
+        
         :return: str or False
         """
         # Do a fresh request if status is None or last timestamp is older 1 hour
@@ -927,7 +929,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_keep_max_received_last_second_entries(self):
         """
-        Get the number of received_last_second entries are stored till they get deleted
+        Get the number of how much received_last_second entries are stored till they get deleted
 
         :return: int
         """
@@ -1525,6 +1527,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def print_summary(self, add_string=""):
         """
         Print an overview of all streams
+        
         :param add_string: text to add to the output
         :type add_string: str
         """
