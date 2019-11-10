@@ -53,7 +53,7 @@ class BinanceWebSocketApiRestServer(Resource):
         """
         Get the status of the 'UNICORN Binance WebSocket API Manager'
 
-        :param statusformat: Choose the format for the export (e.g. 'icinga'
+        :param statusformat: Choose the format for the export (e.g. 'icinga')
         :type statusformat: str
 
         :param checkcommandversion: Control if there is a new version of the check_command available!
