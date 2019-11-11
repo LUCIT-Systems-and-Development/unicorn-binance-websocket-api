@@ -7,7 +7,7 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/unicorn-binance-websocket-api.svg?label=PyPI%20downloads&color=orange)
 
 # UNICORN Binance WebSocket API
-A python API to use the Binance Websocket API's (com, com-futures, jersey, us, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.
+A python API to use the Binance Websocket API's (com, com-margin, com-futures, jersey, us, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.
 
 ### Create a multiplex websocket connection to Binance with just 3 lines of code:
 ```
@@ -35,6 +35,7 @@ unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_stream_data_fr
 ## Description
 The python module [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) 
 provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs) 
+, [Binance Margin](https://binance-docs.github.io/apidocs/spot/en/#user-data-streams)
 , [Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams), 
 [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
@@ -62,6 +63,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 - Fully managed websockets and 100% auto-reconnect!
 - Supported exchanges: 
     * [Binance](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com")`
+    * [Binance Margin](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com-margin")`
     * [Binance Futures](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com-futures")`
     * [Binance Jersey](https://www.binance.je) `BinanceWebSocketApiManager(exchange="binance.je")`
     * [Binance US](https://www.binance.us) `BinanceWebSocketApiManager(exchange="binance.us")`

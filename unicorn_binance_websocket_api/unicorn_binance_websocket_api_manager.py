@@ -55,7 +55,7 @@ import uuid
 
 class BinanceWebSocketApiManager(threading.Thread):
     """
-    A python API to use the Binance Websocket API`s (com, com-futures, jersey, us, dex/chain+testnet) in a easy, fast,
+    A python API to use the Binance Websocket API`s (com, com-margin, com-futures, jersey, us, dex/chain+testnet) in a easy, fast,
     flexible, robust and fully-featured way.
 
     Binance.com websocket API documentation:
@@ -86,7 +86,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
-        self.version = "1.8.2"
+        self.version = "1.8.2.dev"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
@@ -97,6 +97,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.exchange == "binance.com":
             # Binance: www.binance.com
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
+        elif self.exchange == "binance.com-margin":
+            # Binance Margin: www.binance.com
+            self.websocket_base_uri = "wss://stream.binance.com:9443/"
         elif self.exchange == "binance.com-futures":
             # Binance Futures: www.binance.com
             self.websocket_base_uri = "wss://fstream.binance.com/"
@@ -104,7 +107,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             # Binance Jersey: www.binance.je
             self.websocket_base_uri = "wss://stream.binance.je:9443/"
         elif self.exchange == "binance.us":
-            # Binance Jersey: www.binance.us
+            # Binance US: www.binance.us
             self.websocket_base_uri = "wss://stream.binance.us:9443/"
         elif self.exchange == "binance.org":
             # Binance Chain: www.binance.org

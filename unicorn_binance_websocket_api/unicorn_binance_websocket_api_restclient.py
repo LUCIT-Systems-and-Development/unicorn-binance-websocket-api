@@ -52,12 +52,19 @@ class BinanceWebSocketApiRestclient(object):
         self.unicorn_binance_websocket_api_version = unicorn_binance_websocket_api_version
         if self.exchange == "binance.com":
             self.restful_base_uri = "https://api.binance.com/"
+            self.path_userdata = "/api/v3/userDataStream"
+        elif self.exchange == "binance.com-margin":
+            self.restful_base_uri = "https://api.binance.com/"
+            self.path_userdata = "/sapi/v1/userDataStream"
         elif self.exchange == "binance.com-futures":
             self.restful_base_uri = "https://fapi.binance.com/"
+            self.path_userdata = "/fapi/v1/listenKey"
         elif self.exchange == "binance.je":
             self.restful_base_uri = "https://api.binance.je/"
+            self.path_userdata = "/api/v1/userDataStream"
         elif self.exchange == "binance.us":
             self.restful_base_uri = "https://api.binance.us/"
+            self.path_userdata = "/api/v1/userDataStream"
         self.listen_key = False
         self.binance_api_status = binance_api_status
 
@@ -148,9 +155,8 @@ class BinanceWebSocketApiRestclient(object):
         """
         logging.debug("BinanceWebSocketApiRestclient->delete_listen_key(" + str(listen_key) + ")")
         method = "delete"
-        path = "/api/v1/userDataStream"
         try:
-            return self._request(method, path, False, {'listenKey': str(listen_key)})
+            return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
         except KeyError:
             return False
         except TypeError:
@@ -165,8 +171,7 @@ class BinanceWebSocketApiRestclient(object):
         """
         logging.debug("BinanceWebSocketApiRestclient->get_listen_key()")
         method = "post"
-        path = "/api/v1/userDataStream"
-        response = self._request(method, path)
+        response = self._request(method, self.path_userdata)
         try:
             self.listen_key = response['listenKey']
             return response
@@ -187,9 +192,8 @@ class BinanceWebSocketApiRestclient(object):
         """
         logging.debug("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(listen_key) + ")")
         method = "put"
-        path = "/api/v1/userDataStream"
         try:
-            return self._request(method, path, False, {'listenKey': str(listen_key)})
+            return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
         except KeyError:
             return False
         except TypeError:
