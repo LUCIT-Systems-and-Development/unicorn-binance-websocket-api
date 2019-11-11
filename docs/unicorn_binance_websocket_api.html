@@ -18,6 +18,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
     <link rel="shortcut icon" type="image/png" href="_static/py.png" />
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
     
     <script type="text/javascript" src="_static/copybutton.js"></script>
     
@@ -267,7 +268,7 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_keep_max_received_last_second_entries">
 <code class="sig-name descname">get_keep_max_received_last_second_entries</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_keep_max_received_last_second_entries" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the number of received_last_second entries are stored till they get deleted</p>
+<dd><p>Get the number of how much received_last_second entries are stored till they get deleted</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>int</p>
@@ -289,8 +290,12 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_latest_release_info_check_command">
 <code class="sig-name descname">get_latest_release_info_check_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_latest_release_info_check_command" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get infos about the latest available <cite>check_unicorn_monitoring_api</cite> release
-:return: dict or False</p>
+<dd><p>Get infos about the latest available <cite>check_unicorn_monitoring_api</cite> release</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict or False</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -307,8 +312,12 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_latest_version_check_command">
 <code class="sig-name descname">get_latest_version_check_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_latest_version_check_command" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the version of the latest available <cite>check_unicorn_monitoring_api</cite> release (cache time 1 hour)
-:return: str or False</p>
+<dd><p>Get the version of the latest available <cite>check_unicorn_monitoring_api</cite> release (cache time 1 hour)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str or False</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -649,9 +658,12 @@ indicates that the allowed max length of an URI to binance websocket server is 8
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.print_summary">
 <code class="sig-name descname">print_summary</code><span class="sig-paren">(</span><em class="sig-param">add_string=''</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.print_summary" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print an overview of all streams
-:param add_string: text to add to the output
-:type add_string: str</p>
+<dd><p>Print an overview of all streams</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>add_string</strong> (<em>str</em>) – text to add to the output</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -937,7 +949,7 @@ user_address with create_stream() in the market parameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>statusformat</strong> (<em>str</em>) – Choose the format for the export (e.g. ‘icinga’</p></li>
+<li><p><strong>statusformat</strong> (<em>str</em>) – Choose the format for the export (e.g. ‘icinga’)</p></li>
 <li><p><strong>checkcommandversion</strong> (<em>bool</em>) – Control if there is a new version of the check_command available!</p></li>
 </ul>
 </dd>
@@ -1016,12 +1028,22 @@ user_address with create_stream() in the market parameter.</p>
 <script type="text/javascript">$('#searchbox').show(0);</script>
 <br />
     
-<iframe src="https://ghbtns.com/github-btn.html?user=oliver-zehentleitner&repo=unicorn-binance-websocket-api&type=star&count=true"
-        frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-<iframe src="https://ghbtns.com/github-btn.html?user=oliver-zehentleitner&repo=unicorn-binance-websocket-api&type=watch&count=true&v=2"
-        frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-<iframe src="https://ghbtns.com/github-btn.html?user=oliver-zehentleitner&repo=unicorn-binance-websocket-api&type=fork&count=true"
-        frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+<a class="github-button" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api"
+   data-icon="octicon-star" data-show-count="true"
+   aria-label="Star oliver-zehentleitner/unicorn-binance-websocket-api on GitHub">Star</a>
+<br />
+<a class="github-button" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/subscription"
+   data-icon="octicon-eye" data-show-count="true"
+   aria-label="Watch oliver-zehentleitner/unicorn-binance-websocket-api on GitHub">Watch</a>
+<br />
+<a class="github-button" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/fork"
+   data-icon="octicon-repo-forked" data-show-count="true"
+   aria-label="Fork oliver-zehentleitner/unicorn-binance-websocket-api on GitHub">Fork</a>
+<br />
+<a class="github-button" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues"
+   data-icon="octicon-issue-opened"
+   data-show-count="true" aria-label="Issue oliver-zehentleitner/unicorn-binance-websocket-api on GitHub">Issue</a>
+    
 
         </div>
       </div>
