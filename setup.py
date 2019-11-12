@@ -40,7 +40,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='unicorn-binance-websocket-api',
-     version='1.8.2.dev',
+     version='1.9.0.dev',
      author="Oliver Zehentleitner",
      url="https://about.me/oliver-zehentleitner/",
      scripts=['unicorn_binance_websocket_api.py'],

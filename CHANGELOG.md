@@ -5,11 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.8.2.dev (development stage/unreleased)
+## 1.9.0.dev (development stage/unreleased)
+
+## 1.9.0
 ### Added 
 - Endpoints for www.binance.com margin UserData listenkey [issue #35](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35)
 ### Changed
 - Endpoints for www.binance.com spot UserData listenkey [issue #35](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35)
+- Endpoints for www.binance.com futures UserData listenkey [issue #35](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35)
 
 ## 1.8.2
 ### Fixed

@@ -60,8 +60,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     Binance.com websocket API documentation:
     https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
-    https://github.com/binance-exchange/binance-official-api-docs/blob/master/user-data-stream.md
-    https://binance-docs.github.io/apidocs/futures/en/#symbol-order-book-ticker-market_data
+    https://binance-docs.github.io/apidocs/futures/en/#user-data-streams
+    https://binance-docs.github.io/apidocs/spot/en/#user-data-streams
 
     Binance.je websocket API documentation:
     https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md
@@ -79,14 +79,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 data` cointains the raw_stream_data. If not provided, the raw stream_data will get
                                 stored in the stream_buffer.
     :type process_stream_data: function
-    :param exchange: Select binance.com, binance.je, binance.us, binance.org or binance.org-testnet (default: binance.com)
+    :param exchange: Select binance.com, binance.com-margin, binance.com-futures, binance.je, binance.us, binance.org
+                     or binance.org-testnet (default: binance.com)
     :type exchange: str
 
     """
 
     def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
-        self.version = "1.8.2.dev"
+        self.version = "1.9.0"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
