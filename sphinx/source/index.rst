@@ -10,8 +10,8 @@ Welcome to unicorn-binance-websocket-api's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   README <README.md>
-
+   Readme <README.md>
+   Copyright <copyright.rst>
 
 
 Indices and tables
