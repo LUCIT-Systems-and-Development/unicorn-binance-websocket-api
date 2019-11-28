@@ -182,7 +182,7 @@ class BinanceWebSocketApiRestclient(object):
 
     def keepalive_listen_key(self, listen_key):
         """
-        Delete a specific listen key
+        Ping a listenkey to keep it alive
 
         :param listen_key: the listenkey you want to keepalive
         :type listen_key: str

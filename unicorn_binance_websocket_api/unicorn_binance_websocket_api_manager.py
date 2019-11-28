@@ -1174,6 +1174,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def get_stream_list(self):
         """
         Get a list of all streams
+
         :return: set
         """
         # get the stream list
@@ -1354,6 +1355,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def is_update_availabe_check_command(self, check_command_version=False):
         """
         Is a new release of `check_unicorn_monitoring_api` available?
+
         :return: bool
         """
         installed_version = check_command_version
@@ -1792,10 +1794,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Start the monitoring API server
 
-        :param host: host name or ip address (default: 127.0.0.1)
+        :param host: listening ip address, use 0.0.0.0 or a specific address (default: 127.0.0.1)
         :type host: str
 
-        :param port: port number (default: 64201)
+        :param port: listening port number (default: 64201)
         :type port: int
 
         :param warn_on_update: set to `False` to disable the update warning
