@@ -79,7 +79,8 @@ class BinanceWebSocketApiConnection(object):
                 except KeyError:
                     pass
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(uri['msg']))
-                sys.exit(1)
+
+                exit(1)
         except KeyError:
             pass
         except TypeError:
