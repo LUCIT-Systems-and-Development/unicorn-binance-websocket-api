@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.9.0.dev (development stage/unreleased)
+### Added
+- python version in print_stream_info() and print_summary()
 
 ## 1.9.0
 ### Added 
