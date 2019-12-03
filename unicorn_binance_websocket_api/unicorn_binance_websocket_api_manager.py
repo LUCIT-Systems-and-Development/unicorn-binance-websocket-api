@@ -1491,7 +1491,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print("===============================================================================================\r\n"
-                  " exchange:", str(self.stream_list[stream_id]['exchange']), "(lib " + str(self.version) + ")\r\n" +
+                  " exchange:", str(self.stream_list[stream_id]['exchange']), "(lib " + str(self.version) + " on python " + platform.python_version() + ")\r\n" +
                   str(add_string) +
                   " stream_id:", str(stream_id), "\r\n"
                   " channels:", str(stream_info['channels']), "\r\n"
@@ -1649,7 +1649,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 print(
                     "===============================================================================================\r\n" +
-                    " exchange:", str(self.stream_list[stream_id]['exchange']), "(lib " + str(self.version) + "/" + platform.python_version() + ")\r\n" +
+                    " exchange:", str(self.stream_list[stream_id]['exchange']), "(lib " + str(self.version) + " on python " + platform.python_version() + ")\r\n" +
                     " uptime:", str(self.get_human_uptime(time.time() - self.start_time)), "since " +
                     str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d, %H:%M:%S UTC')) + "\r\n" +
                     " streams:", str(streams), "\r\n" +
