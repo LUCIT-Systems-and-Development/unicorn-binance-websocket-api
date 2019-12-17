@@ -3,8 +3,6 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg) 
 ![PyPI - Status](https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg) 
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel&color=orange) 
-[![Downloads](https://pepy.tech/badge/unicorn-binance-websocket-api)](https://pepy.tech/project/unicorn-binance-websocket-api)
-[![Downloads per month](https://pepy.tech/badge/unicorn-binance-websocket-api/month)](https://pepy.tech/project/unicorn-binance-websocket-api/month)
 
 # UNICORN Binance WebSocket API
 A python API to use the Binance Websocket API's (com, com-margin, com-futures, jersey, us, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.
