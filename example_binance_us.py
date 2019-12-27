@@ -71,7 +71,7 @@ userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!use
 ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])
 miniticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])
 
-markets = {'btcusd', 'btcxrp', 'ethusd', 'bnbusd'}
+markets = {'btcusd', 'btcxrp', 'ethusd', 'bnbusd', 'busdusd'}
 
 binance_websocket_api_manager.create_stream(["aggTrade"], markets)
 binance_websocket_api_manager.create_stream(["trade"], markets)

@@ -49,7 +49,7 @@ binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiPr
 
 print("\r\n========================================== Starting aggTrade ==========================================\r\n")
 # start
-markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'eosusdt'}
+markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt' 'eosusdt'}
 aggtrade_stream_id = binance_websocket_api_manager.create_stream(["aggTrade"], markets)
 time.sleep(3)
 # stop

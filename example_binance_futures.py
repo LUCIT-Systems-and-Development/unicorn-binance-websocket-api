@@ -70,7 +70,7 @@ userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!use
 
 bookticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!bookTicker"])
 
-markets = {'btcusdt', 'eosusdt', 'ethusdt'}
+markets = {'btcusdt', 'bchusdt', 'ethusdt'}
 binance_websocket_api_manager.create_stream(["aggTrade"], markets)
 binance_websocket_api_manager.create_stream(["markPrice"], markets)
 binance_websocket_api_manager.create_stream(["kline_1m"], markets)
