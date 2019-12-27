@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.9.0 documentation</title>
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.9.1 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -40,7 +40,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.9.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.9.1 documentation</a> &#187;
     
 
     <li class="right">
@@ -473,8 +473,12 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_list">
 <code class="sig-name descname">get_stream_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of all streams
-:return: set</p>
+<dd><p>Get a list of all streams</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>set</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -609,8 +613,12 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_update_availabe_check_command">
 <code class="sig-name descname">is_update_availabe_check_command</code><span class="sig-paren">(</span><em class="sig-param">check_command_version=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_update_availabe_check_command" title="Permalink to this definition">¶</a></dt>
-<dd><p>Is a new release of <cite>check_unicorn_monitoring_api</cite> available?
-:return: bool</p>
+<dd><p>Is a new release of <cite>check_unicorn_monitoring_api</cite> available?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -758,8 +766,8 @@ user_address with create_stream() in the market parameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>host</strong> (<em>str</em>) – host name or ip address (default: 127.0.0.1)</p></li>
-<li><p><strong>port</strong> (<em>int</em>) – port number (default: 64201)</p></li>
+<li><p><strong>host</strong> (<em>str</em>) – listening ip address, use 0.0.0.0 or a specific address (default: 127.0.0.1)</p></li>
+<li><p><strong>port</strong> (<em>int</em>) – listening port number (default: 64201)</p></li>
 <li><p><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</p></li>
 </ul>
 </dd>
@@ -911,7 +919,7 @@ user_address with create_stream() in the market parameter.</p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.keepalive_listen_key">
 <code class="sig-name descname">keepalive_listen_key</code><span class="sig-paren">(</span><em class="sig-param">listen_key</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.keepalive_listen_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete a specific listen key</p>
+<dd><p>Ping a listenkey to keep it alive</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>listen_key</strong> (<em>str</em>) – the listenkey you want to keepalive</p>
@@ -1065,7 +1073,7 @@ user_address with create_stream() in the market parameter.</p>
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.9.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.9.1 documentation</a> &#187;
     
 
     <li class="right">

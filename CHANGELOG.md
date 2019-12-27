@@ -5,9 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.9.0.dev (development stage/unreleased)
+## 1.9.1.dev (development stage/unreleased)
+
+## 1.9.1
 ### Added
 - python version in print_stream_info() and print_summary()
+### Fixed 
+- Typo in text string
 
 ## 1.9.0
 ### Added 
