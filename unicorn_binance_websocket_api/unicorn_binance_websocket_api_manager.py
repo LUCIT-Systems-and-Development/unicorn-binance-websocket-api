@@ -88,7 +88,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
-        self.version = "1.9.1"
+        self.version = "1.9.1.dev"
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
