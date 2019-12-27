@@ -1,6 +1,7 @@
 # Contributing
 
-When contributing to this repository, please first discuss the change you wish to make via issue 
+When contributing to this repository, please first discuss the change you wish to make via 
+[issue](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/new/choose) 
 with the owners of this repository before making a change. 
 
 Please note we have a 
