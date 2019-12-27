@@ -80,12 +80,12 @@ if start_testing != "":
             if round >= start_testing:
                 print("round:", round)
                 try:
-                    binance_test_uri_length(query)
+                    binance_test_uri_length(query[:-1])
                 except websocket._exceptions.WebSocketBadStatusException as error_msg:
                     print("error_msg:", error_msg)
-                    print("uri length:", str(len("wss://stream.binance.com:9443/stream?streams=" + query)))
+                    print("uri length:", str(len("wss://stream.binance.com:9443/stream?streams=" + query[:-1])))
                     print("query:")
-                    print(query)
+                    print(query[:-1])
                     if "Large" in str(error_msg):
                         print("\r\nfound too long URI!")
                         break
