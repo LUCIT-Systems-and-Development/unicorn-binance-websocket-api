@@ -99,13 +99,13 @@ class TestBinanceComManager(unittest.TestCase):
 
     def test_create_uri_single_com(self):
         self.assertEqual(self.binance_com_websocket_api_manager.create_websocket_uri(["trade"], ["bnbbtc"]),
-                         'wss://stream.binance.com:9443/stream?streams=bnbbtc@trade/')
+                         'wss://stream.binance.com:9443/stream?streams=bnbbtc@trade')
 
     def test_create_uri_multi_com(self):
         self.assertEqual(self.binance_com_websocket_api_manager.create_websocket_uri(['trade', 'kline_1h'],
                                                                                      ['bnbbtc', 'ethbtc']),
                          'wss://stream.binance.com:9443/stream?streams=bnbbtc@trade/ethbtc@trade/'
-                         'bnbbtc@kline_1h/ethbtc@kline_1h/')
+                         'bnbbtc@kline_1h/ethbtc@kline_1h')
 
     def test_create_uri_multi_with_ticker_com(self):
         self.assertFalse(self.binance_com_websocket_api_manager.create_websocket_uri(['trade', 'kline_1h', '!ticker'],
@@ -172,13 +172,13 @@ class TestBinanceJeManager(unittest.TestCase):
 
     def test_create_uri_single_je(self):
         self.assertEqual(self.binance_je_websocket_api_manager.create_websocket_uri(["trade"], ["bnbbtc"]),
-                         'wss://stream.binance.je:9443/stream?streams=bnbbtc@trade/')
+                         'wss://stream.binance.je:9443/stream?streams=bnbbtc@trade')
 
     def test_create_uri_multi_je(self):
         self.assertEqual(self.binance_je_websocket_api_manager.create_websocket_uri(['trade', 'kline_1h'],
                                                                                      ['bnbbtc', 'ethbtc']),
                          'wss://stream.binance.je:9443/stream?streams=bnbbtc@trade/ethbtc@trade/'
-                         'bnbbtc@kline_1h/ethbtc@kline_1h/')
+                         'bnbbtc@kline_1h/ethbtc@kline_1h')
 
     def test_create_uri_multi_with_miniTicker_je(self):
         self.assertFalse(self.binance_je_websocket_api_manager.create_websocket_uri(['trade', 'kline_1h', '!miniTicker'],
