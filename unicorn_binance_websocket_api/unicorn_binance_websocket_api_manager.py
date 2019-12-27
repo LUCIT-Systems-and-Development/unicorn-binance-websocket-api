@@ -548,7 +548,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     response = self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
                     try:
                         if response['code'] == -2014 or response['code'] == -2015:
-                            logging.error("Received unknown error code from rest client: " + str(response))
+                            logging.error("Received known error code from rest client: " + str(response))
                             return response
                         else:
                             logging.critical("Received unknown error code from rest client: " + str(response))
