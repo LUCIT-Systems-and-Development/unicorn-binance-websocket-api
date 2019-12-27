@@ -91,7 +91,7 @@ binance_websocket_api_manager.create_stream(["ticker"], markets)
 binance_websocket_api_manager.create_stream(["miniTicker"], markets)
 
 markets = ['RAVEN-F66_BNB', 'ANKR-E97_BNB', 'AWC-986_BNB', 'COVA-218_BNB', 'BCPT-95A_BNB', 'WISH-2D5_BNB',
-           'MITH-C76_BNB', 'BNB_BTCB-1DE', 'BNB_USDSB-1AC', 'BTCB-1DE_USDSB-1AC']
+           'MITH-C76_BNB', 'BNB_BTCB-1DE', 'BNB_USDSB-1AC', 'BTCB-1DE_USDSB-1AC', 'NEXO-A84_BNB']
 channels = ['trades']
 #channels = ['kline_1m', 'kline_5m', 'kline_15m', 'marketDepth', 'ticker', 'miniTicker', 'marketDiff', 'trades']
 multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)

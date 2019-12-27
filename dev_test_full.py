@@ -124,7 +124,7 @@ time.sleep(2)
 print("\r\n============================================ Stopped depth  ===========================================\r\n")
 
 print("\r\n\r\nTesting multi markets with one stream_type")
-markets = {'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt', 'neousdt'}
+markets = {'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt', 'neousdt', 'btcusdt', 'bnbusdt'}
 print("\r\n========================================== Starting aggTrade ==========================================\r\n")
 aggtrade_stream_id = binance_websocket_api_manager.create_stream(["aggTrade"], markets)
 time.sleep(3)
