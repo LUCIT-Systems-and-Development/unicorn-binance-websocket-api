@@ -140,8 +140,9 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 [https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki)
 
 ## Receive Notifications
-To receive notifications on available updates you can ![watch](https://s3.gifyu.com/images/github_watch.png) the 
-repository on [GitHub](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api), write your 
+To receive notifications on available updates you can 
+[![watch](https://s3.gifyu.com/images/github_watch.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/watchers) 
+the repository on [GitHub](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api), write your 
 [own script](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py) 
 with using `binance_websocket_api_manager.is_update_availabe()` or you use the 
 [monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service).
