@@ -82,7 +82,7 @@ crypto API endpoints into well-formed python dictionaries.
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
 and a [check_command](https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api) 
 for [ICINGA](https://exchange.icinga.com/bithon/check_unicorn_monitoring_api)/Nagios 
-![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)
+[![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service)
 - Excessively tested on Linux, Mac and Windows
 
 If you like the project, please [![star](https://s3.gifyu.com/images/stard237b3003af9f9a9.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/stargazers) it on 
