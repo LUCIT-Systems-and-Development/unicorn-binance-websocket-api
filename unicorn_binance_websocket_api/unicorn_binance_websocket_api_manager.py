@@ -78,8 +78,8 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param process_stream_data: Provide a function/method to process the received webstream data. The function
                                 will be called with one variable like `process_stream_data(data)` where
                                 `data` cointains the raw_stream_data. If not provided, the raw stream_data will get
-                                stored in the stream_buffer (How to read from stream_buffer:
-                                https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives
+                                stored in the stream_buffer! (How to read from stream_buffer:
+                                https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives)
     :type process_stream_data: function
     :param exchange: Select binance.com, binance.com-margin, binance.com-futures, binance.je, binance.us, binance.org
                      or binance.org-testnet (default: binance.com)

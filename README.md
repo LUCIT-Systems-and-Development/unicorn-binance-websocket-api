@@ -127,7 +127,8 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.technopathy.club/2019/11/02/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2/)
 
 ## Documentation
-[https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api)
+- [General](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api)
+- [Modules](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html)
 
 ## Source, Downloads, Examples, ...
 [https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
