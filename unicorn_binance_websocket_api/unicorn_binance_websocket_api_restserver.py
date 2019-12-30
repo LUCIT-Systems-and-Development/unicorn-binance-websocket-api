@@ -38,7 +38,9 @@ from flask_restful import Resource
 
 class BinanceWebSocketApiRestServer(Resource):
     """
-    Provide a REST API server
+    Provide a REST API server 
+    
+    Wiki: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service
 
     :param handler_binance_websocket_api_manager: Provide the handler of the binance_websocket_api_manager
     :type handler_binance_websocket_api_manager: function
