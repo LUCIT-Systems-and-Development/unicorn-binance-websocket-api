@@ -32,9 +32,8 @@ unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_stream_data_fr
 
 ## Description
 The python module [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) 
-provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs) 
-, [Binance Margin](https://binance-docs.github.io/apidocs/spot/en/#user-data-streams)
-, [Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams), 
+provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs), [Binance Margin](https://binance-docs.github.io/apidocs/spot/en/#user-data-streams),
+[Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams), 
 [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
