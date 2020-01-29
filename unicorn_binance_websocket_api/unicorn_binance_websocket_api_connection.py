@@ -61,6 +61,10 @@ class BinanceWebSocketApiConnection(object):
         uri = self.handler_binance_websocket_api_manager.create_websocket_uri(self.channels, self.markets,
                                                                               self.stream_id, self.api_key,
                                                                               self.api_secret)
+        # Todo:
+        # remove:
+        print(str(uri))
+        # Todo End
         if uri is False:
             # cant get a valid URI, so this stream has to crash
             error_msg = "Probably no internet connection?"
@@ -103,7 +107,9 @@ class BinanceWebSocketApiConnection(object):
                     sys.exit(1)
             try:
                 for payload in self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
-                    await self.send(json.dumps(payload, ensure_ascii=False))
+                    pass
+                    # Todo:
+                    #await self.send(json.dumps(payload, ensure_ascii=False))
             except TypeError:
                 pass
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['status'] = "running"

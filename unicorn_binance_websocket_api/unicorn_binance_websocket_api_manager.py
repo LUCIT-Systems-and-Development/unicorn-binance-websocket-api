@@ -1896,8 +1896,12 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         try:
             for payload in self.stream_list[stream_id]['payload']:
-                if payload['topic'] != "trades":
-                    self.websocket_list[stream_id].send(json.dumps(payload, ensure_ascii=False))
+                print(str(json.dumps(payload, ensure_ascii=False)))
+                # Todo:
+                #result = self.websocket_list[stream_id].send('{ "method": "subscribe", "topic": "kline_1m", "symbols": ["ANKR-E97_BNB"] }')
+                #print(str(result))
+                #if payload['topic'] != "trades":
+                #    self.websocket_list[stream_id].send(json.dumps(payload, ensure_ascii=False))
             return True
         except KeyError:
             logging.critical(
