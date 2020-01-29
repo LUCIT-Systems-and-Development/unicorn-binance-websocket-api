@@ -34,9 +34,16 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+import logging
 import time
 import threading
 
+# https://docs.python.org/3/library/logging.html#logging-levels
+logging.basicConfig(filename=os.path.basename(__file__) + '.log',
+                    format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
+                    style="{")
+logging.getLogger('unicorn-log').setLevel(logging.INFO)
+logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     while True:
