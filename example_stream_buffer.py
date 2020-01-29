@@ -40,7 +40,7 @@ import time
 import threading
 import os
 
-# https://docs.python.org/3/library/logging.html
+# https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
