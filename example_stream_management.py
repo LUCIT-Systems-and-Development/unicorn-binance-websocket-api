@@ -65,7 +65,7 @@ binance_get_ticker_stream_id = binance_websocket_api_manager.create_stream("arr"
 
 # create stream 2
 binance_get_kline_stream_id = binance_websocket_api_manager.create_stream(['kline_1m', 'kline_5m', 'kline_30m', 'kline_1h', 'kline_15m'], markets)
-binance_get_kline_stream_id = binance_websocket_api_manager.create_stream(['trade'], markets)
+binance_get_trade_stream_id = binance_websocket_api_manager.create_stream(['trade'], markets)
 
 time.sleep(5)
 
