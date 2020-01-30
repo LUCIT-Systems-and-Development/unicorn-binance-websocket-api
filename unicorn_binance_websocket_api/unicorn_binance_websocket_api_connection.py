@@ -101,14 +101,12 @@ class BinanceWebSocketApiConnection(object):
                     time.sleep(2)
                     self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                     sys.exit(1)
+            # Manage subscriptions for DEX/CHAIN sockets
             if self.handler_binance_websocket_api_manager.exchange == "binance.org" or \
                     self.handler_binance_websocket_api_manager.exchange == "binance.org-testnet":
-                # send subscription to DEX/CHAIN sockets
-                try:
-                    for payload in self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
-                        await self.send(json.dumps(payload, ensure_ascii=False))
-                except TypeError:
-                    pass
+                while self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
+                    payload = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload'].pop(0)
+                    await self.send(json.dumps(payload, ensure_ascii=False))
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['status'] = "running"
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['has_stopped'] = False
             try:

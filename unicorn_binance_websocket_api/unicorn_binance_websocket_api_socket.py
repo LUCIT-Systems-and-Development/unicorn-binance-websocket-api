@@ -87,12 +87,7 @@ class BinanceWebSocketApiSocket(object):
                 # Manage subscriptions for DEX/CHAIN sockets
                 if self.handler_binance_websocket_api_manager.exchange == "binance.org" or \
                         self.handler_binance_websocket_api_manager.exchange == "binance.org-testnet":
-                    if self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['subscribe_request'] is \
-                            not False:
-                        try:
-                            for payload in self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
-                                await websocket.send(json.dumps(payload, ensure_ascii=False))
-                        except TypeError:
-                            pass
-                        finally:
-                            self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['subscribe_request'] = False
+                    while self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
+                        payload = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload'].pop(0)
+                        await websocket.send(json.dumps(payload, ensure_ascii=False))
+                        print(str(payload))
