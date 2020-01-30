@@ -35,15 +35,15 @@
 
 from __future__ import print_function
 from .unicorn_binance_websocket_api_connection import BinanceWebSocketApiConnection
+import json
 import logging
 import websockets
 import sys
 
 
 class BinanceWebSocketApiSocket(object):
-    def __init__(self, handler_binance_websocket_api_manager, loop, stream_id, channels, markets):
+    def __init__(self, handler_binance_websocket_api_manager, stream_id, channels, markets):
         self.handler_binance_websocket_api_manager = handler_binance_websocket_api_manager
-        self.loop = loop
         self.stream_id = stream_id
         self.channels = channels
         self.markets = markets
@@ -84,3 +84,15 @@ class BinanceWebSocketApiSocket(object):
                                   str(self.channels) + ", " + str(self.markets) + ") Exception AttributeError Info: " +
                                   str(error_msg))
                     break
+                # Manage subscriptions for DEX/CHAIN sockets
+                if self.handler_binance_websocket_api_manager.exchange == "binance.org" or \
+                        self.handler_binance_websocket_api_manager.exchange == "binance.org-testnet":
+                    if self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['subscribe_request'] is \
+                            not False:
+                        try:
+                            for payload in self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
+                                await websocket.send(json.dumps(payload, ensure_ascii=False))
+                        except TypeError:
+                            pass
+                        finally:
+                            self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['subscribe_request'] = False

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.9.1.dev (development stage/unreleased)
+### Fixed
+- Subscribe/Unsubscribe items of DEX websockets ([card #5](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/projects/5#card-23700264))
 
 ## 1.9.1
 ### Added
@@ -15,14 +17,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.9.0
 ### Added 
-- Endpoints for www.binance.com margin UserData listenkey [issue #35](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35)
+- Endpoints for www.binance.com margin UserData listenkey ([issue #35](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35))
 ### Changed
-- Endpoints for www.binance.com spot UserData listenkey [issue #35](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35)
-- Endpoints for www.binance.com futures UserData listenkey [issue #35](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35)
+- Endpoints for www.binance.com spot UserData listenkey ([issue #35](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35))
+- Endpoints for www.binance.com futures UserData listenkey ([issue #35](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35))
 
 ## 1.8.2
 ### Fixed
-- Errors when creating private DEX streams: [issue #34](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/34)
+- Errors when creating private DEX streams ([issue #34](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/34))
 
 ## 1.8.1
 ### Changed

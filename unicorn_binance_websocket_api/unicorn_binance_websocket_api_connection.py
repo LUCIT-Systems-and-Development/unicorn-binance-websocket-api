@@ -61,10 +61,6 @@ class BinanceWebSocketApiConnection(object):
         uri = self.handler_binance_websocket_api_manager.create_websocket_uri(self.channels, self.markets,
                                                                               self.stream_id, self.api_key,
                                                                               self.api_secret)
-        # Todo:
-        # remove:
-        print(str(uri))
-        # Todo End
         if uri is False:
             # cant get a valid URI, so this stream has to crash
             error_msg = "Probably no internet connection?"
@@ -105,13 +101,14 @@ class BinanceWebSocketApiConnection(object):
                     time.sleep(2)
                     self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                     sys.exit(1)
-            try:
-                for payload in self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
+            if self.handler_binance_websocket_api_manager.exchange == "binance.org" or \
+                    self.handler_binance_websocket_api_manager.exchange == "binance.org-testnet":
+                # send subscription to DEX/CHAIN sockets
+                try:
+                    for payload in self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
+                        await self.send(json.dumps(payload, ensure_ascii=False))
+                except TypeError:
                     pass
-                    # Todo:
-                    #await self.send(json.dumps(payload, ensure_ascii=False))
-            except TypeError:
-                pass
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['status'] = "running"
             self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['has_stopped'] = False
             try:
@@ -191,6 +188,7 @@ class BinanceWebSocketApiConnection(object):
             logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                           "AttributeError - " + str(error_msg))
             try:
+                # Todo: Handle a recursive call
                 self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
                 logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                               "AttributeError - close() - done!")

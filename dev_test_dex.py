@@ -99,7 +99,6 @@ worker_thread.start()
 #    binance_websocket_api_manager.print_stream_info(multiplex_stream_id)
 #    time.sleep(5)
 
-#    # TODO: doenst work :/
 #    binance_websocket_api_manager.subscribe_to_stream(multiplex_stream_id,
 #                                                      channels=['kline_1m', 'kline_5m', 'kline_15m', 'marketDepth',
 #                                                                'ticker', 'miniTicker', 'marketDiff'])

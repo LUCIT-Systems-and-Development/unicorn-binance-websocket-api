@@ -46,7 +46,7 @@ logging.basicConfig(filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
-logging.getLogger('unicorn-log').setLevel(logging.INFO)
+logging.getLogger('unicorn-log').setLevel(logging.DEBUG)
 
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
@@ -80,24 +80,30 @@ worker_thread.start()
 #binance_websocket_api_manager.create_stream(["allMiniTickers"], ["$all"])
 #binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
 
-#markets = 'RAVEN-F66_BNB'
-markets = ['RAVEN-F66_BNB', 'ANKR-E97_BNB']
 #binance_websocket_api_manager.create_stream(["trades"], markets)
 #binance_websocket_api_manager.create_stream(["marketDepth"], markets)
-stream_id = binance_websocket_api_manager.create_stream(["kline_1m"], markets)
+
 #binance_websocket_api_manager.create_stream(["kline_5m"], markets)
 #binance_websocket_api_manager.create_stream(["ticker"], markets)
 #binance_websocket_api_manager.create_stream(["miniTicker"], markets)
+#multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+
+markets = 'RAVEN-F66_BNB'
+stream_id = binance_websocket_api_manager.create_stream(["kline_1m"], markets)
+binance_websocket_api_manager.print_stream_info(stream_id)
+
 
 markets = ['RAVEN-F66_BNB', 'ANKR-E97_BNB', 'AWC-986_BNB', 'COVA-218_BNB', 'BCPT-95A_BNB', 'WISH-2D5_BNB',
            'MITH-C76_BNB', 'BNB_BTCB-1DE', 'BNB_USDSB-1AC', 'BTCB-1DE_USDSB-1AC', 'NEXO-A84_BNB']
 channels = ['trades', 'kline_1m', 'kline_5m', 'kline_15m', 'marketDepth', 'ticker', 'miniTicker', 'marketDiff']
-#multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+binance_websocket_api_manager.subscribe_to_stream(stream_id,
+                                                  markets=markets,
+                                                  channels=channels)
+binance_websocket_api_manager.print_stream_info(stream_id)
 
 
-print("wait 5 seconds!")
-time.sleep(5)
-#binance_websocket_api_manager.subscribe_to_stream(stream_id,
-#                                                  markets=['ANKR-E97_BNB'])
-print("start_subscribtion:")
-#binance_websocket_api_manager.print_stream_info(stream_id)
+markets = ['RAVEN-F66_BNB', 'ANKR-E97_BNB', 'AWC-986_BNB', 'COVA-218_BNB', 'BCPT-95A_BNB', 'WISH-2D5_BNB',
+           'MITH-C76_BNB', 'BTCB-1DE_USDSB-1AC', 'NEXO-A84_BNB']
+channels = ['trades', 'kline_15m', 'marketDepth', 'ticker', 'miniTicker', 'marketDiff']
+binance_websocket_api_manager.unsubscribe_from_stream(stream_id, channels=channels, markets=markets)
+binance_websocket_api_manager.print_stream_info(stream_id)
