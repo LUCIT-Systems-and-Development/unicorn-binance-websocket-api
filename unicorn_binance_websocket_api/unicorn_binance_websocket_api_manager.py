@@ -498,8 +498,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (market * channels).
 
         Example:
+
             markets = ['bnbbtc', 'ethbtc']
+
             channels = ['trade', 'kline_1']
+
             Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
 
         :param channels: provide the channels you wish to stream
@@ -1868,7 +1871,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         Subscribe channels, markets or an array of them to an existing DEX stream
 
-        If you provide one channel and one market, then every subscribed market going to get added to the new channel
+        If you provide one channel and one market, then every subscribed market is going to get added to the new channel
         and all subscribed channels are going to get added to the new market
 
         How are channels and markets used to build the subscriptions:
