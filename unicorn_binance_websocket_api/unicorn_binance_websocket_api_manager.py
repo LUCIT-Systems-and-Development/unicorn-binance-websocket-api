@@ -1380,8 +1380,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Is the websocket URI length valid?
 
-        Binance DEX is using the subscribe methods, so this function must not get used with them and will always return!
-        `False`
+        Binance DEX is using the subscribe methods, so this function must not get used with them and will always return
+        `False`!
 
         A test with https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
         indicates that the allowed max length of an URI to binance websocket server is 8004 characters.
@@ -1868,6 +1868,12 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         Subscribe channels, markets or an array of them to an existing DEX stream
 
+        If you provide one channel and one market, then every subscribed market going to get added to the new channel
+        and all subscribed channels are going to get added to the new market
+
+        How are channels and markets used to build the subscriptions:
+        https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream
+
         :param stream_id: id of a stream
         :type stream_id: uuid
 
@@ -1916,6 +1922,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         Notice: This method only works with DEX!
 
         Unsubscribe channels, markets or an array of them from an existing DEX stream
+
+        If you provide one channel and one market, then all subscribed markets from the specific channel and all
+        subscribed markets from the specific channel are going to be removed!
+
+        How are channels and markets used to build the subscriptions:
+        https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream
 
         :param stream_id: id of a stream
         :type stream_id: uuid
