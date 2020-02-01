@@ -142,6 +142,13 @@ processing.</p>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">
 <code class="sig-name descname">create_stream</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a websocket stream</p>
+<p>If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (market * channels).</p>
+<dl class="simple">
+<dt>Example:</dt><dd><p>markets = [‘bnbbtc’, ‘ethbtc’]
+channels = [‘trade’, ‘kline_1’]
+Finally:  <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;trade">bnbbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;trade">ethbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;kline_1">bnbbtc<span>&#64;</span>kline_1</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;kline_1">ethbtc<span>&#64;</span>kline_1</a></p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -626,8 +633,8 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_websocket_uri_length_valid">
 <code class="sig-name descname">is_websocket_uri_length_valid</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_websocket_uri_length_valid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is the websocket URI length valid?</p>
-<p>Binance DEX is using the subscribe methods, so this function must not get used with them and will always return!
-<cite>False</cite></p>
+<p>Binance DEX is using the subscribe methods, so this function must not get used with them and will always return
+<cite>False</cite>!</p>
 <p>A test with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py</a>
 indicates that the allowed max length of an URI to binance websocket server is 8004 characters.</p>
 <dl class="field-list simple">
@@ -815,7 +822,11 @@ user_address with create_stream() in the market parameter.</p>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">
 <code class="sig-name descname">subscribe_to_stream</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">channels=[]</em>, <em class="sig-param">markets=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Notice: This method only works with DEX!</p>
-<p>Subscribe channels, markets or an array of them to an exisiting DEX stream</p>
+<p>Subscribe channels, markets or an array of them to an existing DEX stream</p>
+<p>If you provide one channel and one market, then every subscribed market going to get added to the new channel
+and all subscribed channels are going to get added to the new market</p>
+<p>How are channels and markets used to build the subscriptions:
+<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -834,7 +845,11 @@ user_address with create_stream() in the market parameter.</p>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">
 <code class="sig-name descname">unsubscribe_from_stream</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">channels</em>, <em class="sig-param">markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Notice: This method only works with DEX!</p>
-<p>Unsubscribe channels, markets or an array of them from an exisiting DEX stream</p>
+<p>Unsubscribe channels, markets or an array of them from an existing DEX stream</p>
+<p>If you provide one channel and one market, then all subscribed markets from the specific channel and all
+subscribed markets from the specific channel are going to be removed!</p>
+<p>How are channels and markets used to build the subscriptions:
+<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -985,7 +1000,7 @@ user_address with create_stream() in the market parameter.</p>
 <span id="unicorn-binance-websocket-api-unicorn-binance-websocket-api-socket-module"></span><h2>unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket module<a class="headerlink" href="#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket.BinanceWebSocketApiSocket">
-<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket.</code><code class="sig-name descname">BinanceWebSocketApiSocket</code><span class="sig-paren">(</span><em class="sig-param">handler_binance_websocket_api_manager</em>, <em class="sig-param">loop</em>, <em class="sig-param">stream_id</em>, <em class="sig-param">channels</em>, <em class="sig-param">markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket.BinanceWebSocketApiSocket" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket.</code><code class="sig-name descname">BinanceWebSocketApiSocket</code><span class="sig-paren">(</span><em class="sig-param">handler_binance_websocket_api_manager</em>, <em class="sig-param">stream_id</em>, <em class="sig-param">channels</em>, <em class="sig-param">markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket.BinanceWebSocketApiSocket" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket.BinanceWebSocketApiSocket.start_socket">
@@ -1098,7 +1113,7 @@ user_address with create_stream() in the market parameter.</p>
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.2.1
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />

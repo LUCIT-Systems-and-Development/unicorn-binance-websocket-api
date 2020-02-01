@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-rm ../docs -r
+rm -r ../docs
 mv build/html ../docs

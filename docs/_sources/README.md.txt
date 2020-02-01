@@ -32,9 +32,8 @@ unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_stream_data_fr
 
 ## Description
 The python module [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) 
-provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs) 
-, [Binance Margin](https://binance-docs.github.io/apidocs/spot/en/#user-data-streams)
-, [Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams), 
+provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs), [Binance Margin](https://binance-docs.github.io/apidocs/spot/en/#user-data-streams),
+[Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams), 
 [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
@@ -77,7 +76,7 @@ stream_buffer which stores the receives in the RAM till you are able to process 
 crypto API endpoints into well-formed python dictionaries. 
 - Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
 `get_stream_statistic()`, `is_websocket_uri_length_valid()`, `replace_stream()`, `wait_till_stream_has_started()`, 
-`get_current_receiving_speed()` and many more, explore them 
+`get_current_receiving_speed()`, `subscribe_to_stream()`, `unsubscribe_from_stream()` and many more, explore them 
 [here](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html).
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
 and a [check_command](https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api) 

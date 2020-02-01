@@ -76,7 +76,7 @@ stream_buffer which stores the receives in the RAM till you are able to process 
 crypto API endpoints into well-formed python dictionaries. 
 - Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
 `get_stream_statistic()`, `is_websocket_uri_length_valid()`, `replace_stream()`, `wait_till_stream_has_started()`, 
-`get_current_receiving_speed()` and many more, explore them 
+`get_current_receiving_speed()`, `subscribe_to_stream()`, `unsubscribe_from_stream()` and many more, explore them 
 [here](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html).
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
 and a [check_command](https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api) 

@@ -64,17 +64,17 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <p><a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/"><img alt="https://img.shields.io/github/release/oliver-zehentleitner/unicorn-binance-websocket-api.svg" src="https://img.shields.io/github/release/oliver-zehentleitner/unicorn-binance-websocket-api.svg" />GitHub release</a>
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/LICENSE"><img alt="https://img.shields.io/github/license/oliver-zehentleitner/unicorn-binance-websocket-api.svg?color=blue" src="https://img.shields.io/github/license/oliver-zehentleitner/unicorn-binance-websocket-api.svg?color=blue" />GitHub</a>
-<a class="reference external" href="https://www.python.org/downloads/"><img alt="https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg" src="https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg" />PyPI - Python Version</a>
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues"><img alt="https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg" src="https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg" />PyPI - Status</a>
-<a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/"><img alt="https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel&amp;color=orange" src="https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel&amp;color=orange" />PyPI - Wheel</a></p>
+  <p><a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/"><img alt="GitHub release" src="https://img.shields.io/github/release/oliver-zehentleitner/unicorn-binance-websocket-api.svg" /></a>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/oliver-zehentleitner/unicorn-binance-websocket-api.svg?color=blue" /></a>
+<a class="reference external" href="https://www.python.org/downloads/"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg" /></a>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues"><img alt="PyPI - Status" src="https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg" /></a>
+<a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/"><img alt="PyPI - Wheel" src="https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel&amp;color=orange" /></a></p>
 <div class="section" id="unicorn-binance-websocket-api">
 <h1>UNICORN Binance WebSocket API<a class="headerlink" href="#unicorn-binance-websocket-api" title="Permalink to this headline">¶</a></h1>
 <p>A python API to use the Binance Websocket API’s (com, com-margin, com-futures, jersey, us, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.</p>
 <div class="section" id="create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code">
 <h2>Create a multiplex websocket connection to Binance with just 3 lines of code:<a class="headerlink" href="#create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager</span> <span class="k">import</span> <span class="n">BinanceWebSocketApiManager</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
 
 <span class="n">binance_websocket_api_manager</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
 <span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">create_stream</span><span class="p">([</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">])</span>
@@ -100,9 +100,8 @@
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The python module <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">UNICORN Binance WebSocket API</a>
-provides an API to the Binance Websocket API`s of <a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs">Binance</a>
-, <a class="reference external" href="https://binance-docs.github.io/apidocs/spot/en/#user-data-streams">Binance Margin</a>
-, <a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams">Binance Futures</a>,
+provides an API to the Binance Websocket API`s of <a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs">Binance</a>, <a class="reference external" href="https://binance-docs.github.io/apidocs/spot/en/#user-data-streams">Binance Margin</a>,
+<a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams">Binance Futures</a>,
 <a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/">Binance Jersey</a>,
 <a class="reference external" href="https://github.com/binance-us/binance-official-api-docs">Binance US</a>,
 <a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">Binance DEX</a> and
@@ -146,15 +145,15 @@ stream_buffer which stores the receives in the RAM till you are able to process 
 crypto API endpoints into well-formed python dictionaries.</p></li>
 <li><p>Helpful management features like <code class="docutils literal notranslate"><span class="pre">get_binance_api_status()</span></code>, <code class="docutils literal notranslate"><span class="pre">get_stream_info()</span></code>, <code class="docutils literal notranslate"><span class="pre">get_stream_list()</span></code>,
 <code class="docutils literal notranslate"><span class="pre">get_stream_statistic()</span></code>, <code class="docutils literal notranslate"><span class="pre">is_websocket_uri_length_valid()</span></code>, <code class="docutils literal notranslate"><span class="pre">replace_stream()</span></code>, <code class="docutils literal notranslate"><span class="pre">wait_till_stream_has_started()</span></code>,
-<code class="docutils literal notranslate"><span class="pre">get_current_receiving_speed()</span></code> and many more, explore them
+<code class="docutils literal notranslate"><span class="pre">get_current_receiving_speed()</span></code>, <code class="docutils literal notranslate"><span class="pre">subscribe_to_stream()</span></code>, <code class="docutils literal notranslate"><span class="pre">unsubscribe_from_stream()</span></code> and many more, explore them
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html">here</a>.</p></li>
 <li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service">Monitoring API service</a>
 and a <a class="reference external" href="https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api">check_command</a>
 for <a class="reference external" href="https://exchange.icinga.com/bithon/check_unicorn_monitoring_api">ICINGA</a>/Nagios
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service"><img alt="https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png" src="https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png" />icinga2-demo</a></p></li>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service"><img alt="icinga2-demo" src="https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png" /></a></p></li>
 <li><p>Excessively tested on Linux, Mac and Windows</p></li>
 </ul>
-<p>If you like the project, please <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/stargazers"><img alt="https://s3.gifyu.com/images/stard237b3003af9f9a9.png" src="https://s3.gifyu.com/images/stard237b3003af9f9a9.png" />star</a> it on
+<p>If you like the project, please <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/stargazers"><img alt="star" src="https://s3.gifyu.com/images/stard237b3003af9f9a9.png" /></a> it on
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">GitHub</a>!</p>
 </div>
 </div>
@@ -201,7 +200,7 @@ and use:</p>
 <div class="section" id="demo">
 <h2>Demo<a class="headerlink" href="#demo" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py">Demo source</a></p>
-<p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py"><img alt="https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif" src="https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif" />demo_gif</a></p>
+<p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py"><img alt="demo_gif" src="https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif" /></a></p>
 </div>
 <div class="section" id="howto">
 <h2>Howto<a class="headerlink" href="#howto" title="Permalink to this headline">¶</a></h2>
@@ -232,7 +231,7 @@ and use:</p>
 <div class="section" id="receive-notifications">
 <h2>Receive Notifications<a class="headerlink" href="#receive-notifications" title="Permalink to this headline">¶</a></h2>
 <p>To receive notifications on available updates you can
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/watchers"><img alt="https://s3.gifyu.com/images/github_watch.png" src="https://s3.gifyu.com/images/github_watch.png" />watch</a>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/watchers"><img alt="watch" src="https://s3.gifyu.com/images/github_watch.png" /></a>
 the repository on <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">GitHub</a>, write your
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py">own script</a>
 with using <code class="docutils literal notranslate"><span class="pre">binance_websocket_api_manager.is_update_availabe()</span></code> or you use the
@@ -250,7 +249,7 @@ with using <code class="docutils literal notranslate"><span class="pre">binance_
 <div class="section" id="how-to-report-bugs-or-suggest-improvements">
 <h2>How to report Bugs or suggest Improvements?<a class="headerlink" href="#how-to-report-bugs-or-suggest-improvements" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement">List of planned features</a> -
-click <img alt="https://s3.gifyu.com/images/tu.png" src="https://s3.gifyu.com/images/tu.png" />thumbs-up if you need one of them or suggest a new feature!</p>
+click <img alt="thumbs-up" src="https://s3.gifyu.com/images/tu.png" /> if you need one of them or suggest a new feature!</p>
 <p>Before you report a bug, <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api#installation-and-upgrade">try the latest release</a>. If the issue still exists, provide the error trace, OS
 and python version and explain how to reproduce the error. A demo script is appreciated.</p>
 <p>If you dont find an issue related to your topic, please open a new issue:
@@ -263,7 +262,7 @@ https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues</p>
 source project which welcomes contributions which can be anything from simple documentation fixes to new features. To
 contribute follow
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CONTRIBUTING">this guide</a>.</p>
-<p>We <img alt="https://s3.gifyu.com/images/heartae002231c41d8a80.png" src="https://s3.gifyu.com/images/heartae002231c41d8a80.png" />love open source!</p>
+<p>We <img alt="love" src="https://s3.gifyu.com/images/heartae002231c41d8a80.png" /> open source!</p>
 </div>
 </div>
 
@@ -397,7 +396,7 @@ contribute follow
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.2.1
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
