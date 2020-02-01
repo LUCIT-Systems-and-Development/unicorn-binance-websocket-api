@@ -8,12 +8,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.9.1.dev (development stage/unreleased)
 ### Added
 - unicorn_binance_websocket_api_manager.is_exchange_type()
+- support for subscribe/unsubscribe for CEX websockets
+- unicorn_binance_websocket_api_manager.list_subscriptions()
 ### Fixed
-- Subscribe/Unsubscribe items of DEX websockets ([card #5](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/projects/5#card-23700264))
+- Subscribe/unsubscribe items of DEX websockets ([card #5](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/projects/5#card-23700264))
 
 ## 1.9.1
 ### Added
-- python version in print_stream_info() and print_summary()
+- Python version in print_stream_info() and print_summary()
 ### Fixed 
 - Typo in text string
 
@@ -30,7 +32,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.8.1
 ### Changed
-- moved docs to github pages
+- Moved docs to github pages
 
 ## 1.8.0
 ### Added 
@@ -51,7 +53,7 @@ https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/31
 
 ## 1.6.4
 ### Added
-- amount of active streams to icinga status msg
+- Amount of active streams to icinga status msg
 ### Fix
 - RuntimeError in _frequent_checks
 

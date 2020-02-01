@@ -149,6 +149,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.total_received_bytes = 0
         self.total_receives = 0
         self.websocket_list = {}
+        self.request_id = 0
         self.binance_api_status = {'weight': None,
                                    'timestamp': 0,
                                    'status_code': None}
@@ -435,48 +436,83 @@ class BinanceWebSocketApiManager(threading.Thread):
         if type(markets) is str:
             markets = [markets]
         payload = []
-        if method == "subscribe":
-            for channel in channels:
-                add_payload = {"method": method,
-                               "topic": channel}
-                symbols = []
-                for market in markets:
-                    if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
-                        if self.stream_list[stream_id]['dex_user_address'] is False:
-                            self.stream_list[stream_id]['dex_user_address'] = market
-                    else:
-                        symbols.append(market)
-                try:
-                    if self.stream_list[stream_id]["dex_user_address"] is not False:
-                        add_payload["address"] = self.stream_list[stream_id]["dex_user_address"]
-                except KeyError:
-                    pass
-                if len(symbols) > 0:
-                    add_payload["symbols"] = symbols
-                payload.append(add_payload)
-        elif method == "unsubscribe":
-            if markets:
-                # ready
-                add_payload = {"method": method}
-                markets_temp = copy.deepcopy(markets)
-                for market in markets_temp:
-                    if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
-                        if self.stream_list[stream_id]['dex_user_address'] is False:
-                            self.stream_list[stream_id]['dex_user_address'] = market
-                            markets.remove(market)
-                add_payload["symbols"] = markets
-                payload.append(add_payload)
-            if channels:
-                # ready
+        if self.is_exchange_type("dex"):
+            # Todo: markets * channels +/- the existing markets and channels of the stream
+            if method == "subscribe":
                 for channel in channels:
                     add_payload = {"method": method,
                                    "topic": channel}
+                    symbols = []
+                    for market in markets:
+                        if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
+                            if self.stream_list[stream_id]['dex_user_address'] is False:
+                                self.stream_list[stream_id]['dex_user_address'] = market
+                        else:
+                            symbols.append(market)
+                    try:
+                        if self.stream_list[stream_id]["dex_user_address"] is not False:
+                            add_payload["address"] = self.stream_list[stream_id]["dex_user_address"]
+                    except KeyError:
+                        pass
+                    if len(symbols) > 0:
+                        add_payload["symbols"] = symbols
+                        payload.append(add_payload)
+            elif method == "unsubscribe":
+                if markets:
+                    add_payload = {"method": method}
+                    for market in markets:
+                        if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
+                            if self.stream_list[stream_id]['dex_user_address'] is False:
+                                self.stream_list[stream_id]['dex_user_address'] = market
+                                markets.remove(market)
+                    if len(markets) > 0:
+                        add_payload["symbols"] = markets
+                        payload.append(add_payload)
+                if channels:
+                    for channel in channels:
+                        add_payload = {"method": method,
+                                       "topic": channel}
+                        payload.append(add_payload)
+            else:
+                logging.critical("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", "
+                                 + str(channels) + ", " + str(markets) + ") Allowed values for `method`: `subscribe` "
+                                 "or `unsubscribe`!")
+                return False
+        elif self.is_exchange_type("cex"):
+            if method == "subscribe":
+                add_payload = {"method": "SUBSCRIBE",
+                               "params": [],
+                               "id": self.get_request_id()}
+                params = []
+                for channel in channels:
+                    for market in markets:
+                        params.append(market + "@" + channel)
+                    if len(params) > 0:
+                        add_payload["params"] = params
+                        payload.append(add_payload)
+            elif method == "unsubscribe":
+                if markets:
+                    add_payload = {"method": "UNSUBSCRIBE",
+                                   "params": [],
+                                   "id": self.get_request_id()}
+                    markets_temp = copy.deepcopy(markets)
+                    for market in markets_temp:
+                        if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
+                            if self.stream_list[stream_id]['dex_user_address'] is False:
+                                self.stream_list[stream_id]['dex_user_address'] = market
+                                markets.remove(market)
+                    add_payload["symbols"] = markets
                     payload.append(add_payload)
-        else:
-            logging.critical("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", "
-                             + str(channels) + ", " + str(markets) + ") Allowed values for `method`: `subscribe` "
-                             "or `unsubscribe`!")
-            return False
+                if channels:
+                    for channel in channels:
+                        add_payload = {"method": method,
+                                       "topic": channel}
+                        payload.append(add_payload)
+            else:
+                logging.critical("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", "
+                                 + str(channels) + ", " + str(markets) + ") Allowed values for `method`: `subscribe` "
+                                                                         "or `unsubscribe`!")
+                return False
         logging.debug("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", " + str(channels) + ", " +
                       str(markets) + ") finished ...")
         return payload
@@ -485,7 +521,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Create a websocket stream
 
-        If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (market * channels).
+        If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (markets * channels).
+
+        You must split userData Streams and streams with "all" and "arr" together and with market specific streams.
 
         Example:
 
@@ -1130,6 +1168,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         return self.reconnects
+
+    def get_request_id(self):
+        return ++self.request_id
 
     def get_start_time(self):
         """
