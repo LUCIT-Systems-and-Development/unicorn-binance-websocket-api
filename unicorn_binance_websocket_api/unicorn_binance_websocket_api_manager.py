@@ -1948,7 +1948,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         If you provide one channel and one market, then every subscribed market is going to get added to the new channel
         and all subscribed channels are going to get added to the new market
 
-        How are channels and markets used to build the subscriptions:
+        How are the parameter `channels` and `markets used with subscriptions:
         https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream
 
         :param stream_id: id of a stream
@@ -1997,7 +1997,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         If you provide one channel and one market, then all subscribed markets from the specific channel and all
         subscribed markets from the specific channel are going to be removed!
 
-        How are channels and markets used to build the subscriptions:
+        How are the parameter `channels` and `markets used with subscriptions:
         https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream
 
         :param stream_id: id of a stream
