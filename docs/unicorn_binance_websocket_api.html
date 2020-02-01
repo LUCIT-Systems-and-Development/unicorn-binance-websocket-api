@@ -143,12 +143,12 @@ processing.</p>
 <code class="sig-name descname">create_stream</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a websocket stream</p>
 <p>If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (market * channels).</p>
-<dl class="simple">
-<dt>Example:</dt><dd><p>markets = [‘bnbbtc’, ‘ethbtc’]
-channels = [‘trade’, ‘kline_1’]
-Finally:  <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;trade">bnbbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;trade">ethbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;kline_1">bnbbtc<span>&#64;</span>kline_1</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;kline_1">ethbtc<span>&#64;</span>kline_1</a></p>
-</dd>
-</dl>
+<p>Example:</p>
+<blockquote>
+<div><p>markets = [‘bnbbtc’, ‘ethbtc’]</p>
+<p>channels = [‘trade’, ‘kline_1’]</p>
+<p>Finally:  <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;trade">bnbbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;trade">ethbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;kline_1">bnbbtc<span>&#64;</span>kline_1</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;kline_1">ethbtc<span>&#64;</span>kline_1</a></p>
+</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -823,7 +823,7 @@ user_address with create_stream() in the market parameter.</p>
 <code class="sig-name descname">subscribe_to_stream</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">channels=[]</em>, <em class="sig-param">markets=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Notice: This method only works with DEX!</p>
 <p>Subscribe channels, markets or an array of them to an existing DEX stream</p>
-<p>If you provide one channel and one market, then every subscribed market going to get added to the new channel
+<p>If you provide one channel and one market, then every subscribed market is going to get added to the new channel
 and all subscribed channels are going to get added to the new market</p>
 <p>How are channels and markets used to build the subscriptions:
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream</a></p>
