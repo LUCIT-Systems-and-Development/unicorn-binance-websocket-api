@@ -136,9 +136,12 @@ on, you have to use the Binance Rest API (<a class="reference external" href="ht
 <li><p><a class="reference external" href="https://testnet.binance.org">Binance DEX testnet</a> <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.org-testnet&quot;)</span></code></p></li>
 </ul>
 </li>
-<li><p>Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread.</p></li>
+<li><p>Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread, but
+you dont need to deal with asyncio in your code!</p></li>
 <li><p>No use of the twisted module, so you can use this lib in a daemonized application (compatible with
 <a class="reference external" href="https://pypi.org/project/python-daemon/">python-daemon</a>).</p></li>
+<li><p>Supports <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">subscribe</a>
+/<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a> on all exchanges!</p></li>
 <li><p>If you can not store your data in cause of a temporary technical issue, you can kick back the data to the
 stream_buffer which stores the receives in the RAM till you are able to process the data in the normal way again.</p></li>
 <li><p>Compatible with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> to convert received raw data from
