@@ -1329,6 +1329,34 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return True
 
+    def is_exchange_type(self, exchange_type=False):
+        """
+        Check the exchange type!
+
+        :param exchange_type: Valid types are `dex` and `cex`!
+        :type exchange_type: str
+        :return: bool
+        """
+        if exchange_type is False:
+            return False
+        if self.exchange == "binance.org" or \
+                self.exchange == "binance.org-testnet":
+            type = "dex"
+        elif self.exchange == "binance.com" or \
+            self.exchange == "binance.com-margin" or \
+            self.exchange == "binance.com-futures" or \
+            self.exchange == "binance.je" or \
+            self.exchange == "binance.us":
+            type = "cex"
+        else:
+            logging.CRITICAL("Can not determine exchange type in method unicorn_binance_websocket_api."
+                             "is_exchange_type()")
+            return False
+        if type == exchange_type:
+            return True
+        else:
+            return False
+
     def is_stop_request(self, stream_id):
         """
         Has a specific stream a stop_request?
@@ -1864,6 +1892,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         if error_msg:
             self.stream_list[stream_id]['status'] += " - " + str(error_msg)
 
+    def stream_is_stopping(self, stream_id):
+        # streams report with this call their shutdowns
+        logging.debug("BinanceWebSocketApiManager->stream_is_stopping(" + str(stream_id) + ")")
+        self.stream_list[stream_id]['has_stopped'] = time.time()
+        self.stream_list[stream_id]['status'] = "stopped"
+
     def subscribe_to_stream(self, stream_id, channels=[], markets=[]):
         """
         Notice: This method only works with DEX!
@@ -1912,12 +1946,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.debug("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                       ", " + str(markets) + ") finished ...")
         return True
-
-    def stream_is_stopping(self, stream_id):
-        # streams report with this call their shutdowns
-        logging.debug("BinanceWebSocketApiManager->stream_is_stopping(" + str(stream_id) + ")")
-        self.stream_list[stream_id]['has_stopped'] = time.time()
-        self.stream_list[stream_id]['status'] = "stopped"
 
     def unsubscribe_from_stream(self, stream_id, channels, markets):
         """

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.9.1.dev (development stage/unreleased)
+### Added
+- unicorn_binance_websocket_api_manager.is_exchange_type()
 ### Fixed
 - Subscribe/Unsubscribe items of DEX websockets ([card #5](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/projects/5#card-23700264))
 
