@@ -39,6 +39,12 @@ import time
 import threading
 import os
 
+# https://docs.python.org/3/library/logging.html#logging-levels
+logging.basicConfig(level=logging.DEBUG,
+                    filename=os.path.basename(__file__) + '.log',
+                    format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
+                    style="{")
+
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     while True:
@@ -47,14 +53,6 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
-
-
-# https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(filename=os.path.basename(__file__) + '.log',
-                    format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
-                    style="{")
-logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
-logging.getLogger('unicorn-log').setLevel(logging.INFO)
 
 # create instance of BinanceWebSocketApiManager for Binance.com Futures
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures")

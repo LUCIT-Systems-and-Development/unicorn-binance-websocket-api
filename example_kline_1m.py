@@ -40,12 +40,11 @@ import time
 import threading
 import os
 
-# https://docs.python.org/3/library/logging.html
-logging.basicConfig(filename=os.path.basename(__file__) + '.log',
+# https://docs.python.org/3/library/logging.html#logging-levels
+logging.basicConfig(level=logging.DEBUG,
+                    filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
-logging.getLogger('unicorn-log').setLevel(logging.INFO)
-logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
 
 # create instance of BinanceWebSocketApiManager
 binance_websocket_api_manager = BinanceWebSocketApiManager()

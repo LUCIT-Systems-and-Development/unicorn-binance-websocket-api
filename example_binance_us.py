@@ -50,11 +50,10 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(filename=os.path.basename(__file__) + '.log',
+logging.basicConfig(level=logging.DEBUG,
+                    filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
-logging.getLogger('unicorn-log').addHandler(logging.StreamHandler())
-logging.getLogger('unicorn-log').setLevel(logging.INFO)
 
 # create instance of BinanceWebSocketApiManager for Binance Jersey
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us")

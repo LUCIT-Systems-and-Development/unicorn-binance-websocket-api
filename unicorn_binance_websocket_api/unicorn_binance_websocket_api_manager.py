@@ -437,7 +437,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             markets = [markets]
         payload = []
         if self.is_exchange_type("dex"):
-            # Todo: markets * channels +/- the existing markets and channels of the stream
             if method == "subscribe":
                 for channel in channels:
                     add_payload = {"method": method,
@@ -2028,8 +2027,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         if type(self.stream_list[stream_id]['markets']) is str:
             self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets']]
 
-        self.stream_list[stream_id]['payload'] = self.create_payload(stream_id, "unsubscribe",
-                                                                     channels=channels, markets=markets)
         for channel in channels:
             self.stream_list[stream_id]['channels'].remove(channel)
         for market in markets:
@@ -2038,10 +2035,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.stream_list[stream_id]['markets'].remove(market)
                 except ValueError:
                     pass
-        self.stream_list[stream_id]['payload'].append(self.create_payload(stream_id,
-                                                                          "unsubscribe",
-                                                                          self.stream_list[stream_id]['channels'],
-                                                                          self.stream_list[stream_id]['markets']))
+
+        self.stream_list[stream_id]['payload'] = self.create_payload(stream_id, "unsubscribe",
+                                                                     channels=channels, markets=markets)
         logging.debug("BinanceWebSocketApiManager->unsubscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                       ", " + str(markets) + ") finished ...")
         return True
