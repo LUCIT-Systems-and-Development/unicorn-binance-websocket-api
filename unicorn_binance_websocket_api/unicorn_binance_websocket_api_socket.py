@@ -35,6 +35,7 @@
 
 from __future__ import print_function
 from .unicorn_binance_websocket_api_connection import BinanceWebSocketApiConnection
+import json
 import logging
 import websockets
 import sys
@@ -57,18 +58,13 @@ class BinanceWebSocketApiSocket(object):
                     self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
                     websocket.close()
                     sys.exit(0)
-
                 if self.handler_binance_websocket_api_manager.is_exchange_type("dex"):
-                    print("test1")
                     while self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
                         payload = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload'].pop(0)
-                        print(str(payload))
-                        #await websocket.send(json.dumps(payload, ensure_ascii=False))
+                        await websocket.send(json.dumps(payload, ensure_ascii=False))
                         logging.debug("BinanceWebSocketApiSocket->start_socket(" +
                                       str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ") "
                                       + "Sending payload: " + str(payload))
-                        print("test2")
-
                 try:
                     received_stream_data_json = await websocket.receive()
                     if received_stream_data_json is not None:

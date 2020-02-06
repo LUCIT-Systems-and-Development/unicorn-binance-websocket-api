@@ -104,8 +104,10 @@ if binance_websocket_api_manager.wait_till_stream_has_started(multiplex_stream_i
 
 #stream_id = binance_websocket_api_manager.create_stream(["kline_1m"], ['RAVEN-F66_BNB'])
 
-markets = ['RAVEN-F66_BNB', 'ANKR-E97_BNB', 'AWC-986_BNB', 'COVA-218_BNB', 'BCPT-95A_BNB', 'WISH-2D5_BNB',
-           'MITH-C76_BNB', 'BNB_BTCB-1DE', 'BNB_USDSB-1AC', 'BTCB-1DE_USDSB-1AC', 'NEXO-A84_BNB']
+#markets = ['RAVEN-F66_BNB', 'ANKR-E97_BNB', 'AWC-986_BNB', 'COVA-218_BNB', 'BCPT-95A_BNB', 'WISH-2D5_BNB',
+#           'MITH-C76_BNB', 'BNB_BTCB-1DE', 'BNB_USDSB-1AC', 'BTCB-1DE_USDSB-1AC', 'NEXO-A84_BNB']
+
+markets = ['ANKR-E97_BNB', 'COVA-218_BNB']
 
 binance_websocket_api_manager.subscribe_to_stream(multiplex_stream_id, markets=markets)
 
