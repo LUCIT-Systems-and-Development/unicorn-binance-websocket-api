@@ -148,6 +148,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list = {}
         self.total_received_bytes = 0
         self.total_receives = 0
+        self.total_transmitted = 0
         self.websocket_list = {}
         self.request_id = 0
         self.binance_api_status = {'weight': None,
@@ -177,6 +178,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'has_stopped': False,
                                        'reconnects': 0,
                                        'logged_reconnects': [],
+                                       'processed_transmitted_total': 0,
                                        'last_static_ping_listen_key': 0,
                                        'listen_key': False,
                                        'listen_key_cache_time': 30 * 60,
@@ -1340,23 +1342,22 @@ class BinanceWebSocketApiManager(threading.Thread):
             pass
 
     def increase_processed_receives_statistic(self, stream_id):
-        # for every receive we call this method to increase the receives statistics
         current_timestamp = int(time.time())
-        # for every received row of data, the stream counts + 1 in to the statistic (average values)
         self.stream_list[stream_id]['processed_receives_total'] += 1
-        # increase for every received row the global received stats for the current second
         try:
             self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] += 1
         except KeyError:
             self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] = 1
-        # increase `total_receives`
         self.total_receives += 1
 
     def increase_reconnect_counter(self, stream_id):
-        # at every reconnect we call this method to increase the reconnect statistic
         self.stream_list[stream_id]['logged_reconnects'].append(time.time())
         self.stream_list[stream_id]['reconnects'] += 1
         self.reconnects += 1
+
+    def increase_transmitted_counter(self, stream_id):
+        self.stream_list[stream_id]['processed_transmitted_total'] += 1
+        self.total_transmitted += 1
 
     def is_manager_stopping(self):
         """
@@ -1592,8 +1593,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                   " seconds_since_has_stopped:",
                   str(stream_info['seconds_since_has_stopped']), "\r\n"
                   " current_receiving_speed:", str(current_receiving_speed), "\r\n" +
-                  " processed_receives:",
-                  str(stream_info['processed_receives_total']), "\r\n" +
+                  " processed_receives:", str(stream_info['processed_receives_total']), "\r\n" +
+                  " transmitted:", str(self.stream_list[stream_id]['processed_transmitted_total']), "\r\n" +
                   " stream_most_receives_per_second:",
                   str(stream_info['receives_statistic_last_second']['most_receives_per_second']), "\r\n"
                   " stream_receives_per_second:",
@@ -1742,6 +1743,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " total_receives:", str(self.total_receives), "\r\n"
                     " total_received_bytes:", str(total_received_bytes), "\r\n"
                     " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +
+                    " total_transmitted:", str(self.total_transmitted), "\r\n" +
                     str(binance_api_status_row) +
                     str(add_string) +
                     " ---------------------------------------------------------------------------------------------\r\n"
@@ -1806,24 +1808,18 @@ class BinanceWebSocketApiManager(threading.Thread):
         return stream_id
 
     def run(self):
-        # overload inherited threading.run()
-        # starting threads
-        # start thread for frequent_checks
         thread_frequent_checks = threading.Thread(target=self._frequent_checks)
         thread_frequent_checks.start()
-        # start thread for keepalive_streams
         thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
         thread_keepalive_streams.start()
         time.sleep(5)
         while self.stop_manager_request is None:
             if self._keepalive_streams_restart_request is True:
-                # start thread for keepalive_streams
                 self._keepalive_streams_restart_request = None
                 thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
                 thread_keepalive_streams.start()
             if self._frequent_checks_restart_request is True:
                 self._frequent_checks_restart_request = None
-                # start thread for frequent_checks
                 thread_frequent_checks = threading.Thread(target=self._frequent_checks)
                 thread_frequent_checks.start()
             time.sleep(0.2)
@@ -1940,8 +1936,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def subscribe_to_stream(self, stream_id, channels=[], markets=[]):
         """
-        Notice: This method only works with DEX!
-
         Subscribe channels, markets or an array of them to an existing DEX stream
 
         If you provide one channel and one market, then every subscribed market is going to get added to the new channel
@@ -1989,10 +1983,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                       ", " + str(markets) + ") finished ...")
         return True
 
-    def unsubscribe_from_stream(self, stream_id, channels, markets):
+    def unsubscribe_from_stream(self, stream_id, channels=[], markets=[]):
         """
-        Notice: This method only works with DEX!
-
         Unsubscribe channels, markets or an array of them from an existing DEX stream
 
         If you provide one channel and one market, then all subscribed markets from the specific channel and all
@@ -2030,7 +2022,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets']]
 
         for channel in channels:
-            self.stream_list[stream_id]['channels'].remove(channel)
+            try:
+                self.stream_list[stream_id]['channels'].remove(channel)
+            except ValueError:
+                pass
         for market in markets:
             if re.match(r'[a-zA-Z0-9]{41,43}', market) is None:
                 try:

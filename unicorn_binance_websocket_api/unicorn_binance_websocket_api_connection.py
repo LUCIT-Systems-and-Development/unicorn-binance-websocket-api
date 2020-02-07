@@ -202,14 +202,12 @@ class BinanceWebSocketApiConnection(object):
             sys.exit(0)
 
     def close(self):
-        # used to close the stream
         self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
         logging.info("binance_websocket_api_connection->close(" + str(self.stream_id) + ")")
         self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
         sys.exit(0)
 
     async def receive(self):
-        # method to catch the data from the stream
         self.handler_binance_websocket_api_manager.set_heartbeat(self.stream_id)
         try:
             received_data_json = await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].recv()
@@ -251,8 +249,8 @@ class BinanceWebSocketApiConnection(object):
             sys.exit(0)
 
     async def send(self, data):
-        # method to send data to the endpoint
         try:
             await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].send(data)
+            self.handler_binance_websocket_api_manager.increase_transmitted_counter(self.stream_id)
         except KeyError:
             pass
