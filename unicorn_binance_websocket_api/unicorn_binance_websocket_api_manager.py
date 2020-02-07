@@ -1980,9 +1980,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['channels'] = list(set(self.stream_list[stream_id]['channels'] + channels))
         self.stream_list[stream_id]['markets'] = list(set(self.stream_list[stream_id]['markets'] + markets))
 
-        self.stream_list[stream_id]['payload'].append(self.create_payload(stream_id, "subscribe",
-                                                      channels=self.stream_list[stream_id]['channels'],
-                                                      markets=self.stream_list[stream_id]['markets']))
+        payload = self.create_payload(stream_id, "subscribe",
+                                      channels=self.stream_list[stream_id]['channels'],
+                                      markets=self.stream_list[stream_id]['markets'])
+        for item in payload:
+            self.stream_list[stream_id]['payload'].append(item)
         logging.debug("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                       ", " + str(markets) + ") finished ...")
         return True
@@ -2036,8 +2038,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 except ValueError:
                     pass
 
-        self.stream_list[stream_id]['payload'] = self.create_payload(stream_id, "unsubscribe",
-                                                                     channels=channels, markets=markets)
+        payload = self.create_payload(stream_id, "unsubscribe",
+                                      channels=channels, markets=markets)
+        for item in payload:
+            self.stream_list[stream_id]['payload'].append(item)
         logging.debug("BinanceWebSocketApiManager->unsubscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                       ", " + str(markets) + ") finished ...")
         return True

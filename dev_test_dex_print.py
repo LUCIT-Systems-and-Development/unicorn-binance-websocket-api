@@ -42,7 +42,6 @@ import os
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-# https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
