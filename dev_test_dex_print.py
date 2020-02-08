@@ -68,32 +68,32 @@ worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, ar
 worker_thread.start()
 
 # userAddress streams
-binance_dex_user_address = "bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6"
-id = binance_websocket_api_manager.create_stream('orders', binance_dex_user_address)
-binance_websocket_api_manager.create_stream('accounts', binance_dex_user_address)
-binance_websocket_api_manager.create_stream('transfers', binance_dex_user_address)
-user_address_multi_stream_id = binance_websocket_api_manager.create_stream(['orders', 'transfers', 'accounts'],
-                                                                           binance_dex_user_address)
+#binance_dex_user_address = "bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6"
+#id = binance_websocket_api_manager.create_stream('orders', binance_dex_user_address)
+#binance_websocket_api_manager.create_stream('accounts', binance_dex_user_address)
+#binance_websocket_api_manager.create_stream('transfers', binance_dex_user_address)
+#user_address_multi_stream_id = binance_websocket_api_manager.create_stream(['orders', 'transfers', 'accounts'],
+#                                                                           binance_dex_user_address)
 
 time.sleep(5)
-binance_websocket_api_manager.print_stream_info(user_address_multi_stream_id)
+#binance_websocket_api_manager.print_stream_info(user_address_multi_stream_id)
 time.sleep(5)
 
 #markets = 'RAVEN-F66_BNB' # live
 markets = ['000-0E1_BNB'] # testnet
 channels = ['trades', 'kline_1m', 'kline_5m', 'kline_15m']
 
-binance_websocket_api_manager.create_stream(["allTickers"], ["$all"])
-binance_websocket_api_manager.create_stream(["allMiniTickers"], ["$all"])
-binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
+#binance_websocket_api_manager.create_stream(["allTickers"], ["$all"])
+#binance_websocket_api_manager.create_stream(["allMiniTickers"], ["$all"])
+#binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
 
-binance_websocket_api_manager.create_stream(["trades"], markets)
-binance_websocket_api_manager.create_stream(["marketDepth"], markets)
+#binance_websocket_api_manager.create_stream(["trades"], markets)
+#binance_websocket_api_manager.create_stream(["marketDepth"], markets)
 
-binance_websocket_api_manager.create_stream(["kline_5m"], markets)
-binance_websocket_api_manager.create_stream(["ticker"], markets)
-binance_websocket_api_manager.create_stream(["miniTicker"], markets)
-multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+#binance_websocket_api_manager.create_stream(["kline_5m"], markets)
+#binance_websocket_api_manager.create_stream(["ticker"], markets)
+#binance_websocket_api_manager.create_stream(["miniTicker"], markets)
+#multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 
 stream_id = binance_websocket_api_manager.create_stream(["kline_1m"], markets)
 binance_websocket_api_manager.print_stream_info(stream_id)
@@ -114,6 +114,15 @@ markets = ['BCPT-95A_BNB', 'WISH-2D5_BNB',
 channels = ['trades', 'kline_15m', 'marketDepth', 'ticker', 'miniTicker', 'marketDiff']
 binance_websocket_api_manager.unsubscribe_from_stream(stream_id, channels=channels, markets=markets)
 
+binance_websocket_api_manager.get_stream_subscriptions(stream_id)
 binance_websocket_api_manager.print_summary()
+
+binance_websocket_api_manager.get_stream_subscriptions(stream_id)
+
+binance_websocket_api_manager.get_stream_subscriptions(stream_id)
+
+binance_websocket_api_manager.get_stream_subscriptions(stream_id)
+
+binance_websocket_api_manager.get_stream_subscriptions(stream_id)
 
 
