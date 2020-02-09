@@ -58,17 +58,20 @@ class BinanceWebSocketApiSocket(object):
                     self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
                     websocket.close()
                     sys.exit(0)
-                if self.handler_binance_websocket_api_manager.is_exchange_type("dex"):
-                    while self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
-                        payload = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload'].pop(0)
-                        await websocket.send(json.dumps(payload, ensure_ascii=False))
-                        logging.debug("BinanceWebSocketApiSocket->start_socket(" +
-                                      str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ") "
-                                      + "Sending payload: " + str(payload))
+                while self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
+                    payload = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload'].pop(0)
+                    await websocket.send(json.dumps(payload, ensure_ascii=False))
+                    logging.debug("BinanceWebSocketApiSocket->start_socket(" +
+                                  str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ") "
+                                  + "Sending payload: " + str(payload))
                 try:
                     received_stream_data_json = await websocket.receive()
                     if received_stream_data_json is not None:
                         self.handler_binance_websocket_api_manager.process_stream_data(received_stream_data_json)
+                        if "error" in received_stream_data_json:
+                            logging.error("BinanceWebSocketApiSocket->start_socket(" +
+                                          str(self.stream_id) + ") "
+                                          "Received error message: " + str(received_stream_data_json))
                 except websockets.exceptions.ConnectionClosed as error_msg:
                     logging.critical("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") Exception ConnectionClosed "

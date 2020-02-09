@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_binance_dex.py
+# File: dev_test_dex_subscribe.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -41,7 +41,7 @@ import os
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(level=logging.ERROR,
+logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
@@ -83,6 +83,8 @@ binance_websocket_api_manager.unsubscribe_from_stream(stream_id,
                                                       channels=['kline_1m', 'marketDepth',
                                                                 'ticker', 'miniTicker', 'marketDiff'],
                                                       markets=markets)
+
+binance_websocket_api_manager.get_stream_subscriptions(stream_id)
 
 
 while True:

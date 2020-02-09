@@ -9,7 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - unicorn_binance_websocket_api_manager.is_exchange_type()
 - support for subscribe/unsubscribe for CEX websockets
-- unicorn_binance_websocket_api_manager.list_subscriptions()
+- unicorn_binance_websocket_api_manager.get_stream_subscriptions()
+- unicorn_binance_websocket_api_manager.increase_transmitted_counter() and added output to 
+  print_summary() and print_stream_info() 
 ### Fixed
 - Subscribe/unsubscribe items of DEX websockets ([card #5](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/projects/5#card-23700264))
 

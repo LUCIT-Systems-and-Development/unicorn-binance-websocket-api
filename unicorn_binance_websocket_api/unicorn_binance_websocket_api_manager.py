@@ -58,6 +58,10 @@ class BinanceWebSocketApiManager(threading.Thread):
     A python API to use the Binance Websocket API`s (com, com-margin, com-futures, jersey, us, dex/chain+testnet) in a easy, fast,
     flexible, robust and fully-featured way.
 
+    This library supports two different kind of websocket endpoints:
+    - CEX (Centralized exchange): binance.com, binance.je, binance.us
+    - DEX (Decentralized exchange): binance.org
+
     Binance.com websocket API documentation:
     https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
     https://binance-docs.github.io/apidocs/futures/en/#user-data-streams
@@ -547,7 +551,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: stream_id or False
         """
-
         # create a stream
         stream_id = uuid.uuid4()
         if not self.is_websocket_uri_length_valid(channels, markets):
@@ -582,7 +585,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: str or False
         """
-
         payload = []
         if type(channels) is str:
             channels = [channels]
@@ -623,7 +625,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
             elif "arr" in markets or "$all" in channels:
                 return self.websocket_base_uri + "ws/" + channels[0] + "@" + markets[0]
-            elif self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
+            elif self.is_exchange_type("dex"):
                 if re.match(r'[a-zA-Z0-9]{41,43}', markets[0]) is not None:
                     try:
                         if self.stream_list[stream_id]['dex_user_address'] is False:
@@ -646,7 +648,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 else:
                     logging.error("Error: not able to create websocket URI for DEX")
                     return False
-        if self.exchange == "binance.org" or self.exchange == "binance.org-testnet":
+        if self.is_exchange_type("dex"):
             query = "ws"
             if stream_id:
                 payload = self.create_payload(stream_id, "subscribe", channels=channels, markets=markets)
@@ -1222,20 +1224,36 @@ class BinanceWebSocketApiManager(threading.Thread):
             pass
         return temp_stream_list[stream_id]
 
-    def get_stream_subscriptions(self, stream_id):
+    def get_stream_subscriptions(self, stream_id, request_id=False):
         """
         Listing subscriptions
 
+        This function is supported by CEX endpoints only!
+
         https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions
 
-        :param stream_id:
+        :param stream_id: id of a stream
+        :type stream_id: uuid
+        :param request_id: id to use for the request
+        :type request_id: int
         :return: bool
         """
-        payload = {"method": "LIST_SUBSCRIPTIONS",
-                   "id": self.get_request_id()}
-        self.stream_list[stream_id]['payload'].append(payload)
-        logging.debug("BinanceWebSocketApiManager->get_stream_subscriptions(" + str(stream_id) + ") payload appended!")
-        return True
+        if request_id is False:
+            request_id = self.get_request_id()
+        if self.is_exchange_type('dex'):
+            logging.error("BinanceWebSocketApiManager->get_stream_subscriptions(" + str(stream_id) + ", " +
+                          str(request_id) + ") DEX websockets dont support the listing of subscriptions! Request not "
+                          "sent!")
+            return False
+        elif self.is_exchange_type('cex'):
+            payload = {"method": "LIST_SUBSCRIPTIONS",
+                       "id": str(request_id)}
+            self.stream_list[stream_id]['payload'].append(payload)
+            logging.debug("BinanceWebSocketApiManager->get_stream_subscriptions(" + str(stream_id) + ", " +
+                          str(request_id) + ") payload added!")
+            return True
+        else:
+            return False
 
     def get_stream_list(self):
         """
@@ -1475,7 +1493,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: bool
         """
         # binance DEX doesnt have the payload in the URI, it can be transmitted through the socket connection
-        if self.exchange != "binance.org" or self.exchange != "binance.org-testnet":
+        if self.is_exchange_type("dex"):
             return True
 
         # we know the length for a single !userData is valid (this avoids extra handling's of stream_id,
@@ -1972,11 +1990,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logging.debug("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                       ", " + str(markets) + ") started ...")
-        if self.exchange != "binance.org" and self.exchange != "binance.org-testnet":
-            logging.critical("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ", "
-                             + str(channels) + ", " + str(markets) + ") Error: Only allowed to use with "
-                             + "a DEX/CHAIN websockets!")
-            return False
         if type(channels) is str:
             channels = [channels]
         if type(markets) is str:
@@ -2019,11 +2032,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logging.debug("BinanceWebSocketApiManager->unsubscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                       ", " + str(markets) + ") started ...")
-        if self.exchange != "binance.org" and self.exchange != "binance.org-testnet":
-            logging.critical("BinanceWebSocketApiManager->unsubscribe_to_stream(" + str(stream_id) + ", "
-                             + str(channels) + ", " + str(markets) + ") Error: Only allowed to use with "
-                             + "a DEX/CHAIN websockets!")
-            return False
         if type(channels) is str:
             channels = [channels]
         if type(markets) is str:
