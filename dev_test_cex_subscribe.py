@@ -71,22 +71,25 @@ markets = ['xrpusdt', 'rvnbtc']
 stream_id = binance_websocket_api_manager.create_stream(["kline_1m"], markets)
 
 
-markets = {'ltcusdt', 'adausdt', 'eosusdt', 'neousdt', 'btcusdt', 'bnbusdt'}
-channels = ['kline_5m', 'kline_15m']
-
+time.sleep(5)
+binance_websocket_api_manager.get_stream_subscriptions(stream_id)
 binance_websocket_api_manager.subscribe_to_stream(stream_id,
                                                   channels=['kline_1m', 'kline_5m', 'marketDepth',
                                                             'ticker', 'miniTicker', 'marketDiff'])
 
-binance_websocket_api_manager.unsubscribe_from_stream(stream_id,
-                                                      channels=['kline_1m', 'marketDepth',
-                                                                'ticker', 'miniTicker', 'marketDiff'],
-                                                      markets=markets)
+#time.sleep(5)
+#binance_websocket_api_manager.get_stream_subscriptions(stream_id)
+#binance_websocket_api_manager.unsubscribe_from_stream(stream_id,
+#                                                      channels=['kline_1m', 'marketDepth',
+#                                                                'ticker', 'miniTicker', 'marketDiff'],
+#                                                      markets=markets)
 
+time.sleep(5)
 binance_websocket_api_manager.get_stream_subscriptions(stream_id)
 
 
 while True:
     #binance_websocket_api_manager.print_summary()
     #binance_websocket_api_manager.print_stream_info(stream_id)
-    time.sleep(1)
+    binance_websocket_api_manager.get_stream_subscriptions(stream_id)
+    time.sleep(3)

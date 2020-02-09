@@ -1173,7 +1173,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         return self.reconnects
 
     def get_request_id(self):
-        return ++self.request_id
+        # Todo: make it thread safe
+        self.request_id = self.request_id + 1
+        return self.request_id
 
     def get_start_time(self):
         """
@@ -1247,7 +1249,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             return False
         elif self.is_exchange_type('cex'):
             payload = {"method": "LIST_SUBSCRIPTIONS",
-                       "id": str(request_id)}
+                       "id": request_id}
             self.stream_list[stream_id]['payload'].append(payload)
             logging.debug("BinanceWebSocketApiManager->get_stream_subscriptions(" + str(stream_id) + ", " +
                           str(request_id) + ") payload added!")
