@@ -505,8 +505,22 @@ class BinanceWebSocketApiManager(threading.Thread):
                 params = []
                 for channel in channels:
                     for market in markets:
-                        params.append(market + "@" + channel)
+                        if market == "!ticker":
+                            params.append(market + "@arr")
+                        elif market == "!miniTicker":
+                            params.append(market + "@arr")
+                        elif market == "!bookTicker":
+                            params.append(market + "@arr")
+                        elif channel == "!ticker":
+                            params.append(channel + "@arr")
+                        elif channel == "!miniTicker":
+                            params.append(channel + "@arr")
+                        elif channel == "!bookTicker":
+                            params.append(channel + "@arr")
+                        else:
+                            params.append(market + "@" + channel)
                 if len(params) > 0:
+                    params = list(set(params))
                     add_payload["params"] = params
                     payload.append(add_payload)
             elif method == "unsubscribe":
@@ -517,8 +531,22 @@ class BinanceWebSocketApiManager(threading.Thread):
                     params = []
                     for channel in self.stream_list[stream_id]['channels']:
                         for market in markets:
-                            params.append(market + "@" + channel)
+                            if market == "!ticker":
+                                params.append(market + "@arr")
+                            elif market == "!miniTicker":
+                                params.append(market + "@arr")
+                            elif market == "!bookTicker":
+                                params.append(market + "@arr")
+                            elif channel == "!ticker":
+                                params.append(channel + "@arr")
+                            elif channel == "!miniTicker":
+                                params.append(channel + "@arr")
+                            elif channel == "!bookTicker":
+                                params.append(channel + "@arr")
+                            else:
+                                params.append(market + "@" + channel)
                     if len(params) > 0:
+                        params = list(set(params))
                         add_payload["params"] = params
                         payload.append(add_payload)
                 if channels:
@@ -569,16 +597,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         # create a stream
         stream_id = uuid.uuid4()
-        if not self.is_websocket_uri_length_valid(channels, markets):
-            logging.error("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets) + ") "
-                          "Info: the allowed max length of an URI to binance websocket server is 8004 characters")
-            return False
-        else:
-            logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets) + ")")
-            loop = asyncio.new_event_loop()
-            thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels, markets))
-            thread.start()
-            return stream_id
+        logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets) + ") "
+                     "with stream_id=" + str(stream_id))
+        loop = asyncio.new_event_loop()
+        thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels, markets))
+        thread.start()
+        return stream_id
 
     def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False):
         """
@@ -673,25 +697,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             query = "stream?streams="
             for channel in channels:
-                # Test if !ticker, !miniTicker or !userDAta is part of multiplex stream and return False
                 if channel == "!ticker":
-                    logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
-                                  "Unfortunately Binance only stream it in a single stream socket! "
-                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!ticker\"]) to "
-                                  "initiate an extra connection.")
-                    return False
+                    self.subscribe_to_stream(stream_id, markets=channel)
+                    logging.debug("Create subscription " + str(channel))
                 if channel == "!miniTicker":
-                    logging.error("Can not create 'arr@!miniTicker' in a multi channel socket! "
-                                  "Unfortunately Binance only stream it in a single stream socket! ./"
-                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) to "
-                                  "initiate an extra connection.")
-                    return False
+                    self.subscribe_to_stream(stream_id, markets=channel)
+                    logging.debug("Create subscription " + str(channel))
                 if channel == "!bookTicker":
-                    logging.error("Can not create 'arr@!bookTicker' in a multi channel socket! "
-                                  "Unfortunately Binance only stream it in a single stream socket! ./"
-                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!bookTicker\"]) to "
-                                  "initiate an extra connection.")
-                    return False
+                    self.subscribe_to_stream(stream_id, markets=channel)
+                    logging.debug("Create subscription " + str(channel))
                 if channel == "!userData":
                     logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
                                   "Unfortunately Binance only stream it in a single stream socket! ./"
@@ -700,31 +714,25 @@ class BinanceWebSocketApiManager(threading.Thread):
                     return False
                 for market in markets:
                     if market == "!ticker":
-                        logging.error("Can not create 'arr@!ticker' in a multi channel socket! "
-                                      "Unfortunately Binance only stream it in a single stream socket! "
-                                      "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!ticker\"]) to "
-                                      "initiate an extra connection.")
-                        return False
+                        self.subscribe_to_stream(stream_id, markets=market)
+                        logging.debug("Create subscription " + str(market))
                     if market == "!miniTicker":
-                        logging.error("Can not create 'arr@!miniTicker' in a multi channel socket! "
-                                      "Unfortunatly Binance only stream it in a single stream socket! ./"
-                                      "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!miniTicker\"]) "
-                                      "to initiate an extra connection.")
-                        return False
+                        self.subscribe_to_stream(stream_id, markets=market)
+                        logging.debug("Create subscription " + str(market))
                     if market == "!bookTicker":
-                        logging.error("Can not create 'arr@!bookTicker' in a multi channel socket! "
-                                      "Unfortunatly Binance only stream it in a single stream socket! ./"
-                                      "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!bookTicker\"]) "
-                                      "to initiate an extra connection.")
-                        return False
+                        self.subscribe_to_stream(stream_id, markets=market)
+                        logging.debug("Create subscription " + str(market))
                     if market == "!userData":
                         logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
                                       "Unfortunatly Binance only stream it in a single stream socket! ./"
                                       "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
                                       "initiate an extra connection.")
                         return False
-                    query += market.lower() + "@" + channel + "/"
-            return self.websocket_base_uri + str(query[:-1])
+            query += market.lower() + "@" + channel
+            self.subscribe_to_stream(stream_id, markets=markets, channels=channels)
+            logging.debug("Created websocket URI for stream_id=" + str(stream_id) + " is " +
+                          self.websocket_base_uri + str(query))
+            return self.websocket_base_uri + str(query)
 
     def delete_listen_key_by_stream_id(self, stream_id):
         """
@@ -1510,6 +1518,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Is the websocket URI length valid?
 
+        *** OBSOLETE SINCE WE SEND SUBCRIPTIONS VIA send() THROUGH THE WEBSOCKET ***
+
         Binance DEX is using the subscribe methods, so this function must not get used with them and will always return
         `False`!
 
@@ -1518,23 +1528,26 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: bool
         """
+        logging.info("is_websocket_uri_length_valid() is obsolete! DONT USE IT ANYMORE!")
+        return True
+        # OBSOLETE CODE - READY TO DELETE?:
         # binance DEX doesnt have the payload in the URI, it can be transmitted through the socket connection
-        if self.is_exchange_type("dex"):
-            return True
+        #if self.is_exchange_type("dex"):
+        #    return True
 
         # we know the length for a single !userData is valid (this avoids extra handling's of stream_id,
         # api_key and api_secret)
-        if isinstance(markets, str):
-            markets = [markets]
-        if len(markets) == 1 and "!userData" in markets:
-            return True
+        #if isinstance(markets, str):
+        #    markets = [markets]
+        #if len(markets) == 1 and "!userData" in markets:
+        #    return True
 
         # do a regular test
-        uri = self.create_websocket_uri(channels, markets)
-        if len(uri) >= 8004:
-            return False
-        else:
-            return True
+        #uri = self.create_websocket_uri(channels, markets)
+        #if len(uri) >= 8004:
+        #    return False
+        #else:
+        #    return True
 
     def pop_stream_data_from_stream_buffer(self):
         """
@@ -1959,7 +1972,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         Stop the monitoring API service
         """
         try:
-            self.monitoring_api_server.stop()
+            if not isinstance(self.monitoring_api_server, bool):
+                self.monitoring_api_server.stop()
         except AttributeError as error_msg:
             logging.debug("can not execute self.monitoring_api_server.stop() - info: " + str(error_msg))
 
@@ -2021,10 +2035,19 @@ class BinanceWebSocketApiManager(threading.Thread):
             channels = [channels]
         if type(markets) is str:
             markets = [markets]
+        if type(channels) is set:
+            channels = list(channels)
+        if type(markets) is set:
+            markets = list(markets)
         if type(self.stream_list[stream_id]['channels']) is str:
             self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels']]
         if type(self.stream_list[stream_id]['markets']) is str:
             self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets']]
+        if type(self.stream_list[stream_id]['channels']) is set:
+            self.stream_list[stream_id]['channels'] = list(self.stream_list[stream_id]['channels'])
+        if type(self.stream_list[stream_id]['markets']) is set:
+            self.stream_list[stream_id]['markets'] = list(self.stream_list[stream_id]['markets'])
+
         self.stream_list[stream_id]['channels'] = list(set(self.stream_list[stream_id]['channels'] + channels))
         self.stream_list[stream_id]['markets'] = list(set(self.stream_list[stream_id]['markets'] + markets))
         payload = self.create_payload(stream_id, "subscribe",
