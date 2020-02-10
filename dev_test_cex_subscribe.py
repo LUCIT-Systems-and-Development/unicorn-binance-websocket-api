@@ -55,7 +55,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
         else:
-            print(oldest_stream_data_from_stream_buffer)
+            #print(oldest_stream_data_from_stream_buffer)
             pass
 
 
@@ -66,16 +66,18 @@ binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
 
-markets = ['xrpusdt', 'rvnbtc']
-
+#markets = ['xrpusdt', 'rvnbtc']
+markets = ['xrpusdt']
 stream_id = binance_websocket_api_manager.create_stream(["kline_1m"], markets)
 
 
 time.sleep(5)
 binance_websocket_api_manager.get_stream_subscriptions(stream_id)
-binance_websocket_api_manager.subscribe_to_stream(stream_id,
-                                                  channels=['kline_1m', 'kline_5m', 'marketDepth',
-                                                            'ticker', 'miniTicker', 'marketDiff'])
+#binance_websocket_api_manager.subscribe_to_stream(stream_id,
+#                                                  channels=['kline_1m', 'kline_5m', 'marketDepth',
+#                                                            'ticker', 'miniTicker', 'marketDiff'])
+
+#binance_websocket_api_manager.subscribe_to_stream(stream_id, channels="arr", markets="!miniTicker")
 
 #time.sleep(5)
 #binance_websocket_api_manager.get_stream_subscriptions(stream_id)

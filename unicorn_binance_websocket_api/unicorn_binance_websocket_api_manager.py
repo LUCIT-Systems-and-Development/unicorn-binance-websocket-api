@@ -93,6 +93,8 @@ class BinanceWebSocketApiManager(threading.Thread):
     def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
         self.version = "1.9.1.dev"
+        logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
+        colorama.init()
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
@@ -131,35 +133,39 @@ class BinanceWebSocketApiManager(threading.Thread):
         self._keepalive_streams_restart_request = None
         self.api_key = False
         self.api_secret = False
+        self.binance_api_status = {'weight': None,
+                                   'timestamp': 0,
+                                   'status_code': None}
         self.dex_user_address = False
         self.frequent_checks_list = {}
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
-        self.most_receives_per_second = 0
-        self.monitoring_api_server = False
-        self.monitoring_total_received_bytes = 0
-        self.monitoring_total_receives = 0
-        self.reconnects = 0
-        self.restart_requests = {}
-        self.start_time = time.time()
-        self.stream_buffer = []
         self.last_entry_added_to_stream_buffer = 0
         self.last_monitoring_check = time.time()
         self.last_update_check_github = {'timestamp': time.time(),
                                          'status': None}
         self.last_update_check_github_check_command = {'timestamp': time.time(),
                                                        'status': None}
+        self.most_receives_per_second = 0
+        self.monitoring_api_server = False
+        self.monitoring_total_received_bytes = 0
+        self.monitoring_total_receives = 0
+        self.reconnects = 0
+        self.reconnects_lock = threading.Lock()
+        self.restart_requests = {}
+        self.start_time = time.time()
+        self.stream_buffer = []
         self.stream_list = {}
         self.total_received_bytes = 0
+        self.total_received_bytes_lock = threading.Lock()
         self.total_receives = 0
+        self.total_receives_lock = threading.Lock()
         self.total_transmitted = 0
+        self.total_transmitted_lock = threading.Lock()
         self.websocket_list = {}
         self.request_id = 0
-        self.binance_api_status = {'weight': None,
-                                   'timestamp': 0,
-                                   'status_code': None}
+        self.request_id_lock = threading.Lock()
         self.start()
-        colorama.init()
 
     def _add_socket_to_socket_list(self, stream_id, channels, markets):
         # create a list entry for new sockets
@@ -431,8 +437,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.last_entry_added_to_stream_buffer = time.time()
 
     def add_total_received_bytes(self, size):
-        # add received bytes to the total received bytes statistic
-        self.total_received_bytes += int(size)
+        """
+        Add received bytes to the total received bytes statistic
+
+        :param size: int value of added bytes
+        :type size: int
+        :return:
+        """
+        with self.total_received_bytes_lock:
+            self.total_received_bytes += int(size)
 
     def create_payload(self, stream_id, method, channels=False, markets=False, ):
         logging.debug("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", " + str(channels) + ", " +
@@ -492,9 +505,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 for channel in channels:
                     for market in markets:
                         params.append(market + "@" + channel)
-                    if len(params) > 0:
-                        add_payload["params"] = params
-                        payload.append(add_payload)
+                if len(params) > 0:
+                    add_payload["params"] = params
+                    payload.append(add_payload)
             elif method == "unsubscribe":
                 if markets:
                     add_payload = {"method": "UNSUBSCRIBE",
@@ -521,8 +534,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             else:
                 logging.critical("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", "
                                  + str(channels) + ", " + str(markets) + ") Allowed values for `method`: `subscribe` "
-                                                                         "or `unsubscribe`!")
+                                 "or `unsubscribe`!")
                 return False
+        logging.debug("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", "
+                      + str(channels) + ", " + str(markets) + ") Payload: " + str(payload))
         logging.debug("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", " + str(channels) + ", " +
                       str(markets) + ") finished ...")
         return payload
@@ -1173,9 +1188,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         return self.reconnects
 
     def get_request_id(self):
-        # Todo: make it thread safe
-        self.request_id = self.request_id + 1
-        return self.request_id
+        """
+        Get a unique request ID
+
+        :return: int
+        """
+        with self.request_id_lock:
+            self.request_id += 1
+            return self.request_id
 
     def get_start_time(self):
         """
@@ -1383,16 +1403,19 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] += 1
         except KeyError:
             self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] = 1
-        self.total_receives += 1
+        with self.total_receives_lock:
+            self.total_receives += 1
 
     def increase_reconnect_counter(self, stream_id):
         self.stream_list[stream_id]['logged_reconnects'].append(time.time())
         self.stream_list[stream_id]['reconnects'] += 1
-        self.reconnects += 1
+        with self.reconnects_lock:
+            self.reconnects += 1
 
     def increase_transmitted_counter(self, stream_id):
         self.stream_list[stream_id]['processed_transmitted_total'] += 1
-        self.total_transmitted += 1
+        with self.total_transmitted_lock:
+            self.total_transmitted += 1
 
     def is_manager_stopping(self):
         """
@@ -1921,6 +1944,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Stop the BinanceWebSocketApiManager with all streams and management threads
         """
+        logging.info("Stopping unicorn_binance_websocket_api_manager " + self.version + " ...")
         # send signal to all threads
         self.stop_manager_request = True
         # delete listenKeys
