@@ -61,7 +61,7 @@ class BinanceWebSocketApiSocket(object):
                 while self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
                     payload = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload'].pop(0)
                     await websocket.send(json.dumps(payload, ensure_ascii=False))
-                    logging.debug("BinanceWebSocketApiSocket->start_socket(" +
+                    logging.info("BinanceWebSocketApiSocket->start_socket(" +
                                   str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ") "
                                   + "Sending payload: " + str(payload))
                 try:
@@ -73,9 +73,9 @@ class BinanceWebSocketApiSocket(object):
                                           str(self.stream_id) + ") "
                                           "Received error message: " + str(received_stream_data_json))
                         elif "result" in received_stream_data_json:
-                            logging.debug("BinanceWebSocketApiSocket->start_socket(" +
-                                          str(self.stream_id) + ") "
-                                          "Received result message: " + str(received_stream_data_json))
+                            logging.info("BinanceWebSocketApiSocket->start_socket(" +
+                                         str(self.stream_id) + ") "
+                                         "Received result message: " + str(received_stream_data_json))
                 except websockets.exceptions.ConnectionClosed as error_msg:
                     logging.critical("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") Exception ConnectionClosed "
