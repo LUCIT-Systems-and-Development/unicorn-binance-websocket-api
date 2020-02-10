@@ -287,7 +287,6 @@ class TestBinanceOrgManager(unittest.TestCase):
         payload = self.binance_org_websocket_api_manager.create_payload(stream_id, 'subscribe',
                                                                         ['orders', 'transfers', 'accounts'],
                                                                         'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
-        print(str(payload))
         self.assertEqual(str(payload),
                          "[{'method': 'subscribe', 'topic': 'orders', 'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}, "
                          "{'method': 'subscribe', 'topic': 'transfers', 'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}, "
