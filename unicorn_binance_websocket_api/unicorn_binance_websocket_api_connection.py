@@ -201,8 +201,11 @@ class BinanceWebSocketApiConnection(object):
     def close(self):
         self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
         logging.info("binance_websocket_api_connection->close(" + str(self.stream_id) + ")")
-        self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
-        sys.exit(0)
+        try:
+            self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+        except KeyError:
+            logging.debug("binance_websocket_api_connection->close(" +
+                          str(self.stream_id) + ") - Stream not found!")
 
     async def receive(self):
         self.handler_binance_websocket_api_manager.set_heartbeat(self.stream_id)

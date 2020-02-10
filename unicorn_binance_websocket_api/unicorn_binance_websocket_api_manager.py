@@ -470,6 +470,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     try:
                         if self.stream_list[stream_id]["dex_user_address"] is not False:
                             add_payload["address"] = self.stream_list[stream_id]["dex_user_address"]
+                            payload.append(add_payload)
                     except KeyError:
                         pass
                     if len(symbols) > 0:

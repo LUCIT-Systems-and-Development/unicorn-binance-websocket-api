@@ -257,8 +257,8 @@ class TestBinanceOrgManager(unittest.TestCase):
 
         stream_id = self.binance_org_websocket_api_manager.create_stream(['trades', 'kline_1h'],
                                                                   ['RAVEN-F66_BNB', 'ANKR-E97_BNB'])
-        payload = self.binance_org_websocket_api_manager._create_payload(stream_id, "subscribe", ['trades', 'kline_1h'],
-                                                                         ['RAVEN-F66_BNB', 'ANKR-E97_BNB'])
+        payload = self.binance_org_websocket_api_manager.create_payload(stream_id, "subscribe", ['trades', 'kline_1h'],
+                                                                        ['RAVEN-F66_BNB', 'ANKR-E97_BNB'])
         self.assertEqual(str(payload),
                          "[{'method': 'subscribe', 'topic': 'trades', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}, "
                          "{'method': 'subscribe', 'topic': 'kline_1h', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}]")
@@ -284,9 +284,10 @@ class TestBinanceOrgManager(unittest.TestCase):
     def test_create_uri_user_address_multi_org_subscribe(self):
         stream_id = self.binance_org_websocket_api_manager.create_stream(['orders', 'transfers', 'accounts'],
                                                                          'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
-        payload = self.binance_org_websocket_api_manager._create_payload(stream_id, 'subscribe',
-                                                                         ['orders', 'transfers', 'accounts'],
-                                                                         'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
+        payload = self.binance_org_websocket_api_manager.create_payload(stream_id, 'subscribe',
+                                                                        ['orders', 'transfers', 'accounts'],
+                                                                        'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
+        print(str(payload))
         self.assertEqual(str(payload),
                          "[{'method': 'subscribe', 'topic': 'orders', 'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}, "
                          "{'method': 'subscribe', 'topic': 'transfers', 'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}, "
@@ -294,7 +295,7 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     def test_create_misc_single_org_subscribe(self):
         stream_id = self.binance_org_websocket_api_manager.create_stream(["trades"], ["RAVEN-F66_BNB"])
-        payload = self.binance_org_websocket_api_manager._create_payload(stream_id, 'subscribe',
+        payload = self.binance_org_websocket_api_manager.create_payload(stream_id, 'subscribe',
                                                                          ['trades'],
                                                                          'RAVEN-F66_BNB')
         self.assertEqual(str(payload),
@@ -303,9 +304,9 @@ class TestBinanceOrgManager(unittest.TestCase):
     def test_create_misc_multi_org_subscribe(self):
         stream_id = self.binance_org_websocket_api_manager.create_stream(["trades", 'kline_1m'],
                                                                          ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
-        payload = self.binance_org_websocket_api_manager._create_payload(stream_id, 'subscribe',
-                                                                         ["trades", 'kline_1m'],
-                                                                         ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
+        payload = self.binance_org_websocket_api_manager.create_payload(stream_id, 'subscribe',
+                                                                        ["trades", 'kline_1m'],
+                                                                        ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
         self.assertEqual(str(payload),
                          "[{'method': 'subscribe', 'topic': 'trades', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}, "
                          "{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}]")
@@ -313,9 +314,9 @@ class TestBinanceOrgManager(unittest.TestCase):
     def test_create_misc_multi_org_unsubscribe(self):
         stream_id = self.binance_org_websocket_api_manager.create_stream(["trades", 'kline_1m'],
                                                                          ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
-        payload = self.binance_org_websocket_api_manager._create_payload(stream_id, 'unsubscribe',
-                                                                         ["trades", 'kline_1m'],
-                                                                         ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
+        payload = self.binance_org_websocket_api_manager.create_payload(stream_id, 'unsubscribe',
+                                                                        ["trades", 'kline_1m'],
+                                                                        ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
         self.assertEqual(str(payload),
                          "[{'method': 'unsubscribe', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}, "
                          "{'method': 'unsubscribe', 'topic': 'trades'}, "
@@ -324,9 +325,9 @@ class TestBinanceOrgManager(unittest.TestCase):
     def test_create_misc_single_org_unsubscribe(self):
         stream_id = self.binance_org_websocket_api_manager.create_stream(["trades"],
                                                                          ["RAVEN-F66_BNB"])
-        payload = self.binance_org_websocket_api_manager._create_payload(stream_id, 'unsubscribe',
-                                                                         ["trades"],
-                                                                         ["RAVEN-F66_BNB"])
+        payload = self.binance_org_websocket_api_manager.create_payload(stream_id, 'unsubscribe',
+                                                                        ["trades"],
+                                                                        ["RAVEN-F66_BNB"])
         self.assertEqual(str(payload),
                          "[{'method': 'unsubscribe', 'symbols': ['RAVEN-F66_BNB']}, "
                          "{'method': 'unsubscribe', 'topic': 'trades'}]")

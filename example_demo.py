@@ -130,9 +130,9 @@ channels = {'trade', 'kline_1', 'kline_5', 'kline_15', 'kline_30', 'kline_1h', '
 print(channels)
 print(markets, "\r\n")
 time.sleep(1)
-#multi_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+multi_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 time.sleep(3)
-#binance_websocket_api_manager.stop_stream(multi_multi_stream_id)
+binance_websocket_api_manager.stop_stream(multi_multi_stream_id)
 time.sleep(2)
 print("\r\n================================== Stopped multi multi socket  ========================================\r\n")
 
