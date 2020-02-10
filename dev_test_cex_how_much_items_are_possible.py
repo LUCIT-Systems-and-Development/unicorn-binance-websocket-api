@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: dev_test_cex_too_long_uri_test.py
+# File: dev_test_cex_how_much_items_are_possible.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -55,8 +55,8 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
         else:
-            print(oldest_stream_data_from_stream_buffer)
-            #pass
+            #print(oldest_stream_data_from_stream_buffer)
+            pass
 
 
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
@@ -71,12 +71,15 @@ markets = ['bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
            'neobtc', 'adaeth', 'icxusdt', 'btctusd', 'icxbtc', 'btcusdc', 'wanbtc', 'zecbtc', 'wtcbtc']
 
 channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
+print("channels:", str(len(channels)))
+print("markets:", str(len(markets)))
 
 stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 
 markets = ['batbtc', 'adabnb', 'etcusdt', 'qtumusdt', 'xmrbtc', 'trxeth', 'adatusd', 'trxxrp', 'trxbnb',
            'dashbtc', 'rvnbnb', 'bchabctusd', 'etcbtc', 'bnbeth', 'ethpax', 'nanobtc', 'xembtc']
 binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
+print("markets:", str(len(markets)))
 
 markets = ['xrpbnb',
            'bchabcpax', 'xrpeth', 'bttbnb', 'ltcbnb', 'agibtc', 'zrxusdt', 'xlmbnb', 'ltceth', 'eoseth',
@@ -90,6 +93,7 @@ markets = ['engbtc', 'zileth', 'xlmeth', 'eosbnb', 'xrppax', 'lskbtc', 'npxsbtc'
            'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
            'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth']
 #binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
+
 
 
 while True:

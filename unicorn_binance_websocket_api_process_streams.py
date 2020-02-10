@@ -84,6 +84,8 @@ class BinanceWebSocketApiProcessStreams(object):
                 BinanceWebSocketApiProcessStreams.anything_else(unicorn_fied_stream_data)
         except KeyError as error_msg:
             print("received_data: " + str(received_stream_data_json), "error_msg: " + str(error_msg))
+        except TypeError:
+            pass
 
     @staticmethod
     def aggtrade(stream_data):

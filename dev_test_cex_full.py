@@ -35,19 +35,40 @@
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import logging
+import os
 import time
+import threading
 
-# import class to process stream data
-from unicorn_binance_websocket_api_process_streams_without_output import BinanceWebSocketApiProcessStreams
 
 # https://docs.python.org/3/library/logging.html#logging-levels
+def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
+    print("waiting 30 seconds, then we start flushing the stream_buffer")
+    time.sleep(30)
+    while True:
+        if binance_websocket_api_manager.is_manager_stopping():
+            exit(0)
+        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+        if oldest_stream_data_from_stream_buffer is False:
+            time.sleep(0.01)
+        else:
+            try:
+                print(oldest_stream_data_from_stream_buffer)
+            except Exception:
+                # not able to process the data? write it back to the stream_buffer
+                binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
+
+
 logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
 # create instance of BinanceWebSocketApiManager and provide the function for stream processing
-binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
+binance_websocket_api_manager = BinanceWebSocketApiManager()
+
+# start a worker process to process to move the received stream_data from the stream_buffer to a print function
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread.start()
 
 print("testing ws/ single streams")
 

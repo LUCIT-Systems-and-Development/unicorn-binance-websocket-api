@@ -60,7 +60,8 @@ markets = ['bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
            'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
            'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth']
 
-channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
+channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5', 'depth10',
+            'depth20']
 
 streams = []
 for market in markets:
@@ -72,7 +73,7 @@ print("generated stream items:", len(streams), "\r\n")
 query = ""
 round = 0
 #start_testing = int(input("start at round (try 484): "))
-start_testing = 484
+start_testing = 1013
 if start_testing != "":
     for stream in streams:
         if round < len(streams):
