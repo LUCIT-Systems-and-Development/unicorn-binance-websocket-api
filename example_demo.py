@@ -126,7 +126,7 @@ print("\r\n=========================================== Stopped ticker all ======
 
 print("\r\n=================================== Starting multi multi socket =======================================\r\n")
 channels = {'trade', 'kline_1', 'kline_5', 'kline_15', 'kline_30', 'kline_1h', 'kline_12h', 'kline_1w',
-                'miniTicker', 'depth20', '!miniTicker', '!ticker'}
+            'miniTicker', 'depth20'}
 print(channels)
 print(markets, "\r\n")
 time.sleep(1)
@@ -135,6 +135,19 @@ time.sleep(3)
 binance_websocket_api_manager.stop_stream(multi_multi_stream_id)
 time.sleep(2)
 print("\r\n================================== Stopped multi multi socket  ========================================\r\n")
+
+print("\r\n============================= Starting multi multi socket subscribe ===================================\r\n")
+channels = {'trade', 'kline_1', 'kline_5', 'kline_15', 'kline_30', 'kline_1h', 'kline_12h', 'kline_1w',
+            'miniTicker', 'depth20', '!miniTicker', '!ticker'}
+print(channels)
+print(markets, "\r\n")
+time.sleep(1)
+multi_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+time.sleep(3)
+binance_websocket_api_manager.stop_stream(multi_multi_stream_id)
+time.sleep(2)
+print("\r\n============================== Stopped multi multi socket subscribe ===================================\r\n")
+
 
 print("\r\n=============================== Stopping BinanceWebSocketManager ======================================\r\n")
 binance_websocket_api_manager.stop_manager_with_all_streams()
