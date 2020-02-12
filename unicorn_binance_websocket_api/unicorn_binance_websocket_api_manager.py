@@ -261,7 +261,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     # receives_statistic_last_second
                     delete_index = []
                     if len(self.stream_list[stream_id]['receives_statistic_last_second']['entries']) > self.keep_max_received_last_second_entries:
-                        for timestamp_key in self.stream_list[stream_id]['receives_statistic_last_second']['entries']:
+                        temp_entries = copy.deepcopy(self.stream_list[stream_id]['receives_statistic_last_second']['entries'])
+                        for timestamp_key in temp_entries:
                             try:
                                 if timestamp_key < current_timestamp - self.keep_max_received_last_second_entries:
                                     delete_index.append(timestamp_key)
@@ -277,7 +278,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     delete_index = []
                     if len(self.stream_list[stream_id]['transfer_rate_per_second']['bytes']) > self.keep_max_received_last_second_entries:
                         try:
-                            for timestamp_key in self.stream_list[stream_id]['transfer_rate_per_second']['bytes']:
+                            temp_bytes = self.stream_list[stream_id]['transfer_rate_per_second']['bytes']
+                            for timestamp_key in temp_bytes:
                                 try:
                                     if timestamp_key < current_timestamp - self.keep_max_received_last_second_entries:
                                         delete_index.append(timestamp_key)

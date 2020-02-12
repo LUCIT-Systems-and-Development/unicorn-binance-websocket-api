@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   print_summary() and print_stream_info() 
 ### Fixed
 - Subscribe/unsubscribe items of DEX websockets ([card #5](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/projects/5#card-23700264))
+- `['receives_statistic_last_second']` dict is changing size during iteration. ([issue #37](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/37))
 
 ## 1.9.1
 ### Added
