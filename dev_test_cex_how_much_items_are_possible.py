@@ -41,7 +41,7 @@ import os
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.INFO,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
@@ -55,8 +55,8 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
         else:
-            #print(oldest_stream_data_from_stream_buffer)
-            pass
+            print(oldest_stream_data_from_stream_buffer)
+            #pass
 
 
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
@@ -86,7 +86,7 @@ markets = ['xrpbnb',
            'ltctusd', 'polybnb', 'scbtc', 'steembtc', 'trxtusd', 'npxseth', 'kmdbtc', 'polybtc', 'gasbtc']
 
 markets = ['xrpbnb']
-binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
+#binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
 
 markets = ['engbtc', 'zileth', 'xlmeth', 'eosbnb', 'xrppax', 'lskbtc', 'npxsbtc', 'xmrusdt', 'ltcpax', 'xmrusdt',
            'ethtusd', 'batusdt', 'mcobtc', 'neoeth', 'bntbtc', 'eostusd', 'lrcbtc', 'funbtc', 'zecusdt',

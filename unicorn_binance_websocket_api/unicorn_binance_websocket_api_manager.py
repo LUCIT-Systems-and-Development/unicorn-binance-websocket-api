@@ -501,9 +501,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return False
         elif self.is_exchange_type("cex"):
             if method == "subscribe":
-                add_payload = {"method": "SUBSCRIBE",
-                               "params": [],
-                               "id": self.get_request_id()}
                 params = []
                 for channel in channels:
                     for market in markets:
@@ -523,8 +520,24 @@ class BinanceWebSocketApiManager(threading.Thread):
                             params.append(market + "@" + channel)
                 if len(params) > 0:
                     params = list(set(params))
-                    add_payload["params"] = params
-                    payload.append(add_payload)
+                    # bypass websocket send limit
+                    count_items = 0
+                    add_params = []
+                    for param in params:
+                        add_params.append(param)
+                        count_items += 1
+                        if count_items > 350:
+                            add_payload = {"method": "SUBSCRIBE",
+                                           "params": add_params,
+                                           "id": self.get_request_id()}
+                            payload.append(add_payload)
+                            count_items = 0
+                            add_params = []
+                    if len(add_params) > 0:
+                        add_payload = {"method": "SUBSCRIBE",
+                                       "params": add_params,
+                                       "id": self.get_request_id()}
+                        payload.append(add_payload)
             elif method == "unsubscribe":
                 if markets:
                     add_payload = {"method": "UNSUBSCRIBE",
