@@ -2153,7 +2153,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def subscribe_to_stream(self, stream_id, channels=[], markets=[]):
         """
-        Subscribe channels, markets to an existing stream
+        Subscribe channels and/or markets to an existing stream
 
         If you provide one channel and one market, then every subscribed market is going to get added to the new channel
         and all subscribed channels are going to get added to the new market!
@@ -2201,7 +2201,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def unsubscribe_from_stream(self, stream_id, channels=[], markets=[]):
         """
-        Unsubscribe channels, markets to an existing stream
+        Unsubscribe channels and/or markets to an existing stream
 
         If you provide one channel and one market, then all subscribed markets from the specific channel and all
         subscribed markets from the specific channel are going to be removed!
