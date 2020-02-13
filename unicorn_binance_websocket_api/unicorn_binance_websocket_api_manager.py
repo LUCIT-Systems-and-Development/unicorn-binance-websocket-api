@@ -59,7 +59,9 @@ class BinanceWebSocketApiManager(threading.Thread):
     flexible, robust and fully-featured way.
 
     This library supports two different kind of websocket endpoints:
+
     - CEX (Centralized exchange): binance.com, binance.je, binance.us
+
     - DEX (Decentralized exchange): binance.org
 
     Binance.com websocket API documentation:
