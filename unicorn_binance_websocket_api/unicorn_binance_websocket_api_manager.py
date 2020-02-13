@@ -631,9 +631,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (markets * channels).
 
-        Create !userData streams as single streams, they use an own endpoint and can not get combined with other streams
-        into a multiplex stream!
-
         Example:
 
             markets = ['bnbbtc', 'ethbtc']
@@ -641,6 +638,26 @@ class BinanceWebSocketApiManager(threading.Thread):
             channels = ['trade', 'kline_1']
 
             Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
+
+
+        Create !userData streams as single streams, because its using an own endpoint and can not get combined with
+        other streams in a multiplexed stream!
+
+        Example:
+        ```
+        binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
+        userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
+        ```
+
+        To create a multiplexed stream which includes also `!miniTicker@arr`, `!ticker@arr` or `!bookTicker@arr` you
+        just need to add `!miniTicker` to the cannels list - dont add `arr` to the markets list.
+
+        But you have to add `arr`if you want to start it as a single stream!
+
+        Example:
+        ```
+        userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
+        ```
 
         :param channels: provide the channels you wish to stream
         :type channels: str, tuple, list, set
