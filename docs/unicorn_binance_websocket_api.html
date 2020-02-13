@@ -204,11 +204,16 @@ with other streams in a multiplexed stream!</p>
 just need to add <cite>!bookTicker</cite> to the channels list - dont add <cite>arr</cite> (cex) or <cite>$arr</cite> (dex) to the markets list.</p>
 <blockquote>
 <div><p>Example:</p>
-<p><code class="docutils literal notranslate"><span class="pre">binance_websocket_api_manager.subscribe_to_stream(stream_id,</span> <span class="pre">channels=['kline_5m',</span> <span class="pre">'marketDepth',</span> <span class="pre">'!miniTicker'])</span></code></p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">binance_websocket_api_manager.subscribe_to_stream(stream_id,</span> <span class="pre">channels=['kline_5m',</span> <span class="pre">'marketDepth',</span> <span class="pre">'!miniTicker'])</span></code></p>
+</div></blockquote>
 </div></blockquote>
 <p>But you have to add <cite>arr</cite> or <cite>$arr</cite> if you want to start it as a single stream!</p>
 <blockquote>
+<div><p>Example:</p>
+<blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">binance_websocket_api_manager.create_stream([&quot;arr&quot;],</span> <span class="pre">[&quot;!miniTicker&quot;])</span></code></p>
+</div></blockquote>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1074,7 +1079,7 @@ and all subscribed channels are going to get added to the new market!</p>
 <code class="sig-name descname">unsubscribe_from_stream</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">channels=[]</em>, <em class="sig-param">markets=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unsubscribe channels and/or markets to an existing stream</p>
 <p>If you provide one channel and one market, then all subscribed markets from the specific channel and all
-subscribed markets from the specific channel are going to be removed!</p>
+subscribed channels from the specific markets are going to be removed!</p>
 <p>How are the parameter <cite>channels</cite> and <cite>markets</cite> used with subscriptions:
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream</a></p>
 <dl class="field-list simple">
@@ -1340,7 +1345,7 @@ subscribed markets from the specific channel are going to be removed!</p>
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.2.1
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />

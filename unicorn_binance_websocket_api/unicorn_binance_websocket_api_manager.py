@@ -661,11 +661,13 @@ class BinanceWebSocketApiManager(threading.Thread):
 
             Example:
 
-            ``binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=['kline_5m', 'marketDepth', '!miniTicker'])``
+                ``binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=['kline_5m', 'marketDepth', '!miniTicker'])``
 
         But you have to add `arr` or `$arr` if you want to start it as a single stream!
 
-            ``binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])``
+            Example:
+
+                ``binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])``
 
         :param channels: provide the channels you wish to stream
         :type channels: str, tuple, list, set
@@ -2229,7 +2231,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Unsubscribe channels and/or markets to an existing stream
 
         If you provide one channel and one market, then all subscribed markets from the specific channel and all
-        subscribed markets from the specific channel are going to be removed!
+        subscribed channels from the specific markets are going to be removed!
 
         How are the parameter `channels` and `markets` used with subscriptions:
         https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream
