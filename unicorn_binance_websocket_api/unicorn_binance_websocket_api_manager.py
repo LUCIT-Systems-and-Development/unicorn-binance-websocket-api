@@ -656,7 +656,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         Example:
         ```
-        userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
+        binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=['kline_5m', 'marketDepth', '!miniTicker'])
         ```
 
         :param channels: provide the channels you wish to stream
