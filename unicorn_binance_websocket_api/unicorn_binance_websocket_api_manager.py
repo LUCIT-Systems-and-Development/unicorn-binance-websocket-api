@@ -639,7 +639,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
             Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
 
-
         Create `!userData` streams as single streams, because its using a different endpoint and can not get combined
         with other streams in a multiplexed stream!
 
@@ -654,9 +653,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         ``userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])``
 
         To create a multiplexed stream which includes also `!miniTicker@arr`, `!ticker@arr` or `!bookTicker@arr` you
-        just need to add `!miniTicker` to the cannels list - dont add `arr` to the markets list.
+        just need to add `!miniTicker` to the cannels list - dont add `arr` (cex) or `$arr` (dex) to the markets list.
 
-        But you have to add `arr`if you want to start it as a single stream!
+        But you have to add `arr` or `$arr` if you want to start it as a single stream!
 
         Example:
 
