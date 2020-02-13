@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -179,18 +179,18 @@ processing.</p>
 <p>channels = [‘trade’, ‘kline_1’]</p>
 <p>Finally:  <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;trade">bnbbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;trade">ethbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;kline_1">bnbbtc<span>&#64;</span>kline_1</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;kline_1">ethbtc<span>&#64;</span>kline_1</a></p>
 </div></blockquote>
-<p>Create !userData streams as single streams, because its using an own endpoint and can not get combined with
-other streams in a multiplexed stream!</p>
-<p>Example:
-Set api_key and api_secret:
-<cite>binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)</cite></p>
-<p>Then start the stream:
-<cite>userdata_stream_id = binance_websocket_api_manager.create_stream([“arr”], [“!userData”])</cite></p>
+<p>Create <cite>!userData</cite> streams as single streams, because its using a different endpoint and can not get combined
+with other streams in a multiplexed stream!</p>
+<p>Example:</p>
+<p>Set api_key and api_secret:</p>
+<p><code class="docutils literal notranslate"><span class="pre">binance_websocket_api_manager.set_private_api_config(binance_api_key,</span> <span class="pre">binance_api_secret)</span></code></p>
+<p>Then start the stream:</p>
+<p><code class="docutils literal notranslate"><span class="pre">userdata_stream_id</span> <span class="pre">=</span> <span class="pre">binance_websocket_api_manager.create_stream([&quot;arr&quot;],</span> <span class="pre">[&quot;!userData&quot;])</span></code></p>
 <p>To create a multiplexed stream which includes also <cite>!miniTicker&#64;arr</cite>, <cite>!ticker&#64;arr</cite> or <cite>!bookTicker&#64;arr</cite> you
 just need to add <cite>!miniTicker</cite> to the cannels list - dont add <cite>arr</cite> to the markets list.</p>
 <p>But you have to add <a href="#id1"><span class="problematic" id="id2">`</span></a>arr`if you want to start it as a single stream!</p>
 <p>Example:</p>
-<p><cite>binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=[‘kline_5m’, ‘marketDepth’, ‘!miniTicker’])</cite></p>
+<p><code class="docutils literal notranslate"><span class="pre">binance_websocket_api_manager.subscribe_to_stream(stream_id,</span> <span class="pre">channels=['kline_5m',</span> <span class="pre">'marketDepth',</span> <span class="pre">'!miniTicker'])</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1321,7 +1321,7 @@ subscribed markets from the specific channel are going to be removed!</p>
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.4.1
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.2.1
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />

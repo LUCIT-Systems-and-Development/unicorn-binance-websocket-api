@@ -640,8 +640,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
 
 
-        Create !userData streams as single streams, because its using an own endpoint and can not get combined with
-        other streams in a multiplexed stream!
+        Create `!userData` streams as single streams, because its using a different endpoint and can not get combined
+        with other streams in a multiplexed stream!
 
         Example:
 
