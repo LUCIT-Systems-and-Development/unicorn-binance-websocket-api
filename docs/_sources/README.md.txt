@@ -174,8 +174,7 @@ click ![thumbs-up](https://s3.gifyu.com/images/tu.png) if you need one of them o
 Before you report a bug, [try the latest release](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS 
 and python version and explain how to reproduce the error. A demo script is appreciated.
 
-If you dont find an issue related to your topic, please open a new issue:
-https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues
+If you dont find an issue related to your topic, please open a new [issue](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues)!
 
 [Report a security bug!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/security/policy)
 
