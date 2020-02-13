@@ -22,7 +22,7 @@ while True:
         print(oldest_stream_data_from_stream_buffer)
 ```
 
-Thats it! 
+Basically that's it, but there are more options:
 
 ### Convert received raw webstream data into well-formed python dictionaries with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy):
 ```
@@ -37,6 +37,8 @@ binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
 channels = ['kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
 binance_websocket_api_manager.unsubscribe_from_stream(stream_id, channels=channels)
 ```
+
+[Discover even more possibilities!](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html)
 
 ## Description
 The python module [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) 
