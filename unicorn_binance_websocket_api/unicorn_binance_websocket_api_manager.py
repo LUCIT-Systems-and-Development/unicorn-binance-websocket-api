@@ -644,11 +644,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         other streams in a multiplexed stream!
 
         Example:
+
         Set api_key and api_secret:
-        `binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)`
+
+        ``binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)``
 
         Then start the stream:
-        `userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])`
+
+        ``userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])``
 
         To create a multiplexed stream which includes also `!miniTicker@arr`, `!ticker@arr` or `!bookTicker@arr` you
         just need to add `!miniTicker` to the cannels list - dont add `arr` to the markets list.
@@ -657,7 +660,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         Example:
 
-        `binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=['kline_5m', 'marketDepth', '!miniTicker'])`
+        ``binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=['kline_5m', 'marketDepth', '!miniTicker'])``
 
         :param channels: provide the channels you wish to stream
         :type channels: str, tuple, list, set
