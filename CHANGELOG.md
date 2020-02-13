@@ -5,19 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.9.1.dev (development stage/unreleased/unstable)
-### About Changes:
-- https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/38
+## 1.10.1.dev (development stage/unreleased/unstable)
+
+## 1.10.1
+### Important infos, [please read!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/38)
 ### Added
-- unicorn_binance_websocket_api_manager.is_exchange_type()
+- `unicorn_binance_websocket_api_manager.is_exchange_type()`
 - support for subscribe/unsubscribe for CEX websockets
-- unicorn_binance_websocket_api_manager.get_stream_subscriptions()
-- unicorn_binance_websocket_api_manager.increase_transmitted_counter() and added output to 
-  print_summary() and print_stream_info() 
-- split_payload()
+- `unicorn_binance_websocket_api_manager.get_stream_subscriptions()`
+- `unicorn_binance_websocket_api_manager.increase_transmitted_counter()` and added output to 
+  `print_summary()` and `print_stream_info()` 
+- `split_payload()`
 ### Changed
 - The 8004 char limit for URIs on websocket connect is bypassed via subscriptions with websocket.send() and 
-`is_websocket_uri_length_valid()` allways returns True now!
+`is_websocket_uri_length_valid()` allways returns `True` now!
 ### Fixed
 - Subscribe/unsubscribe items of DEX websockets ([card #5](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/projects/5#card-23700264))
 - `['receives_statistic_last_second']` dict is changing size during iteration. ([issue #37](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/37))

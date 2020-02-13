@@ -71,6 +71,15 @@ time.sleep(5)
 # replace stream 1 with stream 3 (stream 1 will not get stopped till stream 3 received its first data row
 binance_get_multi_stream_id = binance_websocket_api_manager.replace_stream(binance_get_ticker_stream_id, ['trade', 'depth', 'depth10', 'aggTrade', 'miniTicker'], markets)
 
+# subscribe new markets to a stream
+markets = ['engbtc', 'zileth', 'xlmeth', 'eosbnb', 'xrppax', 'lskbtc', 'npxsbtc', 'xmrusdt', 'ltcpax', 'xmrusdt',
+           'ethtusd', 'batusdt', 'mcobtc', 'neoeth', 'bntbtc', 'eostusd', 'lrcbtc', 'funbtc', 'zecusdt',
+           'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
+           'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth']
+binance_websocket_api_manager.subscribe_to_stream(binance_get_multi_stream_id, markets=markets)
+time.sleep(3)
+binance_websocket_api_manager.get_stream_subscriptions(binance_get_multi_stream_id)
+
 # monitor the streams
 while True:
     binance_websocket_api_manager.print_stream_info(binance_get_multi_stream_id)

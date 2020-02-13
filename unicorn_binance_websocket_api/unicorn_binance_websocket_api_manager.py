@@ -92,7 +92,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
-        self.version = "1.9.1.dev"
+        self.version = "1.10.0"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
         colorama.init()
         if process_stream_data is False:
@@ -168,7 +168,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.start()
 
     def _add_socket_to_socket_list(self, stream_id, channels, markets):
-        # create a list entry for new sockets
+        """
+        Create a list entry for new sockets
+
+        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :type stream_id: uuid
+        :param channels: provide the channels to create the URI
+        :type channels: str, tuple, list, set
+        :param markets: provide the markets to create the URI
+        :type markets: str, tuple, list, set
+        """
         self.stream_list[stream_id] = {'exchange': self.exchange,
                                        'stream_id': copy.deepcopy(stream_id),
                                        'channels': copy.deepcopy(channels),
@@ -198,7 +207,21 @@ class BinanceWebSocketApiManager(threading.Thread):
                       str(stream_id) + ", " + str(channels) + ", " + str(markets) + ")")
 
     def _create_stream_thread(self, loop, stream_id, channels, markets, restart=False):
-        # co function of self.create_stream to create a thread for the socket and to manage the coroutine
+        """
+        Co function of self.create_stream to create a thread for the socket and to manage the coroutine
+
+        :param loop: provide a asynio loop
+        :type loop: asyncio loop
+        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :type stream_id: uuid
+        :param channels: provide the channels to create the URI
+        :type channels: str, tuple, list, set
+        :param markets: provide the markets to create the URI
+        :type markets: str, tuple, list, set
+        :param restart: set to `True`, if its a restart!
+        :type restart: bool
+        :return:
+        """
         if restart is False:
             self._add_socket_to_socket_list(stream_id, channels, markets)
         asyncio.set_event_loop(loop)
@@ -209,6 +232,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             loop.close()
 
     def _frequent_checks(self):
+        """
+        This method gets started as a thread and is doing the frequent checks
+        """
         frequent_checks_id = time.time()
         self.frequent_checks_list[frequent_checks_id] = {'last_heartbeat': 0,
                                                          'stop_request': None,
@@ -349,6 +375,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         sys.exit(0)
 
     def _keepalive_streams(self):
+        """
+        This method is started as a thread and is observing the streams, if neccessary it restarts a died stream
+        """
         keepalive_streams_id = time.time()
         self.keepalive_streams_list[keepalive_streams_id] = {'last_heartbeat': 0,
                                                              'stop_request': None,
@@ -400,6 +429,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         sys.exit(0)
 
     def _start_monitoring_api_thread(self, host, port, warn_on_update):
+        """
+        Threaded method that servces the monitoring api
+
+        :param host: IP or hostname to use
+        :type host: str
+        :param port: Port to use
+        :type port: int
+        :param warn_on_update: Should the monitoring system report available updates?
+        :type warn_on_update: bool
+        """
         logging.info("starting monitoring API service ...")
         app = Flask(__name__)
         @app.route('/')
@@ -444,12 +483,24 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param size: int value of added bytes
         :type size: int
-        :return:
         """
         with self.total_received_bytes_lock:
             self.total_received_bytes += int(size)
 
-    def create_payload(self, stream_id, method, channels=False, markets=False, ):
+    def create_payload(self, stream_id, method, channels=False, markets=False):
+        """
+        Create the payload for subscriptions
+
+        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :type stream_id: uuid
+        :param method: `SUBSCRIBE` or `UNSUBSCRIBE`
+        :type method: str
+        :param channels: provide the channels to create the URI
+        :type channels: str, tuple, list, set
+        :param markets: provide the markets to create the URI
+        :type markets: str, tuple, list, set
+        :return: payload (list) or False
+        """
         logging.debug("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", " + str(channels) + ", " +
                       str(markets) + ") started ...")
         if type(channels) is str:
@@ -578,7 +629,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (markets * channels).
 
-        You must split userData Streams and streams with "all" and "arr" together and with market specific streams.
+        Create !userData streams as single streams, they use an own endpoint and can not get combined with other streams
+        into a multiplex stream!
 
         Example:
 
@@ -590,11 +642,9 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param channels: provide the channels you wish to stream
         :type channels: str, tuple, list, set
-
         :param markets: provide the markets you wish to stream
         :type markets: str, tuple, list, set
-
-        :return: stream_id or False
+        :return: stream_id or 'False'
         """
         # create a stream
         stream_id = uuid.uuid4()
@@ -611,19 +661,14 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param channels: provide the channels to create the URI
         :type channels: str, tuple, list, set
-
         :param markets: provide the markets to create the URI
         :type markets: str, tuple, list, set
-
         :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
         :type stream_id: uuid
-
         :param api_key: provide a valid Binance API key
         :type api_key: str
-
         :param api_secret: provide a valid Binance API secret
         :type api_secret: str
-
         :return: str or False
         """
         payload = []
@@ -762,13 +807,21 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: id of a stream
         :type stream_id: uuid
-
         :return: bool
         """
         logging.debug("deleting " + str(stream_id) + " from stream_list")
         return self.stream_list.pop(stream_id, False)
 
     def fill_up_space(self, demand_of_chars, string):
+        """
+        Add whitespaces to `string` to a length of `demand_of_chars`
+
+        :param demand_of_chars: how much chars does the string have to have?
+        :type demand_of_chars: int
+        :param string: the string that has to get filled up with spaces
+        :type string: str
+        :return: the filled up string
+        """
         blanks_pre = ""
         blanks_post = ""
         demand_of_blanks = demand_of_chars - len(str(string)) - 1
@@ -802,7 +855,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: int
         """
-        # how much receives did we have last second?
         all_receives_last_second = 0
         last_second_timestamp = int(time.time()) - 1
         for stream_id in self.stream_list:
@@ -852,6 +904,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         return self.exchange
 
     def get_human_bytesize(self, bytes, suffix=""):
+        """
+        Convert the bytes to something readable
+
+        :param bytes: amount of bytes
+        :type bytes: int
+        :param suffix: add a string after
+        :type suffix: str
+        :return:
+        """
         if bytes > 1024 * 1024 * 1024:
             bytes = str(round(bytes / (1024 * 1024 * 1024), 2)) + " gB" + suffix
         elif bytes > 1024 * 1024:
@@ -863,7 +924,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         return bytes
 
     def get_human_uptime(self, uptime):
-        # formats a timestamp to a human readable output
+        """
+        Convert a timespan of seconds into hours, days, ...
+
+        :param uptime: Uptime in seconds
+        :type uptime: int
+        :return:
+        """
         if uptime > (60 * 60 * 24):
             uptime_days = int(uptime / (60 * 60 * 24))
             uptime_hours = int(((uptime - (uptime_days * (60 * 60 * 24))) / (60 * 60)))
@@ -954,13 +1021,10 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: provide a stream_id
         :type stream_id: uuid
-
         :param api_key: provide a valid Binance API key
         :type api_key: str
-
         :param api_secret: provide a valid Binance API secret
         :type api_secret: str
-
         :return: str or False
         """
         if (self.stream_list[stream_id]['start_time'] + self.stream_list[stream_id]['listen_key_cache_time']) > \
@@ -1018,12 +1082,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get status and perfdata to monitor and collect metrics with ICINGA/Nagios
 
-        :param check_command_version: is the version of the calling check_command (https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api)
-        :type check_command_version: str
-
-        :param warn_on_update: set to `False` to disable the update warning
-        :type warn_on_update: bool
-
         status: OK, WARNING, CRITICAL
         - WARNING: on restarts, available updates
         - CRITICAL: crashed streams
@@ -1038,6 +1096,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         - reconnects
         - uptime
 
+        :param check_command_version: is the version of the calling check_command (https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api)
+        :type check_command_version: str
+        :param warn_on_update: set to `False` to disable the update warning
+        :type warn_on_update: bool
         :return: dict (text, time, return_code)
         """
         result = self.get_monitoring_status_plain(check_command_version=check_command_version,
@@ -1072,10 +1134,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param check_command_version: is the version of the calling check_command (https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api)
         :type check_command_version: str
-
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
-
         :return: dict
         """
         result = {}
@@ -1385,16 +1445,22 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param channels: provide the channels to create the URI
         :type channels: str, tuple, list, set
-
         :param markets: provide the markets to create the URI
         :type markets: str, tuple, list, set
-
         :return: int
         """
         uri = self.create_websocket_uri(channels, markets)
         return len(uri)
 
     def increase_received_bytes_per_second(self, stream_id, size):
+        """
+        Add the amount of received bytes per second
+
+        :param stream_id: id of a stream
+        :type stream_id: uuid
+        :param size: amount of bytes to add
+        :type size: int
+        """
         current_timestamp = int(time.time())
         try:
             if self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][current_timestamp]:
@@ -1407,6 +1473,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             pass
 
     def increase_processed_receives_statistic(self, stream_id):
+        """
+        Add the number of processed receives
+
+        :param stream_id: id of a stream
+        :type stream_id: uuid
+        """
         current_timestamp = int(time.time())
         self.stream_list[stream_id]['processed_receives_total'] += 1
         try:
@@ -1417,12 +1489,23 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.total_receives += 1
 
     def increase_reconnect_counter(self, stream_id):
+        """
+        Increase reconnect counter
+
+        :param stream_id: id of a stream
+        :type stream_id: uuid
+        """
         self.stream_list[stream_id]['logged_reconnects'].append(time.time())
         self.stream_list[stream_id]['reconnects'] += 1
         with self.reconnects_lock:
             self.reconnects += 1
 
     def increase_transmitted_counter(self, stream_id):
+        """
+        Increase the counter of transmitted payloads
+        :param stream_id: id of a stream
+        :type stream_id: uuid
+        """
         self.stream_list[stream_id]['processed_transmitted_total'] += 1
         with self.total_transmitted_lock:
             self.total_transmitted += 1
@@ -1521,13 +1604,18 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         *** OBSOLETE SINCE SUBSCRIPTIONS ARE SEND VIA `send()` THROUGH THE WEBSOCKET!!! ***
 
-        The length is always valid because this subscriptions are not handled via URI anymore.
+        The length is always valid because subscriptions are not handled via URI anymore.
 
         To keep it compatible this method returns True from now on!
 
+        Reason why we used this in the past:
         A test with https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
         indicates that the allowed max length of an URI to binance websocket server is 8004 characters.
 
+        :param channels: provide the channels to create the URI
+        :type channels: str, tuple, list, set
+        :param markets: provide the markets to create the URI
+        :type markets: str, tuple, list, set
         :return: True
         """
         logging.info("is_websocket_uri_length_valid() is obsolete! DONT USE IT ANYMORE!")
@@ -1654,7 +1742,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                   str(stream_info['seconds_since_has_stopped']), "\r\n"
                   " current_receiving_speed:", str(current_receiving_speed), "\r\n" +
                   " processed_receives:", str(stream_info['processed_receives_total']), "\r\n" +
-                  " transmitted:", str(self.stream_list[stream_id]['processed_transmitted_total']), "\r\n" +
+                  " transmitted_payloads:", str(self.stream_list[stream_id]['processed_transmitted_total']), "\r\n" +
                   " stream_most_receives_per_second:",
                   str(stream_info['receives_statistic_last_second']['most_receives_per_second']), "\r\n"
                   " stream_receives_per_second:",
@@ -1803,7 +1891,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " total_receives:", str(self.total_receives), "\r\n"
                     " total_received_bytes:", str(total_received_bytes), "\r\n"
                     " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +
-                    " total_transmitted:", str(self.total_transmitted), "\r\n" +
+                    " total_transmitted_payloads:", str(self.total_transmitted), "\r\n" +
                     str(binance_api_status_row) +
                     str(add_string) +
                     " ---------------------------------------------------------------------------------------------\r\n"
@@ -1832,13 +1920,10 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: id of the old stream
         :type stream_id: uuid
-
         :param new_channels: the new channel list for the stream
         :type new_channels: str, tuple, list, set
-
         :param new_markets: the new markets list for the stream
         :type new_markets: str, tuple, list, set
-
         :return: new stream_id
         """
         # starting a new socket and stop the old stream not before the new stream received its first record
@@ -1867,6 +1952,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         return stream_id
 
     def run(self):
+        """
+        This method overloads `threading.run()` and starts management threads
+        """
         thread_frequent_checks = threading.Thread(target=self._frequent_checks)
         thread_frequent_checks.start()
         thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
@@ -1892,7 +1980,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param binance_api_key: The Binance API key
         :type binance_api_key: str
-
         :param binance_api_secret: The Binance API secret
         :type binance_api_secret: str
         """
@@ -1906,11 +1993,18 @@ class BinanceWebSocketApiManager(threading.Thread):
         Is going to be the default user_address, once the websocket is created with this default value, its not possible
         to change it. If you plan to use different user_address its recommended to not use this method! Just provide the
         user_address with create_stream() in the market parameter.
+
+        :param binance_dex_user_address: Binance DEX user address
+        :type binance_dex_user_address: str
         """
         self.dex_user_address = binance_dex_user_address
 
     def set_heartbeat(self, stream_id):
-        # set heartbeat for a specific thread (should only be done by the stream itself)
+        """
+        Set heartbeat for a specific thread (should only be done by the stream itself)
+
+
+        """
         logging.debug("BinanceWebSocketApiManager->set_heartbeat(" + str(stream_id) + ")")
         try:
             self.stream_list[stream_id]['last_heartbeat'] = time.time()
@@ -1919,10 +2013,21 @@ class BinanceWebSocketApiManager(threading.Thread):
             pass
 
     def set_keep_max_received_last_second_entries(self, number_of_max_entries):
-        # set how much received_last_second entries are stored till they get deleted!
+        """
+        Set how much received_last_second entries are stored till they get deleted!
+
+        :param number_of_max_entries: number of entries to keep in list
+        :type number_of_max_entries: int
+        """
         self.keep_max_received_last_second_entries = number_of_max_entries
 
     def set_restart_request(self, stream_id):
+        """
+        Set a restart request for a specific stream
+
+        :param stream_id: id of the old stream
+        :type stream_id: uuid
+        """
         self.restart_requests[stream_id] = {'status': "new"}
 
     def split_payload(self, params, method, max_items_per_request=350):
@@ -1937,25 +2042,30 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param max_items_per_request: max size for params, if more it gets splitted
         :return: list or False
         """
-        count_items = 0
-        add_params = []
-        payload = []
-        for param in params:
-            add_params.append(param)
-            count_items += 1
-            if count_items > max_items_per_request:
+        if self.is_exchange_type('cex'):
+            count_items = 0
+            add_params = []
+            payload = []
+            for param in params:
+                add_params.append(param)
+                count_items += 1
+                if count_items > max_items_per_request:
+                    add_payload = {"method": method,
+                                   "params": add_params,
+                                   "id": self.get_request_id()}
+                    payload.append(add_payload)
+                    count_items = 0
+                    add_params = []
+            if len(add_params) > 0:
                 add_payload = {"method": method,
                                "params": add_params,
                                "id": self.get_request_id()}
                 payload.append(add_payload)
-                count_items = 0
-                add_params = []
-        if len(add_params) > 0:
-            add_payload = {"method": method,
-                           "params": add_params,
-                           "id": self.get_request_id()}
-            payload.append(add_payload)
-            return payload
+                return payload
+            else:
+                return False
+        elif self.is_exchange_type('dex'):
+            pass
         else:
             return False
 
@@ -1965,10 +2075,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param host: listening ip address, use 0.0.0.0 or a specific address (default: 127.0.0.1)
         :type host: str
-
         :param port: listening port number (default: 64201)
         :type port: int
-
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
         """
@@ -2004,7 +2112,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: id of a stream
         :type stream_id: uuid
-
         :return: bool
         """
         # stop a specific stream by stream_id
@@ -2016,7 +2123,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['stop_request'] = True
 
     def stream_is_crashing(self, stream_id, error_msg=False):
-        # if a stream can not heal itself in cause of wrong parameter (wrong market, channel type) it calls this method
+        """
+        If a stream can not heal itself in cause of wrong parameter (wrong market, channel type) it calls this method
+
+        :param stream_id: id of a stream
+        :type stream_id: uuid
+        :param error_msg: Error msg to add to the stream status!
+        :type error_msg: str
+        """
         logging.critical("BinanceWebSocketApiManager->stream_is_crashing(" + str(stream_id) + ")")
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "crashed"
@@ -2024,7 +2138,13 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stream_list[stream_id]['status'] += " - " + str(error_msg)
 
     def stream_is_stopping(self, stream_id):
-        # streams report with this call their shutdowns
+        """
+        Streams report with this call their shutdowns
+
+        :param stream_id: id of a stream
+        :type stream_id: uuid
+        :return:
+        """
         logging.debug("BinanceWebSocketApiManager->stream_is_stopping(" + str(stream_id) + ")")
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "stopped"
@@ -2041,13 +2161,10 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: id of a stream
         :type stream_id: uuid
-
         :param channels: provide the channels you wish to stream
         :type channels: str, tuple, list, set
-
         :param markets: provide the markets you wish to stream
         :type markets: str, tuple, list, set
-
         :return: bool
         """
         logging.debug("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
@@ -2092,13 +2209,10 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: id of a stream
         :type stream_id: uuid
-
         :param channels: provide the channels you wish to stream
         :type channels: str, tuple, list, set
-
         :param markets: provide the markets you wish to stream
         :type markets: str, tuple, list, set
-
         :return: bool
         """
         logging.debug("BinanceWebSocketApiManager->unsubscribe_to_stream(" + str(stream_id) + ", " + str(channels) +

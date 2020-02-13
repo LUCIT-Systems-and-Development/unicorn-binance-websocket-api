@@ -62,9 +62,10 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         else:
             from unicorn_fy import UnicornFy
             oldest_stream_data_from_stream_buffer = UnicornFy.binance_websocket(oldest_stream_data_from_stream_buffer)
-            #if oldest_stream_data_from_stream_buffer['event_time'] >= \
-            #        oldest_stream_data_from_stream_buffer['kline']['kline_close_time']:
-            print(oldest_stream_data_from_stream_buffer)
+            if oldest_stream_data_from_stream_buffer is not None:
+                if oldest_stream_data_from_stream_buffer['event_time'] >= \
+                        oldest_stream_data_from_stream_buffer['kline']['kline_close_time']:
+                    print(oldest_stream_data_from_stream_buffer)
 
 
 # start one worker process (or more) to move the received stream_data from the stream_buffer to a print function

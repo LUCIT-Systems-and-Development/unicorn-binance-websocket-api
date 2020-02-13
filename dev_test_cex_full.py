@@ -41,9 +41,13 @@ import threading
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
+logging.basicConfig(level=logging.DEBUG,
+                    filename=os.path.basename(__file__) + '.log',
+                    format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
+                    style="{")
+
+
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
-    print("waiting 30 seconds, then we start flushing the stream_buffer")
-    time.sleep(30)
     while True:
         if binance_websocket_api_manager.is_manager_stopping():
             exit(0)
@@ -57,11 +61,6 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
                 # not able to process the data? write it back to the stream_buffer
                 binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
 
-
-logging.basicConfig(level=logging.DEBUG,
-                    filename=os.path.basename(__file__) + '.log',
-                    format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
-                    style="{")
 
 # create instance of BinanceWebSocketApiManager and provide the function for stream processing
 binance_websocket_api_manager = BinanceWebSocketApiManager()
