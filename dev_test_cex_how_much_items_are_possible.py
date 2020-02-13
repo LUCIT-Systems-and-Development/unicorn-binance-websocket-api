@@ -56,7 +56,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             time.sleep(0.01)
         else:
             print(oldest_stream_data_from_stream_buffer)
-            #pass
+            pass
 
 
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
@@ -71,33 +71,36 @@ markets = ['bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
            'neobtc', 'adaeth', 'icxusdt', 'btctusd', 'icxbtc', 'btcusdc', 'wanbtc', 'zecbtc', 'wtcbtc']
 
 channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
-print("channels:", str(len(channels)))
-print("markets:", str(len(markets)))
 
 stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 
 markets = ['batbtc', 'adabnb', 'etcusdt', 'qtumusdt', 'xmrbtc', 'trxeth', 'adatusd', 'trxxrp', 'trxbnb',
            'dashbtc', 'rvnbnb', 'bchabctusd', 'etcbtc', 'bnbeth', 'ethpax', 'nanobtc', 'xembtc']
 binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
-print("markets:", str(len(markets)))
 
 markets = ['xrpbnb',
            'bchabcpax', 'xrpeth', 'bttbnb', 'ltcbnb', 'agibtc', 'zrxusdt', 'xlmbnb', 'ltceth', 'eoseth',
            'ltctusd', 'polybnb', 'scbtc', 'steembtc', 'trxtusd', 'npxseth', 'kmdbtc', 'polybtc', 'gasbtc']
 
 markets = ['xrpbnb']
-#binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
+binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
 
 markets = ['engbtc', 'zileth', 'xlmeth', 'eosbnb', 'xrppax', 'lskbtc', 'npxsbtc', 'xmrusdt', 'ltcpax', 'xmrusdt',
            'ethtusd', 'batusdt', 'mcobtc', 'neoeth', 'bntbtc', 'eostusd', 'lrcbtc', 'funbtc', 'zecusdt',
            'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
            'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth']
-#binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
+binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
+time.sleep(3)
+binance_websocket_api_manager.get_stream_subscriptions(stream_id)
 
-
+time.sleep(10)
+channels = ['trade', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
+binance_websocket_api_manager.unsubscribe_from_stream(stream_id, channels=channels)
+time.sleep(3)
+binance_websocket_api_manager.get_stream_subscriptions(stream_id)
 
 while True:
     #binance_websocket_api_manager.print_summary()
     #binance_websocket_api_manager.print_stream_info(stream_id)
-    binance_websocket_api_manager.get_stream_subscriptions(stream_id)
-    time.sleep(3)
+    #binance_websocket_api_manager.get_stream_subscriptions(stream_id)
+    time.sleep(1)

@@ -519,30 +519,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                         else:
                             params.append(market + "@" + channel)
                 if len(params) > 0:
-                    params = list(set(params))
-                    # bypass websocket send limit
-                    count_items = 0
-                    add_params = []
-                    for param in params:
-                        add_params.append(param)
-                        count_items += 1
-                        if count_items > 350:
-                            add_payload = {"method": "SUBSCRIBE",
-                                           "params": add_params,
-                                           "id": self.get_request_id()}
-                            payload.append(add_payload)
-                            count_items = 0
-                            add_params = []
-                    if len(add_params) > 0:
-                        add_payload = {"method": "SUBSCRIBE",
-                                       "params": add_params,
-                                       "id": self.get_request_id()}
-                        payload.append(add_payload)
+                    payload = self.split_payload(params, "SUBSCRIBE")
             elif method == "unsubscribe":
                 if markets:
-                    add_payload = {"method": "UNSUBSCRIBE",
-                                   "params": [],
-                                   "id": self.get_request_id()}
                     params = []
                     for channel in self.stream_list[stream_id]['channels']:
                         for market in markets:
@@ -561,20 +540,27 @@ class BinanceWebSocketApiManager(threading.Thread):
                             else:
                                 params.append(market + "@" + channel)
                     if len(params) > 0:
-                        params = list(set(params))
-                        add_payload["params"] = params
-                        payload.append(add_payload)
+                        payload = self.split_payload(params, "UNSUBSCRIBE")
                 if channels:
-                    add_payload = {"method": "UNSUBSCRIBE",
-                                   "params": [],
-                                   "id": self.get_request_id()}
-                    params = []
-                    for market in self.stream_list[stream_id]['markets']:
-                        for channel in channels:
-                            params.append(market + "@" + channel)
-                    if len(params) > 0:
-                        add_payload["params"] = params
-                        payload.append(add_payload)
+                        params = []
+                        for market in self.stream_list[stream_id]['markets']:
+                            for channel in channels:
+                                if market == "!ticker":
+                                    params.append(market + "@arr")
+                                elif market == "!miniTicker":
+                                    params.append(market + "@arr")
+                                elif market == "!bookTicker":
+                                    params.append(market + "@arr")
+                                elif channel == "!ticker":
+                                    params.append(channel + "@arr")
+                                elif channel == "!miniTicker":
+                                    params.append(channel + "@arr")
+                                elif channel == "!bookTicker":
+                                    params.append(channel + "@arr")
+                                else:
+                                    params.append(market + "@" + channel)
+                        if len(params) > 0:
+                            payload = self.split_payload(params, "UNSUBSCRIBE")
             else:
                 logging.critical("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", "
                                  + str(channels) + ", " + str(markets) + ") Allowed values for `method`: `subscribe` "
@@ -1533,36 +1519,19 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Is the websocket URI length valid?
 
-        *** OBSOLETE SINCE WE SEND SUBCRIPTIONS VIA send() THROUGH THE WEBSOCKET ***
+        *** OBSOLETE SINCE SUBSCRIPTIONS ARE SEND VIA `send()` THROUGH THE WEBSOCKET!!! ***
 
-        Binance DEX is using the subscribe methods, so this function must not get used with them and will always return
-        `False`!
+        The length is always valid because this subscriptions are not handled via URI anymore.
+
+        To keep it compatible this method returns True from now on!
 
         A test with https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
         indicates that the allowed max length of an URI to binance websocket server is 8004 characters.
 
-        :return: bool
+        :return: True
         """
         logging.info("is_websocket_uri_length_valid() is obsolete! DONT USE IT ANYMORE!")
         return True
-        # OBSOLETE CODE - READY TO DELETE?:
-        # binance DEX doesnt have the payload in the URI, it can be transmitted through the socket connection
-        #if self.is_exchange_type("dex"):
-        #    return True
-
-        # we know the length for a single !userData is valid (this avoids extra handling's of stream_id,
-        # api_key and api_secret)
-        #if isinstance(markets, str):
-        #    markets = [markets]
-        #if len(markets) == 1 and "!userData" in markets:
-        #    return True
-
-        # do a regular test
-        #uri = self.create_websocket_uri(channels, markets)
-        #if len(uri) >= 8004:
-        #    return False
-        #else:
-        #    return True
 
     def pop_stream_data_from_stream_buffer(self):
         """
@@ -1652,15 +1621,19 @@ class BinanceWebSocketApiManager(threading.Thread):
             payload_row = " payload: " + str(self.stream_list[stream_id]["payload"]) + "\r\n"
         if self.stream_list[stream_id]["dex_user_address"] is not False:
             dex_user_address_row = " user_address: " + str(self.stream_list[stream_id]["dex_user_address"]) + "\r\n"
+        channels_len = len(stream_info['channels'])
+        markets_len = len(stream_info['markets'])
+        subscriptions = channels_len * markets_len
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print("===============================================================================================\r\n"
                   " exchange:", str(self.stream_list[stream_id]['exchange']), "(lib " + str(self.version) + "-python_"
                   + platform.python_version() + ")\r\n" +
                   str(add_string) +
-                  " stream_id:", str(stream_id), "\r\n"
-                  " channels:", str(stream_info['channels']), "\r\n"
-                  " markets:", str(stream_info['markets']), "\r\n" +
+                  " stream_id:", str(stream_id), "\r\n" +
+                  " channels (" + str(channels_len) + "):", str(stream_info['channels']), "\r\n" +
+                  " markets (" + str(markets_len) + "):", str(stream_info['markets']), "\r\n" +
+                  " subscriptions: " + str(subscriptions) + "\r\n" +
                   str(payload_row) +
                   str(status_row) +
                   str(dex_user_address_row) +
@@ -1843,7 +1816,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.fill_up_space(13, all_receives_per_second.__round__(2)) + "|" +
                     self.fill_up_space(18, self.most_receives_per_second) + "|" +
                     self.fill_up_space(8, self.reconnects) + "\r\n"
-                    " ---------------------------------------------------------------------------------------------\r\n"
                     "===============================================================================================\r\n")
             except UnboundLocalError:
                 pass
@@ -1952,6 +1924,40 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def set_restart_request(self, stream_id):
         self.restart_requests[stream_id] = {'status': "new"}
+
+    def split_payload(self, params, method, max_items_per_request=350):
+        """
+        Sending more than 8000 chars via websocket.send() leads to a connection loss, 350 list elements is a good limit
+        to keep the payload length under 8000 chars and avoid reconnects
+
+        :param params: params of subscribe payload
+        :type params: str
+        :param method: SUBSCRIBE or UNSUBSCRIBE
+        :type method: str
+        :param max_items_per_request: max size for params, if more it gets splitted
+        :return: list or False
+        """
+        count_items = 0
+        add_params = []
+        payload = []
+        for param in params:
+            add_params.append(param)
+            count_items += 1
+            if count_items > max_items_per_request:
+                add_payload = {"method": method,
+                               "params": add_params,
+                               "id": self.get_request_id()}
+                payload.append(add_payload)
+                count_items = 0
+                add_params = []
+        if len(add_params) > 0:
+            add_payload = {"method": method,
+                           "params": add_params,
+                           "id": self.get_request_id()}
+            payload.append(add_payload)
+            return payload
+        else:
+            return False
 
     def start_monitoring_api(self, host='127.0.0.1', port=64201, warn_on_update=True):
         """
