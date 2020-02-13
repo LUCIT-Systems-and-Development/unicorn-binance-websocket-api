@@ -631,39 +631,41 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (markets * channels).
 
-        Example:
+            Example:
 
-            markets = ['bnbbtc', 'ethbtc']
+                markets = ['bnbbtc', 'ethbtc']
 
-            channels = ['trade', 'kline_1']
+                channels = ['trade', 'kline_1']
 
-            Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
+                Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
 
         Create `!userData` streams as single streams, because its using a different endpoint and can not get combined
         with other streams in a multiplexed stream!
 
-        Example CEX:
+            Example CEX:
 
-        Set api_key and api_secret:
+                Set api_key and api_secret:
 
-        ``binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)``
+                    ``binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)``
 
-        Then start the stream:
+                Then start the stream:
 
-        ``binance_websocket_api_manager.create_stream(["arr"], ["!userData"])``
+                    ``binance_websocket_api_manager.create_stream(["arr"], ["!userData"])``
 
-        Example DEX:
+            Example DEX:
 
-        ``binance_websocket_api_manager.create_stream(['orders', 'transfers', 'accounts'], binance_dex_user_address)``
+                ``binance_websocket_api_manager.create_stream(['orders', 'transfers', 'accounts'], binance_dex_user_address)``
 
         To create a multiplexed stream which includes also `!miniTicker@arr`, `!ticker@arr` or `!bookTicker@arr` you
-        just need to add `!miniTicker` to the cannels list - dont add `arr` (cex) or `$arr` (dex) to the markets list.
+        just need to add `!bookTicker` to the channels list - dont add `arr` (cex) or `$arr` (dex) to the markets list.
+
+            Example:
+
+            ``binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=['kline_5m', 'marketDepth', '!miniTicker'])``
 
         But you have to add `arr` or `$arr` if you want to start it as a single stream!
 
-        Example:
-
-        ``binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=['kline_5m', 'marketDepth', '!miniTicker'])``
+            ``binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])``
 
         :param channels: provide the channels you wish to stream
         :type channels: str, tuple, list, set
