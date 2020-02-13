@@ -4,15 +4,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.9.1 documentation</title>
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.10.0 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -40,7 +40,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.9.1 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.10.0 documentation</a> &#187;
     
 
     <li class="right">
@@ -93,6 +93,9 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
 <p>A python API to use the Binance Websocket API`s (com, com-margin, com-futures, jersey, us, dex/chain+testnet) in a easy, fast,
 flexible, robust and fully-featured way.</p>
+<p>This library supports two different kind of websocket endpoints:
+- CEX (Centralized exchange): binance.com, binance.je, binance.us
+- DEX (Decentralized exchange): binance.org</p>
 <p>Binance.com websocket API documentation:
 <a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md">https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md</a>
 <a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#user-data-streams">https://binance-docs.github.io/apidocs/futures/en/#user-data-streams</a>
@@ -136,19 +139,40 @@ processing.</p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_total_received_bytes">
 <code class="sig-name descname">add_total_received_bytes</code><span class="sig-paren">(</span><em class="sig-param">size</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_total_received_bytes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Add received bytes to the total received bytes statistic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int</em>) – int value of added bytes</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_payload">
 <code class="sig-name descname">create_payload</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">method</em>, <em class="sig-param">channels=False</em>, <em class="sig-param">markets=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_payload" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create the payload for subscriptions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream_id</strong> (<em>uuid</em>) – provide a stream_id (only needed for userData Streams (acquiring a listenKey)</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – <cite>SUBSCRIBE</cite> or <cite>UNSUBSCRIBE</cite></p></li>
+<li><p><strong>channels</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the channels to create the URI</p></li>
+<li><p><strong>markets</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the markets to create the URI</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>payload (list) or False</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">
 <code class="sig-name descname">create_stream</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a websocket stream</p>
 <p>If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (markets * channels).</p>
-<p>You must split userData Streams and streams with “all” and “arr” together and with market specific streams.</p>
+<p>Create !userData streams as single streams, they use an own endpoint and can not get combined with other streams
+into a multiplex stream!</p>
 <p>Example:</p>
 <blockquote>
 <div><p>markets = [‘bnbbtc’, ‘ethbtc’]</p>
@@ -163,7 +187,7 @@ processing.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>stream_id or False</p>
+<dd class="field-even"><p>stream_id or ‘False’</p>
 </dd>
 </dl>
 </dd></dl>
@@ -218,7 +242,19 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.fill_up_space">
 <code class="sig-name descname">fill_up_space</code><span class="sig-paren">(</span><em class="sig-param">demand_of_chars</em>, <em class="sig-param">string</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.fill_up_space" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Add whitespaces to <cite>string</cite> to a length of <cite>demand_of_chars</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>demand_of_chars</strong> (<em>int</em>) – how much chars does the string have to have?</p></li>
+<li><p><strong>string</strong> (<em>str</em>) – the string that has to get filled up with spaces</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filled up string</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_active_stream_list">
@@ -278,12 +314,33 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_human_bytesize">
 <code class="sig-name descname">get_human_bytesize</code><span class="sig-paren">(</span><em class="sig-param">bytes</em>, <em class="sig-param">suffix=''</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_human_bytesize" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Convert the bytes to something readable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bytes</strong> (<em>int</em>) – amount of bytes</p></li>
+<li><p><strong>suffix</strong> (<em>str</em>) – add a string after</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_human_uptime">
 <code class="sig-name descname">get_human_uptime</code><span class="sig-paren">(</span><em class="sig-param">uptime</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_human_uptime" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Convert a timespan of seconds into hours, days, …</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uptime</strong> (<em>int</em>) – Uptime in seconds</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_keep_max_received_last_second_entries">
@@ -362,14 +419,6 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_monitoring_status_icinga">
 <code class="sig-name descname">get_monitoring_status_icinga</code><span class="sig-paren">(</span><em class="sig-param">check_command_version=False</em>, <em class="sig-param">warn_on_update=True</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_monitoring_status_icinga" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get status and perfdata to monitor and collect metrics with ICINGA/Nagios</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>check_command_version</strong> (<em>str</em>) – is the version of the calling check_command (<a class="reference external" href="https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api">https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api</a>)</p></li>
-<li><p><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</p></li>
-</ul>
-</dd>
-</dl>
 <p>status: OK, WARNING, CRITICAL
 - WARNING: on restarts, available updates
 - CRITICAL: crashed streams</p>
@@ -383,8 +432,14 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 - reconnects
 - uptime</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>dict (text, time, return_code)</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>check_command_version</strong> (<em>str</em>) – is the version of the calling check_command (<a class="reference external" href="https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api">https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api</a>)</p></li>
+<li><p><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict (text, time, return_code)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -445,7 +500,13 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id">
 <code class="sig-name descname">get_request_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get a unique request ID</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_start_time">
@@ -534,6 +595,25 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions">
+<code class="sig-name descname">get_stream_subscriptions</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">request_id=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Listing subscriptions</p>
+<p>This function is supported by CEX endpoints only!</p>
+<p><a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions">https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p></li>
+<li><p><strong>request_id</strong> (<em>int</em>) – id to use for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_total_received_bytes">
 <code class="sig-name descname">get_total_received_bytes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_total_received_bytes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get number of total received bytes</p>
@@ -586,17 +666,46 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.increase_processed_receives_statistic">
 <code class="sig-name descname">increase_processed_receives_statistic</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.increase_processed_receives_statistic" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Add the number of processed receives</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.increase_received_bytes_per_second">
 <code class="sig-name descname">increase_received_bytes_per_second</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">size</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.increase_received_bytes_per_second" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Add the amount of received bytes per second</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – amount of bytes to add</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.increase_reconnect_counter">
 <code class="sig-name descname">increase_reconnect_counter</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.increase_reconnect_counter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Increase reconnect counter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.increase_transmitted_counter">
+<code class="sig-name descname">increase_transmitted_counter</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.increase_transmitted_counter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase the counter of transmitted payloads
+:param stream_id: id of a stream
+:type stream_id: uuid</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_exchange_type">
@@ -663,13 +772,21 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_websocket_uri_length_valid">
 <code class="sig-name descname">is_websocket_uri_length_valid</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_websocket_uri_length_valid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is the websocket URI length valid?</p>
-<p>Binance DEX is using the subscribe methods, so this function must not get used with them and will always return
-<cite>False</cite>!</p>
-<p>A test with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py</a>
+<p><strong>* OBSOLETE SINCE SUBSCRIPTIONS ARE SEND VIA `send()` THROUGH THE WEBSOCKET!!! *</strong></p>
+<p>The length is always valid because subscriptions are not handled via URI anymore.</p>
+<p>To keep it compatible this method returns True from now on!</p>
+<p>Reason why we used this in the past:
+A test with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py</a>
 indicates that the allowed max length of an URI to binance websocket server is 8004 characters.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>bool</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channels</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the channels to create the URI</p></li>
+<li><p><strong>markets</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the markets to create the URI</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True</p>
 </dd>
 </dl>
 </dd></dl>
@@ -751,22 +868,25 @@ consistent.</p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method representing the thread’s activity.</p>
-<p>You may override this method in a subclass. The standard run() method
-invokes the callable object passed to the object’s constructor as the
-target argument, if any, with sequential and keyword arguments taken
-from the args and kwargs arguments, respectively.</p>
+<dd><p>This method overloads <cite>threading.run()</cite> and starts management threads</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_heartbeat">
 <code class="sig-name descname">set_heartbeat</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_heartbeat" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set heartbeat for a specific thread (should only be done by the stream itself)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_keep_max_received_last_second_entries">
 <code class="sig-name descname">set_keep_max_received_last_second_entries</code><span class="sig-paren">(</span><em class="sig-param">number_of_max_entries</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_keep_max_received_last_second_entries" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set how much received_last_second entries are stored till they get deleted!</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number_of_max_entries</strong> (<em>int</em>) – number of entries to keep in list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_private_api_config">
@@ -790,12 +910,42 @@ from the args and kwargs arguments, respectively.</p>
 <p>Is going to be the default user_address, once the websocket is created with this default value, its not possible
 to change it. If you plan to use different user_address its recommended to not use this method! Just provide the
 user_address with create_stream() in the market parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>binance_dex_user_address</strong> (<em>str</em>) – Binance DEX user address</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_restart_request">
 <code class="sig-name descname">set_restart_request</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_restart_request" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set a restart request for a specific stream</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stream_id</strong> (<em>uuid</em>) – id of the old stream</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.split_payload">
+<code class="sig-name descname">split_payload</code><span class="sig-paren">(</span><em class="sig-param">params</em>, <em class="sig-param">method</em>, <em class="sig-param">max_items_per_request=350</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.split_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sending more than 8000 chars via websocket.send() leads to a connection loss, 350 list elements is a good limit
+to keep the payload length under 8000 chars and avoid reconnects</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>str</em>) – params of subscribe payload</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – SUBSCRIBE or UNSUBSCRIBE</p></li>
+<li><p><strong>max_items_per_request</strong> – max size for params, if more it gets splitted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list or False</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.start_monitoring_api">
@@ -841,18 +991,35 @@ user_address with create_stream() in the market parameter.</p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.stream_is_crashing">
 <code class="sig-name descname">stream_is_crashing</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">error_msg=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.stream_is_crashing" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>If a stream can not heal itself in cause of wrong parameter (wrong market, channel type) it calls this method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p></li>
+<li><p><strong>error_msg</strong> (<em>str</em>) – Error msg to add to the stream status!</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.stream_is_stopping">
 <code class="sig-name descname">stream_is_stopping</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.stream_is_stopping" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Streams report with this call their shutdowns</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">
 <code class="sig-name descname">subscribe_to_stream</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">channels=[]</em>, <em class="sig-param">markets=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notice: This method only works with DEX!</p>
-<p>Subscribe channels, markets or an array of them to an existing DEX stream</p>
+<dd><p>Subscribe channels, markets or an array of them to an existing DEX stream</p>
 <p>If you provide one channel and one market, then every subscribed market is going to get added to the new channel
 and all subscribed channels are going to get added to the new market</p>
 <p>How are the parameter <cite>channels</cite> and <a href="#id1"><span class="problematic" id="id2">`</span></a>markets used with subscriptions:
@@ -873,9 +1040,8 @@ and all subscribed channels are going to get added to the new market</p>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">
-<code class="sig-name descname">unsubscribe_from_stream</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">channels</em>, <em class="sig-param">markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notice: This method only works with DEX!</p>
-<p>Unsubscribe channels, markets or an array of them from an existing DEX stream</p>
+<code class="sig-name descname">unsubscribe_from_stream</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">channels=[]</em>, <em class="sig-param">markets=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unsubscribe channels, markets or an array of them from an existing DEX stream</p>
 <p>If you provide one channel and one market, then all subscribed markets from the specific channel and all
 subscribed markets from the specific channel are going to be removed!</p>
 <p>How are the parameter <cite>channels</cite> and <a href="#id3"><span class="problematic" id="id4">`</span></a>markets used with subscriptions:
@@ -1120,7 +1286,7 @@ subscribed markets from the specific channel are going to be removed!</p>
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.9.1 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.10.0 documentation</a> &#187;
     
 
     <li class="right">
@@ -1143,7 +1309,7 @@ subscribed markets from the specific channel are going to be removed!</p>
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.4.1
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
