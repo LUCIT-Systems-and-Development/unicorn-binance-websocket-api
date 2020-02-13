@@ -644,6 +644,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         other streams in a multiplexed stream!
 
         Example:
+
         ```
         binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
         userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
@@ -655,6 +656,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         But you have to add `arr`if you want to start it as a single stream!
 
         Example:
+
         ```
         binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=['kline_5m', 'marketDepth', '!miniTicker'])
         ```

@@ -181,17 +181,17 @@ processing.</p>
 </div></blockquote>
 <p>Create !userData streams as single streams, because its using an own endpoint and can not get combined with
 other streams in a multiplexed stream!</p>
-<p>Example:
-<code class="docutils literal notranslate"><span class="pre">`</span>
+<p>Example:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">binance_websocket_api_manager.set_private_api_config(binance_api_key,</span> <span class="pre">binance_api_secret)</span>
 <span class="pre">userdata_stream_id</span> <span class="pre">=</span> <span class="pre">binance_websocket_api_manager.create_stream([&quot;arr&quot;],</span> <span class="pre">[&quot;!userData&quot;])</span>
 <span class="pre">`</span></code></p>
 <p>To create a multiplexed stream which includes also <cite>!miniTicker&#64;arr</cite>, <cite>!ticker&#64;arr</cite> or <cite>!bookTicker&#64;arr</cite> you
 just need to add <cite>!miniTicker</cite> to the cannels list - dont add <cite>arr</cite> to the markets list.</p>
 <p>But you have to add <a href="#id1"><span class="problematic" id="id2">`</span></a>arr`if you want to start it as a single stream!</p>
-<p>Example:
-<code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">userdata_stream_id</span> <span class="pre">=</span> <span class="pre">binance_websocket_api_manager.create_stream([&quot;arr&quot;],</span> <span class="pre">[&quot;!userData&quot;])</span>
+<p>Example:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">binance_websocket_api_manager.subscribe_to_stream(stream_id,</span> <span class="pre">channels=['kline_5m',</span> <span class="pre">'marketDepth',</span> <span class="pre">'!miniTicker'])</span>
 <span class="pre">`</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
