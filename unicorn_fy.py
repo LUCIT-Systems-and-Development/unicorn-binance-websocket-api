@@ -33,7 +33,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-import json
+import ujson as json
 import logging
 import time
 import requests

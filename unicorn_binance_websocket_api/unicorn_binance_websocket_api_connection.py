@@ -36,7 +36,7 @@
 from websockets import connect
 import asyncio
 import copy
-import json
+import ujson as json
 import logging
 import socket
 import ssl
