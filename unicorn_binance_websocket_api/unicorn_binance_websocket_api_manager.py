@@ -192,6 +192,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'start_time': time.time(),
                                        'processed_receives_total': 0,
                                        'receives_statistic_last_second': {'most_receives_per_second': 0, 'entries': {}},
+                                       'receives_statistic_last_second_lock': threading.Lock(),
                                        'seconds_to_last_heartbeat': None,
                                        'last_heartbeat': None,
                                        'stop_request': None,
@@ -289,7 +290,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     # receives_statistic_last_second
                     delete_index = []
                     if len(self.stream_list[stream_id]['receives_statistic_last_second']['entries']) > self.keep_max_received_last_second_entries:
-                        temp_entries = copy.deepcopy(self.stream_list[stream_id]['receives_statistic_last_second']['entries'])
+                        with self.stream_list[stream_id]['receives_statistic_last_second_lock']:
+                            temp_entries = copy.deepcopy(self.stream_list[stream_id]['receives_statistic_last_second']['entries'])
                         for timestamp_key in temp_entries:
                             try:
                                 if timestamp_key < current_timestamp - self.keep_max_received_last_second_entries:
@@ -301,7 +303,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                     "entries=" + str(self.keep_max_received_last_second_entries) + " error_msg=" +
                                     str(error_msg))
                     for timestamp_key in delete_index:
-                        self.stream_list[stream_id]['receives_statistic_last_second']['entries'].pop(timestamp_key, None)
+                        with self.stream_list[stream_id]['receives_statistic_last_second_lock']:
+                            self.stream_list[stream_id]['receives_statistic_last_second']['entries'].pop(timestamp_key, None)
                     # transfer_rate_per_second
                     delete_index = []
                     if len(self.stream_list[stream_id]['transfer_rate_per_second']['bytes']) > self.keep_max_received_last_second_entries:
@@ -556,71 +559,46 @@ class BinanceWebSocketApiManager(threading.Thread):
             if method == "subscribe":
                 params = []
                 for channel in channels:
-                    for market in markets:
-                        if market == "!ticker":
-                            params.append(market + "@arr")
-                        elif market == "!miniTicker":
-                            params.append(market + "@arr")
-                        elif market == "!bookTicker":
-                            params.append(market + "@arr")
-                        elif channel == "!ticker":
-                            params.append(channel + "@arr")
-                        elif channel == "!miniTicker":
-                            params.append(channel + "@arr")
-                        elif channel == "!bookTicker":
-                            params.append(channel + "@arr")
-                        else:
-                            params.append(market + "@" + channel)
+                    if "!" in channel:
+                        params.append(channel + "@arr")
+                        continue
+                    else:
+                        for market in markets:
+                            if "!" in market:
+                                params.append(market + "@arr")
+                            else:
+                                params.append(market + "@" + channel)
                 if len(params) > 0:
+                    params = list(set(params))
                     payload = self.split_payload(params, "SUBSCRIBE")
             elif method == "unsubscribe":
                 if markets:
                     params = []
                     for channel in self.stream_list[stream_id]['channels']:
-                        for market in markets:
-                            if market == "!ticker":
-                                params.append(market + "@arr")
-                            elif market == "!miniTicker":
-                                params.append(market + "@arr")
-                            elif market == "!bookTicker":
-                                params.append(market + "@arr")
-                            elif channel == "!ticker":
-                                params.append(channel + "@arr")
-                            elif channel == "!miniTicker":
-                                params.append(channel + "@arr")
-                            elif channel == "!bookTicker":
-                                params.append(channel + "@arr")
-                            else:
+                        if "!" in channel:
+                            params.append(channel + "@arr")
+                        else:
+                            for market in markets:
                                 params.append(market + "@" + channel)
                     if len(params) > 0:
                         payload = self.split_payload(params, "UNSUBSCRIBE")
                 if channels:
-                        params = []
-                        for market in self.stream_list[stream_id]['markets']:
+                    params = []
+                    for market in self.stream_list[stream_id]['markets']:
+                        if "!" in market:
+                            params.append(market + "@arr")
+                        else:
                             for channel in channels:
-                                if market == "!ticker":
-                                    params.append(market + "@arr")
-                                elif market == "!miniTicker":
-                                    params.append(market + "@arr")
-                                elif market == "!bookTicker":
-                                    params.append(market + "@arr")
-                                elif channel == "!ticker":
-                                    params.append(channel + "@arr")
-                                elif channel == "!miniTicker":
-                                    params.append(channel + "@arr")
-                                elif channel == "!bookTicker":
-                                    params.append(channel + "@arr")
-                                else:
-                                    params.append(market + "@" + channel)
-                        if len(params) > 0:
-                            payload = self.split_payload(params, "UNSUBSCRIBE")
+                                params.append(market + "@" + channel)
+                    if len(params) > 0:
+                        payload = self.split_payload(params, "UNSUBSCRIBE")
             else:
                 logging.critical("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", "
                                  + str(channels) + ", " + str(markets) + ") Allowed values for `method`: `subscribe` "
                                  "or `unsubscribe`!")
                 return False
-        logging.debug("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", "
-                      + str(channels) + ", " + str(markets) + ") Payload: " + str(payload))
+        logging.info("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", "
+                     + str(channels) + ", " + str(markets) + ") Payload: " + str(payload))
         logging.debug("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", " + str(channels) + ", " +
                       str(markets) + ") finished ...")
         return payload
@@ -772,41 +750,28 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             query = "stream?streams="
             for channel in channels:
-                if channel == "!ticker":
-                    self.subscribe_to_stream(stream_id, markets=channel)
-                    logging.debug("Create subscription " + str(channel))
-                if channel == "!miniTicker":
-                    self.subscribe_to_stream(stream_id, markets=channel)
-                    logging.debug("Create subscription " + str(channel))
-                if channel == "!bookTicker":
-                    self.subscribe_to_stream(stream_id, markets=channel)
-                    logging.debug("Create subscription " + str(channel))
                 if channel == "!userData":
                     logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
                                   "Unfortunately Binance only stream it in a single stream socket! ./"
                                   "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
                                   "initiate an extra connection.")
                     return False
-                for market in markets:
-                    if market == "!ticker":
-                        self.subscribe_to_stream(stream_id, markets=market)
-                        logging.debug("Create subscription " + str(market))
-                    if market == "!miniTicker":
-                        self.subscribe_to_stream(stream_id, markets=market)
-                        logging.debug("Create subscription " + str(market))
-                    if market == "!bookTicker":
-                        self.subscribe_to_stream(stream_id, markets=market)
-                        logging.debug("Create subscription " + str(market))
-                    if market == "!userData":
-                        logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
-                                      "Unfortunatly Binance only stream it in a single stream socket! ./"
-                                      "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
-                                      "initiate an extra connection.")
-                        return False
-            query += market.lower() + "@" + channel
+            for market in markets:
+                if market == "!userData":
+                    logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
+                                  "Unfortunatly Binance only stream it in a single stream socket! ./"
+                                  "Use binance_websocket_api_manager.create_stream([\"arr\"], [\"!userData\"]) to "
+                                  "initiate an extra connection.")
+                    return False
+            if "!" in channel:
+                query += channel + "@arr"
+            elif "!" in market:
+                query += market + "@arr"
+            else:
+                query += market.lower() + "@" + channel
             self.subscribe_to_stream(stream_id, markets=markets, channels=channels)
-            logging.debug("Created websocket URI for stream_id=" + str(stream_id) + " is " +
-                          self.websocket_base_uri + str(query))
+            logging.info("Created websocket URI for stream_id=" + str(stream_id) + " is " +
+                         self.websocket_base_uri + str(query))
             return self.websocket_base_uri + str(query)
 
     def delete_listen_key_by_stream_id(self, stream_id):
@@ -1511,9 +1476,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         current_timestamp = int(time.time())
         self.stream_list[stream_id]['processed_receives_total'] += 1
         try:
-            self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] += 1
+            with self.stream_list[stream_id]['receives_statistic_last_second_lock']:
+                self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] += 1
         except KeyError:
-            self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] = 1
+            with self.stream_list[stream_id]['receives_statistic_last_second_lock']:
+                self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] = 1
         with self.total_receives_lock:
             self.total_receives += 1
 

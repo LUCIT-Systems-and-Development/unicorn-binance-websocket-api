@@ -56,7 +56,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             time.sleep(0.01)
         else:
             pass
-            #print(oldest_stream_data_from_stream_buffer)
+            print(oldest_stream_data_from_stream_buffer)
 
 
 # create instance of BinanceWebSocketApiManager for Binance Chain DEX

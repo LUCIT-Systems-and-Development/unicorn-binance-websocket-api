@@ -72,7 +72,11 @@ markets = ['bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
 
 channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
 
+
+markets = ['bnbbtc', 'ethbtc']
+channels = ['trade', 'kline_1m', '!ticker']
 stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+
 
 markets = ['batbtc', 'adabnb', 'etcusdt', 'qtumusdt', 'xmrbtc', 'trxeth', 'adatusd', 'trxxrp', 'trxbnb',
            'dashbtc', 'rvnbnb', 'bchabctusd', 'etcbtc', 'bnbeth', 'ethpax', 'nanobtc', 'xembtc']
@@ -82,7 +86,7 @@ markets = ['xrpbnb',
            'bchabcpax', 'xrpeth', 'bttbnb', 'ltcbnb', 'agibtc', 'zrxusdt', 'xlmbnb', 'ltceth', 'eoseth',
            'ltctusd', 'polybnb', 'scbtc', 'steembtc', 'trxtusd', 'npxseth', 'kmdbtc', 'polybtc', 'gasbtc']
 
-markets = ['xrpbnb']
+markets = ['!miniTicker']
 binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
 
 markets = ['engbtc', 'zileth', 'xlmeth', 'eosbnb', 'xrppax', 'lskbtc', 'npxsbtc', 'xmrusdt', 'ltcpax', 'xmrusdt',
@@ -90,7 +94,7 @@ markets = ['engbtc', 'zileth', 'xlmeth', 'eosbnb', 'xrppax', 'lskbtc', 'npxsbtc'
            'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
            'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth']
 binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
-time.sleep(3)
+time.sleep(1)
 binance_websocket_api_manager.get_stream_subscriptions(stream_id)
 
 time.sleep(10)
