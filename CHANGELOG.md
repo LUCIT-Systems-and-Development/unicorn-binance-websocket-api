@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.10.1.dev (development stage/unreleased/unstable)
+### Changed
+- Using ujson instead of stock json lib
+- cleaning `create_payload()` for CEX 
+### Fixed
+- `['receives_statistic_last_second']` dict is changing size during iteration. ([issue #37](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/37))
+
 
 ## 1.10.1
 ### Important infos, [please read!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/38)
