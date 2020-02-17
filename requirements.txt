@@ -4,7 +4,6 @@ flask
 flask_restful
 pathlib
 requests
-simplejson
 ujson
 websocket-client
 websockets==7.0
