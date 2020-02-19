@@ -1605,7 +1605,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         The length is always valid because subscriptions are not handled via URI anymore.
 
-        To keep it compatible this method returns True from now on!
+        To keep it compatible this method returns always `True` from now on!
 
         Reason why we used this in the past:
         A test with https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
