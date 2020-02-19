@@ -130,7 +130,7 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - ./setup.py
 
 ## Demo
-[Demo source](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py)
+[Demo source](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py)
 
 [![demo_gif](https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py)
 
