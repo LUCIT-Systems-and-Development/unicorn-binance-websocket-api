@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: dev_test_cex_how_much_items_are_possible.py
+# File: example_subscribe.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -55,7 +55,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
         else:
-            print(oldest_stream_data_from_stream_buffer)
+            #print(oldest_stream_data_from_stream_buffer)
             pass
 
 
@@ -105,6 +105,6 @@ binance_websocket_api_manager.get_stream_subscriptions(stream_id)
 
 while True:
     #binance_websocket_api_manager.print_summary()
-    #binance_websocket_api_manager.print_stream_info(stream_id)
+    binance_websocket_api_manager.print_stream_info(stream_id)
     #binance_websocket_api_manager.get_stream_subscriptions(stream_id)
     time.sleep(1)
