@@ -5,14 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.10.1.dev (development stage/unreleased/unstable)
+## 1.10.2.dev (development stage/unreleased/unstable)
+
+## 1.10.2
+### Fixed
+- `['receives_statistic_last_second']` dict is changing size during iteration. ([issue #37](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/37))
 
 ## 1.10.1
 ### Changed
 - Using ujson instead of stock json lib
 - cleaning `create_payload()` for CEX 
-### Fixed
-- `['receives_statistic_last_second']` dict is changing size during iteration. ([issue #37](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/37))
 
 ## 1.10.0
 ### Important infos, [please read!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/38)

@@ -60,25 +60,25 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     This library supports two different kind of websocket endpoints:
 
-    - CEX (Centralized exchange): binance.com, binance.je, binance.us
+        - CEX (Centralized exchange): binance.com, binance.je, binance.us
 
-    - DEX (Decentralized exchange): binance.org
+        - DEX (Decentralized exchange): binance.org
 
     Binance.com websocket API documentation:
-    https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
-    https://binance-docs.github.io/apidocs/futures/en/#user-data-streams
-    https://binance-docs.github.io/apidocs/spot/en/#user-data-streams
+        https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
+        https://binance-docs.github.io/apidocs/futures/en/#user-data-streams
+        https://binance-docs.github.io/apidocs/spot/en/#user-data-streams
 
     Binance.je websocket API documentation:
-    https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md
-    https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md
+        https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md
+        https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md
 
     Binance.us websocket API documentation:
-    https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md
-    https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md
+        https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md
+        https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md
 
     Binance.org websocket API documentation:
-    https://docs.binance.org/api-reference/dex-api/ws-connection.html
+        https://docs.binance.org/api-reference/dex-api/ws-connection.html
 
     :param process_stream_data: Provide a function/method to process the received webstream data. The function
                                 will be called with one variable like `process_stream_data(data)` where
@@ -94,7 +94,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False, exchange="binance.com"):
         threading.Thread.__init__(self)
-        self.version = "1.10.1"
+        self.version = "1.10.2"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
         colorama.init()
         if process_stream_data is False:
@@ -158,6 +158,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.start_time = time.time()
         self.stream_buffer = []
         self.stream_list = {}
+        self.stream_threading_lock = {}
         self.total_received_bytes = 0
         self.total_received_bytes_lock = threading.Lock()
         self.total_receives = 0
@@ -180,6 +181,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param markets: provide the markets to create the URI
         :type markets: str, tuple, list, set
         """
+        self.stream_threading_lock[stream_id] = {'full_lock': threading.Lock(),
+                                                 'receives_statistic_last_second_lock': threading.Lock()}
         self.stream_list[stream_id] = {'exchange': self.exchange,
                                        'stream_id': copy.deepcopy(stream_id),
                                        'channels': copy.deepcopy(channels),
@@ -192,7 +195,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'start_time': time.time(),
                                        'processed_receives_total': 0,
                                        'receives_statistic_last_second': {'most_receives_per_second': 0, 'entries': {}},
-                                       'receives_statistic_last_second_lock': threading.Lock(),
                                        'seconds_to_last_heartbeat': None,
                                        'last_heartbeat': None,
                                        'stop_request': None,
@@ -290,7 +292,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     # receives_statistic_last_second
                     delete_index = []
                     if len(self.stream_list[stream_id]['receives_statistic_last_second']['entries']) > self.keep_max_received_last_second_entries:
-                        with self.stream_list[stream_id]['receives_statistic_last_second_lock']:
+                        with self.stream_threading_lock[stream_id]['receives_statistic_last_second_lock']:
                             temp_entries = copy.deepcopy(self.stream_list[stream_id]['receives_statistic_last_second']['entries'])
                         for timestamp_key in temp_entries:
                             try:
@@ -303,7 +305,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                     "entries=" + str(self.keep_max_received_last_second_entries) + " error_msg=" +
                                     str(error_msg))
                     for timestamp_key in delete_index:
-                        with self.stream_list[stream_id]['receives_statistic_last_second_lock']:
+                        with self.stream_threading_lock[stream_id]['receives_statistic_last_second_lock']:
                             self.stream_list[stream_id]['receives_statistic_last_second']['entries'].pop(timestamp_key, None)
                     # transfer_rate_per_second
                     delete_index = []
@@ -1287,7 +1289,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_stream_info(self, stream_id):
         """
-        Get infos about a specific stream
+        Get all infos about a specific stream
 
         :param stream_id: id of a stream
         :type stream_id: uuid
@@ -1295,20 +1297,21 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         current_timestamp = time.time()
         try:
-            temp_stream_list = copy.deepcopy(self.stream_list)
+            temp_stream_list = copy.deepcopy(self.stream_list[stream_id])
         except RuntimeError:
             return self.get_stream_info(stream_id)
-        if temp_stream_list[stream_id]['last_heartbeat'] is not None:
-            temp_stream_list[stream_id]['seconds_to_last_heartbeat'] = \
+        if temp_stream_list['last_heartbeat'] is not None:
+            temp_stream_list['seconds_to_last_heartbeat'] = \
                 current_timestamp - self.stream_list[stream_id]['last_heartbeat']
-        if temp_stream_list[stream_id]['has_stopped'] is not False:
-            temp_stream_list[stream_id]['seconds_since_has_stopped'] = \
+        if temp_stream_list['has_stopped'] is not False:
+            temp_stream_list['seconds_since_has_stopped'] = \
                 int(current_timestamp) - int(self.stream_list[stream_id]['has_stopped'])
         try:
             self.stream_list[stream_id]['processed_receives_statistic'] = self.get_stream_statistic(stream_id)
         except ZeroDivisionError:
             pass
-        return temp_stream_list[stream_id]
+        self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = self.get_current_receiving_speed(stream_id)
+        return temp_stream_list
 
     def get_stream_subscriptions(self, stream_id, request_id=False):
         """
@@ -1476,10 +1479,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         current_timestamp = int(time.time())
         self.stream_list[stream_id]['processed_receives_total'] += 1
         try:
-            with self.stream_list[stream_id]['receives_statistic_last_second_lock']:
+            with self.stream_threading_lock[stream_id]['receives_statistic_last_second_lock']:
                 self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] += 1
         except KeyError:
-            with self.stream_list[stream_id]['receives_statistic_last_second_lock']:
+            with self.stream_threading_lock[stream_id]['receives_statistic_last_second_lock']:
                 self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] = 1
         with self.total_receives_lock:
             self.total_receives += 1

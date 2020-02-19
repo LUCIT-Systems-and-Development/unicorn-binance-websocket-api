@@ -51,7 +51,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.ERROR,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
@@ -116,5 +116,7 @@ worker_thread.start()
 # show an overview
 while True:
     binance_websocket_api_manager.print_summary()
-    #binance_websocket_api_manager.print_stream_info(id)
     time.sleep(1)
+    #print(str(binance_websocket_api_manager.get_stream_info(id)))
+    #binance_websocket_api_manager.print_stream_info(id)
+    #time.sleep(2)
