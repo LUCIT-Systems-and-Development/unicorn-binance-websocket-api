@@ -63,8 +63,8 @@ print("starting monitoring api!")
 binance_websocket_api_manager.start_monitoring_api()
 
 # set api key and secret for userData stream
-binance_api_key = "OMfMlElvlYtwoaHIRtBjuUZozKddKoap1Z1qXESaZVX9pNQq396RqARRR9FOhdaq"
-binance_api_secret = "XHllFpxy3Vd7RRTNl1Yhpo7PsmJeM3MICPNFpGYOhnFK8ZjcOAY1045DBb5udMOe"
+binance_api_key = ""
+binance_api_secret = ""
 
 binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
 userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
