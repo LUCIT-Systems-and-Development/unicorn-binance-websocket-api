@@ -118,9 +118,9 @@ class BinanceWebSocketApiConnection(object):
                           str(self.channels) + ", " + str(self.markets) + ")" + " - ConnectionResetError - " +
                           str(error_msg))
         except OSError as error_msg:
-            logging.error("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                          str(self.channels) + ", " + str(self.markets) + ")" + " - OSError "
-                          "- " + str(error_msg))
+            logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
+                             str(self.channels) + ", " + str(self.markets) + ")" + " - OSError "
+                             "- " + str(error_msg))
         except socket.gaierror as error_msg:
             logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ")" + " - No internet connection? "

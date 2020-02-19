@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.10.2.dev (development stage/unreleased/unstable)
+### Changed
+- removed simplejson exception in restclient
+- set OSError from error to critical
 
 ## 1.10.2
 ### Fixed

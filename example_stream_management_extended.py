@@ -71,19 +71,6 @@ markets_mega_list.update(markets)  # merge elements of set `markets` to set `mar
 # define channels
 channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w', 'miniTicker']
 
-# to establish a connection to a websocket server, the client has to call an URI. this URI must not be longer then 8004
-# signs, if you want to get an active connection to a Binance webstream.
-# https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
-if binance_websocket_api_manager.is_websocket_uri_length_valid(channels, markets):
-    print("URI with `markets` length is valid!")
-else:
-    print("URI with `markets` length is too long!")
-
-if binance_websocket_api_manager.is_websocket_uri_length_valid(channels, markets_mega_list):
-    print("URI with `markets_mega_list` length is valid!")
-else:
-    print("URI with `markets_mega_list` length is too long!")
-
 print("############################################################################################################\r\n")
 
 # create and start some streams
@@ -128,8 +115,8 @@ markets.remove('eosusdt')
 
 # edit channels list
 channels.remove('miniTicker')
-channels.add('kline_2w')
-channels.add('depth5')
+channels.append('kline_2w')
+channels.append('depth5')
 
 # start the new multi stream
 second_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)

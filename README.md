@@ -101,9 +101,12 @@ If you like the project, please [![star](https://s3.gifyu.com/images/stard237b30
 [GitHub](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)!
 
 ## Installation and Upgrade
+If you run into errors during the installation take a look [here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Installation).
+
 Please note: UnicornFy is not longer part of this package, visit 
 [https://github.com/oliver-zehentleitner/unicorn_fy](https://github.com/oliver-zehentleitner/unicorn_fy) for
 further information.
+
 ### A wheel of the latest release with PIP from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
 `pip install unicorn-binance-websocket-api --upgrade`
 ### From source of the latest release with PIP from [Github](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
@@ -132,7 +135,7 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 ## Demo
 [Demo source](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py)
 
-[![demo_gif](https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py)
+[![demo_gif](https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py)
 
 ## Howto
 - [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
