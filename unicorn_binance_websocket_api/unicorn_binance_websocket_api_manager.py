@@ -613,9 +613,9 @@ class BinanceWebSocketApiManager(threading.Thread):
 
             Example:
 
-                markets = ['bnbbtc', 'ethbtc']
-
                 channels = ['trade', 'kline_1']
+
+                markets = ['bnbbtc', 'ethbtc']
 
                 Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
 
@@ -641,7 +641,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
             Example:
 
-                ``binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=['kline_5m', 'marketDepth', '!miniTicker'])``
+                ``binance_websocket_api_manager.create_stream(['kline_5m', 'marketDepth', '!miniTicker'], ['bnbbtc'])``
 
         But you have to add `arr` or `$arr` if you want to start it as a single stream!
 

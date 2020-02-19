@@ -180,8 +180,8 @@ processing.</p>
 <blockquote>
 <div><p>Example:</p>
 <blockquote>
-<div><p>markets = [‘bnbbtc’, ‘ethbtc’]</p>
-<p>channels = [‘trade’, ‘kline_1’]</p>
+<div><p>channels = [‘trade’, ‘kline_1’]</p>
+<p>markets = [‘bnbbtc’, ‘ethbtc’]</p>
 <p>Finally:  <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;trade">bnbbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;trade">ethbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;kline_1">bnbbtc<span>&#64;</span>kline_1</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;kline_1">ethbtc<span>&#64;</span>kline_1</a></p>
 </div></blockquote>
 </div></blockquote>
@@ -209,7 +209,7 @@ just need to add <cite>!bookTicker</cite> to the channels list - dont add <cite>
 <blockquote>
 <div><p>Example:</p>
 <blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">binance_websocket_api_manager.subscribe_to_stream(stream_id,</span> <span class="pre">channels=['kline_5m',</span> <span class="pre">'marketDepth',</span> <span class="pre">'!miniTicker'])</span></code></p>
+<div><p><code class="docutils literal notranslate"><span class="pre">binance_websocket_api_manager.create_stream(['kline_5m',</span> <span class="pre">'marketDepth',</span> <span class="pre">'!miniTicker'],</span> <span class="pre">['bnbbtc'])</span></code></p>
 </div></blockquote>
 </div></blockquote>
 <p>But you have to add <cite>arr</cite> or <cite>$arr</cite> if you want to start it as a single stream!</p>
