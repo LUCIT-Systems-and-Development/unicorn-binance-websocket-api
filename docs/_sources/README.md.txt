@@ -88,7 +88,7 @@ stream_buffer which stores the receives in the RAM till you are able to process 
 - Compatible with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy) to convert received raw data from
 crypto API endpoints into well-formed python dictionaries. 
 - Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
-`get_stream_statistic()`, `replace_stream()`, `wait_till_stream_has_started()`, 
+`get_stream_statistic()`, `get_stream_subscriptions()`, `replace_stream()`, `wait_till_stream_has_started()`, 
 `get_current_receiving_speed()`, `subscribe_to_stream()`, `unsubscribe_from_stream()` and many more, explore them 
 [here](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html).
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
@@ -130,7 +130,7 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - ./setup.py
 
 ## Demo
-[Demo source](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py)
+[Demo source](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py)
 
 [![demo_gif](https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py)
 

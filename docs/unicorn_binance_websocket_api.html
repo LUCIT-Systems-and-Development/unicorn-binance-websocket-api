@@ -4,15 +4,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.10.1 documentation</title>
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.10.2 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -40,7 +40,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.10.1 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.10.2 documentation</a> &#187;
     
 
     <li class="right">
@@ -94,22 +94,26 @@
 <p>A python API to use the Binance Websocket API`s (com, com-margin, com-futures, jersey, us, dex/chain+testnet) in a easy, fast,
 flexible, robust and fully-featured way.</p>
 <p>This library supports two different kind of websocket endpoints:</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><p>CEX (Centralized exchange): binance.com, binance.je, binance.us</p></li>
 <li><p>DEX (Decentralized exchange): binance.org</p></li>
 </ul>
-<p>Binance.com websocket API documentation:
-<a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md">https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md</a>
+</div></blockquote>
+<dl class="simple">
+<dt>Binance.com websocket API documentation:</dt><dd><p><a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md">https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md</a>
 <a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#user-data-streams">https://binance-docs.github.io/apidocs/futures/en/#user-data-streams</a>
 <a class="reference external" href="https://binance-docs.github.io/apidocs/spot/en/#user-data-streams">https://binance-docs.github.io/apidocs/spot/en/#user-data-streams</a></p>
-<p>Binance.je websocket API documentation:
-<a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md">https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md</a>
+</dd>
+<dt>Binance.je websocket API documentation:</dt><dd><p><a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md">https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md</a>
 <a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md">https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md</a></p>
-<p>Binance.us websocket API documentation:
-<a class="reference external" href="https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md">https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md</a>
+</dd>
+<dt>Binance.us websocket API documentation:</dt><dd><p><a class="reference external" href="https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md">https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md</a>
 <a class="reference external" href="https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md">https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md</a></p>
-<p>Binance.org websocket API documentation:
-<a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">https://docs.binance.org/api-reference/dex-api/ws-connection.html</a></p>
+</dd>
+<dt>Binance.org websocket API documentation:</dt><dd><p><a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">https://docs.binance.org/api-reference/dex-api/ws-connection.html</a></p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -580,7 +584,7 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_info">
 <code class="sig-name descname">get_stream_info</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get infos about a specific stream</p>
+<dd><p>Get all infos about a specific stream</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p>
@@ -1322,7 +1326,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.10.1 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.10.2 documentation</a> &#187;
     
 
     <li class="right">
@@ -1345,7 +1349,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.4.1
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
