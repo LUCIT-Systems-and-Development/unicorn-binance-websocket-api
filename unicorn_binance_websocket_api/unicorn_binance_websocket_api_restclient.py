@@ -38,7 +38,6 @@ import hashlib
 import hmac
 import logging
 import requests
-import simplejson
 import socket
 import time
 
@@ -132,11 +131,7 @@ class BinanceWebSocketApiRestclient(object):
                              "or you are going to get banned! Read this: https://github.com/binance-exchange/binance-"
                              "official-api-sphinx/blob/master/rest-api.md#limits")
 
-        try:
-            respond = request_handler.json()
-        except simplejson.errors.JSONDecodeError as error_msg:
-            logging.critical(str(error_msg))
-            return False
+        respond = request_handler.json()
         self.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
         self.binance_api_status['timestamp'] = time.time()
         self.binance_api_status['status_code'] = request_handler.status_code
