@@ -65,20 +65,28 @@ class BinanceWebSocketApiManager(threading.Thread):
         - DEX (Decentralized exchange): binance.org
 
     Binance.com websocket API documentation:
-        https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
-        https://binance-docs.github.io/apidocs/futures/en/#user-data-streams
-        https://binance-docs.github.io/apidocs/spot/en/#user-data-streams
+
+        - https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
+
+        - https://binance-docs.github.io/apidocs/futures/en/#user-data-streams
+
+        - https://binance-docs.github.io/apidocs/spot/en/#user-data-streams
 
     Binance.je websocket API documentation:
-        https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md
-        https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md
+
+        - https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md
+
+        - https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md
 
     Binance.us websocket API documentation:
-        https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md
-        https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md
+
+        - https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md
+
+        - https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md
 
     Binance.org websocket API documentation:
-        https://docs.binance.org/api-reference/dex-api/ws-connection.html
+
+        - https://docs.binance.org/api-reference/dex-api/ws-connection.html
 
     :param process_stream_data: Provide a function/method to process the received webstream data. The function
                                 will be called with one variable like `process_stream_data(data)` where
