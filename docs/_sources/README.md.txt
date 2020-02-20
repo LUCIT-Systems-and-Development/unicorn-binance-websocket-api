@@ -29,12 +29,15 @@ Basically that's it, but there are more options:
 unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_stream_data_from_stream_buffer)
 ```
 
-### [Subscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream) / [Unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream) new markets and channels:
+### [Subscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream) / [unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream) new markets and channels:
 ```
 markets = ['engbtc', 'zileth']
-binance_websocket_api_manager.subscribe_to_stream(stream_id, markets=markets)
-
 channels = ['kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
+
+binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=channels, markets=markets)
+
+binance_websocket_api_manager.unsubscribe_from_stream(stream_id, markets=markets)
+
 binance_websocket_api_manager.unsubscribe_from_stream(stream_id, channels=channels)
 ```
 
@@ -101,9 +104,12 @@ If you like the project, please [![star](https://s3.gifyu.com/images/stard237b30
 [GitHub](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)!
 
 ## Installation and Upgrade
+If you run into errors during the installation take a look [here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Installation).
+
 Please note: UnicornFy is not longer part of this package, visit 
 [https://github.com/oliver-zehentleitner/unicorn_fy](https://github.com/oliver-zehentleitner/unicorn_fy) for
 further information.
+
 ### A wheel of the latest release with PIP from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
 `pip install unicorn-binance-websocket-api --upgrade`
 ### From source of the latest release with PIP from [Github](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
@@ -112,10 +118,10 @@ Run in bash:
 
 `pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
 #### Windows
-Use the below command with the version (such as 1.10.1) you determined 
+Use the below command with the version (such as 1.10.2) you determined 
 [here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest):
 
-`pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.3.8.tar.gz --upgrade`
+`pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.10.2.tar.gz --upgrade`
 ### From the latest source (dev-stage) with PIP from [Github](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
 This is not a release version and can not be considered to be stable!
 
@@ -132,7 +138,7 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 ## Demo
 [Demo source](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py)
 
-[![demo_gif](https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py)
+[![demo_gif](https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py)
 
 ## Howto
 - [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)

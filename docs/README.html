@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.10.2 documentation</title>
+    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.10.3 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -48,7 +48,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.10.2 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.10.3 documentation</a> &#187;
     
 
     <li class="right">
@@ -98,11 +98,14 @@
 </div>
 </div>
 <div class="section" id="subscribe-unsubscribe-new-markets-and-channels">
-<h2><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">Subscribe</a> / <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">Unsubscribe</a> new markets and channels:<a class="headerlink" href="#subscribe-unsubscribe-new-markets-and-channels" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">Subscribe</a> / <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a> new markets and channels:<a class="headerlink" href="#subscribe-unsubscribe-new-markets-and-channels" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">markets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;engbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;zileth&#39;</span><span class="p">]</span>
-<span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">subscribe_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">markets</span><span class="o">=</span><span class="n">markets</span><span class="p">)</span>
-
 <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;kline_5m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_15m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_30m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1h&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_12h&#39;</span><span class="p">,</span> <span class="s1">&#39;depth5&#39;</span><span class="p">]</span>
+
+<span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">subscribe_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">,</span> <span class="n">markets</span><span class="o">=</span><span class="n">markets</span><span class="p">)</span>
+
+<span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">unsubscribe_from_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">markets</span><span class="o">=</span><span class="n">markets</span><span class="p">)</span>
+
 <span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">unsubscribe_from_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -173,6 +176,7 @@ for <a class="reference external" href="https://exchange.icinga.com/bithon/check
 </div>
 <div class="section" id="installation-and-upgrade">
 <h2>Installation and Upgrade<a class="headerlink" href="#installation-and-upgrade" title="Permalink to this headline">¶</a></h2>
+<p>If you run into errors during the installation take a look <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Installation">here</a>.</p>
 <p>Please note: UnicornFy is not longer part of this package, visit
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">https://github.com/oliver-zehentleitner/unicorn_fy</a> for
 further information.</p>
@@ -189,9 +193,9 @@ further information.</p>
 </div>
 <div class="section" id="windows">
 <h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h4>
-<p>Use the below command with the version (such as 1.10.1) you determined
+<p>Use the below command with the version (such as 1.10.2) you determined
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest">here</a>:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.3.8.tar.gz</span> <span class="pre">--upgrade</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.10.2.tar.gz</span> <span class="pre">--upgrade</span></code></p>
 </div>
 </div>
 <div class="section" id="from-the-latest-source-dev-stage-with-pip-from-github">
@@ -214,7 +218,7 @@ and use:</p>
 <div class="section" id="demo">
 <h2>Demo<a class="headerlink" href="#demo" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py">Demo source</a></p>
-<p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_full_non_stop.py"><img alt="demo_gif" src="https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif" /></a></p>
+<p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py"><img alt="demo_gif" src="https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif" /></a></p>
 </div>
 <div class="section" id="howto">
 <h2>Howto<a class="headerlink" href="#howto" title="Permalink to this headline">¶</a></h2>
@@ -291,7 +295,7 @@ contribute follow
 <li><a class="reference internal" href="#create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code">Create a multiplex websocket connection to Binance with just 3 lines of code:</a></li>
 <li><a class="reference internal" href="#and-4-more-lines-to-print-the-receives">And 4 more lines to print the receives:</a></li>
 <li><a class="reference internal" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received raw webstream data into well-formed python dictionaries with UnicornFy:</a></li>
-<li><a class="reference internal" href="#subscribe-unsubscribe-new-markets-and-channels">Subscribe / Unsubscribe new markets and channels:</a></li>
+<li><a class="reference internal" href="#subscribe-unsubscribe-new-markets-and-channels">Subscribe / unsubscribe new markets and channels:</a></li>
 <li><a class="reference internal" href="#description">Description</a><ul>
 <li><a class="reference internal" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api">What are the benefits of the UNICORN Binance WebSocket API?</a></li>
 </ul>
@@ -387,7 +391,7 @@ contribute follow
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.10.2 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.10.3 documentation</a> &#187;
     
 
     <li class="right">
