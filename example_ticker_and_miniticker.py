@@ -36,6 +36,7 @@
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import os
 import time
+import threading
 import logging
 
 # import class to process stream data
@@ -49,11 +50,29 @@ logging.basicConfig(level=logging.DEBUG,
 
 # create instance of BinanceWebSocketApiManager and provide the function for stream processing
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
+# binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
+
+
+def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
+    while True:
+        if binance_websocket_api_manager.is_manager_stopping():
+            exit(0)
+        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+        if oldest_stream_data_from_stream_buffer is False:
+            time.sleep(0.01)
+        else:
+            print(oldest_stream_data_from_stream_buffer)
+            pass
+
+
+# start a worker process to move the received stream_data from the stream_buffer to a print function
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread.start()
 
 # create streams
 print("\r\n========================================== Starting ticker all ========================================\r\n")
 ticker_arr_stream_id = binance_websocket_api_manager.create_stream("arr", "!ticker")
-time.sleep(7)
+time.sleep(1)
 binance_websocket_api_manager.stop_stream(ticker_arr_stream_id)
 time.sleep(2)
 print("\r\n=========================================== Stopp ticker all ==========================================\r\n")

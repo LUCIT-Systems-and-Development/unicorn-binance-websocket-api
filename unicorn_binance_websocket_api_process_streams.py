@@ -57,6 +57,8 @@ class BinanceWebSocketApiProcessStreams(object):
             unicorn_fied_stream_data = UnicornFy.binance_com_websocket(received_stream_data_json)
         elif exchange == "binance.com-futures":
             unicorn_fied_stream_data = UnicornFy.binance_com_futures_websocket(received_stream_data_json)
+        elif exchange == "binance.com-margin":
+            unicorn_fied_stream_data = UnicornFy.binance_com_margin_websocket(received_stream_data_json)
         elif exchange == "binance.je":
             unicorn_fied_stream_data = UnicornFy.binance_je_websocket(received_stream_data_json)
         elif exchange == "binance.us":
@@ -82,8 +84,8 @@ class BinanceWebSocketApiProcessStreams(object):
                 BinanceWebSocketApiProcessStreams.miniticker(unicorn_fied_stream_data)
             else:
                 BinanceWebSocketApiProcessStreams.anything_else(unicorn_fied_stream_data)
-        except KeyError as error_msg:
-            print("received_data: " + str(received_stream_data_json), "error_msg: " + str(error_msg))
+        except KeyError:
+            pass
         except TypeError:
             pass
 
