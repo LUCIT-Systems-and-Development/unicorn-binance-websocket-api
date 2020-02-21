@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: dev_test_cex_all.py
+# File: dev_test_cex_stream_everything.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -33,27 +33,36 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
+from binance.client import Client
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import logging
 import os
+import requests
+import sys
 import time
 import threading
-from binance.client import Client
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.INFO,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
-api_key = ""
-api_secret = ""
-binance_rest_client = Client(api_key, api_secret)
-binance_websocket_api_manager = BinanceWebSocketApiManager()
+binance_api_key = ""
+binance_api_secret = ""
 
-channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w',
-            'miniTicker', '!miniTicker', '!ticker', '!bookTicker', 'depth5', 'depth10', 'depth20']
+try:
+    binance_rest_client = Client(binance_api_key, binance_api_secret)
+    binance_websocket_api_manager = BinanceWebSocketApiManager()
+except requests.exceptions.ConnectionError:
+    print("No internet connection?")
+    sys.exit(1
+             )
+channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
+            'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
+            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms',
+            '!miniTicker', '!ticker', '!bookTicker'}
 markets = []
 
 
@@ -62,7 +71,10 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if binance_websocket_api_manager.is_manager_stopping():
             exit(0)
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
-        if oldest_stream_data_from_stream_buffer is False:
+        if oldest_stream_data_from_stream_buffer is not False:
+            pass
+            #print(str(oldest_stream_data_from_stream_buffer))
+        else:
             time.sleep(0.01)
 
 
@@ -75,8 +87,14 @@ for item in data:
     markets.append(item['symbol'])
 
 stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+binance_websocket_api_manager.create_stream(channels, markets)
+
+binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
+userdata_stream_id = binance_websocket_api_manager.create_stream(["!userData"], ["arr"])
+userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"] )
 
 while True:
     #binance_websocket_api_manager.print_summary()
     binance_websocket_api_manager.print_stream_info(stream_id)
+    #binance_websocket_api_manager.print_stream_info(userdata_stream_id)
     time.sleep(1)

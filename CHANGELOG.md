@@ -5,9 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.10.4.dev (development stage/unreleased/unstable)
+## 1.10.5.dev (development stage/unreleased/unstable)
+
+## 1.10.5
 ### Fixed
-- `lower()` markets in `create_payload()`
+- `lower()` markets in `create_payload()` and exception for `!userData`
+- get_active_stream_list() took len() of false item
+- reconnect handling in send() ([issue #40](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/40))
 
 ## 1.10.4
 ### Changed
