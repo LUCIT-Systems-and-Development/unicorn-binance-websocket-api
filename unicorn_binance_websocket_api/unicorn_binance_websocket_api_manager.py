@@ -162,7 +162,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.monitoring_total_receives = 0
         self.reconnects = 0
         self.reconnects_lock = threading.Lock()
+        self.request_id = 0
+        self.request_id_lock = threading.Lock()
         self.restart_requests = {}
+        self.stream_buffer_lock = threading.Lock()
         self.start_time = time.time()
         self.stream_buffer = []
         self.stream_list = {}
@@ -174,8 +177,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.total_transmitted = 0
         self.total_transmitted_lock = threading.Lock()
         self.websocket_list = {}
-        self.request_id = 0
-        self.request_id_lock = threading.Lock()
         self.start()
 
     def _add_socket_to_socket_list(self, stream_id, channels, markets):
@@ -489,7 +490,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_data: the data you want to write back to the buffer
         :type stream_data: raw stream_data or unicorn_fied stream data
         """
-        self.stream_buffer.append(stream_data)
+        with self.stream_buffer_lock:
+            self.stream_buffer.append(stream_data)
         self.last_entry_added_to_stream_buffer = time.time()
 
     def add_total_received_bytes(self, size):
@@ -1285,7 +1287,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: int
         """
-        return sys.getsizeof(self.stream_buffer)
+        with self.stream_buffer_lock:
+            return sys.getsizeof(self.stream_buffer)
 
     def get_stream_buffer_length(self):
         """
@@ -1293,7 +1296,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: int
         """
-        return len(self.stream_buffer)
+        with self.stream_buffer_lock:
+            return len(self.stream_buffer)
 
     def get_stream_info(self, stream_id):
         """
@@ -1635,7 +1639,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: raw_stream_data (set) or False
         """
         try:
-            stream_data = self.stream_buffer.pop(0)
+            with self.stream_buffer_lock:
+                stream_data = self.stream_buffer.pop(0)
             return stream_data
         except IndexError:
             return False
