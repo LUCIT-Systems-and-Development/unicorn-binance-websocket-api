@@ -579,7 +579,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             if "!" in market:
                                 params.append(market + "@arr")
                             else:
-                                params.append(market + "@" + channel)
+                                params.append(market.lower() + "@" + channel)
                 if len(params) > 0:
                     params = list(set(params))
                     payload = self.split_payload(params, "SUBSCRIBE")
@@ -591,7 +591,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             params.append(channel + "@arr")
                         else:
                             for market in markets:
-                                params.append(market + "@" + channel)
+                                params.append(market.lower() + "@" + channel)
                     if len(params) > 0:
                         payload = self.split_payload(params, "UNSUBSCRIBE")
                 if channels:
@@ -601,7 +601,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             params.append(market + "@arr")
                         else:
                             for channel in channels:
-                                params.append(market + "@" + channel)
+                                params.append(market.lower() + "@" + channel)
                     if len(params) > 0:
                         payload = self.split_payload(params, "UNSUBSCRIBE")
             else:

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.10.4.dev (development stage/unreleased/unstable)
+### Fixed
+- `lower()` markets in `create_payload()`
 
 ## 1.10.4
 ### Changed
