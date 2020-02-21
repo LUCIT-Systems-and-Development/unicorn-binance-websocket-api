@@ -33,11 +33,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from __future__ import print_function
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+from unicorn_fy import UnicornFy
 import logging
 import time
-import threading
 import os
 
 # https://docs.python.org/3/library/logging.html#logging-levels
@@ -47,7 +46,7 @@ logging.basicConfig(level=logging.DEBUG,
                     style="{")
 
 # create instance of BinanceWebSocketApiManager
-binance_websocket_api_manager = BinanceWebSocketApiManager()
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
 
 markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
            'neousdt', 'bnbusdt', 'adabtc', 'ethusdt', 'trxbtc', 'bchabcbtc', 'ltcbtc', 'xrpbtc',
@@ -64,24 +63,18 @@ markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
 
 binance_get_kline_1m_bnbbtc = binance_websocket_api_manager.create_stream('kline_1m', markets=markets)
 
-
-
-def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
-    while True:
-        if binance_websocket_api_manager.is_manager_stopping():
-            exit(0)
-        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
-        if oldest_stream_data_from_stream_buffer is False:
-            time.sleep(0.01)
-        else:
-            from unicorn_fy import UnicornFy
-            oldest_stream_data_from_stream_buffer = UnicornFy.binance_websocket(oldest_stream_data_from_stream_buffer)
-            if oldest_stream_data_from_stream_buffer is not None:
+while True:
+    if binance_websocket_api_manager.is_manager_stopping():
+        exit(0)
+    oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+    if oldest_stream_data_from_stream_buffer is False:
+        time.sleep(0.01)
+    else:
+        oldest_stream_data_from_stream_buffer = UnicornFy.binance_websocket(oldest_stream_data_from_stream_buffer)
+        if oldest_stream_data_from_stream_buffer is not None:
+            try:
                 if oldest_stream_data_from_stream_buffer['event_time'] >= \
                         oldest_stream_data_from_stream_buffer['kline']['kline_close_time']:
                     print(oldest_stream_data_from_stream_buffer)
-
-
-# start one worker process (or more) to move the received stream_data from the stream_buffer to a print function
-worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
-worker_thread.start()
+            except KeyError:
+                pass

@@ -85,7 +85,7 @@ class BinanceWebSocketApiProcessStreams(object):
             else:
                 BinanceWebSocketApiProcessStreams.anything_else(unicorn_fied_stream_data)
         except KeyError:
-            pass
+            BinanceWebSocketApiProcessStreams.anything_else(unicorn_fied_stream_data)
         except TypeError:
             pass
 

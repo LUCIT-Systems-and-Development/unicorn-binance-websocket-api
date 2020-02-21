@@ -417,8 +417,9 @@ class UnicornFy(object):
             logging.debug("UnicornFy->binance_com_futures_websocket(" + str(unicorn_fied_data) + ")")
             return unicorn_fied_data
         except KeyError:
-            logging.error("detected unknown data stream format in module `unicorn_fy`: please report to "
-                          "https://github.com/oliver-zehentleitner/unicorn_fy/issues " + str(stream_data))
+            if "result" not in stream_data:
+                logging.error("detected unknown data stream format in module `unicorn_fy`: please report to "
+                              "https://github.com/oliver-zehentleitner/unicorn_fy/issues " + str(stream_data))
             return stream_data
 
     @staticmethod
@@ -697,8 +698,9 @@ class UnicornFy(object):
             logging.debug("UnicornFy->binance_com_futures_websocket(" + str(unicorn_fied_data) + ")")
             return unicorn_fied_data
         except KeyError:
-            logging.error("detected unknown data stream format in module `unicorn_fy`: please report to "
-                          "https://github.com/oliver-zehentleitner/unicorn_fy/issues " + str(stream_data))
+            if "result" not in stream_data:
+                logging.error("detected unknown data stream format in module `unicorn_fy`: please report to "
+                              "https://github.com/oliver-zehentleitner/unicorn_fy/issues " + str(stream_data))
             return stream_data
 
     @staticmethod
