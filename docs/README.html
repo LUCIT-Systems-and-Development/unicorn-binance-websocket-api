@@ -109,7 +109,9 @@
 <span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">unsubscribe_from_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html">Discover even more possibilities!</a></p>
+<p><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html">Discover even more possibilities</a>
+or <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_everything.py">use this script</a>
+to stream everything from “binance.com”.</p>
 </div>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
@@ -155,8 +157,10 @@ you dont need to deal with asyncio in your code!</p></li>
 <li><p>No use of the twisted module, so you can use this lib in a daemonized application (compatible with
 <a class="reference external" href="https://pypi.org/project/python-daemon/">python-daemon</a>).</p></li>
 <li><p>Supports <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">subscribe</a>/<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a> on all exchanges!</p></li>
+<li><p>No subscription limits! This multi stream was subscribed to everything that binance offered (except <code class="docutils literal notranslate"><span class="pre">!userData</span></code>):
+<img alt="20412_subscriptions" src="https://user-images.githubusercontent.com/47597331/75072621-1fc75080-54f8-11ea-99ea-4eeaab1cbf7e.png" /></p></li>
 <li><p>If you can not store your data in cause of a temporary technical issue, you can kick back the data to the
-stream_buffer which stores the receives in the RAM till you are able to process the data in the normal way again.
+<code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> which stores the receives in the RAM till you are able to process the data in the normal way again.
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py">Learn more!</a></p></li>
 <li><p>Compatible with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> to convert received raw data from
 crypto API endpoints into well-formed python dictionaries.</p></li>
