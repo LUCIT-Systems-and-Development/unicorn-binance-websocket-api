@@ -87,8 +87,10 @@ you dont need to deal with asyncio in your code!
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
 [python-daemon](https://pypi.org/project/python-daemon/)).
 - Supports [subscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream) on all exchanges!
+- No subscription limits
+![20412_subscriptions](https://user-images.githubusercontent.com/47597331/75072621-1fc75080-54f8-11ea-99ea-4eeaab1cbf7e.png)
 - If you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
-stream_buffer which stores the receives in the RAM till you are able to process the data in the normal way again. 
+`stream_buffer` which stores the receives in the RAM till you are able to process the data in the normal way again. 
 [Learn more!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py)
 - Compatible with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy) to convert received raw data from
 crypto API endpoints into well-formed python dictionaries. 
