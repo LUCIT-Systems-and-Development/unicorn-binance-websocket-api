@@ -38,6 +38,7 @@ try:
 except ImportError:
     print("Please install `python-binance`!")
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+from unicorn_fy import UnicornFy
 import logging
 import os
 import requests
@@ -67,15 +68,11 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             exit(0)
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         if oldest_stream_data_from_stream_buffer is not False:
-            pass
-            #print(str(oldest_stream_data_from_stream_buffer))
+            unicorn_fied_data = UnicornFy.binance_com_websocket(oldest_stream_data_from_stream_buffer)
+            print(str(unicorn_fied_data))
         else:
             time.sleep(0.01)
 
-
-# start a worker process to move the received stream_data from the stream_buffer to a print function
-worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
-worker_thread.start()
 
 try:
     binance_rest_client = Client(binance_api_key, binance_api_secret)
@@ -83,6 +80,10 @@ try:
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
+
+# start a worker process to move the received stream_data from the stream_buffer to a print function
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread.start()
 
 data = binance_rest_client.get_all_tickers()
 for item in data:

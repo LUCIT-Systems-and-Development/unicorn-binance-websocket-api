@@ -41,7 +41,9 @@ binance_websocket_api_manager.unsubscribe_from_stream(stream_id, markets=markets
 binance_websocket_api_manager.unsubscribe_from_stream(stream_id, channels=channels)
 ```
 
-[Discover even more possibilities!](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html)
+[Discover even more possibilities](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html)
+or [use this script](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_everything.py) 
+to stream everything from binance.com
 
 ## Description
 The python module [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) 
