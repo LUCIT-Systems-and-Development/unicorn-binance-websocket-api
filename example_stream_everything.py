@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: dev_test_cex_stream_everything.py
+# File: example_stream_everything.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -33,7 +33,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from binance.client import Client
+try:
+    from binance.client import Client
+except ImportError:
+    print("Please install `python-binance`!")
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import logging
 import os
@@ -41,7 +44,6 @@ import requests
 import sys
 import time
 import threading
-
 
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(level=logging.INFO,
@@ -52,13 +54,6 @@ logging.basicConfig(level=logging.INFO,
 binance_api_key = ""
 binance_api_secret = ""
 
-try:
-    binance_rest_client = Client(binance_api_key, binance_api_secret)
-    binance_websocket_api_manager = BinanceWebSocketApiManager()
-except requests.exceptions.ConnectionError:
-    print("No internet connection?")
-    sys.exit(1
-             )
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
             'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms',
@@ -78,6 +73,13 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             time.sleep(0.01)
 
 
+try:
+    binance_rest_client = Client(binance_api_key, binance_api_secret)
+    binance_websocket_api_manager = BinanceWebSocketApiManager()
+except requests.exceptions.ConnectionError:
+    print("No internet connection?")
+    sys.exit(1)
+
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
@@ -86,15 +88,12 @@ data = binance_rest_client.get_all_tickers()
 for item in data:
     markets.append(item['symbol'])
 
-stream_id = binance_websocket_api_manager.create_stream(channels, markets)
-binance_websocket_api_manager.create_stream(channels, markets)
-
 binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
 userdata_stream_id = binance_websocket_api_manager.create_stream(["!userData"], ["arr"])
-userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"] )
+multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 
 while True:
-    #binance_websocket_api_manager.print_summary()
-    binance_websocket_api_manager.print_stream_info(stream_id)
+    binance_websocket_api_manager.print_summary()
     #binance_websocket_api_manager.print_stream_info(userdata_stream_id)
+    #binance_websocket_api_manager.print_stream_info(multi_stream_id)
     time.sleep(1)
