@@ -69,7 +69,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         if oldest_stream_data_from_stream_buffer is not False:
             unicorn_fied_data = UnicornFy.binance_com_websocket(oldest_stream_data_from_stream_buffer)
-            print(str(unicorn_fied_data))
+            #print(str(unicorn_fied_data))
         else:
             time.sleep(0.01)
 
