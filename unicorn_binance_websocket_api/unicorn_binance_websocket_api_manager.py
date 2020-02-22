@@ -828,7 +828,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.debug("deleting " + str(stream_id) + " from stream_list")
         return self.stream_list.pop(stream_id, False)
 
-    def fill_up_space(self, demand_of_chars, string):
+    def fill_up_space(self, demand_of_chars, string, filling=" "):
         """
         Add whitespaces to `string` to a length of `demand_of_chars`
 
@@ -836,14 +836,37 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type demand_of_chars: int
         :param string: the string that has to get filled up with spaces
         :type string: str
+        :param filling: filling char (default: blank space)
+        :type filling: str
         :return: the filled up string
         """
         blanks_pre = ""
         blanks_post = ""
         demand_of_blanks = demand_of_chars - len(str(string)) - 1
         while len(blanks_pre) < demand_of_blanks:
-            blanks_pre += " "
-            blanks_post = " "
+            blanks_pre += filling
+            blanks_post = filling
+        return blanks_pre + str(string) + blanks_post
+
+    def fill_up_space_centered(self, demand_of_chars, string, filling=" "):
+        """
+        Add whitespaces to `string` to a length of `demand_of_chars`
+
+        :param demand_of_chars: how much chars does the string have to have?
+        :type demand_of_chars: int
+        :param string: the string that has to get filled up with spaces
+        :type string: str
+        :param filling: filling char (default: blank space)
+        :type filling: str
+        :return: the filled up string
+        """
+        blanks_pre = ""
+        blanks_post = ""
+        demand_of_blanks = demand_of_chars - len(str(string)) - 1
+        while (len(blanks_pre)+len(blanks_post)) < demand_of_blanks:
+            blanks_pre += filling
+            if (len(blanks_pre) + len(blanks_post)) < demand_of_blanks:
+                blanks_post += filling
         return blanks_pre + str(string) + blanks_post
 
     def get_active_stream_list(self):
@@ -1736,9 +1759,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         subscriptions = channels_len * markets_len
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
-            print("===============================================================================================\r\n"
-                  " exchange:", str(self.stream_list[stream_id]['exchange']), "(lib " + str(self.version) + "-python_"
-                  + platform.python_version() + ")\r\n" +
+            print(str(self.fill_up_space_centered(96, " unicorn-binance-websocket-api_" +
+                                                  str(self.version) + "-python_" + platform.python_version() + " ",
+                                                  "=")) + "\r\n" +
+                  " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
                   str(add_string) +
                   " stream_id:", str(stream_id), "\r\n" +
                   " channels (" + str(channels_len) + "):", str(stream_info['channels']), "\r\n" +
@@ -1897,9 +1921,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          ")\r\n"
             try:
                 print(
-                    "===============================================================================================\r\n" +
-                    " exchange:", str(self.stream_list[stream_id]['exchange']), "(lib " + str(self.version) + "-python_"
-                                                                                + platform.python_version() + ")\r\n" +
+                    str(self.fill_up_space_centered(96, " unicorn-binance-websocket-api_" +
+                        str(self.version) + "-python_" + platform.python_version() + " ", "=")) + "\r\n" +
+                    " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
                     " uptime:", str(self.get_human_uptime(time.time() - self.start_time)), "since " +
                     str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d, %H:%M:%S UTC')) + "\r\n" +
                     " streams:", str(streams), "\r\n" +

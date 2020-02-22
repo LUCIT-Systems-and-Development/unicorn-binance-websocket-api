@@ -92,6 +92,6 @@ binance_websocket_api_manager.get_stream_subscriptions(stream_id)
 
 while True:
     #binance_websocket_api_manager.print_summary()
-    #binance_websocket_api_manager.print_stream_info(stream_id)
+    binance_websocket_api_manager.print_stream_info(stream_id)
     binance_websocket_api_manager.get_stream_subscriptions(stream_id)
     time.sleep(3)
