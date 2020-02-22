@@ -526,8 +526,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         if type(markets) is str:
             markets = [markets]
         payload = []
-        # Todo: count subscriptions of dex streams
-        count_subscriptions = []
         if self.is_exchange_type("dex"):
             if method == "subscribe":
                 for channel in channels:
@@ -583,7 +581,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 params.append(market + "@arr")
                             else:
                                 params.append(market.lower() + "@" + channel)
-                self.stream_list[stream_id]['subscriptions'] = len(params)
                 if len(params) > 0:
                     params = list(set(params))
                     payload = self.split_payload(params, "SUBSCRIBE")
@@ -608,19 +605,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 params.append(market.lower() + "@" + channel)
                     if len(params) > 0:
                         payload = self.split_payload(params, "UNSUBSCRIBE")
-                # count subscriptions
-                count_subscriptions = 0
-                for channel in self.stream_list[stream_id]['channels']:
-                    if "!" in channel:
-                        count_subscriptions += 1
-                        continue
-                    else:
-                        for market in self.stream_list[stream_id]['markets']:
-                            if "!" in market:
-                                count_subscriptions += 1
-                            else:
-                                count_subscriptions += 1
-                self.stream_list[stream_id]['subscriptions'] = count_subscriptions
             else:
                 logging.critical("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", "
                                  + str(channels) + ", " + str(markets) + ") Allowed values for `method`: `subscribe` "
@@ -1131,6 +1115,25 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         return len(self.stream_list)
+
+    def get_number_of_subscriptions(self, stream_id):
+        """
+        Get the number of subscriptions of a specific stream
+
+        :return: int
+        """
+        count_subscriptions = 0
+        for channel in self.stream_list[stream_id]['channels']:
+            if "!" in channel:
+                count_subscriptions += 1
+                continue
+            else:
+                for market in self.stream_list[stream_id]['markets']:
+                    if "!" in market:
+                        count_subscriptions += 1
+                    else:
+                        count_subscriptions += 1
+        return count_subscriptions
 
     def get_keep_max_received_last_second_entries(self):
         """
@@ -2262,6 +2265,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                       markets=self.stream_list[stream_id]['markets'])
         for item in payload:
             self.stream_list[stream_id]['payload'].append(item)
+        self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
         logging.debug("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                       ", " + str(markets) + ") finished ...")
         return True
@@ -2309,6 +2313,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                       channels=channels, markets=markets)
         for item in payload:
             self.stream_list[stream_id]['payload'].append(item)
+        self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
         logging.debug("BinanceWebSocketApiManager->unsubscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                       ", " + str(markets) + ") finished ...")
         return True

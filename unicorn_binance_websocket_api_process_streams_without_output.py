@@ -82,8 +82,8 @@ class BinanceWebSocketApiProcessStreams():
                 BinanceWebSocketApiProcessStreams.miniticker(unicorn_fied_stream_data)
             else:
                 BinanceWebSocketApiProcessStreams.anything_else(unicorn_fied_stream_data)
-        except KeyError as error_msg:
-            print("received_data: " + str(received_stream_data_json), "error_msg: " + str(error_msg))
+        except KeyError:
+            print("received_data: " + str(received_stream_data_json))
         except TypeError:
             pass
 
