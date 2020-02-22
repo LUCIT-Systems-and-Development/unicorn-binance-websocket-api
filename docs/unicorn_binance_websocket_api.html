@@ -295,13 +295,32 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.fill_up_space">
-<code class="sig-name descname">fill_up_space</code><span class="sig-paren">(</span><em class="sig-param">demand_of_chars</em>, <em class="sig-param">string</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.fill_up_space" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fill_up_space</code><span class="sig-paren">(</span><em class="sig-param">demand_of_chars</em>, <em class="sig-param">string</em>, <em class="sig-param">filling=' '</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.fill_up_space" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add whitespaces to <cite>string</cite> to a length of <cite>demand_of_chars</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>demand_of_chars</strong> (<em>int</em>) – how much chars does the string have to have?</p></li>
 <li><p><strong>string</strong> (<em>str</em>) – the string that has to get filled up with spaces</p></li>
+<li><p><strong>filling</strong> (<em>str</em>) – filling char (default: blank space)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filled up string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.fill_up_space_centered">
+<code class="sig-name descname">fill_up_space_centered</code><span class="sig-paren">(</span><em class="sig-param">demand_of_chars</em>, <em class="sig-param">string</em>, <em class="sig-param">filling=' '</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.fill_up_space_centered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add whitespaces to <cite>string</cite> to a length of <cite>demand_of_chars</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>demand_of_chars</strong> (<em>int</em>) – how much chars does the string have to have?</p></li>
+<li><p><strong>string</strong> (<em>str</em>) – the string that has to get filled up with spaces</p></li>
+<li><p><strong>filling</strong> (<em>str</em>) – filling char (default: blank space)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
