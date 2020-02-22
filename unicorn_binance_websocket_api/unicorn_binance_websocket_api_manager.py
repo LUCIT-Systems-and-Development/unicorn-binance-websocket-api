@@ -196,6 +196,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'stream_id': copy.deepcopy(stream_id),
                                        'channels': copy.deepcopy(channels),
                                        'markets': copy.deepcopy(markets),
+                                       'subscriptions': 0,
                                        'payload': [],
                                        'api_key': copy.deepcopy(self.api_key),
                                        'api_secret': copy.deepcopy(self.api_secret),
@@ -508,7 +509,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Create the payload for subscriptions
 
-        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :param stream_id: provide a stream_id
         :type stream_id: uuid
         :param method: `SUBSCRIBE` or `UNSUBSCRIBE`
         :type method: str
@@ -525,6 +526,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         if type(markets) is str:
             markets = [markets]
         payload = []
+        # Todo: count subscriptions of dex streams
+        count_subscriptions = []
         if self.is_exchange_type("dex"):
             if method == "subscribe":
                 for channel in channels:
@@ -580,6 +583,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 params.append(market + "@arr")
                             else:
                                 params.append(market.lower() + "@" + channel)
+                self.stream_list[stream_id]['subscriptions'] = len(params)
                 if len(params) > 0:
                     params = list(set(params))
                     payload = self.split_payload(params, "SUBSCRIBE")
@@ -604,6 +608,19 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 params.append(market.lower() + "@" + channel)
                     if len(params) > 0:
                         payload = self.split_payload(params, "UNSUBSCRIBE")
+                # count subscriptions
+                count_subscriptions = 0
+                for channel in self.stream_list[stream_id]['channels']:
+                    if "!" in channel:
+                        count_subscriptions += 1
+                        continue
+                    else:
+                        for market in self.stream_list[stream_id]['markets']:
+                            if "!" in market:
+                                count_subscriptions += 1
+                            else:
+                                count_subscriptions += 1
+                self.stream_list[stream_id]['subscriptions'] = count_subscriptions
             else:
                 logging.critical("BinanceWebSocketApiManager->create_payload(" + str(stream_id) + ", "
                                  + str(channels) + ", " + str(markets) + ") Allowed values for `method`: `subscribe` "
@@ -942,7 +959,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.exchange
 
-    def get_human_bytesize(self, bytes, suffix=""):
+    @staticmethod
+    def get_human_bytesize(bytes, suffix=""):
         """
         Convert the bytes to something readable
 
@@ -952,7 +970,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type suffix: str
         :return:
         """
-        if bytes > 1024 * 1024 * 1024:
+        if bytes > 1024 * 1024 * 1024 *1024:
+            bytes = str(round(bytes / (1024 * 1024 * 1024 * 1024), 2)) + " tB" + suffix
+        elif bytes > 1024 * 1024 * 1024:
             bytes = str(round(bytes / (1024 * 1024 * 1024), 2)) + " gB" + suffix
         elif bytes > 1024 * 1024:
             bytes = str(round(bytes / (1024 * 1024), 2)) + " mB" + suffix
@@ -962,7 +982,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             bytes = str(bytes) + " B" + suffix
         return bytes
 
-    def get_human_uptime(self, uptime):
+    @staticmethod
+    def get_human_uptime(uptime):
         """
         Convert a timespan of seconds into hours, days, ...
 
@@ -991,7 +1012,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             uptime = str(int(uptime)) + " seconds"
         return uptime
 
-    def get_latest_release_info(self):
+    @staticmethod
+    def get_latest_release_info():
         """
         Get infos about the latest available release
 
@@ -1005,7 +1027,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         except Exception:
             return False
 
-    def get_latest_release_info_check_command(self):
+    @staticmethod
+    def get_latest_release_info_check_command():
         """
         Get infos about the latest available `check_unicorn_monitoring_api` release
         
@@ -1754,9 +1777,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             payload_row = " payload: " + str(self.stream_list[stream_id]["payload"]) + "\r\n"
         if self.stream_list[stream_id]["dex_user_address"] is not False:
             dex_user_address_row = " user_address: " + str(self.stream_list[stream_id]["dex_user_address"]) + "\r\n"
-        channels_len = len(stream_info['channels'])
-        markets_len = len(stream_info['markets'])
-        subscriptions = channels_len * markets_len
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print(str(self.fill_up_space_centered(96, " unicorn-binance-websocket-api_" +
@@ -1765,9 +1785,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                   " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
                   str(add_string) +
                   " stream_id:", str(stream_id), "\r\n" +
-                  " channels (" + str(channels_len) + "):", str(stream_info['channels']), "\r\n" +
-                  " markets (" + str(markets_len) + "):", str(stream_info['markets']), "\r\n" +
-                  " subscriptions: " + str(subscriptions) + "\r\n" +
+                  " channels (" + str(len(stream_info['channels'])) + "):", str(stream_info['channels']), "\r\n" +
+                  " markets (" + str(len(stream_info['markets'])) + "):", str(stream_info['markets']), "\r\n" +
+                  " subscriptions: " + str(self.stream_list[stream_id]['subscriptions']) + "\r\n" +
                   str(payload_row) +
                   str(status_row) +
                   str(dex_user_address_row) +

@@ -705,7 +705,7 @@ class UnicornFy(object):
                               "https://github.com/oliver-zehentleitner/unicorn_fy/issues " + str(stream_data))
             return stream_data
         except TypeError:
-            return stream_datas
+            return stream_data
 
     @staticmethod
     def get_latest_release_info():

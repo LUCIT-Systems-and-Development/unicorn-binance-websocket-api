@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - fill_up_space_centered()
 ### Changed
 - print_stream_info() and print_summary(): unicorn-binance-websocket-api_<version>-python_<version> in top boarder row
+- count subscriptions
 
 ## 1.10.5
 ### Fixed
