@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.10.5.dev (development stage/unreleased/unstable)
 ### Added
 - fill_up_space_centered()
+- update check on manager start
 ### Changed
 - print_stream_info() and print_summary(): unicorn-binance-websocket-api_<version>-python_<version> in top boarder row
 - count subscriptions

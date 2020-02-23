@@ -42,7 +42,7 @@ import os
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.WARN,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
@@ -96,6 +96,7 @@ binance_websocket_api_manager.create_stream(["miniTicker"], markets)
 multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 
 stream_id = binance_websocket_api_manager.create_stream(["kline_1m"], markets)
+time.sleep(2)
 binance_websocket_api_manager.print_stream_info(stream_id)
 
 

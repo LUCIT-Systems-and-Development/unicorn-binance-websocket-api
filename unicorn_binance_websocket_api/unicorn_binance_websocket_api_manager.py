@@ -97,10 +97,11 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param exchange: Select binance.com, binance.com-margin, binance.com-futures, binance.je, binance.us, binance.org
                      or binance.org-testnet (default: binance.com)
     :type exchange: str
-
+    :param warn_on_update: set to `False` to disable the update warning
+    :type warn_on_update: bool
     """
 
-    def __init__(self, process_stream_data=False, exchange="binance.com"):
+    def __init__(self, process_stream_data=False, exchange="binance.com", warn_on_update=True):
         threading.Thread.__init__(self)
         self.version = "1.10.5.dev"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
@@ -178,6 +179,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.total_transmitted_lock = threading.Lock()
         self.websocket_list = {}
         self.start()
+        if warn_on_update:
+            if self.is_update_availabe():
+                update_msg = "Release unicorn-binance-websocket-api_" + self.get_latest_version() + " is available, " \
+                             "please consider updating! (Changelog: https://github.com/oliver-zehentleitner/unicorn-" \
+                             "binance-websocket-api/blob/master/CHANGELOG.md)"
+                print(update_msg)
+                logging.warn(update_msg)
 
     def _add_socket_to_socket_list(self, stream_id, channels, markets):
         """
@@ -1124,12 +1132,24 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         count_subscriptions = 0
         for channel in self.stream_list[stream_id]['channels']:
-            if "!" in channel:
+            if "!" in channel \
+                    or channel == "orders" \
+                    or channel == "accounts" \
+                    or channel == "transfers" \
+                    or channel == "allTickers" \
+                    or channel == "allMiniTickers" \
+                    or channel == "blockheight":
                 count_subscriptions += 1
                 continue
             else:
                 for market in self.stream_list[stream_id]['markets']:
-                    if "!" in market:
+                    if "!" in market \
+                            or market == "orders" \
+                            or market == "accounts" \
+                            or market == "transfers" \
+                            or market == "allTickers" \
+                            or market == "allMiniTickers" \
+                            or market == "blockheight":
                         count_subscriptions += 1
                     else:
                         count_subscriptions += 1
