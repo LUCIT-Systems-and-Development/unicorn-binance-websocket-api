@@ -33,10 +33,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-try:
-    from binance.client import Client
-except ImportError:
-    print("Please install `python-binance`!")
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 from unicorn_fy import UnicornFy
 import logging
@@ -45,6 +41,12 @@ import requests
 import sys
 import time
 import threading
+
+try:
+    from binance.client import Client
+except ImportError:
+    print("Please install `python-binance`!")
+    sys.exit(1)
 
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(level=logging.INFO,
