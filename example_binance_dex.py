@@ -75,7 +75,7 @@ binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
 
 # userAddress streams
 binance_dex_user_address = ""
-if binance_websocket_api_manager.get_exchange() == "binance.org-test":
+if binance_websocket_api_manager.get_exchange() == "binance.org":
     binance_dex_user_address = ""
 elif binance_websocket_api_manager.get_exchange() == "binance.org-testnet":
     binance_dex_user_address = "tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7"
@@ -95,7 +95,7 @@ user_address_multi_stream_id = binance_websocket_api_manager.create_stream(['ord
 if binance_websocket_api_manager.get_exchange() == "binance.org":
     markets = 'RAVEN-F66_BNB'
 elif binance_websocket_api_manager.get_exchange() == "binance.org-testnet":
-    markets = 'RBX-C58_BNB'
+    markets = ['0KI-0AF_BNB', '000-0E1_BNB', '1KVOLUME-D65_BNB', '81JIAN-3E8_BNB', 'AAA-B50_BNB', 'AAAAAA-BBA_BNB']
 binance_websocket_api_manager.create_stream(["trades"], markets)
 binance_websocket_api_manager.create_stream(["marketDepth"], markets)
 binance_websocket_api_manager.create_stream(["kline_1h"], markets)

@@ -5,13 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.10.5.dev (development stage/unreleased/unstable)
+## 1.10.6.dev (development stage/unreleased/unstable)
+
+## 1.10.6
 ### Added
 - fill_up_space_centered()
 - update check on manager start
 ### Changed
 - print_stream_info() and print_summary(): unicorn-binance-websocket-api_<version>-python_<version> in top boarder row
 - count subscriptions
+### Fixed
+- lower for cex and upper for dex with exceptions for arr, $all, ! and array channels
 
 ## 1.10.5
 ### Fixed

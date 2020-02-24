@@ -103,7 +103,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False, exchange="binance.com", warn_on_update=True):
         threading.Thread.__init__(self)
-        self.version = "1.10.5.dev"
+        self.version = "1.10.6"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
         colorama.init()
         if process_stream_data is False:
@@ -179,13 +179,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.total_transmitted_lock = threading.Lock()
         self.websocket_list = {}
         self.start()
-        if warn_on_update:
-            if self.is_update_availabe():
-                update_msg = "Release unicorn-binance-websocket-api_" + self.get_latest_version() + " is available, " \
-                             "please consider updating! (Changelog: https://github.com/oliver-zehentleitner/unicorn-" \
-                             "binance-websocket-api/blob/master/CHANGELOG.md)"
-                print(update_msg)
-                logging.warn(update_msg)
+        if warn_on_update and self.is_update_availabe():
+            update_msg = "Release unicorn-binance-websocket-api_" + self.get_latest_version() + " is available, " \
+                         "please consider updating! (Changelog: https://github.com/oliver-zehentleitner/unicorn-" \
+                         "binance-websocket-api/blob/master/CHANGELOG.md)"
+            print(update_msg)
+            logging.warn(update_msg)
 
     def _add_socket_to_socket_list(self, stream_id, channels, markets):
         """
@@ -540,8 +539,22 @@ class BinanceWebSocketApiManager(threading.Thread):
                     add_payload = {"method": method,
                                    "topic": channel}
                     symbols = []
+                    if channel == "allMiniTickers" or \
+                            channel == "allTickers" or \
+                            channel == "blockheight":
+                        add_payload["symbols"] = ["$all"]
+                        payload.append(add_payload)
+                        continue
                     for market in markets:
-                        if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
+                        if market == "allMiniTickers" or \
+                                market == "allTickers" or \
+                                market == "blockheight":
+                            add_payload_from_market = {"method": method,
+                                                       "topic": market,
+                                                       "symbols": ["$all"]}
+                            payload.append(add_payload_from_market)
+                            continue
+                        elif re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
                             if self.stream_list[stream_id]['dex_user_address'] is False:
                                 self.stream_list[stream_id]['dex_user_address'] = market
                         else:
@@ -656,13 +669,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 ``binance_websocket_api_manager.create_stream(['orders', 'transfers', 'accounts'], binance_dex_user_address)``
 
         To create a multiplexed stream which includes also `!miniTicker@arr`, `!ticker@arr` or `!bookTicker@arr` you
-        just need to add `!bookTicker` to the channels list - dont add `arr` (cex) or `$arr` (dex) to the markets list.
+        just need to add `!bookTicker` to the channels list - dont add `arr` (cex) or `$all` (dex) to the markets list.
 
             Example:
 
                 ``binance_websocket_api_manager.create_stream(['kline_5m', 'marketDepth', '!miniTicker'], ['bnbbtc'])``
 
-        But you have to add `arr` or `$arr` if you want to start it as a single stream!
+        But you have to add `arr` or `$all` if you want to start it as a single stream!
 
             Example:
 
@@ -680,16 +693,23 @@ class BinanceWebSocketApiManager(threading.Thread):
         if type(markets) is str:
             markets = [markets]
         stream_id = uuid.uuid4()
-        markets_low = []
+        markets_new = []
         for market in markets:
-            if "!" not in market:
-                markets_low.append(market.lower())
+            if "!" in market \
+                    or market == "allMiniTickers" \
+                    or market == "allTickers" \
+                    or market == "blockheight" \
+                    or market == "$all":
+                markets_new.append(market)
             else:
-                markets_low.append(market)
-        logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets_low) + ") "
+                if self.is_exchange_type('dex'):
+                    markets_new.append(str(market).upper())
+                elif self.is_exchange_type('cex'):
+                    markets_new.append(str(market).lower())
+        logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets_new) + ") "
                      "with stream_id=" + str(stream_id))
         loop = asyncio.new_event_loop()
-        thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels, markets_low))
+        thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels, markets_new))
         thread.start()
         return stream_id
 
@@ -732,6 +752,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     if response:
                         try:
                             uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
+                            self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                             return uri
                         except KeyError:
                             return False
@@ -744,10 +765,16 @@ class BinanceWebSocketApiManager(threading.Thread):
                     logging.debug("Error: Can not create websocket URI!")
                     return False
             elif "!bookTicker" in channels or "!bookTicker" in markets:
+                if stream_id:
+                    self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                 return self.websocket_base_uri + "ws/!bookTicker"
             elif "arr" in channels or "$all" in markets:
+                if stream_id:
+                    self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                 return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
             elif "arr" in markets or "$all" in channels:
+                if stream_id:
+                    self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                 return self.websocket_base_uri + "ws/" + channels[0] + "@" + markets[0]
             elif self.is_exchange_type("dex"):
                 if re.match(r'[a-zA-Z0-9]{41,43}', markets[0]) is not None:
@@ -766,6 +793,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     payload.append(add_payload)
                     if stream_id:
                         self.stream_list[stream_id]['payload'] = payload
+                        self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                     return self.websocket_base_uri + "ws/" + markets[0]
                 elif markets[0] != "" and channels[0] != "":
                     return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
@@ -777,6 +805,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             if stream_id:
                 payload = self.create_payload(stream_id, "subscribe", channels=channels, markets=markets)
                 self.stream_list[stream_id]['payload'] = payload
+                self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
             return self.websocket_base_uri + str(query)
         else:
             query = "stream?streams="
@@ -2276,10 +2305,20 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stream_list[stream_id]['markets'] = list(self.stream_list[stream_id]['markets'])
 
         self.stream_list[stream_id]['channels'] = list(set(self.stream_list[stream_id]['channels'] + channels))
-        markets_low = []
+        markets_new = []
         for market in markets:
-            markets_low.append(market.lower())
-        self.stream_list[stream_id]['markets'] = list(set(self.stream_list[stream_id]['markets'] + markets_low))
+            if "!" in market \
+                    or market == "allMiniTickers" \
+                    or market == "allTickers" \
+                    or market == "blockheight" \
+                    or market == "$all":
+                markets_new.append(market)
+            else:
+                if self.is_exchange_type('dex'):
+                    markets_new.append(str(market).upper())
+                elif self.is_exchange_type('cex'):
+                    markets_new.append(str(market).lower())
+        self.stream_list[stream_id]['markets'] = list(set(self.stream_list[stream_id]['markets'] + markets_new))
         payload = self.create_payload(stream_id, "subscribe",
                                       channels=self.stream_list[stream_id]['channels'],
                                       markets=self.stream_list[stream_id]['markets'])
