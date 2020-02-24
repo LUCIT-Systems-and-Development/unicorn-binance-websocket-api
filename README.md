@@ -181,6 +181,7 @@ To receive news (like inspection windows/maintenance) about the Binance API`s su
 - [https://t.me/BinanceExchange](https://t.me/BinanceExchange)
 - [https://t.me/Binance_Jersey](https://t.me/Binance_Jersey)
 - [https://t.me/Binance_USA](https://t.me/Binance_USA)
+- [https://t.me/Binance_JEX_EN](https://t.me/Binance_JEX_EN)
 - [https://t.me/BinanceDEXchange](https://t.me/BinanceDEXchange)
 
 ## How to report Bugs or suggest Improvements?
