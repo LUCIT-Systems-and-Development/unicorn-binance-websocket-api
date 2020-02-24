@@ -44,7 +44,7 @@ setuptools.setup(
      author="Oliver Zehentleitner",
      url="https://about.me/oliver-zehentleitner/",
      scripts=['unicorn_binance_websocket_api.py'],
-     description="A python API to use the Binance Websocket API's (com, com-margin, com-futures, jersey, us,"
+     description="A python API to use the Binance Websocket API's (com, com-margin, com-futures, jersey, us, jex,"
                  " dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.",
      long_description=long_description,
      long_description_content_type="text/markdown",

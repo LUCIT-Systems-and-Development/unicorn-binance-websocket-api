@@ -60,7 +60,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     This library supports two different kind of websocket endpoints:
 
-        - CEX (Centralized exchange): binance.com, binance.je, binance.us
+        - CEX (Centralized exchange): binance.com, binance.je, binance.us, jex.com
 
         - DEX (Decentralized exchange): binance.org
 
@@ -84,6 +84,12 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         - https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md
 
+    Jex.com websocket API documentation:
+
+        - https://jexapi.github.io/api-doc/option.html#web-socket-streams
+
+        - https://jexapi.github.io/api-doc/option.html#user-data-streams
+
     Binance.org websocket API documentation:
 
         - https://docs.binance.org/api-reference/dex-api/ws-connection.html
@@ -94,8 +100,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 stored in the stream_buffer! (How to read from stream_buffer:
                                 https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives)
     :type process_stream_data: function
-    :param exchange: Select binance.com, binance.com-margin, binance.com-futures, binance.je, binance.us, binance.org
-                     or binance.org-testnet (default: binance.com)
+    :param exchange: Select binance.com, binance.com-margin, binance.com-futures, binance.je, binance.us, jex.com,
+                     binance.org or binance.org-testnet (default: binance.com)
     :type exchange: str
     :param warn_on_update: set to `False` to disable the update warning
     :type warn_on_update: bool
@@ -128,6 +134,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         elif self.exchange == "binance.us":
             # Binance US: www.binance.us
             self.websocket_base_uri = "wss://stream.binance.us:9443/"
+        elif self.exchange == "jex.com":
+            # Binance JEX: www.jex.com
+            self.websocket_base_uri = "wss://ws.jex.com/"
         elif self.exchange == "binance.org":
             # Binance Chain: www.binance.org
             self.websocket_base_uri = "wss://dex.binance.org/api/"
@@ -1652,18 +1661,19 @@ class BinanceWebSocketApiManager(threading.Thread):
             return False
         if self.exchange == "binance.org" or \
                 self.exchange == "binance.org-testnet":
-            type = "dex"
+            is_type = "dex"
         elif self.exchange == "binance.com" or \
-            self.exchange == "binance.com-margin" or \
-            self.exchange == "binance.com-futures" or \
-            self.exchange == "binance.je" or \
-            self.exchange == "binance.us":
-            type = "cex"
+                self.exchange == "binance.com-margin" or \
+                self.exchange == "binance.com-futures" or \
+                self.exchange == "binance.je" or \
+                self.exchange == "binance.us" or \
+                self.exchange == "jex.com":
+            is_type = "cex"
         else:
             logging.CRITICAL("Can not determine exchange type in method unicorn_binance_websocket_api."
                              "is_exchange_type()")
             return False
-        if type == exchange_type:
+        if is_type == exchange_type:
             return True
         else:
             return False

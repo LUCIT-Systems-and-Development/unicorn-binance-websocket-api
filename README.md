@@ -5,7 +5,7 @@
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel&color=orange)](https://pypi.org/project/unicorn-binance-websocket-api/)
 
 # UNICORN Binance WebSocket API
-A python API to use the Binance Websocket API's (com, com-margin, com-futures, jersey, us, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.
+A python API to use the Binance Websocket API's (com, com-margin, com-futures, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.
 
 ### [Create a multiplex websocket connection](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
 ```
@@ -53,13 +53,15 @@ provides an API to the Binance Websocket API`s of [Binance](https://github.com/b
 [Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams), 
 [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
+[Binance JEX](https://jexapi.github.io/api-doc/spot.html#web-socket-streams), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
 [Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports the streaming of 
 all public streams like trade, kline, ticker, depth, !bookTicker and blockheight and also all private userData streams 
 which needs to be used with a valid api_key and api_secret from the Binance Exchange 
 [www.binance.com](https://www.binance.com/userCenter/createApi.html), 
-[www.binance.je](https://www.binance.je/userCenter/createApi.html)  or 
-[www.binance.us](https://www.binance.us/userCenter/createApi.html) - for the DEX you need a user address from 
+[www.binance.je](https://www.binance.je/userCenter/createApi.html),
+[www.binance.us](https://www.binance.us/userCenter/createApi.html) or 
+[www.jex.com](https://www.jex.com/userCenter/createApi.html) - for the DEX you need a user address from 
 [www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create) 
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
@@ -71,6 +73,7 @@ Be aware that the Binance websocket API just offers to receive data. If you woul
 on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), 
 [je](https://github.com/binance-jersey/binance-official-api-docs/), 
 [us](https://github.com/binance-us/binance-official-api-docs/), 
+[jex](https://jexapi.github.io/api-doc/spot.html#change-log), 
 [org](https://docs.binance.org/api-reference/dex-api/paths.html)) in combination. 
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
@@ -81,6 +84,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
     * [Binance Futures](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com-futures")`
     * [Binance Jersey](https://www.binance.je) `BinanceWebSocketApiManager(exchange="binance.je")`
     * [Binance US](https://www.binance.us) `BinanceWebSocketApiManager(exchange="binance.us")`
+    * [Binance JEX](https://www.jex.com) `BinanceWebSocketApiManager(exchange="jex.com")`
     * [Binance DEX](https://www.binance.org) `BinanceWebSocketApiManager(exchange="binance.org")`
     * [Binance DEX testnet](https://testnet.binance.org) `BinanceWebSocketApiManager(exchange="binance.org-testnet")`
 

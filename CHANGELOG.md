@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.10.6.dev (development stage/unreleased/unstable)
+### Added
+- binance jex
 
 ## 1.10.6
 ### Added
