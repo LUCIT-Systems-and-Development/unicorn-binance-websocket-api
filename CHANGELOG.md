@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.10.6.dev (development stage/unreleased/unstable)
 ### Added
 - binance jex
+### Fixed
+- expception handling of send() ([issue #43](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/43))
+- thread lock for `frequent_checks_list` ([comment #590914274](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/11#issuecomment-590914274))
 
 ## 1.10.6
 ### Added

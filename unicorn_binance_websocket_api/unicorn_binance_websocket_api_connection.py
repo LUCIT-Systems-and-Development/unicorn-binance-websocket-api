@@ -196,7 +196,7 @@ class BinanceWebSocketApiConnection(object):
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
-            sys.exit(0)
+            sys.exit(1)
 
     def close(self):
         self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
@@ -237,7 +237,7 @@ class BinanceWebSocketApiConnection(object):
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
-            sys.exit(0)
+            sys.exit(1)
         except asyncio.base_futures.InvalidStateError as error_msg:
             logging.critical("binance_websocket_api_connection->receive(" +
                              str(self.stream_id) + ") - asyncio.base_futures.InvalidStateError - error_msg: " +
@@ -246,7 +246,7 @@ class BinanceWebSocketApiConnection(object):
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
-            sys.exit(0)
+            sys.exit(1)
 
     async def send(self, data):
         try:
@@ -271,9 +271,9 @@ class BinanceWebSocketApiConnection(object):
             logging.error("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
                           str(self.channels) + ", " + str(self.markets) + ") Exception IndexError "
                           "Info: " + str(error_msg))
-            self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
-            self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
-            # Todo: restart handling
+            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
+            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
+                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
         except KeyError:
             pass

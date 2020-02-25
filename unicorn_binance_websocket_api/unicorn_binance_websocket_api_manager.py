@@ -158,6 +158,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    'status_code': None}
         self.dex_user_address = False
         self.frequent_checks_list = {}
+        self.frequent_checks_list_lock = threading.Lock()
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
         self.last_entry_added_to_stream_buffer = 0
@@ -267,26 +268,29 @@ class BinanceWebSocketApiManager(threading.Thread):
         This method gets started as a thread and is doing the frequent checks
         """
         frequent_checks_id = time.time()
-        self.frequent_checks_list[frequent_checks_id] = {'last_heartbeat': 0,
-                                                         'stop_request': None,
-                                                         'has_stopped': False}
+        with self.frequent_checks_list_lock:
+            self.frequent_checks_list[frequent_checks_id] = {'last_heartbeat': 0,
+                                                             'stop_request': None,
+                                                             'has_stopped': False}
         logging.info("BinanceWebSocketApiManager->_frequent_checks() new instance created with frequent_checks_id=" +
                      str(frequent_checks_id))
-        for frequent_checks_instance in self.frequent_checks_list:
-            if frequent_checks_instance != frequent_checks_id:
-                try:
-                    if (self.keepalive_streams_list[frequent_checks_instance]['last_heartbeat'] + 3) > time.time():
-                        logging.info("BinanceWebSocketApiManager->_frequent_checks() found an other living instance, "
-                                     "so i stop" + str(frequent_checks_id))
-                        sys.exit(1)
-                except KeyError:
-                    logging.debug("BinanceWebSocketApiManager->_frequent_checks() - Info: KeyError "
-                                  "" + str(frequent_checks_id))
+        with self.frequent_checks_list_lock:
+            for frequent_checks_instance in self.frequent_checks_list:
+                if frequent_checks_instance != frequent_checks_id:
+                    try:
+                        if (self.keepalive_streams_list[frequent_checks_instance]['last_heartbeat'] + 3) > time.time():
+                            logging.info("BinanceWebSocketApiManager->_frequent_checks() found an other living instance, "
+                                         "so i stop" + str(frequent_checks_id))
+                            sys.exit(1)
+                    except KeyError:
+                        logging.debug("BinanceWebSocketApiManager->_frequent_checks() - Info: KeyError "
+                                      "" + str(frequent_checks_id))
 
         # threaded loop for min 1 check per second
         while self.stop_manager_request is None and self.frequent_checks_list[frequent_checks_id]['stop_request'] \
                 is None:
-            self.frequent_checks_list[frequent_checks_id]['last_heartbeat'] = time.time()
+            with self.frequent_checks_list_lock:
+                self.frequent_checks_list[frequent_checks_id]['last_heartbeat'] = time.time()
             time.sleep(0.8)
             current_timestamp = int(time.time())
             last_timestamp = current_timestamp - 1
@@ -450,12 +454,13 @@ class BinanceWebSocketApiManager(threading.Thread):
             # 1) there should only be one! stop others if necessary:
             found_alive_frequent_checks = False
             current_timestamp = time.time()
-            for frequent_checks_id in self.frequent_checks_list:
-                try:
-                    if (current_timestamp - self.frequent_checks_list[frequent_checks_id]['last_heartbeat']) < 2:
-                        found_alive_frequent_checks = True
-                except TypeError:
-                    pass
+            with self.frequent_checks_list_lock:
+                for frequent_checks_id in self.frequent_checks_list:
+                    try:
+                        if (current_timestamp - self.frequent_checks_list[frequent_checks_id]['last_heartbeat']) < 2:
+                            found_alive_frequent_checks = True
+                    except TypeError:
+                        pass
             # 2) start a new one, if there isnt one
             if found_alive_frequent_checks is False:
                 self._frequent_checks_restart_request = True
