@@ -267,5 +267,13 @@ class BinanceWebSocketApiConnection(object):
             self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
             self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
             sys.exit(1)
+        except IndexError as error_msg:
+            logging.error("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
+                          str(self.channels) + ", " + str(self.markets) + ") Exception IndexError "
+                          "Info: " + str(error_msg))
+            self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+            self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
+            # Todo: restart handling
+            sys.exit(1)
         except KeyError:
             pass
