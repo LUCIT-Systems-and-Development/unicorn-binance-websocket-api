@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.10.6 documentation</title>
+    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.11.0 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -48,7 +48,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.10.6 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.11.0 documentation</a> &#187;
     
 
     <li class="right">
@@ -71,10 +71,10 @@
 <a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/"><img alt="PyPI - Wheel" src="https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel&amp;color=orange" /></a></p>
 <div class="section" id="unicorn-binance-websocket-api">
 <h1>UNICORN Binance WebSocket API<a class="headerlink" href="#unicorn-binance-websocket-api" title="Permalink to this headline">¶</a></h1>
-<p>A python API to use the Binance Websocket API’s (com, com-margin, com-futures, jersey, us, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.</p>
+<p>A python API to use the Binance Websocket API’s (com, com-margin, com-futures, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.</p>
 <div class="section" id="create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code">
 <h2><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">Create a multiplex websocket connection</a> to Binance with just 3 lines of code:<a class="headerlink" href="#create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager</span> <span class="k">import</span> <span class="n">BinanceWebSocketApiManager</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
 
 <span class="n">binance_websocket_api_manager</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
 <span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">create_stream</span><span class="p">([</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">])</span>
@@ -121,22 +121,25 @@ provides an API to the Binance Websocket API`s of <a class="reference external" 
 <a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams">Binance Futures</a>,
 <a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/">Binance Jersey</a>,
 <a class="reference external" href="https://github.com/binance-us/binance-official-api-docs">Binance US</a>,
+<a class="reference external" href="https://jexapi.github.io/api-doc/spot.html#web-socket-streams">Binance JEX</a>,
 <a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">Binance DEX</a> and
 <a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">Binance DEX Testnet</a> and supports the streaming of
 all public streams like trade, kline, ticker, depth, !bookTicker and blockheight and also all private userData streams
 which needs to be used with a valid api_key and api_secret from the Binance Exchange
 <a class="reference external" href="https://www.binance.com/userCenter/createApi.html">www.binance.com</a>,
-<a class="reference external" href="https://www.binance.je/userCenter/createApi.html">www.binance.je</a>  or
-<a class="reference external" href="https://www.binance.us/userCenter/createApi.html">www.binance.us</a> - for the DEX you need a user address from
+<a class="reference external" href="https://www.binance.je/userCenter/createApi.html">www.binance.je</a>,
+<a class="reference external" href="https://www.binance.us/userCenter/createApi.html">www.binance.us</a> or
+<a class="reference external" href="https://www.jex.com/userCenter/createApi.html">www.jex.com</a> - for the DEX you need a user address from
 <a class="reference external" href="https://www.binance.org/en/create">www.binance.org</a> or <a class="reference external" href="https://testnet.binance.org/en/create">testnet.binance.org</a>
 and you can <a class="reference external" href="https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account">get funds</a> for the testnet.</p>
-<p>The module requires python 3.5.3 or above, as it depends on pythons latest asyncio features for asynchronous/concurrent
+<p>The module requires python 3.6.1 or above, as it depends on pythons latest asyncio features for asynchronous/concurrent
 processing. The current dependencies are listed
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/requirements.txt">here</a>.</p>
 <p>Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so
 on, you have to use the Binance Rest API (<a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs">com</a>,
 <a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/">je</a>,
 <a class="reference external" href="https://github.com/binance-us/binance-official-api-docs/">us</a>,
+<a class="reference external" href="https://jexapi.github.io/api-doc/spot.html#change-log">jex</a>,
 <a class="reference external" href="https://docs.binance.org/api-reference/dex-api/paths.html">org</a>) in combination.</p>
 <div class="section" id="what-are-the-benefits-of-the-unicorn-binance-websocket-api">
 <h3>What are the benefits of the UNICORN Binance WebSocket API?<a class="headerlink" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api" title="Permalink to this headline">¶</a></h3>
@@ -149,6 +152,7 @@ on, you have to use the Binance Rest API (<a class="reference external" href="ht
 <li><p><a class="reference external" href="https://www.binance.com">Binance Futures</a> <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-futures&quot;)</span></code></p></li>
 <li><p><a class="reference external" href="https://www.binance.je">Binance Jersey</a> <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.je&quot;)</span></code></p></li>
 <li><p><a class="reference external" href="https://www.binance.us">Binance US</a> <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.us&quot;)</span></code></p></li>
+<li><p><a class="reference external" href="https://www.jex.com">Binance JEX</a> <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;jex.com&quot;)</span></code></p></li>
 <li><p><a class="reference external" href="https://www.binance.org">Binance DEX</a> <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.org&quot;)</span></code></p></li>
 <li><p><a class="reference external" href="https://testnet.binance.org">Binance DEX testnet</a> <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.org-testnet&quot;)</span></code></p></li>
 </ul>
@@ -198,9 +202,9 @@ further information.</p>
 </div>
 <div class="section" id="windows">
 <h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h4>
-<p>Use the below command with the version (such as 1.10.2) you determined
+<p>Use the below command with the version (such as 1.11.0) you determined
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest">here</a>:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.10.2.tar.gz</span> <span class="pre">--upgrade</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.11.0.tar.gz</span> <span class="pre">--upgrade</span></code></p>
 </div>
 </div>
 <div class="section" id="from-the-latest-source-dev-stage-with-pip-from-github">
@@ -266,6 +270,7 @@ with using <code class="docutils literal notranslate"><span class="pre">binance_
 <li><p><a class="reference external" href="https://t.me/BinanceExchange">https://t.me/BinanceExchange</a></p></li>
 <li><p><a class="reference external" href="https://t.me/Binance_Jersey">https://t.me/Binance_Jersey</a></p></li>
 <li><p><a class="reference external" href="https://t.me/Binance_USA">https://t.me/Binance_USA</a></p></li>
+<li><p><a class="reference external" href="https://t.me/Binance_JEX_EN">https://t.me/Binance_JEX_EN</a></p></li>
 <li><p><a class="reference external" href="https://t.me/BinanceDEXchange">https://t.me/BinanceDEXchange</a></p></li>
 </ul>
 </div>
@@ -396,7 +401,7 @@ contribute follow
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.10.6 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.11.0 documentation</a> &#187;
     
 
     <li class="right">
@@ -419,7 +424,7 @@ contribute follow
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.4.2
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.4.3
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
