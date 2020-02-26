@@ -109,7 +109,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __init__(self, process_stream_data=False, exchange="binance.com", warn_on_update=True):
         threading.Thread.__init__(self)
-        self.version = "1.10.6.dev"
+        self.version = "1.11.0"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
         colorama.init()
         if process_stream_data is False:
@@ -977,9 +977,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = \
                     self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][last_timestamp]
         except TypeError:
-            pass
+            return 0
         except KeyError:
-            pass
+            return 0
         try:
             current_receiving_speed = self.stream_list[stream_id]['transfer_rate_per_second']['speed']
         except KeyError:

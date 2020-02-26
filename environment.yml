@@ -1,6 +1,6 @@
 name: unicorn-binance-websocket-api
 dependencies:
-- python>=3.5.3
+- python>=3.6.1
 - pip:
   - cheroot
   - colorama
@@ -10,4 +10,4 @@ dependencies:
   - requests
   - ujson
   - websocket-client
-  - websockets==7.0
+  - websockets==8.1

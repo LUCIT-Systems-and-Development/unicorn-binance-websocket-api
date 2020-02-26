@@ -5,12 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.10.6.dev (development stage/unreleased/unstable)
+## 1.11.0.dev (development stage/unreleased/unstable)
+
+## 1.11.0
 ### Added
 - binance jex
+### Changed
+- dependency websockets from 7.0 to 8.1 which needs python>=3.6.1 ([issue #11](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/11))
 ### Fixed
 - expception handling of send() ([issue #43](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/43))
 - thread lock for `frequent_checks_list` ([comment #590914274](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/11#issuecomment-590914274))
+- `current_receiving_speed` did not reset to 0 if all streams are offline
 
 ## 1.10.6
 ### Added

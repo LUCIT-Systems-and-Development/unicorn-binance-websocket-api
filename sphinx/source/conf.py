@@ -27,7 +27,7 @@ author = 'Oliver Zehentleitner'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '1.10.6'
+release = '1.11.0'
 
 
 # -- General configuration ---------------------------------------------------

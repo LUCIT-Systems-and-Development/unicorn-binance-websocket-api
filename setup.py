@@ -40,7 +40,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='unicorn-binance-websocket-api',
-     version='1.10.6.dev',
+     version='1.11.0',
      author="Oliver Zehentleitner",
      url="https://about.me/oliver-zehentleitner/",
      scripts=['unicorn_binance_websocket_api.py'],
@@ -49,7 +49,7 @@ setuptools.setup(
      long_description=long_description,
      long_description_content_type="text/markdown",
      license='MIT License',
-     install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets==7.0', 'flask_restful',
+     install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets==8.1', 'flask_restful',
                        'cheroot', 'flask', 'ujson'],
      keywords='binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
               'binance-websocket, binance-webstream, webstream, websocket, api, binance-jersey, binance-dex, '
@@ -60,11 +60,10 @@ setuptools.setup(
         'Wiki': 'https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki',
         'Source': 'https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api',
      },
-     python_requires='>=3.5.3',
+     python_requires='>=3.6.1',
      packages=setuptools.find_packages(),
      classifiers=[
          "Development Status :: 5 - Production/Stable",
-         "Programming Language :: Python :: 3.5",
          "Programming Language :: Python :: 3.6",
          "Programming Language :: Python :: 3.7",
          "Programming Language :: Python :: 3.8",

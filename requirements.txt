@@ -6,4 +6,4 @@ pathlib
 requests
 ujson
 websocket-client
-websockets==7.0
+websockets==8.1
