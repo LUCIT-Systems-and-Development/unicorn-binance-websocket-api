@@ -498,7 +498,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.monitoring_api_server = wsgi.WSGIServer((host, port), dispatcher)
             self.monitoring_api_server.start()
         except RuntimeError as error_msg:
-            logging.error("monitoring API service is going down! - info: " + str(error_msg))
+            logging.critical("monitoring API service is going down! - info: " + str(error_msg))
+        except OSError as error_msg:
+            logging.critical("monitoring API service is going down! - info: " + str(error_msg))
 
     def add_to_stream_buffer(self, stream_data):
         """
