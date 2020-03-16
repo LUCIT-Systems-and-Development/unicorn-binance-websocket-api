@@ -131,11 +131,12 @@ class BinanceWebSocketApiConnection(object):
             sys.exit(1)
         except websockets.exceptions.InvalidStatusCode as error_msg:
             if "Status code not 101: 414" in str(error_msg):
+                # Todo: Obsolete since we use subscriptions via websocket.send()?
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg) +
                                                                               " --> URI too long? ;)")
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                                  str(self.channels) + ", " + str(self.markets) + ")" + " - URI Too Long? To many "
-                                 "streams in on socket? ;) - " + str(error_msg))
+                                 "streams in one socket? ;) - " + str(error_msg))
                 try:
                     self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
                 except KeyError:
@@ -253,18 +254,18 @@ class BinanceWebSocketApiConnection(object):
             await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].send(data)
             self.handler_binance_websocket_api_manager.increase_transmitted_counter(self.stream_id)
         except websockets.exceptions.ConnectionClosed as error_msg:
-            logging.error("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
-                          str(self.channels) + ", " + str(self.markets) + ") Exception ConnectionClosed "
-                          "Info: " + str(error_msg))
+            logging.critical("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
+                             str(self.channels) + ", " + str(self.markets) + ") Exception ConnectionClosed "
+                             "Info: " + str(error_msg))
         except RuntimeError as error_msg:
-            logging.error("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
-                          str(self.channels) + ", " + str(self.markets) + ") Exception RuntimeError "
-                          "Info: " + str(error_msg))
+            logging.critical("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
+                             str(self.channels) + ", " + str(self.markets) + ") Exception RuntimeError "
+                             "Info: " + str(error_msg))
         except IndexError as error_msg:
-            logging.error("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
-                          str(self.channels) + ", " + str(self.markets) + ") Exception IndexError "
-                          "Info: " + str(error_msg))
+            logging.critical("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
+                             str(self.channels) + ", " + str(self.markets) + ") Exception IndexError "
+                             "Info: " + str(error_msg))
         except KeyError as error_msg:
-            logging.error("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
-                          str(self.channels) + ", " + str(self.markets) + ") Exception KeyError "
-                          "Info: " + str(error_msg))
+            logging.critical("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
+                             str(self.channels) + ", " + str(self.markets) + ") Exception KeyError "
+                             "Info: " + str(error_msg))
