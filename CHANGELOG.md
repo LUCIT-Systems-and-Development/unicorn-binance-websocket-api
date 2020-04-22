@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - loglevel connection().send() loglevels from error to critical.
 ### Fixed
 - `OSError` exception for `self.monitoring_api_server.start()` if its already started
+- `for keepalive_streams_id in self.keepalive_streams_list:` added threadding lock ([issue #47](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/47))
 
 ## 1.11.0
 ### Added

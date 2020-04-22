@@ -161,6 +161,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.frequent_checks_list_lock = threading.Lock()
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
+        self.keepalive_streams_list_lock = threading.Lock()
         self.last_entry_added_to_stream_buffer = 0
         self.last_monitoring_check = time.time()
         self.last_update_check_github = {'timestamp': time.time(),
@@ -378,12 +379,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                               str(total_most_stream_receives_next_to_last_timestamp) + " error_msg=" + str(error_msg))
             # control _keepalive_streams
             found_alive_keepalive_streams = False
-            for keepalive_streams_id in self.keepalive_streams_list:
-                try:
-                    if (current_timestamp - self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat']) < 3:
-                        found_alive_keepalive_streams = True
-                except TypeError:
-                    pass
+            with self.keepalive_streams_list_lock:
+                for keepalive_streams_id in self.keepalive_streams_list:
+                    try:
+                        if (current_timestamp - self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat']) < 3:
+                            found_alive_keepalive_streams = True
+                    except TypeError:
+                        pass
             # start a new one, if there isnt one
             if found_alive_keepalive_streams is False:
                 self._keepalive_streams_restart_request = True
@@ -422,13 +424,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.info(
             "BinanceWebSocketApiManager->_keepalive_streams() new instance created with keepalive_streams_id=" +
             str(keepalive_streams_id))
-        for keepalive_streams_instance in self.keepalive_streams_list:
-            if keepalive_streams_instance != keepalive_streams_id:
-                if (self.keepalive_streams_list[keepalive_streams_instance]['last_heartbeat'] + 3) > time.time():
-                    logging.info(
-                        "BinanceWebSocketApiManager->_keepalive_streams() found an other living instance, so i stop" +
-                        str(keepalive_streams_id))
-                    sys.exit(1)
+        with self.keepalive_streams_list_lock:
+            for keepalive_streams_instance in self.keepalive_streams_list:
+                if keepalive_streams_instance != keepalive_streams_id:
+                    if (self.keepalive_streams_list[keepalive_streams_instance]['last_heartbeat'] + 3) > time.time():
+                        logging.info(
+                            "BinanceWebSocketApiManager->_keepalive_streams() found an other living instance, so i stop" +
+                            str(keepalive_streams_id))
+                        sys.exit(1)
         # threaded loop to restart crashed streams:
         while self.stop_manager_request is None and \
                 self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
