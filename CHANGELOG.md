@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - `OSError` exception for `self.monitoring_api_server.start()` if its already started
 - `for keepalive_streams_id in self.keepalive_streams_list:` added threadding lock ([issue #47](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/47))
+- avoid sending more than 5 messages per second [issue #45](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/45)
 
 ## 1.11.0
 ### Added

@@ -194,16 +194,24 @@ class BinanceWebSocketApiConnection(object):
         except websockets.exceptions.ConnectionClosed as error_msg:
             logging.critical("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                              "ConnectionClosed - " + str(error_msg))
-            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
-            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
+            if self.handler_binance_websocket_api_manager.is_stop_as_crash_request(self.stream_id) is True:
+                self.handler_binance_websocket_api_manager.stream_is_stopping_as_crash(self.stream_id)
+                sys.exit(1)
+            else:
+                self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
+            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False and \
+                    self.handler_binance_websocket_api_manager.is_stop_as_crash_request is False:
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
 
-    def close(self):
-        self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
+    async def close(self):
+        if self.handler_binance_websocket_api_manager.is_stop_as_crash_request(self.stream_id) is True:
+            self.handler_binance_websocket_api_manager.stream_is_stopping_as_crash(self.stream_id)
+        else:
+            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
         logging.info("binance_websocket_api_connection->close(" + str(self.stream_id) + ")")
         try:
-            self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+            await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
         except KeyError:
             logging.debug("binance_websocket_api_connection->close(" +
                           str(self.stream_id) + ") - Stream not found!")

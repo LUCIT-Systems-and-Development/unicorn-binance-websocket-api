@@ -37,8 +37,9 @@ from __future__ import print_function
 from .unicorn_binance_websocket_api_connection import BinanceWebSocketApiConnection
 import ujson as json
 import logging
-import websockets
 import sys
+import time
+import websockets
 
 
 class BinanceWebSocketApiSocket(object):
@@ -56,14 +57,24 @@ class BinanceWebSocketApiSocket(object):
             while True:
                 if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id):
                     self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
-                    websocket.close()
+                    await websocket.close()
                     sys.exit(0)
+                elif self.handler_binance_websocket_api_manager.is_stop_as_crash_request(self.stream_id):
+                    await websocket.close()
+                    sys.exit(1)
                 while self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
                     payload = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload'].pop(0)
                     await websocket.send(json.dumps(payload, ensure_ascii=False))
+                    # To avoid a ban we respect the limits of binance:
+                    # https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
+                    # Limit: max 5 messages per second inclusive pings/pong
+                    max_subscriptions_per_second = self.handler_binance_websocket_api_manager.max_send_messages_per_second - \
+                                                   self.handler_binance_websocket_api_manager.max_send_messages_per_second_reserve
+                    idle_time = 1/max_subscriptions_per_second
+                    time.sleep(idle_time)
                     logging.info("BinanceWebSocketApiSocket->start_socket(" +
-                                  str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ") "
-                                  + "Sending payload: " + str(payload))
+                                 str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ") "
+                                 + "Sending payload: " + str(payload))
                 try:
                     received_stream_data_json = await websocket.receive()
                     if received_stream_data_json is not None:
