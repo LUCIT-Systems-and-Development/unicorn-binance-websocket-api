@@ -6,12 +6,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.11.0.dev (development stage/unreleased/unstable)
+### RECOMMENDED UPDATE!
+https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#general-wss-information
+### Added
+- avoid sending more than 5 messages per second per stream [issue #45](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/45)
+- stop streams and set status to "crashed" if they exceed the limit of 1024 subscriptions per stream [issue #45](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/45)
+    - `is_stop_as_crash_request()`
+    - `stop_stream_as_crash()`
+- `get_limit_of_subscriptions_per_stream()`
+- `get_number_of_free_subscription_slots()`
+- `BinanceWebSocketApiManager(throw_exception_if_unrepairable=True)` - raise `ValueError` if a stream is not repairable 
+(invalid api-key format or exceeding the 1024 subscription limit)
+
 ### Changed
-- loglevel connection().send() loglevels from error to critical.
+- loglevel `connection.send()` loglevels from error to critical.
+- loglevel `manager.create_websocket_uri()` of known errors from error to critical.
 ### Fixed
 - `OSError` exception for `self.monitoring_api_server.start()` if its already started
 - `for keepalive_streams_id in self.keepalive_streams_list:` added threadding lock ([issue #47](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/47))
-- avoid sending more than 5 messages per second [issue #45](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/45)
 
 ## 1.11.0
 ### Added

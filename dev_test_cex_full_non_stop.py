@@ -57,7 +57,9 @@ logging.basicConfig(level=logging.ERROR,
                     style="{")
 
 # create instance of BinanceWebSocketApiManager
-binance_websocket_api_manager = BinanceWebSocketApiManager()
+#binance_websocket_api_manager = BinanceWebSocketApiManager(throw_exception_if_unrepairable=True)
+binance_websocket_api_manager = BinanceWebSocketApiManager(throw_exception_if_unrepairable=False)
+
 
 print("starting monitoring api!")
 binance_websocket_api_manager.start_monitoring_api()
@@ -156,7 +158,7 @@ markets = ['xrpbearbusd', 'zeceth', 'cndbtc', 'dashbtc', 'atompax', 'perlbtc', '
            'wrxbtc', 'pptbtc', 'nknbtc', 'zecusdt', 'stormeth', 'qtumusdt']
 
 
-id = binance_websocket_api_manager.create_stream(channels, markets)
+stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 
 binance_websocket_api_manager.create_stream(["aggTrade"], markets)
 binance_websocket_api_manager.create_stream(["trade"], markets)
@@ -183,6 +185,6 @@ worker_thread.start()
 while True:
     binance_websocket_api_manager.print_summary()
     time.sleep(1)
-    #print(str(binance_websocket_api_manager.get_stream_info(id)))
-    #binance_websocket_api_manager.print_stream_info(id)
+    #print(str(binance_websocket_api_manager.get_stream_info(stream_id)))
+    #binance_websocket_api_manager.print_stream_info(stream_id)
     #time.sleep(2)
