@@ -91,12 +91,16 @@ data = binance_rest_client.get_all_tickers()
 for item in data:
     markets.append(item['symbol'])
 
-#binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
-#userdata_stream_id = binance_websocket_api_manager.create_stream(["!userData"], ["arr"])
-multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
+userdata_stream_id = binance_websocket_api_manager.create_stream(["!userData"], ["arr"])
+multi_stream_id = binance_websocket_api_manager.create_stream(markets="xtzbusd", channels="kline_1m")
+time.sleep(1)
+binance_websocket_api_manager.print_summary()
+time.sleep(10)
+binance_websocket_api_manager.subscribe_to_stream(multi_stream_id, markets=markets, channels=channels)
 
 while True:
-    #binance_websocket_api_manager.print_summary()
+    binance_websocket_api_manager.print_summary()
     #binance_websocket_api_manager.print_stream_info(userdata_stream_id)
     binance_websocket_api_manager.print_stream_info(multi_stream_id)
     time.sleep(1)

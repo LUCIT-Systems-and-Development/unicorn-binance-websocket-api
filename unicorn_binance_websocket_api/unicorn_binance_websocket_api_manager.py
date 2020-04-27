@@ -852,7 +852,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 query += market + "@arr"
             else:
                 query += market.lower() + "@" + channel
-            self.subscribe_to_stream(stream_id, markets=markets, channels=channels)
+            if self.subscribe_to_stream(stream_id, markets=markets, channels=channels) is False:
+                sys.exit(1)
             logging.debug("Created websocket URI for stream_id=" + str(stream_id) + " is " +
                          self.websocket_base_uri + str(query))
             return self.websocket_base_uri + str(query)

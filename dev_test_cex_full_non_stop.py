@@ -155,6 +155,9 @@ markets = ['xrpbearbusd', 'zeceth', 'cndbtc', 'dashbtc', 'atompax', 'perlbtc', '
            'neobnb', 'cosbtc', 'powreth', 'rlcusdt', 'hbarbnb', 'wabieth', 'bqxeth', 'aionbtc', 'aeeth', 'mthbtc',
            'wrxbtc', 'pptbtc', 'nknbtc', 'zecusdt', 'stormeth', 'qtumusdt']
 
+
+id = binance_websocket_api_manager.create_stream(channels, markets)
+
 binance_websocket_api_manager.create_stream(["aggTrade"], markets)
 binance_websocket_api_manager.create_stream(["trade"], markets)
 binance_websocket_api_manager.create_stream(["kline_1m"], markets)
@@ -171,7 +174,6 @@ binance_websocket_api_manager.create_stream(["depth10"], markets)
 binance_websocket_api_manager.create_stream(["depth20"], markets)
 binance_websocket_api_manager.create_stream(["aggTrade"], markets)
 
-id = binance_websocket_api_manager.create_stream(channels, markets)
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
