@@ -5,11 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.11.0.dev (development stage/unreleased/unstable)
+## 1.12.0.dev (development stage/unreleased/unstable)
+No changes till now!
+
+## 1.12.0
 ### RECOMMENDED UPDATE!
 https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#general-wss-information
 ### Added
-- avoid sending more than 5 messages per second per stream [issue #45](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/45)
+- avoid sending more than 5 messages per stream per second [issue #45](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/45)
 - stop streams and set status to "crashed" if they exceed the limit of 1024 subscriptions per stream [issue #45](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/45)
     - `is_stop_as_crash_request()`
     - `stop_stream_as_crash()`
