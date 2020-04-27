@@ -105,11 +105,15 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type exchange: str
     :param warn_on_update: set to `False` to disable the update warning
     :type warn_on_update: bool
+    :param throw_exception_if_unrepairable: set to `True` to activate exceptions if a crashed stream is unrepairable
+                                            (invalid API key, exceeded subscription limit)
+    :type throw_exception_if_unrepairable: bool
     """
 
-    def __init__(self, process_stream_data=False, exchange="binance.com", warn_on_update=True):
+    def __init__(self, process_stream_data=False, exchange="binance.com", warn_on_update=True,
+                 throw_exception_if_unrepairable=False):
         threading.Thread.__init__(self)
-        self.version = "1.11.0.dev"
+        self.version = "1.12.0.dev"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
         colorama.init()
         if process_stream_data is False:
@@ -185,6 +189,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_buffer = []
         self.stream_list = {}
         self.stream_threading_lock = {}
+        self.throw_exception_if_unrepairable = throw_exception_if_unrepairable
         self.total_received_bytes = 0
         self.total_received_bytes_lock = threading.Lock()
         self.total_receives = 0
@@ -484,7 +489,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param warn_on_update: Should the monitoring system report available updates?
         :type warn_on_update: bool
         """
-        logging.info("starting monitoring API service ...")
+        logging.info("Starting monitoring API service ...")
         app = Flask(__name__)
         @app.route('/')
         @app.route('/status/')
@@ -505,9 +510,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.monitoring_api_server = wsgi.WSGIServer((host, port), dispatcher)
             self.monitoring_api_server.start()
         except RuntimeError as error_msg:
-            logging.critical("monitoring API service is going down! - info: " + str(error_msg))
+            logging.critical("Monitoring API service is going down! - Info: " + str(error_msg))
         except OSError as error_msg:
-            logging.critical("monitoring API service is going down! - info: " + str(error_msg))
+            logging.critical("Monitoring API service is going down! - Info: " + str(error_msg))
 
     def add_to_stream_buffer(self, stream_data):
         """
@@ -674,6 +679,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
                 Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
 
+        There is a limit of 1024 subscriptions per stream. https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
+
         Create `!userData` streams as single streams, because its using a different endpoint and can not get combined
         with other streams in a multiplexed stream!
 
@@ -763,7 +770,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     response = self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
                     try:
                         if response['code'] == -2014 or response['code'] == -2015:
-                            logging.error("Received known error code from rest client: " + str(response))
+                            logging.critical("Received known error code from rest client: " + str(response))
                             return response
                         else:
                             logging.critical("Received unknown error code from rest client: " + str(response))
@@ -855,7 +862,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             if self.subscribe_to_stream(stream_id, markets=markets, channels=channels) is False:
                 sys.exit(1)
             logging.debug("Created websocket URI for stream_id=" + str(stream_id) + " is " +
-                         self.websocket_base_uri + str(query))
+                          self.websocket_base_uri + str(query))
             return self.websocket_base_uri + str(query)
 
     def delete_listen_key_by_stream_id(self, stream_id):
@@ -1121,6 +1128,21 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return "unknown"
         else:
             return "unknown"
+
+    def get_limit_of_subscriptions_per_stream(self):
+        """
+        Get the number of allowed active subscriptions per stream (limit of binance API)
+        :return: int
+        """
+        return self.max_subscriptions_per_stream
+
+    def get_number_of_free_subscription_slots(self, stream_id):
+        """
+        Get the number of free subscription slots (max allowed subscriptions - subscriptions) of a specific stream
+        :return: int
+        """
+        free_slots =  self.max_subscriptions_per_stream - self.stream_list[stream_id]['subscriptions']
+        return free_slots
 
     def get_listen_key_from_restclient(self, stream_id, api_key, api_secret):
         """
@@ -2283,7 +2305,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def stop_stream_as_crash(self, stream_id):
         """
-        Stop a specific stream with 'crash status'
+        Stop a specific stream with 'crashed' status
 
         :param stream_id: id of a stream
         :type stream_id: uuid
@@ -2323,17 +2345,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.debug("BinanceWebSocketApiManager->stream_is_stopping(" + str(stream_id) + ")")
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "stopped"
-
-    def stream_is_stopping_as_crash(self, stream_id):
-        """
-        Streams report with this call their shutdowns as a crash
-
-        :param stream_id: id of a stream
-        :type stream_id: uuid
-        :return:
-        """
-        logging.debug("BinanceWebSocketApiManager->stream_is_stopping_as_crash(" + str(stream_id) + ")")
-        self.stream_list[stream_id]['has_stopped'] = time.time()
 
     def subscribe_to_stream(self, stream_id, channels=[], markets=[]):
         """
@@ -2397,7 +2408,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stop_stream_as_crash(stream_id)
             error_msg = "The limit of " + str(self.max_subscriptions_per_stream) + " subscriptions per stream has " \
                         "been exceeded!"
+            logging.critical("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ") Info: " + str(error_msg))
             self.stream_is_crashing(stream_id, error_msg)
+            if self.throw_exception_if_unrepairable:
+                raise ValueError("stream_id " + str(stream_id) + ": " + str(error_msg))
             return False
 
         for item in payload:

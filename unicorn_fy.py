@@ -51,7 +51,7 @@ class UnicornFy(object):
         - Binance.us
         - Binance.org
     """
-    VERSION = "0.3.3"
+    VERSION = "0.3.4"
 
     def __init__(self):
         self.last_update_check_github = {'timestamp': time.time(),
@@ -150,6 +150,20 @@ class UnicornFy(object):
 
     @staticmethod
     def binance_websocket(stream_data_json, exchange="binance", show_deprecated_warning=True):
+        """
+        unicorn_fy binance.com raw_stream_data
+
+        :param stream_data_json: The received raw stream data from the Binance websocket
+        :type stream_data_json: json
+
+        :param exchange: Exchange endpoint.
+        :type exchange: str
+
+        :param show_deprecated_warning: Show or hide warning
+        :type show_deprecated_warning: bool
+
+        :return: dict
+        """
         unicorn_fied_data = False
 
         logging.debug("UnicornFy->binance_websocket(" + str(stream_data_json) + ")")
@@ -188,6 +202,8 @@ class UnicornFy(object):
             elif stream_data['stream'].find('@depth20') != -1:
                 stream_data['data']['e'] = "depth"
                 stream_data['data']['depth_level'] = 20
+            elif "@bookTicker" in stream_data['stream']:
+                stream_data['data']['e'] = "bookTicker"
         except KeyError:
             pass
 
@@ -225,6 +241,15 @@ class UnicornFy(object):
                                      'trade_time': stream_data['data']['T'],
                                      'is_market_maker': stream_data['data']['m'],
                                      'ignore': stream_data['data']['M']}
+            elif stream_data['data']['e'] == 'bookTicker':
+                unicorn_fied_data = {'stream_type': stream_data['stream'],
+                                     'order_book_update_id': stream_data['data']['u'],
+                                     'symbol': stream_data['data']['s'],
+                                     'best_bid_price': stream_data['data']['b'],
+                                     'best_bid_quantity': stream_data['data']['B'],
+                                     'best_ask_price': stream_data['data']['a'],
+                                     'best_ask_quantity': stream_data['data']['A'],
+                                     'event_type': stream_data['data']['e']}
             elif stream_data['data']['e'] == 'kline':
                 stream_data['data'] = UnicornFy.set_to_false_if_not_exist(stream_data['data'], 'f')
                 stream_data['data'] = UnicornFy.set_to_false_if_not_exist(stream_data['data'], 'L')
@@ -271,7 +296,7 @@ class UnicornFy(object):
                                 'low_price': item['l'],
                                 'taker_by_base_asset_volume': item['v'],
                                 'taker_by_quote_asset_volume': item['q']}
-                        unicorn_fied_data['data'].append(data)
+                        unicorn_fied_data['data'].add(data)
                 except KeyError:
                     data = {'stream_type': stream_data['stream'],
                             'event_type': stream_data['data']['e'],
@@ -283,7 +308,7 @@ class UnicornFy(object):
                             'low_price': stream_data['data']['l'],
                             'taker_by_base_asset_volume': stream_data['data']['v'],
                             'taker_by_quote_asset_volume': stream_data['data']['q']}
-                    unicorn_fied_data['data'].append(data)
+                    unicorn_fied_data['data'].add(data)
             elif stream_data['data']['e'] == '24hrTicker':
                 try:
                     if stream_data['stream']:
@@ -416,13 +441,18 @@ class UnicornFy(object):
             unicorn_fied_data['unicorn_fied'] = unicorn_fied_version
             logging.debug("UnicornFy->binance_com_futures_websocket(" + str(unicorn_fied_data) + ")")
             return unicorn_fied_data
-        except KeyError:
+        except KeyError as error_msg:
             if "result" not in stream_data:
-                logging.error("detected unknown data stream format in module `unicorn_fy`: please report to "
-                              "https://github.com/oliver-zehentleitner/unicorn_fy/issues " + str(stream_data))
+                logging.error("Detected unknown data stream format (type1) in module `unicorn_fy`: please report to "
+                              "https://github.com/oliver-zehentleitner/unicorn_fy/issues " + str(stream_data) + " - " +
+                              str(error_msg))
             return stream_data
-        except TypeError:
+        except TypeError as error_msg:
+            logging.error("Detected unknown data stream format (type2) in module `unicorn_fy`: please report to "
+                          "https://github.com/oliver-zehentleitner/unicorn_fy/issues " + str(stream_data) + " - " +
+                          str(error_msg))
             return stream_data
+
 
     @staticmethod
     def binance_com_futures_websocket(stream_data_json, exchange="binance.com-futures", show_deprecated_warning=False):
@@ -431,6 +461,12 @@ class UnicornFy(object):
 
         :param stream_data_json: The received raw stream data from the Binance websocket
         :type stream_data_json: json
+
+        :param exchange: Exchange endpoint.
+        :type exchange: str
+
+        :param show_deprecated_warning: Show or hide warning
+        :type show_deprecated_warning: bool
 
         :return: dict
         """
@@ -472,6 +508,8 @@ class UnicornFy(object):
             elif stream_data['stream'].find('@depth20') != -1:
                 stream_data['data']['e'] = "depth"
                 stream_data['data']['depth_level'] = 20
+            elif "@bookTicker" in stream_data['stream']:
+                stream_data['data']['e'] = "bookTicker"
         except KeyError:
             pass
 
@@ -701,10 +739,12 @@ class UnicornFy(object):
             return unicorn_fied_data
         except KeyError:
             if "result" not in stream_data:
-                logging.error("detected unknown data stream format in module `unicorn_fy`: please report to "
+                logging.error("Detected unknown data stream format (type1) in module `unicorn_fy`: please report to "
                               "https://github.com/oliver-zehentleitner/unicorn_fy/issues " + str(stream_data))
             return stream_data
         except TypeError:
+            logging.error("Detected unknown data stream format (type2) in module `unicorn_fy`: please report to "
+                          "https://github.com/oliver-zehentleitner/unicorn_fy/issues " + str(stream_data))
             return stream_data
 
     @staticmethod

@@ -11,7 +11,7 @@ Welcome to unicorn-binance-websocket-api's documentation!
    :caption: Contents:
 
    Readme <README.md>
-
+   ChangeLog <CHANGELOG.md>
    Copyright <copyright.rst>
 
 

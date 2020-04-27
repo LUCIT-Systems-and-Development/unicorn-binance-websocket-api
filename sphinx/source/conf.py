@@ -21,13 +21,13 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'unicorn-binance-websocket-api'
-copyright = '2019, Oliver Zehentleitner'
+copyright = '2020, Oliver Zehentleitner'
 author = 'Oliver Zehentleitner'
 
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '1.11.0'
+release = '1.12.0'
 
 
 # -- General configuration ---------------------------------------------------

@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.11.0 documentation</title>
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.12.0 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -40,7 +40,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.11.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.12.0 documentation</a> &#187;
     
 
     <li class="right">
@@ -69,7 +69,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.BinanceWebSocketApiConnection.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.BinanceWebSocketApiConnection.close" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.BinanceWebSocketApiConnection.close" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -89,7 +89,7 @@
 <span id="unicorn-binance-websocket-api-unicorn-binance-websocket-api-manager-module"></span><h2>unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager module<a class="headerlink" href="#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager">
-<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.</code><code class="sig-name descname">BinanceWebSocketApiManager</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process_stream_data</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">exchange</span><span class="o">=</span><span class="default_value">'binance.com'</span></em>, <em class="sig-param"><span class="n">warn_on_update</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.</code><code class="sig-name descname">BinanceWebSocketApiManager</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process_stream_data</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">exchange</span><span class="o">=</span><span class="default_value">'binance.com'</span></em>, <em class="sig-param"><span class="n">warn_on_update</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">throw_exception_if_unrepairable</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
 <p>A python API to use the Binance Websocket API`s (com, com-margin, com-futures, jersey, us, dex/chain+testnet) in a easy, fast,
 flexible, robust and fully-featured way.</p>
@@ -146,6 +146,8 @@ stored in the stream_buffer! (How to read from stream_buffer:
 <li><p><strong>exchange</strong> (<em>str</em>) – Select binance.com, binance.com-margin, binance.com-futures, binance.je, binance.us, jex.com,
 binance.org or binance.org-testnet (default: binance.com)</p></li>
 <li><p><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</p></li>
+<li><p><strong>throw_exception_if_unrepairable</strong> (<em>bool</em>) – set to <cite>True</cite> to activate exceptions if a crashed stream is unrepairable
+(invalid API key, exceeded subscription limit)</p></li>
 </ul>
 </dd>
 </dl>
@@ -207,6 +209,7 @@ processing.</p>
 <p>Finally:  <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;trade">bnbbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;trade">ethbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;kline_1">bnbbtc<span>&#64;</span>kline_1</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;kline_1">ethbtc<span>&#64;</span>kline_1</a></p>
 </div></blockquote>
 </div></blockquote>
+<p>There is a limit of 1024 subscriptions per stream. <a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23">https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23</a></p>
 <p>Create <cite>!userData</cite> streams as single streams, because its using a different endpoint and can not get combined
 with other streams in a multiplexed stream!</p>
 <blockquote>
@@ -479,6 +482,13 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 </dd></dl>
 
 <dl class="py method">
+<dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_limit_of_subscriptions_per_stream">
+<code class="sig-name descname">get_limit_of_subscriptions_per_stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_limit_of_subscriptions_per_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of allowed active subscriptions per stream (limit of binance API)
+:return: int</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_listen_key_from_restclient">
 <code class="sig-name descname">get_listen_key_from_restclient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span></em>, <em class="sig-param"><span class="n">api_key</span></em>, <em class="sig-param"><span class="n">api_secret</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_listen_key_from_restclient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a new or cached (&lt;30m) listen_key</p>
@@ -554,6 +564,13 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_number_of_free_subscription_slots">
+<code class="sig-name descname">get_number_of_free_subscription_slots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_number_of_free_subscription_slots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of free subscription slots (max allowed subscriptions - subscriptions) of a specific stream
+:return: int</p>
 </dd></dl>
 
 <dl class="py method">
@@ -825,6 +842,20 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_stop_as_crash_request">
+<code class="sig-name descname">is_stop_as_crash_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_stop_as_crash_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Has a specific stream a stop_as_crash_request?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_stop_request">
 <code class="sig-name descname">is_stop_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_stop_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Has a specific stream a stop_request?</p>
@@ -1070,6 +1101,20 @@ to keep the payload length under 8000 chars and avoid reconnects</p>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.stop_stream">
 <code class="sig-name descname">stop_stream</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.stop_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stop a specific stream</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.stop_stream_as_crash">
+<code class="sig-name descname">stop_stream_as_crash</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.stop_stream_as_crash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop a specific stream with ‘crashed’ status</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p>
@@ -1378,7 +1423,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.11.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.12.0 documentation</a> &#187;
     
 
     <li class="right">
@@ -1389,7 +1434,7 @@ subscribed channels from the specific markets are going to be removed!</p>
       </ul>
     </div>  
     <div class="footer">
-    &copy; <a href="copyright.html">Copyright</a> 2019, Oliver Zehentleitner.
+    &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
     Last updated on None.
@@ -1401,13 +1446,13 @@ subscribed channels from the specific markets are going to be removed!</p>
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.0.2
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.0.3
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
         <a href="https://www.technopathy.club/2019/11/03/use-python-sphinx-on-github-pages-with-html-and-an-indivdual-theme">
     Create a GitHub Page like this one!</a>    <br />
-        Sponsored by <a href="https://www.lucit.co/desktop-and-server-apps.html">LUCIT - Python Development</a>
+        Powered by <a href="https://www.lucit.co/desktop-and-server-apps.html">LUCIT - Python Development</a>
     </div>
 
   </body>
