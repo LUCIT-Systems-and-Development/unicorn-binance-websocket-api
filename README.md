@@ -162,7 +162,7 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 [https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
 
 ## Change Log
-[https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CHANGELOG.md](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CHANGELOG.md)
+[https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/CHANGELOG.html](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/CHANGELOG.html)
 
 ## Wiki
 [https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki)
