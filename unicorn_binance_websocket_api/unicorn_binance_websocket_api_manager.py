@@ -679,8 +679,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
                 Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
 
-        There is a limit of 1024 subscriptions per stream. https://github.com/binance-exchange/binance-official-api-
-        docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
+        There is a limit of 1024 subscriptions per stream. https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
 
         Create `!userData` streams as single streams, because its using a different endpoint and can not get combined
         with other streams in a multiplexed stream!
