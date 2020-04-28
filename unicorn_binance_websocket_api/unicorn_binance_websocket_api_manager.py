@@ -2059,7 +2059,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     str(self.fill_up_space_centered(96, " unicorn-binance-websocket-api_" +
                         str(self.version) + "-python_" + platform.python_version() + " " + "=")) + "\r\n" +
                     " exchange: " + str(self.stream_list[stream_id]['exchange']) + "\r\n" +
-                    " uptime: " + str(self.get_human_uptime(time.time() - self.start_time)) + "since " +
+                    " uptime: " + str(self.get_human_uptime(time.time() - self.start_time)) + " since " +
                     str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d, %H:%M:%S UTC')) + "\r\n" +
                     " streams: " + str(streams) + "\r\n" +
                     str(active_streams_row) +
