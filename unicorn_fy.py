@@ -185,6 +185,17 @@ class UnicornFy(object):
                                'items': stream_data}
         except KeyError:
             pass
+
+        try:
+            if stream_data['data'][0]['e'] == "24hrMiniTicker":
+                stream_data = {'data': {'e': "24hrMiniTicker"},
+                               'items': stream_data['data']}
+            elif stream_data['data'][0]['e'] == "24hrTicker":
+                stream_data = {'data': {'e': "24hrTicker"},
+                               'items': stream_data['data']}
+        except KeyError:
+            pass
+
         try:
             if stream_data['e'] == 'outboundAccountInfo':
                 stream_data = {'data': stream_data}
@@ -203,6 +214,8 @@ class UnicornFy(object):
                 stream_data['data']['e'] = "depth"
                 stream_data['data']['depth_level'] = 20
             elif "@bookTicker" in stream_data['stream']:
+                stream_data['data']['e'] = "bookTicker"
+            elif "!miniTicker@arr" in stream_data['stream']:
                 stream_data['data']['e'] = "bookTicker"
         except KeyError:
             pass
@@ -296,7 +309,7 @@ class UnicornFy(object):
                                 'low_price': item['l'],
                                 'taker_by_base_asset_volume': item['v'],
                                 'taker_by_quote_asset_volume': item['q']}
-                        unicorn_fied_data['data'].add(data)
+                        unicorn_fied_data['data'].append(data)
                 except KeyError:
                     data = {'stream_type': stream_data['stream'],
                             'event_type': stream_data['data']['e'],
@@ -308,7 +321,7 @@ class UnicornFy(object):
                             'low_price': stream_data['data']['l'],
                             'taker_by_base_asset_volume': stream_data['data']['v'],
                             'taker_by_quote_asset_volume': stream_data['data']['q']}
-                    unicorn_fied_data['data'].add(data)
+                    unicorn_fied_data['data'].append(data)
             elif stream_data['data']['e'] == '24hrTicker':
                 try:
                     if stream_data['stream']:

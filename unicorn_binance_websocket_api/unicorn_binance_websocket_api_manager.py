@@ -403,23 +403,25 @@ class BinanceWebSocketApiManager(threading.Thread):
                 for stream_id in active_stream_list:
                     if isinstance(active_stream_list[stream_id]['markets'], str):
                         active_stream_list[stream_id]['markets'] = [active_stream_list[stream_id]['markets'],]
-                    if isinstance(active_stream_list[stream_id]['markets'], list):
-                        if "!userData" in active_stream_list[stream_id]['markets']:
-                            if (active_stream_list[stream_id]['start_time'] + active_stream_list[stream_id]['listen_key_cache_time']) \
-                                    < time.time() and (active_stream_list[stream_id]['last_static_ping_listen_key'] +
-                                                       active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
-                                # keep-alive the listenKey
-                                binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.exchange,
-                                                                                                 self.stream_list[stream_id]['api_key'],
-                                                                                                 self.stream_list[stream_id]['api_secret'],
-                                                                                                 self.get_version(),
-                                                                                                 self.binance_api_status)
-                                binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
-                                del binance_websocket_api_restclient
-                                # set last_static_ping_listen_key
-                                self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
-                                self.set_heartbeat(stream_id)
-                                logging.info("sent listen_key keepalive ping for stream_id=" + str(stream_id))
+                    if isinstance(active_stream_list[stream_id]['channels'], str):
+                        active_stream_list[stream_id]['channels'] = [active_stream_list[stream_id]['channels'],]
+                    if "!userData" in active_stream_list[stream_id]['markets'] or \
+                            "!userData" in active_stream_list[stream_id]['channels']:
+                        if (active_stream_list[stream_id]['start_time'] + active_stream_list[stream_id]['listen_key_cache_time']) \
+                                < time.time() and (active_stream_list[stream_id]['last_static_ping_listen_key'] +
+                                                   active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
+                            # keep-alive the listenKey
+                            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.exchange,
+                                                                                             self.stream_list[stream_id]['api_key'],
+                                                                                             self.stream_list[stream_id]['api_secret'],
+                                                                                             self.get_version(),
+                                                                                             self.binance_api_status)
+                            binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
+                            del binance_websocket_api_restclient
+                            # set last_static_ping_listen_key
+                            self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
+                            self.set_heartbeat(stream_id)
+                            logging.info("sent listen_key keepalive ping for stream_id=" + str(stream_id))
         sys.exit(0)
 
     def _keepalive_streams(self):
