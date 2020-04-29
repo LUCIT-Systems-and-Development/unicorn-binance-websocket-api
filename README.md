@@ -146,9 +146,12 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - ./setup.py
 
 ## Demo
-[Demo source](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py)
+This live demo script is streaming everything from binance.com and is hosted on a CX11 VPS (1vCPU, 2GB RAM).
 
-[![demo_gif](https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py)
+[Demo source!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_everything.py)
+
+[![live-demo](https://ubwa-demo.lucit.co/print_summary.png)](https://ubwa-demo.lucit.co/print_summary.png)
+(refreshed once a minute!)
 
 ## Howto
 - [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
