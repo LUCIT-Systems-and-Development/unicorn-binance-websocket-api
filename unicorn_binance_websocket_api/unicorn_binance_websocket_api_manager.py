@@ -44,6 +44,7 @@ import asyncio
 import colorama
 import copy
 import logging
+import os
 import platform
 import re
 import requests
@@ -108,10 +109,17 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param throw_exception_if_unrepairable: set to `True` to activate exceptions if a crashed stream is unrepairable
                                             (invalid API key, exceeded subscription limit)
     :type throw_exception_if_unrepairable: bool
+    :param print_summary_export_path: If you want to export the output of print_summary() to an image, please
+                                       provide a path like "/var/www/html/".
+    :type print_summary_export_path: str
     """
 
-    def __init__(self, process_stream_data=False, exchange="binance.com", warn_on_update=True,
-                 throw_exception_if_unrepairable=False):
+    def __init__(self,
+                 process_stream_data=False,
+                 exchange="binance.com",
+                 warn_on_update=True,
+                 throw_exception_if_unrepairable=False,
+                 print_summary_export_path=None):
         threading.Thread.__init__(self)
         self.version = "1.12.0.dev"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
@@ -179,6 +187,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.monitoring_api_server = False
         self.monitoring_total_received_bytes = 0
         self.monitoring_total_receives = 0
+        self.print_summary_export_path = print_summary_export_path
         self.reconnects = 0
         self.reconnects_lock = threading.Lock()
         self.request_id = 0
@@ -1940,12 +1949,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             self.print_stream_info(stream_id)
 
-    def print_summary(self, add_string="", disablePrint=False):
+    def print_summary(self, add_string="", disable_print=False):
         """
         Print an overview of all streams
         
         :param add_string: text to add to the output
         :type add_string: str
+        :param disable_print: set to `True` to use curses instead of print()
+        :type disable_print: bool
         """
         streams = len(self.stream_list)
         active_streams = 0
@@ -2057,9 +2068,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                              self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
                                          ")\r\n"
             try:
-                printText = (
+                print_text = (
                     str(self.fill_up_space_centered(96, " unicorn-binance-websocket-api_" +
-                        str(self.version) + "-python_" + platform.python_version() + " " + "=")) + "\r\n" +
+                        str(self.version) + "-python_" + platform.python_version() + " ", "=")) + "\r\n" +
                     " exchange: " + str(self.stream_list[stream_id]['exchange']) + "\r\n" +
                     " uptime: " + str(self.get_human_uptime(time.time() - self.start_time)) + " since " +
                     str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d, %H:%M:%S UTC')) + "\r\n" +
@@ -2089,14 +2100,40 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.fill_up_space(8, self.reconnects) + "\r\n"
                     "===============================================================================================\r\n"
                     )
-                if disablePrint:
-                    return printText
+                if self.print_summary_export_path is not None:
+                    # Todo:
+                    # 1. Handle paths right
+                    # 2. Use PythonMagick instead of Linux ImageMagick
+                    with open(self.print_summary_export_path + "print_summary.txt", 'w') as text_file:
+                        print(self.remove_ansi_escape_codes(print_text), file=text_file)
+                    os.system('convert -size 730x520 xc:black -font "FreeMono" -pointsize 12 -fill white -annotate '
+                              '+30+30 "@' + self.print_summary_export_path + 'print_summary.txt' + '" ' +
+                              self.print_summary_export_path + 'print_summary.png')
+                if disable_print:
+                    if sys.platform.startswith('Windows'):
+                        print_text = self.remove_ansi_escape_codes(print_text)
+                    return print_text
                 else:
-                    print(printText)
+                    print(print_text)
             except UnboundLocalError:
                 pass
         except ZeroDivisionError:
             pass
+
+    @staticmethod
+    def remove_ansi_escape_codes(text):
+        """
+        Remove ansi excape codes from the text string!
+
+        :param text: str
+        :return:
+        """
+        text = text.replace("\033[1m\033[31m", "")
+        text = text.replace("\033[1m\033[32m", "")
+        text = text.replace("\033[1m\033[33m", "")
+        text = text.replace("\033[1m\033[34m", "")
+        text = text.replace("\033[0m", "")
+        return text
 
     def replace_stream(self, stream_id, new_channels, new_markets):
         """

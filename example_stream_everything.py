@@ -78,7 +78,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 
 try:
     binance_rest_client = Client(binance_api_key, binance_api_secret)
-    binance_websocket_api_manager = BinanceWebSocketApiManager()
+    binance_websocket_api_manager = BinanceWebSocketApiManager(print_summary_export_path="/home/oliver/")
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
