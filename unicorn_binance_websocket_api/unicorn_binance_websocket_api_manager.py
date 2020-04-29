@@ -1940,7 +1940,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             self.print_stream_info(stream_id)
 
-    def print_summary(self, add_string=""):
+    def print_summary(self, add_string="", disablePrint=False):
         """
         Print an overview of all streams
         
@@ -2057,24 +2057,24 @@ class BinanceWebSocketApiManager(threading.Thread):
                                              self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
                                          ")\r\n"
             try:
-                print(
+                printText = (
                     str(self.fill_up_space_centered(96, " unicorn-binance-websocket-api_" +
-                        str(self.version) + "-python_" + platform.python_version() + " ", "=")) + "\r\n" +
-                    " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
-                    " uptime:", str(self.get_human_uptime(time.time() - self.start_time)), "since " +
+                        str(self.version) + "-python_" + platform.python_version() + " " + "=")) + "\r\n" +
+                    " exchange: " + str(self.stream_list[stream_id]['exchange']) + "\r\n" +
+                    " uptime: " + str(self.get_human_uptime(time.time() - self.start_time)) + " since " +
                     str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d, %H:%M:%S UTC')) + "\r\n" +
-                    " streams:", str(streams), "\r\n" +
+                    " streams: " + str(streams) + "\r\n" +
                     str(active_streams_row) +
                     str(crashed_streams_row) +
                     str(restarting_streams_row) +
                     str(stopped_streams_row) +
                     str(streams_with_stop_request_row) +
                     str(stream_buffer_row) +
-                    " current_receiving_speed:", str(self.get_human_bytesize(current_receiving_speed, "/s")), "\r\n" +
-                    " total_receives:", str(self.total_receives), "\r\n"
-                    " total_received_bytes:", str(total_received_bytes), "\r\n"
-                    " total_receiving_speed:", str(received_bytes_per_x_row), "\r\n" +
-                    " total_transmitted_payloads:", str(self.total_transmitted), "\r\n" +
+                    " current_receiving_speed: " + str(self.get_human_bytesize(current_receiving_speed, "/s")) + "\r\n" +
+                    " total_receives: " + str(self.total_receives) + "\r\n"
+                    " total_received_bytes: " + str(total_received_bytes) + "\r\n"
+                    " total_receiving_speed: " + str(received_bytes_per_x_row) + "\r\n" +
+                    " total_transmitted_payloads: " + str(self.total_transmitted) + "\r\n" +
                     str(binance_api_status_row) +
                     str(add_string) +
                     " ---------------------------------------------------------------------------------------------\r\n"
@@ -2087,7 +2087,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.fill_up_space(13, all_receives_per_second.__round__(2)) + "|" +
                     self.fill_up_space(18, self.most_receives_per_second) + "|" +
                     self.fill_up_space(8, self.reconnects) + "\r\n"
-                    "===============================================================================================\r\n")
+                    "===============================================================================================\r\n"
+                    )
+                if disablePrint:
+                    return printText
+                else:
+                    print(printText)
             except UnboundLocalError:
                 pass
         except ZeroDivisionError:
