@@ -147,11 +147,11 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - ./setup.py
 
 ## Demo
-This live demo script is streaming everything from binance.com and is hosted on a CX11 VPS (1vCPU, 2GB RAM).
+This live demo script is streaming everything from binance.com and is hosted on a small VPS (1vCPU, 2GB RAM).
 
 [Demo source!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_everything.py)
 
-[![live-demo](https://ubwa-demo.lucit.co/ps.png)](https://ubwa-demo.lucit.co/print_summary.png)
+[![live-demo](https://ubwa-demo.lucit.co/print_summary.png)](https://ubwa-demo.lucit.co/print_summary.html)
 
 (Refresh update once a minute!)
 
