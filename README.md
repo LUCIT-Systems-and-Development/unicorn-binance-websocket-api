@@ -151,7 +151,8 @@ This live demo script is streaming everything from binance.com and is hosted on 
 [Demo source!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_everything.py)
 
 [![live-demo](https://ubwa-demo.lucit.co/print_summary.png)](https://ubwa-demo.lucit.co/print_summary.png)
-(refreshed once a minute!)
+
+(Refresh update once a minute!)
 
 ## Howto
 - [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
