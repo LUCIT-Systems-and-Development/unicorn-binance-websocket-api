@@ -114,7 +114,10 @@ def main(display):
         #for stream_id in stream_list_of_all_markets:
         #    binance_websocket_api_manager.print_stream_info(stream_id)
         display.clear()
-        display.addstr(0, 0, summary)
+        try:
+            display.addstr(0, 0, summary)
+        except curses.error:
+            display.addstr(0, 0, 'Window is too small, please maximize')
         display.refresh()
         time.sleep(1)
 
