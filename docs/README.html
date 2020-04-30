@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
     <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.12.0 documentation</title>
@@ -161,9 +161,9 @@ on, you have to use the Binance Rest API (<a class="reference external" href="ht
 you dont need to deal with asyncio in your code!</p></li>
 <li><p>No use of the twisted module, so you can use this lib in a daemonized application (compatible with
 <a class="reference external" href="https://pypi.org/project/python-daemon/">python-daemon</a>).</p></li>
-<li><p>Supports <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">subscribe</a>/<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a> on all exchanges!</p></li>
-<li><p>No subscription limits! This multi stream was subscribed to everything that binance offered (except <code class="docutils literal notranslate"><span class="pre">!userData</span></code>):
-<img alt="20412_subscriptions" src="https://user-images.githubusercontent.com/47597331/75072621-1fc75080-54f8-11ea-99ea-4eeaab1cbf7e.png" /></p></li>
+<li><p>Supports
+<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">subscriptions</a>/<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a>)
+on all exchanges! (Maximum 1024 subscriptions per stream!)</p></li>
 <li><p>If you can not store your data in cause of a temporary technical issue, you can kick back the data to the
 <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> which stores the receives in the RAM till you are able to process the data in the normal way again.
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py">Learn more!</a></p></li>
@@ -226,8 +226,10 @@ and use:</p>
 </div>
 <div class="section" id="demo">
 <h2>Demo<a class="headerlink" href="#demo" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py">Demo source</a></p>
-<p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py"><img alt="demo_gif" src="https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif" /></a></p>
+<p>This live demo script is streaming everything from binance.com and is hosted on a CX11 VPS (1vCPU, 2GB RAM).</p>
+<p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_everything.py">Demo source!</a></p>
+<p><a class="reference external" href="https://ubwa-demo.lucit.co/print_summary.png"><img alt="live-demo" src="https://ubwa-demo.lucit.co/print_summary.png" /></a></p>
+<p>(Refresh update once a minute!)</p>
 </div>
 <div class="section" id="howto">
 <h2>Howto<a class="headerlink" href="#howto" title="Permalink to this headline">¶</a></h2>
@@ -424,13 +426,12 @@ contribute follow
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.0.3
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.4.2
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
         <a href="https://www.technopathy.club/2019/11/03/use-python-sphinx-on-github-pages-with-html-and-an-indivdual-theme">
-    Create a GitHub Page like this one!</a>    <br />
-        Powered by <a href="https://www.lucit.co/desktop-and-server-apps.html">LUCIT - Python Development</a>
+    Create a GitHub Page like this one!</a>
     </div>
 
   </body>

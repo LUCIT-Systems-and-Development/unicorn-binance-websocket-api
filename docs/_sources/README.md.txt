@@ -92,9 +92,9 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 you dont need to deal with asyncio in your code!
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
 [python-daemon](https://pypi.org/project/python-daemon/)).
-- Supports [subscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream) on all exchanges!
-- No subscription limits! This multi stream was subscribed to everything that binance offered (except `!userData`):
-![20412_subscriptions](https://user-images.githubusercontent.com/47597331/75072621-1fc75080-54f8-11ea-99ea-4eeaab1cbf7e.png)
+- Supports 
+[subscriptions](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream))
+on all exchanges! (Maximum 1024 subscriptions per stream!)
 - If you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
 `stream_buffer` which stores the receives in the RAM till you are able to process the data in the normal way again. 
 [Learn more!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py)
@@ -146,9 +146,13 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - ./setup.py
 
 ## Demo
-[Demo source](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py)
+This live demo script is streaming everything from binance.com and is hosted on a CX11 VPS (1vCPU, 2GB RAM).
 
-[![demo_gif](https://s3.gifyu.com/images/unicorn-binance-websocket-api_demo_1.6.1.gif)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/dev_test_cex_full_non_stop.py)
+[Demo source!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_everything.py)
+
+[![live-demo](https://ubwa-demo.lucit.co/print_summary.png)](https://ubwa-demo.lucit.co/print_summary.png)
+
+(Refresh update once a minute!)
 
 ## Howto
 - [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
