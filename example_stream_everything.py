@@ -116,8 +116,8 @@ def main(display):
         display.clear()
         try:
             display.addstr(0, 0, summary)
-        except curses.error:
-            display.addstr(0, 0, 'Window is too small, please maximize')
+        except:
+            pass
         display.refresh()
         time.sleep(1)
 
