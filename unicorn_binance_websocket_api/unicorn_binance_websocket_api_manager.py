@@ -2106,7 +2106,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     # 2. Use PythonMagick instead of Linux ImageMagick
                     with open(self.print_summary_export_path + "print_summary.txt", 'w') as text_file:
                         print(self.remove_ansi_escape_codes(print_text), file=text_file)
-                    os.system('convert -size 730x520 xc:black -font "FreeMono" -pointsize 12 -fill white -annotate '
+                    os.system('convert -size 725x540 xc:black -font "FreeMono" -pointsize 12 -fill white -annotate '
                               '+30+30 "@' + self.print_summary_export_path + 'print_summary.txt' + '" ' +
                               self.print_summary_export_path + 'print_summary.png')
                 if disable_print:
