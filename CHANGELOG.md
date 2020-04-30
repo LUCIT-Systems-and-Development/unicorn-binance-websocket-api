@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.12.0.dev (development stage/unreleased/unstable)
+### Added
+- `disable_print` in `print_summary()`
+- `print_summary_export_path` - if provided, the lib is going to export the output of `print_summary()` to a PNG image.
 ### Fixed
 - ping listen_key if "!userData" is in `channels`, not only in `markets`. 
 

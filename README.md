@@ -3,6 +3,7 @@
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg)](https://www.python.org/downloads/)
 [![PyPI - Status](https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues)
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel&color=orange)](https://pypi.org/project/unicorn-binance-websocket-api/)
+[![Downloads](https://pepy.tech/badge/unicorn-binance-websocket-api)](https://pepy.tech/project/unicorn-binance-websocket-api)
 
 # UNICORN Binance WebSocket API
 A python API to use the Binance Websocket API's (com, com-margin, com-futures, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.
@@ -206,3 +207,7 @@ contribute follow
 [this guide](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CONTRIBUTING.md).
  
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
+
+## You need a Python Dev?
+If you would like to [hire me](https://about.me/oliver-zehentleitner) for a Python project, you can book me through 
+my company [LUCIT](https://www.lucit.co/desktop-and-server-apps.html).
