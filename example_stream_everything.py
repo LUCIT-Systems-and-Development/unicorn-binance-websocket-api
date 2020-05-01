@@ -99,14 +99,18 @@ number_of_channels = len(channels)
 subscription_limit_per_stream = binance_websocket_api_manager.get_limit_of_subscriptions_per_stream()
 markets_per_stream = int(subscription_limit_per_stream / number_of_channels)
 stream_list_of_all_markets = []
-temp_markets = []
-for market in markets:
-    temp_markets.append(market)
-    if len(temp_markets) == markets_per_stream:
-        stream_list_of_all_markets.append(binance_websocket_api_manager.create_stream(channels, temp_markets))
-        temp_markets = []
-if (len(temp_markets) != 0):
-	stream_list_of_all_markets.append(binance_websocket_api_manager.create_stream(channels, temp_markets))
+
+#temp_markets = []
+#for market in markets:
+#    temp_markets.append(market)
+#    if len(temp_markets) == markets_per_stream:
+#        stream_list_of_all_markets.append(binance_websocket_api_manager.create_stream(channels, temp_markets))
+#        temp_markets = []
+#if (len(temp_markets) != 0):
+#	stream_list_of_all_markets.append(binance_websocket_api_manager.create_stream(channels, temp_markets))
+
+for channel in channels:
+    binance_websocket_api_manager.create_stream(channel, markets)
 
 while True:
     binance_websocket_api_manager.print_summary()
