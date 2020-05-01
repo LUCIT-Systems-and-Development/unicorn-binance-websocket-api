@@ -1,0 +1,369 @@
+@import url("default.css");
+
+body {
+    background-color: white;
+    margin-left: 1em;
+    margin-right: 1em;
+    font-size: 1.125em;
+    line-height: 1.4;
+}
+
+div.related {
+    margin-bottom: 1.2em;
+    padding: 0.5em 0;
+    border-top: 1px solid #ccc;
+    margin-top: 0.5em;
+}
+
+div.related a:hover {
+    color: #0095C4;
+}
+
+div.related:first-child {
+    border-top: 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.flex.container {
+	display: flex;
+}
+
+.fill-width {
+	flex: 1;
+}
+
+.inline-search {
+    display: inline;
+}
+form.inline-search input {
+    display: inline;
+}
+form.inline-search input[type="submit"] {
+    width: 40px;
+}
+
+div.sphinxsidebar {
+    background-color: #eeeeee;
+    border-radius: 5px;
+    line-height: 1.5;
+    font-size: .875em;
+}
+
+div.sphinxsidebar h3, div.sphinxsidebar h4 {
+    margin-top: 1.5em;
+}
+
+div.sphinxsidebarwrapper > h3:first-child {
+    margin-top: 0.2em;
+}
+
+div.sphinxsidebarwrapper > ul > li > ul > li {
+    margin-bottom: 0.4em;
+}
+
+div.sphinxsidebar a:hover {
+    color: #0095C4;
+}
+
+form.inline-search input,
+div.sphinxsidebar input {
+    font-family: 'Lucida Grande',Arial,sans-serif;
+    border: 1px solid #999999;
+    font-size: .875em;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+div.sphinxsidebar input[type=text] {
+    max-width: 150px;
+}
+
+div.body {
+    padding: 0 0 0 1.2em;
+    max-width: 100%;
+}
+
+div.body p {
+    line-height: 140%;
+    text-align: left;
+}
+
+div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6 {
+    margin: 0;
+    border: 0;
+    padding: 0.3em 0;
+}
+
+div.body hr {
+    border: 0;
+    background-color: #ccc;
+    height: 1px;
+}
+
+div.body pre {
+    border-radius: 3px;
+    border: 1px solid #ac9;
+}
+
+div.body div.admonition, div.body div.impl-detail {
+    border-radius: 3px;
+}
+
+div.body div.impl-detail > p {
+    margin: 0;
+}
+
+div.body div.seealso {
+    border: 1px solid #dddd66;
+}
+
+div.body a {
+    color: #0072aa;
+}
+
+div.body a:visited {
+    color: #6363bb;
+}
+
+div.body a:hover {
+    color: #00B0E4;
+}
+
+tt, code, pre {
+    font-family: monospace, sans-serif;
+    font-size: .875em;
+    line-height: 1.5;
+}
+
+div.body tt, div.body code {
+    border-radius: 3px;
+}
+
+div.body tt.descname, div.body code.descname {
+    font-size: .875em;
+    line-height: 1.5;
+}
+
+div.body tt.xref, div.body a tt, div.body code.xref, div.body a code {
+    font-weight: normal;
+}
+
+table.docutils {
+    border: 1px solid #ddd;
+    min-width: 20%;
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+table.docutils td, table.docutils th {
+    border: 1px solid #ddd !important;
+    border-radius: 3px;
+}
+
+table p, table li {
+    text-align: left !important;
+}
+
+table.docutils th {
+    background-color: #eee;
+    padding: 0.3em 0.5em;
+}
+
+table.docutils td {
+    background-color: white;
+    padding: 0.3em 0.5em;
+}
+
+table.footnote, table.footnote td {
+    border: 0 !important;
+}
+
+div.footer {
+    line-height: 150%;
+    margin-top: -2em;
+    text-align: right;
+    width: auto;
+    margin-right: 10px;
+}
+
+div.footer a:hover {
+    color: #0095C4;
+}
+
+.refcount {
+    color: #060;
+}
+
+.stableabi {
+    color: #229;
+}
+
+.highlight {
+    background: none !important;
+}
+
+dl > dt span ~ em {
+    font-family: monospace, sans-serif;
+}
+
+
+@media screen and (max-width: 870px) {
+
+    div.sphinxsidebar {
+    	display: none;
+    }
+
+    div.document {
+       width: 100%;
+
+    }
+
+    div.documentwrapper {
+    	margin-left: 0;
+    	margin-top: 0;
+    	margin-right: 0;
+    	margin-bottom: 0;
+    }
+
+    div.bodywrapper {
+    	margin-top: 0;
+    	margin-right: 0;
+    	margin-bottom: 0;
+    	margin-left: 0;
+    }
+
+    ul {
+    	margin-left: 0;
+    }
+
+	li > ul {
+        /* Matches the 30px from the "ul, ol" selector above */
+		margin-left: 30px;
+	}
+
+    .document {
+    	width: auto;
+    }
+
+    .footer {
+    	width: auto;
+    }
+
+    .bodywrapper {
+    	margin: 0;
+    }
+
+    .footer {
+    	width: auto;
+    }
+
+    .github {
+        display: none;
+    }
+
+
+
+}
+
+
+
+@media screen and (max-width: 1124px) {
+
+    body {
+        margin: 0;
+        padding: 20px 30px;
+    }
+
+    div.documentwrapper {
+        float: none;
+        background: #fff;
+    }
+
+    div.related {
+        float: none:
+    }
+
+    div.sphinxsidebar {
+        display: block;
+        float: none;
+        width: 102.5%;
+        margin: 50px -30px -20px -30px;
+        padding: 10px 20px;
+        background: #333;
+        color: #FFF;
+    }
+
+    div.sphinxsidebar h3, div.sphinxsidebar h4, div.sphinxsidebar p,
+    div.sphinxsidebar h3 a {
+        color: #fff;
+    }
+
+    div.sphinxsidebar a {
+        color: #AAA;
+    }
+
+    div.sphinxsidebar p.logo {
+        display: none;
+    }
+
+    div.document {
+        width: 100%;
+        margin: 0;
+    }
+
+    div.bodywrapper {
+        margin: 0;
+    }
+
+    div.body {
+        min-height: 0;
+        padding: 0;
+    }
+
+    div.related li.right {
+        display: none;
+        float: none;
+    }
+
+    div.related li {
+        display: inline;
+        float: none;
+    }
+
+    .rtd_doc_footer {
+        display: none;
+    }
+
+    .document {
+        width: auto;
+    }
+
+    .footer {
+        width: auto;
+    }
+}
+
+
+/* misc. */
+
+.revsys-inline {
+    display: none!important;
+}
+
+/* Make nested-list/multi-paragraph items look better in Releases changelog
+ * pages. Without this, docutils' magical list fuckery causes inconsistent
+ * formatting between different release sub-lists.
+ */
+div#changelog > div.section > ul > li > p:only-child {
+    margin-bottom: 0;
+}
+
+/* Hide fugly table cell borders in ..bibliography:: directive output */
+table.docutils.citation, table.docutils.citation td, table.docutils.citation th {
+  border: none;
+  /* Below needed in some edge cases; if not applied, bottom shadows appear */
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
