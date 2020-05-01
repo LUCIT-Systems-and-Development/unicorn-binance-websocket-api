@@ -105,6 +105,8 @@ for market in markets:
     if len(temp_markets) == markets_per_stream:
         stream_list_of_all_markets.append(binance_websocket_api_manager.create_stream(channels, temp_markets))
         temp_markets = []
+if (len(temp_markets) != 0):
+	stream_list_of_all_markets.append(binance_websocket_api_manager.create_stream(channels, temp_markets))
 
 while True:
     binance_websocket_api_manager.print_summary()
