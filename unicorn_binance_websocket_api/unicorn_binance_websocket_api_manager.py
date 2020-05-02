@@ -299,7 +299,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     try:
                         if (self.keepalive_streams_list[frequent_checks_instance]['last_heartbeat'] + 3) > time.time():
                             logging.info("BinanceWebSocketApiManager->_frequent_checks() found an other living instance, "
-                                         "so i stop" + str(frequent_checks_id))
+                                         "stopping " + str(frequent_checks_id))
                             sys.exit(1)
                     except KeyError:
                         logging.debug("BinanceWebSocketApiManager->_frequent_checks() - Info: KeyError "
@@ -449,8 +449,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if keepalive_streams_instance != keepalive_streams_id:
                     if (self.keepalive_streams_list[keepalive_streams_instance]['last_heartbeat'] + 3) > time.time():
                         logging.info(
-                            "BinanceWebSocketApiManager->_keepalive_streams() found an other living instance, so i stop" +
-                            str(keepalive_streams_id))
+                            "BinanceWebSocketApiManager->_keepalive_streams() found an other living instance, "
+                            "stopping " + str(keepalive_streams_id))
                         sys.exit(1)
         # threaded loop to restart crashed streams:
         while self.stop_manager_request is None and \
@@ -709,8 +709,9 @@ class BinanceWebSocketApiManager(threading.Thread):
 
                 ``binance_websocket_api_manager.create_stream(['orders', 'transfers', 'accounts'], binance_dex_user_address)``
 
-        To create a multiplexed stream which includes also `!miniTicker@arr`, `!ticker@arr` or `!bookTicker@arr` you
-        just need to add `!bookTicker` to the channels list - dont add `arr` (cex) or `$all` (dex) to the markets list.
+        To create a multiplexed stream which includes also `!miniTicker@arr`, `!ticker@arr`, `!forceOrder@arr` or
+        `!bookTicker@arr` you just need to add `!bookTicker` to the channels list - dont add `arr` (cex) or `$all`
+        (dex) to the markets list.
 
             Example:
 

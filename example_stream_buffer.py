@@ -128,12 +128,11 @@ markets = ['xrpbearbusd', 'zeceth', 'cndbtc', 'dashbtc', 'atompax', 'perlbtc', '
            'neobnb', 'cosbtc', 'powreth', 'rlcusdt', 'hbarbnb', 'wabieth', 'bqxeth', 'aionbtc', 'aeeth', 'mthbtc',
            'wrxbtc', 'pptbtc', 'nknbtc', 'zecusdt', 'stormeth', 'qtumusdt']
 
-channels = ['kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w']
-binance_get_kline_stream_id1 = binance_websocket_api_manager.create_stream(channels, markets)
+channels = ['kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w', 'trade',
+            'miniTicker', 'depth20']
 
-channels = {'trade', 'miniTicker', 'depth20'}
-binance_get_kline_stream_id2 = binance_websocket_api_manager.create_stream(channels=channels, markets=markets)
-
+for channel in channels:
+    binance_websocket_api_manager.create_stream(channel, markets)
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     print("waiting 30 seconds, then we start flushing the stream_buffer")

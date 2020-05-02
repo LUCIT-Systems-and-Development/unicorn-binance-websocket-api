@@ -9,8 +9,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - `disable_print` in `print_summary()`
 - `print_summary_export_path` - if provided, the lib is going to export the output of `print_summary()` to a PNG image.
+- support '!forceOrder'
 ### Fixed
 - ping listen_key if "!userData" is in `channels`, not only in `markets`. 
+- format of some logs
 
 ## 1.12.0
 ### RECOMMENDED UPDATE!

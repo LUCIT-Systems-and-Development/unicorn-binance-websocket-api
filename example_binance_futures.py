@@ -88,7 +88,7 @@ binance_websocket_api_manager.create_stream(["depth10"], markets)
 binance_websocket_api_manager.create_stream(["depth20"], markets)
 
 channels = {'aggTrade', 'markPrice' 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h',
-            'miniTicker', 'depth20@100ms', 'bookTicker', 'kline_1w@250ms'}
+            'miniTicker', 'depth20@100ms', 'bookTicker', 'forceOrder', '!forceOrder', 'kline_1w@250ms'}
 binance_websocket_api_manager.create_stream(channels, markets)
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function

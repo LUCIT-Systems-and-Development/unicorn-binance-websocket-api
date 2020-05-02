@@ -63,7 +63,7 @@ provides an API to the Binance Websocket API`s of [Binance](https://github.com/b
 [Binance JEX](https://jexapi.github.io/api-doc/spot.html#web-socket-streams), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
 [Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports the streaming of 
-all public streams like trade, kline, ticker, depth, !bookTicker and blockheight and also all private userData streams 
+all public streams like trade, kline, ticker, depth, bookTicker, forceOrder and blockheight and also all private userData streams 
 which needs to be used with a valid api_key and api_secret from the Binance Exchange 
 [www.binance.com](https://www.binance.com/userCenter/createApi.html), 
 [www.binance.je](https://www.binance.je/userCenter/createApi.html),
