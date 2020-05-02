@@ -46,6 +46,7 @@ import copy
 import logging
 import os
 import platform
+from pympler import asizeof
 import re
 import requests
 import sys
@@ -196,7 +197,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_buffer_lock = threading.Lock()
         self.start_time = time.time()
         self.stream_buffer = []
-        self.stream_buffer_size = 0
         self.stream_list = {}
         self.stream_threading_lock = {}
         self.throw_exception_if_unrepairable = throw_exception_if_unrepairable
@@ -541,7 +541,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         with self.stream_buffer_lock:
             self.stream_buffer.append(stream_data)
         self.last_entry_added_to_stream_buffer = time.time()
-        self.stream_buffer_size += sys.getsizeof(stream_data)
 
     def add_total_received_bytes(self, size):
         """
@@ -1454,7 +1453,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: int
         """
-        return self.stream_buffer_size
+        with self.stream_buffer_lock:
+            return asizeof.asizeof(self.stream_buffer)
 
     def get_stream_buffer_length(self):
         """
@@ -1824,7 +1824,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             with self.stream_buffer_lock:
                 stream_data = self.stream_buffer.pop(0)
-            self.stream_buffer_size -= sys.getsizeof(stream_data)
             return stream_data
         except IndexError:
             return False
