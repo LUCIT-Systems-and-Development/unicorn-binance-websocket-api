@@ -6,8 +6,12 @@
 [![Downloads](https://pepy.tech/badge/unicorn-binance-websocket-api)](https://pepy.tech/project/unicorn-binance-websocket-api)
 [![Telegram](https://img.shields.io/badge/chat-telegram-red.svg)](https://t.me/unicorndevs)
 
-
 # UNICORN Binance WebSocket API
+[Description](#description) | [Installation](#installation-and-upgrade) | [Live Demo](#live-demo) | [How To](#how-to) |
+[Documentation](#documentation) | [Change Log](#change-log) | [Wiki](#wiki) | 
+[Notifications](#receive-notifications) | [Bugs/Improvements](#how-to-report-bugs-or-suggest-improvements) | 
+[Contributing](#contributing)
+
 A python API to use the Binance Websocket API's (com, com-margin, com-futures, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.
 
 ### [Create a multiplex websocket connection](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
