@@ -163,6 +163,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stop_manager_request = None
         self._frequent_checks_restart_request = None
         self._keepalive_streams_restart_request = None
+        self.all_subscriptions_number = 0
         self.api_key = False
         self.api_secret = False
         self.binance_api_status = {'weight': None,
@@ -984,6 +985,24 @@ class BinanceWebSocketApiManager(threading.Thread):
             except KeyError:
                 pass
         return all_receives_last_second
+
+    def get_number_of_all_subscriptions(self):
+        """
+        Get the amount of all stream subscriptions
+
+        :return: inf
+        """
+        subscriptions = 0
+        try:
+            active_stream_list = copy.deepcopy(self.get_active_stream_list())
+            for stream_id in active_stream_list:
+                subscriptions += active_stream_list[stream_id]['subscriptions']
+            self.all_subscriptions_number = subscriptions
+        except TypeError:
+            return self.all_subscriptions_number
+        except RuntimeError:
+            return self.all_subscriptions_number
+        return subscriptions
 
     def get_binance_api_status(self):
         """
@@ -2081,6 +2100,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     str(restarting_streams_row) +
                     str(stopped_streams_row) +
                     str(streams_with_stop_request_row) +
+                    " subscriptions: " + str(self.get_number_of_all_subscriptions()) + "\r\n" +
                     str(stream_buffer_row) +
                     " current_receiving_speed: " + str(self.get_human_bytesize(current_receiving_speed, "/s")) + "\r\n" +
                     " total_receives: " + str(self.total_receives) + "\r\n"
@@ -2107,7 +2127,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     # 2. Use PythonMagick instead of Linux ImageMagick
                     with open(self.print_summary_export_path + "print_summary.txt", 'w') as text_file:
                         print(self.remove_ansi_escape_codes(print_text), file=text_file)
-                    os.system('convert -size 725x610 xc:black -font "FreeMono" -pointsize 12 -fill white -annotate '
+                    os.system('convert -size 725x630 xc:black -font "FreeMono" -pointsize 12 -fill white -annotate '
                               '+30+30 "@' + self.print_summary_export_path + 'print_summary.txt' + '" ' +
                               self.print_summary_export_path + 'print_summary_plain.png')
                     os.system('convert ' + self.print_summary_export_path + 'print_summary_plain.png -font "FreeMono" '

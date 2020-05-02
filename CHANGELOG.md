@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - `disable_print` in `print_summary()`
 - `print_summary_export_path` - if provided, the lib is going to export the output of `print_summary()` to a PNG image.
-- support '!forceOrder'
+- `get_number_of_all_subscriptions()` and show all subscriptions number in `print_summary()`
 ### Fixed
 - ping listen_key if "!userData" is in `channels`, not only in `markets`. 
 - format of some logs
