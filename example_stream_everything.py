@@ -41,7 +41,6 @@ import requests
 import sys
 import time
 import threading
-from curses import wrapper
 
 try:
     from binance.client import Client
@@ -114,18 +113,8 @@ stream_list_of_all_markets = []
 for channel in channels:
     binance_websocket_api_manager.create_stream(channel, markets)
 
-def main(display):
-    while True:
-        summary = binance_websocket_api_manager.print_summary(disable_print=True)
-    
-        #for stream_id in stream_list_of_all_markets:
-        #    binance_websocket_api_manager.print_stream_info(stream_id)
-        display.clear()
-        try:
-            display.addstr(0, 0, summary)
-        except:
-            pass
-        display.refresh()
-        time.sleep(1)
-
-wrapper(main)
+while True:
+    binance_websocket_api_manager.print_summary()
+    #for stream_id in stream_list_of_all_markets:
+    #    binance_websocket_api_manager.print_stream_info(stream_id)
+    time.sleep(1)
