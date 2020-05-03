@@ -3,7 +3,6 @@ colorama
 flask
 flask_restful
 pathlib
-pympler
 requests
 ujson
 websocket-client

@@ -2045,13 +2045,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             received_bytes_per_x_row += str((received_bytes_per_second / 1024).__round__(2)) + " kB/s (per day " + \
                                         str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(2)) + " gB)"
             if self.get_stream_buffer_length() > 50:
-                stream_buffer_byte_size = self.get_stream_buffer_byte_size()
                 stream_row_color_prefix = "\033[1m\033[34m"
                 stream_row_color_suffix = "\033[0m"
                 stream_buffer_row += stream_row_color_prefix + " stream_buffer_stored_items: " + str(self.get_stream_buffer_length()) + "\r\n"
-                stream_buffer_row += " stream_buffer_byte_size: " + str(stream_buffer_byte_size) + \
+                stream_buffer_row += " stream_buffer_byte_size: " + str(self.get_stream_buffer_byte_size()) + \
                                      " (" + str(
-                    self.get_human_bytesize(stream_buffer_byte_size)) + ")" + stream_row_color_suffix + "\r\n"
+                    self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")" + stream_row_color_suffix + "\r\n"
 
             if active_streams > 0:
                 active_streams_row = " \033[1m\033[32mactive_streams: " + str(active_streams) + "\033[0m\r\n"
