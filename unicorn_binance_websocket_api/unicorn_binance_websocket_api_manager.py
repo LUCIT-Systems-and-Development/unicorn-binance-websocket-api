@@ -46,7 +46,6 @@ import copy
 import logging
 import os
 import platform
-from pympler import asizeof
 import re
 import requests
 import sys
@@ -1449,12 +1448,15 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_stream_buffer_byte_size(self):
         """
-        Get the current byte size of the stream_buffer
+        Get the current byte size estimation of the stream_buffer
 
         :return: int
         """
-        with self.stream_buffer_lock:
-            return asizeof.asizeof(self.stream_buffer)
+        total_received_bytes = self.get_total_received_bytes()
+        total_receives = self.get_total_receives()
+        stream_buffer_length = self.get_stream_buffer_length()
+
+        return round(total_received_bytes / total_receives * stream_buffer_length)
 
     def get_stream_buffer_length(self):
         """
