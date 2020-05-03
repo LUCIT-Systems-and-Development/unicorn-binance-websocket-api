@@ -231,8 +231,9 @@ with other streams in a multiplexed stream!</p>
 <div><p><code class="docutils literal notranslate"><span class="pre">binance_websocket_api_manager.create_stream(['orders',</span> <span class="pre">'transfers',</span> <span class="pre">'accounts'],</span> <span class="pre">binance_dex_user_address)</span></code></p>
 </div></blockquote>
 </div></blockquote>
-<p>To create a multiplexed stream which includes also <cite>!miniTicker&#64;arr</cite>, <cite>!ticker&#64;arr</cite> or <cite>!bookTicker&#64;arr</cite> you
-just need to add <cite>!bookTicker</cite> to the channels list - dont add <cite>arr</cite> (cex) or <cite>$all</cite> (dex) to the markets list.</p>
+<p>To create a multiplexed stream which includes also <cite>!miniTicker&#64;arr</cite>, <cite>!ticker&#64;arr</cite>, <cite>!forceOrder&#64;arr</cite> or
+<cite>!bookTicker&#64;arr</cite> you just need to add <cite>!bookTicker</cite> to the channels list - dont add <cite>arr</cite> (cex) or <cite>$all</cite>
+(dex) to the markets list.</p>
 <blockquote>
 <div><p>Example:</p>
 <blockquote>
@@ -569,6 +570,17 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_number_of_all_subscriptions">
+<code class="sig-name descname">get_number_of_all_subscriptions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_number_of_all_subscriptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the amount of all stream subscriptions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>inf</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_number_of_free_subscription_slots">
 <code class="sig-name descname">get_number_of_free_subscription_slots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_number_of_free_subscription_slots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the number of free subscription slots (max allowed subscriptions - subscriptions) of a specific stream
@@ -633,7 +645,7 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_buffer_byte_size">
 <code class="sig-name descname">get_stream_buffer_byte_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_buffer_byte_size" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the current byte size of the stream_buffer</p>
+<dd><p>Get the current byte size estimation of the stream_buffer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>int</p>
