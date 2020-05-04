@@ -45,7 +45,7 @@ import threading
 try:
     from binance.client import Client
 except ImportError:
-    print("Please install `python-binance`!")
+    print("Please install `python-binance`! https://pypi.org/project/python-binance/#description")
     sys.exit(1)
 
 # https://docs.python.org/3/library/logging.html#logging-levels
