@@ -7,7 +7,7 @@
 [![Telegram](https://img.shields.io/badge/chat-telegram-red.svg)](https://t.me/unicorndevs)
 
 # UNICORN Binance WebSocket API
-[Description](#description) | [Installation](#installation-and-upgrade) | [Live Demo](#live-demo) | [How To](#how-to) |
+[Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#how-to) |
 [Documentation](#documentation) | [Change Log](#change-log) | [Wiki](#wiki) | 
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
 [Contributing](#contributing)
@@ -100,7 +100,7 @@ you dont need to deal with asyncio in your code!
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
 [python-daemon](https://pypi.org/project/python-daemon/)).
 - Supports 
-[subscriptions](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream))
+[subscriptions](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream)
 on all exchanges! (Maximum 1024 subscriptions per stream!)
 - If you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
 `stream_buffer` which stores the receives in the RAM till you are able to process the data in the normal way again. 
@@ -212,11 +212,12 @@ source project which welcomes contributions which can be anything from simple do
 contribute follow 
 [this guide](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CONTRIBUTING.md).
  
-We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
 ### Contributors
 <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=oliver-zehentleitner/unicorn-binance-websocket-api" />
 </a>
+
+We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
 
 ## You need a Python Dev?
 If you would like to [hire me](https://about.me/oliver-zehentleitner) for a Python project, you can book me through 
