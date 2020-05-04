@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_stream_everything.py
+# File: example_stream_everything_bad_config.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -34,7 +34,6 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
-from unicorn_fy import UnicornFy
 import logging
 import os
 import requests
@@ -47,6 +46,10 @@ try:
 except ImportError:
     print("Please install `python-binance`!")
     sys.exit(1)
+
+print("This is a bad config and will cause a lot of reconnects")
+exit(0)
+
 
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(level=logging.INFO,
@@ -91,12 +94,22 @@ for item in data:
     markets.append(item['symbol'])
 
 binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
-binance_websocket_api_manager.create_stream(["!userData"], ["arr"])
+userdata_stream_id = binance_websocket_api_manager.create_stream(["!userData"], ["arr"])
+arr_stream_id = binance_websocket_api_manager.create_stream(arr_channels, "arr")
 
-binance_websocket_api_manager.create_stream(arr_channels, "arr")
+number_of_channels = len(channels)
+subscription_limit_per_stream = binance_websocket_api_manager.get_limit_of_subscriptions_per_stream()
+markets_per_stream = int(subscription_limit_per_stream / number_of_channels)
+stream_list_of_all_markets = []
 
-for channel in channels:
-    binance_websocket_api_manager.create_stream(channel, markets)
+temp_markets = []
+for market in markets:
+    temp_markets.append(market)
+    if len(temp_markets) == markets_per_stream:
+        stream_list_of_all_markets.append(binance_websocket_api_manager.create_stream(channels, temp_markets))
+        temp_markets = []
+if len(temp_markets) != 0:
+    stream_list_of_all_markets.append(binance_websocket_api_manager.create_stream(channels, temp_markets))
 
 while True:
     binance_websocket_api_manager.print_summary()
