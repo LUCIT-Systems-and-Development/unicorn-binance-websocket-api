@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.12.0 documentation</title>
+    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.13.0 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -48,7 +48,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.12.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.13.0 documentation</a> &#187;
     
 
     <li class="right">
@@ -73,7 +73,7 @@
 <a class="reference external" href="https://t.me/unicorndevs"><img alt="Telegram" src="https://img.shields.io/badge/chat-telegram-red.svg" /></a></p>
 <div class="section" id="unicorn-binance-websocket-api">
 <h1>UNICORN Binance WebSocket API<a class="headerlink" href="#unicorn-binance-websocket-api" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="#description">Description</a> | <a class="reference external" href="#installation-and-upgrade">Installation</a> | <a class="reference external" href="#live-demo">Live Demo</a> | <a class="reference external" href="#how-to">How To</a> |
+<p><a class="reference external" href="#description">Description</a> | <a class="reference external" href="#live-demo">Live Demo</a> | <a class="reference external" href="#installation-and-upgrade">Installation</a> | <a class="reference external" href="#how-to">How To</a> |
 <a class="reference external" href="#documentation">Documentation</a> | <a class="reference external" href="#change-log">Change Log</a> | <a class="reference external" href="#wiki">Wiki</a> |
 <a class="reference external" href="#receive-notifications">Notifications</a> | <a class="reference external" href="#how-to-report-bugs-or-suggest-improvements">Bugs</a> |
 <a class="reference external" href="#contributing">Contributing</a></p>
@@ -168,7 +168,7 @@ you dont need to deal with asyncio in your code!</p></li>
 <li><p>No use of the twisted module, so you can use this lib in a daemonized application (compatible with
 <a class="reference external" href="https://pypi.org/project/python-daemon/">python-daemon</a>).</p></li>
 <li><p>Supports
-<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">subscriptions</a>/<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a>)
+<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">subscriptions</a>/<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a>
 on all exchanges! (Maximum 1024 subscriptions per stream!)</p></li>
 <li><p>If you can not store your data in cause of a temporary technical issue, you can kick back the data to the
 <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> which stores the receives in the RAM till you are able to process the data in the normal way again.
@@ -188,6 +188,13 @@ for <a class="reference external" href="https://exchange.icinga.com/bithon/check
 <p>If you like the project, please <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/stargazers"><img alt="star" src="https://s3.gifyu.com/images/stard237b3003af9f9a9.png" /></a> it on
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">GitHub</a>!</p>
 </div>
+</div>
+<div class="section" id="live-demo">
+<h2>Live Demo<a class="headerlink" href="#live-demo" title="Permalink to this headline">¶</a></h2>
+<p>This live demo script is streaming everything from binance.com, hosted on a small VPS (2vCPU, 2GB RAM).</p>
+<p><a class="reference external" href="https://ubwa-demo.lucit.co/print_summary.php">Open live monitor!</a></p>
+<p><a class="reference external" href="https://ubwa-demo.lucit.co/print_summary.php"><img alt="live-demo" src="https://ubwa-demo.lucit.co/ps.png" /></a></p>
+<p>(Refresh update once a minute!)</p>
 </div>
 <div class="section" id="installation-and-upgrade">
 <h2>Installation and Upgrade<a class="headerlink" href="#installation-and-upgrade" title="Permalink to this headline">¶</a></h2>
@@ -229,13 +236,6 @@ and use:</p>
 <li><p>./setup.py</p></li>
 </ul>
 </div>
-</div>
-<div class="section" id="live-demo">
-<h2>Live Demo<a class="headerlink" href="#live-demo" title="Permalink to this headline">¶</a></h2>
-<p>This live demo script is streaming everything from binance.com, hosted on a small VPS (2vCPU, 2GB RAM).</p>
-<p><a class="reference external" href="https://ubwa-demo.lucit.co/print_summary.php">Open live monitor!</a></p>
-<p><a class="reference external" href="https://ubwa-demo.lucit.co/print_summary.php"><img alt="live-demo" src="https://ubwa-demo.lucit.co/ps.png" /></a></p>
-<p>(Refresh update once a minute!)</p>
 </div>
 <div class="section" id="howto">
 <h2>Howto<a class="headerlink" href="#howto" title="Permalink to this headline">¶</a></h2>
@@ -297,12 +297,11 @@ and python version and explain how to reproduce the error. A demo script is appr
 source project which welcomes contributions which can be anything from simple documentation fixes to new features. To
 contribute follow
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CONTRIBUTING">this guide</a>.</p>
-<p>We <img alt="love" src="https://s3.gifyu.com/images/heartae002231c41d8a80.png" /> open source!</p>
 <div class="section" id="contributors">
 <h3>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h3>
 <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=oliver-zehentleitner/unicorn-binance-websocket-api" />
-</a><p>[Made with <a class="reference external" href="https://contributors-img.web.app">contributors-img</a>]</p>
+</a><p>We <img alt="love" src="https://s3.gifyu.com/images/heartae002231c41d8a80.png" /> open source!</p>
 </div>
 </div>
 <div class="section" id="you-need-a-python-dev">
@@ -329,6 +328,7 @@ my company <a class="reference external" href="https://www.lucit.co/desktop-and-
 <li><a class="reference internal" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api">What are the benefits of the UNICORN Binance WebSocket API?</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#live-demo">Live Demo</a></li>
 <li><a class="reference internal" href="#installation-and-upgrade">Installation and Upgrade</a><ul>
 <li><a class="reference internal" href="#a-wheel-of-the-latest-release-with-pip-from-pypi">A wheel of the latest release with PIP from PyPI</a></li>
 <li><a class="reference internal" href="#from-source-of-the-latest-release-with-pip-from-github">From source of the latest release with PIP from Github</a><ul>
@@ -340,7 +340,6 @@ my company <a class="reference external" href="https://www.lucit.co/desktop-and-
 <li><a class="reference internal" href="#conda-environment-virtualenv-or-plain-python">Conda environment, Virtualenv or plain python</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#live-demo">Live Demo</a></li>
 <li><a class="reference internal" href="#howto">Howto</a></li>
 <li><a class="reference internal" href="#documentation">Documentation</a></li>
 <li><a class="reference internal" href="#source-downloads-examples">Source, Downloads, Examples, …</a></li>
@@ -424,7 +423,7 @@ my company <a class="reference external" href="https://www.lucit.co/desktop-and-
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.12.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.13.0 documentation</a> &#187;
     
 
     <li class="right">

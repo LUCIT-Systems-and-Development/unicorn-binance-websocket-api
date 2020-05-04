@@ -5,9 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.12.0.dev (development stage/unreleased/unstable)
+## 1.13.0.dev (development stage/unreleased/unstable)
+
+## 1.13.0
 ### Added
-- `disable_print` in `print_summary()`  [pull #48](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/48)
+- `disable_print` in `print_summary()` [pull #48](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/48)
 - `print_summary_export_path` - if provided, the lib is going to export the output of `print_summary()` to a PNG image.
 - `get_number_of_all_subscriptions()` and show all subscriptions number in `print_summary()`
 ### Fixed
