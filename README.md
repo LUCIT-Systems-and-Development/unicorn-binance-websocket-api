@@ -218,7 +218,6 @@ We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
   <img src="https://contributors-img.web.app/image?repo=oliver-zehentleitner/unicorn-binance-websocket-api" />
 </a>
 
-[Made with [contributors-img](https://contributors-img.web.app)]
 ## You need a Python Dev?
 If you would like to [hire me](https://about.me/oliver-zehentleitner) for a Python project, you can book me through 
 my company [LUCIT](https://www.lucit.co/desktop-and-server-apps.html).
