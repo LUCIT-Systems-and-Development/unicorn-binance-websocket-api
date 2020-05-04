@@ -121,7 +121,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  throw_exception_if_unrepairable=False,
                  print_summary_export_path=None):
         threading.Thread.__init__(self)
-        self.version = "1.13.0"
+        self.version = "1.13.0.dev"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
         colorama.init()
         if process_stream_data is False:
