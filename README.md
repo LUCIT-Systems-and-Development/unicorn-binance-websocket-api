@@ -120,6 +120,15 @@ for [ICINGA](https://exchange.icinga.com/bithon/check_unicorn_monitoring_api)/Na
 If you like the project, please [![star](https://s3.gifyu.com/images/stard237b3003af9f9a9.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/stargazers) it on 
 [GitHub](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)!
 
+## Live Demo
+This live demo script is streaming everything from binance.com, hosted on a small VPS (2vCPU, 2GB RAM).
+
+[Open live monitor!](https://ubwa-demo.lucit.co/print_summary.php)
+
+[![live-demo](https://ubwa-demo.lucit.co/ps.png)](https://ubwa-demo.lucit.co/print_summary.php)
+
+(Refresh update once a minute!)
+
 ## Installation and Upgrade
 If you run into errors during the installation take a look [here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Installation).
 
@@ -151,15 +160,6 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - ./environment.yml
 - ./requirements.txt
 - ./setup.py
-
-## Live Demo
-This live demo script is streaming everything from binance.com, hosted on a small VPS (2vCPU, 2GB RAM).
-
-[Open live monitor!](https://ubwa-demo.lucit.co/print_summary.php)
-
-[![live-demo](https://ubwa-demo.lucit.co/ps.png)](https://ubwa-demo.lucit.co/print_summary.php)
-
-(Refresh update once a minute!)
 
 ## Howto
 - [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
