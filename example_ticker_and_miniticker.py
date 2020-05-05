@@ -72,7 +72,7 @@ worker_thread.start()
 # create streams
 print("\r\n========================================== Starting ticker all ========================================\r\n")
 ticker_arr_stream_id = binance_websocket_api_manager.create_stream("arr", "!ticker")
-time.sleep(1)
+time.sleep(7)
 binance_websocket_api_manager.stop_stream(ticker_arr_stream_id)
 time.sleep(2)
 print("\r\n=========================================== Stopp ticker all ==========================================\r\n")
@@ -95,7 +95,7 @@ print("\r\n========================================== Starting miniTicker ======
 miniTicker_stream_id = binance_websocket_api_manager.create_stream("miniTicker", ['bnbbtc', 'ethbtc'])
 time.sleep(7)
 binance_websocket_api_manager.stop_stream(miniTicker_stream_id)
-time.sleep(7)
+time.sleep(2)
 print("\r\n============================================ Stop miniTicker==========================================\r\n")
 
 binance_websocket_api_manager.print_summary()

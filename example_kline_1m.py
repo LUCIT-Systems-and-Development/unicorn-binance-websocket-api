@@ -40,7 +40,7 @@ import time
 import os
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.ERROR,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
@@ -70,7 +70,7 @@ while True:
     if oldest_stream_data_from_stream_buffer is False:
         time.sleep(0.01)
     else:
-        oldest_stream_data_from_stream_buffer = UnicornFy.binance_websocket(oldest_stream_data_from_stream_buffer)
+        oldest_stream_data_from_stream_buffer = UnicornFy.binance_com_websocket(oldest_stream_data_from_stream_buffer)
         if oldest_stream_data_from_stream_buffer is not None:
             try:
                 if oldest_stream_data_from_stream_buffer['event_time'] >= \

@@ -42,7 +42,7 @@ import os
 from unicorn_binance_websocket_api_process_streams_without_output import BinanceWebSocketApiProcessStreams
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.ERROR,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
