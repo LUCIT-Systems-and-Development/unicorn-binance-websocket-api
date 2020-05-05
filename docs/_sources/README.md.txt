@@ -178,6 +178,9 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 ## Wiki
 [https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki)
 
+## Social
+- [Telegram](https://t.me/unicorndevs)
+
 ## Receive Notifications
 To receive notifications on available updates you can 
 [![watch](https://s3.gifyu.com/images/github_watch.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/watchers) 
