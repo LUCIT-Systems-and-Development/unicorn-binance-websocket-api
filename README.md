@@ -8,7 +8,7 @@
 
 # UNICORN Binance WebSocket API
 [Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#how-to) |
-[Documentation](#documentation) | [Change Log](#change-log) | [Wiki](#wiki) | 
+[Documentation](#documentation) | [Change Log](#change-log) | [Wiki](#wiki) | [Social](#social) | 
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
 [Contributing](#contributing)
 
