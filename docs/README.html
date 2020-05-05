@@ -170,6 +170,7 @@ you dont need to deal with asyncio in your code!</p></li>
 <li><p>Supports
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">subscriptions</a>/<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a>
 on all exchanges! (Maximum 1024 subscriptions per stream!)</p></li>
+<li><p>Support for multiple private <code class="docutils literal notranslate"><span class="pre">!userData</span></code> streams with different <code class="docutils literal notranslate"><span class="pre">api_key</span></code> and <code class="docutils literal notranslate"><span class="pre">api_secret</span></code>.</p></li>
 <li><p>If you can not store your data in cause of a temporary technical issue, you can kick back the data to the
 <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> which stores the receives in the RAM till you are able to process the data in the normal way again.
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py">Learn more!</a></p></li>
