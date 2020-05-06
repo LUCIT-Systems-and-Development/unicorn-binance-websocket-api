@@ -217,9 +217,7 @@ contribute follow
 [this guide](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CONTRIBUTING.md).
  
 ### Contributors
-<a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=oliver-zehentleitner/unicorn-binance-websocket-api" />
-</a>
+[![Contributors](https://contributors-img.web.app/image?repo=oliver-zehentleitner/unicorn-binance-websocket-api)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/graphs/contributors)
 
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
 
@@ -230,7 +228,7 @@ You don't have to be a developer to support this open source project. If you wan
 feel all warm and fuzzy inside from helping open source development, donations are very welcome. 
 
 ```
-BTC: 1BTftoHPWf7DztnUNWTVii1NpPFHXCvSyr
+BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
 LTC: LTyxxXocZo2rVUuYEkU4taqVQpA19iSfs3
 ETH: 0x724600d08cc2cd4ed408a8aeb021df259adf0aa5
 ```
