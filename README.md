@@ -223,7 +223,7 @@ contribute follow
 
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
 
-### Help me keep making awesome stuff 
+### Donate
 Develop open source software is not without cost though — it takes technical knowledge, time, and effort.
 
 You don't have to be a developer to support my open source work! If you want to receive personal support, or just feel all warm and fuzzy inside from helping open source development, donations are very welcome. 
