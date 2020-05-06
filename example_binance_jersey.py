@@ -57,9 +57,6 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 # create instance of BinanceWebSocketApiManager for Binance Jersey
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.je")
 
-print("starting monitoring api!")
-binance_websocket_api_manager.start_monitoring_api()
-
 # set api key and secret for userData stream
 binance_je_api_key = ""
 binance_je_api_secret = ""

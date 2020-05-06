@@ -58,9 +58,6 @@ logging.basicConfig(level=logging.DEBUG,
 # create instance of BinanceWebSocketApiManager for Binance Jersey
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us")
 
-print("starting monitoring api!")
-binance_websocket_api_manager.start_monitoring_api()
-
 # set api key and secret for userData stream
 binance_us_api_key = ""
 binance_us_api_secret = ""
