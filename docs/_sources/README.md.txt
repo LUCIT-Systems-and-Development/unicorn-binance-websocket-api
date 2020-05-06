@@ -223,6 +223,17 @@ contribute follow
 
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
 
+### Donate
+Develop open source software is not without cost though — it takes technical knowledge, time, and effort.
+
+You don't have to be a developer to support my open source work! If you want to receive personal support, or just feel all warm and fuzzy inside from helping open source development, donations are very welcome. 
+
+```
+BTC: 1BTftoHPWf7DztnUNWTVii1NpPFHXCvSyr
+LTC: LTyxxXocZo2rVUuYEkU4taqVQpA19iSfs3
+ETH: 0x724600d08cc2cd4ed408a8aeb021df259adf0aa5
+```
+
 ## You need a Python Dev?
 If you would like to [hire me](https://about.me/oliver-zehentleitner) for a Python project, you can book me through 
 my company [LUCIT](https://www.lucit.co/desktop-and-server-apps.html).
