@@ -66,6 +66,12 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             time.sleep(0.01)
 
 
+def print_stream(manager):
+    while True:
+        manager.print_summary(disable_print=True)
+        time.sleep(10)
+
+
 binance_api_key = ""
 binance_api_secret = ""
 
@@ -86,16 +92,22 @@ except requests.exceptions.ConnectionError:
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
 
+print_summary_thread = threading.Thread(target=print_stream, args=(binance_websocket_api_manager,))
+print_summary_thread.start()
+
 data = binance_rest_client.get_all_tickers()
 for item in data:
     markets.append(item['symbol'])
 
 binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
-binance_websocket_api_manager.create_stream(["!userData"], ["arr"])
+binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Alice userData stream")
+binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Bobs userData stream")
 
-binance_websocket_api_manager.create_stream(arr_channels, "arr")
+binance_websocket_api_manager.create_stream(arr_channels, "arr", label="arr channels")
 
 for channel in channels:
-    binance_websocket_api_manager.create_stream(channel, markets)
+    binance_websocket_api_manager.create_stream(channel, markets, label=channel)
+
+ubwa = binance_websocket_api_manager
 
 IPython.embed()

@@ -112,6 +112,15 @@ crypto API endpoints into well-formed python dictionaries.
 `get_stream_statistic()`, `get_stream_subscriptions()`, `replace_stream()`, `wait_till_stream_has_started()`, 
 `get_current_receiving_speed()`, `subscribe_to_stream()`, `unsubscribe_from_stream()` and many more, explore them 
 [here](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html).
+- Optimized for use with [iPython](https://ipython.org/)  
+```
+IPython (Interactive Python) is a command shell for interactive computing in multiple programming languages, originally 
+developed for the Python programming language, that offers introspection, rich media, shell syntax, tab completion, 
+and history.
+``` 
+Try this example for further information: [example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py)
+
+Hint: Use `labels` and work with `ubwa.get_stream_id_by_label("trade")`
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
 and a [check_command](https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api) 
 for [ICINGA](https://exchange.icinga.com/bithon/check_unicorn_monitoring_api)/Nagios 
