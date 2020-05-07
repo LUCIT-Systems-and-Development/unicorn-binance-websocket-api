@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_stream_everything.py
+# File: example_interactive_mode.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -34,6 +34,7 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+import IPython
 import logging
 import os
 import requests
@@ -97,6 +98,4 @@ binance_websocket_api_manager.create_stream(arr_channels, "arr")
 for channel in channels:
     binance_websocket_api_manager.create_stream(channel, markets)
 
-while True:
-    binance_websocket_api_manager.print_summary()
-    time.sleep(1)
+IPython.embed()
