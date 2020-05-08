@@ -34,7 +34,6 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
-import IPython
 import logging
 import os
 import requests
@@ -46,6 +45,12 @@ try:
     from binance.client import Client
 except ImportError:
     print("Please install `python-binance`! https://pypi.org/project/python-binance/#description")
+    sys.exit(1)
+
+try:
+    import IPython
+except ImportError:
+    print("Please install `jupyter`! https://ipython.org/")
     sys.exit(1)
 
 # https://docs.python.org/3/library/logging.html#logging-levels
