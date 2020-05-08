@@ -103,10 +103,10 @@ binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_ap
 binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Alice userData stream")
 binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Bobs userData stream")
 
-binance_websocket_api_manager.create_stream(arr_channels, "arr", label="arr channels")
+binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
 
 for channel in channels:
-    binance_websocket_api_manager.create_stream(channel, markets, label=channel)
+    binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
 
 ubwa = binance_websocket_api_manager
 

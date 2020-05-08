@@ -11,8 +11,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `manager.get_stream_label()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
 - `manager.get_stream_id_by_label()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
 - `manager.set_stream_label()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
-- added `label` to `manager.print_stream_info()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
-- added `label` to `manager.print_summary()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
+- added `stream_label` to `manager.print_stream_info()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
+- added `stream_label` to `manager.print_summary()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
 - `manager.help()`
 
 ## 1.13.0
