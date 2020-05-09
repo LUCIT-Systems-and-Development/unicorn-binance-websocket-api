@@ -2270,17 +2270,18 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
         thread_keepalive_streams.start()
         time.sleep(5)
-        while self.stop_manager_request is None:
-            if self._keepalive_streams_restart_request is True:
-                self._keepalive_streams_restart_request = None
-                thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
-                thread_keepalive_streams.start()
-            if self._frequent_checks_restart_request is True:
-                self._frequent_checks_restart_request = None
-                thread_frequent_checks = threading.Thread(target=self._frequent_checks)
-                thread_frequent_checks.start()
-            time.sleep(0.2)
-        sys.exit(0)
+        # TODO: better without??
+        #while self.stop_manager_request is None:
+        #    if self._keepalive_streams_restart_request is True:
+        #        self._keepalive_streams_restart_request = None
+        #        thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
+        #        thread_keepalive_streams.start()
+        #    if self._frequent_checks_restart_request is True:
+        #        self._frequent_checks_restart_request = None
+        #        thread_frequent_checks = threading.Thread(target=self._frequent_checks)
+        #        thread_frequent_checks.start()
+        #    time.sleep(0.2)
+        #sys.exit(0)
 
     def set_private_api_config(self, binance_api_key, binance_api_secret):
         """
