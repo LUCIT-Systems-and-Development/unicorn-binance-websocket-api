@@ -2248,7 +2248,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logging.info("BinanceWebSocketApiManager->restart_stream(" + str(self.stream_list[stream_id]['channels']) +
                      ", " + str(self.stream_list[stream_id]['markets']) + ")")
-        self.restart_requests[stream_id]['status'] = "restarted"
+        self.restart_requests[stream_id] = {'status': "restarted"}
         self.restart_requests[stream_id]['last_restart_time'] = time.time()
         self.stream_list[stream_id]['status'] = "restarting"
         self.stream_list[stream_id]['payload'] = []
