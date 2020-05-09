@@ -14,10 +14,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - added `stream_label` to `manager.print_stream_info()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
 - added `stream_label` to `manager.print_summary()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
 - `manager.help()`
-### Changed
-- moved some code for a stream restart from `_keepalive_streams()` to `restart_stream()`
 ### Fixed
 - reset the payloads of a stream at a stream restart
+- moved some code for a stream restart from `_keepalive_streams()` to `restart_stream()` which caused that the direct
+call of `restart_stream()` worked only inside of `_keepalive_streams()`
 
 ## 1.13.0
 ### Added
