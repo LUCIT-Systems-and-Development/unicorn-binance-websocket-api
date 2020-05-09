@@ -186,12 +186,15 @@ class BinanceWebSocketApiConnection(object):
                           "AttributeError - " + str(error_msg))
             try:
                 # Todo: Handle a recursive call
-                self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+                #self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
                 logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                               "AttributeError - close() - done!")
             except KeyError as error_msg:
                 logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                               "KeyError - " + str(error_msg))
+            except RuntimeWarning as error_msg:
+                logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
+                              "RuntimeWarning - " + str(error_msg))
         except websockets.exceptions.ConnectionClosed as error_msg:
             logging.critical("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                              "ConnectionClosed - " + str(error_msg))
