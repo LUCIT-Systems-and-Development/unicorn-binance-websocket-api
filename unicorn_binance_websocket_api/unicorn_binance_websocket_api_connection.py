@@ -132,12 +132,12 @@ class BinanceWebSocketApiConnection(object):
             sys.exit(1)
         except websockets.exceptions.InvalidStatusCode as error_msg:
             if "Status code not 101: 414" in str(error_msg):
-                # Todo: Obsolete since we use subscriptions via websocket.send()?
+                # Since we subscribe via websocket.send() and not with URI anymore, this is obsolete code I guess.
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg) +
-                                                                              " --> URI too long? ;)")
+                                                                              " --> URI too long?")
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                                 str(self.channels) + ", " + str(self.markets) + ")" + " - URI Too Long? To many "
-                                 "streams in one socket? ;) - " + str(error_msg))
+                                 str(self.channels) + ", " + str(self.markets) + ")" + " - URI Too Long? - "
+                                 + str(error_msg))
                 try:
                     self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
                 except KeyError:
@@ -185,9 +185,7 @@ class BinanceWebSocketApiConnection(object):
             logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                           "AttributeError - " + str(error_msg))
             try:
-                # Todo: Handle a recursive call
-                # TODO !!!!!!!!!!!!!!IMPORTAND!!!!!!!!!!!
-                # Test with Internet on/off an look whats happening in print_summary()
+                # TODO: Handle a recursive call
                 self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
                 logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                               "AttributeError - close() - done!")
