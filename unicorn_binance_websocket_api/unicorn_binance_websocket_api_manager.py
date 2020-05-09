@@ -474,9 +474,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                     # restart streams with requests
                     if self.restart_requests[stream_id]['status'] == "new":
                         self.restart_stream(stream_id)
-                        self.restart_requests[stream_id]['status'] = "restarted"
-                        self.restart_requests[stream_id]['last_restart_time'] = time.time()
-                        self.stream_list[stream_id]['status'] = "restarting"
                 except KeyError:
                     pass
             # control frequent_checks_threads for two cases:
@@ -2251,6 +2248,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logging.info("BinanceWebSocketApiManager->restart_stream(" + str(self.stream_list[stream_id]['channels']) +
                      ", " + str(self.stream_list[stream_id]['markets']) + ")")
+        self.restart_requests[stream_id]['status'] = "restarted"
+        self.restart_requests[stream_id]['last_restart_time'] = time.time()
+        self.stream_list[stream_id]['status'] = "restarting"
+        self.stream_list[stream_id]['payload'] = []
         loop = asyncio.new_event_loop()
         thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id,
                                                                            self.stream_list[stream_id]['channels'],
