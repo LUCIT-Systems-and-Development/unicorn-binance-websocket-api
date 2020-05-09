@@ -186,7 +186,9 @@ class BinanceWebSocketApiConnection(object):
                           "AttributeError - " + str(error_msg))
             try:
                 # Todo: Handle a recursive call
-                #self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
+                # TODO !!!!!!!!!!!!!!IMPORTAND!!!!!!!!!!!
+                # Test with Internet on/off an look whats happening in print_summary()
+                self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
                 logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                               "AttributeError - close() - done!")
             except KeyError as error_msg:
