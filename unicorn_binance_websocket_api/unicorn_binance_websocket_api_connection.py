@@ -33,6 +33,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
+from unicorn_binance_websocket_api.unicorn_binance_websocket_api_exceptions import *
 from websockets import connect
 import asyncio
 import copy
@@ -80,7 +81,7 @@ class BinanceWebSocketApiConnection(object):
                     pass
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(uri['msg']))
                 if self.handler_binance_websocket_api_manager.throw_exception_if_unrepairable:
-                    raise ValueError("stream_id " + str(self.stream_id) + ": " + str(uri['msg']))
+                    raise StreamRecoveryError("stream_id " + str(self.stream_id) + ": " + str(uri['msg']))
                 sys.exit(1)
         except KeyError:
             pass

@@ -33,6 +33,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
+
+from .unicorn_binance_websocket_api_exceptions import *
 from .unicorn_binance_websocket_api_socket import BinanceWebSocketApiSocket
 from .unicorn_binance_websocket_api_restclient import BinanceWebSocketApiRestclient
 from .unicorn_binance_websocket_api_restserver import BinanceWebSocketApiRestServer
@@ -157,9 +159,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.websocket_base_uri = "wss://testnet-dex.binance.org/api/"
         else:
             # Unknown Exchange
-            error_msg = "Unknown exchange '" + str(self.exchange) + "'"
+            error_msg = "Unknown exchange '" + str(self.exchange) + "'! Read the docs to see a list of supported " \
+                        "exchanges: https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_" \
+                        "binance_websocket_api.html#module-unicorn_binance_websocket_api.unicorn_binance_websocket_" \
+                        "api_manager"
             logging.critical(error_msg)
-            raise ValueError(error_msg)
+            raise UnknownExchange(error_msg)
         self.stop_manager_request = None
         #self._frequent_checks_restart_request = None
         #self._keepalive_streams_restart_request = None
@@ -2555,7 +2560,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logging.critical("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ") Info: " + str(error_msg))
             self.stream_is_crashing(stream_id, error_msg)
             if self.throw_exception_if_unrepairable:
-                raise ValueError("stream_id " + str(stream_id) + ": " + str(error_msg))
+                raise StreamRecoveryError("stream_id " + str(stream_id) + ": " + str(error_msg))
             return False
 
         for item in payload:
