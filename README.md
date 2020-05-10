@@ -228,10 +228,11 @@ contribute follow
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
 
 ### Donate
-Develop open source software is not without cost - it takes technical knowledge, time, and effort.
+Since you are probably a developer yourself, you will understand very well that the creation of open source software is 
+not free - it requires technical knowledge, a lot of time and also financial expenditure.
 
-You don't have to be a developer to support this open source project. If you want to receive personal support, or just 
-feel all warm and fuzzy inside from helping open source development, donations are very welcome. 
+If you would like to help me to dedicate the time and energy to this project, I would be very happy about a little 
+support!
 
 ```
 BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
