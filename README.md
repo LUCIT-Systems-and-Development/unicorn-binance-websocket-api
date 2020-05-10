@@ -116,6 +116,7 @@ crypto API endpoints into well-formed python dictionaries.
 "IPython (Interactive Python) is a command shell for interactive computing that offers introspection, 
 rich media, shell syntax, tab completion, and history." 
 ([example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py))
+![iPython](https://user-images.githubusercontent.com/47597331/81512834-fadac080-9323-11ea-85b0-1a9303355e51.png)
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
 and a [check_command](https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api) 
 for [ICINGA](https://exchange.icinga.com/bithon/check_unicorn_monitoring_api)/Nagios 
