@@ -15,8 +15,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - added `stream_label` to `manager.print_summary()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
 - `manager.help()`
 - `unicorn_binance_websocket_api_exceptions.py` with exception `StreamRecoveryError` and `UnknownExchange`
+- `fill_up_space_right()`
 ### Changed
 - raising `UnknownExchange` or `StreamRecoveryError` instead of `ValueError`
+- `fill_up_space()` to `fill_up_space_left()`
 ### Fixed
 - reset the payloads of a stream at a stream restart
 - moved some code for a stream restart from `_keepalive_streams()` to `restart_stream()` which caused that the direct
