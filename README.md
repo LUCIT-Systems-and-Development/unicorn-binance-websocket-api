@@ -112,7 +112,7 @@ crypto API endpoints into well-formed python dictionaries.
 `get_stream_statistic()`, `get_stream_subscriptions()`, `replace_stream()`, `wait_till_stream_has_started()`, 
 `get_current_receiving_speed()`, `subscribe_to_stream()`, `unsubscribe_from_stream()` and many more, explore them 
 [here](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html).
-- Optimized for use with [iPython](https://ipython.org/): 
+- Nice to use with [iPython](https://ipython.org/): 
 "IPython (Interactive Python) is a command shell for interactive computing that offers introspection, 
 rich media, shell syntax, tab completion, and history." 
 ([example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py))
