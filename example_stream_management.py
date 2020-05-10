@@ -38,9 +38,6 @@ import logging
 import time
 import os
 
-# import class to process stream data
-from unicorn_binance_websocket_api_process_streams_without_output import BinanceWebSocketApiProcessStreams
-
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(level=logging.ERROR,
                     filename=os.path.basename(__file__) + '.log',
@@ -48,7 +45,7 @@ logging.basicConfig(level=logging.ERROR,
                     style="{")
 
 # create instance of BinanceWebSocketApiManager and provide the function for stream processing
-binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
+binance_websocket_api_manager = BinanceWebSocketApiManager()
 
 # define some markets
 markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',

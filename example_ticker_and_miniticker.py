@@ -40,7 +40,7 @@ import threading
 import logging
 
 # import class to process stream data
-from unicorn_binance_websocket_api_process_streams import BinanceWebSocketApiProcessStreams
+from example_process_streams import BinanceWebSocketApiProcessStreams
 
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(level=logging.DEBUG,

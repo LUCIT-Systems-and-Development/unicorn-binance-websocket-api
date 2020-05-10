@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: unicorn_binance_websocket_api_process_streams_without_output.py
+# File: example_process_streams.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -33,11 +33,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from unicorn_fy import UnicornFy
 import logging
+import sys
+try:
+    from unicorn_fy.unicorn_fy import UnicornFy
+except ImportError:
+    print("Please install `unicorn-fy`! https://pypi.org/project/unicorn-fy/")
+    sys.exit(1)
 
 
-class BinanceWebSocketApiProcessStreams():
+class BinanceWebSocketApiProcessStreams(object):
     @staticmethod
     def process_stream_data(received_stream_data_json, exchange="binance.com"):
         #
@@ -57,6 +62,8 @@ class BinanceWebSocketApiProcessStreams():
             unicorn_fied_stream_data = UnicornFy.binance_com_websocket(received_stream_data_json)
         elif exchange == "binance.com-futures":
             unicorn_fied_stream_data = UnicornFy.binance_com_futures_websocket(received_stream_data_json)
+        elif exchange == "binance.com-margin":
+            unicorn_fied_stream_data = UnicornFy.binance_com_margin_websocket(received_stream_data_json)
         elif exchange == "binance.je":
             unicorn_fied_stream_data = UnicornFy.binance_je_websocket(received_stream_data_json)
         elif exchange == "binance.us":
@@ -83,50 +90,54 @@ class BinanceWebSocketApiProcessStreams():
             else:
                 BinanceWebSocketApiProcessStreams.anything_else(unicorn_fied_stream_data)
         except KeyError:
-            print("received_data: " + str(received_stream_data_json))
+            BinanceWebSocketApiProcessStreams.anything_else(unicorn_fied_stream_data)
         except TypeError:
             pass
 
     @staticmethod
     def aggtrade(stream_data):
         # print `aggTrade` data
-        pass
+        print(stream_data)
 
     @staticmethod
     def trade(stream_data):
         # print `trade` data
-        pass
+        print(stream_data)
 
     @staticmethod
     def kline(stream_data):
         # print `kline` data
-        pass
+        print(stream_data)
 
     @staticmethod
     def miniticker(stream_data):
         # print `miniTicker` data
-        pass
+        print(stream_data)
 
     @staticmethod
     def ticker(stream_data):
         # print `ticker` data
-        pass
+        print(stream_data)
 
     @staticmethod
     def depth(stream_data):
         # print `depth` data
-        pass
+        print(stream_data)
 
     @staticmethod
     def outboundAccountInfo(stream_data):
         # print `outboundAccountInfo` data from userData stream
-        pass
+        print(stream_data)
 
     @staticmethod
     def executionReport(stream_data):
         # print `executionReport` data from userData stream
-        pass
+        print(stream_data)
 
     @staticmethod
     def anything_else(stream_data):
-        pass
+        print(stream_data)
+
+
+if __name__ == "__main__":
+    print("Dont run this script, its for imports only!")

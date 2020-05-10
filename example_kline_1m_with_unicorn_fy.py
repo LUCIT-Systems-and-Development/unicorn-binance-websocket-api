@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_kline_1m.py
+# File: example_kline_1m_with_unicorn_fy.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -34,10 +34,16 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
-from unicorn_fy import UnicornFy
 import logging
+import sys
 import time
 import os
+try:
+    from unicorn_fy.unicorn_fy import UnicornFy
+except ImportError:
+    print("Please install `unicorn-fy`! https://pypi.org/project/unicorn-fy/")
+    sys.exit(1)
+
 
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(level=logging.ERROR,
