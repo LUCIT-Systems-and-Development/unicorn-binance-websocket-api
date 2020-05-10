@@ -109,10 +109,10 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param warn_on_update: set to `False` to disable the update warning
     :type warn_on_update: bool
     :param throw_exception_if_unrepairable: set to `True` to activate exceptions if a crashed stream is unrepairable
-                                            (invalid API key, exceeded subscription limit)
+                                            (invalid API key, exceeded subscription limit) or an unknown exchange is used
     :type throw_exception_if_unrepairable: bool
     :param print_summary_export_path: If you want to export the output of print_summary() to an image, please
-                                       provide a path like "/var/www/html/".
+                                       provide a path like "/var/www/html/"
     :type print_summary_export_path: str
     """
 
@@ -166,8 +166,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             logging.critical(error_msg)
             raise UnknownExchange(error_msg)
         self.stop_manager_request = None
-        #self._frequent_checks_restart_request = None
-        #self._keepalive_streams_restart_request = None
         self.all_subscriptions_number = 0
         self.api_key = False
         self.api_secret = False
@@ -304,18 +302,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                              'has_stopped': False}
         logging.info("BinanceWebSocketApiManager->_frequent_checks() new instance created with frequent_checks_id=" +
                      str(frequent_checks_id))
-        with self.frequent_checks_list_lock:
-            for frequent_checks_instance in self.frequent_checks_list:
-                if frequent_checks_instance != frequent_checks_id:
-                    try:
-                        if (self.keepalive_streams_list[frequent_checks_instance]['last_heartbeat'] + 3) > time.time():
-                            logging.info("BinanceWebSocketApiManager->_frequent_checks() found an other living instance, "
-                                         "stopping " + str(frequent_checks_id))
-                            sys.exit(1)
-                    except KeyError:
-                        logging.debug("BinanceWebSocketApiManager->_frequent_checks() - Info: KeyError "
-                                      "" + str(frequent_checks_id))
-
         # threaded loop for min 1 check per second
         while self.stop_manager_request is None and self.frequent_checks_list[frequent_checks_id]['stop_request'] \
                 is None:
@@ -347,7 +333,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                         total_most_stream_receives_next_to_last_timestamp += self.stream_list[stream_id]['receives_statistic_last_second']['entries'][next_to_last_timestamp]
                     except KeyError:
                         pass
-
                     # delete list entries older than `keep_max_received_last_second_entries`
                     # receives_statistic_last_second
                     delete_index = []
@@ -386,7 +371,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                             logging.debug("Catched RuntimeError: " + str(error_msg))
                     for timestamp_key in delete_index:
                         self.stream_list[stream_id]['transfer_rate_per_second']['bytes'].pop(timestamp_key, None)
-
             # set most_receives_per_second
             try:
                 if int(self.most_receives_per_second) < int(total_most_stream_receives_last_timestamp):
@@ -406,20 +390,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                               str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_to_"
                               "last_timestamp=" +
                               str(total_most_stream_receives_next_to_last_timestamp) + " error_msg=" + str(error_msg))
-
-            # control _keepalive_streams
-            # found_alive_keepalive_streams = False
-            # with self.keepalive_streams_list_lock:
-            #     for keepalive_streams_id in self.keepalive_streams_list:
-            #         try:
-            #             if (current_timestamp - self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat']) < 3:
-            #                 found_alive_keepalive_streams = True
-            #         except TypeError:
-            #             pass
-            # start a new one, if there isnt one
-            # if found_alive_keepalive_streams is False:
-            #    self._keepalive_streams_restart_request = True
-
             # send keepalive for `!userData` streams every 30 minutes
             if active_stream_list:
                 for stream_id in active_stream_list:
@@ -457,14 +427,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.info(
             "BinanceWebSocketApiManager->_keepalive_streams() new instance created with keepalive_streams_id=" +
             str(keepalive_streams_id))
-        with self.keepalive_streams_list_lock:
-            for keepalive_streams_instance in self.keepalive_streams_list:
-                if keepalive_streams_instance != keepalive_streams_id:
-                    if (self.keepalive_streams_list[keepalive_streams_instance]['last_heartbeat'] + 3) > time.time():
-                        logging.info(
-                            "BinanceWebSocketApiManager->_keepalive_streams() found an other living instance, "
-                            "stopping " + str(keepalive_streams_id))
-                        sys.exit(1)
         # threaded loop to restart crashed streams:
         while self.stop_manager_request is None and \
                 self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
@@ -476,27 +438,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 # find restarts that didnt work
                 try:
                     if self.restart_requests[stream_id]['status'] == "restarted" and \
-                            self.restart_requests[stream_id]['last_restart_time']+5 < time.time():
+                            self.restart_requests[stream_id]['last_restart_time']+6 < time.time():
                         self.restart_requests[stream_id]['status'] = "new"
                     # restart streams with requests
                     if self.restart_requests[stream_id]['status'] == "new":
                         self.restart_stream(stream_id)
                 except KeyError:
                     pass
-            # control frequent_checks_threads for two cases:
-            # 1) there should only be one! stop others if necessary:
-            # found_alive_frequent_checks = False
-            # current_timestamp = time.time()
-            # with self.frequent_checks_list_lock:
-            #    for frequent_checks_id in self.frequent_checks_list:
-            #        try:
-            #            if (current_timestamp - self.frequent_checks_list[frequent_checks_id]['last_heartbeat']) < 2:
-            #                found_alive_frequent_checks = True
-            #        except TypeError:
-            #            pass
-            # 2) start a new one, if there isnt one
-            # if found_alive_frequent_checks is False:
-            #    self._frequent_checks_restart_request = True
         sys.exit(0)
 
     def _start_monitoring_api_thread(self, host, port, warn_on_update):
@@ -2100,9 +2048,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             else:
                 stream_name = stream_id
             stream_rows += stream_row_color_prefix + str(stream_name) + stream_row_color_suffix + " |" + \
-                self.fill_up_space(14, self.get_stream_receives_last_second(stream_id)) + "|" + \
-                self.fill_up_space(13, stream_statistic['stream_receives_per_second'].__round__(2)) + "|" + \
-                self.fill_up_space(18, self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) \
+                self.fill_up_space(17, str(self.stream_list[stream_id]['stream_label'])) + "|" + \
+                self.fill_up_space(8, self.get_stream_receives_last_second(stream_id)) + "|" + \
+                self.fill_up_space(11, stream_statistic['stream_receives_per_second'].__round__(2)) + "|" + \
+                self.fill_up_space(8, self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) \
                 + "|" + stream_row_color_prefix + \
                 self.fill_up_space(8, len(self.stream_list[stream_id]['logged_reconnects'])) + \
                 stream_row_color_suffix + "\r\n "
@@ -2173,14 +2122,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                     str(binance_api_status_row) +
                     str(add_string) +
                     " ---------------------------------------------------------------------------------------------\r\n"
-                    "       stream_id / stream_label       | rec_last_sec | rec_per_sec | most_rec_per_sec | recon\r\n"
+                    "               stream_id              |   stream_label  |  last  |  average  |  most  | recon\r\n"
                     " ---------------------------------------------------------------------------------------------\r\n"
                     " " + str(stream_rows) +
                     "---------------------------------------------------------------------------------------------\r\n"
-                    " all_streams                          |" +
-                    self.fill_up_space(14, self.get_all_receives_last_second()) + "|" +
-                    self.fill_up_space(13, all_receives_per_second.__round__(2)) + "|" +
-                    self.fill_up_space(18, self.most_receives_per_second) + "|" +
+                    " all_streams                                            |" +
+                    self.fill_up_space(8, self.get_all_receives_last_second()) + "|" +
+                    self.fill_up_space(11, all_receives_per_second.__round__(2)) + "|" +
+                    self.fill_up_space(8, self.most_receives_per_second) + "|" +
                     self.fill_up_space(8, self.reconnects) + "\r\n"
                     "===============================================================================================\r\n"
                     )
@@ -2276,20 +2225,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread_frequent_checks.start()
         thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
         thread_keepalive_streams.start()
-
-        # TODO: better without??
-        #time.sleep(5)
-        #while self.stop_manager_request is None:
-        #    if self._keepalive_streams_restart_request is True:
-        #        self._keepalive_streams_restart_request = None
-        #        thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
-        #        thread_keepalive_streams.start()
-        #    if self._frequent_checks_restart_request is True:
-        #        self.f = None
-        #        thread_frequent_checks = threading.Thread(target=self._frequent_checks)
-        #        thread_frequent_checks.start()
-        #    time.sleep(0.2)
-        #sys.exit(0)
 
     def set_private_api_config(self, binance_api_key, binance_api_secret):
         """

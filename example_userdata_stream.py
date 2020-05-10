@@ -71,7 +71,8 @@ binance_us_api_key = ""
 binance_us_api_secret = ""
 
 # create instances of BinanceWebSocketApiManager
-binance_com_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
+binance_com_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com",
+                                                               throw_exception_if_unrepairable=True)
 binance_je_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.je")
 binance_us_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us")
 

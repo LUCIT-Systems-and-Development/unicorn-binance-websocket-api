@@ -95,7 +95,7 @@ binance_websocket_api_manager.create_stream(["!userData"], ["arr"])
 binance_websocket_api_manager.create_stream(arr_channels, "arr")
 
 for channel in channels:
-    binance_websocket_api_manager.create_stream(channel, markets)
+    binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
 
 while True:
     binance_websocket_api_manager.print_summary()
