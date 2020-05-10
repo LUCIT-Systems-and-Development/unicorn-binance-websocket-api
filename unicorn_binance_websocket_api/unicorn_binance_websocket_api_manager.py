@@ -161,8 +161,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             logging.critical(error_msg)
             raise ValueError(error_msg)
         self.stop_manager_request = None
-        self._frequent_checks_restart_request = None
-        self._keepalive_streams_restart_request = None
+        #self._frequent_checks_restart_request = None
+        #self._keepalive_streams_restart_request = None
         self.all_subscriptions_number = 0
         self.api_key = False
         self.api_secret = False
@@ -401,18 +401,20 @@ class BinanceWebSocketApiManager(threading.Thread):
                               str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_to_"
                               "last_timestamp=" +
                               str(total_most_stream_receives_next_to_last_timestamp) + " error_msg=" + str(error_msg))
+
             # control _keepalive_streams
-            found_alive_keepalive_streams = False
-            with self.keepalive_streams_list_lock:
-                for keepalive_streams_id in self.keepalive_streams_list:
-                    try:
-                        if (current_timestamp - self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat']) < 3:
-                            found_alive_keepalive_streams = True
-                    except TypeError:
-                        pass
+            # found_alive_keepalive_streams = False
+            # with self.keepalive_streams_list_lock:
+            #     for keepalive_streams_id in self.keepalive_streams_list:
+            #         try:
+            #             if (current_timestamp - self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat']) < 3:
+            #                 found_alive_keepalive_streams = True
+            #         except TypeError:
+            #             pass
             # start a new one, if there isnt one
-            if found_alive_keepalive_streams is False:
-                self._keepalive_streams_restart_request = True
+            # if found_alive_keepalive_streams is False:
+            #    self._keepalive_streams_restart_request = True
+
             # send keepalive for `!userData` streams every 30 minutes
             if active_stream_list:
                 for stream_id in active_stream_list:
@@ -478,18 +480,18 @@ class BinanceWebSocketApiManager(threading.Thread):
                     pass
             # control frequent_checks_threads for two cases:
             # 1) there should only be one! stop others if necessary:
-            found_alive_frequent_checks = False
-            current_timestamp = time.time()
-            with self.frequent_checks_list_lock:
-                for frequent_checks_id in self.frequent_checks_list:
-                    try:
-                        if (current_timestamp - self.frequent_checks_list[frequent_checks_id]['last_heartbeat']) < 2:
-                            found_alive_frequent_checks = True
-                    except TypeError:
-                        pass
+            # found_alive_frequent_checks = False
+            # current_timestamp = time.time()
+            # with self.frequent_checks_list_lock:
+            #    for frequent_checks_id in self.frequent_checks_list:
+            #        try:
+            #            if (current_timestamp - self.frequent_checks_list[frequent_checks_id]['last_heartbeat']) < 2:
+            #                found_alive_frequent_checks = True
+            #        except TypeError:
+            #            pass
             # 2) start a new one, if there isnt one
-            if found_alive_frequent_checks is False:
-                self._frequent_checks_restart_request = True
+            # if found_alive_frequent_checks is False:
+            #    self._frequent_checks_restart_request = True
         sys.exit(0)
 
     def _start_monitoring_api_thread(self, host, port, warn_on_update):
@@ -2269,15 +2271,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread_frequent_checks.start()
         thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
         thread_keepalive_streams.start()
-        time.sleep(5)
+
         # TODO: better without??
+        #time.sleep(5)
         #while self.stop_manager_request is None:
         #    if self._keepalive_streams_restart_request is True:
         #        self._keepalive_streams_restart_request = None
         #        thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
         #        thread_keepalive_streams.start()
         #    if self._frequent_checks_restart_request is True:
-        #        self._frequent_checks_restart_request = None
+        #        self.f = None
         #        thread_frequent_checks = threading.Thread(target=self._frequent_checks)
         #        thread_frequent_checks.start()
         #    time.sleep(0.2)
