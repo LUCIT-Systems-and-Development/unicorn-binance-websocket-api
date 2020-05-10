@@ -870,9 +870,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.debug("deleting " + str(stream_id) + " from stream_list")
         return self.stream_list.pop(stream_id, False)
 
-    def fill_up_space(self, demand_of_chars, string, filling=" "):
+    def fill_up_space_left(self, demand_of_chars, string, filling=" "):
         """
-        Add whitespaces to `string` to a length of `demand_of_chars`
+        Add whitespaces to `string` to a length of `demand_of_chars` on the left side
 
         :param demand_of_chars: how much chars does the string have to have?
         :type demand_of_chars: int
@@ -909,6 +909,26 @@ class BinanceWebSocketApiManager(threading.Thread):
             blanks_pre += filling
             if (len(blanks_pre) + len(blanks_post)) < demand_of_blanks:
                 blanks_post += filling
+        return blanks_pre + str(string) + blanks_post
+
+    def fill_up_space_right(self, demand_of_chars, string, filling=" "):
+        """
+        Add whitespaces to `string` to a length of `demand_of_chars` on the right side
+
+        :param demand_of_chars: how much chars does the string have to have?
+        :type demand_of_chars: int
+        :param string: the string that has to get filled up with spaces
+        :type string: str
+        :param filling: filling char (default: blank space)
+        :type filling: str
+        :return: the filled up string
+        """
+        blanks_pre = ""
+        blanks_post = ""
+        demand_of_blanks = demand_of_chars - len(str(string)) - 1
+        while len(blanks_post) < demand_of_blanks:
+            blanks_pre = filling
+            blanks_post += filling
         return blanks_pre + str(string) + blanks_post
 
     def get_active_stream_list(self):
@@ -2046,12 +2066,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             else:
                 stream_label = str(self.stream_list[stream_id]['stream_label'])
             stream_rows += stream_row_color_prefix + str(stream_id) + stream_row_color_suffix + " |" + \
-                self.fill_up_space_centered(18, stream_label) + "|" + \
-                self.fill_up_space(8, self.get_stream_receives_last_second(stream_id)) + "|" + \
-                self.fill_up_space(11, stream_statistic['stream_receives_per_second'].__round__(2)) + "|" + \
-                self.fill_up_space(8, self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) \
+                self.fill_up_space_right(17, stream_label) + "|" + \
+                self.fill_up_space_left(8, self.get_stream_receives_last_second(stream_id)) + "|" + \
+                self.fill_up_space_left(11, stream_statistic['stream_receives_per_second'].__round__(2)) + "|" + \
+                self.fill_up_space_left(8, self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) \
                 + "|" + stream_row_color_prefix + \
-                self.fill_up_space(8, len(self.stream_list[stream_id]['logged_reconnects'])) + \
+                self.fill_up_space_left(8, len(self.stream_list[stream_id]['logged_reconnects'])) + \
                 stream_row_color_suffix + "\r\n "
             if self.is_stop_request(stream_id) is True and self.stream_list[stream_id]['status'] == "running":
                 streams_with_stop_request += 1
@@ -2124,10 +2144,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " " + str(stream_rows) +
                     "---------------------------------------------------------------------------------------------\r\n"
                     " all_streams                                            |" +
-                    self.fill_up_space(8, self.get_all_receives_last_second()) + "|" +
-                    self.fill_up_space(11, all_receives_per_second.__round__(2)) + "|" +
-                    self.fill_up_space(8, self.most_receives_per_second) + "|" +
-                    self.fill_up_space(8, self.reconnects) + "\r\n"
+                    self.fill_up_space_left(8, self.get_all_receives_last_second()) + "|" +
+                    self.fill_up_space_left(11, all_receives_per_second.__round__(2)) + "|" +
+                    self.fill_up_space_left(8, self.most_receives_per_second) + "|" +
+                    self.fill_up_space_left(8, self.reconnects) + "\r\n"
                     "===============================================================================================\r\n"
                     )
                 if self.print_summary_export_path is not None:
