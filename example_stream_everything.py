@@ -90,7 +90,8 @@ for item in data:
     markets.append(item['symbol'])
 
 binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
-binance_websocket_api_manager.create_stream(["!userData"], ["arr"])
+binance_websocket_api_manager.create_stream(["!userData"], ["arr"], stream_label="Alice private Stream")
+binance_websocket_api_manager.create_stream(["!userData"], ["arr"], stream_label="Bobs UserData")
 
 binance_websocket_api_manager.create_stream(arr_channels, "arr")
 

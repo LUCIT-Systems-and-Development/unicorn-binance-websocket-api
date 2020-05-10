@@ -2039,16 +2039,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                 stream_row_color_prefix = "\033[1m\033[31m"
                 stream_row_color_suffix = "\033[0m"
             if self.stream_list[stream_id]['stream_label'] is not None:
-                if len(self.stream_list[stream_id]['stream_label']) > 33:
-                    stream_name = str(self.stream_list[stream_id]['stream_label'])[:33] + "..."
+                if len(self.stream_list[stream_id]['stream_label']) > 18:
+                    stream_label = str(self.stream_list[stream_id]['stream_label'])[:14] + "..."
                 else:
-                    stream_label_len = 4 + len(self.stream_list[stream_id]['stream_label'])
-                    space_for_stream_id = 36 - stream_label_len
-                    stream_name = str(stream_id)[:space_for_stream_id] + "... " + self.stream_list[stream_id]['stream_label']
+                    stream_label = str(self.stream_list[stream_id]['stream_label'])
             else:
-                stream_name = stream_id
-            stream_rows += stream_row_color_prefix + str(stream_name) + stream_row_color_suffix + " |" + \
-                self.fill_up_space(17, str(self.stream_list[stream_id]['stream_label'])) + "|" + \
+                stream_label = str(self.stream_list[stream_id]['stream_label'])
+            stream_rows += stream_row_color_prefix + str(stream_id) + stream_row_color_suffix + " |" + \
+                self.fill_up_space_centered(18, stream_label) + "|" + \
                 self.fill_up_space(8, self.get_stream_receives_last_second(stream_id)) + "|" + \
                 self.fill_up_space(11, stream_statistic['stream_receives_per_second'].__round__(2)) + "|" + \
                 self.fill_up_space(8, self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']) \
@@ -2080,7 +2078,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 stream_buffer_row += " stream_buffer_byte_size: " + str(self.get_stream_buffer_byte_size()) + \
                                      " (" + str(
                     self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")" + stream_row_color_suffix + "\r\n"
-
             if active_streams > 0:
                 active_streams_row = " \033[1m\033[32mactive_streams: " + str(active_streams) + "\033[0m\r\n"
             if restarting_streams > 0:
