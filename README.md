@@ -5,6 +5,9 @@
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel)](https://pypi.org/project/unicorn-binance-websocket-api/)
 [![Downloads](https://pepy.tech/badge/unicorn-binance-websocket-api)](https://pepy.tech/project/unicorn-binance-websocket-api)
 [![Telegram](https://img.shields.io/badge/chat-telegram-red.svg)](https://t.me/unicorndevs)
+[![Donations/week](http://img.shields.io/liberapay/receives/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
+[![Patrons](http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay")](https://liberapay.com/oliver-zehentleitner/donate)
+
 
 # UNICORN Binance WebSocket API
 [Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#how-to) |
@@ -235,12 +238,13 @@ not free - it requires technical knowledge, a lot of time and also financial exp
 
 If you would like to help me to dedicate my time and energy to this project, donations are very welcome.
 
+[![Donate using Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/oliver-zehentleitner/donate)
+
 ```
 BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
 LTC: LTyxxXocZo2rVUuYEkU4taqVQpA19iSfs3
 ETH: 0x724600d08cc2cd4ed408a8aeb021df259adf0aa5
 ```
-
 ## You need a Python Dev?
 If you would like to [hire me](https://about.me/oliver-zehentleitner) for a Python project, you can book me through 
 my company [LUCIT](https://www.lucit.co/desktop-and-server-apps.html).
