@@ -114,6 +114,9 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param print_summary_export_path: If you want to export the output of print_summary() to an image, please
                                        provide a path like "/var/www/html/"
     :type print_summary_export_path: str
+    :param restart_timeout: A stream restart must be successful within this time, otherwise a new restart will be
+                            initialized. Default is 6 seconds.
+    :type restart_timeout: int
     """
 
     def __init__(self,
@@ -121,7 +124,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                  exchange="binance.com",
                  warn_on_update=True,
                  throw_exception_if_unrepairable=False,
-                 print_summary_export_path=None):
+                 print_summary_export_path=None,
+                 restart_timeout=6):
         threading.Thread.__init__(self)
         self.version = "1.13.0.dev"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
@@ -197,6 +201,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.request_id = 0
         self.request_id_lock = threading.Lock()
         self.restart_requests = {}
+        self.restart_timeout = restart_timeout
         self.stream_buffer_lock = threading.Lock()
         self.start_time = time.time()
         self.stream_buffer = []
@@ -438,7 +443,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 # find restarts that didnt work
                 try:
                     if self.restart_requests[stream_id]['status'] == "restarted" and \
-                            self.restart_requests[stream_id]['last_restart_time']+6 < time.time():
+                            self.restart_requests[stream_id]['last_restart_time']+self.restart_timeout < time.time():
                         self.restart_requests[stream_id]['status'] = "new"
                     # restart streams with requests
                     if self.restart_requests[stream_id]['status'] == "new":
