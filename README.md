@@ -242,9 +242,9 @@ If you would like to help me to dedicate my time and energy to this project, don
 
 ```
 BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
-LTC: LYNzHMFUbee3siyHvNCPaCjqXxjyq8YRGJ
-ETH: 0x1C15857Bf1E18D122dDd1E536705748aa529fc9C
 DASH: XsRhBuPkXGF9WvifdpkVhTGSmVT4VcuQZ7
+ETH: 0x1C15857Bf1E18D122dDd1E536705748aa529fc9C
+LTC: LYNzHMFUbee3siyHvNCPaCjqXxjyq8YRGJ
 XMR: 85dzsTRh6GRPGVSJoUbFDwAf9uwwAdim1HFpiGshLeKHgj2hVqKtYVPXMZvudioLsuLS1AegkUiQ12jwReRwWcFvF7kDAbF
 ZEC: t1WvQMPJMriGWD9qkZGDdE9tTJaawvmsBie
 ```
