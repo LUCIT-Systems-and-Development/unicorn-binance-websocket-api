@@ -187,7 +187,8 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 [https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki)
 
 ## Social
-- [Telegram](https://t.me/unicorndevs)
+- [https://t.me/unicorndevs](https://t.me/unicorndevs)
+- [https://dev.binance.vision](https://dev.binance.vision)
 
 ## Receive Notifications
 To receive notifications on available updates you can 
@@ -232,8 +233,7 @@ We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
 Since you are probably a developer yourself, you will understand very well that the creation of open source software is 
 not free - it requires technical knowledge, a lot of time and also financial expenditure.
 
-If you would like to help me to dedicate the time and energy to this project, I would be very happy about a little 
-support!
+If you would like to help me to dedicate my time and energy to this project, donations are very welcome.
 
 ```
 BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
