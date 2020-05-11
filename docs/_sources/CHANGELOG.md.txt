@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `manager.help()`
 - `unicorn_binance_websocket_api_exceptions.py` with exception `StreamRecoveryError` and `UnknownExchange`
 - `fill_up_space_right()`
-- `self.restart_timeout()`
+- `self.restart_timeout`
 ### Changed
 - raising `UnknownExchange` or `StreamRecoveryError` instead of `ValueError`
 - `fill_up_space()` to `fill_up_space_left()`
