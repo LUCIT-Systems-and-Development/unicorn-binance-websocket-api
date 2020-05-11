@@ -29,7 +29,8 @@ version = ''
 # The full version, including alpha/beta/rc tags
 release = '1.14.0'
 
-html_last_updated_fmt = "true"
+html_last_updated_fmt = "2020-05-01, 10:22 UTC"
+
 # -- General configuration ---------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
