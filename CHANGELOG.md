@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.13.0.dev (development stage/unreleased/unstable)
+## 1.14.0.dev (development stage/unreleased/unstable)
+
+## 1.14.0
 ### Added
 - new parameter `stream_label` in `manager.create_stream()`[issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
 - `manager.get_stream_label()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)

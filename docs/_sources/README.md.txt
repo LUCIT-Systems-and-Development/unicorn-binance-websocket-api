@@ -5,6 +5,8 @@
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel)](https://pypi.org/project/unicorn-binance-websocket-api/)
 [![Downloads](https://pepy.tech/badge/unicorn-binance-websocket-api)](https://pepy.tech/project/unicorn-binance-websocket-api)
 [![Telegram](https://img.shields.io/badge/chat-telegram-red.svg)](https://t.me/unicorndevs)
+[![Donations/week](http://img.shields.io/liberapay/receives/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
+[![Patrons](http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay")](https://liberapay.com/oliver-zehentleitner/donate)
 
 # UNICORN Binance WebSocket API
 [Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#how-to) |
@@ -112,6 +114,11 @@ crypto API endpoints into well-formed python dictionaries.
 `get_stream_statistic()`, `get_stream_subscriptions()`, `replace_stream()`, `wait_till_stream_has_started()`, 
 `get_current_receiving_speed()`, `subscribe_to_stream()`, `unsubscribe_from_stream()` and many more, explore them 
 [here](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html).
+- Nice to use with [iPython](https://ipython.org/): 
+"IPython (Interactive Python) is a command shell for interactive computing that offers introspection, 
+rich media, shell syntax, tab completion, and history." 
+([example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py))
+![iPython](https://user-images.githubusercontent.com/47597331/81512834-fadac080-9323-11ea-85b0-1a9303355e51.png)
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
 and a [check_command](https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api) 
 for [ICINGA](https://exchange.icinga.com/bithon/check_unicorn_monitoring_api)/Nagios 
@@ -182,7 +189,8 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 [https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki)
 
 ## Social
-- [Telegram](https://t.me/unicorndevs)
+- [https://t.me/unicorndevs](https://t.me/unicorndevs)
+- [https://dev.binance.vision](https://dev.binance.vision)
 
 ## Receive Notifications
 To receive notifications on available updates you can 
@@ -224,17 +232,21 @@ contribute follow
 We ![love](https://s3.gifyu.com/images/heartae002231c41d8a80.png) open source!
 
 ### Donate
-Develop open source software is not without cost - it takes technical knowledge, time, and effort.
+Since you are probably a developer yourself, you will understand very well that the creation of open source software is 
+not free - it requires technical knowledge, a lot of time and also financial expenditure.
 
-You don't have to be a developer to support this open source project. If you want to receive personal support, or just 
-feel all warm and fuzzy inside from helping open source development, donations are very welcome. 
+If you would like to help me to dedicate my time and energy to this project, donations are very welcome.
+
+[![Donate using Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/oliver-zehentleitner/donate)
 
 ```
 BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
-LTC: LTyxxXocZo2rVUuYEkU4taqVQpA19iSfs3
-ETH: 0x724600d08cc2cd4ed408a8aeb021df259adf0aa5
+DASH: XsRhBuPkXGF9WvifdpkVhTGSmVT4VcuQZ7
+ETH: 0x1C15857Bf1E18D122dDd1E536705748aa529fc9C
+LTC: LYNzHMFUbee3siyHvNCPaCjqXxjyq8YRGJ
+XMR: 85dzsTRh6GRPGVSJoUbFDwAf9uwwAdim1HFpiGshLeKHgj2hVqKtYVPXMZvudioLsuLS1AegkUiQ12jwReRwWcFvF7kDAbF
+ZEC: t1WvQMPJMriGWD9qkZGDdE9tTJaawvmsBie
 ```
-
 ## You need a Python Dev?
 If you would like to [hire me](https://about.me/oliver-zehentleitner) for a Python project, you can book me through 
 my company [LUCIT](https://www.lucit.co/desktop-and-server-apps.html).
