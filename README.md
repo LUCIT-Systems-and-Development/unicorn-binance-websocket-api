@@ -242,8 +242,11 @@ If you would like to help me to dedicate my time and energy to this project, don
 
 ```
 BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
-LTC: LTyxxXocZo2rVUuYEkU4taqVQpA19iSfs3
-ETH: 0x724600d08cc2cd4ed408a8aeb021df259adf0aa5
+LTC: LYNzHMFUbee3siyHvNCPaCjqXxjyq8YRGJ
+ETH: 0x1C15857Bf1E18D122dDd1E536705748aa529fc9C
+DASH: XsRhBuPkXGF9WvifdpkVhTGSmVT4VcuQZ7
+XMR: 85dzsTRh6GRPGVSJoUbFDwAf9uwwAdim1HFpiGshLeKHgj2hVqKtYVPXMZvudioLsuLS1AegkUiQ12jwReRwWcFvF7kDAbF
+ZEC: t1WvQMPJMriGWD9qkZGDdE9tTJaawvmsBie
 ```
 ## You need a Python Dev?
 If you would like to [hire me](https://about.me/oliver-zehentleitner) for a Python project, you can book me through 
