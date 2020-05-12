@@ -5,7 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.13.0.dev (development stage/unreleased/unstable)
+## 1.14.0.dev (development stage/unreleased/unstable)
+
+## 1.14.0
+### Added
+- new parameter `stream_label` in `manager.create_stream()`[issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
+- `manager.get_stream_label()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
+- `manager.get_stream_id_by_label()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
+- `manager.set_stream_label()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
+- added `stream_label` to `manager.print_stream_info()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
+- added `stream_label` to `manager.print_summary()` [issue #60](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60)
+- `manager.help()`
+- `unicorn_binance_websocket_api_exceptions.py` with exception `StreamRecoveryError` and `UnknownExchange`
+- `fill_up_space_right()`
+- `self.restart_timeout`
+### Changed
+- raising `UnknownExchange` or `StreamRecoveryError` instead of `ValueError`
+- `fill_up_space()` to `fill_up_space_left()`
+### Fixed
+- reset the payloads of a stream at a stream restart
+- moved some code for a stream restart from `_keepalive_streams()` to `restart_stream()` which caused that the direct
+call of `restart_stream()` worked only inside of `_keepalive_streams()`
+- handling of `RuntimeWarning` in class connection at row 189
+### Removed
+- code to start new `_keepalive_streams()` and `_frequent_checks()` threads
 
 ## 1.13.0
 ### Added
@@ -28,7 +51,7 @@ https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f
     - `stop_stream_as_crash()`
 - `get_limit_of_subscriptions_per_stream()`
 - `get_number_of_free_subscription_slots()`
-- `BinanceWebSocketApiManager(throw_exception_if_unrepairable=True)` - raise `ValueError` if a stream is not repairable 
+- `BinanceWebSocketApiManager(throw_exception_if_unrepairable=True)` - raise `StreamRecoveryError` if a stream is not repairable 
 (invalid api-key format or exceeding the 1024 subscription limit)
 
 ### Changed
