@@ -2121,6 +2121,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          str(datetime.utcfromtimestamp(
                                              self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
                                          ")\r\n"
+            import os
+            import psutil
+            process = psutil.Process(os.getpid())
 
             try:
                 print_text = (
@@ -2155,7 +2158,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.fill_up_space_left(8, self.most_receives_per_second) + "|" +
                     self.fill_up_space_left(8, self.reconnects) + "\r\n"
                     "===============================================================================================\r\n"
-                    " threads: " + str(threading.active_count())
+                    " threads: " + str(threading.active_count()) +
+                    " memory: " + str(self.get_human_bytesize(process.memory_info()[0]))
+
                     )
                 if self.print_summary_export_path is not None:
                     # Todo:
