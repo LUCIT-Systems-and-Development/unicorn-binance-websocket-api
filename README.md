@@ -94,7 +94,6 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
     * [Binance JEX](https://www.jex.com) `BinanceWebSocketApiManager(exchange="jex.com")`
     * [Binance DEX](https://www.binance.org) `BinanceWebSocketApiManager(exchange="binance.org")`
     * [Binance DEX testnet](https://testnet.binance.org) `BinanceWebSocketApiManager(exchange="binance.org-testnet")`
-
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread, but 
 you dont need to deal with asyncio in your code!
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
@@ -102,6 +101,7 @@ you dont need to deal with asyncio in your code!
 - Supports 
 [subscriptions](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream)
 on all exchanges! (Maximum 1024 subscriptions per stream!)
+- [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) respects Binance's API guidelines and protects you from reconnects and a ban.
 - Support for multiple private `!userData` streams with different `api_key` and `api_secret`.
 - If you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
 `stream_buffer` which stores the receives in the RAM till you are able to process the data in the normal way again. 
