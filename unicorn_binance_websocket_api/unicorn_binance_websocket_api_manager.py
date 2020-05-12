@@ -2121,6 +2121,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          str(datetime.utcfromtimestamp(
                                              self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
                                          ")\r\n"
+
             try:
                 print_text = (
                     str(self.fill_up_space_centered(96, " unicorn-binance-websocket-api_" +
@@ -2154,6 +2155,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.fill_up_space_left(8, self.most_receives_per_second) + "|" +
                     self.fill_up_space_left(8, self.reconnects) + "\r\n"
                     "===============================================================================================\r\n"
+                    " threads: " + str(threading.active_count())
                     )
                 if self.print_summary_export_path is not None:
                     # Todo:
