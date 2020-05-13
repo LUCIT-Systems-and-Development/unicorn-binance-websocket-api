@@ -5,11 +5,8 @@ python:
   - "3.8"
 install:
   - pip install -r requirements.txt
-  - pip install pytest
-  - pip install pytest-cov
   - pip install coveralls
 script:
-  - python unittest_binance_manager.py
   - coverage run --source unicorn_binance_websocket_api unittest_binance_manager.py
 after_success:
   - coveralls
