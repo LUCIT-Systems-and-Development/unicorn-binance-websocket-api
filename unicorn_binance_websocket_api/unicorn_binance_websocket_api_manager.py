@@ -2169,8 +2169,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " total_receiving_speed: " + str(received_bytes_per_x_row) + "\r\n" +
                     " total_transmitted_payloads: " + str(self.total_transmitted) + "\r\n" +
                     str(binance_api_status_row) +
-                    " process_ressource_usage: threads=" + str(self.get_process_usage_threads()) + ", memory=" +
-                    str(self.get_process_usage_memory()) + ", cpu=" + str(self.get_process_usage_cpu()) + "%\r\n" +
+                    " process_ressource_usage: cpu=" + str(self.get_process_usage_cpu()) + "%, memory=" + str(self.get_process_usage_memory()) + ", threads=" + str(self.get_process_usage_threads()) + "\r\n" +
                     str(add_string) +
                     " ---------------------------------------------------------------------------------------------\r\n"
                     "               stream_id              |   stream_label  |  last  |  average  |  most  | recon\r\n"

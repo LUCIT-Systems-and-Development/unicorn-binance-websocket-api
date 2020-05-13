@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - Close WS only if open in connection class row 190 [issue #72](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/72)
 ### Removed
-- some code in connection row 206
+- some code in connection row 206 which is not needed anymore and is causing a coroutine error
 
 ## 1.14.0
 ### Added
