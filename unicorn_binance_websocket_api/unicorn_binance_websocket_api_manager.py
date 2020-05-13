@@ -714,7 +714,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 markets_new.append(market)
             else:
                 if self.is_exchange_type('dex'):
-                    if self.stream_list[stream_id]['dex_user_address'] is False:
+                    if re.match(r'[a-zA-Z0-9]{41,43}', market) is None:
                         markets_new.append(str(market).upper())
                     else:
                         markets_new.append(str(market))
