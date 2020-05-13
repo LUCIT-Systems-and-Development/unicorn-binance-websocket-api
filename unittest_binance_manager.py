@@ -260,9 +260,9 @@ class TestBinanceOrgManager(unittest.TestCase):
                                                                         ['orders', 'transfers', 'accounts'],
                                                                         'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
         self.assertEqual(str(payload),
-                         "[{'method': 'subscribe', 'topic': 'orders', 'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}, "
-                         "{'method': 'subscribe', 'topic': 'transfers', 'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}, "
-                         "{'method': 'subscribe', 'topic': 'accounts', 'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}]")
+                         "[{'method': 'subscribe', 'topic': 'orders', 'address': 'BNB1V566F3AVL2UD5Z0JEPAZSRGUZKJ367SNLX4JM6'}, "
+                         "{'method': 'subscribe', 'topic': 'transfers', 'address': 'BNB1V566F3AVL2UD5Z0JEPAZSRGUZKJ367SNLX4JM6'}, "
+                         "{'method': 'subscribe', 'topic': 'accounts', 'address': 'BNB1V566F3AVL2UD5Z0JEPAZSRGUZKJ367SNLX4JM6'}]")
 
     def test_create_misc_single_org_subscribe(self):
         stream_id = self.binance_org_websocket_api_manager.create_stream(["trades"], ["RAVEN-F66_BNB"])
