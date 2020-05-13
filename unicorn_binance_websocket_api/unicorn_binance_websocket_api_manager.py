@@ -714,7 +714,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 markets_new.append(market)
             else:
                 if self.is_exchange_type('dex'):
-                    markets_new.append(str(market).upper())
+                    if self.stream_list[stream_id]['dex_user_address'] is False:
+                        markets_new.append(str(market).upper())
+                    else:
+                        markets_new.append(str(market))
                 elif self.is_exchange_type('cex'):
                     markets_new.append(str(market).lower())
         logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets_new) + ", "
