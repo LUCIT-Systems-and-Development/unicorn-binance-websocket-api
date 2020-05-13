@@ -112,8 +112,11 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param throw_exception_if_unrepairable: set to `True` to activate exceptions if a crashed stream is unrepairable
                                             (invalid API key, exceeded subscription limit) or an unknown exchange is used
     :type throw_exception_if_unrepairable: bool
-    :param print_summary_export_path: If you want to export the output of print_summary() to an image, please
-                                       provide a path like "/var/www/html/"
+    :param print_summary_export_path: *LINUX ONLY* If you want to export the output of print_summary() to an image,
+                                      please provide a path like "/var/www/html/" View:
+                                      https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F
+                                      It should not be hard to make it OS independend:
+                                      https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61
     :type print_summary_export_path: str
     :param restart_timeout: A stream restart must be successful within this time, otherwise a new restart will be
                             initialized. Default is 6 seconds.
