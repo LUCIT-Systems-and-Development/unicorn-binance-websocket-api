@@ -10,6 +10,6 @@ install:
   - pip install coveralls
 script:
   - python unittest_binance_manager.py
-  - pytest --cov=unicorn_binance_websocket_api/
+  - coverage run --source unicorn_binance_websocket_api unittest_binance_manager.py
 after_success:
   - coveralls
