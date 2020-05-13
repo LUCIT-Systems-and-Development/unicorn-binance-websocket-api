@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `get_process_usage_threads()`
 ### Fixed
 - Close WS only if open in connection class row 190 [issue #72](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/72)
+### Removed
+- some code in connection row 206
 
 ## 1.14.0
 ### Added
