@@ -7,6 +7,7 @@ dependencies:
   - flask
   - flask_restful
   - pathlib
+  - psutil
   - requests
   - ujson
   - websocket-client

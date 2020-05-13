@@ -48,6 +48,7 @@ import copy
 import logging
 import os
 import platform
+import psutil
 import re
 import requests
 import sys
@@ -312,7 +313,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 is None:
             with self.frequent_checks_list_lock:
                 self.frequent_checks_list[frequent_checks_id]['last_heartbeat'] = time.time()
-            time.sleep(0.8)
+            time.sleep(0.1)
             current_timestamp = int(time.time())
             last_timestamp = current_timestamp - 1
             next_to_last_timestamp = current_timestamp - 2
@@ -1421,8 +1422,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             result['return_code'] = 1
             result['status_msg'] = " Restart rate per stream last hour: " + \
                                    str(result['highest_restart_per_stream_last_hour'])
-
-        # Perfdata
         result['average_receives_per_second'] = ((self.total_receives - self.monitoring_total_receives) /
                                                  time_period).__round__(2)
         result['average_speed_per_second'] = (((self.total_received_bytes - self.monitoring_total_received_bytes) /
@@ -1437,6 +1436,34 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.last_monitoring_check = result['timestamp']
         result['uptime'] = ((result['timestamp'] - self.start_time) / (60*60*24)).__round__(3)
         return result
+
+    def get_process_usage_memory(self):
+        """
+        Get the used memory of this process
+
+        :return: str
+        """
+        process = psutil.Process(os.getpid())
+        memory = self.get_human_bytesize(process.memory_info()[0])
+        return memory
+
+    def get_process_usage_cpu(self):
+        """
+        Get the used cpu power of this process
+
+        :return: int
+        """
+        cpu = psutil.cpu_percent(interval=None)
+        return cpu
+
+    def get_process_usage_threads(self):
+        """
+        Get the amount of threads that this process is using
+
+        :return: int
+        """
+        threads = threading.active_count()
+        return threads
 
     def get_reconnects(self):
         """
@@ -2121,10 +2148,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          str(datetime.utcfromtimestamp(
                                              self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
                                          ")\r\n"
-            import os
-            import psutil
-            process = psutil.Process(os.getpid())
-
             try:
                 print_text = (
                     str(self.fill_up_space_centered(96, " unicorn-binance-websocket-api_" +
@@ -2146,6 +2169,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " total_receiving_speed: " + str(received_bytes_per_x_row) + "\r\n" +
                     " total_transmitted_payloads: " + str(self.total_transmitted) + "\r\n" +
                     str(binance_api_status_row) +
+                    " process_ressource_usage: threads=" + str(self.get_process_usage_threads()) + ", memory=" +
+                    str(self.get_process_usage_memory()) + ", cpu=" + str(self.get_process_usage_cpu()) + "%\r\n" +
                     str(add_string) +
                     " ---------------------------------------------------------------------------------------------\r\n"
                     "               stream_id              |   stream_label  |  last  |  average  |  most  | recon\r\n"
@@ -2156,12 +2181,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.fill_up_space_left(8, self.get_all_receives_last_second()) + "|" +
                     self.fill_up_space_left(11, all_receives_per_second.__round__(2)) + "|" +
                     self.fill_up_space_left(8, self.most_receives_per_second) + "|" +
-                    self.fill_up_space_left(8, self.reconnects) + "\r\n"
-                    "===============================================================================================\r\n"
-                    " threads: " + str(threading.active_count()) +
-                    " memory: " + str(self.get_human_bytesize(process.memory_info()[0]))
-
-                    )
+                    self.fill_up_space_left(8, self.reconnects) + "\r\n" +
+                    "==============================================================================================\r\n"
+                )
                 if self.print_summary_export_path is not None:
                     # Todo:
                     # 1. Handle paths right

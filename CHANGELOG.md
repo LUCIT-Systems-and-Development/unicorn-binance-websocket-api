@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.14.0.dev (development stage/unreleased/unstable)
+### Added 
+- psutil (new requirement)
+- exception handling of `websockets.exceptions.InvalidMessage` [issue #72](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/72)
+- general exception handling
+- show threads, memory and cpu usage in `print_summary()`
+- `get_process_usage_memory()`
+- `get_process_usage_cpu()`
+- `get_process_usage_threads()`
+### Fixed
+- Close WS only if open in connection class row 190 [issue #72](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/72)
 
 ## 1.14.0
 ### Added
