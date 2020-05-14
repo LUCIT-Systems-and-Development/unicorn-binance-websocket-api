@@ -1866,29 +1866,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return True
 
-    def is_websocket_uri_length_valid(self, channels, markets):
-        """
-        Is the websocket URI length valid?
-
-        *** OBSOLETE SINCE SUBSCRIPTIONS ARE SEND VIA `send()` THROUGH THE WEBSOCKET!!! ***
-
-        The length is always valid because subscriptions are not handled via URI anymore.
-
-        To keep it compatible this method returns always `True` from now on!
-
-        Reason why we used this in the past:
-        A test with https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/test_max_websocket_uri_length.py
-        indicates that the allowed max length of an URI to binance websocket server is 8004 characters.
-
-        :param channels: provide the channels to create the URI
-        :type channels: str, tuple, list, set
-        :param markets: provide the markets to create the URI
-        :type markets: str, tuple, list, set
-        :return: True
-        """
-        logging.info("is_websocket_uri_length_valid() is obsolete! DONT USE IT ANYMORE!")
-        return True
-
     def pop_stream_data_from_stream_buffer(self):
         """
         Get oldest entry from stream_buffer and remove from stack (FIFO stack)
