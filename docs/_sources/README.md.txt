@@ -1,10 +1,12 @@
 [![GitHub release](https://img.shields.io/github/release/oliver-zehentleitner/unicorn-binance-websocket-api.svg)](https://pypi.org/project/unicorn-binance-websocket-api/)
 [![GitHub](https://img.shields.io/github/license/oliver-zehentleitner/unicorn-binance-websocket-api.svg?color=blue)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/LICENSE)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg)](https://www.python.org/downloads/)
+[![Downloads](https://pepy.tech/badge/unicorn-binance-websocket-api)](https://pepy.tech/project/unicorn-binance-websocket-api)
 [![PyPI - Status](https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues)
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel)](https://pypi.org/project/unicorn-binance-websocket-api/)
-[![Downloads](https://pepy.tech/badge/unicorn-binance-websocket-api)](https://pepy.tech/project/unicorn-binance-websocket-api)
-[![Telegram](https://img.shields.io/badge/chat-telegram-red.svg)](https://t.me/unicorndevs)
+[![Build Status](https://travis-ci.com/oliver-zehentleitner/unicorn-binance-websocket-api.svg?branch=master)](https://travis-ci.com/oliver-zehentleitner/unicorn-binance-websocket-api)
+[![Coverage Status](https://coveralls.io/repos/github/oliver-zehentleitner/unicorn-binance-websocket-api/badge.svg?branch=master)](https://coveralls.io/github/oliver-zehentleitner/unicorn-binance-websocket-api?branch=master)
+[![Telegram](https://img.shields.io/badge/chat-telegram-yellow.svg)](https://t.me/unicorndevs)
 [![Donations/week](http://img.shields.io/liberapay/receives/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
 [![Patrons](http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay")](https://liberapay.com/oliver-zehentleitner/donate)
 
@@ -96,7 +98,6 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
     * [Binance JEX](https://www.jex.com) `BinanceWebSocketApiManager(exchange="jex.com")`
     * [Binance DEX](https://www.binance.org) `BinanceWebSocketApiManager(exchange="binance.org")`
     * [Binance DEX testnet](https://testnet.binance.org) `BinanceWebSocketApiManager(exchange="binance.org-testnet")`
-
 - Streams are processing asynchronous/concurrent (python asyncio) and each stream is started in a separate thread, but 
 you dont need to deal with asyncio in your code!
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
@@ -104,6 +105,7 @@ you dont need to deal with asyncio in your code!
 - Supports 
 [subscriptions](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream)
 on all exchanges! (Maximum 1024 subscriptions per stream!)
+- [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) respects Binance's API guidelines and protects you from reconnects and a ban.
 - Support for multiple private `!userData` streams with different `api_key` and `api_secret`.
 - If you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
 `stream_buffer` which stores the receives in the RAM till you are able to process the data in the normal way again. 
