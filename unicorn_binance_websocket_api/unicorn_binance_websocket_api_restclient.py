@@ -134,12 +134,6 @@ class BinanceWebSocketApiRestclient(object):
                              "or you are going to get banned! Read this: https://github.com/binance-exchange/binance-"
                              "official-api-sphinx/blob/master/rest-api.md#limits")
 
-        # Todo: Obsolete?
-        #try:
-        #    respond = request_handler.json()
-        #except simplejson.errors.JSONDecodeError as error_msg:
-        #    logging.critical(str(error_msg))
-        #    return False
         respond = request_handler.json()
 
         self.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
