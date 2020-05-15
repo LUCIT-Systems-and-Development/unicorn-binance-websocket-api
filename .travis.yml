@@ -10,3 +10,5 @@ script:
   - coverage run --source unicorn_binance_websocket_api unittest_binance_websocket_api.py
 after_success:
   - coveralls
+after_script:
+  - bash ./telegram_notification.sh
