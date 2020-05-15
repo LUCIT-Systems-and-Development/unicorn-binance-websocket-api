@@ -2169,7 +2169,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except ZeroDivisionError:
             pass
 
-    def print_summary_to_png(self, print_summary_export_path):
+    def print_summary_to_png(self, print_summary_export_path, hight_per_row=12.5):
         """
         Create a PNG image file with the console output of `print_summary()`
 
@@ -2179,6 +2179,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                           It should not be hard to make it OS independend:
                                           https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61
         :type print_summary_export_path: str
+        :param hight_per_row: set the hight per row for the image hight calculation
+        :type hight_per_row: int
         :return: bool
         """
         print_text = self.print_summary(disable_print=True)
@@ -2188,7 +2190,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         with open(print_summary_export_path + "print_summary.txt", 'w') as text_file:
             print(self.remove_ansi_escape_codes(print_text), file=text_file)
             try:
-                image_hight = print_text.count("\n") * 12.5 + 15
+                image_hight = print_text.count("\n") * hight_per_row + 15
             except AttributeError:
                 return False
         os.system('convert -size 720x' + str(image_hight) + ' xc:black -font "FreeMono" -pointsize 12 -fill white -annotate '
