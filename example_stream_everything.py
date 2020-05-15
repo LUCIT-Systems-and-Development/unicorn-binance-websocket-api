@@ -100,5 +100,5 @@ for channel in channels:
 
 while True:
     binance_websocket_api_manager.print_summary()
-    binance_websocket_api_manager.print_summary_to_png("/home/oliver/")
-    time.sleep(2)
+    #binance_websocket_api_manager.print_summary_to_png("/var/www/html/")
+    time.sleep(1)
