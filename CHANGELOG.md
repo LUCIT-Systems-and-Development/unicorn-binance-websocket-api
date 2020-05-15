@@ -14,10 +14,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `get_process_usage_memory()`
 - `get_process_usage_cpu()`
 - `get_process_usage_threads()`
+- `print_summary_to_png()`
+- dynamic hight for `print_summary_to_ping()` image [issue #63](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/63)
 ### Fixed
 - Close WS only if open in connection class row 190 [issue #72](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/72)
 ### Removed
 - some code in connection row 206 which is not needed anymore and is causing a coroutine error
+- `print_summary_export_path` from class parameters
 
 ## 1.14.0
 ### Added

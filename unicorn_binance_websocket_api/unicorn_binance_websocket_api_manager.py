@@ -112,12 +112,6 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param throw_exception_if_unrepairable: set to `True` to activate exceptions if a crashed stream is unrepairable
                                             (invalid API key, exceeded subscription limit) or an unknown exchange is used
     :type throw_exception_if_unrepairable: bool
-    :param print_summary_export_path: *LINUX ONLY* If you want to export the output of print_summary() to an image,
-                                      please provide a path like "/var/www/html/" View:
-                                      https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F
-                                      It should not be hard to make it OS independend:
-                                      https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61
-    :type print_summary_export_path: str
     :param restart_timeout: A stream restart must be successful within this time, otherwise a new restart will be
                             initialized. Default is 6 seconds.
     :type restart_timeout: int
@@ -128,7 +122,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                  exchange="binance.com",
                  warn_on_update=True,
                  throw_exception_if_unrepairable=False,
-                 print_summary_export_path=None,
                  restart_timeout=6):
         threading.Thread.__init__(self)
         self.version = "1.14.0.dev"
@@ -199,7 +192,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.monitoring_api_server = False
         self.monitoring_total_received_bytes = 0
         self.monitoring_total_receives = 0
-        self.print_summary_export_path = print_summary_export_path
         self.reconnects = 0
         self.reconnects_lock = threading.Lock()
         self.request_id = 0
@@ -2187,20 +2179,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.fill_up_space_left(11, all_receives_per_second.__round__(2)) + "|" +
                     self.fill_up_space_left(8, self.most_receives_per_second) + "|" +
                     self.fill_up_space_left(8, self.reconnects) + "\r\n" +
-                    "==============================================================================================\r\n"
+                    "===============================================================================================\r\n"
                 )
-                if self.print_summary_export_path is not None:
-                    # Todo:
-                    # 1. Handle paths right
-                    # 2. Use PythonMagick instead of Linux ImageMagick
-                    with open(self.print_summary_export_path + "print_summary.txt", 'w') as text_file:
-                        print(self.remove_ansi_escape_codes(print_text), file=text_file)
-                    os.system('convert -size 725x630 xc:black -font "FreeMono" -pointsize 12 -fill white -annotate '
-                              '+30+30 "@' + self.print_summary_export_path + 'print_summary.txt' + '" ' +
-                              self.print_summary_export_path + 'print_summary_plain.png')
-                    os.system('convert ' + self.print_summary_export_path + 'print_summary_plain.png -font "FreeMono" '
-                              '-pointsize 12 -fill red -undercolor \'#00000080\' -gravity North -annotate +0+5 '
-                              '"$(date)" ' + self.print_summary_export_path + 'print_summary.png')
                 if disable_print:
                     if sys.platform.startswith('Windows'):
                         print_text = self.remove_ansi_escape_codes(print_text)
@@ -2211,6 +2191,32 @@ class BinanceWebSocketApiManager(threading.Thread):
                 pass
         except ZeroDivisionError:
             pass
+
+    def print_summary_to_png(self, print_summary_export_path):
+        """
+        Create a PNG image file with the console output of `print_summary()`
+
+        :param print_summary_export_path: *LINUX ONLY* If you want to export the output of print_summary() to an image,
+                                          please provide a path like "/var/www/html/" View:
+                                          https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F
+                                          It should not be hard to make it OS independend:
+                                          https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61
+        :type print_summary_export_path: str
+        :return:
+        """
+        print_text = self.print_summary(disable_print=True)
+        # Todo:
+        # 1. Handle paths right
+        # 2. Use PythonMagick instead of Linux ImageMagick
+        with open(print_summary_export_path + "print_summary.txt", 'w') as text_file:
+            print(self.remove_ansi_escape_codes(print_text), file=text_file)
+            image_hight = print_text.count("\n") * 12.5 + 15
+        os.system('convert -size 720x' + str(image_hight) + ' xc:black -font "FreeMono" -pointsize 12 -fill white -annotate '
+                  '+30+30 "@' + print_summary_export_path + 'print_summary.txt' + '" ' +
+                  print_summary_export_path + 'print_summary_plain.png')
+        os.system('convert ' + print_summary_export_path + 'print_summary_plain.png -font "FreeMono" '
+                  '-pointsize 12 -fill red -undercolor \'#00000080\' -gravity North -annotate +0+5 '
+                  '"$(date)" ' + print_summary_export_path + 'print_summary.png')
 
     @staticmethod
     def remove_ansi_escape_codes(text):
