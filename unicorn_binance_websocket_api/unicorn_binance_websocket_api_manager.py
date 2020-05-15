@@ -2173,11 +2173,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Create a PNG image file with the console output of `print_summary()`
 
-        :param print_summary_export_path: *LINUX ONLY* If you want to export the output of print_summary() to an image,
+        *LINUX ONLY* It should not be hard to make it OS independend:
+        https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61
+
+        :param print_summary_export_path: If you want to export the output of print_summary() to an image,
                                           please provide a path like "/var/www/html/" View:
                                           https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F
-                                          It should not be hard to make it OS independend:
-                                          https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61
         :type print_summary_export_path: str
         :param hight_per_row: set the hight per row for the image hight calculation
         :type hight_per_row: int
