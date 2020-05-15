@@ -2203,6 +2203,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param text: str
         :return:
         """
+        test = str(text)
         text = text.replace("\033[1m\033[31m", "")
         text = text.replace("\033[1m\033[32m", "")
         text = text.replace("\033[1m\033[33m", "")
