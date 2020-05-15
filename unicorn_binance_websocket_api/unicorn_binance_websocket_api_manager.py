@@ -2179,7 +2179,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                           It should not be hard to make it OS independend:
                                           https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61
         :type print_summary_export_path: str
-        :return:
+        :return: bool
         """
         print_text = self.print_summary(disable_print=True)
         # Todo:
@@ -2187,13 +2187,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         # 2. Use PythonMagick instead of Linux ImageMagick
         with open(print_summary_export_path + "print_summary.txt", 'w') as text_file:
             print(self.remove_ansi_escape_codes(print_text), file=text_file)
-            image_hight = print_text.count("\n") * 12.5 + 15
+            try:
+                image_hight = print_text.count("\n") * 12.5 + 15
+            except AttributeError:
+                return False
         os.system('convert -size 720x' + str(image_hight) + ' xc:black -font "FreeMono" -pointsize 12 -fill white -annotate '
                   '+30+30 "@' + print_summary_export_path + 'print_summary.txt' + '" ' +
                   print_summary_export_path + 'print_summary_plain.png')
         os.system('convert ' + print_summary_export_path + 'print_summary_plain.png -font "FreeMono" '
                   '-pointsize 12 -fill red -undercolor \'#00000080\' -gravity North -annotate +0+5 '
                   '"$(date)" ' + print_summary_export_path + 'print_summary.png')
+        return True
 
     @staticmethod
     def remove_ansi_escape_codes(text):
