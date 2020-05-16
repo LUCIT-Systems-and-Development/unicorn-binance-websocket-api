@@ -13,4 +13,4 @@ script:
 after_success:
   - coveralls
 after_script:
-  - bash ./telegram_notification.sh
+  - bash ./tools/travis_telegram_notification.sh
