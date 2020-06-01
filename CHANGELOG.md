@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `get_process_usage_threads()`
 ### Fixed
 - Close WS only if open in connection class row 190 [issue #72](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/72)
+- Enshure that during a restart, only the recent thread is able to send the payload for subscription
 ### Removed
 - some code in connection row 206 which is not needed anymore and is causing a coroutine error
 - `is_websocket_uri_length_valid()`

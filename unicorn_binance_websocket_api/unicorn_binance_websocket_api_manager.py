@@ -236,6 +236,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                  'receives_statistic_last_second_lock': threading.Lock()}
         self.stream_list[stream_id] = {'exchange': self.exchange,
                                        'stream_id': copy.deepcopy(stream_id),
+                                       'recent_socket_id': None,
                                        'channels': copy.deepcopy(channels),
                                        'markets': copy.deepcopy(markets),
                                        'stream_label': copy.deepcopy(stream_label),

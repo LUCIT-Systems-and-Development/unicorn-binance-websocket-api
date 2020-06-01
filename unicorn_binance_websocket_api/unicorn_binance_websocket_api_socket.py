@@ -39,6 +39,7 @@ import ujson as json
 import logging
 import sys
 import time
+import uuid
 import websockets
 
 
@@ -48,6 +49,8 @@ class BinanceWebSocketApiSocket(object):
         self.stream_id = stream_id
         self.channels = channels
         self.markets = markets
+        self.socket_id = uuid.uuid4()
+        self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] = self.socket_id
 
     async def start_socket(self):
         logging.debug("BinanceWebSocketApiSocket->start_socket(" +
@@ -62,7 +65,11 @@ class BinanceWebSocketApiSocket(object):
                 elif self.handler_binance_websocket_api_manager.is_stop_as_crash_request(self.stream_id):
                     await websocket.close()
                     sys.exit(1)
+                if self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
+                    sys.exit(0)
                 while self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
+                    if self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
+                        sys.exit(0)
                     payload = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload'].pop(0)
                     await websocket.send(json.dumps(payload, ensure_ascii=False))
                     # To avoid a ban we respect the limits of binance:

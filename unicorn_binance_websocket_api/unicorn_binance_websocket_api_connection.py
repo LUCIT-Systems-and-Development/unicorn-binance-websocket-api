@@ -291,23 +291,12 @@ class BinanceWebSocketApiConnection(object):
             logging.critical("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ") Exception RuntimeError "
                              "Info: " + str(error_msg))
-            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
-            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
-                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
-            sys.exit(1)
         except IndexError as error_msg:
             logging.critical("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ") Exception IndexError "
                              "Info: " + str(error_msg))
-            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
-            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
-                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
-            sys.exit(1)
         except KeyError as error_msg:
             logging.critical("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ") Exception KeyError "
                              "Info: " + str(error_msg))
-            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
-            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
-                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
-            sys.exit(1)
+
