@@ -432,6 +432,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         # threaded loop to restart crashed streams:
         while self.stop_manager_request is None and \
                 self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
+            #Todo: obsolete
             self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat'] = time.time()
             time.sleep(1)
             # restart streams with a restart_request (status == new)
