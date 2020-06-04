@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.15.0.dev (development stage/unreleased/unstable)
+### Changed
+- renamed `restart_stream()` to `_restart_stream` and execute it only with a valid restart_request
 ### Fixed
 - Enshure that during a restart, only the recent thread is able to send the payload for subscription
 

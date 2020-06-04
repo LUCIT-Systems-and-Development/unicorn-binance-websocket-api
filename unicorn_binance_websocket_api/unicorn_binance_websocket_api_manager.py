@@ -445,7 +445,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         self.restart_requests[stream_id]['status'] = "new"
                     # restart streams with requests
                     if self.restart_requests[stream_id]['status'] == "new":
-                        self.restart_stream(stream_id)
+                        self._restart_stream(stream_id)
                 except KeyError:
                     pass
         sys.exit(0)
@@ -2242,16 +2242,24 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stop_stream(stream_id)
         return new_stream_id
 
-    def restart_stream(self, stream_id):
+    def _restart_stream(self, stream_id):
         """
         Restart a specific stream
 
         :param stream_id: id of a stream
         :type stream_id: uuid
 
-        :return: stream_id
+        :return: stream_id or False
         """
-        logging.info("BinanceWebSocketApiManager->restart_stream(" + str(self.stream_list[stream_id]['channels']) +
+        try:
+            if self.restart_requests[stream_id]['status'] != "new":
+                logging.warning("BinanceWebSocketApiManager->_restart_stream() please use `set_restart_request() instead!")
+                return False
+        except KeyError:
+            # no restart_request entry for this stream_id:
+            logging.warning("BinanceWebSocketApiManager->_restart_stream() please use `set_restart_request() instead!")
+            return False
+        logging.info("BinanceWebSocketApiManager->_restart_stream(" + str(self.stream_list[stream_id]['channels']) +
                      ", " + str(self.stream_list[stream_id]['markets']) + ")")
         self.restart_requests[stream_id] = {'status': "restarted"}
         self.restart_requests[stream_id]['last_restart_time'] = time.time()
