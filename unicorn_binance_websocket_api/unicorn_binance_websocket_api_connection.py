@@ -202,19 +202,6 @@ class BinanceWebSocketApiConnection(object):
         except AttributeError as error_msg:
             logging.error("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                           "AttributeError - " + str(error_msg))
-            # TODO: obsolete?
-            #try:
-            #    self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
-            #    logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
-            #                  "AttributeError - close() - done!")
-            #except KeyError as error_msg:
-            #    logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
-            #                  "KeyError - " + str(error_msg))
-            #except RuntimeWarning as error_msg:
-            #    logging.debug("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
-            #                  "RuntimeWarning - " + str(error_msg))
-            #except AttributeError:
-            #    sys.exit(1)
         except websockets.exceptions.ConnectionClosed as error_msg:
             logging.critical("binance_websocket_api_connection->__aexit__(*args, **kwargs): "
                              "ConnectionClosed - " + str(error_msg))
@@ -283,17 +270,15 @@ class BinanceWebSocketApiConnection(object):
             logging.critical("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ") Exception ConnectionClosed "
                              "Info: " + str(error_msg))
-            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
-            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
-                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+            self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
+            self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
         except RuntimeError as error_msg:
             logging.critical("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ") Exception RuntimeError "
                              "Info: " + str(error_msg))
-            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
-            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
-                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+            self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
+            self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
         except IndexError as error_msg:
             logging.critical("BinanceWebSocketApiSocket->send(" + str(self.stream_id) + ", " +

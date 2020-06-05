@@ -77,8 +77,9 @@ def print_stream(manager):
         time.sleep(10)
 
 
-binance_api_key = ""
-binance_api_secret = ""
+binance_api_key = "I25sjQLfPuTBzMGNiHGPFq7UpxSZ9kdjjvgBri20sDHxJqFG21WabzpHAk1P9To1"
+binance_api_secret = "ogrjfEnUpokY8VKKtlPNNUS3iWTqX9QuwS5vYwcs8fBThIRhQn4AyNL35cRWhuz5"
+
 
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
