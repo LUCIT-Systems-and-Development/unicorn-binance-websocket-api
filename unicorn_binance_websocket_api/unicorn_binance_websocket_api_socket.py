@@ -96,6 +96,13 @@ class BinanceWebSocketApiSocket(object):
                             logging.info("BinanceWebSocketApiSocket->start_socket(" +
                                          str(self.stream_id) + ") "
                                          "Received result message: " + str(received_stream_data_json))
+                            result = json.loads(received_stream_data_json)
+                            try:
+                                result_id = result['id']
+                                if self.handler_binance_websocket_api_manager.connection_tests[self.stream_id][result_id]:
+                                    self.handler_binance_websocket_api_manager.connection_tests[self.stream_id][result_id]['answer_time'] = time.time()
+                            except KeyError:
+                                pass
                 except websockets.exceptions.ConnectionClosed as error_msg:
                     logging.critical("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") Exception ConnectionClosed "

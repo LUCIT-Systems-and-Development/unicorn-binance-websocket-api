@@ -178,6 +178,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.frequent_checks_list_lock = threading.Lock()
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
+        self.testalive_streams_list = {}
         self.last_entry_added_to_stream_buffer = 0
         self.last_monitoring_check = time.time()
         self.last_update_check_github = {'timestamp': time.time(),
@@ -195,6 +196,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.reconnects_lock = threading.Lock()
         self.request_id = 0
         self.request_id_lock = threading.Lock()
+        self.connection_tests = {}
         self.restart_requests = {}
         self.restart_timeout = restart_timeout
         self.stream_buffer_lock = threading.Lock()
@@ -448,13 +450,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         # threaded loop to restart crashed streams:
         while self.stop_manager_request is None and \
                 self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
-            self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat'] = time.time()
             time.sleep(1)
+            self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat'] = time.time()
             # restart streams with a restart_request (status == new)
             temp_restart_requests = copy.deepcopy(self.restart_requests)
             for stream_id in temp_restart_requests:
-                # find restarts that didnt work
                 try:
+                    # find restarts that didnt work
                     if self.restart_requests[stream_id]['status'] == "restarted" and \
                             self.restart_requests[stream_id]['last_restart_time']+self.restart_timeout < time.time():
                         self.restart_requests[stream_id]['status'] = "new"
@@ -466,6 +468,29 @@ class BinanceWebSocketApiManager(threading.Thread):
                         thread.start()
                 except KeyError:
                     pass
+
+        sys.exit(0)
+
+    def _test_if_alive(self):
+        """
+        This method is started as a thread and is testing streams to set restart requests if needed
+        """
+        testalive_streams_id = time.time()
+        self.testalive_streams_list[testalive_streams_id] = {'last_heartbeat': 0,
+                                                             'stop_request': None,
+                                                             'has_stopped': False}
+        logging.info(
+            "BinanceWebSocketApiManager->_keepalive_streams() new instance created with testalive_streams_id=" +
+            str(testalive_streams_id))
+        # threaded loop to restart crashed streams:
+        while self.stop_manager_request is None and \
+                self.testalive_streams_list[testalive_streams_id]['stop_request'] is None:
+            time.sleep(10)
+            self.keepalive_streams_list[testalive_streams_id]['last_heartbeat'] = time.time()
+            temp_stream_list = self.get_active_stream_list()
+            for stream_id in temp_stream_list:
+                if self.is_stream_alive(stream_id, 5) is False:
+                    self.set_restart_request(stream_id)
         sys.exit(0)
 
     def _restart_stream(self, stream_id):
@@ -1674,6 +1699,49 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return False
 
+    def is_stream_alive(self, stream_id, timeout_time=10, request_id=False):
+        """
+        Test the stream connection
+
+        This function is supported by CEX endpoints only!
+
+        https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions
+
+        :param stream_id: id of a stream
+        :type stream_id: uuid
+        :param timeout_time: seconds to wait for a timeout
+        :type timeout_time: int
+        :param request_id: id to use for the request
+        :type request_id: int
+        :return: bool
+        """
+        if request_id is False:
+            request_id = self.get_request_id()
+        if self.is_exchange_type('dex'):
+            logging.error("BinanceWebSocketApiManager->get_stream_subscriptions(" + str(stream_id) + ", " +
+                          str(request_id) + ") DEX websockets dont support the listing of subscriptions! Request not "
+                          "sent!")
+            # Todo: find a way to test on dex
+            return True
+        elif self.is_exchange_type('cex'):
+            payload = {"method": "LIST_SUBSCRIPTIONS",
+                       "id": request_id}
+            self.connection_tests[stream_id] = {request_id: {"request_time": time.time(),
+                                                             "answer_time": None}}
+            self.stream_list[stream_id]['payload'].append(payload)
+            logging.debug("BinanceWebSocketApiManager->is_stream_alive(" + str(stream_id) + ", " +
+                          str(request_id) + ") payload added!")
+            timeout_ts = time.time() + timeout_time
+            while self.connection_tests[stream_id][request_id]['answer_time'] is None and timeout_ts > time.time():
+                time.sleep(0.1)
+            if self.connection_tests[stream_id][request_id]['answer_time'] is None:
+                return False
+            del self.connection_tests[stream_id][request_id]
+            return True
+        else:
+            # to avoid issues
+            return True
+
     def get_stream_list(self):
         """
         Get a list of all streams
@@ -2151,7 +2219,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_buffer_row = ""
         if len(add_string) > 0:
             add_string = " " + str(add_string) + "\r\n"
-        temp_stream_list = copy.deepcopy(self.stream_list)
+        try:
+            temp_stream_list = copy.deepcopy(self.stream_list)
+        except RuntimeError:
+            result = self.print_summary(self, add_string=add_string, disable_print=disable_print)
+            return result
         for stream_id in temp_stream_list:
             stream_name = ""
             stream_row_color_prefix = ""
@@ -2375,6 +2447,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread_frequent_checks.start()
         thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
         thread_keepalive_streams.start()
+        thread_testalive_streams = threading.Thread(target=self._test_if_alive)
+        thread_testalive_streams.start()
 
     def set_private_api_config(self, binance_api_key, binance_api_secret):
         """
