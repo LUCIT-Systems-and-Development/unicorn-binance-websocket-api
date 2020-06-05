@@ -58,7 +58,6 @@ class BinanceWebSocketApiSocket(object):
         async with BinanceWebSocketApiConnection(self.handler_binance_websocket_api_manager, self.stream_id,
                                                  self.channels, self.markets) as websocket:
             while True:
-                self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['last_socket_cycle'] = time.time()
                 if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id):
                     self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
                     await websocket.close()

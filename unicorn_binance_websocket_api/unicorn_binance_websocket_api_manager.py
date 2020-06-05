@@ -254,7 +254,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'receives_statistic_last_second': {'most_receives_per_second': 0, 'entries': {}},
                                        'seconds_to_last_heartbeat': None,
                                        'last_heartbeat': None,
-                                       'last_socket_cycle': None,
                                        'kill_request': None,
                                        'stop_request': None,
                                        'crash_request': None,
@@ -467,17 +466,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                         thread.start()
                 except KeyError:
                     pass
-            try:
-                active_stream_list = self.get_active_stream_list()
-                if active_stream_list:
-                    for stream_id in active_stream_list:
-                        if self.stream_list[stream_id]['last_socket_cycle'] < time.time() - 10 and \
-                                self.stream_list[stream_id]['status'] == "running":
-                            self.set_restart_request(stream_id)
-            except TypeError:
-                pass
-            except KeyError:
-                pass
         sys.exit(0)
 
     def _restart_stream(self, stream_id):
