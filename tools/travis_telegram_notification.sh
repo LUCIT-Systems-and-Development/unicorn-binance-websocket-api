@@ -24,14 +24,13 @@ send_msg () {
 # Send message to the bot with some pertinent details about the job
 # Note that for Markdown, you need to escape any backtick (inline-code)
 # characters, since they're reserved in bash
-send_msg "
--------------------------------------
-Travis build *${build_status}!*
-\`Repository:  ${TRAVIS_REPO_SLUG}\`
-\`Branch:      ${TRAVIS_BRANCH}\`
-*Commit Msg:*
-${TRAVIS_COMMIT_MESSAGE}
-[Job Log here](${TRAVIS_JOB_WEB_URL})
---------------------------------------
-"
-
+#send_msg "
+#-------------------------------------
+#Travis build *${build_status}!*
+#\`Repository:  ${TRAVIS_REPO_SLUG}\`
+#\`Branch:      ${TRAVIS_BRANCH}\`
+#*Commit Msg:*
+#${TRAVIS_COMMIT_MESSAGE}
+#[Job Log here](${TRAVIS_JOB_WEB_URL})
+#--------------------------------------
+#"
