@@ -6,10 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.15.0.dev (development stage/unreleased/unstable)
+### Added
+- stream_buffer control: create_stream(channels, markets, stream_buffer_name=None): 
+If `False` the data is going to get written to the default stream_buffer, set to `True` to read the data via 
+`pop_stream_data_from_stream_buffer(stream_id)` or provide a string to create and use a shared stream_buffer 
+and read it via `pop_stream_data_from_stream_buffer('string')`.
 ### Changed
 - renamed `restart_stream()` to `_restart_stream` and execute it only with a valid restart_request
 ### Fixed
-- Enshure that during a restart, only the recent thread is able to send the payload for subscription
+- Ensure that during a restart, only the recent thread is able to send the payload for subscription
 
 ## 1.15.0
 ### Added 
