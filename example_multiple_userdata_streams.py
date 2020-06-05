@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_multiuserdata_stream.py
+# File: example_multiple_userdata_streams.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -74,7 +74,7 @@ worker_thread = threading.Thread(target=print_stream_buffer_data, args=(binance_
                                                                         alice_stream_id))
 worker_thread.start()
 
-# configure api key and secret for binance.com for Alice
+# configure api key and secret for binance.com for Bob
 bob_api_key = "cccc"
 bob_api_secret = "dddd"
 # set api key and secret in api manager
