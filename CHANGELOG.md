@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.16.0.dev (development stage/unreleased/unstable)
 
+## 1.16.1
+### Fixed
+- exception in `print_suammary()`
+
 ## 1.16.0
 ### Added
 - stream_buffer control: create_stream(channels, markets, stream_buffer_name=None): 
