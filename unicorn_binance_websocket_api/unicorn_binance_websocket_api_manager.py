@@ -1139,7 +1139,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return:
         """
         if bytes > 1024 * 1024 * 1024 *1024:
-            bytes = str(round(bytes / (1024 * 1024 * 1024 * 1024), 2)) + " tB" + suffix
+            bytes = str(round(bytes / (1024 * 1024 * 1024 * 1024), 3)) + " tB" + suffix
         elif bytes > 1024 * 1024 * 1024:
             bytes = str(round(bytes / (1024 * 1024 * 1024), 2)) + " gB" + suffix
         elif bytes > 1024 * 1024:
