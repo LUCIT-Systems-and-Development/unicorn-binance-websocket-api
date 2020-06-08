@@ -5,7 +5,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Index &#8212; unicorn-binance-websocket-api 1.15.0 documentation</title>
+    <title>Index &#8212; unicorn-binance-websocket-api 1.16.0 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -41,7 +41,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.15.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.16.0 documentation</a> &#187;
     
 
     <li class="right">
@@ -81,10 +81,14 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer">add_to_stream_buffer() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_ringbuffer_error">add_to_ringbuffer_error() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+</li>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_ringbuffer_result">add_to_ringbuffer_result() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer">add_to_stream_buffer() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+</li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_total_received_bytes">add_total_received_bytes() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
   </ul></td>
@@ -165,6 +169,8 @@
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_current_receiving_speed">get_current_receiving_speed() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_errors_from_endpoints">get_errors_from_endpoints() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+</li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_exchange">get_exchange() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_human_bytesize">get_human_bytesize() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager static method)</a>
@@ -197,10 +203,10 @@
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_number_of_free_subscription_slots">get_number_of_free_subscription_slots() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_number_of_streams_in_stream_list">get_number_of_streams_in_stream_list() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_number_of_subscriptions">get_number_of_subscriptions() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_process_usage_cpu">get_process_usage_cpu() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
@@ -212,6 +218,12 @@
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_reconnects">get_reconnects() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id">get_request_id() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+</li>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints">get_results_from_endpoints() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+</li>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_ringbuffer_error_max_size">get_ringbuffer_error_max_size() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+</li>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_ringbuffer_result_max_size">get_ringbuffer_result_max_size() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_start_time">get_start_time() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
@@ -286,6 +298,10 @@
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.keepalive_listen_key">keepalive_listen_key() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient method)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.kill_stream">kill_stream() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="M">M</h2>
@@ -340,8 +356,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream">replace_stream() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
-      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.restart_stream">restart_stream() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
-</li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.run">run() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
   </ul></td>
@@ -362,12 +376,16 @@
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_restart_request">set_restart_request() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
-      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_stream_label">set_stream_label() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_ringbuffer_error_max_size">set_ringbuffer_error_max_size() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
-      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.split_payload">split_payload() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_ringbuffer_result_max_size">set_ringbuffer_result_max_size() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+</li>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.set_stream_label">set_stream_label() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.split_payload">split_payload() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
+</li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.start_monitoring_api">start_monitoring_api() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager method)</a>
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket.BinanceWebSocketApiSocket.start_socket">start_socket() (unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket.BinanceWebSocketApiSocket method)</a>
@@ -508,7 +526,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.15.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.16.0 documentation</a> &#187;
     
 
     <li class="right">
@@ -522,7 +540,7 @@
     &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
-    Last updated on 2020-05-15, 12:46 UTC.
+    Last updated on 2020-06-08, 9:45 UTC.
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 

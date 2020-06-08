@@ -106,7 +106,7 @@ you dont need to deal with asyncio in your code!
 [subscriptions](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream)
 on all exchanges! (Maximum 1024 subscriptions per stream!)
 - [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) respects Binance's API guidelines and protects you from reconnects and a ban.
-- Support for multiple private `!userData` streams with different `api_key` and `api_secret`.
+- Support for multiple private `!userData` streams with different `api_key` and `api_secret`. ([example_multiple_userdata_streams.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py))
 - If you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
 `stream_buffer` which stores the receives in the RAM till you are able to process the data in the normal way again. 
 [Learn more!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py)
@@ -122,8 +122,8 @@ rich media, shell syntax, tab completion, and history."
 ([example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py))
 ![iPython](https://user-images.githubusercontent.com/47597331/81512834-fadac080-9323-11ea-85b0-1a9303355e51.png)
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
-and a [check_command](https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api) 
-for [ICINGA](https://exchange.icinga.com/bithon/check_unicorn_monitoring_api)/Nagios 
+and a [check_command](https://exchange.icinga.com/LUCIT/check_lucit_collector) 
+for [ICINGA](https://exchange.icinga.com/LUCIT/check_lucit_collector)/Nagios 
 [![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service)
 - Excessively tested on Linux, Mac and Windows
 
@@ -156,10 +156,10 @@ Run in bash:
 
 `pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
 #### Windows
-Use the below command with the version (such as 1.11.0) you determined 
+Use the below command with the version (such as 1.16.0) you determined 
 [here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest):
 
-`pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.11.0.tar.gz --upgrade`
+`pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.16.0.tar.gz --upgrade`
 ### From the latest source (dev-stage) with PIP from [Github](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
 This is not a release version and can not be considered to be stable!
 

@@ -5,7 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.14.0.dev (development stage/unreleased/unstable)
+## 1.15.0.dev (development stage/unreleased/unstable)
+### Added
+- stream_buffer control: create_stream(channels, markets, stream_buffer_name=None): 
+If `False` the data is going to get written to the default stream_buffer, set to `True` to read the data via 
+`pop_stream_data_from_stream_buffer(stream_id)` or provide a string to create and use a shared stream_buffer 
+and read it via `pop_stream_data_from_stream_buffer('string')`.
+- `add_to_ringbuffer_error()`
+- `add_to_ringbuffer_result()`
+- `set_ringbuffer_error_max_size()`
+- `set_ringbuffer_result_max_size()`
+- `get_errors_from_endpoints()`
+- `get_results_from_endpoints()`
+- `get_ringbuffer_error_max_size()`
+- `get_ringbuffer_result_max_size()`
+### Changed
+- renamed `restart_stream()` to `_restart_stream` and execute it only with a valid restart_request
+### Fixed
+- Ensure that during a restart, only the recent thread is able to send the payload for subscription
+
+## 1.15.0
 ### Added 
 - psutil (new requirement)
 - exception handling of `websockets.exceptions.InvalidMessage` [issue #72](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/72)
