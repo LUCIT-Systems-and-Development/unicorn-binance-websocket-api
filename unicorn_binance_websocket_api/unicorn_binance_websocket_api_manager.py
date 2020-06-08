@@ -178,7 +178,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.frequent_checks_list_lock = threading.Lock()
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
-        self.testalive_streams_list = {}
         self.last_entry_added_to_stream_buffer = 0
         self.last_monitoring_check = time.time()
         self.last_update_check_github = {'timestamp': time.time(),
@@ -1199,12 +1198,12 @@ class BinanceWebSocketApiManager(threading.Thread):
     @staticmethod
     def get_latest_release_info_check_command():
         """
-        Get infos about the latest available `check_unicorn_monitoring_api` release
+        Get infos about the latest available `check_lucit_collector` release
         
         :return: dict or False
         """
         try:
-            respond = requests.get('https://api.github.com/repos/oliver-zehentleitner/check_unicorn_monitoring_api/'
+            respond = requests.get('https://api.github.com/repos/LUCIT-Development/check_lucit_collector.py/'
                                    'releases/latest')
             return respond.json()
         except Exception:
@@ -1230,7 +1229,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_latest_version_check_command(self):
         """
-        Get the version of the latest available `check_unicorn_monitoring_api` release (cache time 1 hour)
+        Get the version of the latest available `check_lucit_collector.py` release (cache time 1 hour)
         
         :return: str or False
         """
@@ -1391,7 +1390,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         - reconnects
         - uptime
 
-        :param check_command_version: is the version of the calling check_command (https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api)
+        :param check_command_version: is the version of the calling check_command (https://github.com/LUCIT-Development/check_lucit_collector.py)
         :type check_command_version: str
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
@@ -1427,7 +1426,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         timestamp, update_msg, average_receives_per_second, average_speed_per_second, total_received_mb,
         stream_buffer_items, stream_buffer_mb, reconnects, uptime
 
-        :param check_command_version: is the version of the calling check_command (https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api)
+        :param check_command_version: is the version of the calling check_command (https://github.com/LUCIT-Development/check_lucit_collector.py)
         :type check_command_version: str
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
@@ -1479,7 +1478,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 result['crashed_streams'] += 1
         if self.is_update_availabe() and is_update_available_unicorn_fy and is_update_available_check_command:
             result['update_msg'] = " Update available: UNICORN Binance WebSocket API, UnicornFy and " \
-                                   "check_unicorn_monitoring_api!"
+                                   "check_lucit_collector.py!"
             if warn_on_update is True:
                 result['status_text'] = "WARNING"
                 result['return_code'] = 1
@@ -1489,12 +1488,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                 result['status_text'] = "WARNING"
                 result['return_code'] = 1
         elif self.is_update_availabe() and is_update_available_check_command:
-            result['update_msg'] = " Update available: UNICORN Binance WebSocket API and check_unicorn_monitoring_api!"
+            result['update_msg'] = " Update available: UNICORN Binance WebSocket API and check_lucit_collector.py!"
             if warn_on_update is True:
                 result['status_text'] = "WARNING"
                 result['return_code'] = 1
         elif is_update_available_unicorn_fy and is_update_available_check_command:
-            result['update_msg'] = " Update available: UnicornFy and check_unicorn_monitoring_api!"
+            result['update_msg'] = " Update available: UnicornFy and check_lucit_collector.py!"
             if warn_on_update is True:
                 result['status_text'] = "WARNING"
                 result['return_code'] = 1
@@ -1509,7 +1508,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 result['status_text'] = "WARNING"
                 result['return_code'] = 1
         elif is_update_available_check_command:
-            result['update_msg'] = " Update `check_unicorn_monitoring_api` " + \
+            result['update_msg'] = " Update `check_lucit_collector.py` " + \
                                    str(self.get_latest_version_check_command()) + " available!"
             if warn_on_update is True:
                 result['status_text'] = "WARNING"
@@ -1997,7 +1996,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def is_update_availabe_check_command(self, check_command_version=False):
         """
-        Is a new release of `check_unicorn_monitoring_api` available?
+        Is a new release of `check_lucit_collector.py` available?
 
         :return: bool
         """

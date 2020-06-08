@@ -122,8 +122,8 @@ rich media, shell syntax, tab completion, and history."
 ([example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py))
 ![iPython](https://user-images.githubusercontent.com/47597331/81512834-fadac080-9323-11ea-85b0-1a9303355e51.png)
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
-and a [check_command](https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api) 
-for [ICINGA](https://exchange.icinga.com/bithon/check_unicorn_monitoring_api)/Nagios 
+and a [check_command](https://exchange.icinga.com/LUCIT/check_lucit_collector) 
+for [ICINGA](https://exchange.icinga.com/LUCIT/check_lucit_collector)/Nagios 
 [![icinga2-demo](https://s3.gifyu.com/images/icinga2-unicorn_binance_websocket_api.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service)
 - Excessively tested on Linux, Mac and Windows
 
