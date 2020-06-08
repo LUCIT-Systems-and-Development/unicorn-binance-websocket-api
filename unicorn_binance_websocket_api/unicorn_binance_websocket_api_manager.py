@@ -196,9 +196,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.reconnects_lock = threading.Lock()
         self.request_id = 0
         self.request_id_lock = threading.Lock()
-        self.connection_tests = {}
         self.restart_requests = {}
         self.restart_timeout = restart_timeout
+        self.ringbuffer_error = []
+        self.ringbuffer_error_max_size = 500
+        self.ringbuffer_result = []
+        self.ringbuffer_result_max_size = 500
         self.stream_buffer_lock = threading.Lock()
         self.stream_buffer_locks = {}
         self.start_time = time.time()
@@ -471,28 +474,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         sys.exit(0)
 
-    def _test_if_alive(self):
-        """
-        This method is started as a thread and is testing streams to set restart requests if needed
-        """
-        testalive_streams_id = time.time()
-        self.testalive_streams_list[testalive_streams_id] = {'last_heartbeat': 0,
-                                                             'stop_request': None,
-                                                             'has_stopped': False}
-        logging.info(
-            "BinanceWebSocketApiManager->_keepalive_streams() new instance created with testalive_streams_id=" +
-            str(testalive_streams_id))
-        # threaded loop to restart crashed streams:
-        while self.stop_manager_request is None and \
-                self.testalive_streams_list[testalive_streams_id]['stop_request'] is None:
-            time.sleep(10)
-            self.keepalive_streams_list[testalive_streams_id]['last_heartbeat'] = time.time()
-            temp_stream_list = self.get_active_stream_list()
-            for stream_id in temp_stream_list:
-                if self.is_stream_alive(stream_id, 5) is False:
-                    self.set_restart_request(stream_id)
-        sys.exit(0)
-
     def _restart_stream(self, stream_id):
         """
         This is NOT stop/start! Its purpose is to start a died stream again! Use `set_restart_request()` for stop/start!
@@ -536,7 +517,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: id of a stream
         :type stream_id: uuid
         """
-        #self.wait_till_stream_has_stopped(stream_id)
         self._restart_stream(stream_id)
 
     def _start_monitoring_api_thread(self, host, port, warn_on_update):
@@ -574,6 +554,30 @@ class BinanceWebSocketApiManager(threading.Thread):
             logging.critical("Monitoring API service is going down! - Info: " + str(error_msg))
         except OSError as error_msg:
             logging.critical("Monitoring API service is going down! - Info: " + str(error_msg))
+
+    def add_to_ringbuffer_error(self, error):
+        """
+        Add received error messages from websocket endpoints to the error ringbuffer
+        :param error: The data to add.
+        :type error: string
+        :return: bool
+        """
+        while len(self.ringbuffer_error) >= self.get_ringbuffer_error_max_size():
+            self.ringbuffer_error.pop(0)
+        self.ringbuffer_error.append(str(error))
+        return True
+
+    def add_to_ringbuffer_result(self, result):
+        """
+        Add received result messages from websocket endpoints to the result ringbuffer
+        :param result: The data to add.
+        :type result: string
+        :return: bool
+        """
+        while len(self.ringbuffer_result) >= self.get_ringbuffer_result_max_size():
+            self.ringbuffer_result.pop(0)
+        self.ringbuffer_result.append(str(result))
+        return True
 
     def add_to_stream_buffer(self, stream_data, stream_buffer_name=False):
         """
@@ -735,8 +739,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                       str(markets) + ") finished ...")
         return payload
 
-    def create_stream(self, channels, markets, stream_label=None, stream_buffer_name=False, api_key=False,
-                      api_secret=False):
+    def create_stream(self, channels, markets, stream_label=None, stream_buffer_name=False):
         """
         Create a websocket stream
 
@@ -794,10 +797,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    provide a string to create and use a shared stream_buffer and read it via
                                    `pop_stream_data_from_stream_buffer('string')`.
         :type stream_buffer_name: bool or str
-        :param binance_api_key: The Binance API key
-        :type binance_api_key: str
-        :param binance_api_secret: The Binance API secret
-        :type binance_api_secret: str
         :return: stream_id or 'False'
         """
         # create a stream
@@ -1083,23 +1082,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 pass
         return all_receives_last_second
 
-    def get_number_of_all_subscriptions(self):
+    def get_errors_from_endpoints(self):
         """
-        Get the amount of all stream subscriptions
+        Get the error messages sent by the endpoints.
 
-        :return: inf
+        :return: list
         """
-        subscriptions = 0
-        try:
-            active_stream_list = copy.deepcopy(self.get_active_stream_list())
-            for stream_id in active_stream_list:
-                subscriptions += active_stream_list[stream_id]['subscriptions']
-            self.all_subscriptions_number = subscriptions
-        except TypeError:
-            return self.all_subscriptions_number
-        except RuntimeError:
-            return self.all_subscriptions_number
-        return subscriptions
+        return self.ringbuffer_error
 
     def get_binance_api_status(self):
         """
@@ -1192,19 +1181,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             uptime = str(int(uptime)) + " seconds"
         return uptime
 
-    def get_stream_label(self, stream_id=False):
-        """
-        Get the stream_label of a specific stream
-
-        :param stream_id: id of a stream
-        :type stream_id: uuid
-        :return: str or False
-        """
-        if stream_id:
-            return self.stream_list[stream_id]['stream_label']
-        else:
-            return False
-
     @staticmethod
     def get_latest_release_info():
         """
@@ -1276,6 +1252,24 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         return self.max_subscriptions_per_stream
+
+    def get_number_of_all_subscriptions(self):
+        """
+        Get the amount of all stream subscriptions
+
+        :return: inf
+        """
+        subscriptions = 0
+        try:
+            active_stream_list = copy.deepcopy(self.get_active_stream_list())
+            for stream_id in active_stream_list:
+                subscriptions += active_stream_list[stream_id]['subscriptions']
+            self.all_subscriptions_number = subscriptions
+        except TypeError:
+            return self.all_subscriptions_number
+        except RuntimeError:
+            return self.all_subscriptions_number
+        return subscriptions
 
     def get_number_of_free_subscription_slots(self, stream_id):
         """
@@ -1595,6 +1589,28 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.request_id += 1
             return self.request_id
 
+    def get_results_from_endpoints(self):
+        """
+        Get the result messages sent by the endpoints.
+
+        :return: list
+        """
+        return self.ringbuffer_result
+
+    def get_ringbuffer_error_max_size(self):
+        """
+        How many entries should be stored in the ringbuffer?
+        :return: int
+        """
+        return self.ringbuffer_error_max_size
+
+    def get_ringbuffer_result_max_size(self):
+        """
+        How many entries should be stored in the ringbuffer?
+        :return: int
+        """
+        return self.ringbuffer_result_max_size
+
     def get_start_time(self):
         """
         Get the start_time of the  BinanceWebSocketApiManager instance
@@ -1668,6 +1684,19 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = self.get_current_receiving_speed(stream_id)
         return temp_stream_list
 
+    def get_stream_label(self, stream_id=False):
+        """
+        Get the stream_label of a specific stream
+
+        :param stream_id: id of a stream
+        :type stream_id: uuid
+        :return: str or False
+        """
+        if stream_id:
+            return self.stream_list[stream_id]['stream_label']
+        else:
+            return False
+
     def get_stream_subscriptions(self, stream_id, request_id=False):
         """
         Listing subscriptions
@@ -1698,49 +1727,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             return True
         else:
             return False
-
-    def is_stream_alive(self, stream_id, timeout_time=10, request_id=False):
-        """
-        Test the stream connection
-
-        This function is supported by CEX endpoints only!
-
-        https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions
-
-        :param stream_id: id of a stream
-        :type stream_id: uuid
-        :param timeout_time: seconds to wait for a timeout
-        :type timeout_time: int
-        :param request_id: id to use for the request
-        :type request_id: int
-        :return: bool
-        """
-        if request_id is False:
-            request_id = self.get_request_id()
-        if self.is_exchange_type('dex'):
-            logging.error("BinanceWebSocketApiManager->get_stream_subscriptions(" + str(stream_id) + ", " +
-                          str(request_id) + ") DEX websockets dont support the listing of subscriptions! Request not "
-                          "sent!")
-            # Todo: find a way to test on dex
-            return True
-        elif self.is_exchange_type('cex'):
-            payload = {"method": "LIST_SUBSCRIPTIONS",
-                       "id": request_id}
-            self.connection_tests[stream_id] = {request_id: {"request_time": time.time(),
-                                                             "answer_time": None}}
-            self.stream_list[stream_id]['payload'].append(payload)
-            logging.debug("BinanceWebSocketApiManager->is_stream_alive(" + str(stream_id) + ", " +
-                          str(request_id) + ") payload added!")
-            timeout_ts = time.time() + timeout_time
-            while self.connection_tests[stream_id][request_id]['answer_time'] is None and timeout_ts > time.time():
-                time.sleep(0.1)
-            if self.connection_tests[stream_id][request_id]['answer_time'] is None:
-                return False
-            del self.connection_tests[stream_id][request_id]
-            return True
-        else:
-            # to avoid issues
-            return True
 
     def get_stream_list(self):
         """
@@ -2082,6 +2068,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         dex_user_address_row = ""
         last_static_ping_listen_key = ""
         stream_info = self.get_stream_info(stream_id)
+        stream_row_color_prefix = ""
+        stream_row_color_suffix = ""
         if len(add_string) > 0:
             add_string = " " + str(add_string) + "\r\n"
         if len(self.stream_list[stream_id]['logged_reconnects']) > 0:
@@ -2113,9 +2101,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             stream_row_color_prefix = "\033[1m\033[33m"
             stream_row_color_suffix = "\033[0m\r\n"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
-        else:
-            stream_row_color_prefix = ""
-            stream_row_color_suffix = ""
         try:
             if self.restart_requests[stream_id]['status']:
                 restart_requests_row = " restart_request: " + self.restart_requests[stream_id]['status'] + "\r\n"
@@ -2219,13 +2204,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_buffer_row = ""
         if len(add_string) > 0:
             add_string = " " + str(add_string) + "\r\n"
-        try:
-            temp_stream_list = copy.deepcopy(self.stream_list)
-        except RuntimeError:
-            result = self.print_summary(self, add_string=add_string, disable_print=disable_print)
-            return result
+        temp_stream_list = copy.deepcopy(self.stream_list)
         for stream_id in temp_stream_list:
-            stream_name = ""
             stream_row_color_prefix = ""
             stream_row_color_suffix = ""
             current_receiving_speed += self.get_current_receiving_speed(stream_id)
@@ -2279,7 +2259,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 + "|" + stream_row_color_prefix + \
                 self.fill_up_space_left(8, len(self.stream_list[stream_id]['logged_reconnects'])) + \
                 stream_row_color_suffix + "\r\n "
-            if self.is_stop_request(stream_id, exclude_kill_requests=True) is True and self.stream_list[stream_id]['status'] == "running":
+            if self.is_stop_request(stream_id, exclude_kill_requests=True) is True and \
+                    self.stream_list[stream_id]['status'] == "running":
                 streams_with_stop_request += 1
         if streams_with_stop_request >= 1:
             stream_row_color_prefix = "\033[1m\033[33m"
@@ -2447,8 +2428,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread_frequent_checks.start()
         thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
         thread_keepalive_streams.start()
-        thread_testalive_streams = threading.Thread(target=self._test_if_alive)
-        thread_testalive_streams.start()
 
     def set_private_api_config(self, binance_api_key, binance_api_secret):
         """
@@ -2489,6 +2468,26 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stream_list[stream_id]['status'] = "running"
         except KeyError:
             pass
+
+    def set_ringbuffer_error_max_size(self, max_size):
+        """
+        How many error messages should be kept in the ringbuffer?
+
+        :param max_size: Max entries of error messages in the ringbuffer.
+        :type max_size: int
+        :return: bool
+        """
+        self.ringbuffer_error_max_size = int(max_size)
+
+    def set_ringbuffer_result_max_size(self, max_size):
+        """
+        How many result messages should be kept in the ringbuffer?
+
+        :param max_size: Max entries of result messages in the ringbuffer.
+        :type max_size: int
+        :return: bool
+        """
+        self.ringbuffer_result_max_size = int(max_size)
 
     def set_stream_label(self, stream_id, stream_label=None):
         """

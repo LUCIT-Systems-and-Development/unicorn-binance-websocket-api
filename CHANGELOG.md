@@ -11,6 +11,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 If `False` the data is going to get written to the default stream_buffer, set to `True` to read the data via 
 `pop_stream_data_from_stream_buffer(stream_id)` or provide a string to create and use a shared stream_buffer 
 and read it via `pop_stream_data_from_stream_buffer('string')`.
+- `add_to_ringbuffer_error()`
+- `add_to_ringbuffer_result()`
+- `set_ringbuffer_error_max_size()`
+- `set_ringbuffer_result_max_size()`
+- `get_errors_from_endpoints()`
+- `get_results_from_endpoints()`
+- `get_ringbuffer_error_max_size()`
+- `get_ringbuffer_result_max_size()`
 ### Changed
 - renamed `restart_stream()` to `_restart_stream` and execute it only with a valid restart_request
 ### Fixed
