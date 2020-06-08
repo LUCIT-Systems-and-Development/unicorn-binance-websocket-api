@@ -2203,7 +2203,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_buffer_row = ""
         if len(add_string) > 0:
             add_string = " " + str(add_string) + "\r\n"
-        temp_stream_list = copy.deepcopy(self.stream_list)
+        try:
+            temp_stream_list = copy.deepcopy(self.stream_list)
+        except RuntimeError:
+            return ""
         for stream_id in temp_stream_list:
             stream_row_color_prefix = ""
             stream_row_color_suffix = ""
