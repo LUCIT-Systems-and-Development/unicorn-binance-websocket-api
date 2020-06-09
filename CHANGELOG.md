@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.16.1.dev (development stage/unreleased/unstable)
+### Fixed
+- Exception AttributeError Info: module 'asyncio.base_futures' has no attribute 'InvalidStateError' [issue #72](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/83)
 
 ## 1.16.1
 ### Fixed
