@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.16.2.dev (development stage/unreleased/unstable)
 
+## 1.16.2
 ### Fixed
 - Exception AttributeError Info: module 'asyncio.base_futures' has no attribute 'InvalidStateError' [issue #72](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/83)
 
