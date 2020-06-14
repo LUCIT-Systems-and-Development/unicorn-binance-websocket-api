@@ -123,3 +123,8 @@ class BinanceWebSocketApiSocket(object):
                     self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                     sys.exit(1)
 
+        logging.critical("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
+                         str(self.channels) + ", " + str(self.markets) + ") lost connection!")
+        self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id)
+        self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+        sys.exit(1)
