@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.16.2.dev (development stage/unreleased/unstable)
+## 1.16.3.dev (development stage/unreleased/unstable)
 
-## 1.16.2.dev
+## 1.16.3
 ### Added
 - restart if "with connection" in socket gets closed
 ### Fixed
