@@ -6,10 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.16.2.dev (development stage/unreleased/unstable)
+
+## 1.16.2.dev
 ### Added
 - restart if "with connection" in socket gets closed
 ### Fixed
-- json.decoder.JSONDecodeError: respond = request_handler.json() 
+- exception json.decoder.JSONDecodeError: respond = request_handler.json() 
 
 ## 1.16.2
 ### Fixed
