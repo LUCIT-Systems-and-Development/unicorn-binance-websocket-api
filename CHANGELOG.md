@@ -8,9 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.16.3.dev (development stage/unreleased/unstable)
 
 ## 1.16.3
-### Added
-- restart if "with connection" in socket gets closed
 ### Fixed
+- restart if "with connection" in socket gets closed
 - exception json.decoder.JSONDecodeError: respond = request_handler.json() 
 
 ## 1.16.2
