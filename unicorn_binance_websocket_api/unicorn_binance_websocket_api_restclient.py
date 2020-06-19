@@ -36,6 +36,7 @@
 import copy
 import hashlib
 import hmac
+import json
 import logging
 import requests
 import socket
@@ -133,9 +134,11 @@ class BinanceWebSocketApiRestclient(object):
             logging.critical("BinanceWebSocketApiRestclient->_request() received status_code 429 from binance! Back off"
                              "or you are going to get banned! Read this: https://github.com/binance-exchange/binance-"
                              "official-api-sphinx/blob/master/rest-api.md#limits")
-
-        respond = request_handler.json()
-
+        try:
+            respond = request_handler.json()
+        except json.decoder.JSONDecodeError as error_msg:
+            logging.error("BinanceWebSocketApiRestclient->_request() - error_msg: " + str(error_msg))
+            return False
         self.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
         self.binance_api_status['timestamp'] = time.time()
         self.binance_api_status['status_code'] = request_handler.status_code
