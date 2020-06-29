@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.16.3.dev (development stage/unreleased/unstable)
+### Fixed
+- Fixed double slash bug when getting listen key for userDataStream. 
+[PR #87](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/87) 
 
 ## 1.16.3
 ### Fixed
