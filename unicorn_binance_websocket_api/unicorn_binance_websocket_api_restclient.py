@@ -52,22 +52,22 @@ class BinanceWebSocketApiRestclient(object):
         self.unicorn_binance_websocket_api_version = unicorn_binance_websocket_api_version
         if self.exchange == "binance.com":
             self.restful_base_uri = "https://api.binance.com/"
-            self.path_userdata = "/api/v3/userDataStream"
+            self.path_userdata = "api/v3/userDataStream"
         elif self.exchange == "binance.com-margin":
             self.restful_base_uri = "https://api.binance.com/"
-            self.path_userdata = "/sapi/v1/userDataStream"
+            self.path_userdata = "sapi/v1/userDataStream"
         elif self.exchange == "binance.com-futures":
             self.restful_base_uri = "https://fapi.binance.com/"
-            self.path_userdata = "/fapi/v1/listenKey"
+            self.path_userdata = "fapi/v1/listenKey"
         elif self.exchange == "binance.je":
             self.restful_base_uri = "https://api.binance.je/"
-            self.path_userdata = "/api/v1/userDataStream"
+            self.path_userdata = "api/v1/userDataStream"
         elif self.exchange == "binance.us":
             self.restful_base_uri = "https://api.binance.us/"
-            self.path_userdata = "/api/v1/userDataStream"
+            self.path_userdata = "api/v1/userDataStream"
         elif self.exchange == "jex.com":
             self.restful_base_uri = "https://www.jex.com/"
-            self.path_userdata = "/api/v1/userDataStream"
+            self.path_userdata = "api/v1/userDataStream"
         self.listen_key = False
         self.binance_api_status = binance_api_status
 
