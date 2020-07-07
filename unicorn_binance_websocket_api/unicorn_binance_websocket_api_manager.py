@@ -2594,7 +2594,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             if not isinstance(self.monitoring_api_server, bool):
                 self.monitoring_api_server.stop()
         except AttributeError as error_msg:
-            logging.debug("can not execute self.monitoring_api_server.stop() - info: " + str(error_msg))
+            logging.info("can not execute self.monitoring_api_server.stop() - info: " + str(error_msg))
 
     def stop_stream(self, stream_id):
         """
@@ -2621,7 +2621,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: bool
         """
         # stop a specific stream by stream_id
-        logging.info("BinanceWebSocketApiManager->stop_stream_as_crash(" + str(stream_id) + ")")
+        logging.critical("BinanceWebSocketApiManager->stop_stream_as_crash(" + str(stream_id) + ")")
         try:
             del self.restart_requests[stream_id]
         except KeyError:
@@ -2651,7 +2651,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: uuid
         :return:
         """
-        logging.debug("BinanceWebSocketApiManager->stream_is_stopping(" + str(stream_id) + ")")
+        logging.info("BinanceWebSocketApiManager->stream_is_stopping(" + str(stream_id) + ")")
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "stopped"
 
