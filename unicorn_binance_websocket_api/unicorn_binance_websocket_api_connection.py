@@ -84,11 +84,13 @@ class BinanceWebSocketApiConnection(object):
                     raise StreamRecoveryError("stream_id " + str(self.stream_id) + ": " + str(uri['msg']))
                 sys.exit(1)
         except KeyError:
-            pass
+            logging.info("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
+                         ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 1")
         except TypeError:
-            pass
-        logging.debug("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
-                      ", " + str(self.markets) + ")" + " connecting to " + str(uri))
+            logging.info("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
+                         ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 2")
+        logging.info("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
+                     ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 3")
         self._conn = connect(uri, ping_interval=20, close_timeout=10,
                              extra_headers={'User-Agent': 'oliver-zehentleitner/unicorn-binance-websocket-api/' +
                                             self.handler_binance_websocket_api_manager.version})
@@ -218,8 +220,8 @@ class BinanceWebSocketApiConnection(object):
         try:
             await self.handler_binance_websocket_api_manager.websocket_list[self.stream_id].close()
         except KeyError:
-            logging.debug("binance_websocket_api_connection->close(" +
-                          str(self.stream_id) + ") - Stream not found!")
+            logging.info("binance_websocket_api_connection->close(" +
+                         str(self.stream_id) + ") - Stream not found!")
 
     async def receive(self):
         self.handler_binance_websocket_api_manager.set_heartbeat(self.stream_id)
@@ -239,15 +241,15 @@ class BinanceWebSocketApiConnection(object):
                                                                                               size)
             return received_data_json
         except RuntimeError as error_msg:
-            logging.debug("binance_websocket_api_connection->receive(" +
-                          str(self.stream_id) + ") - RuntimeError - error_msg: " + str(error_msg))
+            logging.info("binance_websocket_api_connection->receive(" +
+                         str(self.stream_id) + ") - RuntimeError - error_msg: " + str(error_msg))
             sys.exit(1)
         except ssl.SSLError as error_msg:
-            logging.debug("binance_websocket_api_connection->receive(" +
-                          str(self.stream_id) + ") - ssl.SSLError - error_msg: " + str(error_msg))
+            logging.info("binance_websocket_api_connection->receive(" +
+                         str(self.stream_id) + ") - ssl.SSLError - error_msg: " + str(error_msg))
         except KeyError as error_msg:
-            logging.debug("binance_websocket_api_connection->receive(" +
-                          str(self.stream_id) + ") - KeyError - error_msg: " + str(error_msg))
+            logging.info("binance_websocket_api_connection->receive(" +
+                         str(self.stream_id) + ") - KeyError - error_msg: " + str(error_msg))
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)

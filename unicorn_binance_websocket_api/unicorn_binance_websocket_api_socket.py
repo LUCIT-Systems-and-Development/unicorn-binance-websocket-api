@@ -53,8 +53,8 @@ class BinanceWebSocketApiSocket(object):
         self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] = self.socket_id
 
     async def start_socket(self):
-        logging.debug("BinanceWebSocketApiSocket->start_socket(" +
-                      str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ")")
+        logging.info("BinanceWebSocketApiSocket->start_socket(" +
+                     str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ")")
         async with BinanceWebSocketApiConnection(self.handler_binance_websocket_api_manager, self.stream_id,
                                                  self.channels, self.markets) as websocket:
             while True:

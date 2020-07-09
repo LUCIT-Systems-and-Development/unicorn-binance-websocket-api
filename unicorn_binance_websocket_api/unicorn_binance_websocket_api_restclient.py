@@ -155,7 +155,7 @@ class BinanceWebSocketApiRestclient(object):
         :return: the response
         :rtype: str or False
         """
-        logging.debug("BinanceWebSocketApiRestclient->delete_listen_key(" + str(listen_key) + ")")
+        logging.info("BinanceWebSocketApiRestclient->delete_listen_key(" + str(listen_key) + ")")
         method = "delete"
         try:
             return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
@@ -171,7 +171,7 @@ class BinanceWebSocketApiRestclient(object):
         :return: listen_key
         :rtype: str or False
         """
-        logging.debug("BinanceWebSocketApiRestclient->get_listen_key()")
+        logging.info("BinanceWebSocketApiRestclient->get_listen_key()")
         method = "post"
         response = self._request(method, self.path_userdata)
         try:
@@ -192,7 +192,7 @@ class BinanceWebSocketApiRestclient(object):
         :return: the response
         :rtype: str or False
         """
-        logging.debug("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(listen_key) + ")")
+        logging.info("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(listen_key) + ")")
         method = "put"
         try:
             return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
