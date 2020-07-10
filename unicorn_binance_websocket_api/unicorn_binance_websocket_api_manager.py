@@ -1970,7 +1970,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: uuid
         :return: bool
         """
-        logging.info("BinanceWebSocketApiManager->is_stop_as_crash_request(" + str(stream_id) + ")")
+        logging.debug("BinanceWebSocketApiManager->is_stop_as_crash_request(" + str(stream_id) + ")")
         if self.stream_list[stream_id]['crash_request'] is True:
             return True
         elif self.is_manager_stopping():
@@ -2464,7 +2464,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
 
         """
-        logging.info("BinanceWebSocketApiManager->set_heartbeat(" + str(stream_id) + ")")
+        logging.debug("BinanceWebSocketApiManager->set_heartbeat(" + str(stream_id) + ")")
         try:
             self.stream_list[stream_id]['last_heartbeat'] = time.time()
             self.stream_list[stream_id]['status'] = "running"
