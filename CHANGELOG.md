@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - Fixed double slash bug when getting listen key for userDataStream. 
 [PR #87](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/87) 
+- Fixed RuntimeError in connection row 243
 
 ## 1.16.3
 ### Fixed

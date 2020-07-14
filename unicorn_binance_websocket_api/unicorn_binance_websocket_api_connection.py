@@ -243,6 +243,9 @@ class BinanceWebSocketApiConnection(object):
         except RuntimeError as error_msg:
             logging.info("binance_websocket_api_connection->receive(" +
                          str(self.stream_id) + ") - RuntimeError - error_msg: " + str(error_msg))
+            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
+            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
+                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
         except ssl.SSLError as error_msg:
             logging.info("binance_websocket_api_connection->receive(" +
