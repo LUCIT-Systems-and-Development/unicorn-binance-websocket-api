@@ -5,13 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.16.3.dev (development stage/unreleased/unstable)
+## 1.16.4.dev (development stage/unreleased/unstable)
+
+## 1.16.4
 ### Changed
 - Loglevels
 ### Fixed
 - Fixed double slash bug when getting listen key for userDataStream. 
 [PR #87](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/87) 
-- Fixed RuntimeError in connection row 243
+- Fixed RuntimeError in connection row 243 (added restart)
 
 ## 1.16.3
 ### Fixed
