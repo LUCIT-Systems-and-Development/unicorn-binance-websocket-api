@@ -248,8 +248,9 @@ class BinanceWebSocketApiConnection(object):
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
         except ssl.SSLError as error_msg:
-            logging.info("binance_websocket_api_connection->receive(" +
-                         str(self.stream_id) + ") - ssl.SSLError - error_msg: " + str(error_msg))
+            logging.error("binance_websocket_api_connection->receive(" +
+                          str(self.stream_id) + ") - ssl.SSLError - error_msg: " + str(error_msg))
+            # Todo: Not sure if this needs a restart ...
         except KeyError as error_msg:
             logging.info("binance_websocket_api_connection->receive(" +
                          str(self.stream_id) + ") - KeyError - error_msg: " + str(error_msg))
