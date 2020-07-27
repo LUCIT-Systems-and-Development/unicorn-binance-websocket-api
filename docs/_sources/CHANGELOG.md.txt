@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.16.4.dev (development stage/unreleased/unstable)
+### Changed
+- Loglevels
 
 ## 1.16.4
 ### Changed

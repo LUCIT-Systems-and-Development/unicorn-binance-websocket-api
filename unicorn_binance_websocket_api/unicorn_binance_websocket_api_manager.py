@@ -99,8 +99,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         - https://docs.binance.org/api-reference/dex-api/ws-connection.html
 
     :param process_stream_data: Provide a function/method to process the received webstream data. The function
-                                will be called with one variable like `process_stream_data(data)` where
-                                `data` cointains the raw_stream_data. If not provided, the raw stream_data will get
+                                will be called instead of add_to_stream_buffer() (https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer) like `process_stream_data(stream_data, stream_buffer_name)` where
+                                `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will get
                                 stored in the stream_buffer! (How to read from stream_buffer:
                                 https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives)
     :type process_stream_data: function
@@ -124,7 +124,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  throw_exception_if_unrepairable=False,
                  restart_timeout=6):
         threading.Thread.__init__(self)
-        self.version = "1.16.4"
+        self.version = "1.16.4.dev"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
         colorama.init()
         if process_stream_data is False:
@@ -557,6 +557,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def add_to_ringbuffer_error(self, error):
         """
         Add received error messages from websocket endpoints to the error ringbuffer
+
         :param error: The data to add.
         :type error: string
         :return: bool
@@ -569,6 +570,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def add_to_ringbuffer_result(self, result):
         """
         Add received result messages from websocket endpoints to the result ringbuffer
+
         :param result: The data to add.
         :type result: string
         :return: bool
