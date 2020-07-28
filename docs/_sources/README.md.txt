@@ -35,7 +35,7 @@ while True:
 
 Basically that's it, but there are more options:
 
-### Convert received raw webstream data into well-formed python dictionaries with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy):
+### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy):
 ```
 unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_stream_data_from_stream_buffer)
 ```

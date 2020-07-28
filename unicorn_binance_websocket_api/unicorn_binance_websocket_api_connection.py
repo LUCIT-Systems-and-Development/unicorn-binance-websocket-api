@@ -86,11 +86,10 @@ class BinanceWebSocketApiConnection(object):
         except KeyError:
             logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
                           ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 1")
-        except TypeError:
+        except TypeError as error_msg:
+            # Do not restart!
             logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
-                          ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 2")
-        logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
-                      ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 3")
+                          ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 2 - " + str(error_msg))
         self._conn = connect(uri, ping_interval=20, close_timeout=10,
                              extra_headers={'User-Agent': 'oliver-zehentleitner/unicorn-binance-websocket-api/' +
                                             self.handler_binance_websocket_api_manager.version})
