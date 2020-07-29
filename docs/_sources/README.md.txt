@@ -10,7 +10,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/oliver-zehentleitner/unicorn-binance-websocket-api/badge.svg?branch=master)](https://coveralls.io/github/oliver-zehentleitner/unicorn-binance-websocket-api?branch=master)
 [![Telegram](https://img.shields.io/badge/chat-telegram-yellow.svg)](https://t.me/unicorndevs)
 [![Donations/week](http://img.shields.io/liberapay/receives/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
-[![Patrons](http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay")](https://liberapay.com/oliver-zehentleitner/donate)
+[![Patrons](http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
 
 [Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#how-to) |
 [Documentation](#documentation) | [Change Log](#change-log) | [Wiki](#wiki) | [Social](#social) | 
