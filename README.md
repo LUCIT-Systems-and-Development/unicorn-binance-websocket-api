@@ -1,4 +1,4 @@
-![Patrons](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/images/logo/UNICORN_BINANCE_WEBSOCKET_API.svg)
+![UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/images/logo/UNICORN_BINANCE_WEBSOCKET_API.svg)
 
 [![GitHub release](https://img.shields.io/github/release/oliver-zehentleitner/unicorn-binance-websocket-api.svg)](https://pypi.org/project/unicorn-binance-websocket-api/)
 [![GitHub](https://img.shields.io/github/license/oliver-zehentleitner/unicorn-binance-websocket-api.svg?color=blue)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/LICENSE)
@@ -12,7 +12,6 @@
 [![Donations/week](http://img.shields.io/liberapay/receives/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
 [![Patrons](http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay")](https://liberapay.com/oliver-zehentleitner/donate)
 
-# UNICORN Binance WebSocket API
 [Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#how-to) |
 [Documentation](#documentation) | [Change Log](#change-log) | [Wiki](#wiki) | [Social](#social) | 
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
