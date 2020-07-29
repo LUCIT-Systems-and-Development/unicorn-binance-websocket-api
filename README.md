@@ -1,4 +1,4 @@
-[![UNICORN Binance WebSocket API](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/logo/UNICORN_BINANCE_WEBSOCKET_API_README_CENTER.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
+[![UNICORN Binance WebSocket API](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/logo/UNICORN_BINANCE_WEBSOCKET_API.svg)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
 
 [![GitHub release](https://img.shields.io/github/release/oliver-zehentleitner/unicorn-binance-websocket-api.svg)](https://pypi.org/project/unicorn-binance-websocket-api/)
 [![GitHub](https://img.shields.io/github/license/oliver-zehentleitner/unicorn-binance-websocket-api.svg?color=blue)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/LICENSE)
