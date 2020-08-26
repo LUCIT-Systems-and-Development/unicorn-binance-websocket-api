@@ -178,6 +178,7 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 ## Howto
 - [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
 - [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.technopathy.club/2019/11/02/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2/)
+- [Binance Python API – A Step-by-Step Guide](https://algotrading101.com/learn/binance-python-api-guide/#what-is-the-binance-api) ([GitHub Repo](https://github.com/PythonForForex/Binance-api-step-by-step-guide))
 
 ## Documentation
 - [General](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api)

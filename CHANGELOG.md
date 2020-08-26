@@ -5,12 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.16.4.dev (development stage/unreleased/unstable)
+## 1.16.6.dev (development stage/unreleased/unstable)
+
+## 1.16.6
 ### Changed
 - Loglevels
 ### Fixed
 - Fixed exception that thrown when api key is real but was deleted from binance. [PR #96](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/96) (Thanks Flowelcat)
 - Package configuration is wrong. Currently one needs to have the bin-folder of the venv in the PATH. That is not feasible since you often have one venv per project. [PR #97](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/97) (Thanks uggel)
+
+## 1.16.5
+- REMOVED
 
 ## 1.16.4
 ### Changed

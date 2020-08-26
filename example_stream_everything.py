@@ -90,7 +90,7 @@ for item in data:
     markets.append(item['symbol'])
 
 binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
-binance_websocket_api_manager.create_stream(["!userData"], ["arr"], stream_label="userData  stream")
+private_stream_id = binance_websocket_api_manager.create_stream(["!userData"], ["arr"], stream_label="userData stream")
 
 binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
 
@@ -98,5 +98,5 @@ for channel in channels:
     binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
 
 while True:
-    binance_websocket_api_manager.print_summary()
+    binance_websocket_api_manager.print_stream_info(private_stream_id)
     time.sleep(1)
