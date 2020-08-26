@@ -82,6 +82,10 @@ class BinanceWebSocketApiConnection(object):
                     del self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]
                 except KeyError:
                     pass
+                except TypeError as error_msg:
+                    logging.error(
+                        "BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
+                        ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 3 - " + str(error_msg))
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(uri['msg']))
                 if self.handler_binance_websocket_api_manager.throw_exception_if_unrepairable:
                     raise StreamRecoveryError("stream_id " + str(self.stream_id) + ": " + str(uri['msg']))
@@ -91,8 +95,9 @@ class BinanceWebSocketApiConnection(object):
                           ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 1")
         except TypeError as error_msg:
             # Do not restart!
-            logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
-                          ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 2 - " + str(error_msg))
+            logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " +
+                          str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " + str(uri) +
+                          " error: 2 - " + str(error_msg))
         self._conn = connect(uri, ping_interval=20, close_timeout=10,
                              extra_headers={'User-Agent': 'oliver-zehentleitner/unicorn-binance-websocket-api/' +
                                             self.handler_binance_websocket_api_manager.version})
