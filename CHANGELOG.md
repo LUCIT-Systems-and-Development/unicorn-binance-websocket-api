@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.16.6.dev (development stage/unreleased/unstable)
+### Added
+- Logging for TypeError in `BinanceWebSocketApiConnection()`
 
 ## 1.16.6
 ### Changed
