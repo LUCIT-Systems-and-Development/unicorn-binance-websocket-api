@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.16.4.dev (development stage/unreleased/unstable)
 ### Changed
 - Loglevels
+### Fixed
+- Fixed exception that thrown when api key is real but was deleted from binance. [PR #87](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/96) (Thanks Flowelcat)
 
 ## 1.16.4
 ### Changed
