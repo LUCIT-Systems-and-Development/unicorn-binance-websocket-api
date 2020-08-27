@@ -98,5 +98,5 @@ for channel in channels:
     binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
 
 while True:
-    binance_websocket_api_manager.print_stream_info(private_stream_id)
+    binance_websocket_api_manager.print_summary()
     time.sleep(1)

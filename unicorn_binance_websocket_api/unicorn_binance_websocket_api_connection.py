@@ -66,7 +66,7 @@ class BinanceWebSocketApiConnection(object):
             # cant get a valid URI, so this stream has to crash
             error_msg = "Probably no internet connection?"
             logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                             str(self.channels) + ", " + str(self.markets) + ") - " + str(error_msg))
+                             str(self.channels) + ", " + str(self.markets) + ") - " + " error: 5 - " + str(error_msg))
             self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
             self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
@@ -77,15 +77,18 @@ class BinanceWebSocketApiConnection(object):
                 # -2008 = Invalid Api-Key ID
                 # cant get a valid listen_key, so this stream has to crash
                 logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                                 str(self.channels) + ", " + str(self.markets) + ") - " + str(uri['msg']))
+                                 str(self.channels) + ", " + str(self.markets) + ") - " + " error: 4 - " +
+                                 str(uri['msg']))
                 try:
                     del self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]
-                except KeyError:
-                    pass
+                except KeyError as error_msg:
+                    logging.debug("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
+                                  ", " + str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " +
+                                  str(uri) + " error: 6 - " + str(error_msg))
                 except TypeError as error_msg:
-                    logging.error(
-                        "BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
-                        ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 3 - " + str(error_msg))
+                    logging.error("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
+                                  ", " + str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " +
+                                  str(uri) + " error: 3 - " + str(error_msg))
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(uri['msg']))
                 if self.handler_binance_websocket_api_manager.throw_exception_if_unrepairable:
                     raise StreamRecoveryError("stream_id " + str(self.stream_id) + ": " + str(uri['msg']))
@@ -94,7 +97,6 @@ class BinanceWebSocketApiConnection(object):
             logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
                           ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 1")
         except TypeError as error_msg:
-            # Do not restart!
             logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " +
                           str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " + str(uri) +
                           " error: 2 - " + str(error_msg))
@@ -143,8 +145,10 @@ class BinanceWebSocketApiConnection(object):
                           str(error_msg))
         except OSError as error_msg:
             logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                             str(self.channels) + ", " + str(self.markets) + ")" + " - OSError "
-                             "- " + str(error_msg))
+                             str(self.channels) + ", " + str(self.markets) + ")" + " - OSError - " + str(error_msg))
+            self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, (str(error_msg)))
+            self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+            sys.exit(1)
         except socket.gaierror as error_msg:
             logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ")" + " - No internet connection? "

@@ -5,9 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.16.6.dev (development stage/unreleased/unstable)
-### Added
-- Logging for TypeError in `BinanceWebSocketApiConnection()`
+## 1.16.7.dev (development stage/unreleased/unstable)
+
+## 1.16.7
+### Changed
+- Logging in `BinanceWebSocketApiConnection()`
+### Fixed
+- Restart again if OSError in `BinanceWebSocketApiConnection()`
 
 ## 1.16.6
 ### Changed
