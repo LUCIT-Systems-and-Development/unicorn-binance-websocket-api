@@ -97,7 +97,9 @@ class BinanceWebSocketApiConnection(object):
             logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
                           ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 1")
         except TypeError as error_msg:
-            logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " +
+            # This "error" happens everytime if there is no error:
+            # uri['code'] with error msg is a dict, if the uri is a valid uri its a string ....
+            logging.debug("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " +
                           str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " + str(uri) +
                           " error: 2 - " + str(error_msg))
         self._conn = connect(uri, ping_interval=20, close_timeout=10,
@@ -262,6 +264,10 @@ class BinanceWebSocketApiConnection(object):
             logging.error("binance_websocket_api_connection->receive(" +
                           str(self.stream_id) + ") - ssl.SSLError - error_msg: " + str(error_msg))
             # Todo: Not sure if this needs a restart ...
+            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
+            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
+                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+            sys.exit(1)
         except KeyError as error_msg:
             logging.error("binance_websocket_api_connection->receive(" +
                           str(self.stream_id) + ") - KeyError - error_msg: " + str(error_msg))

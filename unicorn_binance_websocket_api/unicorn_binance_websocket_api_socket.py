@@ -116,9 +116,9 @@ class BinanceWebSocketApiSocket(object):
                         self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                         sys.exit(1)
                 except AttributeError as error_msg:
-                    logging.critical("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
-                                  str(self.channels) + ", " + str(self.markets) + ") Exception AttributeError Info: " +
-                                  str(error_msg))
+                    logging.error("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
+                                  str(self.channels) + ", " + str(self.markets) + ") Exception AttributeError "
+                                  "Info: " + str(error_msg))
                     self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
                     self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
                     sys.exit(1)

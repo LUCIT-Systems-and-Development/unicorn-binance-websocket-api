@@ -6,12 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.16.7.dev (development stage/unreleased/unstable)
+### Added
+- Restart to ssl.SSLError exception in connection
+### Changed 
+- Debug level of `error: 2` from error to debug
 
 ## 1.16.7
+### Added
+- Restart again if OSError in `BinanceWebSocketApiConnection()`
 ### Changed
 - Logging in `BinanceWebSocketApiConnection()`
-### Fixed
-- Restart again if OSError in `BinanceWebSocketApiConnection()`
 
 ## 1.16.6
 ### Changed
