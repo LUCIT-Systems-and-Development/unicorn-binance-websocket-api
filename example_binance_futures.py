@@ -65,6 +65,9 @@ userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!use
 
 bookticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!bookTicker"])
 
+# https://binance-docs.github.io/apidocs/futures/en/#mark-price-stream-for-all-market
+binance_websocket_api_manager.create_stream(["!markPrice"], "arr@1s", stream_label="!markPrice@arr@1s")
+
 markets = {'btcusdt', 'bchusdt', 'ethusdt'}
 binance_websocket_api_manager.create_stream(["aggTrade"], markets)
 binance_websocket_api_manager.create_stream(["markPrice"], markets)
