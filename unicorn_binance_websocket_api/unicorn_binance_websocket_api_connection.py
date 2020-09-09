@@ -71,7 +71,7 @@ class BinanceWebSocketApiConnection(object):
             self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
         try:
-            if uri['code'] == -2014 or uri['code'] == -2015 or uri['code'] == -2008:
+            if isinstance(uri, dict) and (uri['code'] == -2014 or uri['code'] == -2015 or uri['code'] == -2008):
                 # -2014 = API-key format invalid
                 # -2015 = Invalid API-key, IP, or permissions for action
                 # -2008 = Invalid Api-Key ID
