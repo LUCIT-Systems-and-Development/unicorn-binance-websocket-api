@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.16.8.dev (development stage/unreleased/unstable)
+## 1.16.9.dev (development stage/unreleased/unstable)
 
-## 1.16.8
+## 1.16.9
 ### Added
 - Restart to ssl.SSLError exception in connection
 ### Removed
