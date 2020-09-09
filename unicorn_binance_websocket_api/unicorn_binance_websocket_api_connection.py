@@ -71,37 +71,32 @@ class BinanceWebSocketApiConnection(object):
             self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
         try:
-            if isinstance(uri, dict) and (uri['code'] == -2014 or uri['code'] == -2015 or uri['code'] == -2008):
-                # -2014 = API-key format invalid
-                # -2015 = Invalid API-key, IP, or permissions for action
-                # -2008 = Invalid Api-Key ID
-                # cant get a valid listen_key, so this stream has to crash
-                logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                                 str(self.channels) + ", " + str(self.markets) + ") - " + " error: 4 - " +
-                                 str(uri['msg']))
-                try:
-                    del self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]
-                except KeyError as error_msg:
-                    logging.debug("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
-                                  ", " + str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " +
-                                  str(uri) + " error: 6 - " + str(error_msg))
-                except TypeError as error_msg:
-                    logging.error("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
-                                  ", " + str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " +
-                                  str(uri) + " error: 3 - " + str(error_msg))
-                self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(uri['msg']))
-                if self.handler_binance_websocket_api_manager.throw_exception_if_unrepairable:
-                    raise StreamRecoveryError("stream_id " + str(self.stream_id) + ": " + str(uri['msg']))
-                sys.exit(1)
+            if isinstance(uri, dict):
+                if uri['code'] == -2014 or uri['code'] == -2015 or uri['code'] == -2008:
+                    # -2014 = API-key format invalid
+                    # -2015 = Invalid API-key, IP, or permissions for action
+                    # -2008 = Invalid Api-Key ID
+                    # cant get a valid listen_key, so this stream has to crash
+                    logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
+                                     str(self.channels) + ", " + str(self.markets) + ") - " + " error: 4 - " +
+                                     str(uri['msg']))
+                    try:
+                        del self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]
+                    except KeyError as error_msg:
+                        logging.debug("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
+                                      ", " + str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " +
+                                      str(uri) + " error: 6 - " + str(error_msg))
+                    except TypeError as error_msg:
+                        logging.error("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
+                                      ", " + str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " +
+                                      str(uri) + " error: 3 - " + str(error_msg))
+                    self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(uri['msg']))
+                    if self.handler_binance_websocket_api_manager.throw_exception_if_unrepairable:
+                        raise StreamRecoveryError("stream_id " + str(self.stream_id) + ": " + str(uri['msg']))
+                    sys.exit(1)
         except KeyError:
             logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
                           ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 1")
-        except TypeError as error_msg:
-            # This "error" happens everytime if there is no error:
-            # uri['code'] with error msg is a dict, if the uri is a valid uri its a string ....
-            logging.debug("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " +
-                          str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " + str(uri) +
-                          " error: 2 - " + str(error_msg))
         self._conn = connect(uri, ping_interval=20, close_timeout=10,
                              extra_headers={'User-Agent': 'oliver-zehentleitner/unicorn-binance-websocket-api/' +
                                             self.handler_binance_websocket_api_manager.version})

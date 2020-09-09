@@ -5,11 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.16.7.dev (development stage/unreleased/unstable)
+## 1.16.8.dev (development stage/unreleased/unstable)
+
+## 1.16.8
 ### Added
 - Restart to ssl.SSLError exception in connection
-### Changed 
-- Debug level of `error: 2` from error to debug
+### Removed
+- error 2 code [PR #98](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/98) (Thanks Flowelcat)
 
 ## 1.16.7
 ### Added
