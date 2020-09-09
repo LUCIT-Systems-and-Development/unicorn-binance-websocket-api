@@ -70,7 +70,8 @@ binance_api_secret = ""
 
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
-            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
+            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth'}
+#channels.add('depth@100ms')
 arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
 markets = []
 
@@ -95,8 +96,21 @@ private_stream_id = binance_websocket_api_manager.create_stream(["!userData"], [
 binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
 
 for channel in channels:
-    binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
-
+    if len(markets) <= 1024:
+        binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
+    else:
+        max_subs = 600
+        loops = 1
+        i = 0
+        markets_sub = []
+        for market in markets:
+            i = i + 1
+            markets_sub.append(market)
+            if i == max_subs or loops*max_subs + i == len(markets):
+                binance_websocket_api_manager.create_stream(channel, markets_sub, stream_label=str(channel+"_"+str(i)))
+                markets_sub = []
+                i = 0
+                loops = loops + 1
 while True:
     binance_websocket_api_manager.print_summary()
     time.sleep(1)
