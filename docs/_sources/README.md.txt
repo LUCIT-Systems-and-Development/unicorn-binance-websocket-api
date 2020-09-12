@@ -17,7 +17,7 @@
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
 [Contributing](#contributing)
 
-An unofficial Python API to use the Binance Websocket API's (com, com-margin, com-futures, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.
+An unofficial Python API to use the Binance Websocket API's (com, com-margin, com-isolated_margin, com-futures, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.
 
 ### [Create a multiplex websocket connection](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
 ```
@@ -61,7 +61,9 @@ This should be known by everyone using this lib: [Do you want consistent data fr
 
 ## Description
 The Python module [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) 
-provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs), [Binance Margin](https://binance-docs.github.io/apidocs/spot/en/#user-data-streams),
+provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs), 
+[Binance Margin](https://binance-docs.github.io/apidocs/spot/en/#user-data-streams),
+[Binance Isolated Margin](https://binance-docs.github.io/apidocs/spot/en/#listen-key-isolated-margin),
 [Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams), 
 [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
@@ -93,6 +95,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 - Supported exchanges: 
     * [Binance](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com")`
     * [Binance Margin](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com-margin")`
+    * [Binance Isolated Margin](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")`
     * [Binance Futures](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com-futures")`
     * [Binance Jersey](https://www.binance.je) `BinanceWebSocketApiManager(exchange="binance.je")`
     * [Binance US](https://www.binance.us) `BinanceWebSocketApiManager(exchange="binance.us")`

@@ -104,8 +104,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 stored in the stream_buffer! (How to read from stream_buffer:
                                 https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives)
     :type process_stream_data: function
-    :param exchange: Select binance.com, binance.com-margin, binance.com-futures, binance.je, binance.us, jex.com,
-                     binance.org or binance.org-testnet (default: binance.com)
+    :param exchange: Select binance.com, binance.com-margin, binance.com-isolated_margin, binance.com-futures,
+                     binance.je, binance.us, jex.com, binance.org or binance.org-testnet (default: binance.com)
     :type exchange: str
     :param warn_on_update: set to `False` to disable the update warning
     :type warn_on_update: bool
@@ -124,7 +124,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  throw_exception_if_unrepairable=False,
                  restart_timeout=6):
         threading.Thread.__init__(self)
-        self.version = "1.16.9.dev"
+        self.version = "1.17.0"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
         colorama.init()
         if process_stream_data is False:
@@ -139,6 +139,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
         elif self.exchange == "binance.com-margin":
             # Binance Margin: www.binance.com
+            self.websocket_base_uri = "wss://stream.binance.com:9443/"
+        elif self.exchange == "binance.com-isolated_margin":
+            # Binance Isolated Margin: www.binance.com
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
         elif self.exchange == "binance.com-futures":
             # Binance Futures: www.binance.com
@@ -1927,13 +1930,14 @@ class BinanceWebSocketApiManager(threading.Thread):
             is_type = "dex"
         elif self.exchange == "binance.com" or \
                 self.exchange == "binance.com-margin" or \
+                self.exchange == "binance.com-isolated_margin" or \
                 self.exchange == "binance.com-futures" or \
                 self.exchange == "binance.je" or \
                 self.exchange == "binance.us" or \
                 self.exchange == "jex.com":
             is_type = "cex"
         else:
-            logging.CRITICAL("Can not determine exchange type in method unicorn_binance_websocket_api."
+            logging.critical("Can not determine exchange type in method unicorn_binance_websocket_api."
                              "is_exchange_type()")
             return False
         if is_type == exchange_type:
