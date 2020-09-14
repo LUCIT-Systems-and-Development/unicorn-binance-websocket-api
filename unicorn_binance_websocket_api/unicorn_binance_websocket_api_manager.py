@@ -228,7 +228,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             print(update_msg)
             logging.warn(update_msg)
 
-    def _add_socket_to_socket_list(self, stream_id, channels, markets, stream_label=None, stream_buffer_name=False):
+    def _add_socket_to_socket_list(self, stream_id, channels, markets, stream_label=None, stream_buffer_name=False,
+                                   symbol=False):
         """
         Create a list entry for new sockets
 
@@ -236,10 +237,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: uuid
         :param channels: provide the channels to create the URI
         :type channels: str, tuple, list, set
-        :param stream_label: provide a stream_label for the stream
-        :type stream_label: str
         :param markets: provide the markets to create the URI
         :type markets: str, tuple, list, set
+        :param stream_label: provide a stream_label for the stream
+        :type stream_label: str
+        :param stream_buffer_name: If `False` the data is going to get written to the default stream_buffer,
+                                   set to `True` to read the data via `pop_stream_data_from_stream_buffer(stream_id)` or
+                                   provide a string to create and use a shared stream_buffer and read it via
+                                   `pop_stream_data_from_stream_buffer('string')`.
+        :type stream_buffer_name: bool or str
+        :param symbol: provide the symbol for isolated_margin user_data streams
+        :type symbol: str
         """
         self.stream_threading_lock[stream_id] = {'full_lock': threading.Lock(),
                                                  'receives_statistic_last_second_lock': threading.Lock()}
@@ -250,6 +258,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'markets': copy.deepcopy(markets),
                                        'stream_label': copy.deepcopy(stream_label),
                                        'stream_buffer_name': copy.deepcopy(stream_buffer_name),
+                                       'symbol': copy.deepcopy(symbol),
                                        'subscriptions': 0,
                                        'payload': [],
                                        'api_key': copy.deepcopy(self.api_key),
@@ -275,11 +284,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'processed_receives_statistic': {},
                                        'transfer_rate_per_second': {'bytes': {}, 'speed': 0}}
         logging.info("BinanceWebSocketApiManager->_add_socket_to_socket_list(" +
-                     str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label)
-                     + str(stream_buffer_name) + ")")
+                     str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
+                     + str(stream_buffer_name) + ", " + str(symbol) + ")")
 
     def _create_stream_thread(self, loop, stream_id, channels, markets, stream_label=None, stream_buffer_name=False,
-                              restart=False):
+                              symbol=False, restart=False):
         """
         Co function of self.create_stream to create a thread for the socket and to manage the coroutine
 
@@ -298,6 +307,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                            provide a string to create and use a shared stream_buffer and read it via
                            `pop_stream_data_from_stream_buffer('string')`.
         :type stream_buffer_name: bool or str
+        :param symbol: provide the symbol for isolated_margin user_data streams
+        :type symbol: str
         :param restart: set to `True`, if its a restart!
         :type restart: bool
         :return:
@@ -305,7 +316,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.is_stop_request(stream_id):
             return False
         if restart is False:
-            self._add_socket_to_socket_list(stream_id, channels, markets, stream_label, stream_buffer_name)
+            self._add_socket_to_socket_list(stream_id, channels, markets, stream_label, stream_buffer_name, symbol)
             if stream_buffer_name is not False:
                 self.stream_buffer_locks[stream_buffer_name] = threading.Lock()
                 self.stream_buffers[stream_buffer_name] = []
@@ -751,7 +762,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                      str(markets) + ") finished ...")
         return payload
 
-    def create_stream(self, channels, markets, stream_label=None, stream_buffer_name=False):
+    def create_stream(self, channels, markets, stream_label=None, stream_buffer_name=False, symbol=False):
         """
         Create a websocket stream
 
@@ -809,6 +820,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    provide a string to create and use a shared stream_buffer and read it via
                                    `pop_stream_data_from_stream_buffer('string')`.
         :type stream_buffer_name: bool or str
+        :param symbol: provide the symbol for isolated_margin user_data streams
+        :type symbol: str
         :return: stream_id or 'False'
         """
         # create a stream
@@ -836,11 +849,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                 elif self.is_exchange_type('cex'):
                     markets_new.append(str(market).lower())
         logging.info("BinanceWebSocketApiManager->create_stream(" + str(channels) + ", " + str(markets_new) + ", "
-                     + str(stream_label) + str(stream_buffer_name) + ") with stream_id=" + str(stream_id))
+                     + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbol) + ") with stream_id="
+                     + str(stream_id))
         loop = asyncio.new_event_loop()
         thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels,
                                                                            markets_new, stream_label,
-                                                                           stream_buffer_name))
+                                                                           stream_buffer_name, symbol))
         thread.start()
         return stream_id
 
@@ -1299,7 +1313,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         free_slots =  self.max_subscriptions_per_stream - self.stream_list[stream_id]['subscriptions']
         return free_slots
 
-    def get_listen_key_from_restclient(self, stream_id, api_key, api_secret):
+    def get_listen_key_from_restclient(self, stream_id, api_key, api_secret, symbol=False):
         """
         Get a new or cached (<30m) listen_key
 
@@ -1309,6 +1323,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_key: str
         :param api_secret: provide a valid Binance API secret
         :type api_secret: str
+        :param symbol: provide the symbol for isolated_margin user_data streams
+        :type symbol: str
         :return: str or False
         """
         if (self.stream_list[stream_id]['start_time'] + self.stream_list[stream_id]['listen_key_cache_time']) > \
@@ -1321,7 +1337,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         # no cached listen_key or listen_key is older than 30 min
         # acquire a new listen_key:
         binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.exchange, api_key, api_secret,
-                                                                         self.get_version(), self.binance_api_status)
+                                                                         self.get_version(), self.binance_api_status,
+                                                                         symbol)
         response = binance_websocket_api_restclient.get_listen_key()
         del binance_websocket_api_restclient
         if response:

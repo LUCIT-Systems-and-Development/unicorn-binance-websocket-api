@@ -45,10 +45,11 @@ import time
 
 class BinanceWebSocketApiRestclient(object):
     def __init__(self, exchange, binance_api_key, binance_api_secret, unicorn_binance_websocket_api_version,
-                 binance_api_status):
+                 binance_api_status, symbol):
         self.exchange = exchange
         self.api_key = copy.deepcopy(binance_api_key)
         self.api_secret = copy.deepcopy(binance_api_secret)
+        self.symbol = symbol
         self.unicorn_binance_websocket_api_version = unicorn_binance_websocket_api_version
         if self.exchange == "binance.com":
             self.restful_base_uri = "https://api.binance.com/"
@@ -174,9 +175,12 @@ class BinanceWebSocketApiRestclient(object):
         :return: listen_key
         :rtype: str or False
         """
-        logging.info("BinanceWebSocketApiRestclient->get_listen_key()")
+        logging.info("BinanceWebSocketApiRestclient->get_listen_key() symbol=" + str(self.symbol))
         method = "post"
-        response = self._request(method, self.path_userdata)
+        if self.exchange == "binance.com-isolated_margin":
+            response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol)})
+        else:
+            response = self._request(method, self.path_userdata)
         try:
             self.listen_key = response['listenKey']
             return response
