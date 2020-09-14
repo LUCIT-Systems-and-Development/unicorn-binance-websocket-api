@@ -696,16 +696,24 @@ class BinanceWebSocketApiManager(threading.Thread):
                                  "or `unsubscribe`!")
                 return False
         elif self.is_exchange_type("cex"):
+            final_market = "@arr"
+            for market in markets:
+                if "arr@" in market:
+                    final_market = "@" + market
+            final_channel = "@arr"
+            for channel in channels:
+                if "arr@" in channel:
+                    final_channel = "@" + channel
             if method == "subscribe":
                 params = []
                 for channel in channels:
                     if "!" in channel:
-                        params.append(channel + "@arr")
+                        params.append(channel + final_market)
                         continue
                     else:
                         for market in markets:
                             if "!" in market:
-                                params.append(market + "@arr")
+                                params.append(market + final_channel)
                             else:
                                 params.append(market.lower() + "@" + channel)
                 if len(params) > 0:
@@ -716,7 +724,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     params = []
                     for channel in self.stream_list[stream_id]['channels']:
                         if "!" in channel:
-                            params.append(channel + "@arr")
+                            params.append(channel + final_market)
                         else:
                             for market in markets:
                                 params.append(market.lower() + "@" + channel)
@@ -726,7 +734,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     params = []
                     for market in self.stream_list[stream_id]['markets']:
                         if "!" in market:
-                            params.append(market + "@arr")
+                            params.append(market + final_channel)
                         else:
                             for channel in channels:
                                 params.append(market.lower() + "@" + channel)
@@ -932,6 +940,14 @@ class BinanceWebSocketApiManager(threading.Thread):
             return self.websocket_base_uri + str(query)
         else:
             query = "stream?streams="
+            final_market = "@arr"
+            for market in markets:
+                if "arr@" in market:
+                    final_market = "@" + market
+            final_channel = "@arr"
+            for channel in channels:
+                if "arr@" in channel:
+                    final_channel = "@" + channel
             for channel in channels:
                 if channel == "!userData":
                     logging.error("Can not create 'outboundAccountInfo' in a multi channel socket! "
@@ -947,9 +963,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                   "initiate an extra connection.")
                     return False
             if "!" in channel:
-                query += channel + "@arr"
+                query += channel + final_market
             elif "!" in market:
-                query += market + "@arr"
+                query += market + final_channel
             else:
                 query += market.lower() + "@" + channel
             if self.subscribe_to_stream(stream_id, markets=markets, channels=channels) is False:
