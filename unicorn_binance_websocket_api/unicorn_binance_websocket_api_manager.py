@@ -316,7 +316,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.is_stop_request(stream_id):
             return False
         if restart is False:
-            self._add_socket_to_socket_list(stream_id, channels, markets, stream_label, stream_buffer_name, symbol)
+            self._add_socket_to_socket_list(stream_id, channels, markets, stream_label, stream_buffer_name, symbol=symbol)
             if stream_buffer_name is not False:
                 self.stream_buffer_locks[stream_buffer_name] = threading.Lock()
                 self.stream_buffers[stream_buffer_name] = []
@@ -519,6 +519,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                                            self.stream_list[stream_id]['markets'],
                                                                            self.stream_list[stream_id]['stream_label'],
                                                                            self.stream_list[stream_id]['stream_buffer_name'],
+                                                                           self.stream_list[stream_id]['symbol'],
                                                                            True))
         thread.start()
         return stream_id
@@ -854,11 +855,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         loop = asyncio.new_event_loop()
         thread = threading.Thread(target=self._create_stream_thread, args=(loop, stream_id, channels,
                                                                            markets_new, stream_label,
-                                                                           stream_buffer_name, symbol))
+                                                                           stream_buffer_name, symbol, False))
         thread.start()
         return stream_id
 
-    def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False):
+    def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False, symbol=False):
         """
         Create a websocket URI
 
@@ -872,6 +873,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_key: str
         :param api_secret: provide a valid Binance API secret
         :type api_secret: str
+        :param symbol: provide the symbol for isolated_margin user_data streams
+        :type symbol: str
         :return: str or False
         """
         payload = []
@@ -882,7 +885,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         if len(channels) == 1 and len(markets) == 1:
             if "!userData" in channels or "!userData" in markets:
                 if stream_id is not False:
-                    response = self.get_listen_key_from_restclient(stream_id, api_key, api_secret)
+                    response = self.get_listen_key_from_restclient(stream_id, api_key, api_secret, symbol=symbol)
                     try:
                         if response['code'] == -2014 or response['code'] == -2015:
                             logging.critical("Received known error code from rest client: " + str(response))
@@ -1338,7 +1341,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         # acquire a new listen_key:
         binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.exchange, api_key, api_secret,
                                                                          self.get_version(), self.binance_api_status,
-                                                                         symbol)
+                                                                         symbol=symbol)
         response = binance_websocket_api_restclient.get_listen_key()
         del binance_websocket_api_restclient
         if response:
@@ -1857,7 +1860,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.version
 
-    def get_websocket_uri_length(self, channels, markets):
+    def get_websocket_uri_length(self, channels, markets, symbol=False):
         """
         Get the length of the generated websocket URI
 
@@ -1867,7 +1870,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type markets: str, tuple, list, set
         :return: int
         """
-        uri = self.create_websocket_uri(channels, markets)
+        uri = self.create_websocket_uri(channels, markets, symbol=symbol)
         return len(uri)
 
     @staticmethod

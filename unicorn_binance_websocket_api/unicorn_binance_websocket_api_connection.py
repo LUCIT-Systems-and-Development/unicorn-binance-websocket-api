@@ -47,13 +47,14 @@ import websockets
 
 
 class BinanceWebSocketApiConnection(object):
-    def __init__(self, handler_binance_websocket_api_manager, stream_id, channels, markets):
+    def __init__(self, handler_binance_websocket_api_manager, stream_id, channels, markets, symbol):
         self.handler_binance_websocket_api_manager = handler_binance_websocket_api_manager
         self.api_key = copy.deepcopy(self.handler_binance_websocket_api_manager.api_key)
         self.api_secret = copy.deepcopy(self.handler_binance_websocket_api_manager.api_secret)
         self.channels = copy.deepcopy(channels)
         self.markets = copy.deepcopy(markets)
         self.stream_id = copy.deepcopy(stream_id)
+        self.symbol = copy.deepcopy(symbol)
 
     async def __aenter__(self):
         if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id):
@@ -61,7 +62,7 @@ class BinanceWebSocketApiConnection(object):
             sys.exit(0)
         uri = self.handler_binance_websocket_api_manager.create_websocket_uri(self.channels, self.markets,
                                                                               self.stream_id, self.api_key,
-                                                                              self.api_secret)
+                                                                              self.api_secret, symbol=self.symbol)
         if uri is False:
             # cant get a valid URI, so this stream has to crash
             error_msg = "Probably no internet connection?"

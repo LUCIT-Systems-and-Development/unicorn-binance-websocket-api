@@ -45,7 +45,7 @@ import time
 
 class BinanceWebSocketApiRestclient(object):
     def __init__(self, exchange, binance_api_key, binance_api_secret, unicorn_binance_websocket_api_version,
-                 binance_api_status, symbol):
+                 binance_api_status, symbol=False):
         self.exchange = exchange
         self.api_key = copy.deepcopy(binance_api_key)
         self.api_secret = copy.deepcopy(binance_api_secret)
@@ -178,7 +178,11 @@ class BinanceWebSocketApiRestclient(object):
         logging.info("BinanceWebSocketApiRestclient->get_listen_key() symbol=" + str(self.symbol))
         method = "post"
         if self.exchange == "binance.com-isolated_margin":
-            response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol)})
+            if self.symbol is False:
+                logging.critical("BinanceWebSocketApiRestclient->get_listen_key() Info: Parameter `symbol` is missing!")
+                return False
+            else:
+                response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol)})
         else:
             response = self._request(method, self.path_userdata)
         try:
