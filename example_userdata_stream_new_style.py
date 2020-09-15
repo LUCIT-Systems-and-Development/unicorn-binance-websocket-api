@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_multiple_userdata_streams.py
+# File: example_userdata_stream_new_style.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -41,51 +41,52 @@ import os
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.INFO,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
 
-def print_stream_buffer_data(binance_websocket_api_manager, stream_id):
+def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     while True:
         if binance_websocket_api_manager.is_manager_stopping():
             exit(0)
-        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer(stream_id)
+        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
         else:
             print(oldest_stream_data_from_stream_buffer)
 
 
-# create instances of BinanceWebSocketApiManager
-binance_com_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
+# configure api key and secret for binance.com
+api_key = ""
+api_secret = ""
 
-# configure api key and secret for binance.com for Alice
-alice_api_key = "aaaa"
-alice_api_secret = "bbbb"
+# create instances of BinanceWebSocketApiManager
+ubwa_com = BinanceWebSocketApiManager(exchange="binance.com")
+
 # create the userData streams
-alice_stream_id = binance_com_websocket_api_manager.create_stream('arr', '!userData', stream_label="Alice",
-                                                                  stream_buffer_name=True,
-                                                                  api_key=alice_api_key, api_secret=alice_api_secret)
+user_stream_id = ubwa_com.create_stream('arr', '!userData', api_key=api_key, api_secret=api_secret)
+
 # start a worker process to move the received stream_data from the stream_buffer to a print function
-worker_thread = threading.Thread(target=print_stream_buffer_data, args=(binance_com_websocket_api_manager,
-                                                                        alice_stream_id))
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa_com,))
 worker_thread.start()
 
-# configure api key and secret for binance.com for Bob
-bob_api_key = "cccc"
-bob_api_secret = "dddd"
+# configure api key and secret for binance.com Isolated Margin
+api_key = ""
+api_secret = ""
+
+# create instances of BinanceWebSocketApiManager
+ubwa_com_im = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")
+
 # create the userData streams
-bob_stream_id = binance_com_websocket_api_manager.create_stream('arr', '!userData', stream_label="Bob",
-                                                                stream_buffer_name=True,
-                                                                api_key=bob_api_key, api_secret=bob_api_secret)
+user_stream_id = ubwa_com_im.create_stream('arr', '!userData', symbol="trxbtc", api_key=api_key, api_secret=api_secret)
+
 # start a worker process to move the received stream_data from the stream_buffer to a print function
-worker_thread = threading.Thread(target=print_stream_buffer_data, args=(binance_com_websocket_api_manager,
-                                                                        bob_stream_id))
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa_com_im,))
 worker_thread.start()
 
 # monitor the streams
 while True:
-    binance_com_websocket_api_manager.print_summary()
+    ubwa.print_stream_info(user_stream_id)
     time.sleep(1)

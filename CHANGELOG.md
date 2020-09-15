@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Isolated margin endpoints [issue #109](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/109)
 - Support for `@arr@@s1` [issue #101](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/101)
 - Added `symbol` to `print_stream_info()`
+- Added `api_key` and `api_secret` to `create_stream()` [issue #84](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/84) 
 
 ## 1.16.9
 ### Added

@@ -107,9 +107,9 @@ worker_thread.start()
 
 # monitor the streams
 while True:
-    binance_com_websocket_api_manager.print_stream_info(binance_com_user_data_stream_id)
+    binance_com_isolated_websocket_api_manager.print_stream_info(binance_com_iso_user_data_stream_id)
     binance_com_websocket_api_manager.print_summary()
     binance_je_websocket_api_manager.print_summary()
     binance_us_websocket_api_manager.print_summary()
     binance_com_isolated_websocket_api_manager.print_summary()
-    time.sleep(1)
+    time.sleep(5)
