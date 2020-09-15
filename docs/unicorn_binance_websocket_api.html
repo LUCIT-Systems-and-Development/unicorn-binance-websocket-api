@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.17.0 documentation</title>
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.16.9 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -40,7 +40,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.17.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.16.9 documentation</a> &#187;
     
 
     <li class="right">
@@ -65,7 +65,7 @@
 <span id="unicorn-binance-websocket-api-unicorn-binance-websocket-api-connection-module"></span><h2>unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection module<a class="headerlink" href="#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.BinanceWebSocketApiConnection">
-<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.</code><code class="sig-name descname">BinanceWebSocketApiConnection</code><span class="sig-paren">(</span><em class="sig-param">handler_binance_websocket_api_manager</em>, <em class="sig-param">stream_id</em>, <em class="sig-param">channels</em>, <em class="sig-param">markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.BinanceWebSocketApiConnection" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.</code><code class="sig-name descname">BinanceWebSocketApiConnection</code><span class="sig-paren">(</span><em class="sig-param">handler_binance_websocket_api_manager</em>, <em class="sig-param">stream_id</em>, <em class="sig-param">channels</em>, <em class="sig-param">markets</em>, <em class="sig-param">symbol</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.BinanceWebSocketApiConnection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.BinanceWebSocketApiConnection.close">
@@ -234,7 +234,7 @@ provide a string to create and use a shared stream_buffer and read it via
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">
-<code class="sig-name descname">create_stream</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em>, <em class="sig-param">stream_label=None</em>, <em class="sig-param">stream_buffer_name=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_stream</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em>, <em class="sig-param">stream_label=None</em>, <em class="sig-param">stream_buffer_name=False</em>, <em class="sig-param">symbol=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a websocket stream</p>
 <p>If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (markets * channels).</p>
 <blockquote>
@@ -291,6 +291,7 @@ with other streams in a multiplexed stream!</p>
 set to <cite>True</cite> to read the data via <cite>pop_stream_data_from_stream_buffer(stream_id)</cite> or
 provide a string to create and use a shared stream_buffer and read it via
 <cite>pop_stream_data_from_stream_buffer(‘string’)</cite>.</p></li>
+<li><p><strong>symbol</strong> (<em>str</em>) – provide the symbol for isolated_margin user_data streams</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -301,7 +302,7 @@ provide a string to create and use a shared stream_buffer and read it via
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_websocket_uri">
-<code class="sig-name descname">create_websocket_uri</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em>, <em class="sig-param">stream_id=False</em>, <em class="sig-param">api_key=False</em>, <em class="sig-param">api_secret=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_websocket_uri" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_websocket_uri</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em>, <em class="sig-param">stream_id=False</em>, <em class="sig-param">api_key=False</em>, <em class="sig-param">api_secret=False</em>, <em class="sig-param">symbol=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_websocket_uri" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a websocket URI</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -311,6 +312,7 @@ provide a string to create and use a shared stream_buffer and read it via
 <li><p><strong>stream_id</strong> (<em>uuid</em>) – provide a stream_id (only needed for userData Streams (acquiring a listenKey)</p></li>
 <li><p><strong>api_key</strong> (<em>str</em>) – provide a valid Binance API key</p></li>
 <li><p><strong>api_secret</strong> (<em>str</em>) – provide a valid Binance API secret</p></li>
+<li><p><strong>symbol</strong> (<em>str</em>) – provide the symbol for isolated_margin user_data streams</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -561,7 +563,7 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_listen_key_from_restclient">
-<code class="sig-name descname">get_listen_key_from_restclient</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">api_key</em>, <em class="sig-param">api_secret</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_listen_key_from_restclient" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_listen_key_from_restclient</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">api_key</em>, <em class="sig-param">api_secret</em>, <em class="sig-param">symbol=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_listen_key_from_restclient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a new or cached (&lt;30m) listen_key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -569,6 +571,7 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 <li><p><strong>stream_id</strong> (<em>uuid</em>) – provide a stream_id</p></li>
 <li><p><strong>api_key</strong> (<em>str</em>) – provide a valid Binance API key</p></li>
 <li><p><strong>api_secret</strong> (<em>str</em>) – provide a valid Binance API secret</p></li>
+<li><p><strong>symbol</strong> (<em>str</em>) – provide the symbol for isolated_margin user_data streams</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -925,7 +928,7 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_websocket_uri_length">
-<code class="sig-name descname">get_websocket_uri_length</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_websocket_uri_length" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_websocket_uri_length</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em>, <em class="sig-param">symbol=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_websocket_uri_length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the length of the generated websocket URI</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1470,7 +1473,7 @@ subscribed channels from the specific markets are going to be removed!</p>
 <span id="unicorn-binance-websocket-api-unicorn-binance-websocket-api-restclient-module"></span><h2>unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient module<a class="headerlink" href="#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient">
-<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.</code><code class="sig-name descname">BinanceWebSocketApiRestclient</code><span class="sig-paren">(</span><em class="sig-param">exchange</em>, <em class="sig-param">binance_api_key</em>, <em class="sig-param">binance_api_secret</em>, <em class="sig-param">unicorn_binance_websocket_api_version</em>, <em class="sig-param">binance_api_status</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.</code><code class="sig-name descname">BinanceWebSocketApiRestclient</code><span class="sig-paren">(</span><em class="sig-param">exchange</em>, <em class="sig-param">binance_api_key</em>, <em class="sig-param">binance_api_secret</em>, <em class="sig-param">unicorn_binance_websocket_api_version</em>, <em class="sig-param">binance_api_status</em>, <em class="sig-param">symbol=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.delete_listen_key">
@@ -1661,7 +1664,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.17.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.16.9 documentation</a> &#187;
     
 
     <li class="right">
