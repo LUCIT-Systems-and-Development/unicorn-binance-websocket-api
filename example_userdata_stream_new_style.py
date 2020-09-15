@@ -88,5 +88,6 @@ worker_thread.start()
 
 # monitor the streams
 while True:
-    ubwa.print_stream_info(user_stream_id)
+    ubwa_com.print_stream_info(user_stream_id)
+    ubwa_com_im.print_stream_info(user_stream_id)
     time.sleep(1)
