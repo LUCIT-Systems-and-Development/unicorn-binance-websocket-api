@@ -72,6 +72,7 @@ channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
             'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth'}
 #channels.add('depth@100ms')
+channels = {'trade', 'kline_1m', 'ticker', 'bookTicker', 'depth'}
 arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
 markets = []
 
@@ -99,7 +100,7 @@ for channel in channels:
     if len(markets) <= 1024:
         binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
     else:
-        max_subs = 600
+        max_subs = 1023
         loops = 1
         i = 0
         markets_sub = []
