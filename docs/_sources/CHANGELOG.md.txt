@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.16.9.dev (development stage/unreleased/unstable)
+## 1.17.0.dev (development stage/unreleased/unstable)
+
+## 1.17.0
 ### Added
 - Isolated margin endpoints [issue #109](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/109)
 - Support for `@arr@@s1` [issue #101](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/101)
