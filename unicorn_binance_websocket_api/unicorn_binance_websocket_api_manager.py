@@ -2507,6 +2507,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def set_private_api_config(self, binance_api_key, binance_api_secret):
         """
+        DEPRICATED - Use `api_key` and `api_secret` in `create_stream()`
+        
         Set binance_api_key and binance_api_secret
 
         This settings are needed to acquire a listenKey from Binance to establish a userData stream
