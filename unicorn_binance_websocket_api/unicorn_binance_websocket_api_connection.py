@@ -49,8 +49,8 @@ import websockets
 class BinanceWebSocketApiConnection(object):
     def __init__(self, handler_binance_websocket_api_manager, stream_id, channels, markets, symbol):
         self.handler_binance_websocket_api_manager = handler_binance_websocket_api_manager
-        self.api_key = copy.deepcopy(self.handler_binance_websocket_api_manager.api_key)
-        self.api_secret = copy.deepcopy(self.handler_binance_websocket_api_manager.api_secret)
+        self.api_key = copy.deepcopy(self.handler_binance_websocket_api_manager.stream_list[stream_id]['api_key'])
+        self.api_secret = copy.deepcopy(self.handler_binance_websocket_api_manager.stream_list[stream_id]['api_secret'])
         self.channels = copy.deepcopy(channels)
         self.markets = copy.deepcopy(markets)
         self.stream_id = copy.deepcopy(stream_id)

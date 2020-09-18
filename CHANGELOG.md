@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.17.0.dev (development stage/unreleased/unstable)
+## 1.17.1.dev (development stage/unreleased/unstable)
+
+## 1.17.1
+### Fixed
+- reference of api_key and secret in connection class
 
 ## 1.17.0
 ### Added

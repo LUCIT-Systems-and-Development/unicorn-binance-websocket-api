@@ -182,7 +182,7 @@ class BinanceWebSocketApiRestclient(object):
                 logging.critical("BinanceWebSocketApiRestclient->get_listen_key() Info: Parameter `symbol` is missing!")
                 return False
             else:
-                response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol)})
+                response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol.lower())})
         else:
             response = self._request(method, self.path_userdata)
         try:
