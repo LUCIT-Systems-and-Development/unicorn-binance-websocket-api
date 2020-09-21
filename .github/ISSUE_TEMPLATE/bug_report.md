@@ -37,6 +37,10 @@ Check this or we will delete your issue. (fill in the checkbox with an X like so
 - [ ] Windows
 - [ ] Linux (include flavour)
 
+#### Options
+- [ ] stream_buffer
+- [ ] process_stream_data
+
 #### Python Version Requirement
 - [ ] I am using Python 3.6.1 or above
 
