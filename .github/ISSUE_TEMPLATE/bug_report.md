@@ -29,8 +29,13 @@ Check this or we will delete your issue. (fill in the checkbox with an X like so
 
 #### Environment
 - [ ] Are you using the module on a VPS or other Cloud hosting?
-- [ ] If so, have you tried running the code on your local machine?
 - [ ] Are you using the module on a Raspberry Pi?
+
+#### What kind of internet connection do you have?
+
+#### Average system load (CPU)
+
+#### Hardware specification 
 
 #### Operating System? (include version)
 - [ ] macOS
