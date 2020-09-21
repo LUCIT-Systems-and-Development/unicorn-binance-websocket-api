@@ -74,11 +74,17 @@ class BinanceWebSocketApiConnection(object):
         try:
             if isinstance(uri, dict):
                 # dict = error, string = valid url
-                if uri['code'] == -2014 or uri['code'] == -2015 or uri['code'] == -2008:
+                if uri['code'] == -1102 or \
+                        uri['code'] == -2008 or \
+                        uri['code'] == -2014 or \
+                        uri['code'] == -2015 or \
+                        uri['code'] == -11001:
+                    # -1102 = Mandatory parameter 'symbol' was not sent, was empty/null, or malformed.
+                    # -2008 = Invalid Api-Key ID
                     # -2014 = API-key format invalid
                     # -2015 = Invalid API-key, IP, or permissions for action
-                    # -2008 = Invalid Api-Key ID
-                    # cant get a valid listen_key, so this stream has to crash
+                    # -11001 = Isolated margin account does not exist.
+                    # Cant get a valid listen_key, so this stream has to crash:
                     logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
                                      ", " + str(self.channels) + ", " + str(self.markets) + ") - " + " error: 4 - " +
                                      str(uri['msg']))
@@ -98,7 +104,7 @@ class BinanceWebSocketApiConnection(object):
                                      " error msg from Binance: " + str(uri['msg']))
                 self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(uri['msg']))
                 if self.handler_binance_websocket_api_manager.throw_exception_if_unrepairable:
-                    raise StreamRecoveryError("stream_id " + str(self.stream_id) + ": " + str(uri['msg']))
+                    raise StreamRecoveryError("stream_id " + str(self.stream_id) + ": " + str(uri))
                 sys.exit(1)
         except KeyError:
             logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
@@ -272,15 +278,6 @@ class BinanceWebSocketApiConnection(object):
         except KeyError as error_msg:
             logging.error("binance_websocket_api_connection->receive(" +
                           str(self.stream_id) + ") - KeyError - error_msg: " + str(error_msg))
-            self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
-            if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
-                self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
-            sys.exit(1)
-        except asyncio.base_futures.InvalidStateError as error_msg:
-            logging.error("binance_websocket_api_connection->receive(" +
-                          str(self.stream_id) + ") - asyncio.base_futures.InvalidStateError - error_msg: " +
-                          str(error_msg) + " - Extra info: https://github.com/oliver-zehentleitner/unicorn-binance-"
-                          "websocket-api/issues/18 - open an own issue if needed!")
             self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
             if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id) is False:
                 self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)

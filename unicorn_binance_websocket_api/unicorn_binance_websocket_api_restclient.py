@@ -117,7 +117,10 @@ class BinanceWebSocketApiRestclient(object):
             uri = self.restful_base_uri + path
         try:
             if method == "post":
-                request_handler = requests.post(uri, headers=requests_headers)
+                if data is False:
+                    request_handler = requests.post(uri, headers=requests_headers)
+                else:
+                    request_handler = requests.post(uri, headers=requests_headers, data=data)
             elif method == "put":
                 request_handler = requests.put(uri, headers=requests_headers, data=data)
             elif method == "delete":
@@ -182,7 +185,7 @@ class BinanceWebSocketApiRestclient(object):
                 logging.critical("BinanceWebSocketApiRestclient->get_listen_key() Info: Parameter `symbol` is missing!")
                 return False
             else:
-                response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol.lower())})
+                response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol)})
         else:
             response = self._request(method, self.path_userdata)
         try:

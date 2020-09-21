@@ -908,7 +908,16 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if stream_id is not False:
                     response = self.get_listen_key_from_restclient(stream_id, api_key, api_secret, symbol=symbol)
                     try:
-                        if response['code'] == -2014 or response['code'] == -2015:
+                        if response['code'] == -1102 or \
+                                response['code'] == -2008 or \
+                                response['code'] == -2014 or \
+                                response['code'] == -2015 or \
+                                response['code'] == -11001:
+                            # -1102 = Mandatory parameter 'symbol' was not sent, was empty/null, or malformed.
+                            # -2008 = Invalid Api-Key ID
+                            # -2014 = API-key format invalid
+                            # -2015 = Invalid API-key, IP, or permissions for action
+                            # -11001 = Isolated margin account does not exist.
                             logging.critical("Received known error code from rest client: " + str(response))
                             return response
                         else:
