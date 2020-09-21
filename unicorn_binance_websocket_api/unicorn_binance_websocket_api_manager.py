@@ -2483,7 +2483,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         text = text.replace("\033[0m", "")
         return text
 
-    def replace_stream(self, stream_id, new_channels, new_markets):
+    def replace_stream(self, stream_id, new_channels, new_markets, new_stream_label=None, new_stream_buffer_name=False,
+                       new_symbol=False, new_api_key=False, new_api_secret=False):
         """
         Replace a stream
 
@@ -2497,10 +2498,24 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type new_channels: str, tuple, list, set
         :param new_markets: the new markets list for the stream
         :type new_markets: str, tuple, list, set
+        :param new_stream_label: provide a stream_label to identify the stream
+        :type new_stream_label: str
+        :param new_stream_buffer_name: If `False` the data is going to get written to the default stream_buffer,
+                                   set to `True` to read the data via `pop_stream_data_from_stream_buffer(stream_id)` or
+                                   provide a string to create and use a shared stream_buffer and read it via
+                                   `pop_stream_data_from_stream_buffer('string')`.
+        :type new_stream_buffer_name: bool or str
+        :param new_symbol: provide the symbol for isolated_margin user_data streams
+        :type new_symbol: str
+        :param new_api_key: provide a valid Binance API key
+        :type new_api_key: str
+        :param new_api_secret: provide a valid Binance API secret
+        :type new_api_secret: str
         :return: new stream_id
         """
         # starting a new socket and stop the old stream not before the new stream received its first record
-        new_stream_id = self.create_stream(new_channels, new_markets)
+        new_stream_id = self.create_stream(new_channels, new_markets, new_stream_label, new_stream_buffer_name,
+                                           new_symbol, new_api_key, new_api_secret)
         if self.wait_till_stream_has_started(new_stream_id):
             self.stop_stream(stream_id)
         return new_stream_id

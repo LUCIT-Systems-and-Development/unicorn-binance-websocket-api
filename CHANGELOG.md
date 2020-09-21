@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.17.3.dev (development stage/unreleased/unstable)
+### Added
+- `replace_stream()`: new_stream_label=None, new_stream_buffer_name=False, new_symbol=False, new_api_key=False, 
+new_api_secret=False
 
 ## 1.17.3
 ### Fixed
