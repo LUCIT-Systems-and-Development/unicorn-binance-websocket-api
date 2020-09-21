@@ -66,5 +66,5 @@ Please control what version you are using with this script and post the output: 
 
 #### Description of your issue
 ```
-Include the contents of the log file here.
+Include the contents of the log file here. (REMOVE API_KEY, API_SECRET, LISTEN_KEY!!)
 ```
