@@ -677,7 +677,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             markets = [markets]
         payload = []
         if self.is_exchange_type("dex"):
-            if method == "subscribe":
+            if method == "subscribe" and channels is not False:
                 for channel in channels:
                     add_payload = {"method": method,
                                    "topic": channel}
@@ -688,20 +688,21 @@ class BinanceWebSocketApiManager(threading.Thread):
                         add_payload["symbols"] = ["$all"]
                         payload.append(add_payload)
                         continue
-                    for market in markets:
-                        if market == "allMiniTickers" or \
-                                market == "allTickers" or \
-                                market == "blockheight":
-                            add_payload_from_market = {"method": method,
-                                                       "topic": market,
-                                                       "symbols": ["$all"]}
-                            payload.append(add_payload_from_market)
-                            continue
-                        elif re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
-                            if self.stream_list[stream_id]['dex_user_address'] is False:
-                                self.stream_list[stream_id]['dex_user_address'] = market
-                        else:
-                            symbols.append(market)
+                    if markets:
+                        for market in markets:
+                            if market == "allMiniTickers" or \
+                                    market == "allTickers" or \
+                                    market == "blockheight":
+                                add_payload_from_market = {"method": method,
+                                                           "topic": market,
+                                                           "symbols": ["$all"]}
+                                payload.append(add_payload_from_market)
+                                continue
+                            elif re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
+                                if self.stream_list[stream_id]['dex_user_address'] is False:
+                                    self.stream_list[stream_id]['dex_user_address'] = market
+                            else:
+                                symbols.append(market)
                     try:
                         if self.stream_list[stream_id]["dex_user_address"] is not False:
                             add_payload["address"] = self.stream_list[stream_id]["dex_user_address"]
@@ -1126,7 +1127,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get a list of all active streams
 
-        :return: set
+        :return: set or False
         """
         # get the stream_list without stopped and crashed streams
         stream_list_with_active_streams = {}
@@ -1337,9 +1338,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         subscriptions = 0
         try:
             active_stream_list = copy.deepcopy(self.get_active_stream_list())
-            for stream_id in active_stream_list:
-                subscriptions += active_stream_list[stream_id]['subscriptions']
-            self.all_subscriptions_number = subscriptions
+            if active_stream_list:
+                for stream_id in active_stream_list:
+                    subscriptions += active_stream_list[stream_id]['subscriptions']
+                self.all_subscriptions_number = subscriptions
         except TypeError:
             return self.all_subscriptions_number
         except RuntimeError:

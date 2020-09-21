@@ -152,18 +152,18 @@ class BinanceWebSocketApiConnection(object):
             logging.error("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                           str(self.channels) + ", " + str(self.markets) + ")" + " - ConnectionResetError - " +
                           str(error_msg))
-        except OSError as error_msg:
-            logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                             str(self.channels) + ", " + str(self.markets) + ")" + " - OSError - " + str(error_msg))
-            self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, (str(error_msg)))
-            self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
-            sys.exit(1)
         except socket.gaierror as error_msg:
             logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ")" + " - No internet connection? "
                              "- " + str(error_msg))
             self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, (str(error_msg) +
                                                                           " - No internet connection?"))
+            self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+            sys.exit(1)
+        except OSError as error_msg:
+            logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) + ", " +
+                             str(self.channels) + ", " + str(self.markets) + ")" + " - OSError - " + str(error_msg))
+            self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, (str(error_msg)))
             self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
             sys.exit(1)
         except websockets.exceptions.InvalidStatusCode as error_msg:
