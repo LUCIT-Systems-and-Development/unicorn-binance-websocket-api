@@ -61,8 +61,8 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
         else:
+            #pass
             print(oldest_stream_data_from_stream_buffer)
-            pass
 
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function

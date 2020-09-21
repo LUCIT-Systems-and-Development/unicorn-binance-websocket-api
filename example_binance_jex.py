@@ -64,9 +64,9 @@ binance_jex_api_secret = ""
 binance_websocket_api_manager.set_private_api_config(binance_jex_api_key, binance_jex_api_secret)
 userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
 
-ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!optionMiniTicker"])
-miniticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!spotMiniTicker"])
-miniticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!spotTicker"])
+omt_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!optionMiniTicker"])
+smt_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!spotMiniTicker"])
+st_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!spotTicker"])
 
 spot_markets = {'eosbtc', 'ltcbtc', 'ethbtc', 'dashbtc'}
 spot_channels = {'spotTrade', 'spotMiniTicker', 'spotDepth20', 'spotDepthUpdate', 'spotTicker'}

@@ -1046,7 +1046,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                                              self.get_version(),
                                                                              self.used_weight)
             binance_websocket_api_restclient.delete_listen_key(self.stream_list[stream_id]['listen_key'])
-            del binance_websocket_api_restclient
 
     def delete_stream_from_stream_list(self, stream_id):
         """
@@ -2907,9 +2906,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         # will return `True` as soon the stream received the first data row
         while self.stream_list[stream_id]['last_heartbeat'] is None:
-            time.sleep(0.2)
-        else:
-            return True
+            time.sleep(0.1)
+        return True
 
     def wait_till_stream_has_stopped(self, stream_id):
         """
@@ -2921,6 +2919,5 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: True
         """
         while self.stream_list[stream_id]['has_stopped'] is False:
-            time.sleep(0.2)
-        else:
-            return True
+            time.sleep(0.1)
+        return True
