@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.17.3 documentation</title>
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.17.4 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -40,7 +40,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.17.3 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.17.4 documentation</a> &#187;
     
 
     <li class="right">
@@ -235,7 +235,7 @@ provide a string to create and use a shared stream_buffer and read it via
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">
-<code class="sig-name descname">create_stream</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em>, <em class="sig-param">stream_label=None</em>, <em class="sig-param">stream_buffer_name=False</em>, <em class="sig-param">symbol=False</em>, <em class="sig-param">api_key=False</em>, <em class="sig-param">api_secret=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_stream</code><span class="sig-paren">(</span><em class="sig-param">channels</em>, <em class="sig-param">markets</em>, <em class="sig-param">stream_label=None</em>, <em class="sig-param">stream_buffer_name=False</em>, <em class="sig-param">api_key=False</em>, <em class="sig-param">api_secret=False</em>, <em class="sig-param">symbol=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a websocket stream</p>
 <p>If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (markets * channels).</p>
 <blockquote>
@@ -285,9 +285,9 @@ with other streams in a multiplexed stream!</p>
 set to <cite>True</cite> to read the data via <cite>pop_stream_data_from_stream_buffer(stream_id)</cite> or
 provide a string to create and use a shared stream_buffer and read it via
 <cite>pop_stream_data_from_stream_buffer(‘string’)</cite>.</p></li>
-<li><p><strong>symbol</strong> (<em>str</em>) – provide the symbol for isolated_margin user_data streams</p></li>
 <li><p><strong>api_key</strong> (<em>str</em>) – provide a valid Binance API key</p></li>
 <li><p><strong>api_secret</strong> (<em>str</em>) – provide a valid Binance API secret</p></li>
+<li><p><strong>symbol</strong> (<em>str</em>) – provide the symbol for isolated_margin user_data streams</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1164,7 +1164,7 @@ please provide a path like “/var/www/html/” View:
 
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream">
-<code class="sig-name descname">replace_stream</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">new_channels</em>, <em class="sig-param">new_markets</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">replace_stream</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">new_channels</em>, <em class="sig-param">new_markets</em>, <em class="sig-param">new_stream_label=None</em>, <em class="sig-param">new_stream_buffer_name=False</em>, <em class="sig-param">new_api_key=False</em>, <em class="sig-param">new_api_secret=False</em>, <em class="sig-param">new_symbol=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace a stream</p>
 <p>If you want to start a stream with a new config, its recommended, to first start a new stream with the new
 settings and close the old stream not before the new stream received its first data. So your data will stay
@@ -1175,6 +1175,14 @@ consistent.</p>
 <li><p><strong>stream_id</strong> (<em>uuid</em>) – id of the old stream</p></li>
 <li><p><strong>new_channels</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – the new channel list for the stream</p></li>
 <li><p><strong>new_markets</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – the new markets list for the stream</p></li>
+<li><p><strong>new_stream_label</strong> (<em>str</em>) – provide a stream_label to identify the stream</p></li>
+<li><p><strong>new_stream_buffer_name</strong> (<em>bool</em><em> or </em><em>str</em>) – If <cite>False</cite> the data is going to get written to the default stream_buffer,
+set to <cite>True</cite> to read the data via <cite>pop_stream_data_from_stream_buffer(stream_id)</cite> or
+provide a string to create and use a shared stream_buffer and read it via
+<cite>pop_stream_data_from_stream_buffer(‘string’)</cite>.</p></li>
+<li><p><strong>new_api_key</strong> (<em>str</em>) – provide a valid Binance API key</p></li>
+<li><p><strong>new_api_secret</strong> (<em>str</em>) – provide a valid Binance API secret</p></li>
+<li><p><strong>new_symbol</strong> (<em>str</em>) – provide the symbol for isolated_margin user_data streams</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1661,7 +1669,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.17.3 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.17.4 documentation</a> &#187;
     
 
     <li class="right">
@@ -1675,7 +1683,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
-    Last updated on Mo 21. Sep 08:54:01 UTC 2020.
+    Last updated on Mo 21. Sep 10:27:23 UTC 2020.
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 

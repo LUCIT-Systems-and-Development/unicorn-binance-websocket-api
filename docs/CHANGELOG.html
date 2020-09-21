@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>unicorn-binance-websocket-api Change Log &#8212; unicorn-binance-websocket-api 1.17.3 documentation</title>
+    <title>unicorn-binance-websocket-api Change Log &#8212; unicorn-binance-websocket-api 1.17.4 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -48,7 +48,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.17.3 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.17.4 documentation</a> &#187;
     
 
     <li class="right">
@@ -70,40 +70,56 @@
 <p>The format is based on <a class="reference external" href="http://keepachangelog.com/">Keep a Changelog</a> and this project adheres to
 <a class="reference external" href="http://semver.org/">Semantic Versioning</a>.</p>
 <div class="section" id="dev-development-stage-unreleased-unstable">
-<h2>1.17.3.dev (development stage/unreleased/unstable)<a class="headerlink" href="#dev-development-stage-unreleased-unstable" title="Permalink to this headline">¶</a></h2>
+<h2>1.17.4.dev (development stage/unreleased/unstable)<a class="headerlink" href="#dev-development-stage-unreleased-unstable" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="id1">
-<h2>1.17.3<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2>1.17.4<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="added">
+<h3>Added<a class="headerlink" href="#added" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">replace_stream()</span></code>: new_stream_label=None, new_stream_buffer_name=False, new_symbol=False, new_api_key=False,
+new_api_secret=False</p></li>
+</ul>
+</div>
 <div class="section" id="fixed">
 <h3>Fixed<a class="headerlink" href="#fixed" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>reconnect counter (bug since 1.17.0)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>1.17.3<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>Fixed<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/109">issue #109</a></p></li>
 <li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/110">issue #110</a></p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id2">
-<h2>1.17.2<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="added">
-<h3>Added<a class="headerlink" href="#added" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h2>1.17.2<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h3>Added<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Handling of unknown error msg from Binance if uri = dict in connection class</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id3">
-<h2>1.17.1<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id4">
-<h3>Fixed<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h2>1.17.1<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h3>Fixed<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>reference of api_key and secret in connection class</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id5">
-<h2>1.17.0<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id6">
-<h3>Added<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h2>1.17.0<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h3>Added<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Isolated margin endpoints <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/109">issue #109</a></p></li>
 <li><p>Support for <code class="docutils literal notranslate"><span class="pre">&#64;arr&#64;&#64;s1</span></code> <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/101">issue #101</a></p></li>
@@ -112,10 +128,10 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id7">
-<h2>1.16.9<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id8">
-<h3>Added<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<h2>1.16.9<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id11">
+<h3>Added<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Restart to ssl.SSLError exception in connection</p></li>
 </ul>
@@ -127,10 +143,10 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id9">
-<h2>1.16.7<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id10">
-<h3>Added<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id12">
+<h2>1.16.7<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id13">
+<h3>Added<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Restart again if OSError in <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiConnection()</span></code></p></li>
 </ul>
@@ -142,38 +158,38 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id11">
-<h2>1.16.6<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id12">
-<h3>Changed<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id14">
+<h2>1.16.6<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id15">
+<h3>Changed<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Loglevels</p></li>
 </ul>
 </div>
-<div class="section" id="id13">
-<h3>Fixed<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id16">
+<h3>Fixed<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Fixed exception that thrown when api key is real but was deleted from binance. <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/96">PR #96</a> (Thanks Flowelcat)</p></li>
 <li><p>Package configuration is wrong. Currently one needs to have the bin-folder of the venv in the PATH. That is not feasible since you often have one venv per project. <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/97">PR #97</a> (Thanks uggel)</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id14">
-<h2>1.16.5<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id17">
+<h2>1.16.5<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>REMOVED</p></li>
 </ul>
 </div>
-<div class="section" id="id15">
-<h2>1.16.4<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id16">
-<h3>Changed<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id18">
+<h2>1.16.4<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id19">
+<h3>Changed<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Loglevels</p></li>
 </ul>
 </div>
-<div class="section" id="id17">
-<h3>Fixed<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id20">
+<h3>Fixed<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Fixed double slash bug when getting listen key for userDataStream.
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/87">PR #87</a></p></li>
@@ -181,38 +197,38 @@
 </ul>
 </div>
 </div>
-<div class="section" id="id18">
-<h2>1.16.3<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id19">
-<h3>Fixed<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id21">
+<h2>1.16.3<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id22">
+<h3>Fixed<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>restart if “with connection” in socket gets closed</p></li>
 <li><p>exception json.decoder.JSONDecodeError: respond = request_handler.json()</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id20">
-<h2>1.16.2<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id21">
-<h3>Fixed<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id23">
+<h2>1.16.2<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id24">
+<h3>Fixed<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Exception AttributeError Info: module ‘asyncio.base_futures’ has no attribute ‘InvalidStateError’ <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/83">issue #72</a></p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id22">
-<h2>1.16.1<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id23">
-<h3>Fixed<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id25">
+<h2>1.16.1<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id26">
+<h3>Fixed<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>exception in <code class="docutils literal notranslate"><span class="pre">print_suammary()</span></code></p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id24">
-<h2>1.16.0<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id25">
-<h3>Added<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id27">
+<h2>1.16.0<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id28">
+<h3>Added<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>stream_buffer control: create_stream(channels, markets, stream_buffer_name=None):
 If <code class="docutils literal notranslate"><span class="pre">False</span></code> the data is going to get written to the default stream_buffer, set to <code class="docutils literal notranslate"><span class="pre">True</span></code> to read the data via
@@ -228,23 +244,23 @@ and read it via <code class="docutils literal notranslate"><span class="pre">pop
 <li><p><code class="docutils literal notranslate"><span class="pre">get_ringbuffer_result_max_size()</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id26">
-<h3>Changed<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id29">
+<h3>Changed<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>renamed <code class="docutils literal notranslate"><span class="pre">restart_stream()</span></code> to <code class="docutils literal notranslate"><span class="pre">_restart_stream</span></code> and execute it only with a valid restart_request</p></li>
 </ul>
 </div>
-<div class="section" id="id27">
-<h3>Fixed<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id30">
+<h3>Fixed<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Ensure that during a restart, only the recent thread is able to send the payload for subscription</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id28">
-<h2>1.15.0<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id29">
-<h3>Added<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id31">
+<h2>1.15.0<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id32">
+<h3>Added<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>psutil (new requirement)</p></li>
 <li><p>exception handling of <code class="docutils literal notranslate"><span class="pre">websockets.exceptions.InvalidMessage</span></code> <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/72">issue #72</a></p></li>
@@ -255,24 +271,24 @@ and read it via <code class="docutils literal notranslate"><span class="pre">pop
 <li><p><code class="docutils literal notranslate"><span class="pre">get_process_usage_threads()</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id30">
-<h3>Fixed<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id33">
+<h3>Fixed<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Close WS only if open in connection class row 190 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/72">issue #72</a></p></li>
 </ul>
 </div>
-<div class="section" id="id31">
-<h3>Removed<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id34">
+<h3>Removed<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>some code in connection row 206 which is not needed anymore and is causing a coroutine error</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">is_websocket_uri_length_valid()</span></code></p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id32">
-<h2>1.14.0<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id33">
-<h3>Added<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id35">
+<h2>1.14.0<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id36">
+<h3>Added<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>new parameter <code class="docutils literal notranslate"><span class="pre">stream_label</span></code> in <code class="docutils literal notranslate"><span class="pre">manager.create_stream()</span></code><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60">issue #60</a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">manager.get_stream_label()</span></code> <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/60">issue #60</a></p></li>
@@ -286,15 +302,15 @@ and read it via <code class="docutils literal notranslate"><span class="pre">pop
 <li><p><code class="docutils literal notranslate"><span class="pre">self.restart_timeout</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id34">
-<h3>Changed<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id37">
+<h3>Changed<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>raising <code class="docutils literal notranslate"><span class="pre">UnknownExchange</span></code> or <code class="docutils literal notranslate"><span class="pre">StreamRecoveryError</span></code> instead of <code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fill_up_space()</span></code> to <code class="docutils literal notranslate"><span class="pre">fill_up_space_left()</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id35">
-<h3>Fixed<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id38">
+<h3>Fixed<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>reset the payloads of a stream at a stream restart</p></li>
 <li><p>moved some code for a stream restart from <code class="docutils literal notranslate"><span class="pre">_keepalive_streams()</span></code> to <code class="docutils literal notranslate"><span class="pre">restart_stream()</span></code> which caused that the direct
@@ -302,25 +318,25 @@ call of <code class="docutils literal notranslate"><span class="pre">restart_str
 <li><p>handling of <code class="docutils literal notranslate"><span class="pre">RuntimeWarning</span></code> in class connection at row 189</p></li>
 </ul>
 </div>
-<div class="section" id="id36">
-<h3>Removed<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id39">
+<h3>Removed<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>code to start new <code class="docutils literal notranslate"><span class="pre">_keepalive_streams()</span></code> and <code class="docutils literal notranslate"><span class="pre">_frequent_checks()</span></code> threads</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id37">
-<h2>1.13.0<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id38">
-<h3>Added<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id40">
+<h2>1.13.0<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id41">
+<h3>Added<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">disable_print</span></code> in <code class="docutils literal notranslate"><span class="pre">print_summary()</span></code> <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/48">pull #48</a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">print_summary_export_path</span></code> - if provided, the lib is going to export the output of <code class="docutils literal notranslate"><span class="pre">print_summary()</span></code> to a PNG image.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">get_number_of_all_subscriptions()</span></code> and show all subscriptions number in <code class="docutils literal notranslate"><span class="pre">print_summary()</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id39">
-<h3>Fixed<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id42">
+<h3>Fixed<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>ping listen_key if “!userData” is in <code class="docutils literal notranslate"><span class="pre">channels</span></code>, not only in <code class="docutils literal notranslate"><span class="pre">markets</span></code>.</p></li>
 <li><p>format of some logs</p></li>
@@ -329,14 +345,14 @@ call of <code class="docutils literal notranslate"><span class="pre">restart_str
 </ul>
 </div>
 </div>
-<div class="section" id="id40">
-<h2>1.12.0<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id43">
+<h2>1.12.0<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="recommended-update">
 <h3>RECOMMENDED UPDATE!<a class="headerlink" href="#recommended-update" title="Permalink to this headline">¶</a></h3>
 <p>https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23</p>
 </div>
-<div class="section" id="id41">
-<h3>Added<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id44">
+<h3>Added<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>avoid sending more than 5 messages per stream per second <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/45">issue #45</a></p></li>
 <li><p>stop streams and set status to “crashed” if they exceed the limit of 1024 subscriptions per stream <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/45">issue #45</a></p>
@@ -351,37 +367,37 @@ call of <code class="docutils literal notranslate"><span class="pre">restart_str
 (invalid api-key format or exceeding the 1024 subscription limit)</p></li>
 </ul>
 </div>
-<div class="section" id="id42">
-<h3>Changed<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id45">
+<h3>Changed<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>loglevel <code class="docutils literal notranslate"><span class="pre">connection.send()</span></code> loglevels from error to critical.</p></li>
 <li><p>loglevel <code class="docutils literal notranslate"><span class="pre">manager.create_websocket_uri()</span></code> of known errors from error to critical.</p></li>
 </ul>
 </div>
-<div class="section" id="id43">
-<h3>Fixed<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id46">
+<h3>Fixed<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">OSError</span></code> exception for <code class="docutils literal notranslate"><span class="pre">self.monitoring_api_server.start()</span></code> if its already started</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">keepalive_streams_id</span> <span class="pre">in</span> <span class="pre">self.keepalive_streams_list:</span></code> added threadding lock (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/47">issue #47</a>)</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id44">
-<h2>1.11.0<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id45">
-<h3>Added<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id47">
+<h2>1.11.0<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id48">
+<h3>Added<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>binance jex</p></li>
 </ul>
 </div>
-<div class="section" id="id46">
-<h3>Changed<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id49">
+<h3>Changed<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>dependency websockets from 7.0 to 8.1 which needs python&gt;=3.6.1 (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/11">issue #11</a>)</p></li>
 </ul>
 </div>
-<div class="section" id="id47">
-<h3>Fixed<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id50">
+<h3>Fixed<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>expception handling of send() (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/43">issue #43</a>)</p></li>
 <li><p>thread lock for <code class="docutils literal notranslate"><span class="pre">frequent_checks_list</span></code> (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/11#issuecomment-590914274">comment #590914274</a>)</p></li>
@@ -389,33 +405,33 @@ call of <code class="docutils literal notranslate"><span class="pre">restart_str
 </ul>
 </div>
 </div>
-<div class="section" id="id48">
-<h2>1.10.6<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id49">
-<h3>Added<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id51">
+<h2>1.10.6<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id52">
+<h3>Added<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>fill_up_space_centered()</p></li>
 <li><p>update check on manager start</p></li>
 </ul>
 </div>
-<div class="section" id="id50">
-<h3>Changed<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id53">
+<h3>Changed<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>print_stream_info() and print_summary(): unicorn-binance-websocket-api_<version>-python_<version> in top boarder row</p></li>
 <li><p>count subscriptions</p></li>
 </ul>
 </div>
-<div class="section" id="id51">
-<h3>Fixed<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id54">
+<h3>Fixed<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>lower for cex and upper for dex with exceptions for arr, $all, ! and array channels</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id52">
-<h2>1.10.5<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id53">
-<h3>Fixed<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id55">
+<h2>1.10.5<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id56">
+<h3>Fixed<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">lower()</span></code> markets in <code class="docutils literal notranslate"><span class="pre">create_payload()</span></code> and exception for <code class="docutils literal notranslate"><span class="pre">!userData</span></code></p></li>
 <li><p>get_active_stream_list() took len() of false item</p></li>
@@ -423,51 +439,51 @@ call of <code class="docutils literal notranslate"><span class="pre">restart_str
 </ul>
 </div>
 </div>
-<div class="section" id="id54">
-<h2>1.10.4<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id55">
-<h3>Changed<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id57">
+<h2>1.10.4<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id58">
+<h3>Changed<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>making <code class="docutils literal notranslate"><span class="pre">self.stream_buffer</span></code> thread safe</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id56">
-<h2>1.10.3<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id57">
-<h3>Changed<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id59">
+<h2>1.10.3<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id60">
+<h3>Changed<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>removed simplejson exception in restclient</p></li>
 <li><p>set OSError from error to critical</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id58">
-<h2>1.10.2<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id59">
-<h3>Fixed<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id61">
+<h2>1.10.2<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id62">
+<h3>Fixed<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">['receives_statistic_last_second']</span></code> dict is changing size during iteration. (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/37">issue #37</a>)</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id60">
-<h2>1.10.1<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id61">
-<h3>Changed<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id63">
+<h2>1.10.1<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id64">
+<h3>Changed<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Using ujson instead of stock json lib</p></li>
 <li><p>cleaning <code class="docutils literal notranslate"><span class="pre">create_payload()</span></code> for CEX</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id62">
-<h2>1.10.0<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id65">
+<h2>1.10.0<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="important-infos-please-read">
 <h3>Important infos, <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/38">please read!</a><a class="headerlink" href="#important-infos-please-read" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="section" id="id63">
-<h3>Added<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id66">
+<h3>Added<a class="headerlink" href="#id66" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">unicorn_binance_websocket_api_manager.is_exchange_type()</span></code></p></li>
 <li><p>support for subscribe/unsubscribe for CEX websockets</p></li>
@@ -477,111 +493,111 @@ call of <code class="docutils literal notranslate"><span class="pre">restart_str
 <li><p><code class="docutils literal notranslate"><span class="pre">split_payload()</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id64">
-<h3>Changed<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id67">
+<h3>Changed<a class="headerlink" href="#id67" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>The 8004 char limit for URIs on websocket connect is bypassed via subscriptions with websocket.send() and
 <code class="docutils literal notranslate"><span class="pre">is_websocket_uri_length_valid()</span></code> allways returns <code class="docutils literal notranslate"><span class="pre">True</span></code> now!</p></li>
 </ul>
 </div>
-<div class="section" id="id65">
-<h3>Fixed<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id68">
+<h3>Fixed<a class="headerlink" href="#id68" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Subscribe/unsubscribe items of DEX websockets (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/projects/5#card-23700264">card #5</a>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">['receives_statistic_last_second']</span></code> dict is changing size during iteration. (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/37">issue #37</a>)</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id66">
-<h2>1.9.1<a class="headerlink" href="#id66" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id67">
-<h3>Added<a class="headerlink" href="#id67" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id69">
+<h2>1.9.1<a class="headerlink" href="#id69" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id70">
+<h3>Added<a class="headerlink" href="#id70" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Python version in print_stream_info() and print_summary()</p></li>
 </ul>
 </div>
-<div class="section" id="id68">
-<h3>Fixed<a class="headerlink" href="#id68" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id71">
+<h3>Fixed<a class="headerlink" href="#id71" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Typo in text string</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id69">
-<h2>1.9.0<a class="headerlink" href="#id69" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id70">
-<h3>Added<a class="headerlink" href="#id70" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id72">
+<h2>1.9.0<a class="headerlink" href="#id72" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id73">
+<h3>Added<a class="headerlink" href="#id73" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Endpoints for www.binance.com margin UserData listenkey (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35">issue #35</a>)</p></li>
 </ul>
 </div>
-<div class="section" id="id71">
-<h3>Changed<a class="headerlink" href="#id71" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id74">
+<h3>Changed<a class="headerlink" href="#id74" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Endpoints for www.binance.com spot UserData listenkey (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35">issue #35</a>)</p></li>
 <li><p>Endpoints for www.binance.com futures UserData listenkey (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/35">issue #35</a>)</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id72">
-<h2>1.8.2<a class="headerlink" href="#id72" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id73">
-<h3>Fixed<a class="headerlink" href="#id73" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id75">
+<h2>1.8.2<a class="headerlink" href="#id75" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id76">
+<h3>Fixed<a class="headerlink" href="#id76" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Errors when creating private DEX streams (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/34">issue #34</a>)</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id74">
-<h2>1.8.1<a class="headerlink" href="#id74" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id75">
-<h3>Changed<a class="headerlink" href="#id75" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id77">
+<h2>1.8.1<a class="headerlink" href="#id77" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id78">
+<h3>Changed<a class="headerlink" href="#id78" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Moved docs to github pages</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id76">
-<h2>1.8.0<a class="headerlink" href="#id76" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id77">
-<h3>Added<a class="headerlink" href="#id77" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id79">
+<h2>1.8.0<a class="headerlink" href="#id79" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id80">
+<h3>Added<a class="headerlink" href="#id80" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>binance.com Futures websocket support and <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_futures.py">example_binance_futures.py</a> and <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_bookticker.py">example_bookticker.py</a> (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/32">issue#32</a>)</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id78">
-<h2>1.7.0<a class="headerlink" href="#id78" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id79">
-<h3>Added<a class="headerlink" href="#id79" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id81">
+<h2>1.7.0<a class="headerlink" href="#id81" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id82">
+<h3>Added<a class="headerlink" href="#id82" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>binance.us websocket support and <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_us.py">example_binance_us.py</a> (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/22">issue#22</a>)</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id80">
-<h2>1.6.6<a class="headerlink" href="#id80" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id81">
-<h3>Fixed<a class="headerlink" href="#id81" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id83">
+<h2>1.6.6<a class="headerlink" href="#id83" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id84">
+<h3>Fixed<a class="headerlink" href="#id84" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Trailing / is no longer accepted by the endpoints:
 https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/31</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id82">
-<h2>1.6.5<a class="headerlink" href="#id82" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id83">
-<h3>Fixed<a class="headerlink" href="#id83" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id85">
+<h2>1.6.5<a class="headerlink" href="#id85" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id86">
+<h3>Fixed<a class="headerlink" href="#id86" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>‘websockets&gt;=7.0’ to ‘websockets==7.0’: Websockets 8 is released and it seems to be not compatible</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id84">
-<h2>1.6.4<a class="headerlink" href="#id84" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id85">
-<h3>Added<a class="headerlink" href="#id85" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id87">
+<h2>1.6.4<a class="headerlink" href="#id87" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id88">
+<h3>Added<a class="headerlink" href="#id88" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Amount of active streams to icinga status msg</p></li>
 </ul>
@@ -593,64 +609,64 @@ https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/31<
 </ul>
 </div>
 </div>
-<div class="section" id="id86">
-<h2>1.6.3<a class="headerlink" href="#id86" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id87">
-<h3>Fix<a class="headerlink" href="#id87" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id89">
+<h2>1.6.3<a class="headerlink" href="#id89" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id90">
+<h3>Fix<a class="headerlink" href="#id90" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>‘except websockets.exceptions.InvalidStatusCode as error_msg:’ moved to right place</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id88">
-<h2>1.6.2<a class="headerlink" href="#id88" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id89">
-<h3>Fix<a class="headerlink" href="#id89" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id91">
+<h2>1.6.2<a class="headerlink" href="#id91" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id92">
+<h3>Fix<a class="headerlink" href="#id92" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>‘except websockets.exceptions.InvalidStatusCode as error_msg:’ in connnection line 97 with restart</p></li>
 <li><p>‘except KeyError:’ in connection line 162</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id90">
-<h2>1.6.1<a class="headerlink" href="#id90" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id91">
-<h3>Fix<a class="headerlink" href="#id91" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id93">
+<h2>1.6.1<a class="headerlink" href="#id93" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id94">
+<h3>Fix<a class="headerlink" href="#id94" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>get_monitoring_status_plain(): exception for outdated UnicornFy</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id92">
-<h2>1.6.0<a class="headerlink" href="#id92" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id93">
-<h3>Added<a class="headerlink" href="#id93" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id95">
+<h2>1.6.0<a class="headerlink" href="#id95" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id96">
+<h3>Added<a class="headerlink" href="#id96" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>is_update_availabe_check_command()</p></li>
 <li><p>get_latest_version_check_command()</p></li>
 <li><p>get_latest_release_info_check_command()</p></li>
 </ul>
 </div>
-<div class="section" id="id94">
-<h3>Changed<a class="headerlink" href="#id94" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id97">
+<h3>Changed<a class="headerlink" href="#id97" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>get_monitoring_status_plain()</p></li>
 <li><p>get_monitoring_status_icinga()</p></li>
 <li><p>_start_monitoring_api()</p></li>
 </ul>
 </div>
-<div class="section" id="id95">
-<h3>Removed!<a class="headerlink" href="#id95" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id98">
+<h3>Removed!<a class="headerlink" href="#id98" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/icinga/
 (to https://github.com/oliver-zehentleitner/check_unicorn_monitoring_api)</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id96">
-<h2>1.5.0<a class="headerlink" href="#id96" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id97">
-<h3>Added<a class="headerlink" href="#id97" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id99">
+<h2>1.5.0<a class="headerlink" href="#id99" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id100">
+<h3>Added<a class="headerlink" href="#id100" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>support for binance.org and testnet.binance.org websockets</p></li>
 <li><p>exchange name to icinga status msg</p></li>
@@ -666,8 +682,8 @@ behaviour)</strong></p></li>
 <li><p>_create_payload()</p></li>
 </ul>
 </div>
-<div class="section" id="id98">
-<h3>Changed<a class="headerlink" href="#id98" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id101">
+<h3>Changed<a class="headerlink" href="#id101" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>rewrite create_websocket_url():</p>
 <ol class="simple">
@@ -679,10 +695,10 @@ behaviour)</strong></p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id99">
-<h2>1.4.0<a class="headerlink" href="#id99" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id100">
-<h3>Added<a class="headerlink" href="#id100" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id102">
+<h2>1.4.0<a class="headerlink" href="#id102" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id103">
+<h3>Added<a class="headerlink" href="#id103" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>support for binance.je (Binance Jersey) websockets</p></li>
 <li><p>logging on failure in <code class="docutils literal notranslate"><span class="pre">create_stream()</span></code></p></li>
@@ -692,55 +708,55 @@ behaviour)</strong></p></li>
 <li><p>show the used exchange in <code class="docutils literal notranslate"><span class="pre">print_summary()</span></code> and <code class="docutils literal notranslate"><span class="pre">print_stream_info()</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id101">
-<h3>Fixed<a class="headerlink" href="#id101" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id104">
+<h3>Fixed<a class="headerlink" href="#id104" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>removed space from <code class="docutils literal notranslate"><span class="pre">total_received_length</span></code> in <code class="docutils literal notranslate"><span class="pre">get_monitoring_status_icinga()</span></code> to avoid ‘no data’ error in ICINGA</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id102">
-<h2>1.3.10<a class="headerlink" href="#id102" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id103">
-<h3>Added<a class="headerlink" href="#id103" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id105">
+<h2>1.3.10<a class="headerlink" href="#id105" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id106">
+<h3>Added<a class="headerlink" href="#id106" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>exception for <code class="docutils literal notranslate"><span class="pre">asyncio.base_futures.InvalidStateError</span></code> by DaWe35
 https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/18</p></li>
 </ul>
 </div>
-<div class="section" id="id104">
-<h3>Changed<a class="headerlink" href="#id104" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id107">
+<h3>Changed<a class="headerlink" href="#id107" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>create_stream() returns False if websocket URL is to long</p></li>
 </ul>
 </div>
-<div class="section" id="id105">
-<h3>Fixed<a class="headerlink" href="#id105" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id108">
+<h3>Fixed<a class="headerlink" href="#id108" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">is_websocket_uri_length_valid()</span></code> to work with !userData on the pre test in <code class="docutils literal notranslate"><span class="pre">create_stream()</span></code> without api secrets</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id106">
-<h2>1.3.9<a class="headerlink" href="#id106" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id107">
-<h3>Changed<a class="headerlink" href="#id107" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id109">
+<h2>1.3.9<a class="headerlink" href="#id109" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id110">
+<h3>Changed<a class="headerlink" href="#id110" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Docstrings for <code class="docutils literal notranslate"><span class="pre">markets</span></code> and <code class="docutils literal notranslate"><span class="pre">channels</span></code> to support: str, tuple, list, set</p></li>
 <li><p>Fine tuning of perfdata output in <code class="docutils literal notranslate"><span class="pre">get_monitoring_status_plain()</span></code> and <code class="docutils literal notranslate"><span class="pre">get_monitoring_status_icinga()</span></code></p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id108">
-<h2>1.3.8<a class="headerlink" href="#id108" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id109">
-<h3>Added<a class="headerlink" href="#id109" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id111">
+<h2>1.3.8<a class="headerlink" href="#id111" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id112">
+<h3>Added<a class="headerlink" href="#id112" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">get_stream_buffer_length()</span></code> by DaWe35 https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/12</p></li>
 </ul>
 </div>
-<div class="section" id="id110">
-<h3>Fixed<a class="headerlink" href="#id110" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id113">
+<h3>Fixed<a class="headerlink" href="#id113" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>the <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> FIFO stack was a LIFO stack (Thanks to DaWe35 for recognizing and fixing this issue
 https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/12)</p></li>
@@ -748,49 +764,49 @@ https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/12)</
 </ul>
 </div>
 </div>
-<div class="section" id="id111">
-<h2>1.3.7<a class="headerlink" href="#id111" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id112">
-<h3>Changed<a class="headerlink" href="#id112" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id114">
+<h2>1.3.7<a class="headerlink" href="#id114" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id115">
+<h3>Changed<a class="headerlink" href="#id115" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>added round received items to 2 decimals instead of 0</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id113">
-<h2>1.3.6<a class="headerlink" href="#id113" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id116">
+<h2>1.3.6<a class="headerlink" href="#id116" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>wrong version in manager class …</p></li>
 </ul>
 </div>
-<div class="section" id="id114">
-<h2>1.3.5<a class="headerlink" href="#id114" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id115">
-<h3>Added<a class="headerlink" href="#id115" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id117">
+<h2>1.3.5<a class="headerlink" href="#id117" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id118">
+<h3>Added<a class="headerlink" href="#id118" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>is_manager_stopping()</p></li>
 </ul>
 </div>
-<div class="section" id="id116">
-<h3>Fixed<a class="headerlink" href="#id116" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id119">
+<h3>Fixed<a class="headerlink" href="#id119" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>is_update_available returns False if github API is not available.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id117">
-<h2>1.3.4<a class="headerlink" href="#id117" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id118">
-<h3>Changed<a class="headerlink" href="#id118" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id120">
+<h2>1.3.4<a class="headerlink" href="#id120" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id121">
+<h3>Changed<a class="headerlink" href="#id121" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>get_monitoring_status_icinga(): update check</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id119">
-<h2>1.3.3<a class="headerlink" href="#id119" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id120">
-<h3>Added<a class="headerlink" href="#id120" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id122">
+<h2>1.3.3<a class="headerlink" href="#id122" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id123">
+<h3>Added<a class="headerlink" href="#id123" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>get_monitoring_status_icinga(): reconnects and update check</p></li>
 <li><p>get_monitoring_status_plain()</p></li>
@@ -805,171 +821,171 @@ https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/12)</
 <li><p>./tools/icinga/check_binance_websocket_api_manager (check_command for ICINGA)</p></li>
 </ul>
 </div>
-<div class="section" id="id121">
-<h3>Changed<a class="headerlink" href="#id121" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id124">
+<h3>Changed<a class="headerlink" href="#id124" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>example_monitoring.py</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id122">
-<h2>1.3.2<a class="headerlink" href="#id122" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id123">
-<h3>Added<a class="headerlink" href="#id123" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id125">
+<h2>1.3.2<a class="headerlink" href="#id125" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id126">
+<h3>Added<a class="headerlink" href="#id126" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>example_monitoring.py and tools/check_binance_websocket_api_manager</p></li>
 <li><p>get_monitoring_status_icinga tests for available updates and changes the <code class="docutils literal notranslate"><span class="pre">return_code</span></code> to WARNING if an update is
 available. but i recognized an API ban from github in cause of too many requests. i have to extend it …</p></li>
 </ul>
 </div>
-<div class="section" id="id124">
-<h3>Changed<a class="headerlink" href="#id124" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id127">
+<h3>Changed<a class="headerlink" href="#id127" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>get_monitoring_status_icinga: changed <code class="docutils literal notranslate"><span class="pre">status</span></code> dict node to <code class="docutils literal notranslate"><span class="pre">return_code</span></code></p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id125">
-<h2>1.3.1<a class="headerlink" href="#id125" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id126">
-<h3>Changed<a class="headerlink" href="#id126" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id128">
+<h2>1.3.1<a class="headerlink" href="#id128" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id129">
+<h3>Changed<a class="headerlink" href="#id129" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>changing output of get_monitoring_status_icinga</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id127">
-<h2>1.3.0<a class="headerlink" href="#id127" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id128">
-<h3>Added<a class="headerlink" href="#id128" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id130">
+<h2>1.3.0<a class="headerlink" href="#id130" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id131">
+<h3>Added<a class="headerlink" href="#id131" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>get_monitoring_status_icinga() in manager class</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id129">
-<h2>1.2.8<a class="headerlink" href="#id129" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id130">
-<h3>Added<a class="headerlink" href="#id130" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id132">
+<h2>1.2.8<a class="headerlink" href="#id132" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id133">
+<h3>Added<a class="headerlink" href="#id133" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>lib version to print_summary()</p></li>
 </ul>
 </div>
-<div class="section" id="id131">
-<h3>Fixed<a class="headerlink" href="#id131" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id134">
+<h3>Fixed<a class="headerlink" href="#id134" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Typo in text in print_summary()</p></li>
 <li><p>KeyError in manager class row 148</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id132">
-<h2>1.2.7<a class="headerlink" href="#id132" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id133">
-<h3>Fixed<a class="headerlink" href="#id133" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id135">
+<h2>1.2.7<a class="headerlink" href="#id135" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id136">
+<h3>Fixed<a class="headerlink" href="#id136" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Bug in class UnicornFy: kline_close_time had the value kline_start_time</p></li>
 </ul>
 </div>
-<div class="section" id="id134">
-<h3>Changed<a class="headerlink" href="#id134" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id137">
+<h3>Changed<a class="headerlink" href="#id137" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Moved UnicornFy from UNICORN Binance WebSocket API to its own <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">repository</a></p></li>
 <li><p>connection handling (improved)</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id135">
-<h2>1.2.6<a class="headerlink" href="#id135" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id136">
-<h3>Fixed<a class="headerlink" href="#id136" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id138">
+<h2>1.2.6<a class="headerlink" href="#id138" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id139">
+<h3>Fixed<a class="headerlink" href="#id139" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">markets</span></code> in keepalive listen_key can come as str or as list and the routine only handled it as list, now str gets
 converted to list to keep the function working</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id137">
-<h2>1.2.5<a class="headerlink" href="#id137" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id138">
-<h3>Added<a class="headerlink" href="#id138" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id140">
+<h2>1.2.5<a class="headerlink" href="#id140" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id141">
+<h3>Added<a class="headerlink" href="#id141" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>“UTC” text to printed times</p></li>
 </ul>
 </div>
-<div class="section" id="id139">
-<h3>Fixed<a class="headerlink" href="#id139" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id142">
+<h3>Fixed<a class="headerlink" href="#id142" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>listen_key 30 min cache</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id140">
-<h2>1.2.4<a class="headerlink" href="#id140" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id141">
-<h3>Added<a class="headerlink" href="#id141" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id143">
+<h2>1.2.4<a class="headerlink" href="#id143" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id144">
+<h3>Added<a class="headerlink" href="#id144" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>method to delete a listen_key</p></li>
 <li><p>binance_api_status added to print_stream_info()</p></li>
 </ul>
 </div>
-<div class="section" id="id142">
-<h3>Changed<a class="headerlink" href="#id142" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id145">
+<h3>Changed<a class="headerlink" href="#id145" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>README.md</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id143">
-<h2>1.2.3<a class="headerlink" href="#id143" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id144">
-<h3>Changed<a class="headerlink" href="#id144" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id146">
+<h2>1.2.3<a class="headerlink" href="#id146" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id147">
+<h3>Changed<a class="headerlink" href="#id147" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>rewrite coloring for status_code in print_summary</p></li>
 <li><p>ping_interval from None to 20 seconds</p></li>
 </ul>
 </div>
-<div class="section" id="id145">
-<h3>Fixed<a class="headerlink" href="#id145" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id148">
+<h3>Fixed<a class="headerlink" href="#id148" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>listen_key keepalive didnt work propper</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id146">
-<h2>1.2.2<a class="headerlink" href="#id146" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id147">
-<h3>Fixed<a class="headerlink" href="#id147" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id149">
+<h2>1.2.2<a class="headerlink" href="#id149" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id150">
+<h3>Fixed<a class="headerlink" href="#id150" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>TypeError in print_summary()</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id148">
-<h2>1.2.1<a class="headerlink" href="#id148" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id149">
-<h3>Added<a class="headerlink" href="#id149" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id151">
+<h2>1.2.1<a class="headerlink" href="#id151" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id152">
+<h3>Added<a class="headerlink" href="#id152" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>handling for status_code and used_weight from the binance REST Api (used for listen_key) - see <code class="docutils literal notranslate"><span class="pre">get_binance_api_status()</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="id150">
-<h3>Fixed<a class="headerlink" href="#id150" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id153">
+<h3>Fixed<a class="headerlink" href="#id153" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>reconnect issues</p></li>
 </ul>
 </div>
-<div class="section" id="id151">
-<h3>Changed<a class="headerlink" href="#id151" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id154">
+<h3>Changed<a class="headerlink" href="#id154" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>log levels</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id152">
-<h2>1.2.0<a class="headerlink" href="#id152" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id153">
-<h3>Changed<a class="headerlink" href="#id153" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id155">
+<h2>1.2.0<a class="headerlink" href="#id155" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id156">
+<h3>Changed<a class="headerlink" href="#id156" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>if no method is provided to BinanceWebSocketApiManager when creating the instance, then all data will be written to
 the stream_buffer.</p></li>
@@ -977,83 +993,83 @@ the stream_buffer.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id154">
-<h2>1.1.20<a class="headerlink" href="#id154" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id155">
-<h3>Changed<a class="headerlink" href="#id155" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id157">
+<h2>1.1.20<a class="headerlink" href="#id157" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id158">
+<h3>Changed<a class="headerlink" href="#id158" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>show stream_buffer content if items len &gt; 50</p></li>
 </ul>
 </div>
-<div class="section" id="id156">
-<h3>Removed<a class="headerlink" href="#id156" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id159">
+<h3>Removed<a class="headerlink" href="#id159" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>removed stream_buffer log</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id157">
-<h2>1.1.19<a class="headerlink" href="#id157" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id160">
+<h2>1.1.19<a class="headerlink" href="#id160" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="change">
 <h3>Change<a class="headerlink" href="#change" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>renamed get_stream_data_from_stream_buffer to pop_stream_data_from_stream_buffer</p></li>
 </ul>
 </div>
-<div class="section" id="id158">
-<h3>Fixed<a class="headerlink" href="#id158" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id161">
+<h3>Fixed<a class="headerlink" href="#id161" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>IndexError in pop_stream_data_from_stream_buffer</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id159">
-<h2>1.1.18<a class="headerlink" href="#id159" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id160">
-<h3>Removed<a class="headerlink" href="#id160" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id162">
+<h2>1.1.18<a class="headerlink" href="#id162" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id163">
+<h3>Removed<a class="headerlink" href="#id163" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>_forward_stream_buffer_data: system change - no pushing anymore, its better to buffer everything and run a import class
 in a separate thread, that is able to reconnect to the database</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id161">
-<h2>1.1.17<a class="headerlink" href="#id161" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id162">
-<h3>Changed<a class="headerlink" href="#id162" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id164">
+<h2>1.1.17<a class="headerlink" href="#id164" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id165">
+<h3>Changed<a class="headerlink" href="#id165" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>rewrite of keepalive and frequentchecks restarts</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id163">
-<h2>1.1.16<a class="headerlink" href="#id163" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id164">
-<h3>Changed<a class="headerlink" href="#id164" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>stream_buffer logging: log amount of items in buffer</p></li>
-</ul>
-</div>
-</div>
-<div class="section" id="id165">
-<h2>1.1.15<a class="headerlink" href="#id165" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id166">
-<h3>Changed<a class="headerlink" href="#id166" title="Permalink to this headline">¶</a></h3>
+<h2>1.1.16<a class="headerlink" href="#id166" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id167">
+<h3>Changed<a class="headerlink" href="#id167" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>stream_buffer logging: log amount of items in buffer</p></li>
 </ul>
 </div>
-<div class="section" id="id167">
-<h3>Fixed<a class="headerlink" href="#id167" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id168">
+<h2>1.1.15<a class="headerlink" href="#id168" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id169">
+<h3>Changed<a class="headerlink" href="#id169" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>stream_buffer logging: log amount of items in buffer</p></li>
+</ul>
+</div>
+<div class="section" id="id170">
+<h3>Fixed<a class="headerlink" href="#id170" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>added two mac os specific exceptions to connection class for better reconnect management</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id168">
-<h2>1.1.14<a class="headerlink" href="#id168" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id169">
-<h3>Fixed<a class="headerlink" href="#id169" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id171">
+<h2>1.1.14<a class="headerlink" href="#id171" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id172">
+<h3>Fixed<a class="headerlink" href="#id172" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>updated the “update” methods in manager class (error handling while no internet connection)</p></li>
 <li><p>trying other behaviour on `400 - bad request’ error</p></li>
@@ -1061,44 +1077,44 @@ in a separate thread, that is able to reconnect to the database</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id170">
-<h2>1.1.13<a class="headerlink" href="#id170" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id171">
-<h3>Changed<a class="headerlink" href="#id171" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id173">
+<h2>1.1.13<a class="headerlink" href="#id173" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id174">
+<h3>Changed<a class="headerlink" href="#id174" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>changed the waiting time before setting a restart request on 400 error to 5 seconds in connection class</p></li>
 </ul>
 </div>
-<div class="section" id="id172">
-<h3>Fixed<a class="headerlink" href="#id172" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id175">
+<h3>Fixed<a class="headerlink" href="#id175" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>replaced tabs in print_summary() with blanks</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id173">
-<h2>1.1.12<a class="headerlink" href="#id173" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id174">
-<h3>Fixed<a class="headerlink" href="#id174" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id176">
+<h2>1.1.12<a class="headerlink" href="#id176" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id177">
+<h3>Fixed<a class="headerlink" href="#id177" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>KeyError in unicorn_binance_websocket_api_connection.py error exception 414</p></li>
 <li><p>UnicornFy was very buggy with ticker and miniTicker handling</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id175">
-<h2>1.1.11<a class="headerlink" href="#id175" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id176">
-<h3>Fixed<a class="headerlink" href="#id176" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id178">
+<h2>1.1.11<a class="headerlink" href="#id178" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id179">
+<h3>Fixed<a class="headerlink" href="#id179" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>KeyError in unicorn_binance_websocket_api_manager.py</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id177">
-<h2>1.1.10<a class="headerlink" href="#id177" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id178">
-<h3>Added<a class="headerlink" href="#id178" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id180">
+<h2>1.1.10<a class="headerlink" href="#id180" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id181">
+<h3>Added<a class="headerlink" href="#id181" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>restarting streams row to print_summary()</p></li>
 <li><p>show active restarting and stopped streams only if not 0</p></li>
@@ -1106,39 +1122,39 @@ in a separate thread, that is able to reconnect to the database</p></li>
 <li><p>reconnect depends from disconnect reason now (network or api-settings)</p></li>
 </ul>
 </div>
-<div class="section" id="id179">
-<h3>Fixed<a class="headerlink" href="#id179" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id182">
+<h3>Fixed<a class="headerlink" href="#id182" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>del restart request in stop_stream()</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id180">
-<h2>1.1.9<a class="headerlink" href="#id180" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id181">
-<h3>Fixed<a class="headerlink" href="#id181" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id183">
+<h2>1.1.9<a class="headerlink" href="#id183" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id184">
+<h3>Fixed<a class="headerlink" href="#id184" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>!miniTicker and !userData didnt work in cause of lower case all currencies. added an exception for them.</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id182">
-<h2>1.1.8<a class="headerlink" href="#id182" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id183">
-<h3>Added<a class="headerlink" href="#id183" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id185">
+<h2>1.1.8<a class="headerlink" href="#id185" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id186">
+<h3>Added<a class="headerlink" href="#id186" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>pypi_install_packaging_tools.sh</p></li>
 </ul>
 </div>
-<div class="section" id="id184">
-<h3>Changed<a class="headerlink" href="#id184" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id187">
+<h3>Changed<a class="headerlink" href="#id187" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>README.md</p></li>
 <li><p>Removed 2nd argument from binance_websocket_api_manager.stream_is_stopping()</p></li>
 </ul>
 </div>
-<div class="section" id="id185">
-<h3>Fixed<a class="headerlink" href="#id185" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id188">
+<h3>Fixed<a class="headerlink" href="#id188" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Tabs in print_summary() for windows platform</p></li>
 <li><p>Fixing format errors from auto reformat in unicorn_binance_websocket_api_connection</p></li>
@@ -1148,27 +1164,27 @@ in a separate thread, that is able to reconnect to the database</p></li>
 <div class="section" id="failed-build">
 <h2>1.1.7 failed build<a class="headerlink" href="#failed-build" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="id186">
-<h2>1.1.6<a class="headerlink" href="#id186" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id187">
-<h3>Fixed<a class="headerlink" href="#id187" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id189">
+<h2>1.1.6<a class="headerlink" href="#id189" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id190">
+<h3>Fixed<a class="headerlink" href="#id190" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Catching “ssl.SSLError” BinanceWebSocketApiConnection.receive()</p></li>
 <li><p>Improvment of reconnect on invalid URI caused by no network issue and a missing listen_key from Binance</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="id188">
-<h2>1.1.5<a class="headerlink" href="#id188" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id189">
-<h3>Added<a class="headerlink" href="#id189" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id191">
+<h2>1.1.5<a class="headerlink" href="#id191" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id192">
+<h3>Added<a class="headerlink" href="#id192" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>30 min cache for Binance “listenKey” from rest api to avoid weight costs and hammering the Binance API on a
 flapping network connection</p></li>
 </ul>
 </div>
-<div class="section" id="id190">
-<h3>Fixed<a class="headerlink" href="#id190" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id193">
+<h3>Fixed<a class="headerlink" href="#id193" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Reconnect issue on userData stream</p></li>
 <li><p>Reset “has_stopped” attr from “stream_list” after a conncection restart</p></li>
@@ -1188,351 +1204,356 @@ flapping network connection</p></li>
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">unicorn-binance-websocket-api Change Log</a><ul>
-<li><a class="reference internal" href="#dev-development-stage-unreleased-unstable">1.17.3.dev (development stage/unreleased/unstable)</a></li>
-<li><a class="reference internal" href="#id1">1.17.3</a><ul>
+<li><a class="reference internal" href="#dev-development-stage-unreleased-unstable">1.17.4.dev (development stage/unreleased/unstable)</a></li>
+<li><a class="reference internal" href="#id1">1.17.4</a><ul>
+<li><a class="reference internal" href="#added">Added</a></li>
 <li><a class="reference internal" href="#fixed">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id2">1.17.2</a><ul>
-<li><a class="reference internal" href="#added">Added</a></li>
+<li><a class="reference internal" href="#id2">1.17.3</a><ul>
+<li><a class="reference internal" href="#id3">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id3">1.17.1</a><ul>
-<li><a class="reference internal" href="#id4">Fixed</a></li>
+<li><a class="reference internal" href="#id4">1.17.2</a><ul>
+<li><a class="reference internal" href="#id5">Added</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id5">1.17.0</a><ul>
-<li><a class="reference internal" href="#id6">Added</a></li>
+<li><a class="reference internal" href="#id6">1.17.1</a><ul>
+<li><a class="reference internal" href="#id7">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id7">1.16.9</a><ul>
-<li><a class="reference internal" href="#id8">Added</a></li>
+<li><a class="reference internal" href="#id8">1.17.0</a><ul>
+<li><a class="reference internal" href="#id9">Added</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id10">1.16.9</a><ul>
+<li><a class="reference internal" href="#id11">Added</a></li>
 <li><a class="reference internal" href="#removed">Removed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id9">1.16.7</a><ul>
-<li><a class="reference internal" href="#id10">Added</a></li>
+<li><a class="reference internal" href="#id12">1.16.7</a><ul>
+<li><a class="reference internal" href="#id13">Added</a></li>
 <li><a class="reference internal" href="#changed">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id11">1.16.6</a><ul>
-<li><a class="reference internal" href="#id12">Changed</a></li>
-<li><a class="reference internal" href="#id13">Fixed</a></li>
+<li><a class="reference internal" href="#id14">1.16.6</a><ul>
+<li><a class="reference internal" href="#id15">Changed</a></li>
+<li><a class="reference internal" href="#id16">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id14">1.16.5</a></li>
-<li><a class="reference internal" href="#id15">1.16.4</a><ul>
-<li><a class="reference internal" href="#id16">Changed</a></li>
-<li><a class="reference internal" href="#id17">Fixed</a></li>
+<li><a class="reference internal" href="#id17">1.16.5</a></li>
+<li><a class="reference internal" href="#id18">1.16.4</a><ul>
+<li><a class="reference internal" href="#id19">Changed</a></li>
+<li><a class="reference internal" href="#id20">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id18">1.16.3</a><ul>
-<li><a class="reference internal" href="#id19">Fixed</a></li>
+<li><a class="reference internal" href="#id21">1.16.3</a><ul>
+<li><a class="reference internal" href="#id22">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id20">1.16.2</a><ul>
-<li><a class="reference internal" href="#id21">Fixed</a></li>
+<li><a class="reference internal" href="#id23">1.16.2</a><ul>
+<li><a class="reference internal" href="#id24">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id22">1.16.1</a><ul>
-<li><a class="reference internal" href="#id23">Fixed</a></li>
+<li><a class="reference internal" href="#id25">1.16.1</a><ul>
+<li><a class="reference internal" href="#id26">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id24">1.16.0</a><ul>
-<li><a class="reference internal" href="#id25">Added</a></li>
-<li><a class="reference internal" href="#id26">Changed</a></li>
-<li><a class="reference internal" href="#id27">Fixed</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id28">1.15.0</a><ul>
-<li><a class="reference internal" href="#id29">Added</a></li>
+<li><a class="reference internal" href="#id27">1.16.0</a><ul>
+<li><a class="reference internal" href="#id28">Added</a></li>
+<li><a class="reference internal" href="#id29">Changed</a></li>
 <li><a class="reference internal" href="#id30">Fixed</a></li>
-<li><a class="reference internal" href="#id31">Removed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id32">1.14.0</a><ul>
-<li><a class="reference internal" href="#id33">Added</a></li>
-<li><a class="reference internal" href="#id34">Changed</a></li>
-<li><a class="reference internal" href="#id35">Fixed</a></li>
-<li><a class="reference internal" href="#id36">Removed</a></li>
+<li><a class="reference internal" href="#id31">1.15.0</a><ul>
+<li><a class="reference internal" href="#id32">Added</a></li>
+<li><a class="reference internal" href="#id33">Fixed</a></li>
+<li><a class="reference internal" href="#id34">Removed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id37">1.13.0</a><ul>
-<li><a class="reference internal" href="#id38">Added</a></li>
-<li><a class="reference internal" href="#id39">Fixed</a></li>
+<li><a class="reference internal" href="#id35">1.14.0</a><ul>
+<li><a class="reference internal" href="#id36">Added</a></li>
+<li><a class="reference internal" href="#id37">Changed</a></li>
+<li><a class="reference internal" href="#id38">Fixed</a></li>
+<li><a class="reference internal" href="#id39">Removed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id40">1.12.0</a><ul>
-<li><a class="reference internal" href="#recommended-update">RECOMMENDED UPDATE!</a></li>
+<li><a class="reference internal" href="#id40">1.13.0</a><ul>
 <li><a class="reference internal" href="#id41">Added</a></li>
-<li><a class="reference internal" href="#id42">Changed</a></li>
-<li><a class="reference internal" href="#id43">Fixed</a></li>
+<li><a class="reference internal" href="#id42">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id44">1.11.0</a><ul>
-<li><a class="reference internal" href="#id45">Added</a></li>
-<li><a class="reference internal" href="#id46">Changed</a></li>
-<li><a class="reference internal" href="#id47">Fixed</a></li>
+<li><a class="reference internal" href="#id43">1.12.0</a><ul>
+<li><a class="reference internal" href="#recommended-update">RECOMMENDED UPDATE!</a></li>
+<li><a class="reference internal" href="#id44">Added</a></li>
+<li><a class="reference internal" href="#id45">Changed</a></li>
+<li><a class="reference internal" href="#id46">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id48">1.10.6</a><ul>
-<li><a class="reference internal" href="#id49">Added</a></li>
-<li><a class="reference internal" href="#id50">Changed</a></li>
-<li><a class="reference internal" href="#id51">Fixed</a></li>
+<li><a class="reference internal" href="#id47">1.11.0</a><ul>
+<li><a class="reference internal" href="#id48">Added</a></li>
+<li><a class="reference internal" href="#id49">Changed</a></li>
+<li><a class="reference internal" href="#id50">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id52">1.10.5</a><ul>
-<li><a class="reference internal" href="#id53">Fixed</a></li>
+<li><a class="reference internal" href="#id51">1.10.6</a><ul>
+<li><a class="reference internal" href="#id52">Added</a></li>
+<li><a class="reference internal" href="#id53">Changed</a></li>
+<li><a class="reference internal" href="#id54">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id54">1.10.4</a><ul>
-<li><a class="reference internal" href="#id55">Changed</a></li>
+<li><a class="reference internal" href="#id55">1.10.5</a><ul>
+<li><a class="reference internal" href="#id56">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id56">1.10.3</a><ul>
-<li><a class="reference internal" href="#id57">Changed</a></li>
+<li><a class="reference internal" href="#id57">1.10.4</a><ul>
+<li><a class="reference internal" href="#id58">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id58">1.10.2</a><ul>
-<li><a class="reference internal" href="#id59">Fixed</a></li>
+<li><a class="reference internal" href="#id59">1.10.3</a><ul>
+<li><a class="reference internal" href="#id60">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id60">1.10.1</a><ul>
-<li><a class="reference internal" href="#id61">Changed</a></li>
+<li><a class="reference internal" href="#id61">1.10.2</a><ul>
+<li><a class="reference internal" href="#id62">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id62">1.10.0</a><ul>
-<li><a class="reference internal" href="#important-infos-please-read">Important infos, please read!</a></li>
-<li><a class="reference internal" href="#id63">Added</a></li>
+<li><a class="reference internal" href="#id63">1.10.1</a><ul>
 <li><a class="reference internal" href="#id64">Changed</a></li>
-<li><a class="reference internal" href="#id65">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id66">1.9.1</a><ul>
-<li><a class="reference internal" href="#id67">Added</a></li>
+<li><a class="reference internal" href="#id65">1.10.0</a><ul>
+<li><a class="reference internal" href="#important-infos-please-read">Important infos, please read!</a></li>
+<li><a class="reference internal" href="#id66">Added</a></li>
+<li><a class="reference internal" href="#id67">Changed</a></li>
 <li><a class="reference internal" href="#id68">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id69">1.9.0</a><ul>
+<li><a class="reference internal" href="#id69">1.9.1</a><ul>
 <li><a class="reference internal" href="#id70">Added</a></li>
-<li><a class="reference internal" href="#id71">Changed</a></li>
+<li><a class="reference internal" href="#id71">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id72">1.8.2</a><ul>
-<li><a class="reference internal" href="#id73">Fixed</a></li>
+<li><a class="reference internal" href="#id72">1.9.0</a><ul>
+<li><a class="reference internal" href="#id73">Added</a></li>
+<li><a class="reference internal" href="#id74">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id74">1.8.1</a><ul>
-<li><a class="reference internal" href="#id75">Changed</a></li>
+<li><a class="reference internal" href="#id75">1.8.2</a><ul>
+<li><a class="reference internal" href="#id76">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id76">1.8.0</a><ul>
-<li><a class="reference internal" href="#id77">Added</a></li>
+<li><a class="reference internal" href="#id77">1.8.1</a><ul>
+<li><a class="reference internal" href="#id78">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id78">1.7.0</a><ul>
-<li><a class="reference internal" href="#id79">Added</a></li>
+<li><a class="reference internal" href="#id79">1.8.0</a><ul>
+<li><a class="reference internal" href="#id80">Added</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id80">1.6.6</a><ul>
-<li><a class="reference internal" href="#id81">Fixed</a></li>
+<li><a class="reference internal" href="#id81">1.7.0</a><ul>
+<li><a class="reference internal" href="#id82">Added</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id82">1.6.5</a><ul>
-<li><a class="reference internal" href="#id83">Fixed</a></li>
+<li><a class="reference internal" href="#id83">1.6.6</a><ul>
+<li><a class="reference internal" href="#id84">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id84">1.6.4</a><ul>
-<li><a class="reference internal" href="#id85">Added</a></li>
+<li><a class="reference internal" href="#id85">1.6.5</a><ul>
+<li><a class="reference internal" href="#id86">Fixed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id87">1.6.4</a><ul>
+<li><a class="reference internal" href="#id88">Added</a></li>
 <li><a class="reference internal" href="#fix">Fix</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id86">1.6.3</a><ul>
-<li><a class="reference internal" href="#id87">Fix</a></li>
+<li><a class="reference internal" href="#id89">1.6.3</a><ul>
+<li><a class="reference internal" href="#id90">Fix</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id88">1.6.2</a><ul>
-<li><a class="reference internal" href="#id89">Fix</a></li>
+<li><a class="reference internal" href="#id91">1.6.2</a><ul>
+<li><a class="reference internal" href="#id92">Fix</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id90">1.6.1</a><ul>
-<li><a class="reference internal" href="#id91">Fix</a></li>
+<li><a class="reference internal" href="#id93">1.6.1</a><ul>
+<li><a class="reference internal" href="#id94">Fix</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id92">1.6.0</a><ul>
-<li><a class="reference internal" href="#id93">Added</a></li>
-<li><a class="reference internal" href="#id94">Changed</a></li>
-<li><a class="reference internal" href="#id95">Removed!</a></li>
+<li><a class="reference internal" href="#id95">1.6.0</a><ul>
+<li><a class="reference internal" href="#id96">Added</a></li>
+<li><a class="reference internal" href="#id97">Changed</a></li>
+<li><a class="reference internal" href="#id98">Removed!</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id96">1.5.0</a><ul>
-<li><a class="reference internal" href="#id97">Added</a></li>
-<li><a class="reference internal" href="#id98">Changed</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id99">1.4.0</a><ul>
+<li><a class="reference internal" href="#id99">1.5.0</a><ul>
 <li><a class="reference internal" href="#id100">Added</a></li>
-<li><a class="reference internal" href="#id101">Fixed</a></li>
+<li><a class="reference internal" href="#id101">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id102">1.3.10</a><ul>
+<li><a class="reference internal" href="#id102">1.4.0</a><ul>
 <li><a class="reference internal" href="#id103">Added</a></li>
-<li><a class="reference internal" href="#id104">Changed</a></li>
-<li><a class="reference internal" href="#id105">Fixed</a></li>
+<li><a class="reference internal" href="#id104">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id106">1.3.9</a><ul>
+<li><a class="reference internal" href="#id105">1.3.10</a><ul>
+<li><a class="reference internal" href="#id106">Added</a></li>
 <li><a class="reference internal" href="#id107">Changed</a></li>
+<li><a class="reference internal" href="#id108">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id108">1.3.8</a><ul>
-<li><a class="reference internal" href="#id109">Added</a></li>
-<li><a class="reference internal" href="#id110">Fixed</a></li>
+<li><a class="reference internal" href="#id109">1.3.9</a><ul>
+<li><a class="reference internal" href="#id110">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id111">1.3.7</a><ul>
-<li><a class="reference internal" href="#id112">Changed</a></li>
+<li><a class="reference internal" href="#id111">1.3.8</a><ul>
+<li><a class="reference internal" href="#id112">Added</a></li>
+<li><a class="reference internal" href="#id113">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id113">1.3.6</a></li>
-<li><a class="reference internal" href="#id114">1.3.5</a><ul>
-<li><a class="reference internal" href="#id115">Added</a></li>
-<li><a class="reference internal" href="#id116">Fixed</a></li>
+<li><a class="reference internal" href="#id114">1.3.7</a><ul>
+<li><a class="reference internal" href="#id115">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id117">1.3.4</a><ul>
-<li><a class="reference internal" href="#id118">Changed</a></li>
+<li><a class="reference internal" href="#id116">1.3.6</a></li>
+<li><a class="reference internal" href="#id117">1.3.5</a><ul>
+<li><a class="reference internal" href="#id118">Added</a></li>
+<li><a class="reference internal" href="#id119">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id119">1.3.3</a><ul>
-<li><a class="reference internal" href="#id120">Added</a></li>
-<li><a class="reference internal" href="#rewrite">Rewrite</a></li>
+<li><a class="reference internal" href="#id120">1.3.4</a><ul>
 <li><a class="reference internal" href="#id121">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id122">1.3.2</a><ul>
+<li><a class="reference internal" href="#id122">1.3.3</a><ul>
 <li><a class="reference internal" href="#id123">Added</a></li>
+<li><a class="reference internal" href="#rewrite">Rewrite</a></li>
 <li><a class="reference internal" href="#id124">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id125">1.3.1</a><ul>
-<li><a class="reference internal" href="#id126">Changed</a></li>
+<li><a class="reference internal" href="#id125">1.3.2</a><ul>
+<li><a class="reference internal" href="#id126">Added</a></li>
+<li><a class="reference internal" href="#id127">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id127">1.3.0</a><ul>
-<li><a class="reference internal" href="#id128">Added</a></li>
+<li><a class="reference internal" href="#id128">1.3.1</a><ul>
+<li><a class="reference internal" href="#id129">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id129">1.2.8</a><ul>
-<li><a class="reference internal" href="#id130">Added</a></li>
-<li><a class="reference internal" href="#id131">Fixed</a></li>
+<li><a class="reference internal" href="#id130">1.3.0</a><ul>
+<li><a class="reference internal" href="#id131">Added</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id132">1.2.7</a><ul>
-<li><a class="reference internal" href="#id133">Fixed</a></li>
-<li><a class="reference internal" href="#id134">Changed</a></li>
+<li><a class="reference internal" href="#id132">1.2.8</a><ul>
+<li><a class="reference internal" href="#id133">Added</a></li>
+<li><a class="reference internal" href="#id134">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id135">1.2.6</a><ul>
+<li><a class="reference internal" href="#id135">1.2.7</a><ul>
 <li><a class="reference internal" href="#id136">Fixed</a></li>
+<li><a class="reference internal" href="#id137">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id137">1.2.5</a><ul>
-<li><a class="reference internal" href="#id138">Added</a></li>
+<li><a class="reference internal" href="#id138">1.2.6</a><ul>
 <li><a class="reference internal" href="#id139">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id140">1.2.4</a><ul>
+<li><a class="reference internal" href="#id140">1.2.5</a><ul>
 <li><a class="reference internal" href="#id141">Added</a></li>
-<li><a class="reference internal" href="#id142">Changed</a></li>
+<li><a class="reference internal" href="#id142">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id143">1.2.3</a><ul>
-<li><a class="reference internal" href="#id144">Changed</a></li>
-<li><a class="reference internal" href="#id145">Fixed</a></li>
+<li><a class="reference internal" href="#id143">1.2.4</a><ul>
+<li><a class="reference internal" href="#id144">Added</a></li>
+<li><a class="reference internal" href="#id145">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id146">1.2.2</a><ul>
-<li><a class="reference internal" href="#id147">Fixed</a></li>
+<li><a class="reference internal" href="#id146">1.2.3</a><ul>
+<li><a class="reference internal" href="#id147">Changed</a></li>
+<li><a class="reference internal" href="#id148">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id148">1.2.1</a><ul>
-<li><a class="reference internal" href="#id149">Added</a></li>
+<li><a class="reference internal" href="#id149">1.2.2</a><ul>
 <li><a class="reference internal" href="#id150">Fixed</a></li>
-<li><a class="reference internal" href="#id151">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id152">1.2.0</a><ul>
-<li><a class="reference internal" href="#id153">Changed</a></li>
+<li><a class="reference internal" href="#id151">1.2.1</a><ul>
+<li><a class="reference internal" href="#id152">Added</a></li>
+<li><a class="reference internal" href="#id153">Fixed</a></li>
+<li><a class="reference internal" href="#id154">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id154">1.1.20</a><ul>
-<li><a class="reference internal" href="#id155">Changed</a></li>
-<li><a class="reference internal" href="#id156">Removed</a></li>
+<li><a class="reference internal" href="#id155">1.2.0</a><ul>
+<li><a class="reference internal" href="#id156">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id157">1.1.19</a><ul>
+<li><a class="reference internal" href="#id157">1.1.20</a><ul>
+<li><a class="reference internal" href="#id158">Changed</a></li>
+<li><a class="reference internal" href="#id159">Removed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id160">1.1.19</a><ul>
 <li><a class="reference internal" href="#change">Change</a></li>
-<li><a class="reference internal" href="#id158">Fixed</a></li>
+<li><a class="reference internal" href="#id161">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id159">1.1.18</a><ul>
-<li><a class="reference internal" href="#id160">Removed</a></li>
+<li><a class="reference internal" href="#id162">1.1.18</a><ul>
+<li><a class="reference internal" href="#id163">Removed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id161">1.1.17</a><ul>
-<li><a class="reference internal" href="#id162">Changed</a></li>
+<li><a class="reference internal" href="#id164">1.1.17</a><ul>
+<li><a class="reference internal" href="#id165">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id163">1.1.16</a><ul>
-<li><a class="reference internal" href="#id164">Changed</a></li>
+<li><a class="reference internal" href="#id166">1.1.16</a><ul>
+<li><a class="reference internal" href="#id167">Changed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id165">1.1.15</a><ul>
-<li><a class="reference internal" href="#id166">Changed</a></li>
-<li><a class="reference internal" href="#id167">Fixed</a></li>
+<li><a class="reference internal" href="#id168">1.1.15</a><ul>
+<li><a class="reference internal" href="#id169">Changed</a></li>
+<li><a class="reference internal" href="#id170">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id168">1.1.14</a><ul>
-<li><a class="reference internal" href="#id169">Fixed</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id170">1.1.13</a><ul>
-<li><a class="reference internal" href="#id171">Changed</a></li>
+<li><a class="reference internal" href="#id171">1.1.14</a><ul>
 <li><a class="reference internal" href="#id172">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id173">1.1.12</a><ul>
-<li><a class="reference internal" href="#id174">Fixed</a></li>
+<li><a class="reference internal" href="#id173">1.1.13</a><ul>
+<li><a class="reference internal" href="#id174">Changed</a></li>
+<li><a class="reference internal" href="#id175">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id175">1.1.11</a><ul>
-<li><a class="reference internal" href="#id176">Fixed</a></li>
+<li><a class="reference internal" href="#id176">1.1.12</a><ul>
+<li><a class="reference internal" href="#id177">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id177">1.1.10</a><ul>
-<li><a class="reference internal" href="#id178">Added</a></li>
+<li><a class="reference internal" href="#id178">1.1.11</a><ul>
 <li><a class="reference internal" href="#id179">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id180">1.1.9</a><ul>
-<li><a class="reference internal" href="#id181">Fixed</a></li>
+<li><a class="reference internal" href="#id180">1.1.10</a><ul>
+<li><a class="reference internal" href="#id181">Added</a></li>
+<li><a class="reference internal" href="#id182">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id182">1.1.8</a><ul>
-<li><a class="reference internal" href="#id183">Added</a></li>
-<li><a class="reference internal" href="#id184">Changed</a></li>
-<li><a class="reference internal" href="#id185">Fixed</a></li>
+<li><a class="reference internal" href="#id183">1.1.9</a><ul>
+<li><a class="reference internal" href="#id184">Fixed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id185">1.1.8</a><ul>
+<li><a class="reference internal" href="#id186">Added</a></li>
+<li><a class="reference internal" href="#id187">Changed</a></li>
+<li><a class="reference internal" href="#id188">Fixed</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#failed-build">1.1.7 failed build</a></li>
-<li><a class="reference internal" href="#id186">1.1.6</a><ul>
-<li><a class="reference internal" href="#id187">Fixed</a></li>
+<li><a class="reference internal" href="#id189">1.1.6</a><ul>
+<li><a class="reference internal" href="#id190">Fixed</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id188">1.1.5</a><ul>
-<li><a class="reference internal" href="#id189">Added</a></li>
-<li><a class="reference internal" href="#id190">Fixed</a></li>
+<li><a class="reference internal" href="#id191">1.1.5</a><ul>
+<li><a class="reference internal" href="#id192">Added</a></li>
+<li><a class="reference internal" href="#id193">Fixed</a></li>
 </ul>
 </li>
 </ul>
@@ -1606,7 +1627,7 @@ flapping network connection</p></li>
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.17.3 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.17.4 documentation</a> &#187;
     
 
     <li class="right">
@@ -1620,7 +1641,7 @@ flapping network connection</p></li>
     &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
-    Last updated on Mo 21. Sep 08:54:01 UTC 2020.
+    Last updated on Mo 21. Sep 10:27:23 UTC 2020.
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 

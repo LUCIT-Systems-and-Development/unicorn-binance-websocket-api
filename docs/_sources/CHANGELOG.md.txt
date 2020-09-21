@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.17.3.dev (development stage/unreleased/unstable)
+## 1.17.4.dev (development stage/unreleased/unstable)
+## 1.17.4
+### Added
+- `replace_stream()`: new_stream_label=None, new_stream_buffer_name=False, new_symbol=False, new_api_key=False, 
+new_api_secret=False
+### Fixed 
+- reconnect counter (bug since 1.17.0)
 
 ## 1.17.3
 ### Fixed
