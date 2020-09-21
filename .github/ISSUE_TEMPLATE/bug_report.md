@@ -64,6 +64,8 @@ Did you upgrade to the latest release version with `pip install unicorn-binance-
 Please control what version you are using with this script and post the output: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/tools/get_used_module_version.py
 ```
 
+#### Upload your logfile WITHOUT api_key, api_secret and listen_key!!!!!!!!!!
+
 #### Description of your issue
 
 ```
