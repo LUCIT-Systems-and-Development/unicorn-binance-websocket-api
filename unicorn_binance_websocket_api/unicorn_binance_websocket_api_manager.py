@@ -813,6 +813,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 ``binance_websocket_api_manager.create_stream(["arr"], ["!userData"], api_key="aaa", api_secret="bbb")``
 
                 Isolated Margin:
+
                 ``binance_websocket_api_manager.create_stream(["arr"], ["!userData"], api_key="aaa", api_secret="bbb", symbol="ankrbtc")``
 
             Example DEX:
