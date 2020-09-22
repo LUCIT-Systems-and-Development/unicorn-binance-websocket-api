@@ -33,9 +33,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from unicorn_binance_websocket_api.unicorn_binance_websocket_api_exceptions import *
+from unicorn_binance_websocket_api.unicorn_binance_websocket_api_exceptions import StreamRecoveryError
 from websockets import connect
-import asyncio
 import copy
 import ujson as json
 import logging

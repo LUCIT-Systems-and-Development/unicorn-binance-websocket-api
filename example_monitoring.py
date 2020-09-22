@@ -58,9 +58,8 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         else:
             try:
                 # remove # to activate the print function:
-                #print(oldest_stream_data_from_stream_buffer)
-                pass
-            except ValueError:
+                print(oldest_stream_data_from_stream_buffer)
+            except KeyError:
                 # Any kind of error...
                 # not able to process the data? write it back to the stream_buffer
                 binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)

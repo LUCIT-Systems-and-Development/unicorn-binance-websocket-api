@@ -34,7 +34,7 @@
 # IN THE SOFTWARE.
 
 
-from .unicorn_binance_websocket_api_exceptions import *
+from .unicorn_binance_websocket_api_exceptions import StreamRecoveryError, UnknownExchange
 from .unicorn_binance_websocket_api_socket import BinanceWebSocketApiSocket
 from .unicorn_binance_websocket_api_restclient import BinanceWebSocketApiRestclient
 from .unicorn_binance_websocket_api_restserver import BinanceWebSocketApiRestServer
@@ -2087,7 +2087,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         installed_version = check_command_version
         latest_version = self.get_latest_version_check_command()
-        if ".dev" in installed_version:
+        if ".dev" in str(installed_version):
             installed_version = installed_version[:-4]
         if latest_version == installed_version:
             return False
