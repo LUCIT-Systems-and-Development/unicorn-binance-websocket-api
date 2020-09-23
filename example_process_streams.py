@@ -58,13 +58,13 @@ class BinanceWebSocketApiProcessStreams(object):
         # to see the difference.
         # Github: https://github.com/oliver-zehentleitner/unicorn_fy
         # PyPI: https://pypi.org/project/unicorn-fy/
-        if exchange == "binance.com":
+        if exchange == "binance.com" or exchange == "binance.com-testnet":
             unicorn_fied_stream_data = UnicornFy.binance_com_websocket(received_stream_data_json)
-        elif exchange == "binance.com-futures":
+        elif exchange == "binance.com-futures" or exchange == "binance.com-futures-testnet":
             unicorn_fied_stream_data = UnicornFy.binance_com_futures_websocket(received_stream_data_json)
-        elif exchange == "binance.com-margin":
+        elif exchange == "binance.com-margin" or exchange == "binance.com-margin-testnet":
             unicorn_fied_stream_data = UnicornFy.binance_com_margin_websocket(received_stream_data_json)
-        elif exchange == "binance.com-isolated_margin":
+        elif exchange == "binance.com-isolated_margin" or exchange == "binance.com-isolated_margin-testnet":
             unicorn_fied_stream_data = UnicornFy.binance_com_margin_websocket(received_stream_data_json)
         elif exchange == "binance.je":
             unicorn_fied_stream_data = UnicornFy.binance_je_websocket(received_stream_data_json)

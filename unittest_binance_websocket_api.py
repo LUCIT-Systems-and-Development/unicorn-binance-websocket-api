@@ -107,8 +107,95 @@ class TestBinanceComManager(unittest.TestCase):
                                                                                          self.binance_com_api_secret),
                              r'wss://stream.binance.com:9443/ws/.')
 
+    def test_is_exchange_type_cex(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.is_exchange_type("cex"), True)
+
+    def test_is_exchange_type_dex(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.is_exchange_type("dex"), False)
+
+    def test_is_update_available(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.is_update_availabe(), False)
+
+    def test_is_manager_stopping(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.is_manager_stopping(), False)
+
+    def test_get_human_uptime(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(3737823782), "43261d:20h:23m:2s")
+
+    def test_get_human_bytesize(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_bytesize(99999993737823782), "90949.464 tB")
+
+    def test_get_exchange(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.get_exchange(), "binance.com")
+
     def tearDown(self):
         self.binance_com_websocket_api_manager.stop_manager_with_all_streams()
+
+
+class TestBinanceComManagerTest(unittest.TestCase):
+    # Test testnet.binance.vision (Binance Testnet)
+
+    def setUp(self):
+        self.binance_com_testnet_api_key = BINANCE_COM_API_KEY
+        self.binance_com_testnet_api_secret = BINANCE_COM_API_SECRET
+        self.binance_com_testnet_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-testnet")
+
+    def test_create_uri_miniticker_regular_com(self):
+        self.assertEqual(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["!miniTicker"], ["arr"]),
+                         'wss://testnet.binance.vision/ws/!miniTicker@arr')
+
+    def test_create_uri_miniticker_reverse_com(self):
+        self.assertEqual(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["arr"], ["!miniTicker"]),
+                         'wss://testnet.binance.vision/ws/!miniTicker@arr')
+
+    def test_create_uri_ticker_regular_com(self):
+        self.assertEqual(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["!ticker"], ["arr"]),
+                         'wss://testnet.binance.vision/ws/!ticker@arr')
+
+    def test_create_uri_ticker_reverse_com(self):
+        self.assertEqual(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["arr"], ["!ticker"]),
+                         'wss://testnet.binance.vision/ws/!ticker@arr')
+
+    def test_create_uri_userdata_regular_false_com(self):
+        self.assertFalse(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["!userData"], ["arr"]))
+
+    def test_create_uri_userdata_reverse_false_com(self):
+        self.assertFalse(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["arr"], ["!userData"]))
+
+    def test_create_uri_userdata_regular_com(self):
+        if len(self.binance_com_testnet_api_key) == 0 or len(self.binance_com_testnet_api_secret) == 0:
+            print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_regular_com() "
+                  "for binance.com-testnet")
+        else:
+            stream_id = uuid.uuid4()
+            self.binance_com_testnet_websocket_api_manager._add_socket_to_socket_list(stream_id, ["!userData"], ["arr"])
+            self.assertRegex(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["!userData"], ["arr"],
+                                                                                         stream_id,
+                                                                                         self.binance_com_testnet_api_key,
+                                                                                         self.binance_com_testnet_api_secret),
+                             r'wss://testnet.binance.vision/ws/.')
+
+    def test_create_uri_userdata_reverse_com(self):
+        if len(self.binance_com_testnet_api_key) == 0 or len(self.binance_com_testnet_api_secret) == 0:
+            print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_reverse_com() "
+                  "for binance.com-testnet")
+        else:
+            stream_id = uuid.uuid4()
+            self.binance_com_testnet_websocket_api_manager._add_socket_to_socket_list(stream_id, ["arr"], ["!userData"])
+            self.assertRegex(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["arr"], ["!userData"],
+                                                                                         stream_id,
+                                                                                         self.binance_com_testnet_api_key,
+                                                                                         self.binance_com_testnet_api_secret),
+                             r'wss://stream.binance.com:9443/ws/.')
+
+    def test_is_exchange_type_cex(self):
+        self.assertEqual(self.binance_com_testnet_websocket_api_manager.is_exchange_type("cex"), True)
+
+    def test_is_exchange_type_dex(self):
+        self.assertEqual(self.binance_com_testnet_websocket_api_manager.is_exchange_type("dex"), False)
+
+    def tearDown(self):
+        self.binance_com_testnet_websocket_api_manager.stop_manager_with_all_streams()
 
 
 class TestBinanceJeManager(unittest.TestCase):
@@ -167,6 +254,12 @@ class TestBinanceJeManager(unittest.TestCase):
                                                                                         self.binance_je_api_key,
                                                                                         self.binance_je_api_secret),
                              r'wss://stream.binance.je:9443/ws')
+
+    def test_is_exchange_type_cex(self):
+        self.assertEqual(self.binance_je_websocket_api_manager.is_exchange_type("cex"), True)
+
+    def test_is_exchange_type_dex(self):
+        self.assertEqual(self.binance_je_websocket_api_manager.is_exchange_type("dex"), False)
 
     def tearDown(self):
         self.binance_je_websocket_api_manager.stop_manager_with_all_streams()
@@ -302,6 +395,12 @@ class TestBinanceOrgManager(unittest.TestCase):
         self.assertEqual(str(payload),
                          "[{'method': 'unsubscribe', 'symbols': ['RAVEN-F66_BNB']}, "
                          "{'method': 'unsubscribe', 'topic': 'trades'}]")
+
+    def test_is_exchange_type_cex(self):
+        self.assertEqual(self.binance_org_websocket_api_manager.is_exchange_type("cex"), False)
+
+    def test_is_exchange_type_dex(self):
+        self.assertEqual(self.binance_org_websocket_api_manager.is_exchange_type("dex"), True)
 
     def tearDown(self):
         self.binance_org_websocket_api_manager.stop_manager_with_all_streams()

@@ -59,8 +59,9 @@ import uuid
 
 class BinanceWebSocketApiManager(threading.Thread):
     """
-    A python API to use the Binance Websocket API`s (com, com-margin, com-futures, jersey, us, dex/chain+testnet) in a
-    easy, fast, flexible, robust and fully-featured way.
+    An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
+    com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible,
+    robust and fully-featured way.
 
     This library supports two different kind of websocket endpoints:
 
@@ -104,8 +105,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 get stored in the stream_buffer! (How to read from stream_buffer:
                                 https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives)
     :type process_stream_data: function
-    :param exchange: Select binance.com, binance.com-margin, binance.com-isolated_margin, binance.com-futures,
-                     binance.je, binance.us, jex.com, binance.org or binance.org-testnet (default: binance.com)
+    :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
+                     binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
+                     binance.com-futures-testnet, binance.je, binance.us, jex.com, binance.org or binance.org-testnet
+                     (default: binance.com)
     :type exchange: str
     :param warn_on_update: set to `False` to disable the update warning
     :type warn_on_update: bool
@@ -136,31 +139,30 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.process_stream_data = process_stream_data
         self.exchange = exchange
         if self.exchange == "binance.com":
-            # Binance: www.binance.com
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
+        elif self.exchange == "binance.com-testnet":
+            self.websocket_base_uri = "wss://testnet.binance.vision/"
         elif self.exchange == "binance.com-margin":
-            # Binance Margin: www.binance.com
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
+        elif self.exchange == "binance.com-margin-testnet":
+            self.websocket_base_uri = "wss://testnet.binance.vision/"
         elif self.exchange == "binance.com-isolated_margin":
-            # Binance Isolated Margin: www.binance.com
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
+        elif self.exchange == "binance.com-isolated_margin-testnet":
+            self.websocket_base_uri = "wss://testnet.binance.vision/"
         elif self.exchange == "binance.com-futures":
-            # Binance Futures: www.binance.com
             self.websocket_base_uri = "wss://fstream.binance.com/"
+        elif self.exchange == "binance.com-futures-testnet":
+            self.websocket_base_uri = "wss://stream.binancefuture.com/"
         elif self.exchange == "binance.je":
-            # Binance Jersey: www.binance.je
             self.websocket_base_uri = "wss://stream.binance.je:9443/"
         elif self.exchange == "binance.us":
-            # Binance US: www.binance.us
             self.websocket_base_uri = "wss://stream.binance.us:9443/"
         elif self.exchange == "jex.com":
-            # Binance JEX: www.jex.com
             self.websocket_base_uri = "wss://ws.jex.com/"
         elif self.exchange == "binance.org":
-            # Binance Chain: www.binance.org
             self.websocket_base_uri = "wss://dex.binance.org/api/"
         elif self.exchange == "binance.org-testnet":
-            # Binance Chain Testnet: www.binance.org
             self.websocket_base_uri = "wss://testnet-dex.binance.org/api/"
         else:
             # Unknown Exchange
@@ -1507,7 +1509,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_buffer_items, stream_buffer_mb, reconnects, uptime
 
         :param check_command_version: is the version of the calling check_command (https://github.com/LUCIT-Development/check_lucit_collector.py)
-        :type check_command_version: str
+        :type check_command_version: False or str
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
         :return: dict
@@ -2008,9 +2010,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.exchange == "binance.org-testnet":
             is_type = "dex"
         elif self.exchange == "binance.com" or \
+                self.exchange == "binance.com-testnet" or \
                 self.exchange == "binance.com-margin" or \
+                self.exchange == "binance.com-margin-testnet" or \
                 self.exchange == "binance.com-isolated_margin" or \
+                self.exchange == "binance.com-isolated_margin-testnet" or \
                 self.exchange == "binance.com-futures" or \
+                self.exchange == "binance.com-futures-testnet" or \
                 self.exchange == "binance.je" or \
                 self.exchange == "binance.us" or \
                 self.exchange == "jex.com":
@@ -2418,8 +2424,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " total_receiving_speed: " + str(received_bytes_per_x_row) + "\r\n" +
                     " total_transmitted_payloads: " + str(self.total_transmitted) + "\r\n" +
                     str(binance_api_status_row) +
-                    " process_ressource_usage: cpu=" + str(self.get_process_usage_cpu()) + "%, memory=" + str(self.get_process_usage_memory()) + ", threads=" + str(self.get_process_usage_threads()) + "\r\n" +
-                    str(add_string) +
+                    " process_ressource_usage: cpu=" + str(self.get_process_usage_cpu()) + "%, memory=" +
+                    str(self.get_process_usage_memory()) + ", threads=" + str(self.get_process_usage_threads()) +
+                    "\r\n" + str(add_string) +
                     " ---------------------------------------------------------------------------------------------\r\n"
                     "               stream_id              |   stream_label  |  last  |  average  |  most  | recon\r\n"
                     " ---------------------------------------------------------------------------------------------\r\n"
