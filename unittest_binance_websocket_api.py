@@ -113,6 +113,21 @@ class TestBinanceComManager(unittest.TestCase):
     def test_is_exchange_type_dex(self):
         self.assertEqual(self.binance_com_websocket_api_manager.is_exchange_type("dex"), False)
 
+    def test_is_update_available(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.is_update_availabe(), False)
+
+    def test_is_manager_stopping(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.is_manager_stopping(), False)
+
+    def test_get_human_uptime(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(3737823782), "43261d:20h:23m:2s")
+
+    def test_get_human_bytesize(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_bytesize(99999993737823782), "90949.464 tB")
+
+    def test_get_exchange(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.get_exchange(), "binance.com")
+
     def tearDown(self):
         self.binance_com_websocket_api_manager.stop_manager_with_all_streams()
 
