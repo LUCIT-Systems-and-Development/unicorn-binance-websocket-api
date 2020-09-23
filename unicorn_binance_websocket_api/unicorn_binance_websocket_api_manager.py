@@ -943,17 +943,24 @@ class BinanceWebSocketApiManager(threading.Thread):
                     if response:
                         try:
                             uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
+                            uri_hidden_secret = self.websocket_base_uri + "ws/" + str(response['listenKey'])
+                            if self.show_secrets_in_logs is True:
+                                logging.info("create_websocket_uri() result: " + uri)
+                            else:
+                                logging.info("create_websocket_uri() result: " + uri_hidden_secret)
                             self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                             return uri
                         except KeyError:
+                            logging.critical("create_websocket_uri() can not create URI!!")
                             return False
                         except TypeError:
+                            logging.critical("create_websocket_uri() can not create URI!!")
                             return False
                     else:
-                        logging.error("Error: Can not create websocket URI!")
+                        logging.critical("create_websocket_uri() can not create URI!!")
                         return False
                 else:
-                    logging.info("Error: Can not create websocket URI!")
+                    logging.critical("create_websocket_uri() can not create URI!!")
                     return False
             elif "!bookTicker" in channels or "!bookTicker" in markets:
                 if stream_id:

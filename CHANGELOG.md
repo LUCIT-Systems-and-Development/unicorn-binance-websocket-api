@@ -10,9 +10,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.18.0
 ### Added
 - binance.com testnets (spot, margin, isolated_margin, future)
-- `hide_secrets_in_logs` parameter 
+- `show_secrets_in_logs` parameter 
 ### Changed
 - `symbol` to `symbols` (isolated_margin)
+### Fixed
+- update `binance_api_status`
 
 ## 1.17.4
 ### Added

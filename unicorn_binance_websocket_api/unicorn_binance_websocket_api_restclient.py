@@ -173,7 +173,11 @@ class BinanceWebSocketApiRestclient(object):
         :return: the response
         :rtype: str or False
         """
-        logging.info("BinanceWebSocketApiRestclient->delete_listen_key(" + str(listen_key) + ")")
+        if self.ubwa.show_secrets_in_logs is True:
+            logging.info("BinanceWebSocketApiRestclient->delete_listen_key(" + str(listen_key) + ")")
+        else:
+            logging.info("BinanceWebSocketApiRestclient->delete_listen_key(" + str(self.ubwa.replaced_secrets_text)
+                         + ")")
         method = "delete"
         try:
             return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
@@ -217,7 +221,11 @@ class BinanceWebSocketApiRestclient(object):
         :return: the response
         :rtype: str or False
         """
-        logging.info("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(listen_key) + ")")
+        if self.ubwa.show_secrets_in_logs is True:
+            logging.info("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(listen_key) + ")")
+        else:
+            logging.info("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(self.ubwa.replaced_secrets_text)
+                         + ")")
         method = "put"
         try:
             return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
