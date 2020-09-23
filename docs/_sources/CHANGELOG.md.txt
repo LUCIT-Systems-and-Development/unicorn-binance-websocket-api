@@ -6,7 +6,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.18.0.dev (development stage/unreleased/unstable)
-
 ## 1.18.0
 ### Added
 - binance.com testnets (spot, margin, isolated_margin, future)

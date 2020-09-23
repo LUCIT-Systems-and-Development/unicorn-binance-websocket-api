@@ -152,6 +152,21 @@ class TestBinanceComManager(unittest.TestCase):
                                                                                    ['bnbbtc'])),
                          result)
 
+    def test_fill_up_space_centered(self):
+        result = "==========test text=========="
+        self.assertEqual(str(self.binance_com_websocket_api_manager.fill_up_space_centered(30, "test text", "=")),
+                         result)
+
+    def test_fill_up_space_right(self):
+        result = "|test text||||||||||||||||||||"
+        self.assertEqual(str(self.binance_com_websocket_api_manager.fill_up_space_right(30, "test text", "|")),
+                         result)
+
+    def test_fill_up_space_left(self):
+        result = "||||||||||||||||||||test text|"
+        self.assertEqual(str(self.binance_com_websocket_api_manager.fill_up_space_left(30, "test text", "|")),
+                         result)
+
     def tearDown(self):
         self.binance_com_websocket_api_manager.stop_manager_with_all_streams()
 

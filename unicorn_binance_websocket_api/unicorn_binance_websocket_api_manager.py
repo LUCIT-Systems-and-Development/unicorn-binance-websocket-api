@@ -65,7 +65,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     This library supports two different kind of websocket endpoints:
 
-        - CEX (Centralized exchange): binance.com, binance.je, binance.us, jex.com
+        - CEX (Centralized exchange): binance.com, binance.vision, binance.je, binance.us, jex.com
 
         - DEX (Decentralized exchange): binance.org
 
@@ -76,6 +76,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         - https://binance-docs.github.io/apidocs/futures/en/#user-data-streams
 
         - https://binance-docs.github.io/apidocs/spot/en/#user-data-streams
+
+    Binance.vision (Testnet) websocket API documentation:
+
+        - https://testnet.binance.vision/
 
     Binance.je websocket API documentation:
 
@@ -2124,8 +2128,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get oldest entry from stream_buffer and remove from stack (FIFO stack)
 
-        :param stream_buffer_name: `False` to read from generic stream_buffer, `True` to use stream_id as name or the
-                                   name as string
+        :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
+                                   create_stream() or the string name of a shared stream_buffer.
         :type stream_buffer_name: bool or str
         :return: raw_stream_data (set) or False
         """
