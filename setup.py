@@ -43,9 +43,9 @@ setuptools.setup(
      version='1.17.4.dev',
      author="Oliver Zehentleitner",
      url="https://about.me/oliver-zehentleitner/",
-     description="An unofficial Python API to use the Binance Websocket API`s (com, com-margin, com-isolated_margin, "
-                 "com-futures, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured"
-                 " way.",
+     description="An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, "
+                 "com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast"
+                 ", flexible, robust and fully-featured way.",
      long_description=long_description,
      long_description_content_type="text/markdown",
      license='MIT License',

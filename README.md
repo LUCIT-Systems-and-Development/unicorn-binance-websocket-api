@@ -18,8 +18,7 @@
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
 [Contributing](#contributing)
 
-An unofficial Python API to use the Binance Websocket API's (com, com-margin, com-isolated_margin, com-futures, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.
-
+An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way. 
 ### [Create a multiplex websocket connection](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
 ```
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
@@ -62,10 +61,15 @@ This should be known by everyone using this lib: [Do you want consistent data fr
 
 ## Description
 The Python module [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) 
-provides an API to the Binance Websocket API`s of [Binance](https://github.com/binance-exchange/binance-official-api-docs), 
-[Binance Margin](https://binance-docs.github.io/apidocs/spot/en/#user-data-streams),
-[Binance Isolated Margin](https://binance-docs.github.io/apidocs/spot/en/#listen-key-isolated-margin),
-[Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams), 
+provides an API to the Binance Websocket API`s of 
+[Binance](https://github.com/binance-exchange/binance-official-api-docs) 
+([+Testnet](https://testnet.binance.vision/)), 
+[Binance Margin](https://binance-docs.github.io/apidocs/spot/en/#user-data-streams) 
+([+Testnet](https://testnet.binance.vision/)), 
+[Binance Isolated Margin](https://binance-docs.github.io/apidocs/spot/en/#listen-key-isolated-margin)
+([+Testnet](https://testnet.binance.vision/)), 
+[Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams) 
+([+Testnet](https://testnet.binancefuture.com)), 
 [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
 [Binance JEX](https://jexapi.github.io/api-doc/spot.html#web-socket-streams), 
@@ -94,15 +98,32 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect!
 - Supported exchanges: 
-    * [Binance](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com")`
-    * [Binance Margin](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com-margin")`
-    * [Binance Isolated Margin](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")`
-    * [Binance Futures](https://www.binance.com) `BinanceWebSocketApiManager(exchange="binance.com-futures")`
-    * [Binance Jersey](https://www.binance.je) `BinanceWebSocketApiManager(exchange="binance.je")`
-    * [Binance US](https://www.binance.us) `BinanceWebSocketApiManager(exchange="binance.us")`
-    * [Binance JEX](https://www.jex.com) `BinanceWebSocketApiManager(exchange="jex.com")`
-    * [Binance DEX](https://www.binance.org) `BinanceWebSocketApiManager(exchange="binance.org")`
-    * [Binance DEX testnet](https://testnet.binance.org) `BinanceWebSocketApiManager(exchange="binance.org-testnet")`
+    * [Binance](https://www.binance.com) 
+     `BinanceWebSocketApiManager(exchange="binance.com")`
+    * [Binance](https://testnet.binance.vision/)
+     `BinanceWebSocketApiManager(exchange="binance.com-testnet")`
+    * [Binance Margin](https://www.binance.com)
+     `BinanceWebSocketApiManager(exchange="binance.com-margin")`
+    * [Binance Margin Testnet](https://testnet.binance.vision/)
+     `BinanceWebSocketApiManager(exchange="binance.com-margin-testnet")`
+    * [Binance Isolated Margin](https://www.binance.com)
+     `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")`
+    * [Binance Isolated Margin Testnet](https://testnet.binance.vision/)
+     `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")`
+    * [Binance Futures](https://www.binance.com)
+     `BinanceWebSocketApiManager(exchange="binance.com-futures")`
+    * [Binance Futures Testnet](https://testnet.binancefuture.com)
+     `BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")`
+    * [Binance Jersey](https://www.binance.je)
+     `BinanceWebSocketApiManager(exchange="binance.je")`
+    * [Binance US](https://www.binance.us)
+     `BinanceWebSocketApiManager(exchange="binance.us")`
+    * [Binance JEX](https://www.jex.com)
+     `BinanceWebSocketApiManager(exchange="jex.com")`
+    * [Binance DEX](https://www.binance.org)
+     `BinanceWebSocketApiManager(exchange="binance.org")`
+    * [Binance DEX testnet](https://testnet.binance.org)
+     `BinanceWebSocketApiManager(exchange="binance.org-testnet")`
 - Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, but 
 you dont need to deal with asyncio in your code!
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 

@@ -54,14 +54,26 @@ class BinanceWebSocketApiRestclient(object):
         if self.exchange == "binance.com":
             self.restful_base_uri = "https://api.binance.com/"
             self.path_userdata = "api/v3/userDataStream"
+        elif self.exchange == "binance.com-testnet":
+            self.restful_base_uri = "https://testnet.binance.vision/"
+            self.path_userdata = "api/v3/userDataStream"
         elif self.exchange == "binance.com-margin":
             self.restful_base_uri = "https://api.binance.com/"
+            self.path_userdata = "sapi/v1/userDataStream"
+        elif self.exchange == "binance.com-margin-testnet":
+            self.restful_base_uri = "https://testnet.binance.vision/"
             self.path_userdata = "sapi/v1/userDataStream"
         elif self.exchange == "binance.com-isolated_margin":
             self.restful_base_uri = "https://api.binance.com/"
             self.path_userdata = "sapi/v1/userDataStream/isolated"
+        elif self.exchange == "binance.com-isolated_margin-testnet":
+            self.restful_base_uri = "https://testnet.binance.vision/"
+            self.path_userdata = "sapi/v1/userDataStream/isolated"
         elif self.exchange == "binance.com-futures":
             self.restful_base_uri = "https://fapi.binance.com/"
+            self.path_userdata = "fapi/v1/listenKey"
+        elif self.exchange == "binance.com-futures-testnet":
+            self.restful_base_uri = "https://testnet.binancefuture.com/"
             self.path_userdata = "fapi/v1/listenKey"
         elif self.exchange == "binance.je":
             self.restful_base_uri = "https://api.binance.je/"
