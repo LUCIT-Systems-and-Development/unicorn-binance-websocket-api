@@ -128,6 +128,15 @@ class TestBinanceComManager(unittest.TestCase):
     def test_get_exchange(self):
         self.assertEqual(self.binance_com_websocket_api_manager.get_exchange(), "binance.com")
 
+    def test_create_payload(self):
+        result = "[{'method': 'SUBSCRIBE', 'params': ['bnbbtc@kline_1m'], 'id': 1}]"
+        stream_id = uuid.uuid4()
+        self.assertEqual(str(self.binance_com_websocket_api_manager.create_payload(stream_id,
+                                                                                   "subscribe",
+                                                                                   ['kline_1m'],
+                                                                                   ['bnbbtc'])),
+                         result)
+
     def tearDown(self):
         self.binance_com_websocket_api_manager.stop_manager_with_all_streams()
 

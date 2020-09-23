@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.17.4.dev (development stage/unreleased/unstable)
 
 ### Added
-- binance.com testnets
+- binance.com testnets (spot, margin, isolated_margin, future)
 
 ## 1.17.4
 ### Added

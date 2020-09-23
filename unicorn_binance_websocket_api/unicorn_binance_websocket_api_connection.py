@@ -34,7 +34,6 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_exceptions import StreamRecoveryError
-from websockets import connect
 import copy
 import ujson as json
 import logging
@@ -43,6 +42,8 @@ import ssl
 import sys
 import time
 import websockets
+
+connect = websockets.connect
 
 
 class BinanceWebSocketApiConnection(object):
