@@ -171,29 +171,6 @@ class BinanceWebSocketApiRestclient(object):
         request_handler.close()
         return respond
 
-    def delete_listen_key(self, listen_key):
-        """
-        Delete a specific listen key
-
-        :param listen_key: the listenkey you want to delete
-        :type listen_key: str
-
-        :return: the response
-        :rtype: str or False
-        """
-        if self.ubwa.show_secrets_in_logs is True:
-            logging.info("BinanceWebSocketApiRestclient->delete_listen_key(" + str(listen_key) + ")")
-        else:
-            logging.info("BinanceWebSocketApiRestclient->delete_listen_key(" + str(self.ubwa.replaced_secrets_text)
-                         + ")")
-        method = "delete"
-        try:
-            return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
-        except KeyError:
-            return False
-        except TypeError:
-            return False
-
     def get_listen_key(self):
         """
         Request a valid listen_key from binance
@@ -219,6 +196,18 @@ class BinanceWebSocketApiRestclient(object):
         except TypeError:
             return False
 
+    def delete_listen_key(self, listen_key):
+        """
+        Delete a specific listen key
+
+        :param listen_key: the listenkey you want to delete
+        :type listen_key: str
+
+        :return: the response
+        :rtype: str or False
+        """
+        return self.do_request(listen_key, "delete")
+
     def keepalive_listen_key(self, listen_key):
         """
         Ping a listenkey to keep it alive
@@ -229,15 +218,46 @@ class BinanceWebSocketApiRestclient(object):
         :return: the response
         :rtype: str or False
         """
-        if self.ubwa.show_secrets_in_logs is True:
-            logging.info("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(listen_key) + ")")
+        return self.do_request(listen_key, "keepalive")
+
+    def do_request(self, listen_key, action=False):
+        """
+        Do a request!
+
+        :param listen_key: the listenkey you want to keepalive
+        :type listen_key: str
+
+        :param action: choose "delete" or "keepalive"
+        :type action: str
+
+        :return: the response
+        :rtype: str or False
+        """
+        if action == "keepalive":
+            if self.ubwa.show_secrets_in_logs is True:
+                logging.info("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(listen_key) + ")")
+            else:
+                logging.info("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(self.ubwa.replaced_secrets_text)
+                             + ")")
+            method = "put"
+            try:
+                return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
+            except KeyError:
+                return False
+            except TypeError:
+                return False
+        elif action == "delete":
+            if self.ubwa.show_secrets_in_logs is True:
+                logging.info("BinanceWebSocketApiRestclient->delete_listen_key(" + str(listen_key) + ")")
+            else:
+                logging.info("BinanceWebSocketApiRestclient->delete_listen_key(" + str(self.ubwa.replaced_secrets_text)
+                             + ")")
+            method = "delete"
+            try:
+                return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
+            except KeyError:
+                return False
+            except TypeError:
+                return False
         else:
-            logging.info("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(self.ubwa.replaced_secrets_text)
-                         + ")")
-        method = "put"
-        try:
-            return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
-        except KeyError:
-            return False
-        except TypeError:
             return False
