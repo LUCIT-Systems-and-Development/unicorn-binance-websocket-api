@@ -34,7 +34,6 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_exceptions import StreamRecoveryError
-from websockets import connect
 import copy
 import ujson as json
 import logging
@@ -44,16 +43,18 @@ import sys
 import time
 import websockets
 
+connect = websockets.connect
+
 
 class BinanceWebSocketApiConnection(object):
-    def __init__(self, handler_binance_websocket_api_manager, stream_id, channels, markets, symbol):
+    def __init__(self, handler_binance_websocket_api_manager, stream_id, channels, markets, symbols):
         self.handler_binance_websocket_api_manager = handler_binance_websocket_api_manager
         self.api_key = copy.deepcopy(self.handler_binance_websocket_api_manager.stream_list[stream_id]['api_key'])
         self.api_secret = copy.deepcopy(self.handler_binance_websocket_api_manager.stream_list[stream_id]['api_secret'])
         self.channels = copy.deepcopy(channels)
         self.markets = copy.deepcopy(markets)
         self.stream_id = copy.deepcopy(stream_id)
-        self.symbol = copy.deepcopy(symbol)
+        self.symbols = copy.deepcopy(symbols)
 
     async def __aenter__(self):
         if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id):
@@ -61,7 +62,7 @@ class BinanceWebSocketApiConnection(object):
             sys.exit(0)
         uri = self.handler_binance_websocket_api_manager.create_websocket_uri(self.channels, self.markets,
                                                                               self.stream_id, self.api_key,
-                                                                              self.api_secret, symbol=self.symbol)
+                                                                              self.api_secret, symbols=self.symbols)
         if uri is False:
             # cant get a valid URI, so this stream has to crash
             error_msg = "Probably no internet connection?"
@@ -90,13 +91,13 @@ class BinanceWebSocketApiConnection(object):
                     try:
                         del self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]
                     except KeyError as error_msg:
-                        logging.debug("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
-                                      ", " + str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " +
-                                      str(uri) + " error: 6 - " + str(error_msg))
+                        logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
+                                      ", " + str(self.channels) + ", " + str(self.markets) + ")" + " error: 6 - "
+                                      + str(error_msg))
                     except TypeError as error_msg:
-                        logging.error("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
-                                      ", " + str(self.channels) + ", " + str(self.markets) + ")" + " connecting to " +
-                                      str(uri) + " error: 3 - " + str(error_msg))
+                        logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
+                                      ", " + str(self.channels) + ", " + str(self.markets) + ")" + " error: 3 - "
+                                      + str(error_msg))
                 else:
                     logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
                                      ", " + str(self.channels) + ", " + str(self.markets) + ") - " + " Received unknown"
@@ -106,8 +107,9 @@ class BinanceWebSocketApiConnection(object):
                     raise StreamRecoveryError("stream_id " + str(self.stream_id) + ": " + str(uri))
                 sys.exit(1)
         except KeyError:
-            logging.error("BinanceWebSocketApiConnection->__enter__(" + str(self.stream_id) + ", " + str(self.channels) +
-                          ", " + str(self.markets) + ")" + " connecting to " + str(uri) + " error: 1")
+            logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
+                             ", " + str(self.channels) + ", " + str(self.markets) + ")" + " error: 1 - "
+                             + str(error_msg))
         self._conn = connect(uri, ping_interval=20, close_timeout=10,
                              extra_headers={'User-Agent': 'oliver-zehentleitner/unicorn-binance-websocket-api/' +
                                             self.handler_binance_websocket_api_manager.version})

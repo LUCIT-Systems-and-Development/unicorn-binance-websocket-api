@@ -34,6 +34,7 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient import BinanceWebSocketApiRestclient
 import logging
 import unittest
 import uuid
@@ -127,6 +128,29 @@ class TestBinanceComManager(unittest.TestCase):
 
     def test_get_exchange(self):
         self.assertEqual(self.binance_com_websocket_api_manager.get_exchange(), "binance.com")
+
+    def test_get_listenkey_from_restclient(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.get_listen_key_from_restclient(), False)
+
+    def test_get_listenkey_from_restclient(self):
+        stream_id = uuid.uuid4()
+        self.assertEqual(self.binance_com_websocket_api_manager.delete_listen_key_by_stream_id(stream_id), False)
+
+    def test_keepalive_listen_key(self):
+        stream_id = uuid.uuid4()
+        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.binance_com_websocket_api_manager,
+                                                                         stream_id)
+        self.assertEqual(str(binance_websocket_api_restclient.keepalive_listen_key("invalid_testkey")),
+                         "{'code': -2014, 'msg': 'API-key format invalid.'}")
+
+    def test_create_payload(self):
+        result = "[{'method': 'SUBSCRIBE', 'params': ['bnbbtc@kline_1m'], 'id': 1}]"
+        stream_id = uuid.uuid4()
+        self.assertEqual(str(self.binance_com_websocket_api_manager.create_payload(stream_id,
+                                                                                   "subscribe",
+                                                                                   ['kline_1m'],
+                                                                                   ['bnbbtc'])),
+                         result)
 
     def tearDown(self):
         self.binance_com_websocket_api_manager.stop_manager_with_all_streams()
@@ -401,6 +425,15 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     def test_is_exchange_type_dex(self):
         self.assertEqual(self.binance_org_websocket_api_manager.is_exchange_type("dex"), True)
+
+    def test_create_payload(self):
+        result = "[{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RAVEN-F66_BNB']}]"
+        stream_id = uuid.uuid4()
+        self.assertEqual(str(self.binance_org_websocket_api_manager.create_payload(stream_id,
+                                                                                   "subscribe",
+                                                                                   ['kline_1m'],
+                                                                                   ['RAVEN-F66_BNB'])),
+                         result)
 
     def tearDown(self):
         self.binance_org_websocket_api_manager.stop_manager_with_all_streams()

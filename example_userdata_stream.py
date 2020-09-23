@@ -92,7 +92,7 @@ binance_com_user_data_stream_id = binance_com_websocket_api_manager.create_strea
 binance_je_user_data_stream_id = binance_je_websocket_api_manager.create_stream('arr', '!userData')
 binance_us_user_data_stream_id = binance_us_websocket_api_manager.create_stream('arr', '!userData')
 binance_com_iso_user_data_stream_id = binance_com_isolated_websocket_api_manager.create_stream('arr', '!userData',
-                                                                                               symbol="trxbtc")
+                                                                                               symbols="trxbtc")
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_com_websocket_api_manager,))

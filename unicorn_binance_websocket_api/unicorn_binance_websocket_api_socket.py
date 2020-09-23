@@ -51,13 +51,13 @@ class BinanceWebSocketApiSocket(object):
         self.markets = markets
         self.socket_id = uuid.uuid4()
         self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] = self.socket_id
-        self.symbol = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['symbol']
+        self.symbols = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['symbols']
 
     async def start_socket(self):
         logging.info("BinanceWebSocketApiSocket->start_socket(" +
                      str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ")")
         async with BinanceWebSocketApiConnection(self.handler_binance_websocket_api_manager, self.stream_id,
-                                                 self.channels, self.markets, symbol=self.symbol) as websocket:
+                                                 self.channels, self.markets, symbols=self.symbols) as websocket:
             while True:
                 if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id):
                     self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
