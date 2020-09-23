@@ -107,11 +107,17 @@ class TestBinanceComManager(unittest.TestCase):
                                                                                          self.binance_com_api_secret),
                              r'wss://stream.binance.com:9443/ws/.')
 
+    def test_is_exchange_type_cex(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.is_exchange_type("cex"), True)
+
+    def test_is_exchange_type_dex(self):
+        self.assertEqual(self.binance_com_websocket_api_manager.is_exchange_type("dex"), False)
+
     def tearDown(self):
         self.binance_com_websocket_api_manager.stop_manager_with_all_streams()
 
 
-class TestBinanceComManager(unittest.TestCase):
+class TestBinanceComManagerTest(unittest.TestCase):
     # Test testnet.binance.vision (Binance Testnet)
 
     def setUp(self):
@@ -166,6 +172,12 @@ class TestBinanceComManager(unittest.TestCase):
                                                                                          self.binance_com_testnet_api_key,
                                                                                          self.binance_com_testnet_api_secret),
                              r'wss://stream.binance.com:9443/ws/.')
+
+    def test_is_exchange_type_cex(self):
+        self.assertEqual(self.binance_com_testnet_websocket_api_manager.is_exchange_type("cex"), True)
+
+    def test_is_exchange_type_dex(self):
+        self.assertEqual(self.binance_com_testnet_websocket_api_manager.is_exchange_type("dex"), False)
 
     def tearDown(self):
         self.binance_com_testnet_websocket_api_manager.stop_manager_with_all_streams()
@@ -227,6 +239,12 @@ class TestBinanceJeManager(unittest.TestCase):
                                                                                         self.binance_je_api_key,
                                                                                         self.binance_je_api_secret),
                              r'wss://stream.binance.je:9443/ws')
+
+    def test_is_exchange_type_cex(self):
+        self.assertEqual(self.binance_je_websocket_api_manager.is_exchange_type("cex"), True)
+
+    def test_is_exchange_type_dex(self):
+        self.assertEqual(self.binance_je_websocket_api_manager.is_exchange_type("dex"), False)
 
     def tearDown(self):
         self.binance_je_websocket_api_manager.stop_manager_with_all_streams()
@@ -362,6 +380,12 @@ class TestBinanceOrgManager(unittest.TestCase):
         self.assertEqual(str(payload),
                          "[{'method': 'unsubscribe', 'symbols': ['RAVEN-F66_BNB']}, "
                          "{'method': 'unsubscribe', 'topic': 'trades'}]")
+
+    def test_is_exchange_type_cex(self):
+        self.assertEqual(self.binance_org_websocket_api_manager.is_exchange_type("cex"), False)
+
+    def test_is_exchange_type_dex(self):
+        self.assertEqual(self.binance_org_websocket_api_manager.is_exchange_type("dex"), True)
 
     def tearDown(self):
         self.binance_org_websocket_api_manager.stop_manager_with_all_streams()
