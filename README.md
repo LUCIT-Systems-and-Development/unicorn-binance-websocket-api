@@ -100,7 +100,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 - Supported exchanges: 
     * [Binance](https://www.binance.com) 
      `BinanceWebSocketApiManager(exchange="binance.com")`
-    * [Binance](https://testnet.binance.vision/)
+    * [Binance Testnet](https://testnet.binance.vision/)
      `BinanceWebSocketApiManager(exchange="binance.com-testnet")`
     * [Binance Margin](https://www.binance.com)
      `BinanceWebSocketApiManager(exchange="binance.com-margin")`
@@ -122,7 +122,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
      `BinanceWebSocketApiManager(exchange="jex.com")`
     * [Binance DEX](https://www.binance.org)
      `BinanceWebSocketApiManager(exchange="binance.org")`
-    * [Binance DEX testnet](https://testnet.binance.org)
+    * [Binance DEX Testnet](https://testnet.binance.org)
      `BinanceWebSocketApiManager(exchange="binance.org-testnet")`
 - Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, but 
 you dont need to deal with asyncio in your code!
