@@ -2010,9 +2010,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.exchange == "binance.org-testnet":
             is_type = "dex"
         elif self.exchange == "binance.com" or \
+                self.exchange == "binance.com-testnet" or \
                 self.exchange == "binance.com-margin" or \
+                self.exchange == "binance.com-margin-testnet" or \
                 self.exchange == "binance.com-isolated_margin" or \
+                self.exchange == "binance.com-isolated_margin-testnet" or \
                 self.exchange == "binance.com-futures" or \
+                self.exchange == "binance.com-futures-testnet" or \
                 self.exchange == "binance.je" or \
                 self.exchange == "binance.us" or \
                 self.exchange == "jex.com":

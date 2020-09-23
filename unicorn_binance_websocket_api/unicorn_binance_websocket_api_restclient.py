@@ -192,7 +192,7 @@ class BinanceWebSocketApiRestclient(object):
         """
         logging.info("BinanceWebSocketApiRestclient->get_listen_key() symbol=" + str(self.symbol))
         method = "post"
-        if self.exchange == "binance.com-isolated_margin":
+        if self.exchange == "binance.com-isolated_margin" or self.exchange == "binance.com-isolated_margin-testnet":
             if self.symbol is False:
                 logging.critical("BinanceWebSocketApiRestclient->get_listen_key() Info: Parameter `symbol` is missing!")
                 return False
