@@ -45,10 +45,6 @@ import time
 class BinanceWebSocketApiRestclient(object):
     def __init__(self, ubwa, stream_id):
         self.ubwa = ubwa
-        self.api_key = self.ubwa.stream_list[stream_id]['api_key']
-        self.api_secret = self.ubwa.stream_list[stream_id]['api_secret']
-        self.symbols = self.ubwa.stream_list[stream_id]['symbols']
-        self.unicorn_binance_websocket_api_version = self.ubwa.get_version()
         if self.ubwa.exchange == "binance.com":
             self.restful_base_uri = "https://api.binance.com/"
             self.path_userdata = "api/v3/userDataStream"
@@ -82,6 +78,19 @@ class BinanceWebSocketApiRestclient(object):
         elif self.ubwa.exchange == "jex.com":
             self.restful_base_uri = "https://www.jex.com/"
             self.path_userdata = "api/v1/userDataStream"
+        try:
+            self.api_key = self.ubwa.stream_list[stream_id]['api_key']
+            self.api_secret = self.ubwa.stream_list[stream_id]['api_secret']
+            self.symbols = self.ubwa.stream_list[stream_id]['symbols']
+        except AttributeError:
+            self.api_key = False
+            self.api_secret = False
+            self.symbols = False
+        except KeyError:
+            self.api_key = False
+            self.api_secret = False
+            self.symbols = False
+        self.unicorn_binance_websocket_api_version = self.ubwa.get_version()
         self.listen_key = False
         self.binance_api_status = self.ubwa.binance_api_status
 

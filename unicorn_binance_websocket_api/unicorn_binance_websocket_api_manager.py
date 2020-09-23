@@ -1048,11 +1048,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: id of a !userData stream
         :type stream_id: uuid
         """
-        if self.stream_list[stream_id]['listen_key'] is not False:
-            logging.info("BinanceWebSocketApiManager->stop_manager_with_all_streams(" + str(
-                stream_id) + ")->delete_listen_key")
-            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self, stream_id)
-            binance_websocket_api_restclient.delete_listen_key(self.stream_list[stream_id]['listen_key'])
+        try:
+            if self.stream_list[stream_id]['listen_key'] is not False:
+                logging.info("BinanceWebSocketApiManager->stop_manager_with_all_streams(" + str(
+                    stream_id) + ")->delete_listen_key")
+                binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self, stream_id)
+                binance_websocket_api_restclient.delete_listen_key(self.stream_list[stream_id]['listen_key'])
+        except KeyError:
+            return False
 
     def delete_stream_from_stream_list(self, stream_id):
         """
