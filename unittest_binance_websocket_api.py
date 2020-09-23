@@ -171,7 +171,12 @@ class TestBinanceComManager(unittest.TestCase):
     def test_create_stream(self):
         self.assertTrue(bool(self.binance_com_websocket_api_manager.create_stream(markets=['bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt'],
                                                                                   channels="trade")))
-        time.sleep(10)
+
+    def test_restart_stream(self):
+        self.assertFalse(bool(self.binance_com_websocket_api_manager._restart_stream(uuid.uuid4())))
+
+    def test_start_monitoring_api(self):
+        self.assertTrue(self.binance_com_websocket_api_manager.start_monitoring_api())
 
     def tearDown(self):
         self.binance_com_websocket_api_manager.stop_manager_with_all_streams()

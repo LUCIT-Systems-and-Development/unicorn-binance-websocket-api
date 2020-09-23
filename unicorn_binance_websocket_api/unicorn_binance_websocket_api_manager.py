@@ -2700,6 +2700,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         thread = threading.Thread(target=self._start_monitoring_api_thread, args=(host, port, warn_on_update))
         thread.start()
+        return True
 
     def stop_manager_with_all_streams(self):
         """
