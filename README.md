@@ -78,6 +78,7 @@ provides an API to the Binance Websocket API`s of
 all public streams like trade, kline, ticker, depth, bookTicker, forceOrder and blockheight and also all private userData streams 
 which needs to be used with a valid api_key and api_secret from the Binance Exchange 
 [www.binance.com](https://www.binance.com/userCenter/createApi.html), 
+[testnet.binance.vision](https://testnet.binance.vision/), 
 [www.binance.je](https://www.binance.je/userCenter/createApi.html),
 [www.binance.us](https://www.binance.us/userCenter/createApi.html) or 
 [www.jex.com](https://www.jex.com/userCenter/createApi.html) - for the DEX you need a user address from 
