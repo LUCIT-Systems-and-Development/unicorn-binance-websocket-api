@@ -411,6 +411,15 @@ class TestBinanceOrgManager(unittest.TestCase):
     def test_is_exchange_type_dex(self):
         self.assertEqual(self.binance_org_websocket_api_manager.is_exchange_type("dex"), True)
 
+    def test_create_payload(self):
+        result = "[{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RAVEN-F66_BNB']}]"
+        stream_id = uuid.uuid4()
+        self.assertEqual(str(self.binance_org_websocket_api_manager.create_payload(stream_id,
+                                                                                   "subscribe",
+                                                                                   ['kline_1m'],
+                                                                                   ['RAVEN-F66_BNB'])),
+                         result)
+
     def tearDown(self):
         self.binance_org_websocket_api_manager.stop_manager_with_all_streams()
 

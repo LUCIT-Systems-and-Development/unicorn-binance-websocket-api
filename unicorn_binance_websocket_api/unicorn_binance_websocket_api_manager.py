@@ -126,7 +126,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                  exchange="binance.com",
                  warn_on_update=True,
                  throw_exception_if_unrepairable=False,
-                 restart_timeout=6):
+                 restart_timeout=6,
+                 show_secrets_in_logs=False):
         threading.Thread.__init__(self)
         self.version = "1.17.4.dev"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
@@ -207,6 +208,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.ringbuffer_error_max_size = 500
         self.ringbuffer_result = []
         self.ringbuffer_result_max_size = 500
+        self.show_secrets_in_logs = show_secrets_in_logs
         self.stream_buffer_lock = threading.Lock()
         self.stream_buffer_locks = {}
         self.start_time = time.time()

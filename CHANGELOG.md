@@ -5,10 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.17.4.dev (development stage/unreleased/unstable)
+## 1.18.0.dev (development stage/unreleased/unstable)
 
+## 1.18.0
 ### Added
 - binance.com testnets (spot, margin, isolated_margin, future)
+- `hide_secrets_in_logs` parameter 
+### Changed
+- `symbol` to `symbols` (isolated_margin)
 
 ## 1.17.4
 ### Added
