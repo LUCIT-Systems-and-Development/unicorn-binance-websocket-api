@@ -39,6 +39,7 @@ import logging
 import unittest
 import uuid
 import os
+import time
 
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
@@ -166,6 +167,11 @@ class TestBinanceComManager(unittest.TestCase):
         result = "||||||||||||||||||||test text|"
         self.assertEqual(str(self.binance_com_websocket_api_manager.fill_up_space_left(30, "test text", "|")),
                          result)
+
+    def test_create_stream(self):
+        self.assertTrue(bool(self.binance_com_websocket_api_manager.create_stream(markets=['bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt'],
+                                                                                  channels="trade")))
+        time.sleep(10)
 
     def tearDown(self):
         self.binance_com_websocket_api_manager.stop_manager_with_all_streams()
