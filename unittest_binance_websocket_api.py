@@ -562,6 +562,12 @@ class TestRestApi(unittest.TestCase):
         BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
+    def test_rest_binance_com_hmac(self):
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
+        rest = BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        rest._get_signature("blah")
+        binance_websocket_api_manager.stop_manager_with_all_streams()
+
 
 if __name__ == '__main__':
     unittest.main()
