@@ -189,16 +189,9 @@ class TestBinanceComManager(unittest.TestCase):
                                                                                   channels="trade",
                                                                                   stream_label="test_stream")))
         stream_id = self.binance_com_websocket_api_manager.get_stream_id_by_label("test_stream")
-
-        time.sleep(5)
-#        result = "[{'method': 'UNSUBSCRIBE', 'params': ['bnbbtc@trade'], 'id': "
-#        self.assertIn(result, str(self.binance_com_websocket_api_manager.create_payload(stream_id,
-#                                                                                        "unsubscribe",
-#                                                                                        markets=['bnbbtc'])))
-        result = "[{'method': 'UNSUBSCRIBE', 'params': ['bnbbtc@trade'], 'id': "
-        self.assertIn(result, str(self.binance_com_websocket_api_manager.create_payload(stream_id,
-                                                                                        "unsubscribe",
-                                                                                        channels=['trade'])))
+        #time.sleep(5)
+        #self.binance_com_websocket_api_manager.unsubscribe_from_stream(stream_id, markets=['bnbbtc'])
+        #self.binance_com_websocket_api_manager.unsubscribe_from_stream(stream_id, channels=['trade'])
         time.sleep(5)
         self.assertTrue(self.binance_com_websocket_api_manager.set_restart_request(stream_id))
         time.sleep(10)
