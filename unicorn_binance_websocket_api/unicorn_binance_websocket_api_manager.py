@@ -768,19 +768,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                     params = list(set(params))
                     payload = self.split_payload(params, "SUBSCRIBE")
             elif method == "unsubscribe":
-                try:
-                    current_channels = self.stream_list[stream_id]['channels']
-                except KeyError:
-                    current_channels = []
-                if current_channels:
+                if markets:
                     params = []
-                    for channel in current_channels:
+                    for channel in self.stream_list[stream_id]['channels']:
                         if "!" in channel:
                             params.append(channel + final_market)
                         else:
-                            if markets:
-                                for market in markets:
-                                    params.append(market.lower() + "@" + channel)
+                            for market in markets:
+                                params.append(market.lower() + "@" + channel)
                     if len(params) > 0:
                         payload = self.split_payload(params, "UNSUBSCRIBE")
                 if channels:

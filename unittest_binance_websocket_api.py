@@ -122,10 +122,18 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(self.binance_com_websocket_api_manager.is_manager_stopping(), False)
 
     def test_get_human_uptime(self):
-        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(3737823782), "43261d:20h:23m:2s")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(1024 * 1024 * 1024 * 1024), "12725829d:0h:36m:16s")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(1024 * 1024 * 1024), "12427d:13h:37m:4s")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(1024 * 1024), "12d:3h:16m:16s")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(1024), "17m:4s")
 
     def test_get_human_bytesize(self):
-        self.assertEqual(self.binance_com_websocket_api_manager.get_human_bytesize(99999993737823782), "90949.464 tB")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_bytesize(1024 * 1024 * 1024 * 1024 * 1024), "1024.0 tB")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_bytesize(1024 * 1024 * 1024 * 1024), "1024.0 gB")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_bytesize(1024 * 1024 * 1024), "1024.0 mB")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_bytesize(1024 * 1024), "1024.0 kB")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_bytesize(1024), "1024 B")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_bytesize(1), "1 B")
 
     def test_get_exchange(self):
         self.assertEqual(self.binance_com_websocket_api_manager.get_exchange(), "binance.com")
@@ -169,6 +177,7 @@ class TestBinanceComManager(unittest.TestCase):
                          result)
 
     def test_create_stream(self):
+        self.assertTrue(bool(self.binance_com_websocket_api_manager.create_stream('arr', '!userData', "key", "secret")))
         self.assertTrue(bool(self.binance_com_websocket_api_manager.create_stream(markets=['bnbbtc'],
                                                                                   channels="trade",
                                                                                   stream_label="test_stream")))
