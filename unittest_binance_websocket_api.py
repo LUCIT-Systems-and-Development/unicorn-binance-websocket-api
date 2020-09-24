@@ -144,7 +144,7 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(str(binance_websocket_api_restclient.keepalive_listen_key("invalid_testkey")),
                          "{'code': -2014, 'msg': 'API-key format invalid.'}")
 
-    def test_create_payload(self):
+    def test_create_payload_subscribe(self):
         result = "[{'method': 'SUBSCRIBE', 'params': ['bnbbtc@kline_1m'], 'id': 1}]"
         stream_id = uuid.uuid4()
         self.assertEqual(str(self.binance_com_websocket_api_manager.create_payload(stream_id,
@@ -169,11 +169,23 @@ class TestBinanceComManager(unittest.TestCase):
                          result)
 
     def test_create_stream(self):
-        self.assertTrue(bool(self.binance_com_websocket_api_manager.create_stream(markets=['bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt'],
+        self.assertTrue(bool(self.binance_com_websocket_api_manager.create_stream(markets=['bnbbtc'],
                                                                                   channels="trade",
                                                                                   stream_label="test_stream")))
+        stream_id = self.binance_com_websocket_api_manager.get_stream_id_by_label("test_stream")
+
+        result = "[{'method': 'UNSUBSCRIBE', 'params': ['ethbtc@trade'], 'id': "
+        self.assertIn(result, str(self.binance_com_websocket_api_manager.create_payload(stream_id,
+                                                                                        "unsubscribe",
+                                                                                        markets=['ethbtc'])))
+        result = "[{'method': 'UNSUBSCRIBE', 'params': ['bnbbtc@trade'], 'id': "
+        self.assertIn(result, str(self.binance_com_websocket_api_manager.create_payload(stream_id,
+                                                                                        "unsubscribe",
+                                                                                        channels=['trade'])))
         time.sleep(5)
-        self.assertTrue(self.binance_com_websocket_api_manager.stop_stream(self.binance_com_websocket_api_manager.get_stream_id_by_label("test_stream")))
+        self.assertTrue(self.binance_com_websocket_api_manager.set_restart_request(stream_id))
+        time.sleep(10)
+        self.assertTrue(self.binance_com_websocket_api_manager.stop_stream(stream_id))
 
     def test_restart_stream(self):
         self.assertFalse(bool(self.binance_com_websocket_api_manager._restart_stream(uuid.uuid4())))

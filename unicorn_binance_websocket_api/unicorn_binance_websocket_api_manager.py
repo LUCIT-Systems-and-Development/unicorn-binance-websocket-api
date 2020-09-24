@@ -743,13 +743,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return False
         elif self.is_exchange_type("cex"):
             final_market = "@arr"
-            for market in markets:
-                if "arr@" in market:
-                    final_market = "@" + market
+            if markets:
+                for market in markets:
+                    if "arr@" in market:
+                        final_market = "@" + market
             final_channel = "@arr"
-            for channel in channels:
-                if "arr@" in channel:
-                    final_channel = "@" + channel
+            if channels:
+                for channel in channels:
+                    if "arr@" in channel:
+                        final_channel = "@" + channel
             if method == "subscribe":
                 params = []
                 for channel in channels:
@@ -766,14 +768,19 @@ class BinanceWebSocketApiManager(threading.Thread):
                     params = list(set(params))
                     payload = self.split_payload(params, "SUBSCRIBE")
             elif method == "unsubscribe":
-                if markets:
+                try:
+                    current_channels = self.stream_list[stream_id]['channels']
+                except KeyError:
+                    current_channels = []
+                if current_channels:
                     params = []
-                    for channel in self.stream_list[stream_id]['channels']:
+                    for channel in current_channels:
                         if "!" in channel:
                             params.append(channel + final_market)
                         else:
-                            for market in markets:
-                                params.append(market.lower() + "@" + channel)
+                            if markets:
+                                for market in markets:
+                                    params.append(market.lower() + "@" + channel)
                     if len(params) > 0:
                         payload = self.split_payload(params, "UNSUBSCRIBE")
                 if channels:
@@ -2647,6 +2654,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: uuid
         """
         self.restart_requests[stream_id] = {'status': "new"}
+        return True
 
     def split_payload(self, params, method, max_items_per_request=350):
         """
