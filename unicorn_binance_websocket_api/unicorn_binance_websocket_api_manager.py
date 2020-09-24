@@ -2718,12 +2718,16 @@ class BinanceWebSocketApiManager(threading.Thread):
     def stop_monitoring_api(self):
         """
         Stop the monitoring API service
+
+        :return: bool
         """
         try:
             if not isinstance(self.monitoring_api_server, bool):
                 self.monitoring_api_server.stop()
+                return True
         except AttributeError as error_msg:
             logging.info("can not execute self.monitoring_api_server.stop() - info: " + str(error_msg))
+            return False
 
     def stop_stream(self, stream_id):
         """
@@ -2740,6 +2744,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             pass
         self.stream_list[stream_id]['stop_request'] = True
+        return True
 
     def stop_stream_as_crash(self, stream_id):
         """
