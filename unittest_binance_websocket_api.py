@@ -184,17 +184,17 @@ class TestBinanceComManager(unittest.TestCase):
                          result)
 
     def test_create_stream(self):
-        self.assertTrue(bool(self.binance_com_websocket_api_manager.create_stream('arr', '!userData',"userData", "key", "secret")))
+        self.assertTrue(bool(self.binance_com_websocket_api_manager.create_stream('arr', '!userData', "userData", "key", "secret")))
         self.assertTrue(bool(self.binance_com_websocket_api_manager.create_stream(markets=['bnbbtc'],
                                                                                   channels="trade",
                                                                                   stream_label="test_stream")))
         stream_id = self.binance_com_websocket_api_manager.get_stream_id_by_label("test_stream")
 
-        time.sleep(2)
-        result = "[{'method': 'UNSUBSCRIBE', 'params': ['bnbbtc@trade'], 'id': "
-        self.assertIn(result, str(self.binance_com_websocket_api_manager.create_payload(stream_id,
-                                                                                        "unsubscribe",
-                                                                                        markets=['bnbbtc'])))
+        time.sleep(5)
+#        result = "[{'method': 'UNSUBSCRIBE', 'params': ['bnbbtc@trade'], 'id': "
+#        self.assertIn(result, str(self.binance_com_websocket_api_manager.create_payload(stream_id,
+#                                                                                        "unsubscribe",
+#                                                                                        markets=['bnbbtc'])))
         result = "[{'method': 'UNSUBSCRIBE', 'params': ['bnbbtc@trade'], 'id': "
         self.assertIn(result, str(self.binance_com_websocket_api_manager.create_payload(stream_id,
                                                                                         "unsubscribe",
@@ -562,9 +562,10 @@ class TestRestApi(unittest.TestCase):
         BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
-    def test_rest_binance_com_hmac(self):
+    def test_rest_binance_com_get_signature(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
-        rest = BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        stream_id = binance_websocket_api_manager.create_stream("arr", "!userData", api_key="blah", api_secret="blub")
+        rest = BinanceWebSocketApiRestclient(binance_websocket_api_manager, stream_id)
         rest._get_signature("blah")
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
