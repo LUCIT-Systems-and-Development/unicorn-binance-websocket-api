@@ -185,6 +185,9 @@ class TestBinanceComManager(unittest.TestCase):
         time.sleep(5)
         self.assertTrue(self.binance_com_websocket_api_manager.set_restart_request(stream_id))
         time.sleep(10)
+        self.binance_com_websocket_api_manager.get_monitoring_status_icinga()
+        self.binance_com_websocket_api_manager.print_summary()
+        self.binance_com_websocket_api_manager.print_stream_info(stream_id)
         self.assertTrue(self.binance_com_websocket_api_manager.stop_stream(stream_id))
 
     def test_restart_stream(self):
