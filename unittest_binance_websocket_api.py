@@ -723,8 +723,9 @@ class TestRestApi(unittest.TestCase):
                    'wrxbtc', 'pptbtc', 'nknbtc', 'zecusdt', 'stormeth', 'qtumusdt']
 
         for channel in channels:
-            stream_id2 =binance_websocket_api_manager.create_stream(channel, markets)
+            stream_id2 = binance_websocket_api_manager.create_stream(channel, markets)
 
+        time.sleep(10)
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
