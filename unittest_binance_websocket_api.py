@@ -751,10 +751,10 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.get_latest_release_info_check_command()
         binance_websocket_api_manager.get_version()
         binance_websocket_api_manager.help()
-        binance_websocket_api_manager.wait_till_stream_has_started()
-        binance_websocket_api_manager.wait_till_stream_has_stopped()
+        binance_websocket_api_manager.wait_till_stream_has_started(stream_id1)
         binance_websocket_api_manager.remove_ansi_escape_codes("test text")
         binance_websocket_api_manager.stop_manager_with_all_streams()
+        binance_websocket_api_manager.wait_till_stream_has_stopped(stream_id2)
 
 
 if __name__ == '__main__':
