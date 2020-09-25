@@ -2749,7 +2749,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             del self.restart_requests[stream_id]
         except KeyError:
             pass
-        self.stream_list[stream_id]['stop_request'] = True
+        try:
+            self.stream_list[stream_id]['stop_request'] = True
+        except KeyError:
+            return False
         return True
 
     def stop_stream_as_crash(self, stream_id):
