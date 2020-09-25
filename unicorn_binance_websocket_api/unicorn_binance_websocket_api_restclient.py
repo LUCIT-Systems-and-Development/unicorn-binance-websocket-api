@@ -178,14 +178,14 @@ class BinanceWebSocketApiRestclient(object):
         :return: listen_key
         :rtype: str or False
         """
-        logging.info("BinanceWebSocketApiRestclient->get_listen_key() symbol=" + str(self.symbols))
+        logging.info("BinanceWebSocketApiRestclient->get_listen_key() symbols=" + str(self.symbols))
         method = "post"
         if self.ubwa.exchange == "binance.com-isolated_margin" or self.ubwa.exchange == "binance.com-isolated_margin-testnet":
             if self.symbols is False:
                 logging.critical("BinanceWebSocketApiRestclient->get_listen_key() Info: Parameter `symbol` is missing!")
                 return False
             else:
-                response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol)})
+                response = self._request(method, self.path_userdata, False, {'symbols': str(self.symbols)})
         else:
             response = self._request(method, self.path_userdata)
         try:
