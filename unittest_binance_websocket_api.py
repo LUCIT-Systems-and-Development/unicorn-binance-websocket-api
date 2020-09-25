@@ -564,7 +564,7 @@ class TestRestApi(unittest.TestCase):
     def test_invalid_exchange(self):
         from unicorn_binance_websocket_api.unicorn_binance_websocket_api_exceptions import UnknownExchange
         try:
-            binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="invalid-exchange.com")
+            BinanceWebSocketApiManager(exchange="invalid-exchange.com")
         except UnknownExchange:
             pass
 
@@ -748,12 +748,12 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.get_monitoring_status_plain()
         binance_websocket_api_manager.get_ringbuffer_error_max_size()
         binance_websocket_api_manager.get_ringbuffer_result_max_size()
-        #        binance_websocket_api_manager.get_websocket_uri_length('trade', 'kncbtc', False)
+        binance_websocket_api_manager.get_websocket_uri_length('trade', 'kncbtc', False)
         binance_websocket_api_manager.set_ringbuffer_error_max_size(200)
         binance_websocket_api_manager.set_ringbuffer_result_max_size(300)
         binance_websocket_api_manager.set_restart_request(stream_id1)
         binance_websocket_api_manager.delete_stream_from_stream_list(stream_id1)
-        #        binance_websocket_api_manager.delete_listen_key_by_stream_id(stream_id1)
+        binance_websocket_api_manager.delete_listen_key_by_stream_id(stream_id1)
         time.sleep(10)
         binance_websocket_api_manager.stop_stream_as_crash(stream_id2)
         binance_websocket_api_manager.stop_stream(stream_id2)

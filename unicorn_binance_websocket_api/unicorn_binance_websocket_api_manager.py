@@ -1044,8 +1044,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                 query += market + final_channel
             else:
                 query += market.lower() + "@" + channel
-            if self.subscribe_to_stream(stream_id, markets=markets, channels=channels) is False:
-                sys.exit(1)
+            try:
+                if self.subscribe_to_stream(stream_id, markets=markets, channels=channels) is False:
+                    sys.exit(1)
+            except KeyError:
+                pass
             logging.info("Created websocket URI for stream_id=" + str(stream_id) + " is " +
                          self.websocket_base_uri + str(query))
             return self.websocket_base_uri + str(query)
@@ -1928,6 +1931,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type channels: str, tuple, list, set
         :param markets: provide the markets to create the URI
         :type markets: str, tuple, list, set
+        :param symbols: provide the symbols for isolated_margin user_data streams
+        :type symbols: str
         :return: int
         """
         uri = self.create_websocket_uri(channels, markets, symbols=symbols)
