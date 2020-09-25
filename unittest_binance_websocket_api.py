@@ -557,9 +557,9 @@ class TestRestApi(unittest.TestCase):
 
     def test_rest_binance_com_get_signature(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
-        stream_id = binance_websocket_api_manager.create_stream("arr", "!userData", api_key="blah", api_secret="blub")
+        stream_id = binance_websocket_api_manager.create_stream("arr", "!userData", api_key="key", api_secret="secret")
         rest = BinanceWebSocketApiRestclient(binance_websocket_api_manager, stream_id)
-        rest._get_signature("blah")
+        rest._get_signature("test_data")
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
 
