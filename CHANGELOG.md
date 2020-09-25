@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.18.1.dev (development stage/unreleased/unstable)
+### Fixed
+- added KeyError exception and `return False`
 
 ## 1.18.1
 ### Fixed
