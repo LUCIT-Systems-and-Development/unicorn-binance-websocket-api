@@ -153,6 +153,8 @@ rich media, shell syntax, tab completion, and history."
 and a [check_command](https://exchange.icinga.com/LUCIT/check_lucit_collector) 
 for [ICINGA](https://exchange.icinga.com/LUCIT/check_lucit_collector)/Nagios 
 [![icinga2-demo](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/icinga.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service)
+- Monitor the status of the streams within your code with 
+[get_monitoring_status_plain()](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=plain#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_monitoring_status_plain)!
 - Excessively tested on Linux, Mac and Windows
 
 If you like the project, please [![star](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/star.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/stargazers) it on 
