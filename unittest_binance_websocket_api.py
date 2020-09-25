@@ -715,9 +715,16 @@ class TestRestApi(unittest.TestCase):
                     'miniTicker', 'depth20']
 
         for channel in channels:
-            stream_id =binance_websocket_api_manager.create_stream(channel, markets)
+            stream_id1 =binance_websocket_api_manager.create_stream(channel, markets)
 
         time.sleep(10)
+        markets = ['xrpbearbusd', 'zeceth', 'cndbtc', 'dashbtc', 'atompax', 'perlbtc', 'ardreth', 'zecbnb',
+                   'erdbnb', 'xrpbearusdt', 'stratbnb', 'cmtbtc', 'cvcbtc', 'kncbtc', 'rpxbnb', 'zenbnb', 'cndbnb',
+                   'wrxbtc', 'pptbtc', 'nknbtc', 'zecusdt', 'stormeth', 'qtumusdt']
+
+        for channel in channels:
+            stream_id2 =binance_websocket_api_manager.create_stream(channel, markets)
+
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
@@ -733,11 +740,11 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.get_websocket_uri_length(channels, markets)
         binance_websocket_api_manager.set_ringbuffer_error_max_size(200)
         binance_websocket_api_manager.set_ringbuffer_result_max_size(300)
-        binance_websocket_api_manager.set_restart_request(stream_id)
+        binance_websocket_api_manager.set_restart_request(stream_id1)
         time.sleep(10)
-        binance_websocket_api_manager.stop_stream_as_crash(stream_id)
-        binance_websocket_api_manager.stop_stream(stream_id)
-        binance_websocket_api_manager.print_stream_info(stream_id)
+        binance_websocket_api_manager.stop_stream_as_crash(stream_id1)
+        binance_websocket_api_manager.stop_stream(stream_id1)
+        binance_websocket_api_manager.print_stream_info(stream_id2)
         binance_websocket_api_manager.print_summary()
         binance_websocket_api_manager.print_summary_to_png(".", 12.5)
         binance_websocket_api_manager.get_latest_release_info()
@@ -747,6 +754,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.wait_till_stream_has_started()
         binance_websocket_api_manager.wait_till_stream_has_stopped()
         binance_websocket_api_manager.remove_ansi_escape_codes("test text")
+        binance_websocket_api_manager.stop_manager_with_all_streams()
 
 
 if __name__ == '__main__':
