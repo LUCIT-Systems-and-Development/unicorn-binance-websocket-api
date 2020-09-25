@@ -739,7 +739,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
-        binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+        binance_websocket_api_manager.pop_stream_data_from_stream_buffer(stream_buffer_name="invalid")
 
         binance_websocket_api_manager.get_results_from_endpoints()
         binance_websocket_api_manager.get_stream_subscriptions(stream_id2)
@@ -755,7 +755,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.delete_stream_from_stream_list(stream_id1)
         #        binance_websocket_api_manager.delete_listen_key_by_stream_id(stream_id1)
         time.sleep(10)
-        #binance_websocket_api_manager.stop_stream_as_crash(stream_id2)
+        binance_websocket_api_manager.stop_stream_as_crash(stream_id2)
         binance_websocket_api_manager.stop_stream(stream_id2)
         binance_websocket_api_manager.wait_till_stream_has_stopped(stream_id2)
         binance_websocket_api_manager.print_stream_info(stream_id2)

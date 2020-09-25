@@ -2798,10 +2798,15 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: id of a stream
         :type stream_id: uuid
+        :return: bool
         """
         logging.info("BinanceWebSocketApiManager->stream_is_stopping(" + str(stream_id) + ")")
-        self.stream_list[stream_id]['has_stopped'] = time.time()
-        self.stream_list[stream_id]['status'] = "stopped"
+        try:
+            self.stream_list[stream_id]['has_stopped'] = time.time()
+            self.stream_list[stream_id]['status'] = "stopped"
+            return True
+        except KeyError:
+            return False
 
     def subscribe_to_stream(self, stream_id, channels=[], markets=[]):
         """
