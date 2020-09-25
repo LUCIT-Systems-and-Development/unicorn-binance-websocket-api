@@ -134,6 +134,7 @@ channels = ['kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline
 for channel in channels:
     binance_websocket_api_manager.create_stream(channel, markets)
 
+
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     print("waiting 30 seconds, then we start flushing the stream_buffer")
     time.sleep(30)
