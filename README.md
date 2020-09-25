@@ -141,7 +141,7 @@ per stream!)
 - Use separate `stream_buffers` for 
 [specific streams](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py) 
 or 
-[users](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py)
+[users](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py)!
 - Compatible with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy) to convert received raw data from
 crypto API endpoints into well-formed Python dictionaries. 
 - Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
