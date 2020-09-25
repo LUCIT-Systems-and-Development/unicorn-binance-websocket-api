@@ -122,10 +122,10 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(self.binance_com_websocket_api_manager.is_manager_stopping(), False)
 
     def test_get_human_uptime(self):
-        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(1024 * 1024 * 1024 * 1024), "12725829d:0h:36m:16s")
-        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(1024 * 1024 * 1024), "12427d:13h:37m:4s")
-        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(1024 * 1024), "12d:3h:16m:16s")
-        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(1024), "17m:4s")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(60 * 60 * 60 * 61), "152d:12h:0m:0s")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(60 * 60 * 24), "24h:0m:0s")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(60 * 60), "60m:0s")
+        self.assertEqual(self.binance_com_websocket_api_manager.get_human_uptime(60), "60 seconds")
 
     def test_get_human_bytesize(self):
         self.assertEqual(self.binance_com_websocket_api_manager.get_human_bytesize(1024 * 1024 * 1024 * 1024 * 1024), "1024.0 tB")
@@ -198,7 +198,6 @@ class TestBinanceComManager(unittest.TestCase):
         self.binance_com_websocket_api_manager.get_monitoring_status_icinga()
         self.binance_com_websocket_api_manager.print_summary()
         self.binance_com_websocket_api_manager.print_stream_info(stream_id)
-        self.assertTrue(self.binance_com_websocket_api_manager.stop_stream(stream_id))
 
     def test_restart_stream(self):
         self.assertFalse(bool(self.binance_com_websocket_api_manager._restart_stream(uuid.uuid4())))
@@ -562,8 +561,18 @@ class TestRestApi(unittest.TestCase):
         rest._get_signature("test_data")
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
+    def test_invalid_exchange(self):
+        from unicorn_binance_websocket_api.unicorn_binance_websocket_api_exceptions import UnknownExchange
+        try:
+            binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="invalid-exchange.com")
+        except UnknownExchange:
+            pass
+
     def test_live_run(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager()
+        binance_websocket_api_manager.get_active_stream_list()
+        binance_websocket_api_manager.get_limit_of_subscriptions_per_stream()
+        binance_websocket_api_manager.get_stream_list()
 
         markets = ['xrpbearbusd', 'zeceth', 'cndbtc', 'dashbtc', 'atompax', 'perlbtc', 'ardreth', 'zecbnb',
                    'bchabctusd',
@@ -726,6 +735,7 @@ class TestRestApi(unittest.TestCase):
             stream_id2 = binance_websocket_api_manager.create_stream(channel, markets)
 
         time.sleep(10)
+        binance_websocket_api_manager.unsubscribe_from_stream(stream_id2, markets="erdbnb")
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
@@ -738,24 +748,27 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.get_monitoring_status_plain()
         binance_websocket_api_manager.get_ringbuffer_error_max_size()
         binance_websocket_api_manager.get_ringbuffer_result_max_size()
-#        binance_websocket_api_manager.get_websocket_uri_length('trade', 'kncbtc', False)
+        #        binance_websocket_api_manager.get_websocket_uri_length('trade', 'kncbtc', False)
         binance_websocket_api_manager.set_ringbuffer_error_max_size(200)
         binance_websocket_api_manager.set_ringbuffer_result_max_size(300)
         binance_websocket_api_manager.set_restart_request(stream_id1)
+        binance_websocket_api_manager.delete_stream_from_stream_list(stream_id1)
+        #        binance_websocket_api_manager.delete_listen_key_by_stream_id(stream_id1)
         time.sleep(10)
-        binance_websocket_api_manager.stop_stream_as_crash(stream_id1)
-        binance_websocket_api_manager.stop_stream(stream_id1)
+        #binance_websocket_api_manager.stop_stream_as_crash(stream_id2)
+        binance_websocket_api_manager.stop_stream(stream_id2)
+        binance_websocket_api_manager.wait_till_stream_has_stopped(stream_id2)
         binance_websocket_api_manager.print_stream_info(stream_id2)
         binance_websocket_api_manager.print_summary()
-        binance_websocket_api_manager.print_summary_to_png(".", 12.5)
+        #        binance_websocket_api_manager.print_summary_to_png(".", 12.5)
         binance_websocket_api_manager.get_latest_release_info()
         binance_websocket_api_manager.get_latest_release_info_check_command()
         binance_websocket_api_manager.get_version()
         binance_websocket_api_manager.help()
-        binance_websocket_api_manager.wait_till_stream_has_started(stream_id1)
+        binance_websocket_api_manager.wait_till_stream_has_started(stream_id2)
         binance_websocket_api_manager.remove_ansi_escape_codes("test text")
+        time.sleep(10)
         binance_websocket_api_manager.stop_manager_with_all_streams()
-        binance_websocket_api_manager.wait_till_stream_has_stopped(stream_id2)
 
 
 if __name__ == '__main__':

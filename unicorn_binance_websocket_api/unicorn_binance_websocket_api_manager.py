@@ -1968,7 +1968,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: uuid
         """
         current_timestamp = int(time.time())
-        self.stream_list[stream_id]['processed_receives_total'] += 1
+        try:
+            self.stream_list[stream_id]['processed_receives_total'] += 1
+        except KeyError:
+            return False
         try:
             with self.stream_threading_lock[stream_id]['receives_statistic_last_second_lock']:
                 self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] += 1
@@ -2769,7 +2772,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             del self.restart_requests[stream_id]
         except KeyError:
             pass
-        self.stream_list[stream_id]['crash_request'] = True
+        try:
+            self.stream_list[stream_id]['crash_request'] = True
+        except KeyError:
+            return False
 
     def stream_is_crashing(self, stream_id, error_msg=False):
         """
@@ -2792,7 +2798,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: id of a stream
         :type stream_id: uuid
-        :return:
         """
         logging.info("BinanceWebSocketApiManager->stream_is_stopping(" + str(stream_id) + ")")
         self.stream_list[stream_id]['has_stopped'] = time.time()
@@ -2934,12 +2939,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: id of a stream
         :type stream_id: uuid
 
-        :return: True
+        :return: bool
         """
         # will return `True` as soon the stream received the first data row
-        while self.stream_list[stream_id]['last_heartbeat'] is None:
-            time.sleep(0.1)
-        return True
+        try:
+            while self.stream_list[stream_id]['last_heartbeat'] is None:
+                time.sleep(0.1)
+            return True
+        except KeyError:
+            return False
 
     def wait_till_stream_has_stopped(self, stream_id):
         """
@@ -2948,8 +2956,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: id of a stream
         :type stream_id: uuid
 
-        :return: True
+        :return: bool
         """
-        while self.stream_list[stream_id]['has_stopped'] is False:
-            time.sleep(0.1)
-        return True
+        try:
+            while self.stream_list[stream_id]['has_stopped'] is False:
+                time.sleep(0.1)
+            return True
+        except KeyError:
+            return False
