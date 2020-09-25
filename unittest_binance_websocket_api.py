@@ -733,6 +733,8 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.get_websocket_uri_length(channels, markets)
         binance_websocket_api_manager.set_ringbuffer_error_max_size(200)
         binance_websocket_api_manager.set_ringbuffer_result_max_size(300)
+        binance_websocket_api_manager.set_restart_request(stream_id)
+        time.sleep(10)
         binance_websocket_api_manager.stop_stream_as_crash(stream_id)
         binance_websocket_api_manager.stop_stream(stream_id)
         binance_websocket_api_manager.print_stream_info(stream_id)
@@ -745,7 +747,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.wait_till_stream_has_started()
         binance_websocket_api_manager.wait_till_stream_has_stopped()
         binance_websocket_api_manager.remove_ansi_escape_codes("test text")
-        
+
 
 if __name__ == '__main__':
     unittest.main()
