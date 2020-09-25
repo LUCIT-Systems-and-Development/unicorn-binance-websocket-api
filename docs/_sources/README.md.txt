@@ -135,15 +135,21 @@ on all exchanges! (Maximum [1024 subscriptions](https://github.com/binance-excha
 per stream!)
 - [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) respects Binance's API guidelines and protects you from avoidable reconnects and bans.
 - Support for multiple private `!userData` streams with different `api_key` and `api_secret`. ([example_multiple_userdata_streams.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py))
-- If you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
+- Pick up the received data from the `stream_buffer` - if you can not store your data in cause of a temporary technical issue, you can kick back the data to the 
 `stream_buffer` which stores the receives in the RAM till you are able to process the data in the normal way again. 
 [Learn more!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py)
+- Use separate `stream_buffers` for 
+[specific streams](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py) 
+or 
+[users](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py)
 - Compatible with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy) to convert received raw data from
 crypto API endpoints into well-formed Python dictionaries. 
 - Helpful management features like `get_binance_api_status()`, `get_stream_info()`, `get_stream_list()`, 
 `get_stream_statistic()`, `get_stream_subscriptions()`, `replace_stream()`, `wait_till_stream_has_started()`, 
 `get_current_receiving_speed()`, `subscribe_to_stream()`, `unsubscribe_from_stream()` and many more! Explore them 
 [here](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html).
+- Monitor the status of the streams within your code with 
+[get_monitoring_status_plain()](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=plain#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_monitoring_status_plain)!
 - Nice to use with [iPython](https://ipython.org/): 
 "IPython (Interactive Python) is a command shell for interactive computing that offers introspection, 
 rich media, shell syntax, tab completion, and history." 
@@ -266,7 +272,7 @@ We ![love](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binanc
 Since you are probably a developer yourself, you will understand very well that the creation of open source software is 
 not free - it requires technical knowledge, a lot of time and also financial expenditure.
 
-If you would like to help me to dedicate my time and energy to this project, donations are very welcome.
+If you would like to help me to dedicate my time and energy to this project, even small donations are very welcome.
 
 [![Donate using Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/oliver-zehentleitner/donate)
 
