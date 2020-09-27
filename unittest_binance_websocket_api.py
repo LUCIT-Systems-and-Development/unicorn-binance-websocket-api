@@ -773,6 +773,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.print_summary_to_png(".", 12.5)
         binance_websocket_api_manager.get_latest_release_info()
         binance_websocket_api_manager.get_latest_release_info_check_command()
+        binance_websocket_api_manager.set_private_dex_config("blasfjsalkfjsf222lks")
         binance_websocket_api_manager.get_version()
         binance_websocket_api_manager.help()
         binance_websocket_api_manager.wait_till_stream_has_started(stream_id2)

@@ -7,3 +7,4 @@ exclude_lines =
     self.process_stream_data = process_stream_data
     self.websocket_base_uri = "
     if (active_stream_list[stream_id]['start_time'] + active_stream_list[stream_id]['listen_key_cache_time'])
+    stream_row_color
