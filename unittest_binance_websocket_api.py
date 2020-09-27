@@ -770,7 +770,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.wait_till_stream_has_stopped(stream_id2)
         binance_websocket_api_manager.print_stream_info(stream_id2)
         binance_websocket_api_manager.print_summary()
-        #        binance_websocket_api_manager.print_summary_to_png(".", 12.5)
+        binance_websocket_api_manager.print_summary_to_png(".", 12.5)
         binance_websocket_api_manager.get_latest_release_info()
         binance_websocket_api_manager.get_latest_release_info_check_command()
         binance_websocket_api_manager.get_version()
