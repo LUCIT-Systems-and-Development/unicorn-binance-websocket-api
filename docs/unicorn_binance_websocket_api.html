@@ -894,14 +894,17 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dl class="method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions">
 <code class="sig-name descname">get_stream_subscriptions</code><span class="sig-paren">(</span><em class="sig-param">stream_id</em>, <em class="sig-param">request_id=False</em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Listing subscriptions</p>
+<dd><p>Get a list of subscriptions of a specific stream from Binance endpoints - the result can be received via
+the <cite>stream_buffer</cite> and is also added to te results ringbuffer
+(<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints</a>)</p>
 <p>This function is supported by CEX endpoints only!</p>
 <p><a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions">https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p></li>
-<li><p><strong>request_id</strong> (<em>int</em>) – id to use for the request - use <cite>get_request_id()</cite> to create a unique id:
+<li><p><strong>request_id</strong> (<em>int</em>) – id to use for the request - use <cite>get_request_id()</cite> to create a unique id. If not provided or
+<cite>False</cite>, then this method is using <cite>get_request_id()</cite> automatically.
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id</a></p></li>
 </ul>
 </dd>
