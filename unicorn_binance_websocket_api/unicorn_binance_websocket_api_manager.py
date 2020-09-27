@@ -1804,7 +1804,9 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_stream_subscriptions(self, stream_id, request_id=False):
         """
-        Listing subscriptions
+        Get a list of subscriptions of a specific stream from Binance endpoints - the result can be received via
+        the `stream_buffer` and is also added to te results ringbuffer
+        (https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints)
 
         This function is supported by CEX endpoints only!
 
