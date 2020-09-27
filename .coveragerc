@@ -2,3 +2,5 @@
 exclude_lines =
     pragma: no cover
     except
+    if warn_on_update and self.is_update_availabe():
+    if sys.platform.startswith('Windows'):
