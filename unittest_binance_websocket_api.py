@@ -723,7 +723,7 @@ class TestRestApi(unittest.TestCase):
         channels = ['kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w', 'trade',
                     'miniTicker', 'depth20']
 
-        binance_websocket_api_manager.create_stream("error", "error", stream_label="error")
+#        binance_websocket_api_manager.create_stream("error", "error", stream_label="error")
 
         for channel in channels:
             stream_id1 =binance_websocket_api_manager.create_stream(channel, markets)
