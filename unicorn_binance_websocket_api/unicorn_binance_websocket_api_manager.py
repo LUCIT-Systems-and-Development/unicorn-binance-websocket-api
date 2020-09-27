@@ -1699,6 +1699,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def get_ringbuffer_error_max_size(self):
         """
         How many entries should be stored in the ringbuffer?
+
         :return: int
         """
         return self.ringbuffer_error_max_size
@@ -1706,6 +1707,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def get_ringbuffer_result_max_size(self):
         """
         How many entries should be stored in the ringbuffer?
+        
         :return: int
         """
         return self.ringbuffer_result_max_size
