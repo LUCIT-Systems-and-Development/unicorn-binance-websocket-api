@@ -204,7 +204,7 @@ class TestBinanceComManager(unittest.TestCase):
 
     def test_start_monitoring_api(self):
         self.assertTrue(self.binance_com_websocket_api_manager.start_monitoring_api())
-        time.sleep(2)
+        time.sleep(5)
         self.assertTrue(self.binance_com_websocket_api_manager.stop_monitoring_api())
 
     def tearDown(self):
