@@ -1812,7 +1812,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: id of a stream
         :type stream_id: uuid
-        :param request_id: id to use for the request - use [`get_request_id()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id)
+        :param request_id: id to use for the request - use `get_request_id()` to create a unique id:
+                           https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id
         :type request_id: int
         :return: bool
         """
