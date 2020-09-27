@@ -1707,7 +1707,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def get_ringbuffer_result_max_size(self):
         """
         How many entries should be stored in the ringbuffer?
-        
+
         :return: int
         """
         return self.ringbuffer_result_max_size
@@ -1812,7 +1812,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: id of a stream
         :type stream_id: uuid
-        :param request_id: id to use for the request
+        :param request_id: id to use for the request - use [`get_request_id()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id)
         :type request_id: int
         :return: bool
         """
