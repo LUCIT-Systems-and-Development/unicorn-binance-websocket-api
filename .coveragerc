@@ -8,6 +8,6 @@ exclude_lines =
     self.websocket_base_uri = "
     if (active_stream_list[stream_id]['start_time'] + active_stream_list[stream_id]['listen_key_cache_time'])
     stream_row_color
-    def get(
+    def get(self, statusformat, checkcommandversion=False):
     elif self.ubwa.exchange
     if request_handler.status_code == "
