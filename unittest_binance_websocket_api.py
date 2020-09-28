@@ -35,6 +35,7 @@
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient import BinanceWebSocketApiRestclient
+from unicorn_binance_websocket_api.unicorn_binance_websocket_api_restserver import BinanceWebSocketApiRestServer
 import logging
 import unittest
 import uuid
@@ -736,6 +737,11 @@ class TestRestApi(unittest.TestCase):
             stream_id1 =binance_websocket_api_manager.create_stream(channel, markets)
 
         time.sleep(10)
+
+        restserver = BinanceWebSocketApiRestServer(binance_websocket_api_manager)
+        restserver.get("icinga")
+        restserver.get("invalid")
+
         markets = ['xrpbearbusd', 'zeceth', 'cndbtc', 'dashbtc', 'atompax', 'perlbtc', 'ardreth', 'zecbnb',
                    'erdbnb', 'xrpbearusdt', 'stratbnb', 'cmtbtc', 'cvcbtc', 'kncbtc', 'rpxbnb', 'zenbnb', 'cndbnb',
                    'wrxbtc', 'pptbtc', 'nknbtc', 'zecusdt', 'stormeth', 'qtumusdt']

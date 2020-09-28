@@ -66,8 +66,11 @@ class BinanceWebSocketApiSocket(object):
                 elif self.handler_binance_websocket_api_manager.is_stop_as_crash_request(self.stream_id):
                     await websocket.close()
                     sys.exit(1)
-                if self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
-                    sys.exit(0)
+                try:
+                    if self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
+                        sys.exit(0)
+                except KeyError:
+                    sys.exit(1)
                 while self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
                     if self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
                         sys.exit(0)

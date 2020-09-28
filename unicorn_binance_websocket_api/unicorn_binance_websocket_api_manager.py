@@ -2091,9 +2091,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: bool
         """
         logging.debug("BinanceWebSocketApiManager->is_stop_as_crash_request(" + str(stream_id) + ")")
-        if self.stream_list[stream_id]['crash_request'] is True:
-            return True
-        elif self.is_manager_stopping():
+        try:
+            if self.stream_list[stream_id]['crash_request'] is True:
+                return True
+        except KeyError:
+            pass
+        if self.is_manager_stopping():
             return True
         else:
             return False
