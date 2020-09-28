@@ -192,7 +192,7 @@ If you like the project, please [![star](https://raw.githubusercontent.com/olive
 [GitHub](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)!
 
 ## Live Demo
-This live demo script is streaming everything from binance.com, hosted on a small VPS (2vCPU, 2GB RAM) at 
+This live demo script is streaming from binance.com, hosted on a small VPS (2vCPU, 2GB RAM) at 
 [HETZNER Cloud](https://www.hetzner.de/cloud) with 20TB traffic for ~4 EUR per month (no affiliate link, its just a 
 good service!)
 
