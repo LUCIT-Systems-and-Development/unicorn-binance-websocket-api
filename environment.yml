@@ -10,5 +10,6 @@ dependencies:
   - psutil
   - requests
   - ujson
+  - unicorn-fy
   - websocket-client
   - websockets==8.1
