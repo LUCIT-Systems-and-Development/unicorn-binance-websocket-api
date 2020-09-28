@@ -349,6 +349,18 @@ class TestBinanceOrgManager(unittest.TestCase):
     # Test binance.org (Binance Chain Dex)
 
     def setUp(self):
+        self.binance_org_testnet = BinanceWebSocketApiManager(exchange="binance.org-testnet")
+        self.binance_org_testnet.set_private_dex_config("tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
+        self.binance_org_testnet.unsubscribe_from_stream("tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
+
+    def tearDown(self):
+        self.binance_org_testnet.stop_manager_with_all_streams()
+
+
+class TestBinanceOrgManager(unittest.TestCase):
+    # Test binance.org (Binance Chain Dex)
+
+    def setUp(self):
         self.binance_org_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org")
 
     def test_create_uri_alltickers_regular_org_subscribe(self):
@@ -772,6 +784,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.set_stream_label(stream_id2, "blub")
         binance_websocket_api_manager.delete_stream_from_stream_list(stream_id1)
         binance_websocket_api_manager.delete_listen_key_by_stream_id(stream_id1)
+        binance_websocket_api_manager.create_payload(stream_id2, "invalid", channels="trade")
         time.sleep(10)
         binance_websocket_api_manager.set_keep_max_received_last_second_entries(30)
         binance_websocket_api_manager.stop_stream_as_crash(stream_id2)
