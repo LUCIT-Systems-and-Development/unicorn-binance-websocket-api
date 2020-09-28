@@ -568,6 +568,13 @@ class TestRestApi(unittest.TestCase):
         except UnknownExchange:
             pass
 
+    def test_isolated_margin(self):
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")
+        stream_id = binance_websocket_api_manager.create_stream('arr', '!userData', symbols="CELRBTC", api_key="key", api_secret="secret")
+        time.sleep(10)
+        binance_websocket_api_manager.print_stream_info(stream_id)
+        binance_websocket_api_manager.stop_manager_with_all_streams()
+
     def test_live_run(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager()
         binance_websocket_api_manager.get_active_stream_list()
