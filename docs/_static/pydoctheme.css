@@ -268,7 +268,7 @@ dl > dt span ~ em {
 
 
 
-@media screen and (max-width: 1124px) {
+@media screen and (max-width: 1024px) {
 
     body {
         margin: 0;
@@ -341,6 +341,11 @@ dl > dt span ~ em {
 
     .footer {
         width: auto;
+    }
+
+    iframe {
+        display: list-item;
+        margin-bottom: 10px;
     }
 }
 

@@ -122,6 +122,8 @@ class BinanceWebSocketApiSocket(object):
                                 received_stream_data = self.unicorn_fy.binance_org_websocket(received_stream_data_json)
                             else:
                                 received_stream_data = received_stream_data_json
+                        elif self.output == "dict":
+                            received_stream_data = json.loads(received_stream_data_json)
                         else:
                             received_stream_data = received_stream_data_json
                         self.handler_binance_websocket_api_manager.process_stream_data(

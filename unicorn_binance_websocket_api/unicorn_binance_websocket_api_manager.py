@@ -267,8 +267,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param output: set to "UnicornFy" to convert the received data with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_
-                       - otherwise the output remains unchanged and be delivered as received from the endpoints
+        :param output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
+                       with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
+                       remains unchanged and gets delivered as received from the endpoints
         :type output: str
         """
 
@@ -343,8 +344,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param output: set to "UnicornFy" to convert the received data with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_
-                       - otherwise the output remains unchanged and be delivered as received from the endpoints
+        :param output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
+                       with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
+                       remains unchanged and gets delivered as received from the endpoints
         :type output: str
         :param restart: set to `True`, if its a restart!
         :type restart: bool
@@ -877,8 +879,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param output: set to "UnicornFy" to convert the received data with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_
-                       - otherwise the output remains unchanged and be delivered as received from the endpoints
+        :param output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
+                       with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
+                       remains unchanged and gets delivered as received from the endpoints
         :type output: str
         :return: stream_id or 'False'
         """

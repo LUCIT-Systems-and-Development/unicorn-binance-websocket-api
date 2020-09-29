@@ -5,8 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.19.0.dev (development stage/unreleased/unstable)
+## 1.20.0.dev (development stage/unreleased/unstable)
 
+## 1.20.0
+### Added
+- `dict` to [`create_stream(output='dict')`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream)
+ 
 ## 1.19.0
 ### Added
 - [`UnicornFy`](https://github.com/oliver-zehentleitner/unicorn_fy) to 
