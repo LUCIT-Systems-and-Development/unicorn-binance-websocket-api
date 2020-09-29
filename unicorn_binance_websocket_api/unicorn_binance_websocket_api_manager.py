@@ -360,6 +360,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             if stream_buffer_name is not False:
                 self.stream_buffer_locks[stream_buffer_name] = threading.Lock()
                 try:
+                    # Not reseting the stream_buffer during a restart:
                     if self.stream_buffers[stream_buffer_name]:
                         pass
                 except KeyError:
