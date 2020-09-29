@@ -85,10 +85,6 @@ which needs to be used with a valid api_key and api_secret from the Binance Exch
 [www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create) 
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
-The module requires Python 3.6.1 or above, as it depends on Pythons latest asyncio features for asynchronous/concurrent 
-processing. The current dependencies are listed 
-[here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/requirements.txt).
-
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
 on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), 
 [je](https://github.com/binance-jersey/binance-official-api-docs/), 
@@ -203,11 +199,11 @@ good service!)
 (Refresh update once a minute!)
 
 ## Installation and Upgrade
-If you run into errors during the installation take a look [here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Installation).
+The module requires Python 3.6.1 or above, as it depends on Pythons latest asyncio features for asynchronous/concurrent 
+processing. The current dependencies are listed 
+[here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
-Please note: UnicornFy is not longer part of this package, visit 
-[https://github.com/oliver-zehentleitner/unicorn_fy](https://github.com/oliver-zehentleitner/unicorn_fy) for
-further information.
+If you run into errors during the installation take a look [here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Installation).
 
 ### A wheel of the latest release with PIP from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
 `pip install unicorn-binance-websocket-api --upgrade`
