@@ -42,7 +42,7 @@ setuptools.setup(
      name='unicorn-binance-websocket-api',
      version='1.18.2.dev',
      author="Oliver Zehentleitner",
-     url="https://about.me/oliver-zehentleitner/",
+     url="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api",
      description="An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, "
                  "com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast"
                  ", flexible, robust and fully-featured way.",
@@ -58,7 +58,7 @@ setuptools.setup(
         'Howto': 'https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/',
         'Documentation': 'https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/',
         'Wiki': 'https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki',
-        'Source': 'https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api',
+        'Author': 'https://about.me/oliver-zehentleitner/',
      },
      python_requires='>=3.6.1',
      packages=setuptools.find_packages(),
