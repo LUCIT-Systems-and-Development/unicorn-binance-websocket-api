@@ -203,7 +203,9 @@ good service!)
 
 ## Installation and Upgrade
 The module requires Python 3.6.1 or above, as it depends on Pythons latest asyncio features for asynchronous/concurrent 
-processing. The current dependencies are listed 
+processing. 
+
+The current dependencies are listed 
 [here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
 If you run into errors during the installation take a look [here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Installation).
