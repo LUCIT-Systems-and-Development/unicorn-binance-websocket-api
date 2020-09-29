@@ -35,14 +35,8 @@
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import logging
-import sys
 import time
 import os
-try:
-    from unicorn_fy.unicorn_fy import UnicornFy
-except ImportError:
-    print("Please install `unicorn-fy`! https://pypi.org/project/unicorn-fy/")
-    sys.exit(1)
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
@@ -67,7 +61,7 @@ markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
            'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
            'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth'}
 
-binance_get_kline_1m_bnbbtc = binance_websocket_api_manager.create_stream('kline_1m', markets=markets)
+binance_get_kline_1m_bnbbtc = binance_websocket_api_manager.create_stream('kline_1m', markets, output="UnicornFy")
 
 while True:
     if binance_websocket_api_manager.is_manager_stopping():
@@ -76,7 +70,6 @@ while True:
     if oldest_stream_data_from_stream_buffer is False:
         time.sleep(0.01)
     else:
-        oldest_stream_data_from_stream_buffer = UnicornFy.binance_com_websocket(oldest_stream_data_from_stream_buffer)
         if oldest_stream_data_from_stream_buffer is not None:
             try:
                 if oldest_stream_data_from_stream_buffer['event_time'] >= \

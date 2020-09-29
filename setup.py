@@ -34,13 +34,16 @@
 # IN THE SOFTWARE.
 
 import setuptools
+from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+
+ubwa = BinanceWebSocketApiManager()
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
      name='unicorn-binance-websocket-api',
-     version='1.18.2.dev',
+     version=str(ubwa.get_version()),
      author="Oliver Zehentleitner",
      url="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api",
      description="An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, "
@@ -79,3 +82,5 @@ setuptools.setup(
          "Framework :: AsyncIO",
      ],
 )
+
+ubwa.stop_manager_with_all_streams()

@@ -35,6 +35,7 @@
 
 from __future__ import print_function
 from .unicorn_binance_websocket_api_connection import BinanceWebSocketApiConnection
+from unicorn_fy.unicorn_fy import UnicornFy
 import ujson as json
 import logging
 import sys
@@ -52,6 +53,9 @@ class BinanceWebSocketApiSocket(object):
         self.socket_id = uuid.uuid4()
         self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] = self.socket_id
         self.symbols = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['symbols']
+        self.output = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['output']
+        self.unicorn_fy = UnicornFy()
+        self.exchange = handler_binance_websocket_api_manager.get_exchange()
 
     async def start_socket(self):
         logging.info("BinanceWebSocketApiSocket->start_socket(" +
@@ -89,8 +93,39 @@ class BinanceWebSocketApiSocket(object):
                 try:
                     received_stream_data_json = await websocket.receive()
                     if received_stream_data_json is not None:
+                        if self.output == "UnicornFy":
+                            if self.exchange == "binance.com":
+                                received_stream_data = self.unicorn_fy.binance_com_websocket(received_stream_data_json)
+                            elif self.exchange == "binance.com-testnet":
+                                received_stream_data = self.unicorn_fy.binance_com_websocket(received_stream_data_json)
+                            elif self.exchange == "binance.com-margin":
+                                received_stream_data = self.unicorn_fy.binance_com_margin_websocket(received_stream_data_json)
+                            elif self.exchange == "binance.com-margin-testnet":
+                                received_stream_data = self.unicorn_fy.binance_com_margin_websocket(received_stream_data_json)
+                            elif self.exchange == "binance.com-isolated_margin":
+                                received_stream_data = self.unicorn_fy.binance_com_isolated_margin_websocket(received_stream_data_json)
+                            elif self.exchange == "binance.com-isolated_margin-testnet":
+                                received_stream_data = self.unicorn_fy.binance_com_isolated_margin_websocket(received_stream_data_json)
+                            elif self.exchange == "binance.com-futures":
+                                received_stream_data = self.unicorn_fy.binance_com_futures_websocket(received_stream_data_json)
+                            elif self.exchange == "binance.com-futures-testnet":
+                                received_stream_data = self.unicorn_fy.binance_com_futures_websocket(received_stream_data_json)
+                            elif self.exchange == "binance.je":
+                                received_stream_data = self.unicorn_fy.binance_je_websocket(received_stream_data_json)
+                            elif self.exchange == "binance.us":
+                                received_stream_data = self.unicorn_fy.binance_us_websocket(received_stream_data_json)
+                            elif self.exchange == "jex.com":
+                                received_stream_data = self.unicorn_fy.jex_com_websocket(received_stream_data_json)
+                            elif self.exchange == "binance.org":
+                                received_stream_data = self.unicorn_fy.binance_org_websocket(received_stream_data_json)
+                            elif self.exchange == "binance.org-testnet":
+                                received_stream_data = self.unicorn_fy.binance_org_websocket(received_stream_data_json)
+                            else:
+                                received_stream_data = received_stream_data_json
+                        else:
+                            received_stream_data = received_stream_data_json
                         self.handler_binance_websocket_api_manager.process_stream_data(
-                            received_stream_data_json,
+                            received_stream_data,
                             stream_buffer_name=self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['stream_buffer_name'])
                         if "error" in received_stream_data_json:
                             logging.error("BinanceWebSocketApiSocket->start_socket(" +
