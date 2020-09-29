@@ -746,7 +746,7 @@ class TestRestApi(unittest.TestCase):
 #        binance_websocket_api_manager.create_stream("error", "error", stream_label="error")
 
         for channel in channels:
-            stream_id1 =binance_websocket_api_manager.create_stream(channel, markets)
+            stream_id1 =binance_websocket_api_manager.create_stream(channel, markets, output="UnicornFy")
 
         time.sleep(10)
 
