@@ -142,12 +142,12 @@ robust and fully-featured way.</p>
 <li><p><a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">https://docs.binance.org/api-reference/dex-api/ws-connection.html</a></p></li>
 </ul>
 </div></blockquote>
-<p><a class="reference external" href="http://stackoverflow.com/">Stack Overflow</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>process_stream_data</strong> (<em>function</em>) – Provide a function/method to process the received webstream data. The function
-will be called instead of add_to_stream_buffer() (<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer</a>) like <cite>process_stream_data(stream_data, stream_buffer_name)</cite> where
+will be called instead of <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer">add_to_stream_buffer()</a>
+like <cite>process_stream_data(stream_data, stream_buffer_name)</cite> where
 <cite>stream_data</cite> cointains the raw_stream_data. If not provided, the raw stream_data will
 get stored in the stream_buffer! (How to read from stream_buffer:
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives</a>)</p></li>
@@ -302,7 +302,7 @@ provide a string to create and use a shared stream_buffer and read it via
 <li><p><strong>api_key</strong> (<em>str</em>) – provide a valid Binance API key</p></li>
 <li><p><strong>api_secret</strong> (<em>str</em>) – provide a valid Binance API secret</p></li>
 <li><p><strong>symbols</strong> (<em>str</em>) – provide the symbols for isolated_margin user_data streams</p></li>
-<li><p><strong>output</strong> (<em>str</em>) – set to “UnicornFy” to convert the received data with UnicornFy <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">https://github.com/oliver-zehentleitner/unicorn_fy</a>
+<li><p><strong>output</strong> (<em>str</em>) – set to “UnicornFy” to convert the received data with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a>
 - otherwise the output remains unchanged and be delivered as received from the endpoints</p></li>
 </ul>
 </dd>
@@ -1461,8 +1461,8 @@ and all subscribed channels are going to get added to the new market!</p>
 <dd><p>Unsubscribe channels and/or markets to an existing stream</p>
 <p>If you provide one channel and one market, then all subscribed markets from the specific channel and all
 subscribed channels from the specific markets are going to be removed!</p>
-<p>How are the parameter <cite>channels</cite> and <cite>markets</cite> used with subscriptions:
-<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream</a></p>
+<p><cite>How are the parameter `channels</cite> and <cite>markets</cite> used with
+<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">subscriptions</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

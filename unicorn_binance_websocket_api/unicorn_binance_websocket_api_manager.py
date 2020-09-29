@@ -103,10 +103,10 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         - https://docs.binance.org/api-reference/dex-api/ws-connection.html
 
-    `Stack Overflow <http://stackoverflow.com/>`_.
 
     :param process_stream_data: Provide a function/method to process the received webstream data. The function
-                                will be called instead of add_to_stream_buffer() (https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer) like `process_stream_data(stream_data, stream_buffer_name)` where
+                                will be called instead of `add_to_stream_buffer() <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
+                                like `process_stream_data(stream_data, stream_buffer_name)` where
                                 `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
                                 get stored in the stream_buffer! (How to read from stream_buffer:
                                 https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives)
@@ -267,7 +267,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param output: set to "UnicornFy" to convert the received data with UnicornFy https://github.com/oliver-zehentleitner/unicorn_fy
+        :param output: set to "UnicornFy" to convert the received data with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_
                        - otherwise the output remains unchanged and be delivered as received from the endpoints
         :type output: str
         """
@@ -343,7 +343,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param output: set to "UnicornFy" to convert the received data with UnicornFy https://github.com/oliver-zehentleitner/unicorn_fy
+        :param output: set to "UnicornFy" to convert the received data with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_
                        - otherwise the output remains unchanged and be delivered as received from the endpoints
         :type output: str
         :param restart: set to `True`, if its a restart!
@@ -876,7 +876,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param output: set to "UnicornFy" to convert the received data with UnicornFy https://github.com/oliver-zehentleitner/unicorn_fy
+        :param output: set to "UnicornFy" to convert the received data with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_
                        - otherwise the output remains unchanged and be delivered as received from the endpoints
         :type output: str
         :return: stream_id or 'False'
@@ -2931,8 +2931,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         If you provide one channel and one market, then all subscribed markets from the specific channel and all
         subscribed channels from the specific markets are going to be removed!
 
-        How are the parameter `channels` and `markets` used with subscriptions:
-        https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream
+        `How are the parameter `channels` and `markets` used with
+        `subscriptions <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
 
         :param stream_id: id of a stream
         :type stream_id: uuid
