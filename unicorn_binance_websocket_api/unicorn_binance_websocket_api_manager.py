@@ -2514,7 +2514,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61
 
         :param print_summary_export_path: If you want to export the output of print_summary() to an image,
-                                          please provide a path like "/var/www/html/" `View the Wiki
+                                          please provide a path like "/var/www/html/". `View the Wiki!
                                           <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F>`_
         :type print_summary_export_path: str
         :param hight_per_row: set the hight per row for the image hight calculation
@@ -2853,8 +2853,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         If you provide one channel and one market, then every subscribed market is going to get added to the new channel
         and all subscribed channels are going to get added to the new market!
 
-        `How are the parameter `channels` and `markets` used with subscriptions:
-        <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
+        `How are the parameter `channels` and `markets` used with
+        `subscriptions <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
 
         :param stream_id: id of a stream
         :type stream_id: uuid
