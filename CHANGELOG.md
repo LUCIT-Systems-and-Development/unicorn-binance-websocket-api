@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.19.0
 ### Added
 - [`UnicornFy`](https://github.com/oliver-zehentleitner/unicorn_fy) to 
-[`create_stream()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream)
+[`create_stream(output='UnicornFy')`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream)
 ### Changed
 - Links in docstrings
 
