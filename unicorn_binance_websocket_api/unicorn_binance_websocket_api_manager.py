@@ -828,7 +828,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
                 Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
 
-        There is a limit of 1024 subscriptions per stream. https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
+        `There is a limit of 1024 subscriptions per stream.
+        <https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23>`_
 
         Create `!userData` streams as single streams, because its using a different endpoint and can not get combined
         with other streams in a multiplexed stream!
@@ -1511,7 +1512,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         - reconnects
         - uptime
 
-        :param check_command_version: is the version of the calling check_command (https://github.com/LUCIT-Development/check_lucit_collector.py)
+        :param check_command_version: is the version of the calling `check_command <https://github.com/LUCIT-Development/check_lucit_collector.py>`_
         :type check_command_version: str
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
@@ -1547,7 +1548,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         timestamp, update_msg, average_receives_per_second, average_speed_per_second, total_received_mb,
         stream_buffer_items, stream_buffer_mb, reconnects, uptime
 
-        :param check_command_version: is the version of the calling check_command (https://github.com/LUCIT-Development/check_lucit_collector.py)
+        :param check_command_version: is the version of the calling `check_command <https://github.com/LUCIT-Development/check_lucit_collector.py>`_
         :type check_command_version: False or str
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
@@ -1826,18 +1827,19 @@ class BinanceWebSocketApiManager(threading.Thread):
     def get_stream_subscriptions(self, stream_id, request_id=False):
         """
         Get a list of subscriptions of a specific stream from Binance endpoints - the result can be received via
-        the `stream_buffer` and is also added to te results ringbuffer
-        (https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints)
+        the `stream_buffer` and is also added to the results ringbuffer - `get_results_from_endpoints()
+        <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints>`_
 
         This function is supported by CEX endpoints only!
 
-        https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions
+        Info: https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions
 
         :param stream_id: id of a stream
         :type stream_id: uuid
         :param request_id: id to use for the request - use `get_request_id()` to create a unique id. If not provided or
-                           `False`, then this method is using `get_request_id()` automatically.
-                           https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id
+                           `False`, then this method is using `get_request_id()
+                           <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id>`_
+                           automatically.
         :type request_id: int
         :return: bool
         """
@@ -2511,8 +2513,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61
 
         :param print_summary_export_path: If you want to export the output of print_summary() to an image,
-                                          please provide a path like "/var/www/html/" View:
-                                          https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F
+                                          please provide a path like "/var/www/html/" `View the Wiki
+                                          <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F>`_
         :type print_summary_export_path: str
         :param hight_per_row: set the hight per row for the image hight calculation
         :type hight_per_row: int
@@ -2850,8 +2852,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         If you provide one channel and one market, then every subscribed market is going to get added to the new channel
         and all subscribed channels are going to get added to the new market!
 
-        How are the parameter `channels` and `markets` used with subscriptions:
-        https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream
+        `How are the parameter `channels` and `markets` used with subscriptions:
+        <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
 
         :param stream_id: id of a stream
         :type stream_id: uuid

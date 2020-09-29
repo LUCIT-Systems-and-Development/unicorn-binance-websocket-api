@@ -257,7 +257,7 @@ provide a string to create and use a shared stream_buffer and read it via
 <p>Finally:  <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;trade">bnbbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;trade">ethbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;kline_1">bnbbtc<span>&#64;</span>kline_1</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;kline_1">ethbtc<span>&#64;</span>kline_1</a></p>
 </div></blockquote>
 </div></blockquote>
-<p>There is a limit of 1024 subscriptions per stream. <a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23">https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23</a></p>
+<p><a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23">There is a limit of 1024 subscriptions per stream.</a></p>
 <p>Create <cite>!userData</cite> streams as single streams, because its using a different endpoint and can not get combined
 with other streams in a multiplexed stream!</p>
 <blockquote>
@@ -610,7 +610,7 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>check_command_version</strong> (<em>str</em>) – is the version of the calling check_command (<a class="reference external" href="https://github.com/LUCIT-Development/check_lucit_collector.py">https://github.com/LUCIT-Development/check_lucit_collector.py</a>)</p></li>
+<li><p><strong>check_command_version</strong> (<em>str</em>) – is the version of the calling <a class="reference external" href="https://github.com/LUCIT-Development/check_lucit_collector.py">check_command</a></p></li>
 <li><p><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</p></li>
 </ul>
 </dd>
@@ -630,7 +630,8 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>check_command_version</strong> (<em>False</em><em> or </em><em>str</em>) – is the version of the calling check_command (<a class="reference external" href="https://github.com/LUCIT-Development/check_lucit_collector.py">https://github.com/LUCIT-Development/check_lucit_collector.py</a>)</p></li>
+<li><p><strong>check_command_version</strong> (<em>False</em><em> or </em><em>str</em>) – <p>is the version of the calling <a class="reference external" href="https://github.com/LUCIT-Development/check_lucit_collector.py">check_command</a></p>
+</p></li>
 <li><p><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</p></li>
 </ul>
 </dd>
@@ -897,17 +898,16 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions">
 <code class="sig-name descname">get_stream_subscriptions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span></em>, <em class="sig-param"><span class="n">request_id</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of subscriptions of a specific stream from Binance endpoints - the result can be received via
-the <cite>stream_buffer</cite> and is also added to te results ringbuffer
-(<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints</a>)</p>
+the <cite>stream_buffer</cite> and is also added to the results ringbuffer - <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints">get_results_from_endpoints()</a></p>
 <p>This function is supported by CEX endpoints only!</p>
-<p><a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions">https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions</a></p>
+<p>Info: <a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions">https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p></li>
 <li><p><strong>request_id</strong> (<em>int</em>) – id to use for the request - use <cite>get_request_id()</cite> to create a unique id. If not provided or
-<cite>False</cite>, then this method is using <cite>get_request_id()</cite> automatically.
-<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id</a></p></li>
+<cite>False</cite>, then this method is using <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id">get_request_id()</a>
+automatically.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1165,8 +1165,7 @@ create_stream() or the string name of a shared stream_buffer.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>print_summary_export_path</strong> (<em>str</em>) – If you want to export the output of print_summary() to an image,
-please provide a path like “/var/www/html/” View:
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F</a></p></li>
+please provide a path like “/var/www/html/” <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F">View the Wiki</a></p></li>
 <li><p><strong>hight_per_row</strong> (<em>int</em>) – set the hight per row for the image hight calculation</p></li>
 </ul>
 </dd>
@@ -1438,8 +1437,8 @@ to keep the payload length under 8000 chars and avoid reconnects</p>
 <dd><p>Subscribe channels and/or markets to an existing stream</p>
 <p>If you provide one channel and one market, then every subscribed market is going to get added to the new channel
 and all subscribed channels are going to get added to the new market!</p>
-<p>How are the parameter <cite>channels</cite> and <cite>markets</cite> used with subscriptions:
-<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream</a></p>
+<p><cite>How are the parameter `channels</cite> and <cite>markets</cite> used with subscriptions:
+&lt;<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream</a>&gt;`_</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
