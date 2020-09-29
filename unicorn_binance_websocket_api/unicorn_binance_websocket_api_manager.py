@@ -358,9 +358,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             self._add_socket_to_socket_list(stream_id, channels, markets, stream_label, stream_buffer_name,
                                             symbols=symbols, api_key=api_key, api_secret=api_secret, output=output)
             if stream_buffer_name is not False:
-                # Todo: Does the stream_buffer get reseted after a restart? It looks like that!
                 self.stream_buffer_locks[stream_buffer_name] = threading.Lock()
-                self.stream_buffers[stream_buffer_name] = []
+                try:
+                    if self.stream_buffers[stream_buffer_name]:
+                        pass
+                except KeyError:
+                    self.stream_buffers[stream_buffer_name] = []
         asyncio.set_event_loop(loop)
         binance_websocket_api_socket = BinanceWebSocketApiSocket(self, stream_id, channels, markets)
         try:
