@@ -11,7 +11,7 @@ assignees: oliver-zehentleitner
 Before opening a new issue, please ensure:
 - YOU HAVE READ THE ISSUE GUIDELINES! -> https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Issue-Guidelines
 - You search for existing bugs/feature requests
-- If related to `UnicornFy` post to [https://github.com/oliver-zehentleitner/unicorn_fy/issues](https://github.com/oliver-zehentleitner/unicorn_fy/issues/new?assignees=oliver-zehentleitner&labels=bug&template=bug_report.md&title=)
+- If related to `UnicornFy` post to https://github.com/oliver-zehentleitner/unicorn_fy/issues
 - Remove extraneous template details
 - Do not prefix title with type of issue (Feature Request, Bug, etc.) The appropriate labels will be added during triage.
 - Do not delete any of the template, fill all of it in; even if you think it doesn't apply to your issue.
