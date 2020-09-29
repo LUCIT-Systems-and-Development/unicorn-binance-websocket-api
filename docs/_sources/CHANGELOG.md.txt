@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - `dict` to [`create_stream(output='dict')`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream)
 ### Fixed
-- StreamBuffer reset on restart[issue#119](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/119)
+- StreamBuffer reset on restart [issue#119](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/119)
  
 ## 1.19.0
 ### Added
