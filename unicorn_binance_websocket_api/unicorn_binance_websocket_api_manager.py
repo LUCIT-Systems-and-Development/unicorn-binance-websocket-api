@@ -2563,7 +2563,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         return text
 
     def replace_stream(self, stream_id, new_channels, new_markets, new_stream_label=None, new_stream_buffer_name=False,
-                       new_api_key=False, new_api_secret=False, new_symbols=False,):
+                       new_api_key=False, new_api_secret=False, new_symbols=False, new_output="raw_data"):
         """
         Replace a stream
 
@@ -2591,10 +2591,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param new_symbols: provide the symbols for isolated_margin user_data streams
         :type new_symbols: str
         :return: new stream_id
+        :param new_output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
+                       with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
+                       remains unchanged and gets delivered as received from the endpoints
+        :type new_output: str
         """
         # starting a new socket and stop the old stream not before the new stream received its first record
         new_stream_id = self.create_stream(new_channels, new_markets, new_stream_label, new_stream_buffer_name,
-                                           new_api_key, new_api_secret, new_symbols)
+                                           new_api_key, new_api_secret, new_symbols, new_output)
         if self.wait_till_stream_has_started(new_stream_id):
             self.stop_stream(stream_id)
         return new_stream_id
@@ -2744,6 +2748,10 @@ class BinanceWebSocketApiManager(threading.Thread):
     def start_monitoring_api(self, host='127.0.0.1', port=64201, warn_on_update=True):
         """
         Start the monitoring API server
+
+        Take a look into the
+        `Wiki <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service>`_
+        to see how this works!
 
         :param host: listening ip address, use 0.0.0.0 or a specific address (default: 127.0.0.1)
         :type host: str
