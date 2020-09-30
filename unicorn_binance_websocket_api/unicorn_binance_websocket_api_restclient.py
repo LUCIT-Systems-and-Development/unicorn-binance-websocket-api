@@ -295,20 +295,24 @@ class BinanceWebSocketApiRestclient(object):
         :type listen_key: str
         :return: bool
         """
-        if api_key is False:
-            self.api_key = self.ubwa.stream_list[stream_id]['api_key']
-        else:
-            self.api_key = api_key
-        if api_secret is False:
-            self.api_secret = self.ubwa.stream_list[stream_id]['api_secret']
-        else:
-            self.api_secret = api_secret
-        if symbol is False:
-            self.symbol = self.ubwa.stream_list[stream_id]['symbols']
-        else:
-            self.symbol = symbol
-        if listen_key is False:
-            self.listen_key = self.ubwa.stream_list[stream_id]['listen_key']
-        else:
-            self.listen_key = listen_key
+        try:
+            if api_key is False:
+                self.api_key = self.ubwa.stream_list[stream_id]['api_key']
+            else:
+                self.api_key = api_key
+            if api_secret is False:
+                self.api_secret = self.ubwa.stream_list[stream_id]['api_secret']
+            else:
+                self.api_secret = api_secret
+            if symbol is False:
+                self.symbol = self.ubwa.stream_list[stream_id]['symbols']
+            else:
+                self.symbol = symbol
+            if listen_key is False:
+                self.listen_key = False
+            else:
+                self.listen_key = listen_key
+        except KeyError as error_msg:
+            logging.error(f"init_vars() failed with TypeError: {str(error_msg)}")
+            return False
         return True
