@@ -10,6 +10,7 @@ exclude_lines =
     stream_row_color
     def get(self, statusformat, checkcommandversion=False)
     elif self.ubwa.exchange
+    elif self.exchange
     if request_handler.status_code == "
     def redirect_to_wiki
     self.ringbuffer_error.pop(0)
