@@ -16,4 +16,4 @@ exclude_lines =
     while len(self.ringbuffer_result) >= self.get_ringbuffer_result_max_size()
     if self.stream_list[stream_id]['listen_key'] is not False
     return "unknown"
-    active_stream_list[stream_id]['listen_key_cache_time']) < time.time()
+    active_stream_list[stream_id]['listen_key_cache_time']) < time.time
