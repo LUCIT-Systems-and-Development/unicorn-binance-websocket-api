@@ -765,7 +765,7 @@ class TestRestApi(unittest.TestCase):
         for channel in channels:
             stream_id2 = binance_websocket_api_manager.create_stream(channel, markets, stream_buffer_name=channel)
 
-        stream_id3 = binance_websocket_api_manager.create_stream(channel, markets, stream_buffer_name=channel)
+        stream_id3 = binance_websocket_api_manager.create_stream(channel, markets, stream_buffer_name=True)
         time.sleep(10)
         binance_websocket_api_manager.stop_stream_as_crash(stream_id3)
         binance_websocket_api_manager.create_websocket_uri(False, False, stream_id1)
