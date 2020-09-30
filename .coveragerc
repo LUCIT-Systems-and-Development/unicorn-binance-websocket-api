@@ -6,7 +6,6 @@ exclude_lines =
     if sys.platform.startswith('Windows')
     self.process_stream_data = process_stream_data
     self.websocket_base_uri = "
-    if (active_stream_list[stream_id]['start_time'] + active_stream_list[stream_id]['listen_key_cache_time'])
     stream_row_color
     def get(self, statusformat, checkcommandversion=False)
     elif self.ubwa.exchange
@@ -17,3 +16,4 @@ exclude_lines =
     self.ringbuffer_result.pop(0)
     if self.stream_list[stream_id]['listen_key'] is not False
     return "unknown"
+    if (active_stream_list[stream_id]['start_time']
