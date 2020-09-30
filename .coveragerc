@@ -17,3 +17,4 @@ exclude_lines =
     if self.stream_list[stream_id]['listen_key'] is not False
     return "unknown"
     if (active_stream_list[stream_id]['start_time']
+    < time.time() and (active_stream_list[stream_id]['last_static_ping_listen_key']
