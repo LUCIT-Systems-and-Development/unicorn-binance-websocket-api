@@ -213,8 +213,11 @@ which stores the receives in the RAM till you are able to process the data in th
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py">specific streams</a>
 or
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py">users</a>!</p></li>
-<li><p>Compatible with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> to convert received raw data from
-crypto API endpoints into well-formed Python dictionaries.</p></li>
+<li><p>Get the received data unchanged as received, as Python dict or converted with
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> into well-formed Python dictionaries. Use the <code class="docutils literal notranslate"><span class="pre">output</span></code>
+parameter of
+<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream"><code class="docutils literal notranslate"><span class="pre">create_stream()</span></code></a>
+to control the output format.</p></li>
 <li><p>Helpful management features like
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_binance_api_status"><code class="docutils literal notranslate"><span class="pre">get_binance_api_status()</span></code></a>,
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_current_receiving_speed"><code class="docutils literal notranslate"><span class="pre">get_current_receiving_speed()</span></code></a>,
