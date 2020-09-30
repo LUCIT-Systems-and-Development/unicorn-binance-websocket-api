@@ -313,6 +313,6 @@ class BinanceWebSocketApiRestclient(object):
             else:
                 self.listen_key = listen_key
         except KeyError as error_msg:
-            logging.error(f"init_vars() failed with TypeError: {str(error_msg)}")
+            logging.error(f"BinanceWebSocketApiRestclient->init_vars() failed with TypeError: {str(error_msg)}")
             return False
         return True
