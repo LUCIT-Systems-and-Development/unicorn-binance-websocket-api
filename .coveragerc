@@ -18,3 +18,4 @@ exclude_lines =
     return "unknown"
     if "!userData" in active_stream_list[stream_id]['markets']
     if self.restart_requests[stream_id]['status'] != "new"
+    if channel == "allMiniTickers" or
