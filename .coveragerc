@@ -12,8 +12,8 @@ exclude_lines =
     elif self.exchange
     if request_handler.status_code == "
     def redirect_to_wiki
-    self.ringbuffer_error.pop(0)
-    self.ringbuffer_result.pop(0)
+    while len(self.ringbuffer_error) >= self.get_ringbuffer_error_max_size()
+    while len(self.ringbuffer_result) >= self.get_ringbuffer_result_max_size()
     if self.stream_list[stream_id]['listen_key'] is not False
     return "unknown"
     if (active_stream_list[stream_id]['start_time']

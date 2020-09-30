@@ -793,6 +793,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.set_ringbuffer_error_max_size(200)
         binance_websocket_api_manager.set_ringbuffer_result_max_size(300)
         binance_websocket_api_manager.set_stream_label(stream_id2, "blub")
+        binance_websocket_api_manager._restart_stream((stream_id1))
         binance_websocket_api_manager.delete_stream_from_stream_list(stream_id1)
         binance_websocket_api_manager.delete_listen_key_by_stream_id(stream_id1)
         binance_websocket_api_manager.create_payload(stream_id2, "invalid", channels="trade")
