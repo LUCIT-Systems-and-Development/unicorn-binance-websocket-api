@@ -126,9 +126,12 @@ class BinanceWebSocketApiSocket(object):
                             received_stream_data = json.loads(received_stream_data_json)
                         else:
                             received_stream_data = received_stream_data_json
-                        self.handler_binance_websocket_api_manager.process_stream_data(
-                            received_stream_data,
-                            stream_buffer_name=self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['stream_buffer_name'])
+                        try:
+                            stream_buffer_name = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['stream_buffer_name']
+                        except KeyError:
+                            stream_buffer_name = False
+                        self.handler_binance_websocket_api_manager.process_stream_data(received_stream_data,
+                                                                                       stream_buffer_name=stream_buffer_name)
                         if "error" in received_stream_data_json:
                             logging.error("BinanceWebSocketApiSocket->start_socket(" +
                                           str(self.stream_id) + ") "

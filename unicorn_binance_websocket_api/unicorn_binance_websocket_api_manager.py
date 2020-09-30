@@ -890,6 +890,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: stream_id or 'False'
         """
         # create a stream
+        if isinstance(channels, bool):
+            logging.error(f"Parameter `channels` must be str, tuple, list or a set!")
+            return False
+        elif isinstance(markets, bool):
+            logging.error(f"Parameter `channels` must be str, tuple, list or a set!")
+            return False
         if type(channels) is str:
             channels = [channels]
         if type(markets) is str:
@@ -949,6 +955,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type symbols: str
         :return: str or False
         """
+        if isinstance(channels, bool):
+            logging.error(f"Parameter `channels` must be str, tuple, list or a set!")
+            return False
+        elif isinstance(markets, bool):
+            logging.error(f"Parameter `channels` must be str, tuple, list or a set!")
+            return False
         payload = []
         if type(channels) is str:
             channels = [channels]

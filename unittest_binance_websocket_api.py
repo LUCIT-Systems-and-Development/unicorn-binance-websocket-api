@@ -743,12 +743,15 @@ class TestRestApi(unittest.TestCase):
         channels = ['kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w', 'trade',
                     'miniTicker', 'depth20']
 
-#        binance_websocket_api_manager.create_stream("error", "error", stream_label="error")
+        binance_websocket_api_manager.create_stream(False, False, stream_label="error")
 
         for channel in channels:
-            stream_id1 =binance_websocket_api_manager.create_stream(channel, markets, output="UnicornFy")
+            stream_id1 = binance_websocket_api_manager.create_stream(channel, markets, output="UnicornFy")
 
+        time.sleep(5)
+        binance_websocket_api_manager.set_restart_request(stream_id1)
         time.sleep(10)
+        binance_websocket_api_manager.set_restart_request(stream_id1)
 
         restserver = BinanceWebSocketApiRestServer(binance_websocket_api_manager)
         restserver.get("icinga")
@@ -759,7 +762,7 @@ class TestRestApi(unittest.TestCase):
                    'wrxbtc', 'pptbtc', 'nknbtc', 'zecusdt', 'stormeth', 'qtumusdt']
 
         for channel in channels:
-            stream_id2 = binance_websocket_api_manager.create_stream(channel, markets)
+            stream_id2 = binance_websocket_api_manager.create_stream(channel, markets, stream_buffer_name=channel)
 
         time.sleep(10)
         binance_websocket_api_manager.unsubscribe_from_stream(stream_id2, markets="erdbnb")
@@ -780,7 +783,6 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.get_websocket_uri_length('trade', 'kncbtc', False)
         binance_websocket_api_manager.set_ringbuffer_error_max_size(200)
         binance_websocket_api_manager.set_ringbuffer_result_max_size(300)
-        binance_websocket_api_manager.set_restart_request(stream_id1)
         binance_websocket_api_manager.set_stream_label(stream_id2, "blub")
         binance_websocket_api_manager.delete_stream_from_stream_list(stream_id1)
         binance_websocket_api_manager.delete_listen_key_by_stream_id(stream_id1)
