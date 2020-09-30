@@ -236,6 +236,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.websocket_list = {}
         self.start()
         self.replaced_secrets_text = "***SECRET_REMOVED***"
+        self.restclient = BinanceWebSocketApiRestclient(self)
         if warn_on_update and self.is_update_availabe():
             update_msg = "Release unicorn-binance-websocket-api_" + self.get_latest_version() + " is available, " \
                          "please consider updating! (Changelog: https://github.com/oliver-zehentleitner/unicorn-" \
@@ -487,9 +488,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 < time.time() and (active_stream_list[stream_id]['last_static_ping_listen_key'] +
                                                    active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
                             # keep-alive the listenKey
-                            binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self, stream_id)
-                            binance_websocket_api_restclient.keepalive_listen_key(self.stream_list[stream_id]['listen_key'])
-                            del binance_websocket_api_restclient
+                            self.restclient.keepalive_listen_key(stream_id)
                             # set last_static_ping_listen_key
                             self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
                             self.set_heartbeat(stream_id)
@@ -1105,8 +1104,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             if self.stream_list[stream_id]['listen_key'] is not False:
                 logging.info("BinanceWebSocketApiManager->stop_manager_with_all_streams(" + str(
                     stream_id) + ")->delete_listen_key")
-                binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self, stream_id)
-                binance_websocket_api_restclient.delete_listen_key(self.stream_list[stream_id]['listen_key'])
+                self.restclient.delete_listen_key(stream_id)
         except KeyError:
             return False
 
@@ -1442,9 +1440,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return response
         # no cached listen_key or listen_key is older than 30 min
         # acquire a new listen_key:
-        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self, stream_id)
-        response = binance_websocket_api_restclient.get_listen_key()
-        del binance_websocket_api_restclient
+        response = self.restclient.get_listen_key(stream_id)
         if response:
             # save and return the valid listen_key
             try:

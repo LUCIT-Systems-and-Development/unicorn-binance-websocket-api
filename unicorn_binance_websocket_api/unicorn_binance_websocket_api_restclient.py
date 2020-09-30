@@ -39,11 +39,12 @@ import json
 import logging
 import requests
 import socket
+import threading
 import time
 
 
 class BinanceWebSocketApiRestclient(object):
-    def __init__(self, ubwa, stream_id):
+    def __init__(self, ubwa):
         self.ubwa = ubwa
         if self.ubwa.exchange == "binance.com":
             self.restful_base_uri = "https://api.binance.com/"
@@ -78,21 +79,14 @@ class BinanceWebSocketApiRestclient(object):
         elif self.ubwa.exchange == "jex.com":
             self.restful_base_uri = "https://www.jex.com/"
             self.path_userdata = "api/v1/userDataStream"
-        try:
-            self.api_key = self.ubwa.stream_list[stream_id]['api_key']
-            self.api_secret = self.ubwa.stream_list[stream_id]['api_secret']
-            self.symbols = self.ubwa.stream_list[stream_id]['symbols']
-        except AttributeError:
-            self.api_key = False
-            self.api_secret = False
-            self.symbols = False
-        except KeyError:
-            self.api_key = False
-            self.api_secret = False
-            self.symbols = False
-        self.unicorn_binance_websocket_api_version = self.ubwa.get_version()
+
+        self.api_key = False
+        self.api_secret = False
+        self.symbol = False
         self.listen_key = False
+        self.unicorn_binance_websocket_api_version = self.ubwa.get_version()
         self.binance_api_status = self.ubwa.binance_api_status
+        self.threading_lock = threading.Lock()
 
     def _get_signature(self, data):
         """
@@ -117,16 +111,12 @@ class BinanceWebSocketApiRestclient(object):
 
         :param method: choose the method to use (post, put or delete)
         :type method: str
-
         :param path: choose the path to use
         :type path: str
-
         :param query: choose the query to use
         :type query: str
-
         :param data: the payload for the post method
         :type data: str
-
         :return: the response
         :rtype: str or False
         """
@@ -175,54 +165,79 @@ class BinanceWebSocketApiRestclient(object):
         request_handler.close()
         return respond
 
-    def get_listen_key(self):
+    def get_listen_key(self, stream_id=False, api_key=False, api_secret=False, symbol=False):
         """
         Request a valid listen_key from binance
 
+        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :type stream_id: uuid
+        :param api_key: provide a valid Binance API key
+        :type api_key: str
+        :param api_secret: provide a valid Binance API secret
+        :type api_secret: str
+        :param symbol: provide the symbol for isolated_margin user_data listen_key
+        :type symbol: str
         :return: listen_key
         :rtype: str or False
         """
-        logging.info(f"BinanceWebSocketApiRestclient->get_listen_key() symbols='{str(self.symbols)}')")
-        method = "post"
-        if self.ubwa.exchange == "binance.com-isolated_margin" or self.ubwa.exchange == "binance.com-isolated_margin-testnet":
-            if self.symbols is False:
-                logging.critical("BinanceWebSocketApiRestclient->get_listen_key() Info: Parameter `symbol` is missing!")
-                return False
-            else:
-                response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbols)})
-        else:
-            response = self._request(method, self.path_userdata)
-        try:
-            self.listen_key = response['listenKey']
-            return response
-        except KeyError:
-            return response
-        except TypeError:
+        logging.info(f"BinanceWebSocketApiRestclient->get_listen_key() symbol='{str(self.symbol)}' "
+                     f"stream_id='{str(stream_id)}')")
+        if stream_id is False:
             return False
+        with self.threading_lock:
+            self.init_vars(stream_id, api_key=api_key, api_secret=api_secret, symbol=symbol)
+            method = "post"
+            if self.ubwa.exchange == "binance.com-isolated_margin" or \
+                    self.ubwa.exchange == "binance.com-isolated_margin-testnet":
+                if self.symbol is False:
+                    logging.critical("BinanceWebSocketApiRestclient->get_listen_key() Info: Parameter `symbol`"
+                                     " is missing!")
+                    return False
+                else:
+                    response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol)})
+            else:
+                response = self._request(method, self.path_userdata)
+            try:
+                self.listen_key = response['listenKey']
+                return response
+            except KeyError:
+                return response
+            except TypeError:
+                return False
 
-    def delete_listen_key(self, listen_key):
+    def delete_listen_key(self, stream_id=False, api_key=False, api_secret=False, listen_key=False):
         """
         Delete a specific listen key
 
+        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :type stream_id: uuid
         :param listen_key: the listenkey you want to delete
-        :type listen_key: str
-
+        :type listen_key: str or bool
         :return: the response
         :rtype: str or False
         """
-        return self.do_request(listen_key, "delete")
+        if stream_id is False:
+            return False
+        with self.threading_lock:
+            self.init_vars(stream_id, api_key, api_secret, listen_key)
+            return self.do_request(self.listen_key, "delete")
 
-    def keepalive_listen_key(self, listen_key):
+    def keepalive_listen_key(self, stream_id=False, api_key=False, api_secret=False, listen_key=False) -> object:
         """
         Ping a listenkey to keep it alive
 
+        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :type stream_id: uuid
         :param listen_key: the listenkey you want to keepalive
         :type listen_key: str
-
         :return: the response
         :rtype: str or False
         """
-        return self.do_request(listen_key, "keepalive")
+        if stream_id is False:
+            return False
+        with self.threading_lock:
+            self.init_vars(stream_id, api_key, api_secret, listen_key)
+            return self.do_request(self.listen_key, "keepalive")
 
     def do_request(self, listen_key, action=False):
         """
@@ -230,10 +245,8 @@ class BinanceWebSocketApiRestclient(object):
 
         :param listen_key: the listenkey you want to keepalive
         :type listen_key: str
-
         :param action: choose "delete" or "keepalive"
         :type action: str
-
         :return: the response
         :rtype: str or False
         """
@@ -265,3 +278,37 @@ class BinanceWebSocketApiRestclient(object):
                 return False
         else:
             return False
+
+    def init_vars(self, stream_id, api_key=False, api_secret=False, symbol=False, listen_key=False):
+        """
+        set default values and load values from stream_list
+
+        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :type stream_id: uuid
+        :param api_key: provide a valid Binance API key
+        :type api_key: str
+        :param api_secret: provide a valid Binance API secret
+        :type api_secret: str
+        :param symbol: provide the symbol for isolated_margin user_data listen_key
+        :type symbol: str
+        :param listen_key: provide the listen_key
+        :type listen_key: str
+        :return: bool
+        """
+        if api_key is False:
+            self.api_key = self.ubwa.stream_list[stream_id]['api_key']
+        else:
+            self.api_key = api_key
+        if api_secret is False:
+            self.api_secret = self.ubwa.stream_list[stream_id]['api_secret']
+        else:
+            self.api_secret = api_secret
+        if symbol is False:
+            self.symbol = self.ubwa.stream_list[stream_id]['symbols']
+        else:
+            self.symbol = symbol
+        if listen_key is False:
+            self.listen_key = False
+        else:
+            self.listen_key = listen_key
+        return True
