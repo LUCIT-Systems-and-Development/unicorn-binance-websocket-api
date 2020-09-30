@@ -148,16 +148,14 @@ class TestBinanceComManager(unittest.TestCase):
 
     def test_keepalive_listen_key(self):
         stream_id = uuid.uuid4()
-        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.binance_com_websocket_api_manager,
-                                                                         stream_id)
-        self.assertEqual(str(binance_websocket_api_restclient.keepalive_listen_key("invalid_testkey")),
+        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.binance_com_websocket_api_manager)
+        self.assertEqual(str(binance_websocket_api_restclient.keepalive_listen_key(stream_id, listen_key="invalid_testkey")),
                          "{'code': -2014, 'msg': 'API-key format invalid.'}")
 
     def test_delete_listen_key(self):
         stream_id = uuid.uuid4()
-        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.binance_com_websocket_api_manager,
-                                                                         stream_id)
-        self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key("invalid_testkey")),
+        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.binance_com_websocket_api_manager)
+        self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
                          "{'code': -2014, 'msg': 'API-key format invalid.'}")
 
     def test_create_payload_subscribe(self):
@@ -515,57 +513,57 @@ class TestRestApi(unittest.TestCase):
 
     def test_rest_binance_com(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-testnet")
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_margin(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-margin")
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_margin_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-margin-testnet")
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_isolated_margin(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_isolated_margin_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_isolated_margin_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures")
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_isolated_margin_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_isolated_margin_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.je")
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_isolated_margin_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us")
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_isolated_margin_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="jex.com")
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager, self.stream_id)
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_get_signature(self):

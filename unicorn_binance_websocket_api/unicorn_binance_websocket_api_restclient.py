@@ -308,7 +308,7 @@ class BinanceWebSocketApiRestclient(object):
         else:
             self.symbol = symbol
         if listen_key is False:
-            self.listen_key = False
+            self.listen_key = self.ubwa.stream_list[stream_id]['listen_key']
         else:
             self.listen_key = listen_key
         return True
