@@ -350,8 +350,9 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     def setUp(self):
         self.binance_org_testnet = BinanceWebSocketApiManager(exchange="binance.org-testnet")
-        self.binance_org_testnet.set_private_dex_config("tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
-        self.binance_org_testnet.unsubscribe_from_stream("tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
+        stream_id = self.binance_org_testnet.create_stream(['orders', 'transfers', 'accounts'],
+                                                            "tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
+        self.binance_org_testnet.unsubscribe_from_stream(stream_id, "tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
 
     def tearDown(self):
         self.binance_org_testnet.stop_manager_with_all_streams()
@@ -765,6 +766,7 @@ class TestRestApi(unittest.TestCase):
             stream_id2 = binance_websocket_api_manager.create_stream(channel, markets, stream_buffer_name=channel)
 
         time.sleep(10)
+        binance_websocket_api_manager.create_websocket_uri(False, False, stream_id1)
         binance_websocket_api_manager.unsubscribe_from_stream(stream_id2, markets="erdbnb")
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
@@ -773,6 +775,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.replace_stream(stream_id1, 'trade', 'kncbtc', "name")
 
         binance_websocket_api_manager.get_results_from_endpoints()
+        binance_websocket_api_manager.get_binance_api_status()
         binance_websocket_api_manager.get_stream_subscriptions(stream_id2)
         binance_websocket_api_manager.get_reconnects()
         binance_websocket_api_manager.get_errors_from_endpoints()

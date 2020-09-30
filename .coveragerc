@@ -14,3 +14,4 @@ exclude_lines =
     def redirect_to_wiki
     self.ringbuffer_error.pop(0)
     self.ringbuffer_result.pop(0)
+    if self.stream_list[stream_id]['listen_key'] is not False
