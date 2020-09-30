@@ -15,3 +15,4 @@ exclude_lines =
     self.ringbuffer_error.pop(0)
     self.ringbuffer_result.pop(0)
     if self.stream_list[stream_id]['listen_key'] is not False
+    return "unknown"

@@ -776,6 +776,10 @@ class TestRestApi(unittest.TestCase):
 
         binance_websocket_api_manager.get_results_from_endpoints()
         binance_websocket_api_manager.get_binance_api_status()
+        binance_websocket_api_manager.get_start_time()
+        binance_websocket_api_manager.get_stream_label(stream_id1)
+        binance_websocket_api_manager.get_stream_label(False)
+        binance_websocket_api_manager.get_keep_max_received_last_second_entries()
         binance_websocket_api_manager.get_stream_subscriptions(stream_id2)
         binance_websocket_api_manager.get_reconnects()
         binance_websocket_api_manager.get_errors_from_endpoints()
