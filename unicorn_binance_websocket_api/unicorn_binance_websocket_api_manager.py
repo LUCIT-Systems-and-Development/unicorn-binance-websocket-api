@@ -2592,8 +2592,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type new_symbols: str
         :return: new stream_id
         :param new_output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
-                       with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
-                       remains unchanged and gets delivered as received from the endpoints
+                           with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
+                           remains unchanged and gets delivered as received from the endpoints
         :type new_output: str
         """
         # starting a new socket and stop the old stream not before the new stream received its first record
