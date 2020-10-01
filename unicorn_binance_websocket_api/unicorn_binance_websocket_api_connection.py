@@ -92,12 +92,12 @@ class BinanceWebSocketApiConnection(object):
                         del self.handler_binance_websocket_api_manager.restart_requests[self.stream_id]
                     except KeyError as error_msg:
                         logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
-                                      ", " + str(self.channels) + ", " + str(self.markets) + ")" + " error: 6 - "
-                                      + str(error_msg))
+                                         ", " + str(self.channels) + ", " + str(self.markets) + ")" + " error: 6 - "
+                                         + str(error_msg))
                     except TypeError as error_msg:
                         logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
-                                      ", " + str(self.channels) + ", " + str(self.markets) + ")" + " error: 3 - "
-                                      + str(error_msg))
+                                         ", " + str(self.channels) + ", " + str(self.markets) + ")" + " error: 3 - "
+                                         + str(error_msg))
                 else:
                     logging.critical("BinanceWebSocketApiConnection->await._conn.__aenter__(" + str(self.stream_id) +
                                      ", " + str(self.channels) + ", " + str(self.markets) + ") - " + " Received unknown"

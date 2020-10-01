@@ -566,13 +566,6 @@ class TestRestApi(unittest.TestCase):
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
-    def test_rest_binance_com_get_signature(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
-        stream_id = binance_websocket_api_manager.create_stream("arr", "!userData", api_key="key", api_secret="secret")
-        rest = BinanceWebSocketApiRestclient(binance_websocket_api_manager)
-        rest._get_signature("test_data")
-        binance_websocket_api_manager.stop_manager_with_all_streams()
-
     def test_invalid_exchange(self):
         from unicorn_binance_websocket_api.unicorn_binance_websocket_api_exceptions import UnknownExchange
         try:
