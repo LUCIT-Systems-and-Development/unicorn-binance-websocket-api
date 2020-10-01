@@ -26,5 +26,5 @@ exclude_lines =
     return response
     if uri is False
     pass
-    if (active_stream_list[stream_id]['start_time'] + active_stream_list[stream_id]['listen_key_cache_time']) \
+    if (active_stream_list[stream_id]['start_time'] + active_stream_list[stream_id]['listen_key_cache_time'])
     self.restart_requests[stream_id]['status'] = "new"
