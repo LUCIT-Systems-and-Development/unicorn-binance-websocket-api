@@ -157,6 +157,9 @@ class TestBinanceComManager(unittest.TestCase):
         binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.binance_com_websocket_api_manager)
         self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
                          "{'code': -2014, 'msg': 'API-key format invalid.'}")
+        self.binance_com_websocket_api_manager.show_secrets_in_logs = True
+        self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
+                         "{'code': -2014, 'msg': 'API-key format invalid.'}")
 
     def test_create_payload_subscribe(self):
         result = "[{'method': 'SUBSCRIBE', 'params': ['bnbbtc@kline_1m'], 'id': 1}]"
