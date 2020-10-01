@@ -30,3 +30,5 @@ exclude_lines =
     self.restart_requests[stream_id]['status'] = "new"
     if self.stream_list[stream_id]['subscriptions']
     if type(self.stream_list[stream_id]
+    if type(channels)
+    if type(markets)
