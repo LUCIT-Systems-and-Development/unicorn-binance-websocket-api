@@ -312,7 +312,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'processed_transmitted_total': 0,
                                        'last_static_ping_listen_key': 0,
                                        'listen_key': False,
-                                       'listen_key_cache_time': 30 * 60,
+                                       'listen_key_cache_time':  30 * 60,
                                        'processed_receives_statistic': {},
                                        'transfer_rate_per_second': {'bytes': {}, 'speed': 0}}
         logging.info("BinanceWebSocketApiManager->_add_socket_to_socket_list(" +
@@ -389,7 +389,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 is None:
             with self.frequent_checks_list_lock:
                 self.frequent_checks_list[frequent_checks_id]['last_heartbeat'] = time.time()
-            time.sleep(0.1)
+            time.sleep(0.3)
             current_timestamp = int(time.time())
             last_timestamp = current_timestamp - 1
             next_to_last_timestamp = current_timestamp - 2

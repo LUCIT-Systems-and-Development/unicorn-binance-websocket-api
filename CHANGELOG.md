@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.20.0.dev (development stage/unreleased/unstable)
 ### Added 
 - `new_output` to [`replace_stream()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=replace_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream)
+### Changed
+- Rewrite of `BinanceWebSocketApiRestclient()`. Now we use one instance globally instead creating a new one everytime we 
+need it.
+- `time.sleep()` in `_frequent_checks()` from 0.1 to 0.3
 
 ## 1.20.0
 ### Added
