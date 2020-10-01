@@ -88,23 +88,6 @@ class BinanceWebSocketApiRestclient(object):
         self.binance_api_status = self.ubwa.binance_api_status
         self.threading_lock = threading.Lock()
 
-    def _get_signature(self, data):
-        """
-        Get the signature of 'data'
-
-        :param data: the data you want to sign
-        :type data: str
-
-        :return: signature
-        :rtype: str
-        """
-        try:
-            hmac_signature = hmac.new(self.api_secret.encode('utf-8'), data.encode('utf-8'), hashlib.sha256)
-            return hmac_signature.hexdigest()
-        except AttributeError as error_msg:
-            logging.critical(f"_get_signature({str(data)}) Error: {str(error_msg)}")
-            return False
-
     def _request(self, method, path, query=False, data=False):
         """
         Do the request
