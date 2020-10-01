@@ -372,6 +372,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             loop.run_until_complete(binance_websocket_api_socket.start_socket())
         except RuntimeError as error_msg:
             logging.critical(f"_create_stream_thread() stream_id={str(stream_id)} error: 7 - {str(error_msg)}")
+            # Todo:
+            # Check if stop request is True or restart again! Is there an orphaned thread?
         finally:
             loop.close()
 

@@ -101,11 +101,10 @@ class BinanceWebSocketApiRestclient(object):
         """
         if action == "keepalive":
             if self.ubwa.show_secrets_in_logs is True:
-                logging.info("BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(listen_key) + ")")
+                logging.info(f"BinanceWebSocketApiRestclient->keepalive_listen_key({str(listen_key)})")
             else:
-                logging.info(
-                    "BinanceWebSocketApiRestclient->keepalive_listen_key(" + str(self.ubwa.replaced_secrets_text)
-                    + ")")
+                logging.info(f"BinanceWebSocketApiRestclient->keepalive_listen_key("
+                             f"{str(self.ubwa.replaced_secrets_text)})")
             method = "put"
             try:
                 return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
@@ -115,10 +114,10 @@ class BinanceWebSocketApiRestclient(object):
                 return False
         elif action == "delete":
             if self.ubwa.show_secrets_in_logs is True:
-                logging.info("BinanceWebSocketApiRestclient->delete_listen_key(" + str(listen_key) + ")")
+                logging.info(f"BinanceWebSocketApiRestclient->delete_listen_key({str(listen_key)})")
             else:
-                logging.info("BinanceWebSocketApiRestclient->delete_listen_key(" + str(self.ubwa.replaced_secrets_text)
-                             + ")")
+                logging.info(f"BinanceWebSocketApiRestclient->delete_listen_key("
+                             f"{str(self.ubwa.replaced_secrets_text)})")
             method = "delete"
             try:
                 return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
@@ -183,8 +182,8 @@ class BinanceWebSocketApiRestclient(object):
         :rtype: str or False
         """
         requests_headers = {'Accept': 'application/json',
-                            'User-Agent': 'oliver-zehentleitner/unicorn-binance-websocket-api/' +
-                                          self.unicorn_binance_websocket_api_version,
+                            'User-Agent': f'oliver-zehentleitner/unicorn-binance-websocket-api/'
+                                          f'{self.unicorn_binance_websocket_api_version}',
                             'X-MBX-APIKEY': str(self.api_key)}
         if query is not False:
             uri = self.restful_base_uri + path + "?" + query
@@ -203,10 +202,10 @@ class BinanceWebSocketApiRestclient(object):
             else:
                 request_handler = False
         except requests.exceptions.ConnectionError as error_msg:
-            logging.critical("BinanceWebSocketApiRestclient->_request() - error_msg: " + str(error_msg))
+            logging.critical(f"BinanceWebSocketApiRestclient->_request() - error_msg: {str(error_msg)}")
             return False
         except socket.gaierror as error_msg:
-            logging.critical("BinanceWebSocketApiRestclient->_request() - error_msg: " + str(error_msg))
+            logging.critical(f"BinanceWebSocketApiRestclient->_request() - error_msg: {str(error_msg)}")
             return False
         if request_handler.status_code == "418":
             logging.critical("BinanceWebSocketApiRestclient->_request() received status_code 418 from binance! You got"
@@ -219,7 +218,7 @@ class BinanceWebSocketApiRestclient(object):
         try:
             respond = request_handler.json()
         except json.decoder.JSONDecodeError as error_msg:
-            logging.error("BinanceWebSocketApiRestclient->_request() - error_msg: " + str(error_msg))
+            logging.error(f"BinanceWebSocketApiRestclient->_request() - error_msg: {str(error_msg)}")
             return False
         self.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
         self.binance_api_status['timestamp'] = time.time()
@@ -231,7 +230,7 @@ class BinanceWebSocketApiRestclient(object):
         """
         Request a valid listen_key from binance
 
-        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :param stream_id: provide a stream_id
         :type stream_id: uuid
         :param api_key: provide a valid Binance API key
         :type api_key: str
@@ -252,8 +251,8 @@ class BinanceWebSocketApiRestclient(object):
             if self.ubwa.exchange == "binance.com-isolated_margin" or \
                     self.ubwa.exchange == "binance.com-isolated_margin-testnet":
                 if self.symbol is False:
-                    logging.critical("BinanceWebSocketApiRestclient->get_listen_key() Info: Parameter `symbol`"
-                                     " is missing!")
+                    logging.critical("BinanceWebSocketApiRestclient->get_listen_key() Info: Parameter "
+                                     "`symbol` is missing!")
                     return False
                 else:
                     response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol)})
@@ -271,7 +270,7 @@ class BinanceWebSocketApiRestclient(object):
         """
         Delete a specific listen key
 
-        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :param stream_id: provide a stream_id
         :type stream_id: uuid
         :param api_key: provide a valid Binance API key
         :type api_key: str
@@ -282,6 +281,7 @@ class BinanceWebSocketApiRestclient(object):
         :return: the response
         :rtype: str or False
         """
+        logging.info(f"BinanceWebSocketApiRestclient->delete_listen_key() stream_id='{str(stream_id)}')")
         if stream_id is False:
             return False
         with self.threading_lock:
@@ -292,7 +292,7 @@ class BinanceWebSocketApiRestclient(object):
         """
         Ping a listenkey to keep it alive
 
-        :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
+        :param stream_id: provide a stream_id
         :type stream_id: uuid
         :param api_key: provide a valid Binance API key
         :type api_key: str
@@ -303,6 +303,7 @@ class BinanceWebSocketApiRestclient(object):
         :return: the response
         :rtype: str or False
         """
+        logging.info(f"BinanceWebSocketApiRestclient->get_listen_key() stream_id='{str(stream_id)}')")
         if stream_id is False:
             return False
         with self.threading_lock:
