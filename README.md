@@ -13,7 +13,7 @@
 [![Donations/week](http://img.shields.io/liberapay/receives/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
 [![Patrons](http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
 
-[Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#how-to) |
+[Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#howto) |
 [Documentation](#documentation) | [Change Log](#change-log) | [Wiki](#wiki) | [Social](#social) | 
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
 [Contributing](#contributing) | [Donate](#donate)
