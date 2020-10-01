@@ -46,6 +46,11 @@ import time
 class BinanceWebSocketApiRestclient(object):
     def __init__(self, ubwa):
         self.ubwa = ubwa
+        self.api_key = False
+        self.api_secret = False
+        self.symbol = False
+        self.listen_key = False
+        self.threading_lock = threading.Lock()
         if self.ubwa.exchange == "binance.com":
             self.restful_base_uri = "https://api.binance.com/"
             self.path_userdata = "api/v3/userDataStream"
@@ -79,14 +84,6 @@ class BinanceWebSocketApiRestclient(object):
         elif self.ubwa.exchange == "jex.com":
             self.restful_base_uri = "https://www.jex.com/"
             self.path_userdata = "api/v1/userDataStream"
-
-        self.api_key = False
-        self.api_secret = False
-        self.symbol = False
-        self.listen_key = False
-        self.unicorn_binance_websocket_api_version = self.ubwa.get_version()
-        self.binance_api_status = self.ubwa.binance_api_status
-        self.threading_lock = threading.Lock()
 
     def _do_request(self, listen_key, action=False):
         """
@@ -182,8 +179,7 @@ class BinanceWebSocketApiRestclient(object):
         :rtype: str or False
         """
         requests_headers = {'Accept': 'application/json',
-                            'User-Agent': f'oliver-zehentleitner/unicorn-binance-websocket-api/'
-                                          f'{self.unicorn_binance_websocket_api_version}',
+                            'User-Agent': f'unicorn-binance-websocket-api_{self.ubwa.get_version()}',
                             'X-MBX-APIKEY': str(self.api_key)}
         if query is not False:
             uri = self.restful_base_uri + path + "?" + query
@@ -220,9 +216,9 @@ class BinanceWebSocketApiRestclient(object):
         except json.decoder.JSONDecodeError as error_msg:
             logging.error(f"BinanceWebSocketApiRestclient->_request() - error_msg: {str(error_msg)}")
             return False
-        self.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
-        self.binance_api_status['timestamp'] = time.time()
-        self.binance_api_status['status_code'] = request_handler.status_code
+        self.ubwa.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
+        self.ubwa.binance_api_status['timestamp'] = time.time()
+        self.ubwa.binance_api_status['status_code'] = request_handler.status_code
         request_handler.close()
         return respond
 
