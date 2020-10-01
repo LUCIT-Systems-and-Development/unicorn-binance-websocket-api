@@ -764,6 +764,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.stop_stream_as_crash(stream_id3)
         binance_websocket_api_manager.create_websocket_uri(False, False, stream_id1)
         binance_websocket_api_manager.unsubscribe_from_stream(stream_id2, markets="erdbnb")
+        binance_websocket_api_manager.unsubscribe_from_stream(stream_id2, channels="trade")
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()

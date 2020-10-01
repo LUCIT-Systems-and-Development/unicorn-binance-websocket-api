@@ -28,3 +28,5 @@ exclude_lines =
     pass
     if (active_stream_list[stream_id]['start_time'] + active_stream_list[stream_id]['listen_key_cache_time'])
     self.restart_requests[stream_id]['status'] = "new"
+    if self.stream_list[stream_id]['subscriptions']
+    if type(self.stream_list[stream_id]
