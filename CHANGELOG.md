@@ -5,15 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.20.0.dev (development stage/unreleased/unstable)
+## 1.21.0.dev (development stage/unreleased/unstable)
+
+## 1.21.0
 ### Added 
+- `is_update_availabe_unicorn_fy()` and `get_version_unicorn_fy()`
 - `new_output` to [`replace_stream()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=replace_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream)
 ### Changed
-- Rewrite of `BinanceWebSocketApiRestclient()`. Now we use one instance globally instead creating a new one everytime we 
-need it.
-- `time.sleep()` in `_frequent_checks()` from 0.1 to 0.3
+- Rewrite of `BinanceWebSocketApiRestclient()`, its more or less stateless but compatible to the current system. Now 
+we use one instance globally instead of creating a new one every time we need it. It will help to implement isolated
+margin with more than one symbol. [issue#111](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/111)
+- `time.sleep()` in `_frequent_checks()` from 0.1 to 0.3 seconds
 ### Fixed
-- `RuntimeError` exception in `_create_stream_thread()`
+- `RuntimeError` exception in `_create_stream_thread()` - no handling added, only logging and a "Todo"
 
 ## 1.20.0
 ### Added

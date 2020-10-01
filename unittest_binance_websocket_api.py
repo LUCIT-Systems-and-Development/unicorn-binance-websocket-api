@@ -791,6 +791,8 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager._restart_stream((stream_id1))
         binance_websocket_api_manager.delete_stream_from_stream_list(stream_id1)
         binance_websocket_api_manager.delete_listen_key_by_stream_id(stream_id1)
+        binance_websocket_api_manager.is_update_availabe_unicorn_fy()
+        binance_websocket_api_manager.get_version_unicorn_fy()
         binance_websocket_api_manager.create_payload(stream_id2, "invalid", channels="trade")
         time.sleep(10)
         binance_websocket_api_manager.set_keep_max_received_last_second_entries(30)

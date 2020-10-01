@@ -138,7 +138,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  restart_timeout=6,
                  show_secrets_in_logs=False):
         threading.Thread.__init__(self)
-        self.version = "1.20.0.dev"
+        self.version = "1.21.0"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
         colorama.init()
         if process_stream_data is False:
@@ -1972,6 +1972,18 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.version
 
+    def get_version_unicorn_fy(self):
+        """
+        Get the package/module version of `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_
+
+        :return: str
+        """
+        from unicorn_fy.unicorn_fy import UnicornFy
+
+        unicorn_fy = UnicornFy()
+
+        return unicorn_fy.get_version()
+
     def get_websocket_uri_length(self, channels, markets, symbols=False):
         """
         Get the length of the generated websocket URI
@@ -2159,6 +2171,18 @@ class BinanceWebSocketApiManager(threading.Thread):
             return False
         else:
             return True
+
+    def is_update_availabe_unicorn_fy(self):
+        """
+        Is a new release of `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ available?
+
+        :return: bool
+        """
+        from unicorn_fy.unicorn_fy import UnicornFy
+
+        unicorn_fy = UnicornFy()
+
+        return unicorn_fy.is_update_availabe()
 
     def is_update_availabe_check_command(self, check_command_version=False):
         """
