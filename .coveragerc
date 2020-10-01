@@ -22,3 +22,5 @@ exclude_lines =
     if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None
     elif isinstance(markets, bool)
     if warn_on_update is True
+    return False
+    return response
