@@ -370,6 +370,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         binance_websocket_api_socket = BinanceWebSocketApiSocket(self, stream_id, channels, markets)
         try:
             loop.run_until_complete(binance_websocket_api_socket.start_socket())
+        except RuntimeError as error_msg:
+            logging.critical(f"_create_stream_thread() stream_id={str(stream_id)} error: 7 - {str(error_msg)}")
         finally:
             loop.close()
 

@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Rewrite of `BinanceWebSocketApiRestclient()`. Now we use one instance globally instead creating a new one everytime we 
 need it.
 - `time.sleep()` in `_frequent_checks()` from 0.1 to 0.3
+### Fixed
+- `RuntimeError` exception in `_create_stream_thread()`
 
 ## 1.20.0
 ### Added
