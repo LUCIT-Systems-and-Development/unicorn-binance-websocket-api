@@ -192,6 +192,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.dex_user_address = False
         self.frequent_checks_list = {}
         self.frequent_checks_list_lock = threading.Lock()
+        self.receiving_speed_average = 0
+        self.receiving_speed_peak = 0
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
         self.last_entry_added_to_stream_buffer = 0
@@ -470,15 +472,18 @@ class BinanceWebSocketApiManager(threading.Thread):
                               "=" + str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_"
                               "to_last_timestamp=" + str(total_most_stream_receives_next_to_last_timestamp) + " error_"
                               "msg=" + str(error_msg))
-            try:
-                if int(self.most_receives_per_second) < int(total_most_stream_receives_next_to_last_timestamp):
-                    self.most_receives_per_second = int(total_most_stream_receives_next_to_last_timestamp)
-            except ValueError as error_msg:
-                logging.error("BinanceWebSocketManager->_frequent_checks() self.most_receives_per_second=" + str(
-                              self.most_receives_per_second) + " total_most_stream_receives_last_timestamp=" +
-                              str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_to_"
-                              "last_timestamp=" +
-                              str(total_most_stream_receives_next_to_last_timestamp) + " error_msg=" + str(error_msg))
+            #try:
+            #    if int(self.most_receives_per_second) < int(total_most_stream_receives_next_to_last_timestamp):
+            #        self.most_receives_per_second = int(total_most_stream_receives_next_to_last_timestamp)
+            #except ValueError as error_msg:
+            #    logging.error("BinanceWebSocketManager->_frequent_checks() self.most_receives_per_second=" + str(
+            #                  self.most_receives_per_second) + " total_most_stream_receives_last_timestamp=" +
+            #                  str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_to_"
+            #                  "last_timestamp=" +
+            #                  str(total_most_stream_receives_next_to_last_timestamp) + " error_msg=" + str(error_msg))
+            last_second_receiving_speed = self.get_current_receiving_speed_global()
+            if last_second_receiving_speed > self.receiving_speed_peak:
+                self.receiving_speed_peak = last_second_receiving_speed
             # send keepalive for `!userData` streams every 30 minutes
             if active_stream_list:
                 for stream_id in active_stream_list:
@@ -1258,6 +1263,23 @@ class BinanceWebSocketApiManager(threading.Thread):
             current_receiving_speed = self.stream_list[stream_id]['transfer_rate_per_second']['speed']
         except KeyError:
             current_receiving_speed = 0
+        return current_receiving_speed
+
+    def get_current_receiving_speed_global(self):
+        """
+        Get the receiving speed of the last second in Bytes from all streams!
+
+        :return: int
+        """
+        current_receiving_speed = 0
+        try:
+            temp_stream_list = copy.deepcopy(self.stream_list)
+        except RuntimeError:
+            return ""
+        for stream_id in temp_stream_list:
+            stream_row_color_prefix = ""
+            stream_row_color_suffix = ""
+            current_receiving_speed += self.get_current_receiving_speed(stream_id)
         return current_receiving_speed
 
     def get_exchange(self):
@@ -2518,9 +2540,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " subscriptions: " + str(self.get_number_of_all_subscriptions()) + "\r\n" +
                     str(stream_buffer_row) +
                     " current_receiving_speed: " + str(self.get_human_bytesize(current_receiving_speed, "/s")) + "\r\n" +
+                    " average_receiving_speed: " + str(received_bytes_per_x_row) + "\r\n" +
+                    " highest_receiving_speed: " + str(self.get_human_bytesize(self.receiving_speed_peak, "/s")) + "\r\n" +
                     " total_receives: " + str(self.total_receives) + "\r\n"
                     " total_received_bytes: " + str(total_received_bytes) + "\r\n"
-                    " total_receiving_speed: " + str(received_bytes_per_x_row) + "\r\n" +
                     " total_transmitted_payloads: " + str(self.total_transmitted) + "\r\n" +
                     str(binance_api_status_row) +
                     " process_ressource_usage: cpu=" + str(self.get_process_usage_cpu()) + "%, memory=" +

@@ -6,9 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.21.0.dev (development stage/unreleased/unstable)
+### Added
+- `get_current_receiving_speed_global()`
 ### Changed
 - renamed variable `ubwa` to `manager` in restclient
-
+- renamed variable `total_receiving_speed` to `average_receiving_speed`
+ 
 ## 1.21.0
 ### Added 
 - `is_update_availabe_unicorn_fy()` and `get_version_unicorn_fy()`
