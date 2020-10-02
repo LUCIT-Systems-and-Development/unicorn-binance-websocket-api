@@ -98,6 +98,24 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect!
 - Supported exchanges: 
+
+| Exchange | Exchange string | Implementation | Docs |
+| -------- | --------------- | ------ | ---- |
+| [Binance](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com")` | [x] |  |
+| [Binance Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-testnet")` | implemented |  |
+| [Binance Margin](https://www.binance.com) |  `BinanceWebSocketApiManager(exchange="binance.com-margin")` | implemented |  |
+| [Binance Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-margin-testnet")` | implemented |  |
+| [Binance Isolated Margin](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")` | implemented |  |
+| [Binance Isolated Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")` | implemented |  |
+| [Binance Futures](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures")` | implemented |  |
+| [Binance Futures Testnet](https://testnet.binancefuture.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")` | implemented |  |
+| [Binance Jersey](https://www.binance.je) | `BinanceWebSocketApiManager(exchange="binance.je")` | implemented |  |
+| [Binance US](https://www.binance.us) | `BinanceWebSocketApiManager(exchange="binance.us")` | implemented |  |
+| [Binance JEX](https://www.jex.com) | `BinanceWebSocketApiManager(exchange="jex.com")` | [x] |  |
+| [Binance DEX](https://www.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org")` | [x] |  |
+| [Binance DEX Testnet](https://testnet.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org-testnet")` | [x] |  |
+
+
     * [Binance](https://www.binance.com) 
      `BinanceWebSocketApiManager(exchange="binance.com")`
     * [Binance Testnet](https://testnet.binance.vision/)
@@ -118,6 +136,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
      `BinanceWebSocketApiManager(exchange="binance.je")`
     * [Binance US](https://www.binance.us)
      `BinanceWebSocketApiManager(exchange="binance.us")`
+     
     * [Binance JEX](https://www.jex.com)
      `BinanceWebSocketApiManager(exchange="jex.com")`
     * [Binance DEX](https://www.binance.org)
