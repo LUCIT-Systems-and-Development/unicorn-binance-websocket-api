@@ -184,7 +184,7 @@ and specific streams with
 "IPython (Interactive Python) is a command shell for interactive computing that offers introspection, 
 rich media, shell syntax, tab completion, and history." 
 ([example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py)) 
-![iPython](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/ipython.png)
+[![iPython](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/ipython.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py)
 
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
 and a [check_command](https://exchange.icinga.com/LUCIT/check_lucit_collector) 
