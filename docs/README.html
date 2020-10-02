@@ -4,6 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create a multiplex websocket connection to Binance with just 3 lines of code: &#8212; unicorn-binance-websocket-api 1.21.0 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -51,6 +52,7 @@
     <a href="index.html">unicorn-binance-websocket-api 1.21.0 documentation</a> &#187;
     
 
+        <li class="nav-item nav-item-this"><a href="">Create a multiplex websocket connection to Binance with just 3 lines of code:</a></li>
     <li class="right">
         <a href="search.html" title="Search">search</a>
          |
@@ -166,22 +168,68 @@ on, you have to use the Binance Rest API (<a class="reference external" href="ht
 <li><p>Fully managed websockets and 100% auto-reconnect!</p></li>
 <li><p>Supported exchanges:</p></li>
 </ul>
-<p>| Exchange | Exchange string |
-| ——– | ————— |
-| <a class="reference external" href="https://www.binance.com">Binance</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com&quot;)</span></code> |
-| <a class="reference external" href="https://testnet.binance.vision/">Binance Testnet</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-testnet&quot;)</span></code> |
-| <a class="reference external" href="https://www.binance.com">Binance Margin</a> |  <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-margin&quot;)</span></code> |
-| <a class="reference external" href="https://testnet.binance.vision/">Binance Margin Testnet</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-margin-testnet&quot;)</span></code> |
-| <a class="reference external" href="https://www.binance.com">Binance Isolated Margin</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-isolated_margin&quot;)</span></code> |
-| <a class="reference external" href="https://testnet.binance.vision/">Binance Isolated Margin Testnet</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-isolated_margin-testnet&quot;)</span></code> |
-| <a class="reference external" href="https://www.binance.com">Binance Futures</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-futures&quot;)</span></code> |
-| <a class="reference external" href="https://testnet.binancefuture.com">Binance Futures Testnet</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-futures-testnet&quot;)</span></code> |
-| <a class="reference external" href="https://www.binance.je">Binance Jersey</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.je&quot;)</span></code> |
-| <a class="reference external" href="https://www.binance.us">Binance US</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.us&quot;)</span></code> |
-| <a class="reference external" href="https://www.jex.com">Binance JEX</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;jex.com&quot;)</span></code> |
-| <a class="reference external" href="https://www.binance.org">Binance DEX</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.org&quot;)</span></code> |
-| <a class="reference external" href="https://testnet.binance.org">Binance DEX Testnet</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.org-testnet&quot;)</span></code> |</p>
-<ul class="simple">
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Exchange</th>
+<th>Exchange string</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.binance.com">Binance</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.com")</code></td>
+</tr>
+<tr>
+<td><a href="https://testnet.binance.vision/">Binance Testnet</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.com-testnet")</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.com">Binance Margin</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.com-margin")</code></td>
+</tr>
+<tr>
+<td><a href="https://testnet.binance.vision/">Binance Margin Testnet</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.com-margin-testnet")</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.com">Binance Isolated Margin</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")</code></td>
+</tr>
+<tr>
+<td><a href="https://testnet.binance.vision/">Binance Isolated Margin Testnet</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.com">Binance Futures</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.com-futures")</code></td>
+</tr>
+<tr>
+<td><a href="https://testnet.binancefuture.com">Binance Futures Testnet</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.je">Binance Jersey</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.je")</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.us">Binance US</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.us")</code></td>
+</tr>
+<tr>
+<td><a href="https://www.jex.com">Binance JEX</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="jex.com")</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.org">Binance DEX</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.org")</code></td>
+</tr>
+<tr>
+<td><a href="https://testnet.binance.org">Binance DEX Testnet</a></td>
+<td><code>BinanceWebSocketApiManager(exchange="binance.org-testnet")</code></td>
+</tr>
+</tbody>
+</table><ul class="simple">
 <li><p>Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so
 you dont need to deal with asyncio in your code!</p></li>
 <li><p>No use of the twisted module, so you can use this lib in a daemonized application (compatible with
@@ -401,6 +449,7 @@ my company <a class="reference external" href="https://www.lucit.co/desktop-and-
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -514,6 +563,7 @@ my company <a class="reference external" href="https://www.lucit.co/desktop-and-
     <a href="index.html">unicorn-binance-websocket-api 1.21.0 documentation</a> &#187;
     
 
+        <li class="nav-item nav-item-this"><a href="">Create a multiplex websocket connection to Binance with just 3 lines of code:</a></li>
     <li class="right">
         <a href="search.html" title="Search">search</a>
          |
@@ -534,7 +584,7 @@ my company <a class="reference external" href="https://www.lucit.co/desktop-and-
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.0.3
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.2.1
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
