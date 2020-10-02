@@ -141,7 +141,7 @@ which stores the receives in the RAM till you are able to process the data in th
 or 
 [users](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py)!
 
-- Get the received data unchanged as received, as Python dict or converted with 
+- Get the received data unchanged as received, as Python dictionary or converted with 
 [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy) into well-formed Python dictionaries. Use the `output`
 parameter of 
 [`create_stream()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) 
