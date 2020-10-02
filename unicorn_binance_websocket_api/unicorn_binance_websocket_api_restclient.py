@@ -44,44 +44,50 @@ import time
 
 
 class BinanceWebSocketApiRestclient(object):
-    def __init__(self, ubwa):
-        self.ubwa = ubwa
+    def __init__(self, manager):
+        """
+        Create a restclient instance!
+
+        :param manager: provide `self` of `BinanceWebsocketApiManager()`
+        :type manager: object
+        """
+        self.manager = manager
         self.api_key = False
         self.api_secret = False
         self.symbol = False
         self.listen_key = False
         self.threading_lock = threading.Lock()
-        if self.ubwa.exchange == "binance.com":
+        if self.manager.exchange == "binance.com":
             self.restful_base_uri = "https://api.binance.com/"
             self.path_userdata = "api/v3/userDataStream"
-        elif self.ubwa.exchange == "binance.com-testnet":
+        elif self.manager.exchange == "binance.com-testnet":
             self.restful_base_uri = "https://testnet.binance.vision/"
             self.path_userdata = "api/v3/userDataStream"
-        elif self.ubwa.exchange == "binance.com-margin":
+        elif self.manager.exchange == "binance.com-margin":
             self.restful_base_uri = "https://api.binance.com/"
             self.path_userdata = "sapi/v1/userDataStream"
-        elif self.ubwa.exchange == "binance.com-margin-testnet":
+        elif self.manager.exchange == "binance.com-margin-testnet":
             self.restful_base_uri = "https://testnet.binance.vision/"
             self.path_userdata = "sapi/v1/userDataStream"
-        elif self.ubwa.exchange == "binance.com-isolated_margin":
+        elif self.manager.exchange == "binance.com-isolated_margin":
             self.restful_base_uri = "https://api.binance.com/"
             self.path_userdata = "sapi/v1/userDataStream/isolated"
-        elif self.ubwa.exchange == "binance.com-isolated_margin-testnet":
+        elif self.manager.exchange == "binance.com-isolated_margin-testnet":
             self.restful_base_uri = "https://testnet.binance.vision/"
             self.path_userdata = "sapi/v1/userDataStream/isolated"
-        elif self.ubwa.exchange == "binance.com-futures":
+        elif self.manager.exchange == "binance.com-futures":
             self.restful_base_uri = "https://fapi.binance.com/"
             self.path_userdata = "fapi/v1/listenKey"
-        elif self.ubwa.exchange == "binance.com-futures-testnet":
+        elif self.manager.exchange == "binance.com-futures-testnet":
             self.restful_base_uri = "https://testnet.binancefuture.com/"
             self.path_userdata = "fapi/v1/listenKey"
-        elif self.ubwa.exchange == "binance.je":
+        elif self.manager.exchange == "binance.je":
             self.restful_base_uri = "https://api.binance.je/"
             self.path_userdata = "api/v1/userDataStream"
-        elif self.ubwa.exchange == "binance.us":
+        elif self.manager.exchange == "binance.us":
             self.restful_base_uri = "https://api.binance.us/"
             self.path_userdata = "api/v1/userDataStream"
-        elif self.ubwa.exchange == "jex.com":
+        elif self.manager.exchange == "jex.com":
             self.restful_base_uri = "https://www.jex.com/"
             self.path_userdata = "api/v1/userDataStream"
 
@@ -97,11 +103,11 @@ class BinanceWebSocketApiRestclient(object):
         :rtype: str or False
         """
         if action == "keepalive":
-            if self.ubwa.show_secrets_in_logs is True:
+            if self.manager.show_secrets_in_logs is True:
                 logging.info(f"BinanceWebSocketApiRestclient->keepalive_listen_key({str(listen_key)})")
             else:
                 logging.info(f"BinanceWebSocketApiRestclient->keepalive_listen_key("
-                             f"{str(self.ubwa.replaced_secrets_text)})")
+                             f"{str(self.manager.replaced_secrets_text)})")
             method = "put"
             try:
                 return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
@@ -110,11 +116,11 @@ class BinanceWebSocketApiRestclient(object):
             except TypeError:
                 return False
         elif action == "delete":
-            if self.ubwa.show_secrets_in_logs is True:
+            if self.manager.show_secrets_in_logs is True:
                 logging.info(f"BinanceWebSocketApiRestclient->delete_listen_key({str(listen_key)})")
             else:
                 logging.info(f"BinanceWebSocketApiRestclient->delete_listen_key("
-                             f"{str(self.ubwa.replaced_secrets_text)})")
+                             f"{str(self.manager.replaced_secrets_text)})")
             method = "delete"
             try:
                 return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
@@ -147,13 +153,13 @@ class BinanceWebSocketApiRestclient(object):
         self.symbol = symbol
         try:
             if self.api_key is False:
-                self.api_key = self.ubwa.stream_list[stream_id]['api_key']
+                self.api_key = self.manager.stream_list[stream_id]['api_key']
             if self.api_secret is False:
-                self.api_secret = self.ubwa.stream_list[stream_id]['api_secret']
+                self.api_secret = self.manager.stream_list[stream_id]['api_secret']
             if self.symbol is False:
-                self.symbol = self.ubwa.stream_list[stream_id]['symbols']
+                self.symbol = self.manager.stream_list[stream_id]['symbols']
             if self.listen_key is False:
-                self.listen_key = self.ubwa.stream_list[stream_id]['listen_key']
+                self.listen_key = self.manager.stream_list[stream_id]['listen_key']
         except KeyError as error_msg:
             logging.error(f"BinanceWebSocketApiRestclient->init_vars() failed with TypeError: {str(error_msg)}")
             return False
@@ -175,7 +181,7 @@ class BinanceWebSocketApiRestclient(object):
         :rtype: str or False
         """
         requests_headers = {'Accept': 'application/json',
-                            'User-Agent': f'unicorn-binance-websocket-api_{self.ubwa.get_version()}',
+                            'User-Agent': f'unicorn-binance-websocket-api_{self.manager.get_version()}',
                             'X-MBX-APIKEY': str(self.api_key)}
         if query is not False:
             uri = self.restful_base_uri + path + "?" + query
@@ -212,9 +218,9 @@ class BinanceWebSocketApiRestclient(object):
         except json.decoder.JSONDecodeError as error_msg:
             logging.error(f"BinanceWebSocketApiRestclient->_request() - error_msg: {str(error_msg)}")
             return False
-        self.ubwa.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
-        self.ubwa.binance_api_status['timestamp'] = time.time()
-        self.ubwa.binance_api_status['status_code'] = request_handler.status_code
+        self.manager.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
+        self.manager.binance_api_status['timestamp'] = time.time()
+        self.manager.binance_api_status['status_code'] = request_handler.status_code
         request_handler.close()
         return respond
 
@@ -240,8 +246,8 @@ class BinanceWebSocketApiRestclient(object):
         with self.threading_lock:
             self._init_vars(stream_id, api_key=api_key, api_secret=api_secret, symbol=symbol)
             method = "post"
-            if self.ubwa.exchange == "binance.com-isolated_margin" or \
-                    self.ubwa.exchange == "binance.com-isolated_margin-testnet":
+            if self.manager.exchange == "binance.com-isolated_margin" or \
+                    self.manager.exchange == "binance.com-isolated_margin-testnet":
                 if self.symbol is False:
                     logging.critical("BinanceWebSocketApiRestclient->get_listen_key() Info: Parameter "
                                      "`symbol` is missing!")
