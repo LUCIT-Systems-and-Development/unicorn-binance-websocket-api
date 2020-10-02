@@ -183,7 +183,7 @@ and specific streams with
 - Nice to use with [iPython](https://ipython.org/): 
 "IPython (Interactive Python) is a command shell for interactive computing that offers introspection, 
 rich media, shell syntax, tab completion, and history." 
-([example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py))
+([example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py)) 
 ![iPython](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/ipython.png)
 
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
