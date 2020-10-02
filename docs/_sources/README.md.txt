@@ -13,7 +13,7 @@
 [![Donations/week](http://img.shields.io/liberapay/receives/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
 [![Patrons](http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
 
-[Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#how-to) |
+[Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#howto) |
 [Documentation](#documentation) | [Change Log](#change-log) | [Wiki](#wiki) | [Social](#social) | 
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
 [Contributing](#contributing) | [Donate](#donate)
@@ -98,56 +98,55 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect!
 - Supported exchanges: 
-    * [Binance](https://www.binance.com) 
-     `BinanceWebSocketApiManager(exchange="binance.com")`
-    * [Binance Testnet](https://testnet.binance.vision/)
-     `BinanceWebSocketApiManager(exchange="binance.com-testnet")`
-    * [Binance Margin](https://www.binance.com)
-     `BinanceWebSocketApiManager(exchange="binance.com-margin")`
-    * [Binance Margin Testnet](https://testnet.binance.vision/)
-     `BinanceWebSocketApiManager(exchange="binance.com-margin-testnet")`
-    * [Binance Isolated Margin](https://www.binance.com)
-     `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")`
-    * [Binance Isolated Margin Testnet](https://testnet.binance.vision/)
-     `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")`
-    * [Binance Futures](https://www.binance.com)
-     `BinanceWebSocketApiManager(exchange="binance.com-futures")`
-    * [Binance Futures Testnet](https://testnet.binancefuture.com)
-     `BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")`
-    * [Binance Jersey](https://www.binance.je)
-     `BinanceWebSocketApiManager(exchange="binance.je")`
-    * [Binance US](https://www.binance.us)
-     `BinanceWebSocketApiManager(exchange="binance.us")`
-    * [Binance JEX](https://www.jex.com)
-     `BinanceWebSocketApiManager(exchange="jex.com")`
-    * [Binance DEX](https://www.binance.org)
-     `BinanceWebSocketApiManager(exchange="binance.org")`
-    * [Binance DEX Testnet](https://testnet.binance.org)
-     `BinanceWebSocketApiManager(exchange="binance.org-testnet")`
-- Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, but 
+
+| Exchange | Exchange string | 
+| -------- | --------------- | 
+| [Binance](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com")` |
+| [Binance Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-testnet")` |
+| [Binance Margin](https://www.binance.com) |  `BinanceWebSocketApiManager(exchange="binance.com-margin")` |
+| [Binance Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-margin-testnet")` |
+| [Binance Isolated Margin](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")` |
+| [Binance Isolated Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")` |
+| [Binance Futures](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures")` |
+| [Binance Futures Testnet](https://testnet.binancefuture.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")` |
+| [Binance Jersey](https://www.binance.je) | `BinanceWebSocketApiManager(exchange="binance.je")` |
+| [Binance US](https://www.binance.us) | `BinanceWebSocketApiManager(exchange="binance.us")` |
+| [Binance JEX](https://www.jex.com) | `BinanceWebSocketApiManager(exchange="jex.com")` |
+| [Binance DEX](https://www.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org")` |
+| [Binance DEX Testnet](https://testnet.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org-testnet")` |
+
+- Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so 
 you dont need to deal with asyncio in your code!
+
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
 [python-daemon](https://pypi.org/project/python-daemon/)).
+
 - Supports 
 [subscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream)
 on all exchanges! (Maximum [1024 subscriptions](https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23) 
 per stream!)
+
 - [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) respects Binance's API guidelines and protects you from avoidable reconnects and bans.
+
 - Support for multiple private `!userData` streams with different `api_key` and `api_secret`. ([example_multiple_userdata_streams.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py))
+
 - [Pick up the received data from the `stream_buffer`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer) - 
 if you can not store your data in cause of a temporary technical issue, you can 
 [kick back the data to the `stream_buffer`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer) 
 which stores the receives in the RAM till you are able to process the data in the normal way again. 
 [Learn more!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py)
+
 - Use separate `stream_buffers` for 
 [specific streams](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py) 
 or 
 [users](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py)!
-- Get the received data unchanged as received, as Python dict or converted with 
+
+- Get the received data unchanged as received, as Python dictionary or converted with 
 [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy) into well-formed Python dictionaries. Use the `output`
 parameter of 
 [`create_stream()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) 
 to control the output format.
+
 - Helpful management features like 
 [`get_binance_api_status()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_binance_api_status), 
 [`get_current_receiving_speed()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_current_receiving_speed), 
@@ -175,19 +174,23 @@ to control the output format.
 [`wait_till_stream_has_started()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.wait_till_stream_has_started) 
 and many more! Explore them 
 [here](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html).
+
 - Monitor the status of the created `BinanceWebSocketApiManager()` instance within your code with 
 [`get_monitoring_status_plain()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=plain#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_monitoring_status_plain)
 and specific streams with 
 [`get_stream_info()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_info).
+
 - Nice to use with [iPython](https://ipython.org/): 
 "IPython (Interactive Python) is a command shell for interactive computing that offers introspection, 
 rich media, shell syntax, tab completion, and history." 
 ([example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py))
 ![iPython](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/ipython.png)
+
 - [Monitoring API service](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service) 
 and a [check_command](https://exchange.icinga.com/LUCIT/check_lucit_collector) 
 for [ICINGA](https://exchange.icinga.com/LUCIT/check_lucit_collector)/Nagios 
 [![icinga2-demo](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/icinga.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service)
+
 - Excessively tested on Linux, Mac and Windows
 
 If you like the project, please [![star](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/star.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/stargazers) it on 

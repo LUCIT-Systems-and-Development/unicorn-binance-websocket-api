@@ -77,7 +77,7 @@
 <a class="reference external" href="https://t.me/unicorndevs"><img alt="Telegram" src="https://img.shields.io/badge/chat-telegram-yellow.svg" /></a>
 <a class="reference external" href="https://liberapay.com/oliver-zehentleitner/donate"><img alt="Donations/week" src="http://img.shields.io/liberapay/receives/oliver-zehentleitner.svg?logo=liberapay" /></a>
 <a class="reference external" href="https://liberapay.com/oliver-zehentleitner/donate"><img alt="Patrons" src="http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay" /></a></p>
-<p><a class="reference external" href="#description">Description</a> | <a class="reference external" href="#live-demo">Live Demo</a> | <a class="reference external" href="#installation-and-upgrade">Installation</a> | <a class="reference external" href="#how-to">How To</a> |
+<p><a class="reference external" href="#description">Description</a> | <a class="reference external" href="#live-demo">Live Demo</a> | <a class="reference external" href="#installation-and-upgrade">Installation</a> | <a class="reference external" href="#howto">How To</a> |
 <a class="reference external" href="#documentation">Documentation</a> | <a class="reference external" href="#change-log">Change Log</a> | <a class="reference external" href="#wiki">Wiki</a> | <a class="reference external" href="#social">Social</a> |
 <a class="reference external" href="#receive-notifications">Notifications</a> | <a class="reference external" href="#how-to-report-bugs-or-suggest-improvements">Bugs</a> |
 <a class="reference external" href="#contributing">Contributing</a> | <a class="reference external" href="#donate">Donate</a></p>
@@ -164,37 +164,25 @@ on, you have to use the Binance Rest API (<a class="reference external" href="ht
 <h2>What are the benefits of the UNICORN Binance WebSocket API?<a class="headerlink" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Fully managed websockets and 100% auto-reconnect!</p></li>
-<li><p>Supported exchanges:</p>
-<ul>
-<li><p><a class="reference external" href="https://www.binance.com">Binance</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://testnet.binance.vision/">Binance Testnet</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-testnet&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://www.binance.com">Binance Margin</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-margin&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://testnet.binance.vision/">Binance Margin Testnet</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-margin-testnet&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://www.binance.com">Binance Isolated Margin</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-isolated_margin&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://testnet.binance.vision/">Binance Isolated Margin Testnet</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-isolated_margin-testnet&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://www.binance.com">Binance Futures</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-futures&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://testnet.binancefuture.com">Binance Futures Testnet</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-futures-testnet&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://www.binance.je">Binance Jersey</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.je&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://www.binance.us">Binance US</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.us&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://www.jex.com">Binance JEX</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;jex.com&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://www.binance.org">Binance DEX</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.org&quot;)</span></code></p></li>
-<li><p><a class="reference external" href="https://testnet.binance.org">Binance DEX Testnet</a>
-<code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.org-testnet&quot;)</span></code></p></li>
+<li><p>Supported exchanges:</p></li>
 </ul>
-</li>
-<li><p>Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, but
+<p>| Exchange | Exchange string |
+| ——– | ————— |
+| <a class="reference external" href="https://www.binance.com">Binance</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com&quot;)</span></code> |
+| <a class="reference external" href="https://testnet.binance.vision/">Binance Testnet</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-testnet&quot;)</span></code> |
+| <a class="reference external" href="https://www.binance.com">Binance Margin</a> |  <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-margin&quot;)</span></code> |
+| <a class="reference external" href="https://testnet.binance.vision/">Binance Margin Testnet</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-margin-testnet&quot;)</span></code> |
+| <a class="reference external" href="https://www.binance.com">Binance Isolated Margin</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-isolated_margin&quot;)</span></code> |
+| <a class="reference external" href="https://testnet.binance.vision/">Binance Isolated Margin Testnet</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-isolated_margin-testnet&quot;)</span></code> |
+| <a class="reference external" href="https://www.binance.com">Binance Futures</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-futures&quot;)</span></code> |
+| <a class="reference external" href="https://testnet.binancefuture.com">Binance Futures Testnet</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.com-futures-testnet&quot;)</span></code> |
+| <a class="reference external" href="https://www.binance.je">Binance Jersey</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.je&quot;)</span></code> |
+| <a class="reference external" href="https://www.binance.us">Binance US</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.us&quot;)</span></code> |
+| <a class="reference external" href="https://www.jex.com">Binance JEX</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;jex.com&quot;)</span></code> |
+| <a class="reference external" href="https://www.binance.org">Binance DEX</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.org&quot;)</span></code> |
+| <a class="reference external" href="https://testnet.binance.org">Binance DEX Testnet</a> | <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager(exchange=&quot;binance.org-testnet&quot;)</span></code> |</p>
+<ul class="simple">
+<li><p>Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so
 you dont need to deal with asyncio in your code!</p></li>
 <li><p>No use of the twisted module, so you can use this lib in a daemonized application (compatible with
 <a class="reference external" href="https://pypi.org/project/python-daemon/">python-daemon</a>).</p></li>
@@ -213,7 +201,7 @@ which stores the receives in the RAM till you are able to process the data in th
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py">specific streams</a>
 or
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py">users</a>!</p></li>
-<li><p>Get the received data unchanged as received, as Python dict or converted with
+<li><p>Get the received data unchanged as received, as Python dictionary or converted with
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> into well-formed Python dictionaries. Use the <code class="docutils literal notranslate"><span class="pre">output</span></code>
 parameter of
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream"><code class="docutils literal notranslate"><span class="pre">create_stream()</span></code></a>

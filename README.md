@@ -115,7 +115,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 | [Binance DEX](https://www.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org")` |
 | [Binance DEX Testnet](https://testnet.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org-testnet")` |
 
-- Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, but 
+- Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so 
 you dont need to deal with asyncio in your code!
 
 - No use of the twisted module, so you can use this lib in a daemonized application (compatible with 
