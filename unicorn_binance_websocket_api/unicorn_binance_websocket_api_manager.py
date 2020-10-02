@@ -472,15 +472,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                               "=" + str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_"
                               "to_last_timestamp=" + str(total_most_stream_receives_next_to_last_timestamp) + " error_"
                               "msg=" + str(error_msg))
-            #try:
-            #    if int(self.most_receives_per_second) < int(total_most_stream_receives_next_to_last_timestamp):
-            #        self.most_receives_per_second = int(total_most_stream_receives_next_to_last_timestamp)
-            #except ValueError as error_msg:
-            #    logging.error("BinanceWebSocketManager->_frequent_checks() self.most_receives_per_second=" + str(
-            #                  self.most_receives_per_second) + " total_most_stream_receives_last_timestamp=" +
-            #                  str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_to_"
-            #                  "last_timestamp=" +
-            #                  str(total_most_stream_receives_next_to_last_timestamp) + " error_msg=" + str(error_msg))
+            # check receiving_speed_peak
             last_second_receiving_speed = self.get_current_receiving_speed_global()
             if last_second_receiving_speed > self.receiving_speed_peak:
                 self.receiving_speed_peak = last_second_receiving_speed
