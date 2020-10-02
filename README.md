@@ -99,21 +99,21 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 - Fully managed websockets and 100% auto-reconnect!
 - Supported exchanges: 
 
-| Exchange | Exchange string | Implementation | Docs |
-| -------- | --------------- | ------ | ---- |
-| [Binance](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com")` | [x] |  |
-| [Binance Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-testnet")` | implemented |  |
-| [Binance Margin](https://www.binance.com) |  `BinanceWebSocketApiManager(exchange="binance.com-margin")` | implemented |  |
-| [Binance Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-margin-testnet")` | implemented |  |
-| [Binance Isolated Margin](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")` | implemented |  |
-| [Binance Isolated Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")` | implemented |  |
-| [Binance Futures](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures")` | implemented |  |
-| [Binance Futures Testnet](https://testnet.binancefuture.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")` | implemented |  |
-| [Binance Jersey](https://www.binance.je) | `BinanceWebSocketApiManager(exchange="binance.je")` | implemented |  |
-| [Binance US](https://www.binance.us) | `BinanceWebSocketApiManager(exchange="binance.us")` | implemented |  |
-| [Binance JEX](https://www.jex.com) | `BinanceWebSocketApiManager(exchange="jex.com")` | [x] |  |
-| [Binance DEX](https://www.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org")` | [x] |  |
-| [Binance DEX Testnet](https://testnet.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org-testnet")` | [x] |  |
+| Exchange | Exchange string | 
+| -------- | --------------- | 
+| [Binance](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com")` |
+| [Binance Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-testnet")` |
+| [Binance Margin](https://www.binance.com) |  `BinanceWebSocketApiManager(exchange="binance.com-margin")` |
+| [Binance Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-margin-testnet")` |
+| [Binance Isolated Margin](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")` |
+| [Binance Isolated Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")` |
+| [Binance Futures](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures")` |
+| [Binance Futures Testnet](https://testnet.binancefuture.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")` |
+| [Binance Jersey](https://www.binance.je) | `BinanceWebSocketApiManager(exchange="binance.je")` |
+| [Binance US](https://www.binance.us) | `BinanceWebSocketApiManager(exchange="binance.us")` |
+| [Binance JEX](https://www.jex.com) | `BinanceWebSocketApiManager(exchange="jex.com")` |
+| [Binance DEX](https://www.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org")` |
+| [Binance DEX Testnet](https://testnet.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org-testnet")` |
 
 
     * [Binance](https://www.binance.com) 
