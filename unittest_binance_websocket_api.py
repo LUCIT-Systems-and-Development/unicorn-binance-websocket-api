@@ -813,6 +813,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.set_private_dex_config("blasfjsalkfjsf222lks")
         binance_websocket_api_manager.get_version()
         binance_websocket_api_manager.help()
+        binance_websocket_api_manager.get_current_receiving_speed_global()
         binance_websocket_api_manager.wait_till_stream_has_started(stream_id2)
         binance_websocket_api_manager.remove_ansi_escape_codes("test text")
         time.sleep(10)
