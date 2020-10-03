@@ -9,8 +9,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - `get_current_receiving_speed_global()`
 ### Changed
-- renamed variable `ubwa` to `manager` in restclient
+- renamed variable `ubwa` to `manager` in restclient class
+- renamed variable `unicorn_binance_websocket_api_manager` to `manager` in socket class
 - renamed variable `total_receiving_speed` to `average_receiving_speed`
+- user agent string for rest and websocket client
  
 ## 1.21.0
 ### Added 

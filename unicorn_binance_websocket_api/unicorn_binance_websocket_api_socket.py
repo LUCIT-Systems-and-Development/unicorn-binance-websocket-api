@@ -45,46 +45,48 @@ import websockets
 
 
 class BinanceWebSocketApiSocket(object):
-    def __init__(self, handler_binance_websocket_api_manager, stream_id, channels, markets):
-        self.handler_binance_websocket_api_manager = handler_binance_websocket_api_manager
+    def __init__(self, manager, stream_id, channels, markets):
+        self.manager = manager
         self.stream_id = stream_id
         self.channels = channels
         self.markets = markets
         self.socket_id = uuid.uuid4()
-        self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] = self.socket_id
-        self.symbols = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['symbols']
-        self.output = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['output']
+        self.manager.stream_list[self.stream_id]['recent_socket_id'] = self.socket_id
+        self.symbols = self.manager.stream_list[self.stream_id]['symbols']
+        self.output = self.manager.stream_list[self.stream_id]['output']
         self.unicorn_fy = UnicornFy()
-        self.exchange = handler_binance_websocket_api_manager.get_exchange()
+        self.exchange = manager.get_exchange()
 
     async def start_socket(self):
         logging.info("BinanceWebSocketApiSocket->start_socket(" +
                      str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ")")
-        async with BinanceWebSocketApiConnection(self.handler_binance_websocket_api_manager, self.stream_id,
+        async with BinanceWebSocketApiConnection(self.manager, self.stream_id,
                                                  self.channels, self.markets, symbols=self.symbols) as websocket:
             while True:
-                if self.handler_binance_websocket_api_manager.is_stop_request(self.stream_id):
-                    self.handler_binance_websocket_api_manager.stream_is_stopping(self.stream_id)
+                if self.manager.is_stop_request(self.stream_id):
+                    self.manager.stream_is_stopping(self.stream_id)
                     await websocket.close()
                     sys.exit(0)
-                elif self.handler_binance_websocket_api_manager.is_stop_as_crash_request(self.stream_id):
+                elif self.manager.is_stop_as_crash_request(self.stream_id):
                     await websocket.close()
                     sys.exit(1)
                 try:
-                    if self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
+                    if self.manager.stream_list[self.stream_id]['recent_socket_id'] != \
+                            self.socket_id:
                         sys.exit(0)
                 except KeyError:
                     sys.exit(1)
-                while self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload']:
-                    if self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
+                while self.manager.stream_list[self.stream_id]['payload']:
+                    if self.manager.stream_list[self.stream_id]['recent_socket_id'] != \
+                            self.socket_id:
                         sys.exit(0)
-                    payload = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['payload'].pop(0)
+                    payload = self.manager.stream_list[self.stream_id]['payload'].pop(0)
                     await websocket.send(json.dumps(payload, ensure_ascii=False))
                     # To avoid a ban we respect the limits of binance:
                     # https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
                     # Limit: max 5 messages per second inclusive pings/pong
-                    max_subscriptions_per_second = self.handler_binance_websocket_api_manager.max_send_messages_per_second - \
-                                                   self.handler_binance_websocket_api_manager.max_send_messages_per_second_reserve
+                    max_subscriptions_per_second = self.manager.max_send_messages_per_second - \
+                                                   self.manager.max_send_messages_per_second_reserve
                     idle_time = 1/max_subscriptions_per_second
                     time.sleep(idle_time)
                     logging.info("BinanceWebSocketApiSocket->start_socket(" +
@@ -127,42 +129,42 @@ class BinanceWebSocketApiSocket(object):
                         else:
                             received_stream_data = received_stream_data_json
                         try:
-                            stream_buffer_name = self.handler_binance_websocket_api_manager.stream_list[self.stream_id]['stream_buffer_name']
+                            stream_buffer_name = self.manager.stream_list[self.stream_id]['stream_buffer_name']
                         except KeyError:
                             stream_buffer_name = False
-                        self.handler_binance_websocket_api_manager.process_stream_data(received_stream_data,
+                        self.manager.process_stream_data(received_stream_data,
                                                                                        stream_buffer_name=stream_buffer_name)
                         if "error" in received_stream_data_json:
                             logging.error("BinanceWebSocketApiSocket->start_socket(" +
                                           str(self.stream_id) + ") "
                                           "Received error message: " + str(received_stream_data_json))
-                            self.handler_binance_websocket_api_manager.add_to_ringbuffer_error(received_stream_data_json)
+                            self.manager.add_to_ringbuffer_error(received_stream_data_json)
                         elif "result" in received_stream_data_json:
                             logging.info("BinanceWebSocketApiSocket->start_socket(" +
                                          str(self.stream_id) + ") "
                                          "Received result message: " + str(received_stream_data_json))
-                            self.handler_binance_websocket_api_manager.add_to_ringbuffer_result(received_stream_data_json)
+                            self.manager.add_to_ringbuffer_result(received_stream_data_json)
                 except websockets.exceptions.ConnectionClosed as error_msg:
                     logging.critical("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") Exception ConnectionClosed "
                                      "Info: " + str(error_msg))
                     if "WebSocket connection is closed: code = 1008" in str(error_msg):
                         websocket.close()
-                        self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
-                        self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+                        self.manager.stream_is_crashing(self.stream_id, error_msg)
+                        self.manager.set_restart_request(self.stream_id)
                         sys.exit(1)
                     elif "WebSocket connection is closed: code = 1006" in str(error_msg):
-                        self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, error_msg)
-                        self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+                        self.manager.stream_is_crashing(self.stream_id, error_msg)
+                        self.manager.set_restart_request(self.stream_id)
                         sys.exit(1)
                     else:
-                        self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
-                        self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+                        self.manager.stream_is_crashing(self.stream_id, str(error_msg))
+                        self.manager.set_restart_request(self.stream_id)
                         sys.exit(1)
                 except AttributeError as error_msg:
                     logging.error("BinanceWebSocketApiSocket->start_socket(" + str(self.stream_id) + ", " +
                                   str(self.channels) + ", " + str(self.markets) + ") Exception AttributeError "
                                   "Info: " + str(error_msg))
-                    self.handler_binance_websocket_api_manager.stream_is_crashing(self.stream_id, str(error_msg))
-                    self.handler_binance_websocket_api_manager.set_restart_request(self.stream_id)
+                    self.manager.stream_is_crashing(self.stream_id, str(error_msg))
+                    self.manager.set_restart_request(self.stream_id)
                     sys.exit(1)
