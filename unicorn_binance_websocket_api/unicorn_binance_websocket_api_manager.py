@@ -467,15 +467,18 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if int(self.most_receives_per_second) < int(total_most_stream_receives_last_timestamp):
                     self.most_receives_per_second = int(total_most_stream_receives_last_timestamp)
             except ValueError as error_msg:
-                logging.error("BinanceWebSocketManager->_frequent_checks() self.most_receives_per_second"
+                logging.error("BinanceWebSocketManager()->_frequent_checks() self.most_receives_per_second"
                               "=" + str(self.most_receives_per_second) + " total_most_stream_receives_last_timestamp"
                               "=" + str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_"
                               "to_last_timestamp=" + str(total_most_stream_receives_next_to_last_timestamp) + " error_"
                               "msg=" + str(error_msg))
             # check receiving_speed_peak
             last_second_receiving_speed = self.get_current_receiving_speed_global()
-            if last_second_receiving_speed > self.receiving_speed_peak:
-                self.receiving_speed_peak = last_second_receiving_speed
+            try:
+                if last_second_receiving_speed > self.receiving_speed_peak:
+                    self.receiving_speed_peak = last_second_receiving_speed
+            except TypeError as error_msg:
+                pass
             # send keepalive for `!userData` streams every 30 minutes
             if active_stream_list:
                 for stream_id in active_stream_list:
@@ -1266,11 +1269,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         current_receiving_speed = 0
         try:
             temp_stream_list = copy.deepcopy(self.stream_list)
-        except RuntimeError:
-            return ""
+        except RuntimeError as error_msg:
+            logging.error(f"BinanceWebSocketApiManager->get_current_receiving_speed_global() - RuntimeError: "
+                          f"{str(error_msg)}")
+            return 0
         for stream_id in temp_stream_list:
-            stream_row_color_prefix = ""
-            stream_row_color_suffix = ""
             current_receiving_speed += self.get_current_receiving_speed(stream_id)
         return current_receiving_speed
 
