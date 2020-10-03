@@ -71,14 +71,17 @@ class BinanceWebSocketApiSocket(object):
                     await websocket.close()
                     sys.exit(1)
                 try:
-                    if self.manager.stream_list[self.stream_id]['recent_socket_id'] != \
-                            self.socket_id:
+                    if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
+                        logging.error(f"BinanceWebSocketApiSocket->start_socket({str(self.stream_id)}, "
+                                      f"{str(self.channels)}, {str(self.markets)} Sending payload - exit because its "
+                                      f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
+                                      f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
                         sys.exit(0)
                 except KeyError:
                     sys.exit(1)
                 while self.manager.stream_list[self.stream_id]['payload']:
                     logging.info(f"BinanceWebSocketApiSocket->start_socket({str(self.stream_id)}, "
-                                 f"{str(self.channels)}, {str(self.markets)} Sending payload: {str(payload)}")
+                                 f"{str(self.channels)}, {str(self.markets)} Sending payload started ...")
                     if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
                         logging.error(f"BinanceWebSocketApiSocket->start_socket({str(self.stream_id)}, "
                                       f"{str(self.channels)}, {str(self.markets)} Sending payload - exit because its "
@@ -86,6 +89,8 @@ class BinanceWebSocketApiSocket(object):
                                       f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
                         sys.exit(0)
                     payload = self.manager.stream_list[self.stream_id]['payload'].pop(0)
+                    logging.info(f"BinanceWebSocketApiSocket->start_socket({str(self.stream_id)}, "
+                                 f"{str(self.channels)}, {str(self.markets)} Sending payload: {str(payload)}")
                     await websocket.send(json.dumps(payload, ensure_ascii=False))
                     # To avoid a ban we respect the limits of binance:
                     # https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
