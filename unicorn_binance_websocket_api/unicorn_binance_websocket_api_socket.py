@@ -58,8 +58,8 @@ class BinanceWebSocketApiSocket(object):
         self.exchange = manager.get_exchange()
 
     async def start_socket(self):
-        logging.info("BinanceWebSocketApiSocket->start_socket(" +
-                     str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ")")
+        logging.info(f"BinanceWebSocketApiSocket->start_socket({str(self.stream_id)}, {str(self.channels)}, "
+                     f"{str(self.markets)}) socket_id={str(self.socket_id)}")
         async with BinanceWebSocketApiConnection(self.manager, self.stream_id,
                                                  self.channels, self.markets, symbols=self.symbols) as websocket:
             while True:
@@ -77,8 +77,13 @@ class BinanceWebSocketApiSocket(object):
                 except KeyError:
                     sys.exit(1)
                 while self.manager.stream_list[self.stream_id]['payload']:
-                    if self.manager.stream_list[self.stream_id]['recent_socket_id'] != \
-                            self.socket_id:
+                    logging.info(f"BinanceWebSocketApiSocket->start_socket({str(self.stream_id)}, "
+                                 f"{str(self.channels)}, {str(self.markets)} Sending payload: {str(payload)}")
+                    if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
+                        logging.error(f"BinanceWebSocketApiSocket->start_socket({str(self.stream_id)}, "
+                                      f"{str(self.channels)}, {str(self.markets)} Sending payload - exit because its "
+                                      f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
+                                      f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
                         sys.exit(0)
                     payload = self.manager.stream_list[self.stream_id]['payload'].pop(0)
                     await websocket.send(json.dumps(payload, ensure_ascii=False))
@@ -89,9 +94,6 @@ class BinanceWebSocketApiSocket(object):
                                                    self.manager.max_send_messages_per_second_reserve
                     idle_time = 1/max_subscriptions_per_second
                     time.sleep(idle_time)
-                    logging.info("BinanceWebSocketApiSocket->start_socket(" +
-                                 str(self.stream_id) + ", " + str(self.channels) + ", " + str(self.markets) + ") "
-                                 + "Sending payload: " + str(payload))
                 try:
                     received_stream_data_json = await websocket.receive()
                     if received_stream_data_json is not None:

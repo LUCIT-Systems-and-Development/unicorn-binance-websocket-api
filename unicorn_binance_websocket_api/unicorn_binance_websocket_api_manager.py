@@ -2984,7 +2984,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stop_stream_as_crash(stream_id)
             error_msg = "The limit of " + str(self.max_subscriptions_per_stream) + " subscriptions per stream has " \
                         "been exceeded!"
-            logging.critical("BinanceWebSocketApiManager->subscribe_to_stream(" + str(stream_id) + ") Info: " + str(error_msg))
+            logging.critical(f"BinanceWebSocketApiManager->subscribe_to_stream({str(stream_id)}) "
+                             f"Info: {str(error_msg)}")
             self.stream_is_crashing(stream_id, error_msg)
             if self.throw_exception_if_unrepairable:
                 raise StreamRecoveryError("stream_id " + str(stream_id) + ": " + str(error_msg))
