@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - renamed variable `unicorn_binance_websocket_api_manager` to `manager` in socket class
 - renamed variable `total_receiving_speed` to `average_receiving_speed`
 - user agent string for rest and websocket client
+- removed the sending of the payload in __aenter__ in connection class, its only done in the socket class
  
 ## 1.21.0
 ### Added 
