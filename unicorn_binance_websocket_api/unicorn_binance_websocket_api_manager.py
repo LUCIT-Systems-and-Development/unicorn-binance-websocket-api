@@ -422,6 +422,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             total_most_stream_receives_last_timestamp = 0
             total_most_stream_receives_next_to_last_timestamp = 0
             active_stream_list = self.get_active_stream_list()
+            # check CPU stats
+            cpu = self.get_process_usage_cpu()
+            if cpu > 90:
+                logging.warning(f"BinanceWebSocketApiManager._frequent_checks() - High CPU usage: {str(cpu)}")
             # count most_receives_per_second total last second
             if active_stream_list:
                 for stream_id in active_stream_list:
@@ -503,10 +507,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.receiving_speed_peak['timestamp'] = time.time()
             except TypeError as error_msg:
                 pass
-            # check CPU stats
-            cpu = self.get_process_usage_cpu()
-            if cpu > 80:
-                logging.warning(f"BinanceWebSocketApiManager._frequent_checks() - High CPU usage: {str(cpu)}")
             # send keepalive for `!userData` streams every 30 minutes
             if active_stream_list:
                 for stream_id in active_stream_list:
