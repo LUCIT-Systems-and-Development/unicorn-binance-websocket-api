@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.22.0.dev (development stage/unreleased/unstable)
 ## Added
 - timestamp to `receiving_speed_peak` in manager
-- warning if the cpu usage is > 80%
+- log warning if the cpu usage is > 80%
 
 ## 1.22.0
 ### Added
