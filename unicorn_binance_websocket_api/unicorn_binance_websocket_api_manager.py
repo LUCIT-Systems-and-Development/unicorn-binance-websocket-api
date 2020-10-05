@@ -194,7 +194,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.frequent_checks_list = {}
         self.frequent_checks_list_lock = threading.Lock()
         self.receiving_speed_average = 0
-        self.receiving_speed_peak = 0
+        self.receiving_speed_peak = {'value': 0,
+                                     'timestamp': time.time()}
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
         self.last_entry_added_to_stream_buffer = 0
@@ -497,10 +498,15 @@ class BinanceWebSocketApiManager(threading.Thread):
             # check receiving_speed_peak
             last_second_receiving_speed = self.get_current_receiving_speed_global()
             try:
-                if last_second_receiving_speed > self.receiving_speed_peak:
-                    self.receiving_speed_peak = last_second_receiving_speed
+                if last_second_receiving_speed > self.receiving_speed_peak['value']:
+                    self.receiving_speed_peak['value'] = last_second_receiving_speed
+                    self.receiving_speed_peak['timestamp'] = time.time()
             except TypeError as error_msg:
                 pass
+            # check CPU stats
+            cpu = self.get_process_usage_cpu()
+            if cpu > 80:
+                logging.warning(f"BinanceWebSocketApiManager._frequent_checks() - High CPU usage: {str(cpu)}")
             # send keepalive for `!userData` streams every 30 minutes
             if active_stream_list:
                 for stream_id in active_stream_list:
@@ -1326,6 +1332,18 @@ class BinanceWebSocketApiManager(threading.Thread):
         for stream_id in temp_stream_list:
             current_receiving_speed += self.get_current_receiving_speed(stream_id)
         return current_receiving_speed
+
+    @staticmethod
+    def get_date_of_timestamp(timestamp):
+        """
+        Convert a timestamp into a readable date/time format for humans
+
+        :param timestamp: provide the timestamp you want to convert into a date
+        :type timestamp: timestamp
+        :return: str
+        """
+        date = str(datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d, %H:%M:%S UTC'))
+        return date
 
     def get_exchange(self):
         """
@@ -2465,6 +2483,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         received_bytes_per_x_row = ""
         streams_with_stop_request_row = ""
         stream_buffer_row = ""
+        highest_receiving_speed_row = f"{str(self.get_human_bytesize(self.receiving_speed_peak['value'], '/s'))} " \
+                                      f"(reached at " \
+                                      f"{self.get_date_of_timestamp(self.receiving_speed_peak['timestamp'])})"
+
         if len(add_string) > 0:
             add_string = " " + str(add_string) + "\r\n"
         try:
@@ -2543,14 +2565,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             received_bytes_per_second = self.get_total_received_bytes() / (time.time() - self.start_time)
             received_bytes_per_x_row += str((received_bytes_per_second / 1024).__round__(2)) + " kB/s (per day " + \
-                                        str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(2)) + " gB)"
+                                        str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(2))\
+                                        + " gB)"
             if self.get_stream_buffer_length() > 50:
                 stream_row_color_prefix = "\033[1m\033[34m"
                 stream_row_color_suffix = "\033[0m"
-                stream_buffer_row += stream_row_color_prefix + " stream_buffer_stored_items: " + str(self.get_stream_buffer_length()) + "\r\n"
+                stream_buffer_row += stream_row_color_prefix + " stream_buffer_stored_items: " + \
+                                     str(self.get_stream_buffer_length()) + "\r\n"
                 stream_buffer_row += " stream_buffer_byte_size: " + str(self.get_stream_buffer_byte_size()) + \
-                                     " (" + str(
-                    self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")" + stream_row_color_suffix + "\r\n"
+                                     " (" + str(self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")" + \
+                                     stream_row_color_suffix + "\r\n"
             if active_streams > 0:
                 active_streams_row = " \033[1m\033[32mactive_streams: " + str(active_streams) + "\033[0m\r\n"
             if restarting_streams > 0:
@@ -2561,10 +2585,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if self.binance_api_status['status_code'] == 200:
                     binance_api_status_code = str(self.binance_api_status['status_code'])
                 elif self.binance_api_status['status_code'] == 418:
-                    binance_api_status_code = "\033[1m\033[31m" + str(self.binance_api_status['status_code']) + "\033[0m"
+                    binance_api_status_code = "\033[1m\033[31m" + str(self.binance_api_status['status_code']) + \
+                                              "\033[0m"
                 else:
-                    binance_api_status_code = "\033[1m\033[33m" + str(self.binance_api_status['status_code']) + "\033[0m"
-                binance_api_status_row = " binance_api_status: used_weight=" + str(self.binance_api_status['weight']) + \
+                    binance_api_status_code = "\033[1m\033[33m" + str(self.binance_api_status['status_code']) + \
+                                              "\033[0m"
+                binance_api_status_row = " binance_api_status: used_weight=" + \
+                                         str(self.binance_api_status['weight']) + \
                                          ", status_code=" + str(binance_api_status_code) + " (last update " + \
                                          str(datetime.utcfromtimestamp(
                                              self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
@@ -2575,7 +2602,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         str(self.version) + "-python_" + platform.python_version() + " ", "=")) + "\r\n" +
                     " exchange: " + str(self.stream_list[stream_id]['exchange']) + "\r\n" +
                     " uptime: " + str(self.get_human_uptime(time.time() - self.start_time)) + " since " +
-                    str(datetime.utcfromtimestamp(self.start_time).strftime('%Y-%m-%d, %H:%M:%S UTC')) + "\r\n" +
+                    str(self.get_date_of_timestamp(self.start_time)) + "\r\n" +
                     " streams: " + str(streams) + "\r\n" +
                     str(active_streams_row) +
                     str(crashed_streams_row) +
@@ -2586,7 +2613,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     str(stream_buffer_row) +
                     " current_receiving_speed: " + str(self.get_human_bytesize(current_receiving_speed, "/s")) + "\r\n" +
                     " average_receiving_speed: " + str(received_bytes_per_x_row) + "\r\n" +
-                    " highest_receiving_speed: " + str(self.get_human_bytesize(self.receiving_speed_peak, "/s")) + "\r\n" +
+                    " highest_receiving_speed: " + str(highest_receiving_speed_row) + "\r\n" +
                     " total_receives: " + str(self.total_receives) + "\r\n"
                     " total_received_bytes: " + str(total_received_bytes) + "\r\n"
                     " total_transmitted_payloads: " + str(self.total_transmitted) + "\r\n" +
