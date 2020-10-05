@@ -34,13 +34,15 @@
 # IN THE SOFTWARE.
 
 from flask_restful import Resource
+import logging
 
 
 class BinanceWebSocketApiRestServer(Resource):
     """
     Provide a REST API server 
     
-    Description: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service
+    Description:
+    https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service
 
     :param handler_binance_websocket_api_manager: Provide the handler of the binance_websocket_api_manager
     :type handler_binance_websocket_api_manager: function
@@ -48,7 +50,7 @@ class BinanceWebSocketApiRestServer(Resource):
     :type warn_on_update: bool
     """
     def __init__(self, handler_binance_websocket_api_manager, warn_on_update=True):
-        self.handler_binance_websocket_api_manager = handler_binance_websocket_api_manager
+        self.manager = handler_binance_websocket_api_manager
         self.warn_on_update = warn_on_update
 
     def get(self, statusformat, checkcommandversion=False):
@@ -65,8 +67,10 @@ class BinanceWebSocketApiRestServer(Resource):
         :rtype: list (status string, http status code)
         """
         if statusformat == "icinga":
-            return self.handler_binance_websocket_api_manager.get_monitoring_status_icinga(check_command_version=checkcommandversion,
-                                                                                           warn_on_update=self.warn_on_update), \
-                   200
+            logging.error(f"BinanceWebSocketApiRestServer.get({statusformat}, {str(checkcommandversion)}) 200")
+            return self.manager.get_monitoring_status_icinga(check_command_version=checkcommandversion,
+                                                             warn_on_update=self.warn_on_update), 200
         else:
+            logging.error(f"BinanceWebSocketApiRestServer.get({statusformat}, {str(checkcommandversion)}) - service not"
+                          f"found!")
             return "service not found", 404
