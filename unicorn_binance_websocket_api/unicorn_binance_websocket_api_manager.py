@@ -2756,8 +2756,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param binance_api_secret: The Binance API secret
         :type binance_api_secret: str
         """
-        logging.info("BinanceWebSocketApiManager.set_private_config() - The method `set_private_api_config()` "
-                     "is deprecated! Please use `create_stream(markets, channels, api_key='aaa', api_secret='bbb')")
+        logging.warning("BinanceWebSocketApiManager.set_private_config() - The method `set_private_api_config()` "
+                        "is deprecated! Please use `create_stream(markets, channels, api_key='aaa', api_secret='bbb')")
         self.api_key = binance_api_key
         self.api_secret = binance_api_secret
 
