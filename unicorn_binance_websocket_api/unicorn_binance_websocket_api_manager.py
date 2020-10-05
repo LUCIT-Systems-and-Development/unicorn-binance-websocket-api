@@ -1040,13 +1040,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                     if response:
                         try:
                             uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
-                            uri_hidden_secret = self.websocket_base_uri + "ws/" + str(response['listenKey'])
+                            uri_hidden_secret = self.websocket_base_uri + "ws/" + self.replaced_secrets_text
                             if self.show_secrets_in_logs is True:
                                 logging.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) +
-                                             ", " + str(markets) + ", " + str(symbols) + ") - result2: " + uri)
+                                             ", " + str(markets) + ", " + str(symbols) + ") - result: " + uri)
                             else:
                                 logging.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) +
-                                             ", " + str(markets) + ", " + str(symbols) + ") - result1: " +
+                                             ", " + str(markets) + ", " + str(symbols) + ") - result: " +
                                              uri_hidden_secret)
                             self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                             return uri

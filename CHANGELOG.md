@@ -8,8 +8,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.22.0.dev (development stage/unreleased/unstable)
 ## Added
 - timestamp to `receiving_speed_peak` in manager
-- log warning if the cpu usage is > 80%
-
+- log warning if the cpu usage is > 95%
+## Fixed
+- `listen_key` was printed to logfiles
+ 
 ## 1.22.0
 ### Added
 - `get_current_receiving_speed_global()`
