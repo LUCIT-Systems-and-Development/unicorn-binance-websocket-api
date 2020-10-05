@@ -424,7 +424,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             active_stream_list = self.get_active_stream_list()
             # check CPU stats
             cpu = self.get_process_usage_cpu()
-            if cpu > 90:
+            if cpu > 95:
                 logging.warning(f"BinanceWebSocketApiManager._frequent_checks() - High CPU usage: {str(cpu)}")
             # count most_receives_per_second total last second
             if active_stream_list:
@@ -995,12 +995,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: str or False
         """
         if isinstance(channels, bool):
-            logging.error(f"BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " + str(markets) +
-                          ", " + ", " + str(symbols) + ") - Parameter `channels` must be str, tuple, list or a set!")
+            logging.error(f"BinanceWebSocketApiManager.create_websocket_uri({str(channels)}, {str(markets)}"
+                          f", {str(symbols)}) - error_msg: Parameter `channels` must be str, tuple, list "
+                          f"or a set!")
             return False
         elif isinstance(markets, bool):
-            logging.error(f"BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " + str(markets) +
-                          ", " + ", " + str(symbols) + ") - Parameter `markets` must be str, tuple, list or a set!")
+            logging.error(f"BinanceWebSocketApiManager.create_websocket_uri({str(channels)}, {str(markets)}"
+                          f", {str(symbols)}) - error_msg: Parameter `markets` must be str, tuple, list "
+                          f"or a set!")
             return False
         payload = []
         if type(channels) is str:
@@ -1041,28 +1043,31 @@ class BinanceWebSocketApiManager(threading.Thread):
                             uri_hidden_secret = self.websocket_base_uri + "ws/" + str(response['listenKey'])
                             if self.show_secrets_in_logs is True:
                                 logging.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) +
-                                             ", " + str(markets) + ", " + ", " + str(symbols) + ") - result: " + uri)
+                                             ", " + str(markets) + ", " + str(symbols) + ") - result: " + uri)
                             else:
                                 logging.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) +
-                                             ", " + str(markets) + ", " + ", " + str(symbols) + ") - result: " +
+                                             ", " + str(markets) + ", " + str(symbols) + ") - result: " +
                                              uri_hidden_secret)
                             self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                             return uri
                         except KeyError:
                             logging.critical("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", "
-                                             + str(markets) + ", " + ", " + str(symbols) + ") -  can not create URI!!")
+                                             + str(markets) + ", " + ", " + str(symbols) + ") - error_msg: can not "
+                                             "create URI!!")
                             return False
                         except TypeError:
                             logging.critical("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", "
-                                             + str(markets) + ", " + ", " + str(symbols) + ") - can not create URI!!")
+                                             + str(markets) + ", " + ", " + str(symbols) + ") - error_msg: can not "
+                                             "create URI!!")
                             return False
                     else:
                         logging.critical("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
-                                         str(markets) + ", " + ", " + str(symbols) + ") - can not create URI!!")
+                                         str(markets) + ", " + ", " + str(symbols) + ") - error_msg: can not create "
+                                         "URI!!")
                         return False
                 else:
                     logging.critical("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
-                                     str(markets) + ", " + ", " + str(symbols) + ") - can not create URI!!")
+                                     str(markets) + ", " + ", " + str(symbols) + ") - error_msg: can not create URI!!")
                     return False
             elif "!bookTicker" in channels or "!bookTicker" in markets:
                 if stream_id:

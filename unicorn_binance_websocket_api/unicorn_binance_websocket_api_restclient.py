@@ -33,8 +33,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-import hashlib
-import hmac
 import json
 import logging
 import requests
@@ -161,7 +159,7 @@ class BinanceWebSocketApiRestclient(object):
             if self.listen_key is False:
                 self.listen_key = self.manager.stream_list[stream_id]['listen_key']
         except KeyError as error_msg:
-            logging.error(f"BinanceWebSocketApiRestclient.init_vars() failed with TypeError: {str(error_msg)}")
+            logging.error(f"BinanceWebSocketApiRestclient.init_vars() - TypeError - error_msg: {str(error_msg)}")
             return False
         return True
 
@@ -206,13 +204,14 @@ class BinanceWebSocketApiRestclient(object):
             logging.critical(f"BinanceWebSocketApiRestclient._request() - error_msg: {str(error_msg)}")
             return False
         if request_handler.status_code == "418":
-            logging.critical("BinanceWebSocketApiRestclient._request() received status_code 418 from binance! You got"
+            logging.critical("BinanceWebSocketApiRestclient._request() - error_msg: received status_code 418 from binance! You got"
                              "banned from the binance api! Read this: https://github.com/binance-exchange/binance-"
                              "official-api-sphinx/blob/master/rest-api.md#limits")
         elif request_handler.status_code == "429":
-            logging.critical("BinanceWebSocketApiRestclient._request() received status_code 429 from binance! Back off"
-                             "or you are going to get banned! Read this: https://github.com/binance-exchange/binance-"
-                             "official-api-sphinx/blob/master/rest-api.md#limits")
+            logging.critical("BinanceWebSocketApiRestclient._request() - error_msg: received status_code 429 from "
+                             "binance! Back off or you are going to get banned! Read this: "
+                             "https://github.com/binance-exchange/binance-official-api-sphinx/blob/master/"
+                             "rest-api.md#limits")
         try:
             respond = request_handler.json()
         except json.decoder.JSONDecodeError as error_msg:
@@ -249,7 +248,7 @@ class BinanceWebSocketApiRestclient(object):
             if self.manager.exchange == "binance.com-isolated_margin" or \
                     self.manager.exchange == "binance.com-isolated_margin-testnet":
                 if self.symbol is False:
-                    logging.critical("BinanceWebSocketApiRestclient.get_listen_key() Info: Parameter "
+                    logging.critical("BinanceWebSocketApiRestclient.get_listen_key() - error_msg: Parameter "
                                      "`symbol` is missing!")
                     return False
                 else:
