@@ -8,12 +8,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.21.0.dev (development stage/unreleased/unstable)
 ### Added
 - `get_current_receiving_speed_global()`
+- better logging in socket class
 ### Changed
 - renamed variable `ubwa` to `manager` in restclient class
 - renamed variable `unicorn_binance_websocket_api_manager` to `manager` in socket class
 - renamed variable `total_receiving_speed` to `average_receiving_speed`
 - user agent string for rest and websocket client
 - removed the sending of the payload in __aenter__ in connection class, from now on its only done in the socket class
+- renamed variable `unicorn_binance_websocket_api_connection` to `connection`
+- renamed variable `unicorn_binance_websocket_api_socket` to `socket`
  
 ## 1.21.0
 ### Added 
