@@ -29,7 +29,7 @@ version = ''
 # The full version, including alpha/beta/rc tags
 release = '1.22.0'
 
-html_last_updated_fmt = "%b %d, %Y, %X"
+html_last_updated_fmt = "%b %d %Y at %H:%M"
 
 # -- General configuration ---------------------------------------------------
 
