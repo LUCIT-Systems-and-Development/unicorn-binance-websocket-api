@@ -248,8 +248,16 @@ class BinanceWebSocketApiManager(threading.Thread):
             print(update_msg)
             logging.warning(update_msg)
 
-    def _add_socket_to_socket_list(self, stream_id, channels, markets, stream_label=None, stream_buffer_name=False,
-                                   api_key=False, api_secret=False, symbols=False, output="raw_data"):
+    def _add_socket_to_socket_list(self,
+                                   stream_id,
+                                   channels,
+                                   markets,
+                                   stream_label=None,
+                                   stream_buffer_name=False,
+                                   api_key=False,
+                                   api_secret=False,
+                                   symbols=False,
+                                   output="raw_data"):
         """
         Create a list entry for new sockets
 
