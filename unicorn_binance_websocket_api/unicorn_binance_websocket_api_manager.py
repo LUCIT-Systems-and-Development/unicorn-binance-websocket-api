@@ -322,8 +322,18 @@ class BinanceWebSocketApiManager(threading.Thread):
                      str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
                      + str(stream_buffer_name) + ", " + str(symbols) + ")")
 
-    def _create_stream_thread(self, loop, stream_id, channels, markets, stream_label=None, stream_buffer_name=False,
-                              api_key=False, api_secret=False, symbols=False, output="raw_data", restart=False):
+    def _create_stream_thread(self,
+                              loop,
+                              stream_id,
+                              channels,
+                              markets,
+                              stream_label=None,
+                              stream_buffer_name=False,
+                              api_key=False,
+                              api_secret=False,
+                              symbols=False,
+                              output="raw_data",
+                              restart=False):
         """
         Co function of self.create_stream to create a thread for the socket and to manage the coroutine
 
