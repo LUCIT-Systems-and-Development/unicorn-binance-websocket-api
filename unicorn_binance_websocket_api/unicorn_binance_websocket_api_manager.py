@@ -248,7 +248,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             print(update_msg)
             logging.warning(update_msg)
 
-    def _add_socket_to_socket_list(self,
+    def _add_stream_to_stream_list(self,
                                    stream_id,
                                    channels,
                                    markets,
@@ -259,7 +259,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    symbols=False,
                                    output="raw_data"):
         """
-        Create a list entry for new sockets
+        Create a list entry for new streams
 
         :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
         :type stream_id: uuid
@@ -327,7 +327,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'listen_key_cache_time':  30 * 60,
                                        'processed_receives_statistic': {},
                                        'transfer_rate_per_second': {'bytes': {}, 'speed': 0}}
-        logging.info("BinanceWebSocketApiManager._add_socket_to_socket_list(" +
+        logging.info("BinanceWebSocketApiManager._add_stream_to_stream_list(" +
                      str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
                      + str(stream_buffer_name) + ", " + str(symbols) + ")")
 
@@ -378,7 +378,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.is_stop_request(stream_id):
             return False
         if restart is False:
-            self._add_socket_to_socket_list(stream_id,
+            self._add_stream_to_stream_list(stream_id,
                                             channels,
                                             markets,
                                             stream_label,

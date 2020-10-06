@@ -54,6 +54,8 @@ class BinanceWebSocketApiRestclient(object):
         self.api_secret = False
         self.symbol = False
         self.listen_key = False
+        self.last_static_ping_listen_key = False
+        self.listen_key_output = False
         self.threading_lock = threading.Lock()
         if self.manager.exchange == "binance.com":
             self.restful_base_uri = "https://api.binance.com/"
@@ -89,47 +91,51 @@ class BinanceWebSocketApiRestclient(object):
             self.restful_base_uri = "https://www.jex.com/"
             self.path_userdata = "api/v1/userDataStream"
 
-    def _do_request(self, listen_key, action=False):
+    def _do_request(self, action=False):
         """
         Do a request!
 
-        :param listen_key: the listenkey you want to keepalive
-        :type listen_key: str
         :param action: choose "delete" or "keepalive"
         :type action: str
         :return: the response
         :rtype: str or False
         """
         if action == "keepalive":
-            if self.manager.show_secrets_in_logs is True:
-                logging.info(f"BinanceWebSocketApiRestclient.keepalive_listen_key({str(listen_key)})")
-            else:
-                logging.info(f"BinanceWebSocketApiRestclient.keepalive_listen_key("
-                             f"{str(self.manager.replaced_secrets_text)})")
+            logging.info(f"BinanceWebSocketApiRestclient.keepalive_listen_key({str(self.listen_key_output)})")
             method = "put"
             try:
-                return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
+                response = self._request(method, self.path_userdata, False, {'listenKey': str(self.listen_key)})
+                self.last_static_ping_listen_key = time.time()
+                return response
             except KeyError:
                 return False
             except TypeError:
                 return False
         elif action == "delete":
-            if self.manager.show_secrets_in_logs is True:
-                logging.info(f"BinanceWebSocketApiRestclient.delete_listen_key({str(listen_key)})")
-            else:
-                logging.info(f"BinanceWebSocketApiRestclient.delete_listen_key("
-                             f"{str(self.manager.replaced_secrets_text)})")
+            logging.info(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)})")
             method = "delete"
             try:
-                return self._request(method, self.path_userdata, False, {'listenKey': str(listen_key)})
-            except KeyError:
+                response = self._request(method, self.path_userdata, False, {'listenKey': str(self.listen_key)})
+                self.listen_key = False
+                return response
+            except KeyError as error_msg:
+                logging.error(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)}) - "
+                              f"KeyError - error_msg: {str(error_msg)}")
                 return False
-            except TypeError:
+            except TypeError as error_msg:
+                logging.error(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)}) - "
+                              f"KeyError - error_msg: {str(error_msg)}")
                 return False
         else:
             return False
 
-    def _init_vars(self, stream_id, api_key=False, api_secret=False, symbol=False, listen_key=False):
+    def _init_vars(self,
+                   stream_id,
+                   api_key=False,
+                   api_secret=False,
+                   symbol=False,
+                   listen_key=False,
+                   last_static_ping_listen_key=False):
         """
         set default values and load values from stream_list
 
@@ -143,12 +149,16 @@ class BinanceWebSocketApiRestclient(object):
         :type symbol: str
         :param listen_key: provide the listen_key
         :type listen_key: str
+        :param listen_key: the `last_static_ping_listen_key` variable of the `listen_key` you want to keepalive
+        :type listen_key: int
         :return: bool
         """
         self.api_key = api_key
         self.api_secret = api_secret
         self.listen_key = listen_key
         self.symbol = symbol
+        self.last_static_ping_listen_key = last_static_ping_listen_key
+        self.listen_key_output = self.manager.replaced_secrets_text
         try:
             if self.api_key is False:
                 self.api_key = self.manager.stream_list[stream_id]['api_key']
@@ -158,6 +168,10 @@ class BinanceWebSocketApiRestclient(object):
                 self.symbol = self.manager.stream_list[stream_id]['symbols']
             if self.listen_key is False:
                 self.listen_key = self.manager.stream_list[stream_id]['listen_key']
+            if self.last_static_ping_listen_key is False:
+                self.last_static_ping_listen_key = self.manager.stream_list[stream_id]['last_static_ping_listen_key']
+            if self.manager.show_secrets_in_logs is True:
+                self.listen_key_output = self.listen_key
         except KeyError as error_msg:
             logging.error(f"BinanceWebSocketApiRestclient.init_vars() - TypeError - error_msg: {str(error_msg)}")
             return False
@@ -223,7 +237,12 @@ class BinanceWebSocketApiRestclient(object):
         request_handler.close()
         return respond
 
-    def get_listen_key(self, stream_id=False, api_key=False, api_secret=False, symbol=False):
+    def get_listen_key(self,
+                       stream_id=False,
+                       api_key=False,
+                       api_secret=False,
+                       last_static_ping_listen_key=False,
+                       symbol=False):
         """
         Request a valid listen_key from binance
 
@@ -233,6 +252,8 @@ class BinanceWebSocketApiRestclient(object):
         :type api_key: str
         :param api_secret: provide a valid Binance API secret
         :type api_secret: str
+        :param last_static_ping_listen_key: the `last_static_ping_listen_key` variable of the `listen_key` you want to keepalive
+        :type last_static_ping_listen_key: int
         :param symbol: provide the symbol for isolated_margin user_data listen_key
         :type symbol: str
         :return: listen_key
@@ -243,7 +264,11 @@ class BinanceWebSocketApiRestclient(object):
         if stream_id is False:
             return False
         with self.threading_lock:
-            self._init_vars(stream_id, api_key=api_key, api_secret=api_secret, symbol=symbol)
+            self._init_vars(stream_id,
+                            api_key=api_key,
+                            api_secret=api_secret,
+                            symbol=symbol,
+                            last_static_ping_listen_key=last_static_ping_listen_key)
             method = "post"
             if self.manager.exchange == "binance.com-isolated_margin" or \
                     self.manager.exchange == "binance.com-isolated_margin-testnet":
@@ -257,13 +282,18 @@ class BinanceWebSocketApiRestclient(object):
                 response = self._request(method, self.path_userdata)
             try:
                 self.listen_key = response['listenKey']
+                self.last_static_ping_listen_key = time.time()
                 return response
             except KeyError:
                 return response
             except TypeError:
                 return False
 
-    def delete_listen_key(self, stream_id=False, api_key=False, api_secret=False, listen_key=False):
+    def delete_listen_key(self,
+                          stream_id=False,
+                          api_key=False,
+                          api_secret=False,
+                          listen_key=False):
         """
         Delete a specific listen key
 
@@ -283,9 +313,14 @@ class BinanceWebSocketApiRestclient(object):
             return False
         with self.threading_lock:
             self._init_vars(stream_id, api_key, api_secret, listen_key)
-            return self._do_request(self.listen_key, "delete")
+            return self._do_request("delete")
 
-    def keepalive_listen_key(self, stream_id=False, api_key=False, api_secret=False, listen_key=False) -> object:
+    def keepalive_listen_key(self,
+                             stream_id=False,
+                             api_key=False,
+                             api_secret=False,
+                             listen_key=False,
+                             last_static_ping_listen_key=False):
         """
         Ping a listenkey to keep it alive
 
@@ -297,6 +332,8 @@ class BinanceWebSocketApiRestclient(object):
         :type api_secret: str
         :param listen_key: the listenkey you want to keepalive
         :type listen_key: str
+        :param last_static_ping_listen_key: the `last_static_ping_listen_key` variable of the `listen_key` you want to keepalive
+        :type last_static_ping_listen_key: int
         :return: the response
         :rtype: str or False
         """
@@ -304,5 +341,5 @@ class BinanceWebSocketApiRestclient(object):
         if stream_id is False:
             return False
         with self.threading_lock:
-            self._init_vars(stream_id, api_key, api_secret, listen_key)
-            return self._do_request(self.listen_key, "keepalive")
+            self._init_vars(stream_id, api_key, api_secret, listen_key, last_static_ping_listen_key)
+            return self._do_request("keepalive")

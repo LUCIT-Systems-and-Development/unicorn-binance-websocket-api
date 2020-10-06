@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - logging.info if new `highest_receiving_speed` is reached
 ## Fixed
 - `listen_key` was printed to logfiles
+## Changed
+- renamed `_add_socket_to_socket_list` to `_add_stream_to_stream_list`
  
 ## 1.22.0
 ### Added
