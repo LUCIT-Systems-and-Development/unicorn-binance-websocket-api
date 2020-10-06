@@ -513,6 +513,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if last_second_receiving_speed > self.receiving_speed_peak['value']:
                     self.receiving_speed_peak['value'] = last_second_receiving_speed
                     self.receiving_speed_peak['timestamp'] = time.time()
+                    logging.info(f"BinanceWebSocketApiManager._frequent_checks() - reached new "
+                                 f"`highest_receiving_speed` "
+                                 f"{str(self.get_human_bytesize(self.receiving_speed_peak['value'], '/s'))} at "
+                                 f"{self.get_date_of_timestamp(self.receiving_speed_peak['timestamp'])}")
             except TypeError as error_msg:
                 pass
             # send keepalive for `!userData` streams every 30 minutes

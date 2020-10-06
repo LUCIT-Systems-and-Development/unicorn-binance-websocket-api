@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## Added
 - timestamp to `receiving_speed_peak` in manager
 - log warning if the cpu usage is > 95%
+- logging.info if new `highest_receiving_speed` is reached
 ## Fixed
 - `listen_key` was printed to logfiles
  
@@ -16,6 +17,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - `get_current_receiving_speed_global()`
 - better logging in socket class
+- `highest_receiving_speed` in `print_summary()`
 ### Changed
 - renamed variable `ubwa` to `manager` in restclient class
 - renamed variable `unicorn_binance_websocket_api_manager` to `manager` in socket class
