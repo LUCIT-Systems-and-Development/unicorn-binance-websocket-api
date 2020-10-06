@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.23.0.dev (development stage/unreleased/unstable)
+## Removed
+- unused import of `ujson` in connection class
 
 ## 1.23.0
 ## Added

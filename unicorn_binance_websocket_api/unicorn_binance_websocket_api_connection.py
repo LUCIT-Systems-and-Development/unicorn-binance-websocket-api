@@ -35,7 +35,6 @@
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_exceptions import StreamRecoveryError
 import copy
-import ujson as json
 import logging
 import socket
 import ssl
