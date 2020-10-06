@@ -62,6 +62,7 @@ class BinanceWebSocketApiSocket(object):
                      f"{str(self.markets)}) socket_id={str(self.socket_id)} recent_socket_id={str(self.socket_id)}")
         async with BinanceWebSocketApiConnection(self.manager,
                                                  self.stream_id,
+                                                 self.socket_id,
                                                  self.channels,
                                                  self.markets,
                                                  symbols=self.symbols) as websocket:

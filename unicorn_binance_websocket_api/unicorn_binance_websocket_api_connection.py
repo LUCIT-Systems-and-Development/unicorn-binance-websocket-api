@@ -47,13 +47,20 @@ connect = websockets.connect
 
 
 class BinanceWebSocketApiConnection(object):
-    def __init__(self, manager, stream_id, channels, markets, symbols):
+    def __init__(self,
+                 manager,
+                 stream_id,
+                 socket_id,
+                 channels,
+                 markets,
+                 symbols):
         self.manager = manager
+        self.stream_id = copy.deepcopy(stream_id)
+        self.socket_id = copy.deepcopy(socket_id)
         self.api_key = copy.deepcopy(self.manager.stream_list[stream_id]['api_key'])
         self.api_secret = copy.deepcopy(self.manager.stream_list[stream_id]['api_secret'])
         self.channels = copy.deepcopy(channels)
         self.markets = copy.deepcopy(markets)
-        self.stream_id = copy.deepcopy(stream_id)
         self.symbols = copy.deepcopy(symbols)
 
     async def __aenter__(self):
@@ -244,6 +251,11 @@ class BinanceWebSocketApiConnection(object):
         except RuntimeError as error_msg:
             logging.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) - "
                           f"RuntimeError: {str(error_msg)}")
+        except ValueError as error_msg:
+            # ValueError: The future belongs to a different loop than the one specified as the loop argument
+            logging.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) socket_id="
+                          f"{str(self.socket_id)}) - Closing this socket! - ValueError: {str(error_msg)}")
+            sys.exit(0)
 
     async def receive(self):
         self.manager.set_heartbeat(self.stream_id)
@@ -284,6 +296,11 @@ class BinanceWebSocketApiConnection(object):
             if self.manager.is_stop_request(self.stream_id) is False:
                 self.manager.set_restart_request(self.stream_id)
             sys.exit(1)
+        except ValueError as error_msg:
+            # ValueError: The future belongs to a different loop than the one specified as the loop argument
+            logging.error(f"BinanceWebSocketApiConnection.receive({str(self.stream_id)}) socket_id="
+                          f"{str(self.socket_id)}) - Closing this socket! - ValueError: {str(error_msg)}")
+            sys.exit(0)
 
     async def send(self, data):
         try:
@@ -311,4 +328,8 @@ class BinanceWebSocketApiConnection(object):
             logging.error("BinanceWebSocketApiConnection.send(" + str(self.stream_id) + ", " +
                           str(self.channels) + ", " + str(self.markets) + ") - Exception KeyError "
                           "- error_msg:  " + str(error_msg))
-
+        except ValueError as error_msg:
+            # ValueError: The future belongs to a different loop than the one specified as the loop argument
+            logging.error(f"BinanceWebSocketApiConnection.send({str(self.stream_id)}) socket_id="
+                          f"{str(self.socket_id)}) - Closing this socket! - ValueError: {str(error_msg)}")
+            sys.exit(0)
