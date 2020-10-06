@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.22.0.dev (development stage/unreleased/unstable)
+## 1.23.0.dev (development stage/unreleased/unstable)
+
+## 1.23.0
 ## Added
 - timestamp to `receiving_speed_peak` in manager
 - log warning if the cpu usage is > 95%
