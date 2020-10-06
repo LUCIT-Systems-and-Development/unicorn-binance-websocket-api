@@ -2603,7 +2603,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.get_human_bytesize(self.get_total_received_bytes())) + ")"
         try:
             received_bytes_per_second = self.get_total_received_bytes() / (time.time() - self.start_time)
-            received_bytes_per_x_row += str((received_bytes_per_second / 1024).__round__(2)) + " kB/s (per day " + \
+            received_bytes_per_x_row += str(self.get_human_bytesize(received_bytes_per_second, '/s')) + " (per day " + \
                                         str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(2))\
                                         + " gB)"
             if self.get_stream_buffer_length() > 50:
