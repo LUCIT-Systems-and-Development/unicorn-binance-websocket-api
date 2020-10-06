@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `listen_key` was printed to logfiles
 - `listen_key` cache time was not set in `get_listen_key()` so it pinged immediately after its creation again, which caused
 a higher weight
-- close thread if "The future belongs to a different loop than the one specified as the loop argument" [issue#121](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/121)
+- restart stream if "The future belongs to a different loop than the one specified as the loop argument" [issue#121](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/121)
 ## Changed
 - renamed `_add_socket_to_socket_list` to `_add_stream_to_stream_list`
  
