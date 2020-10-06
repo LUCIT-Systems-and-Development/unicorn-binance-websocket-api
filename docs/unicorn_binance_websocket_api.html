@@ -67,7 +67,7 @@
 <span id="unicorn-binance-websocket-api-unicorn-binance-websocket-api-connection-module"></span><h2>unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection module<a class="headerlink" href="#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.BinanceWebSocketApiConnection">
-<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.</code><code class="sig-name descname">BinanceWebSocketApiConnection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">manager</span></em>, <em class="sig-param"><span class="n">stream_id</span></em>, <em class="sig-param"><span class="n">channels</span></em>, <em class="sig-param"><span class="n">markets</span></em>, <em class="sig-param"><span class="n">symbols</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.BinanceWebSocketApiConnection" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.</code><code class="sig-name descname">BinanceWebSocketApiConnection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">manager</span></em>, <em class="sig-param"><span class="n">stream_id</span></em>, <em class="sig-param"><span class="n">socket_id</span></em>, <em class="sig-param"><span class="n">channels</span></em>, <em class="sig-param"><span class="n">markets</span></em>, <em class="sig-param"><span class="n">symbols</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.BinanceWebSocketApiConnection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection.BinanceWebSocketApiConnection.close">
@@ -1598,7 +1598,7 @@ subscribed channels from the specific markets are going to be removed!</p>
 
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.get_listen_key">
-<code class="sig-name descname">get_listen_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_secret</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">symbol</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.get_listen_key" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_listen_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_secret</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">last_static_ping_listen_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">symbol</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.get_listen_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Request a valid listen_key from binance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1606,6 +1606,7 @@ subscribed channels from the specific markets are going to be removed!</p>
 <li><p><strong>stream_id</strong> (<em>uuid</em>) – provide a stream_id</p></li>
 <li><p><strong>api_key</strong> (<em>str</em>) – provide a valid Binance API key</p></li>
 <li><p><strong>api_secret</strong> (<em>str</em>) – provide a valid Binance API secret</p></li>
+<li><p><strong>last_static_ping_listen_key</strong> (<em>int</em>) – the <cite>last_static_ping_listen_key</cite> variable of the <cite>listen_key</cite> you want to keepalive</p></li>
 <li><p><strong>symbol</strong> (<em>str</em>) – provide the symbol for isolated_margin user_data listen_key</p></li>
 </ul>
 </dd>
@@ -1620,7 +1621,7 @@ subscribed channels from the specific markets are going to be removed!</p>
 
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.keepalive_listen_key">
-<code class="sig-name descname">keepalive_listen_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_secret</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">listen_key</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; object<a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.keepalive_listen_key" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">keepalive_listen_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_secret</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">listen_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">last_static_ping_listen_key</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient.BinanceWebSocketApiRestclient.keepalive_listen_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ping a listenkey to keep it alive</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1629,6 +1630,7 @@ subscribed channels from the specific markets are going to be removed!</p>
 <li><p><strong>api_key</strong> (<em>str</em>) – provide a valid Binance API key</p></li>
 <li><p><strong>api_secret</strong> (<em>str</em>) – provide a valid Binance API secret</p></li>
 <li><p><strong>listen_key</strong> (<em>str</em>) – the listenkey you want to keepalive</p></li>
+<li><p><strong>last_static_ping_listen_key</strong> (<em>int</em>) – the <cite>last_static_ping_listen_key</cite> variable of the <cite>listen_key</cite> you want to keepalive</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1798,7 +1800,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
-    Last updated on Oct 05 2020 at 21:57 (CET).
+    Last updated on Oct 06 2020 at 20:11 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 

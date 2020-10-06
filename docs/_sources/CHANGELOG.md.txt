@@ -8,12 +8,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.22.0.dev (development stage/unreleased/unstable)
 ## Added
 - timestamp to `receiving_speed_peak` in manager
-- warning if the cpu usage is > 80%
-
+- log warning if the cpu usage is > 95%
+- logging.info if new `highest_receiving_speed` is reached
+## Fixed
+- `listen_key` was printed to logfiles
+- `listen_key` cache time was not set in `get_listen_key()` so it pinged immediately after its creation again, which caused
+a higher weight
+- restart stream if "The future belongs to a different loop than the one specified as the loop argument" [issue#121](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/121)
+## Changed
+- renamed `_add_socket_to_socket_list` to `_add_stream_to_stream_list`
+ 
 ## 1.22.0
 ### Added
 - `get_current_receiving_speed_global()`
 - better logging in socket class
+- `highest_receiving_speed` in `print_summary()`
 ### Changed
 - renamed variable `ubwa` to `manager` in restclient class
 - renamed variable `unicorn_binance_websocket_api_manager` to `manager` in socket class
