@@ -95,12 +95,13 @@ data = binance_rest_client.get_all_tickers()
 for item in data:
     markets.append(item['symbol'])
 
-binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
 private_stream_id = binance_websocket_api_manager.create_stream(["!userData"],
                                                                 ["arr"],
-                                                                stream_label="userData streamdddddddd")
+                                                                api_key=binance_api_key,
+                                                                api_secret=binance_api_secret,
+                                                                stream_label="userData stream!")
 
-binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
+binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="`arr` channels")
 
 max_subscriptions = binance_websocket_api_manager.get_limit_of_subscriptions_per_stream()
 

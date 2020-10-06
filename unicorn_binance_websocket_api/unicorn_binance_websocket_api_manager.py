@@ -1276,7 +1276,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         while len(blanks_post) < demand_of_blanks-1:
             blanks_pre = filling
             blanks_post += filling
-        return blanks_pre + str(string) + blanks_post
+        string = blanks_pre + str(string) + blanks_post
+        return string[0:demand_of_chars]
 
     def get_active_stream_list(self):
         """

@@ -79,10 +79,11 @@ markets = []
 
 try:
     binance_rest_client = Client(binance_api_key, binance_api_secret)
-    binance_websocket_api_manager = BinanceWebSocketApiManager()
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
+
+binance_websocket_api_manager = BinanceWebSocketApiManager()
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
@@ -92,8 +93,17 @@ data = binance_rest_client.get_all_tickers()
 for item in data:
     markets.append(item['symbol'])
 
-binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
-private_stream_id = binance_websocket_api_manager.create_stream(["!userData"], ["arr"], stream_label="userData stream")
+private_stream_id = binance_websocket_api_manager.create_stream(["!userData"],
+                                                                ["arr"],
+                                                                api_key=binance_api_key,
+                                                                api_secret=binance_api_secret,
+                                                                stream_label="userData Alice")
+
+private_stream_id = binance_websocket_api_manager.create_stream(["!userData"],
+                                                                ["arr"],
+                                                                api_key="aaa",
+                                                                api_secret="bbb",
+                                                                stream_label="userData Bob")
 
 binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
 
