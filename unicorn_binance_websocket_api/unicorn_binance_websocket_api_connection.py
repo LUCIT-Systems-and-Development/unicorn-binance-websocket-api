@@ -255,7 +255,10 @@ class BinanceWebSocketApiConnection(object):
             # ValueError: The future belongs to a different loop than the one specified as the loop argument
             logging.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) socket_id="
                           f"{str(self.socket_id)}) - Closing this socket! - ValueError: {str(error_msg)}")
-            sys.exit(0)
+            self.manager.stream_is_stopping(self.stream_id)
+            if self.manager.is_stop_request(self.stream_id) is False:
+                self.manager.set_restart_request(self.stream_id)
+            sys.exit(1)
 
     async def receive(self):
         self.manager.set_heartbeat(self.stream_id)
@@ -300,7 +303,10 @@ class BinanceWebSocketApiConnection(object):
             # ValueError: The future belongs to a different loop than the one specified as the loop argument
             logging.error(f"BinanceWebSocketApiConnection.receive({str(self.stream_id)}) socket_id="
                           f"{str(self.socket_id)}) - Closing this socket! - ValueError: {str(error_msg)}")
-            sys.exit(0)
+            self.manager.stream_is_stopping(self.stream_id)
+            if self.manager.is_stop_request(self.stream_id) is False:
+                self.manager.set_restart_request(self.stream_id)
+            sys.exit(1)
 
     async def send(self, data):
         try:
@@ -332,4 +338,7 @@ class BinanceWebSocketApiConnection(object):
             # ValueError: The future belongs to a different loop than the one specified as the loop argument
             logging.error(f"BinanceWebSocketApiConnection.send({str(self.stream_id)}) socket_id="
                           f"{str(self.socket_id)}) - Closing this socket! - ValueError: {str(error_msg)}")
-            sys.exit(0)
+            self.manager.stream_is_stopping(self.stream_id)
+            if self.manager.is_stop_request(self.stream_id) is False:
+                self.manager.set_restart_request(self.stream_id)
+            sys.exit(1)

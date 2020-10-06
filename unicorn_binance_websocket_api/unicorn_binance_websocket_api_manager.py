@@ -395,6 +395,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                              f"error: 7 - {str(error_msg)}")
             # Todo:
             # Check if stop request is True or restart again! Is there an orphaned thread?
+            loop.close()
         finally:
             loop.close()
 
