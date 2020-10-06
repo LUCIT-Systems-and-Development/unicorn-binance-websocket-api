@@ -39,6 +39,7 @@ import sys
 import time
 import threading
 import os
+import requests
 
 try:
     from binance.client import Client
@@ -57,7 +58,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 
 
 # https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(level=logging.ERROR,
+logging.basicConfig(level=logging.INFO,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
@@ -95,17 +96,27 @@ for item in data:
     markets.append(item['symbol'])
 
 binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
-binance_websocket_api_manager.create_stream(["!userData"], ["arr"])
+private_stream_id = binance_websocket_api_manager.create_stream(["!userData"], ["arr"], stream_label="userData streamdddddddd")
 
-binance_websocket_api_manager.create_stream(arr_channels, "arr")
+binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
 
 for channel in channels:
-    binance_websocket_api_manager.create_stream(channel, markets)
+    if len(markets) <= 1024:
+        binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
+    else:
+        max_subs = 1023
+        loops = 1
+        i = 0
+        markets_sub = []
+        for market in markets:
+            i = i + 1
+            markets_sub.append(market)
+            if i == max_subs or loops*max_subs + i == len(markets):
+                binance_websocket_api_manager.create_stream(channel, markets_sub, stream_label=str(channel+"_"+str(i+1)))
+                markets_sub = []
+                i = 0
+                loops = loops + 1
 
-# show an overview
 while True:
     binance_websocket_api_manager.print_summary()
     time.sleep(1)
-    #print(str(binance_websocket_api_manager.get_stream_info(stream_id)))
-    #binance_websocket_api_manager.print_stream_info(stream_id)
-    #time.sleep(2)

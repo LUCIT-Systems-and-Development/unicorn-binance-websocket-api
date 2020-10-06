@@ -101,7 +101,7 @@ for channel in channels:
     if len(markets) <= 1024:
         binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
     else:
-        max_subs = 1000
+        max_subs = 1023
         loops = 1
         i = 0
         markets_sub = []
@@ -109,7 +109,7 @@ for channel in channels:
             i = i + 1
             markets_sub.append(market)
             if i == max_subs or loops*max_subs + i == len(markets):
-                binance_websocket_api_manager.create_stream(channel, markets_sub, stream_label=str(channel+"_"+str(i)))
+                binance_websocket_api_manager.create_stream(channel, markets_sub, stream_label=str(channel+"_"+str(i+1)))
                 markets_sub = []
                 i = 0
                 loops = loops + 1
