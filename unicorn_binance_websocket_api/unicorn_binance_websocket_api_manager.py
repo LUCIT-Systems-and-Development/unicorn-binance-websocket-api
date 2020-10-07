@@ -129,6 +129,12 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param show_secrets_in_logs: set to True to show secrets like listen_key, api_key or api_secret in log file
                                  (default=False)
     :type show_secrets_in_logs: bool
+    :param output_default: choose the default output setting of `output` parameter in `create_stream()` and
+                           `replace_stream()` - set to "dict" to convert the received raw data to a python dict, set
+                           to "UnicornFy" to convert with
+                           `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
+                           remains unchanged and gets delivered as received from the endpoints
+    :type output_default: str
     """
 
     def __init__(self,
@@ -137,7 +143,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                  warn_on_update=True,
                  throw_exception_if_unrepairable=False,
                  restart_timeout=6,
-                 show_secrets_in_logs=False):
+                 show_secrets_in_logs=False,
+                 output_default="raw_data"):
         threading.Thread.__init__(self)
         self.version = "1.23.0.dev"
         logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
@@ -211,6 +218,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.monitoring_api_server = False
         self.monitoring_total_received_bytes = 0
         self.monitoring_total_receives = 0
+        self.output_default = output_default
         self.reconnects = 0
         self.reconnects_lock = threading.Lock()
         self.request_id = 0
@@ -257,7 +265,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    api_key=False,
                                    api_secret=False,
                                    symbols=False,
-                                   output="raw_data"):
+                                   output=False):
         """
         Create a list entry for new streams
 
@@ -280,9 +288,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
-                       with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
-                       remains unchanged and gets delivered as received from the endpoints
+        :param output: the default setting `raw_data` can be overruled with the parameter `output_default` of
+                       BinanceWebSocketApiManager` - set to "dict" to convert the received raw data to a python dict,
+                       set to "UnicornFy" to convert with
+                       `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise with the default
+                       setting "raw_data" the output remains unchanged and gets delivered as received from the endpoints
         :type output: str
         """
 
@@ -292,6 +302,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             add_api_key = self.api_key
             add_api_secret = self.api_secret
+        if output is False:
+            output = self.output_default
         self.stream_threading_lock[stream_id] = {'full_lock': threading.Lock(),
                                                  'receives_statistic_last_second_lock': threading.Lock()}
         self.stream_list[stream_id] = {'exchange': self.exchange,
@@ -336,12 +348,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                               stream_id,
                               channels,
                               markets,
-                              stream_label=None,
                               stream_buffer_name=False,
-                              api_key=False,
-                              api_secret=False,
-                              symbols=False,
-                              output="raw_data",
                               restart=False):
         """
         Co function of self.create_stream to create a thread for the socket and to manage the coroutine
@@ -354,23 +361,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type channels: str, tuple, list, set
         :param markets: provide the markets to create the URI
         :type markets: str, tuple, list, set
-        :param stream_label: provide a stream_label for the stream
-        :type stream_label: str
         :param stream_buffer_name: If `False` the data is going to get written to the default stream_buffer,
                            set to `True` to read the data via `pop_stream_data_from_stream_buffer(stream_id)` or
                            provide a string to create and use a shared stream_buffer and read it via
                            `pop_stream_data_from_stream_buffer('string')`.
         :type stream_buffer_name: bool or str
-        :param api_key: provide a valid Binance API key
-        :type api_key: str
-        :param api_secret: provide a valid Binance API secret
-        :type api_secret: str
-        :param symbols: provide the symbols for isolated_margin user_data streams
-        :type symbols: str
-        :param output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
-                       with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
-                       remains unchanged and gets delivered as received from the endpoints
-        :type output: str
         :param restart: set to `True`, if its a restart!
         :type restart: bool
         :return:
@@ -392,9 +387,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             loop.run_until_complete(socket.start_socket())
         except RuntimeError as error_msg:
             logging.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
-                             f"error: 7 - {str(error_msg)}")
-            # Todo:
-            # Check if stop request is True or restart again! Is there an orphaned thread?
+                             f"error: 7 - {str(error_msg)} - if this stream did not restart after this error, please "
+                             f"create an issue: "
+                             f"https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/new/choose")
             loop.close()
         finally:
             loop.close()
@@ -604,12 +599,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         stream_id,
                                         self.stream_list[stream_id]['channels'],
                                         self.stream_list[stream_id]['markets'],
-                                        self.stream_list[stream_id]['stream_label'],
                                         self.stream_list[stream_id]['stream_buffer_name'],
-                                        self.stream_list[stream_id]['api_key'],
-                                        self.stream_list[stream_id]['api_secret'],
-                                        self.stream_list[stream_id]['symbols'],
-                                        self.stream_list[stream_id]['output'],
                                         True))
         thread.start()
         return stream_id
@@ -870,7 +860,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                       api_key=False,
                       api_secret=False,
                       symbols=False,
-                      output="raw_data"):
+                      output=False):
         """
         Create a websocket stream
 
@@ -933,9 +923,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
-                       with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
-                       remains unchanged and gets delivered as received from the endpoints
+        :param output: the default setting `raw_data` can be overruled with the parameter `output_default` of
+                       BinanceWebSocketApiManager` - set to "dict" to convert the received raw data to a python dict,
+                       set to "UnicornFy" to convert with
+                       `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise with the default
+                       setting "raw_data" the output remains unchanged and gets delivered as received from the endpoints
         :type output: str
         :return: stream_id or 'False'
         """
@@ -954,6 +946,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             channels = [channels]
         if type(markets) is str:
             markets = [markets]
+        if output is False:
+            output = self.output_default
         stream_id = uuid.uuid4()
         markets_new = []
         if stream_buffer_name is True:
@@ -996,12 +990,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                                            stream_id,
                                                                            channels,
                                                                            markets_new,
-                                                                           stream_label,
                                                                            stream_buffer_name,
-                                                                           api_key,
-                                                                           api_secret,
-                                                                           symbols,
-                                                                           output,
                                                                            False))
         thread.start()
         return stream_id
@@ -2688,7 +2677,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Create a PNG image file with the console output of `print_summary()`
 
-        *LINUX ONLY* It should not be hard to make it OS independend:
+        *LINUX ONLY* It should not be hard to make it OS independent:
         https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61
 
         :param print_summary_export_path: If you want to export the output of print_summary() to an image,

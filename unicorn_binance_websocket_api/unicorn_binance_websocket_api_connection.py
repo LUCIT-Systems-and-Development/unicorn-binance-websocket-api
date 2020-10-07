@@ -286,7 +286,6 @@ class BinanceWebSocketApiConnection(object):
         except ssl.SSLError as error_msg:
             logging.error("BinanceWebSocketApiConnection.receive(" +
                           str(self.stream_id) + ") - ssl.SSLError - error_msg: " + str(error_msg))
-            # Todo: Not sure if this needs a restart ...
             self.manager.stream_is_stopping(self.stream_id)
             if self.manager.is_stop_request(self.stream_id) is False:
                 self.manager.set_restart_request(self.stream_id)
