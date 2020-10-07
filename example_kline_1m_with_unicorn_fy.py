@@ -46,7 +46,7 @@ logging.basicConfig(level=logging.ERROR,
                     style="{")
 
 # create instance of BinanceWebSocketApiManager
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com", output_default="UnicornFy")
 
 markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
            'neousdt', 'bnbusdt', 'adabtc', 'ethusdt', 'trxbtc', 'bchabcbtc', 'ltcbtc', 'xrpbtc',
@@ -61,7 +61,11 @@ markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
            'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
            'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth'}
 
-binance_get_kline_1m_bnbbtc = binance_websocket_api_manager.create_stream('kline_1m', markets, output="UnicornFy")
+binance_websocket_api_manager.create_stream('kline_1m', markets, stream_label="UnicornFy")
+
+binance_websocket_api_manager.create_stream('kline_1m', markets, stream_label="dict", output="dict")
+
+binance_websocket_api_manager.create_stream('kline_1m', markets, stream_label="raw_data", output="raw_data")
 
 while True:
     if binance_websocket_api_manager.is_manager_stopping():
@@ -74,6 +78,9 @@ while True:
             try:
                 if oldest_stream_data_from_stream_buffer['event_time'] >= \
                         oldest_stream_data_from_stream_buffer['kline']['kline_close_time']:
-                    print(oldest_stream_data_from_stream_buffer)
+                    # print only the last kline
+                    print(f"UnicornFy: {oldest_stream_data_from_stream_buffer}")
             except KeyError:
-                pass
+                print(f"dict: {oldest_stream_data_from_stream_buffer}")
+            except TypeError:
+                print(f"raw_data: {oldest_stream_data_from_stream_buffer}")
