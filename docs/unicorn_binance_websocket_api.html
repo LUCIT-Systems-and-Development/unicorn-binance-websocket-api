@@ -91,7 +91,7 @@
 <span id="unicorn-binance-websocket-api-unicorn-binance-websocket-api-manager-module"></span><h2>unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager module<a class="headerlink" href="#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager">
-<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.</code><code class="sig-name descname">BinanceWebSocketApiManager</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process_stream_data</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">exchange</span><span class="o">=</span><span class="default_value">'binance.com'</span></em>, <em class="sig-param"><span class="n">warn_on_update</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">throw_exception_if_unrepairable</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">restart_timeout</span><span class="o">=</span><span class="default_value">6</span></em>, <em class="sig-param"><span class="n">show_secrets_in_logs</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.</code><code class="sig-name descname">BinanceWebSocketApiManager</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">process_stream_data</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">exchange</span><span class="o">=</span><span class="default_value">'binance.com'</span></em>, <em class="sig-param"><span class="n">warn_on_update</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">throw_exception_if_unrepairable</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">restart_timeout</span><span class="o">=</span><span class="default_value">6</span></em>, <em class="sig-param"><span class="n">show_secrets_in_logs</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">output_default</span><span class="o">=</span><span class="default_value">'raw_data'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
 <p>An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
 com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible,
@@ -165,6 +165,11 @@ used</p></li>
 initialized. Default is 6 seconds.</p></li>
 <li><p><strong>show_secrets_in_logs</strong> (<em>bool</em>) – set to True to show secrets like listen_key, api_key or api_secret in log file
 (default=False)</p></li>
+<li><p><strong>output_default</strong> (<em>str</em>) – choose the default output setting of <cite>output</cite> parameter in <cite>create_stream()</cite> and
+<cite>replace_stream()</cite> - set to “dict” to convert the received raw data to a python dict, set
+to “UnicornFy” to convert with
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> - otherwise the output
+remains unchanged and gets delivered as received from the endpoints</p></li>
 </ul>
 </dd>
 </dl>
@@ -249,7 +254,7 @@ provide a string to create and use a shared stream_buffer and read it via
 
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">
-<code class="sig-name descname">create_stream</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">channels</span></em>, <em class="sig-param"><span class="n">markets</span></em>, <em class="sig-param"><span class="n">stream_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stream_buffer_name</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_secret</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">output</span><span class="o">=</span><span class="default_value">'raw_data'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_stream</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">channels</span></em>, <em class="sig-param"><span class="n">markets</span></em>, <em class="sig-param"><span class="n">stream_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stream_buffer_name</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_secret</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">output</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a websocket stream</p>
 <p>If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (markets * channels).</p>
 <blockquote>
@@ -304,9 +309,12 @@ provide a string to create and use a shared stream_buffer and read it via
 <li><p><strong>api_key</strong> (<em>str</em>) – provide a valid Binance API key</p></li>
 <li><p><strong>api_secret</strong> (<em>str</em>) – provide a valid Binance API secret</p></li>
 <li><p><strong>symbols</strong> (<em>str</em>) – provide the symbols for isolated_margin user_data streams</p></li>
-<li><p><strong>output</strong> (<em>str</em>) – set to “dict” to convert the received raw data to a python dict, set to “UnicornFy” to convert
-with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> - otherwise the output
-remains unchanged and gets delivered as received from the endpoints</p></li>
+<li><p><strong>output</strong> (<em>str</em>) – <p>the default setting <cite>raw_data</cite> can be overruled with the parameter <cite>output_default</cite> of
+BinanceWebSocketApiManager` - set to “dict” to convert the received raw data to a python dict,
+set to “UnicornFy” to convert with
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> - otherwise with the default
+setting “raw_data” the output remains unchanged and gets delivered as received from the endpoints</p>
+</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1214,7 +1222,7 @@ create_stream() or the string name of a shared stream_buffer.</p>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.print_summary_to_png">
 <code class="sig-name descname">print_summary_to_png</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">print_summary_export_path</span></em>, <em class="sig-param"><span class="n">hight_per_row</span><span class="o">=</span><span class="default_value">12.5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.print_summary_to_png" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a PNG image file with the console output of <cite>print_summary()</cite></p>
-<p><em>LINUX ONLY</em> It should not be hard to make it OS independend:
+<p><em>LINUX ONLY</em> It should not be hard to make it OS independent:
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1800,7 +1808,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
-    Last updated on Oct 06 2020 at 20:17 (CET).
+    Last updated on Oct 07 2020 at 17:22 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 
