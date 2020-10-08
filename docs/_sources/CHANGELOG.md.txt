@@ -6,9 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.24.0.dev (development stage/unreleased/unstable)
+### Changed
+- `get_stream_subscriptions()` returns now the used `request_id` instead of `True`
 
 ## 1.24.0
-##
+### Added
 - Added 
   [`output_default`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default)
   to `BinanceWebSocketApiManager` 
