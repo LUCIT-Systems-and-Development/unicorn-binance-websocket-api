@@ -1977,7 +1977,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                            <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id>`_
                            automatically.
         :type request_id: int
-        :return: bool
+        :return: int (request_id)
         """
         if request_id is False:
             request_id = self.get_request_id()
@@ -1992,7 +1992,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stream_list[stream_id]['payload'].append(payload)
             logging.info("BinanceWebSocketApiManager.get_stream_subscriptions(" + str(stream_id) + ", " +
                          str(request_id) + ") payload added!")
-            return True
+            return request_id
         else:
             return False
 
