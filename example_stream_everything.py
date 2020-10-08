@@ -68,12 +68,10 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 binance_api_key = ""
 binance_api_secret = ""
 
-
-#channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
-#            'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
-#            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth'}
-#channels.add('depth@100ms')
-channels = {'trade', 'kline_1m', 'ticker', 'bookTicker', 'depth'}
+channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
+            'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
+            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth'}
+channels.add('depth@100ms')
 arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
 markets = []
 
@@ -93,17 +91,17 @@ data = binance_rest_client.get_all_tickers()
 for item in data:
     markets.append(item['symbol'])
 
-private_stream_id = binance_websocket_api_manager.create_stream(["!userData"],
-                                                                ["arr"],
-                                                                api_key=binance_api_key,
-                                                                api_secret=binance_api_secret,
-                                                                stream_label="userData Alice")
+private_stream_id_alice = binance_websocket_api_manager.create_stream(["!userData"],
+                                                                      ["arr"],
+                                                                      api_key=binance_api_key,
+                                                                      api_secret=binance_api_secret,
+                                                                      stream_label="userData Alice")
 
-private_stream_id = binance_websocket_api_manager.create_stream(["!userData"],
-                                                                ["arr"],
-                                                                api_key="aaa",
-                                                                api_secret="bbb",
-                                                                stream_label="userData Bob")
+private_stream_id_bob = binance_websocket_api_manager.create_stream(["!userData"],
+                                                                    ["arr"],
+                                                                    api_key="aaa",
+                                                                    api_secret="bbb",
+                                                                    stream_label="userData Bob")
 
 binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
 
