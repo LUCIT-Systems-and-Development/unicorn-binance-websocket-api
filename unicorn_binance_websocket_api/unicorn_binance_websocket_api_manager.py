@@ -1895,8 +1895,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         number = 0
-        with self.stream_buffer_lock:
-            number += len(self.stream_buffer)
+        number += len(self.stream_buffer)
         for stream_buffer_name in self.stream_buffers:
             number += len(self.stream_buffers[stream_buffer_name])
         return number
