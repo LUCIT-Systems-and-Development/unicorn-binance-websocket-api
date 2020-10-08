@@ -86,7 +86,7 @@
 <p>An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.</p>
 <div class="section" id="create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code">
 <h1><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">Create a multiplex websocket connection</a> to Binance with just 3 lines of code:<a class="headerlink" href="#create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager</span> <span class="k">import</span> <span class="n">BinanceWebSocketApiManager</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
 
 <span class="n">binance_websocket_api_manager</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
 <span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">create_stream</span><span class="p">([</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">])</span>
@@ -302,8 +302,7 @@ for <a class="reference external" href="https://exchange.icinga.com/LUCIT/check_
 </div>
 <div class="section" id="live-demo">
 <h1>Live Demo<a class="headerlink" href="#live-demo" title="Permalink to this headline">¶</a></h1>
-<p>This live demo script is streaming everything from binance.com, hosted on a CCX11 (2 x dedicated vCPU, 8GB RAM) at
-<a class="reference external" href="https://www.hetzner.de/cloud">HETZNER Cloud</a>.</p>
+<p>This live demo script is streaming everything from binance.com!</p>
 <p><a class="reference external" href="https://ubwa-demo.lucit.co/print_summary.php">Open live monitor!</a></p>
 <p><a class="reference external" href="https://ubwa-demo.lucit.co/print_summary.php"><img alt="live-demo" src="https://ubwa-demo.lucit.co/ps.png" /></a></p>
 <p>(Refresh update once a minute!)</p>
@@ -574,7 +573,7 @@ my company <a class="reference external" href="https://www.lucit.co/desktop-and-
     &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
-    Last updated on Oct 08 2020 at 11:40 (CET).
+    Last updated on Oct 08 2020 at 23:49 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 
