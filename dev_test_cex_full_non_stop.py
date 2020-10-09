@@ -108,7 +108,7 @@ max_subscriptions = binance_websocket_api_manager.get_limit_of_subscriptions_per
 
 for channel in channels:
     if "bookTicker" == channel or "depth@100ms" == channel:
-        max_subscriptions = math.ceil(binance_websocket_api_manager.get_limit_of_subscriptions_per_stream() / 4)
+        max_subscriptions = math.ceil(len(markets) / 4)
     else:
         divisor = math.ceil(len(markets) / binance_websocket_api_manager.get_limit_of_subscriptions_per_stream())
         max_subscriptions = math.ceil(len(markets) / divisor)

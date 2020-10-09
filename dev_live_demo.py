@@ -112,7 +112,7 @@ arr_stream_id = ws_manager.create_stream(arr_channels, "arr", "arr channels")
 
 for channel in channels:
     if "bookTicker" == channel or "depth@100ms" == channel:
-        max_subscriptions = math.ceil(ws_manager.get_limit_of_subscriptions_per_stream() / 4)
+        max_subscriptions = math.ceil(len(markets) / 4)
     else:
         divisor = math.ceil(len(markets) / ws_manager.get_limit_of_subscriptions_per_stream())
         max_subscriptions = math.ceil(len(markets) / divisor)
