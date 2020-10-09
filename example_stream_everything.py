@@ -35,6 +35,7 @@
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import logging
+import math
 import os
 import requests
 import sys
@@ -67,13 +68,11 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 
 binance_api_key = ""
 binance_api_secret = ""
-
+cpu_cores = 4
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
-            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth'}
-channels.add('depth@100ms')
+            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
 arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
-markets = []
 
 try:
     binance_rest_client = Client(binance_api_key, binance_api_secret)
@@ -87,6 +86,7 @@ binance_websocket_api_manager = BinanceWebSocketApiManager()
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
 
+markets = []
 data = binance_rest_client.get_all_tickers()
 for item in data:
     markets.append(item['symbol'])
@@ -105,9 +105,12 @@ private_stream_id_bob = binance_websocket_api_manager.create_stream(["!userData"
 
 binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
 
-max_subscriptions = binance_websocket_api_manager.get_limit_of_subscriptions_per_stream()
-
 for channel in channels:
+    if "bookTicker" == channel or "depth@100ms" == channel:
+        max_subscriptions = math.ceil(binance_websocket_api_manager.get_limit_of_subscriptions_per_stream() / 4)
+    else:
+        divisor = math.ceil(len(markets) / binance_websocket_api_manager.get_limit_of_subscriptions_per_stream())
+        max_subscriptions = math.ceil(len(markets) / divisor)
     if len(markets) <= max_subscriptions:
         binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
     else:

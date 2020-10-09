@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: dev_test_cex_full_non_stop.py
+# File: dev_live_demo.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -11,7 +11,7 @@
 # Author: Oliver Zehentleitner
 #         https://about.me/oliver-zehentleitner
 #
-# Copyright (c) 2019-2020, Oliver Zehentleitner
+# Copyright (c) 2019, Oliver Zehentleitner
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -45,21 +45,14 @@ import threading
 try:
     from binance.client import Client
 except ImportError:
-    print("Please install `python-binance`! https://pypi.org/project/python-binance/#description")
+    print("Please install `python-binance`!")
+    sys.exit(1)
+try:
+    import IPython
+except ImportError:
+    print("Please install `ipython`!")
     sys.exit(1)
 
-
-def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
-    time.sleep(30)
-    while True:
-        if binance_websocket_api_manager.is_manager_stopping():
-            exit(0)
-        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
-        if oldest_stream_data_from_stream_buffer is False:
-            time.sleep(0.01)
-
-
-# https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(level=logging.INFO,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
@@ -67,53 +60,64 @@ logging.basicConfig(level=logging.INFO,
 
 binance_api_key = ""
 binance_api_secret = ""
-cpu_cores = 4
+
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
             'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
 arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
+markets = []
+cpu_cores = 4
 
-# create instance of BinanceWebSocketApiManager
-#binance_websocket_api_manager = BinanceWebSocketApiManager(throw_exception_if_unrepairable=True)
-binance_websocket_api_manager = BinanceWebSocketApiManager(throw_exception_if_unrepairable=False)
 
-print("starting monitoring api!")
-binance_websocket_api_manager.start_monitoring_api()
+def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
+    while True:
+        if binance_websocket_api_manager.is_manager_stopping():
+            exit(0)
+        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+        if oldest_stream_data_from_stream_buffer is not False:
+            pass
+        else:
+            time.sleep(0.01)
+
+
+def ps(manager):
+    while True:
+        manager.print_summary_to_png("/var/www/html/", hight_per_row=13.5)
+        time.sleep(10)
+
 
 try:
     binance_rest_client = Client(binance_api_key, binance_api_secret)
-    binance_websocket_api_manager = BinanceWebSocketApiManager()
+    ws_manager = BinanceWebSocketApiManager()
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
 
-# start a worker process to move the received stream_data from the stream_buffer to a print function
-worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ws_manager,))
 worker_thread.start()
 
-markets = []
+ipython_thread = threading.Thread(target=ps, args=(ws_manager,))
+ipython_thread.start()
+
 data = binance_rest_client.get_all_tickers()
 for item in data:
     markets.append(item['symbol'])
 
-private_stream_id = binance_websocket_api_manager.create_stream(["!userData"],
-                                                                ["arr"],
-                                                                api_key=binance_api_key,
-                                                                api_secret=binance_api_secret,
-                                                                stream_label="userData stream!")
-
-binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="`arr` channels")
-
-max_subscriptions = binance_websocket_api_manager.get_limit_of_subscriptions_per_stream()
+userdata_stream_id = ws_manager.create_stream(["!userData"],
+                                              ["arr"],
+                                              "userData stream",
+                                              api_key=binance_api_key,
+                                              api_secret=binance_api_secret)
+arr_stream_id = ws_manager.create_stream(arr_channels, "arr", "arr channels")
 
 for channel in channels:
     if "bookTicker" == channel or "depth@100ms" == channel:
-        max_subscriptions = math.ceil(binance_websocket_api_manager.get_limit_of_subscriptions_per_stream() / 4)
+        max_subscriptions = math.ceil(ws_manager.get_limit_of_subscriptions_per_stream() / 4)
     else:
-        divisor = math.ceil(len(markets) / binance_websocket_api_manager.get_limit_of_subscriptions_per_stream())
+        divisor = math.ceil(len(markets) / ws_manager.get_limit_of_subscriptions_per_stream())
         max_subscriptions = math.ceil(len(markets) / divisor)
     if len(markets) <= max_subscriptions:
-        binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
+        ws_manager.create_stream(channel, markets, stream_label=channel)
     else:
         loops = 1
         i = 1
@@ -121,12 +125,10 @@ for channel in channels:
         for market in markets:
             markets_sub.append(market)
             if i == max_subscriptions or loops*max_subscriptions + i == len(markets):
-                binance_websocket_api_manager.create_stream(channel, markets_sub, stream_label=str(channel+"_"+str(i)))
+                ws_manager.create_stream(channel, markets_sub, stream_label=str(channel+"_"+str(i)))
                 markets_sub = []
                 i = 1
                 loops += 1
             i += 1
 
-while True:
-    binance_websocket_api_manager.print_summary()
-    time.sleep(1)
+IPython.embed()
