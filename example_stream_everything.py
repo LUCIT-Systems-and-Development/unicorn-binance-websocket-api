@@ -48,6 +48,14 @@ except ImportError:
     print("Please install `python-binance`! https://pypi.org/project/python-binance/#description")
     sys.exit(1)
 
+binance_api_key = ""
+binance_api_secret = ""
+cpu_cores = 4
+channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
+            'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
+            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
+arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
+
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(level=logging.INFO,
                     filename=os.path.basename(__file__) + '.log',
@@ -64,15 +72,6 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             pass
         else:
             time.sleep(0.01)
-
-
-binance_api_key = ""
-binance_api_secret = ""
-cpu_cores = 4
-channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
-            'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
-            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
-arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
 
 try:
     binance_rest_client = Client(binance_api_key, binance_api_secret)
