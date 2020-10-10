@@ -50,7 +50,6 @@ except ImportError:
 
 binance_api_key = ""
 binance_api_secret = ""
-cpu_cores = 4
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
             'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
@@ -104,12 +103,10 @@ private_stream_id_bob = binance_websocket_api_manager.create_stream(["!userData"
 
 binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
 
+divisor = math.ceil(len(markets) / binance_websocket_api_manager.get_limit_of_subscriptions_per_stream())
+max_subscriptions = math.ceil(len(markets) / divisor)
+
 for channel in channels:
-    if "bookTicker" == channel or "depth@100ms" == channel:
-        max_subscriptions = math.ceil(len(markets) / 4)
-    else:
-        divisor = math.ceil(len(markets) / binance_websocket_api_manager.get_limit_of_subscriptions_per_stream())
-        max_subscriptions = math.ceil(len(markets) / divisor)
     if len(markets) <= max_subscriptions:
         binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
     else:
@@ -124,6 +121,7 @@ for channel in channels:
                 i = 1
                 loops += 1
             i += 1
+
 while True:
     binance_websocket_api_manager.print_summary()
     time.sleep(1)

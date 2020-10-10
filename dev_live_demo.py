@@ -55,10 +55,12 @@ except ImportError:
 
 binance_api_key = ""
 binance_api_secret = ""
-cpu_cores = 4
-channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
-            'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
-            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
+
+#channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
+#            'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
+#            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
+channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h',
+            'kline_1d', 'miniTicker', 'ticker', 'bookTicker', 'depth20', 'depth@100ms'}
 arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
 
 logging.basicConfig(level=logging.INFO,
@@ -109,12 +111,10 @@ userdata_stream_id = ws_manager.create_stream(["!userData"],
                                               api_secret=binance_api_secret)
 arr_stream_id = ws_manager.create_stream(arr_channels, "arr", "arr channels")
 
+divisor = math.ceil(len(markets) / ws_manager.get_limit_of_subscriptions_per_stream())
+max_subscriptions = math.ceil(len(markets) / divisor)
+
 for channel in channels:
-    if "bookTicker" == channel or "depth@100ms" == channel:
-        max_subscriptions = math.ceil(len(markets) / 4)
-    else:
-        divisor = math.ceil(len(markets) / ws_manager.get_limit_of_subscriptions_per_stream())
-        max_subscriptions = math.ceil(len(markets) / divisor)
     if len(markets) <= max_subscriptions:
         ws_manager.create_stream(channel, markets, stream_label=channel)
     else:
