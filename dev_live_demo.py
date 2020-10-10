@@ -80,7 +80,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             time.sleep(0.01)
 
 
-def ps(manager):
+def print_stream_to_png(manager):
     while True:
         manager.print_summary_to_png("/var/www/html/", hight_per_row=13.5)
         time.sleep(10)
@@ -96,7 +96,7 @@ except requests.exceptions.ConnectionError:
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ws_manager,))
 worker_thread.start()
 
-ipython_thread = threading.Thread(target=ps, args=(ws_manager,))
+ipython_thread = threading.Thread(target=print_stream_to_png, args=(ws_manager,))
 ipython_thread.start()
 
 markets = []
