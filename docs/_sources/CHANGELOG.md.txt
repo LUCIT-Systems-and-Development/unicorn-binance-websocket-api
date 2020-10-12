@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - [`output_default`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default)
   to `BinanceWebSocketApiManager` 
-  [`get_user_agent()`]()
+  [`get_user_agent()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_user_agent)
 ## Removed
 - unused import of `ujson` in connection class
 - 4 parameters from `_create_stream_thread`
