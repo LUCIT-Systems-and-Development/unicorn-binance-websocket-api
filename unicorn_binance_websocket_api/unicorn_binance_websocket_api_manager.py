@@ -1978,7 +1978,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                            <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id>`_
                            automatically.
         :type request_id: int
-        :return: int (request_id)
+        :return: request_id (int)
         """
         if request_id is False:
             request_id = self.get_request_id()
