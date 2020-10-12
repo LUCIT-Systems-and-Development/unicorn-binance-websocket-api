@@ -128,12 +128,11 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param show_secrets_in_logs: set to True to show secrets like listen_key, api_key or api_secret in log file
                                  (default=False)
     :type show_secrets_in_logs: bool
-    :param output: the default setting `raw_data` can be overruled with the parameter
-                       `output_default <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
-                       of BinanceWebSocketApiManager` - set to "dict" to convert the received raw data to a python
-                       dict,  set to "UnicornFy" to convert with
-                       `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ -  otherwise with the default
-                   setting "raw_data" the output remains unchanged and gets delivered as received from the endpoints
+    :param output_default: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to
+                           convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ -  otherwise
+                           with the default setting "raw_data" the output remains unchanged and gets delivered as
+                           received from the endpoints. Change this for a specific stream with the `output` parameter
+                           of `create_stream()` and `replace_stream()`
     :type output_default: str
     """
 
@@ -289,12 +288,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param output: the default setting `raw_data` can be overruled with the parameter
+        :param output: the default setting `raw_data` can be globaly overwritten with the parameter
                        `output_default <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
-                       of BinanceWebSocketApiManager` - set to "dict" to convert the received raw data to a python
-                       dict,  set to "UnicornFy" to convert with
-                       `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ -  otherwise with the default
-                       setting "raw_data" the output remains unchanged and gets delivered as received from the endpoints
+                       of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
+                       set `output` to "dict" to convert the received raw data to a python dict,  set to "UnicornFy" to
+                       convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ -  otherwise with
+                       the default setting "raw_data" the output remains unchanged and gets delivered as received from
+                       the endpoints
         :type output: str
         """
 
@@ -925,12 +925,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param output: the default setting `raw_data` can be overruled with the parameter
+        :param output: the default setting `raw_data` can be globaly overwritten with the parameter
                        `output_default <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
-                       of BinanceWebSocketApiManager` - set to "dict" to convert the received raw data to a python
-                       dict,  set to "UnicornFy" to convert with
-                       `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ -  otherwise with the default
-                       setting "raw_data" the output remains unchanged and gets delivered as received from the endpoints
+                       of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
+                       set `output` to "dict" to convert the received raw data to a python dict,  set to "UnicornFy" to
+                       convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ -  otherwise with
+                       the default setting "raw_data" the output remains unchanged and gets delivered as received from
+                       the endpoints
         :type output: str
         :return: stream_id or 'False'
         """

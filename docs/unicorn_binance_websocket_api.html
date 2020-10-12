@@ -165,15 +165,11 @@ used</p></li>
 initialized. Default is 6 seconds.</p></li>
 <li><p><strong>show_secrets_in_logs</strong> (<em>bool</em>) – set to True to show secrets like listen_key, api_key or api_secret in log file
 (default=False)</p></li>
-<li><p><strong>output</strong> – <dl class="simple">
-<dt>the default setting <cite>raw_data</cite> can be overruled with the parameter</dt><dd><p><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager">output_default</a>
-of BinanceWebSocketApiManager` - set to “dict” to convert the received raw data to a python
-dict,  set to “UnicornFy” to convert with
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> -  otherwise with the default</p>
-</dd>
-</dl>
-<p>setting “raw_data” the output remains unchanged and gets delivered as received from the endpoints</p>
-</p></li>
+<li><p><strong>output_default</strong> (<em>str</em>) – set to “dict” to convert the received raw data to a python dict, set to “UnicornFy” to
+convert with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> -  otherwise
+with the default setting “raw_data” the output remains unchanged and gets delivered as
+received from the endpoints. Change this for a specific stream with the <cite>output</cite> parameter
+of <cite>create_stream()</cite> and <cite>replace_stream()</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -313,12 +309,13 @@ provide a string to create and use a shared stream_buffer and read it via
 <li><p><strong>api_key</strong> (<em>str</em>) – provide a valid Binance API key</p></li>
 <li><p><strong>api_secret</strong> (<em>str</em>) – provide a valid Binance API secret</p></li>
 <li><p><strong>symbols</strong> (<em>str</em>) – provide the symbols for isolated_margin user_data streams</p></li>
-<li><p><strong>output</strong> (<em>str</em>) – <p>the default setting <cite>raw_data</cite> can be overruled with the parameter
+<li><p><strong>output</strong> (<em>str</em>) – <p>the default setting <cite>raw_data</cite> can be globaly overwritten with the parameter
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager">output_default</a>
-of BinanceWebSocketApiManager` - set to “dict” to convert the received raw data to a python
-dict,  set to “UnicornFy” to convert with
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> -  otherwise with the default
-setting “raw_data” the output remains unchanged and gets delivered as received from the endpoints</p>
+of BinanceWebSocketApiManager`. To overrule the <cite>output_default</cite> value for this specific stream,
+set <cite>output</cite> to “dict” to convert the received raw data to a python dict,  set to “UnicornFy” to
+convert with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> -  otherwise with
+the default setting “raw_data” the output remains unchanged and gets delivered as received from
+the endpoints</p>
 </p></li>
 </ul>
 </dd>
@@ -1824,7 +1821,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
-    Last updated on Oct 12 2020 at 21:01 (CET).
+    Last updated on Oct 12 2020 at 21:19 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 
