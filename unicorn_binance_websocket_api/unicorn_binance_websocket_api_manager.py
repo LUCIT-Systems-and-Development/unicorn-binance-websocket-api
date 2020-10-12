@@ -576,7 +576,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         try:
             if self.restart_requests[stream_id]['status'] != "new":
-                logging.warning("BinanceWebSocketApiManager._restart_stream() please use `set_restart_request() "
+                logging.warning("BinanceWebSocketApiManager._restart_stream() please use `set_restart_request()` "
                                 "instead!")
                 return False
         except KeyError:
