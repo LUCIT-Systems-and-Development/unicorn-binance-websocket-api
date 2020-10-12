@@ -147,8 +147,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                  show_secrets_in_logs=False,
                  output_default="raw_data"):
         threading.Thread.__init__(self)
+        self.name = "unicorn-binance-websocket-api"
         self.version = "1.24.0.dev"
-        logging.info("New instance of unicorn_binance_websocket_api_manager " + self.version + " started ...")
+        logging.info(f"New instance of {self.get_user_agent()} started ...")
         colorama.init()
         if process_stream_data is False:
             # no special method to process stream data provided, so we use write_to_stream_buffer:
@@ -251,7 +252,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.replaced_secrets_text = "***SECRET_REMOVED***"
         self.restclient = BinanceWebSocketApiRestclient(self)
         if warn_on_update and self.is_update_availabe():
-            update_msg = "Release unicorn-binance-websocket-api_" + self.get_latest_version() + " is available, " \
+            update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
                          "please consider updating! (Changelog: https://github.com/oliver-zehentleitner/unicorn-" \
                          "binance-websocket-api/blob/master/CHANGELOG.md)"
             print(update_msg)
@@ -2080,6 +2081,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.total_receives
 
+    def get_user_agent(self):
+        """
+        Get the user_agent string "lib name + lib version + python version"
+
+        :return:
+        """
+        user_agent = f"{self.name}_{str(self.get_version())}-python_{str(platform.python_version())}"
+        return user_agent
+
     def get_version(self):
         """
         Get the package/module version
@@ -2441,9 +2451,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             stream_label_row = " stream_label: " + self.stream_list[stream_id]["stream_label"] + "\r\n"
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
-            print(str(self.fill_up_space_centered(96, " unicorn-binance-websocket-api_" +
-                                                  str(self.version) + "-python_" + platform.python_version() + " ",
-                                                  "=")) + "\r\n" +
+            print(str(self.fill_up_space_centered(96, f" {self.get_user_agent()} ", "=")) + "\r\n" +
                   " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
                   str(add_string) +
                   " stream_id:", str(stream_id), "\r\n" +
@@ -2629,8 +2637,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          ")\r\n"
             try:
                 print_text = (
-                    str(self.fill_up_space_centered(96, " unicorn-binance-websocket-api_" +
-                        str(self.version) + "-python_" + platform.python_version() + " ", "=")) + "\r\n" +
+                    str(self.fill_up_space_centered(96, f" {self.get_user_agent()} ", "=")) + "\r\n" +
                     " exchange: " + str(self.stream_list[stream_id]['exchange']) + "\r\n" +
                     " uptime: " + str(self.get_human_uptime(time.time() - self.start_time)) + " since " +
                     str(self.get_date_of_timestamp(self.start_time)) + "\r\n" +

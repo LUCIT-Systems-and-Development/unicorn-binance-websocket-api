@@ -193,7 +193,7 @@ class BinanceWebSocketApiRestclient(object):
         :rtype: str or False
         """
         requests_headers = {'Accept': 'application/json',
-                            'User-Agent': f'unicorn-binance-websocket-api_{self.manager.get_version()}',
+                            'User-Agent': str(self.manager.get_user_agent()),
                             'X-MBX-APIKEY': str(self.api_key)}
         if query is not False:
             uri = self.restful_base_uri + path + "?" + query

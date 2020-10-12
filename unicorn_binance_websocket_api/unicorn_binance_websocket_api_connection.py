@@ -119,9 +119,10 @@ class BinanceWebSocketApiConnection(object):
             logging.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
                              ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 1 - "
                              + str(error_msg))
-        self._conn = connect(uri, ping_interval=20, close_timeout=10,
-                             extra_headers={'User-Agent': 'unicorn-binance-websocket-api_' +
-                                            self.manager.version})
+        self._conn = connect(uri,
+                             ping_interval=20,
+                             close_timeout=10,
+                             extra_headers={'User-Agent': str(self.manager.get_user_agent())})
         try:
             try:
                 self.manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
