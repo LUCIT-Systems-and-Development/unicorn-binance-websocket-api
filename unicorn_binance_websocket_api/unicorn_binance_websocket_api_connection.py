@@ -273,8 +273,7 @@ class BinanceWebSocketApiConnection(object):
                 size = sys.getsizeof(received_data_json)
                 self.manager.increase_processed_receives_statistic(self.stream_id)
                 self.manager.add_total_received_bytes(size)
-                self.manager.increase_received_bytes_per_second(self.stream_id,
-                                                                                              size)
+                self.manager.increase_received_bytes_per_second(self.stream_id, size)
             return received_data_json
         except RuntimeError as error_msg:
             logging.error("BinanceWebSocketApiConnection.receive(" +
