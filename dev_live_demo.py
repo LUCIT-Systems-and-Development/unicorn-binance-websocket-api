@@ -96,8 +96,8 @@ except requests.exceptions.ConnectionError:
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ws_manager,))
 worker_thread.start()
 
-ipython_thread = threading.Thread(target=print_stream_to_png, args=(ws_manager,))
-ipython_thread.start()
+export_thread = threading.Thread(target=print_stream_to_png, args=(ws_manager,))
+export_thread.start()
 
 markets = []
 data = binance_rest_client.get_all_tickers()
