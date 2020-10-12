@@ -103,7 +103,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         - https://docs.binance.org/api-reference/dex-api/ws-connection.html
 
-
     :param process_stream_data: Provide a function/method to process the received webstream data. The function
                                 will be called instead of
                                 `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_

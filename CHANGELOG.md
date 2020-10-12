@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.24.0.dev (development stage/unreleased/unstable)
+## 1.25.0.dev (development stage/unreleased/unstable)
+
+## 1.25.0
+### Added
+- [`get_user_agent()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_user_agent)
 ### Changed
 - `get_stream_subscriptions()` returns now the used `request_id` instead of `True`
 
@@ -13,7 +17,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - [`output_default`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default)
   to `BinanceWebSocketApiManager` 
-  [`get_user_agent()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_user_agent)
 ## Removed
 - unused import of `ujson` in connection class
 - 4 parameters from `_create_stream_thread`
