@@ -401,6 +401,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         This method gets started as a thread and is doing the frequent checks
         """
         frequent_checks_id = time.time()
+        cpu_usage_time = False
         with self.frequent_checks_list_lock:
             self.frequent_checks_list[frequent_checks_id] = {'last_heartbeat': 0,
                                                              'stop_request': None,
@@ -421,8 +422,16 @@ class BinanceWebSocketApiManager(threading.Thread):
             active_stream_list = self.get_active_stream_list()
             # check CPU stats
             cpu = self.get_process_usage_cpu()
-            if cpu > 95:
-                logging.warning(f"BinanceWebSocketApiManager._frequent_checks() - High CPU usage: {str(cpu)}")
+            if cpu >= 95:
+                time_of_waiting = 5
+                if cpu_usage_time is False:
+                    cpu_usage_time = time.time()
+                elif (time.time() - cpu_usage_time) > time_of_waiting:
+                    logging.warning(f"BinanceWebSocketApiManager._frequent_checks() - High CPU usage since "
+                                    f"{str(time_of_waiting)} seconds: {str(cpu)}")
+                    cpu_usage_time = False
+            else:
+                cpu_usage_time = False
             # count most_receives_per_second total last second
             if active_stream_list:
                 for stream_id in active_stream_list:
