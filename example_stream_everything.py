@@ -33,7 +33,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+import unicorn_binance_websocket_api
 import logging
 import math
 import os
@@ -78,7 +78,7 @@ except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
 
-binance_websocket_api_manager = BinanceWebSocketApiManager()
+binance_websocket_api_manager = unicorn_binance_websocket_api.BinanceWebSocketApiManager()
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))

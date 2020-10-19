@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_version_of_this_package.py
+# File: example_plotting_bnbbtc_price.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -33,24 +33,41 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-import unicorn_binance_websocket_api
+import unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager as ubwam
+import datetime as dt
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
-# create instance of BinanceWebSocketApiManager
-binance_websocket_api_manager = unicorn_binance_websocket_api.BinanceWebSocketApiManager()
+binance_websocket_api_manager = ubwam.BinanceWebSocketApiManager()
+binance_websocket_api_manager.create_stream("trade", "bnbbtc", output="UnicornFy")
 
-# get version of the used UNICORN Binance WebSocket API
-if binance_websocket_api_manager.is_update_availabe():
-    print("Please upgrade to " + binance_websocket_api_manager.get_latest_version() + ", you are on",
-          binance_websocket_api_manager.get_version())
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+xs = []
+ys = []
 
-    latest_release_info = binance_websocket_api_manager.get_latest_release_info()
-    if latest_release_info:
-        print("Please download the latest release or run `pip install unicorn-binance-websocket-api --upgrade`: ")
-        print("\ttar: " + latest_release_info["tarball_url"])
-        print("\tzip: " + latest_release_info["zipball_url"])
-        print("release info:")
-        print(latest_release_info["body"])
-else:
-    print(binance_websocket_api_manager.get_version(), "is the latest version!")
+print("Please wait a few seconds until enough data has been received!")
 
-binance_websocket_api_manager.stop_manager_with_all_streams()
+
+def animate(i, xs, ys):
+    data = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+    try:
+        if data['stream_type']:
+            xs.append(dt.datetime.fromtimestamp(data['trade_time'] / 1000))
+            ys.append(float(data['price']))
+
+            ax.clear()
+            ax.plot(xs, ys)
+
+            plt.xticks(rotation=45, ha='right')
+            plt.subplots_adjust(bottom=0.30)
+            plt.title('BNB Price @ Binance.com')
+            plt.ylabel('BTC Value')
+    except KeyError:
+        pass
+    except TypeError:
+        pass
+
+
+ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=5)
+plt.show()
