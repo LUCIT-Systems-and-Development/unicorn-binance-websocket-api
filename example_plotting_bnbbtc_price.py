@@ -61,7 +61,7 @@ def animate(i, xs, ys):
 
             plt.xticks(rotation=45, ha='right')
             plt.subplots_adjust(bottom=0.30)
-            plt.title('BNB Price @ Binance.com')
+            plt.title('Live BNB Price @ Binance.com')
             plt.ylabel('BTC Value')
     except KeyError:
         pass
