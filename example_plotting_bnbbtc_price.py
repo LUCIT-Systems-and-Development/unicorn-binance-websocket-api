@@ -35,16 +35,22 @@
 
 import unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager as ubwam
 import datetime as dt
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+try:
+    import matplotlib.pyplot as plt
+    import matplotlib.animation as animation
+except ImportError:
+    print("Please install `matplotlib`! https://pypi.org/project/matplotlib")
+    exit(1)
 
 binance_websocket_api_manager = ubwam.BinanceWebSocketApiManager()
 binance_websocket_api_manager.create_stream("trade", "bnbbtc", output="UnicornFy")
 
-fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
 xs = []
 ys = []
+title = "Live BNB Price @ Binance.com"
+fig = plt.figure()
+fig.canvas.set_window_title(title)
+ax = fig.add_subplot(1, 1, 1)
 
 print("Please wait a few seconds until enough data has been received!")
 
@@ -61,7 +67,7 @@ def animate(i, xs, ys):
 
             plt.xticks(rotation=45, ha='right')
             plt.subplots_adjust(bottom=0.30)
-            plt.title('Live BNB Price @ Binance.com')
+            plt.title(title)
             plt.ylabel('BTC Value')
     except KeyError:
         pass
