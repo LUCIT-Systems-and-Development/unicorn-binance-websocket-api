@@ -1319,7 +1319,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_errors_from_endpoints(self):
         """
-        Get the error messages sent by the endpoints.
+        Get all the stored error messages from the ringbuffer sent by the endpoints.
 
         :return: list
         """
@@ -1877,7 +1877,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_results_from_endpoints(self):
         """
-        Get the result messages sent by the endpoints.
+        Get all the stored result messages from the ringbuffer sent by the endpoints.
 
         :return: list
         """
