@@ -782,10 +782,24 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id">
 <code class="sig-name descname">get_request_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a unique request ID</p>
+<dd><p>Get a unique <cite>request_id</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id">
+<code class="sig-name descname">get_result_by_request_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request_id</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the result related to the provided <cite>request_id</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request_id</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>result</cite> or False</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1821,7 +1835,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
-    Last updated on Oct 22 2020 at 19:15 (CET).
+    Last updated on Oct 22 2020 at 20:03 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 
