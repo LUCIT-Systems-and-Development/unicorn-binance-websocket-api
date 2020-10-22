@@ -1994,7 +1994,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         the `stream_buffer` and is also added to the results ringbuffer - `get_results_from_endpoints()
         <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints>`_
         to get all results or use `get_result_by_request_id(request_id)
-        <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id>`
+        <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id>`_
 
         This function is supported by CEX endpoints only!
 
