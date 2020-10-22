@@ -242,20 +242,48 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - ./requirements.txt
 - ./setup.py
 
-## Howto
-- [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
-- [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.technopathy.club/2019/11/02/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2/)
-- [Binance Python API – A Step-by-Step Guide](https://algotrading101.com/learn/binance-python-api-guide/#what-is-the-binance-api) ([GitHub Repo](https://github.com/PythonForForex/Binance-api-step-by-step-guide))
+## Change Log
+[https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/CHANGELOG.html](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/CHANGELOG.html)
 
 ## Documentation
 - [General](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api)
 - [Modules](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html)
 
-## Source, Downloads, Examples, ...
-[https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
+## Examples
+- [example_binance_dex.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_dex.py)
+- [example_binance_futures.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_futures.py)
+- [example_binance_futures_1s.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_futures_1s.py)
+- [example_binance_jersey.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_jersey.py)
+- [example_binance_jex.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_jex.py)
+- [example_binance_us.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_us.py)
+- [example_bookticker.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_bookticker.py)
+- [example_demo.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_demo.py)
+- [example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py)
+- [example_kline_1m_with_unicorn_fy.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_kline_1m_with_unicorn_fy.py)
+- [example_monitoring.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_monitoring.py)
+- [example_multi_stream.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multi_stream.py)
+- [example_multiple_userdata_streams.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py)
+- [example_plotting_last_price.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_plotting_last_price.py)
+- [example_process_streams.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_process_streams.py)
+- [example_stream_buffer.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py)
+- [example_stream_buffer_extended.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py)
+- [example_stream_everything.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_everything.py)
+- [example_stream_management.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_management.py)
+- [example_stream_management_extended.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_management_extended.py)
+- [example_subscribe.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_subscribe.py)
+- [example_ticker_and_miniticker.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_ticker_and_miniticker.py)
+- [example_trade_stream.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_trade_stream.py)
+- [example_userdata_stream.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_userdata_stream.py)
+- [example_userdata_stream_new_style.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_userdata_stream_new_style.py)
+- [example_version_of_this_package.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py)
 
-## Change Log
-[https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/CHANGELOG.html](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/CHANGELOG.html)
+## Howto
+- [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
+- [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.technopathy.club/2019/11/02/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2/)
+- [Binance Python API – A Step-by-Step Guide](https://algotrading101.com/learn/binance-python-api-guide/#what-is-the-binance-api) ([GitHub Repo](https://github.com/PythonForForex/Binance-api-step-by-step-guide))
+
+## Project Homepage
+[https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
 
 ## Wiki
 [https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki)

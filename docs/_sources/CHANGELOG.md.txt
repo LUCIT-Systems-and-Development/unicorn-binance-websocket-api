@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.25.0.dev (development stage/unreleased/unstable)
+### Changed
+- log warning about high cpu usage is logged after 5 seconds if > 95% 
 
 ## 1.25.0
 ### Added
