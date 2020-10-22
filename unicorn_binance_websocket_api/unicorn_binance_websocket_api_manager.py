@@ -1862,7 +1862,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get the result related to the provided `request_id`
 
-        :param request_id: if you run `get_stream_subscriptions <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions>`_
+        :param request_id: if you run `get_stream_subscriptions()
+                           <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions>`_
                            it returns a unique `request_id` - provide it to this method to receive the result.
         :return: `result` or False
         """
