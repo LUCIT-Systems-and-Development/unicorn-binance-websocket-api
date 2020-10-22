@@ -55,6 +55,7 @@ import sys
 import threading
 import time
 import uuid
+import ujson as json
 
 
 class BinanceWebSocketApiManager(threading.Thread):
@@ -1849,13 +1850,28 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_request_id(self):
         """
-        Get a unique request ID
+        Get a unique `request_id`
 
         :return: int
         """
         with self.request_id_lock:
             self.request_id += 1
             return self.request_id
+
+    def get_result_by_request_id(self, request_id=False):
+        """
+        Get the result related to the provided `request_id`
+
+        :param request_id:
+        :return: `result` or False
+        """
+        if request_id is False:
+            return False
+        for result in self.ringbuffer_result:
+            result_dict = json.loads(result)
+            if result_dict['id'] == request_id:
+                return result
+        return False
 
     def get_results_from_endpoints(self):
         """
