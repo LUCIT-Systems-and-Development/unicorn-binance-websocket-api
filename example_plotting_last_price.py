@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_plotting_bnbbtc_price.py
+# File: example_plotting_last_price.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -43,11 +43,11 @@ except ImportError:
     exit(1)
 
 binance_websocket_api_manager = ubwam.BinanceWebSocketApiManager()
-binance_websocket_api_manager.create_stream("trade", "bnbbtc", output="UnicornFy")
+binance_websocket_api_manager.create_stream("trade", "btcusdt", output="UnicornFy")
 
 xs = []
 ys = []
-title = "Live BNB Price @ Binance.com"
+title = "Live BTC Price @ Binance.com"
 fig = plt.figure()
 fig.canvas.set_window_title(title)
 ax = fig.add_subplot(1, 1, 1)
@@ -61,14 +61,12 @@ def animate(i, xs, ys):
         if data['stream_type']:
             xs.append(dt.datetime.fromtimestamp(data['trade_time'] / 1000))
             ys.append(float(data['price']))
-
             ax.clear()
             ax.plot(xs, ys)
-
             plt.xticks(rotation=45, ha='right')
             plt.subplots_adjust(bottom=0.30)
             plt.title(title)
-            plt.ylabel('BTC Value')
+            plt.ylabel('USDT Value')
     except KeyError:
         pass
     except TypeError:
