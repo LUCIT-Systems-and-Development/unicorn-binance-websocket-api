@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.25.0.dev (development stage/unreleased/unstable)
 ### Added
+- `manager.set_heartbeat()` to `connection.send()`
+- parameter `ping_interval`,`ping_timeout`, `close_timeout` to [`manager.create_stream()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream)
 - [`get_result_by_request_id()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id)
 ### Changed
 - log warning about high cpu usage is logged after 5 seconds if > 95% 

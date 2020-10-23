@@ -58,6 +58,9 @@ class BinanceWebSocketApiConnection(object):
         self.socket_id = copy.deepcopy(socket_id)
         self.api_key = copy.deepcopy(self.manager.stream_list[stream_id]['api_key'])
         self.api_secret = copy.deepcopy(self.manager.stream_list[stream_id]['api_secret'])
+        self.ping_interval = copy.deepcopy(self.manager.stream_list[stream_id]['ping_interval'])
+        self.ping_timeout = copy.deepcopy(self.manager.stream_list[stream_id]['ping_timeout'])
+        self.close_timeout = copy.deepcopy(self.manager.stream_list[stream_id]['close_timeout'])
         self.channels = copy.deepcopy(channels)
         self.markets = copy.deepcopy(markets)
         self.symbols = copy.deepcopy(symbols)
@@ -120,8 +123,9 @@ class BinanceWebSocketApiConnection(object):
                              ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 1 - "
                              + str(error_msg))
         self._conn = connect(uri,
-                             ping_interval=20,
-                             close_timeout=10,
+                             ping_interval=self.ping_interval,
+                             ping_timeout=self.ping_timeout,
+                             close_timeout=self.close_timeout,
                              extra_headers={'User-Agent': str(self.manager.get_user_agent())})
         try:
             try:
@@ -307,6 +311,7 @@ class BinanceWebSocketApiConnection(object):
             sys.exit(1)
 
     async def send(self, data):
+        self.manager.set_heartbeat(self.stream_id)
         try:
             await self.manager.websocket_list[self.stream_id].send(data)
             self.manager.increase_transmitted_counter(self.stream_id)
