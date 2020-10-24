@@ -404,7 +404,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             if stream_buffer_name is not False:
                 self.stream_buffer_locks[stream_buffer_name] = threading.Lock()
                 try:
-                    # Not reseting the stream_buffer during a restart:
+                    # Not resetting the stream_buffer during a restart:
                     if self.stream_buffers[stream_buffer_name]:
                         pass
                 except KeyError:
@@ -2530,6 +2530,18 @@ class BinanceWebSocketApiManager(threading.Thread):
             dex_user_address_row = " user_address: " + str(self.stream_list[stream_id]["dex_user_address"]) + "\r\n"
         if self.stream_list[stream_id]["stream_label"] is not None:
             stream_label_row = " stream_label: " + self.stream_list[stream_id]["stream_label"] + "\r\n"
+        if isinstance(stream_info['ping_interval'], int):
+            ping_interval = f"{stream_info['ping_interval']} seconds"
+        else:
+            ping_interval = stream_info['ping_interval']
+        if isinstance(stream_info['ping_timeout'], int):
+            ping_timeout = f"{stream_info['ping_timeout']} seconds"
+        else:
+            ping_timeout = stream_info['ping_timeout']
+        if isinstance(stream_info['close_timeout'], int):
+            close_timeout = f"{stream_info['close_timeout']} seconds"
+        else:
+            close_timeout = stream_info['close_timeout']
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print(str(self.fill_up_space_centered(96, f" {self.get_user_agent()} ", "=")) + "\r\n" +
@@ -2544,6 +2556,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                   str(payload_row) +
                   str(status_row) +
                   str(dex_user_address_row) +
+                  f" ping_interval: {ping_interval}\r\n"
+                  f" ping_timeout: {ping_timeout}\r\n"
+                  f" close_timeout: {close_timeout}\r\n"
                   " start_time:", str(stream_info['start_time']), "\r\n"
                   " uptime:", str(uptime),
                   "since " + str(
@@ -2812,8 +2827,19 @@ class BinanceWebSocketApiManager(threading.Thread):
         text = text.replace("\033[0m", "")
         return text
 
-    def replace_stream(self, stream_id, new_channels, new_markets, new_stream_label=None, new_stream_buffer_name=False,
-                       new_api_key=False, new_api_secret=False, new_symbols=False, new_output="raw_data"):
+    def replace_stream(self,
+                       stream_id,
+                       new_channels,
+                       new_markets,
+                       new_stream_label=None,
+                       new_stream_buffer_name=False,
+                       new_api_key=False,
+                       new_api_secret=False,
+                       new_symbols=False,
+                       new_output="raw_data",
+                       new_ping_interval=20,
+                       new_ping_timeout=20,
+                       new_close_timeout=10):
         """
         Replace a stream
 
@@ -2845,10 +2871,40 @@ class BinanceWebSocketApiManager(threading.Thread):
                            with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
                            remains unchanged and gets delivered as received from the endpoints
         :type new_output: str
+        :param new_ping_interval: Once the connection is open, a `Ping frame`_ is sent every
+                                  `ping_interval` seconds. This serves as a keepalive. It helps keeping
+                                  the connection open, especially in the presence of proxies with short
+                                  timeouts on inactive connections. Set `ping_interval` to `None` to
+                                  disable this behavior. (default: 20)
+                                  This parameter is passed through to the `websockets.client.connect()
+                                  <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+        :type new_ping_interval: int or None
+        :param new_ping_timeout: If the corresponding `Pong frame` isn't received within
+                                 `ping_timeout` seconds, the connection is considered unusable and is closed with
+                                 code 1011. This ensures that the remote endpoint remains responsive. Set
+                                 `ping_timeout` to `None` to disable this behavior. (default: 20)
+                                 This parameter is passed through to the `websockets.client.connect()
+                                 <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+        :type new_ping_timeout: int or None
+        :param new_close_timeout: The `close_timeout` parameter defines a maximum wait time in seconds for
+                                  completing the closing handshake and terminating the TCP connection. (default: 10)
+                                  This parameter is passed through to the `websockets.client.connect()
+                                  <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+        :type new_close_timeout: int or None
+        :return: new_stream_id or 'False'
         """
         # starting a new socket and stop the old stream not before the new stream received its first record
-        new_stream_id = self.create_stream(new_channels, new_markets, new_stream_label, new_stream_buffer_name,
-                                           new_api_key, new_api_secret, new_symbols, new_output)
+        new_stream_id = self.create_stream(new_channels,
+                                           new_markets,
+                                           new_stream_label,
+                                           new_stream_buffer_name,
+                                           new_api_key,
+                                           new_api_secret,
+                                           new_symbols,
+                                           new_output,
+                                           new_ping_interval,
+                                           new_ping_timeout,
+                                           new_close_timeout)
         if self.wait_till_stream_has_started(new_stream_id):
             self.stop_stream(stream_id)
         return new_stream_id

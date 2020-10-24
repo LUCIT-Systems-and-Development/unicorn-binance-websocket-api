@@ -101,7 +101,8 @@ private_stream_id_bob = binance_websocket_api_manager.create_stream(["!userData"
                                                                     api_secret="bbb",
                                                                     stream_label="userData Bob")
 
-binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
+arr_stream_id = binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels",
+                                                            ping_interval=10, ping_timeout=10, close_timeout=5)
 
 divisor = math.ceil(len(markets) / binance_websocket_api_manager.get_limit_of_subscriptions_per_stream())
 max_subscriptions = math.ceil(len(markets) / divisor)
@@ -125,4 +126,5 @@ for channel in channels:
 
 while True:
     #binance_websocket_api_manager.print_summary()
+    binance_websocket_api_manager.print_stream_info(arr_stream_id)
     time.sleep(1)
