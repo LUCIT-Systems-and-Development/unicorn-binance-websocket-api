@@ -116,12 +116,13 @@ for channel in channels:
         for market in markets:
             markets_sub.append(market)
             if i == max_subscriptions or loops*max_subscriptions + i == len(markets):
-                binance_websocket_api_manager.create_stream(channel, markets_sub, stream_label=str(channel+"_"+str(i)))
+                binance_websocket_api_manager.create_stream(channel, markets_sub, stream_label=str(channel+"_"+str(i)),
+                                                            ping_interval=10, ping_timeout=10, close_timeout=5)
                 markets_sub = []
                 i = 1
                 loops += 1
             i += 1
 
 while True:
-    binance_websocket_api_manager.print_summary()
+    #binance_websocket_api_manager.print_summary()
     time.sleep(1)

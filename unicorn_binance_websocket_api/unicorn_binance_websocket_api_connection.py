@@ -122,6 +122,7 @@ class BinanceWebSocketApiConnection(object):
             logging.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
                              ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 1 - "
                              + str(error_msg))
+        print(f"{self.ping_interval}, {self.ping_timeout}, {self.close_timeout}")
         self._conn = connect(uri,
                              ping_interval=self.ping_interval,
                              ping_timeout=self.ping_timeout,
