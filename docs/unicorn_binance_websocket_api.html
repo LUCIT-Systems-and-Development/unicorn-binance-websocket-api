@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.25.0 documentation</title>
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.26.0 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -41,7 +41,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.25.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.26.0 documentation</a> &#187;
     
 
         <li class="nav-item nav-item-this"><a href="">unicorn_binance_websocket_api package</a></li>
@@ -254,7 +254,7 @@ provide a string to create and use a shared stream_buffer and read it via
 
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">
-<code class="sig-name descname">create_stream</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">channels</span></em>, <em class="sig-param"><span class="n">markets</span></em>, <em class="sig-param"><span class="n">stream_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stream_buffer_name</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_secret</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">output</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_stream</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">channels</span></em>, <em class="sig-param"><span class="n">markets</span></em>, <em class="sig-param"><span class="n">stream_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stream_buffer_name</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">api_secret</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">symbols</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">output</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ping_interval</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">ping_timeout</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">close_timeout</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a websocket stream</p>
 <p>If you provide 2 markets and 2 channels, then you are going to create 4 subscriptions (markets * channels).</p>
 <blockquote>
@@ -316,6 +316,22 @@ set <cite>output</cite> to “dict” to convert the received raw data to a pyth
 convert with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> -  otherwise with
 the default setting “raw_data” the output remains unchanged and gets delivered as received from
 the endpoints</p>
+</p></li>
+<li><p><strong>ping_interval</strong> (<em>int</em><em> or </em><em>None</em>) – Once the connection is open, a <cite>Ping frame</cite> is sent every
+<cite>ping_interval</cite> seconds. This serves as a keepalive. It helps keeping
+the connection open, especially in the presence of proxies with short
+timeouts on inactive connections. Set <cite>ping_interval</cite> to <cite>None</cite> to
+disable this behavior. (default: 20)
+This parameter is passed through to the <a class="reference external" href="https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect">websockets.client.connect()</a></p></li>
+<li><p><strong>ping_timeout</strong> (<em>int</em><em> or </em><em>None</em>) – <p>If the corresponding <cite>Pong frame</cite> isn’t received within
+<cite>ping_timeout</cite> seconds, the connection is considered unusable and is closed with
+code 1011. This ensures that the remote endpoint remains responsive. Set
+<cite>ping_timeout</cite> to <cite>None</cite> to disable this behavior. (default: 20)
+This parameter is passed through to the <a class="reference external" href="https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect">websockets.client.connect()</a></p>
+</p></li>
+<li><p><strong>close_timeout</strong> (<em>int</em><em> or </em><em>None</em>) – <p>The <cite>close_timeout</cite> parameter defines a maximum wait time in seconds for
+completing the closing handshake and terminating the TCP connection. (default: 10)
+This parameter is passed through to the <a class="reference external" href="https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect">websockets.client.connect()</a></p>
 </p></li>
 </ul>
 </dd>
@@ -499,7 +515,7 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_errors_from_endpoints">
 <code class="sig-name descname">get_errors_from_endpoints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_errors_from_endpoints" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the error messages sent by the endpoints.</p>
+<dd><p>Get all the stored error messages from the ringbuffer sent by the endpoints.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list</p>
@@ -808,7 +824,7 @@ it returns a unique <cite>request_id</cite> - provide it to this method to recei
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints">
 <code class="sig-name descname">get_results_from_endpoints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the result messages sent by the endpoints.</p>
+<dd><p>Get all the stored result messages from the ringbuffer sent by the endpoints.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list</p>
@@ -1284,7 +1300,7 @@ please provide a path like “/var/www/html/”. <a class="reference external" h
 
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream">
-<code class="sig-name descname">replace_stream</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span></em>, <em class="sig-param"><span class="n">new_channels</span></em>, <em class="sig-param"><span class="n">new_markets</span></em>, <em class="sig-param"><span class="n">new_stream_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">new_stream_buffer_name</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">new_api_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">new_api_secret</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">new_symbols</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">new_output</span><span class="o">=</span><span class="default_value">'raw_data'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">replace_stream</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_id</span></em>, <em class="sig-param"><span class="n">new_channels</span></em>, <em class="sig-param"><span class="n">new_markets</span></em>, <em class="sig-param"><span class="n">new_stream_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">new_stream_buffer_name</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">new_api_key</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">new_api_secret</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">new_symbols</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">new_output</span><span class="o">=</span><span class="default_value">'raw_data'</span></em>, <em class="sig-param"><span class="n">new_ping_interval</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">new_ping_timeout</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">new_close_timeout</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace a stream</p>
 <p>If you want to start a stream with a new config, its recommended, to first start a new stream with the new
 settings and close the old stream not before the new stream received its first data. So your data will stay
@@ -1307,10 +1323,30 @@ provide a string to create and use a shared stream_buffer and read it via
 with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> - otherwise the output
 remains unchanged and gets delivered as received from the endpoints</p>
 </p></li>
+<li><p><strong>new_ping_interval</strong> (<em>int</em><em> or </em><em>None</em>) – <p>Once the connection is open, a <cite>Ping frame</cite> is sent every
+<cite>ping_interval</cite> seconds. This serves as a keepalive. It helps keeping
+the connection open, especially in the presence of proxies with short
+timeouts on inactive connections. Set <cite>ping_interval</cite> to <cite>None</cite> to
+disable this behavior. (default: 20)
+This parameter is passed through to the <a class="reference external" href="https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect">websockets.client.connect()</a></p>
+</p></li>
+<li><p><strong>new_ping_timeout</strong> (<em>int</em><em> or </em><em>None</em>) – <p>If the corresponding <cite>Pong frame</cite> isn’t received within
+<cite>ping_timeout</cite> seconds, the connection is considered unusable and is closed with
+code 1011. This ensures that the remote endpoint remains responsive. Set
+<cite>ping_timeout</cite> to <cite>None</cite> to disable this behavior. (default: 20)
+This parameter is passed through to the <a class="reference external" href="https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect">websockets.client.connect()</a></p>
+</p></li>
+<li><p><strong>new_close_timeout</strong> (<em>int</em><em> or </em><em>None</em>) – <p>The <cite>close_timeout</cite> parameter defines a maximum wait time in seconds for
+completing the closing handshake and terminating the TCP connection. (default: 10)
+This parameter is passed through to the <a class="reference external" href="https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect">websockets.client.connect()</a></p>
+</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>new stream_id</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>new_stream_id or ‘False’</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1823,7 +1859,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.25.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.26.0 documentation</a> &#187;
     
 
         <li class="nav-item nav-item-this"><a href="">unicorn_binance_websocket_api package</a></li>
@@ -1838,7 +1874,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
-    Last updated on Oct 22 2020 at 20:17 (CET).
+    Last updated on Oct 25 2020 at 01:57 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 

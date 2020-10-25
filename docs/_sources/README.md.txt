@@ -352,4 +352,4 @@ ZEC: t1WvQMPJMriGWD9qkZGDdE9tTJaawvmsBie
 ```
 ## You need a Python Dev?
 If you would like to [hire me](https://about.me/oliver-zehentleitner) for a Python project, you can book me through 
-my company [LUCIT](https://www.lucit.co/desktop-and-server-apps.html).
+my company [LUCIT IT-Management GmbH](https://www.lucit.co/desktop-and-server-apps.html).

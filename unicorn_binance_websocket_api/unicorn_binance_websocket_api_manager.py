@@ -299,25 +299,25 @@ class BinanceWebSocketApiManager(threading.Thread):
                        convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ -  otherwise with
                        the default setting "raw_data" the output remains unchanged and gets delivered as received from
                        the endpoints
-        :param ping_interval: Once the connection is open, a `Ping frame`_ is sent every
+        :param ping_interval: Once the connection is open, a `Ping frame` is sent every
                               `ping_interval` seconds. This serves as a keepalive. It helps keeping
                               the connection open, especially in the presence of proxies with short
                               timeouts on inactive connections. Set `ping_interval` to `None` to
                               disable this behavior. (default: 20)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type ping_interval: int or None
         :param ping_timeout: If the corresponding `Pong frame` isn't received within
                              `ping_timeout` seconds, the connection is considered unusable and is closed with
                              code 1011. This ensures that the remote endpoint remains responsive. Set
                              `ping_timeout` to `None` to disable this behavior. (default: 20)
                              This parameter is passed through to the `websockets.client.connect()
-                             <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+                             <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type ping_timeout: int or None
         :param close_timeout: The `close_timeout` parameter defines a maximum wait time in seconds for
                               completing the closing handshake and terminating the TCP connection. (default: 10)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type close_timeout: int or None
         :type output: str
         """
@@ -971,25 +971,25 @@ class BinanceWebSocketApiManager(threading.Thread):
                        the default setting "raw_data" the output remains unchanged and gets delivered as received from
                        the endpoints
         :type output: str
-        :param ping_interval: Once the connection is open, a `Ping frame`_ is sent every
+        :param ping_interval: Once the connection is open, a `Ping frame` is sent every
                               `ping_interval` seconds. This serves as a keepalive. It helps keeping
                               the connection open, especially in the presence of proxies with short
                               timeouts on inactive connections. Set `ping_interval` to `None` to
                               disable this behavior. (default: 20)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type ping_interval: int or None
         :param ping_timeout: If the corresponding `Pong frame` isn't received within
                              `ping_timeout` seconds, the connection is considered unusable and is closed with
                              code 1011. This ensures that the remote endpoint remains responsive. Set
                              `ping_timeout` to `None` to disable this behavior. (default: 20)
                              This parameter is passed through to the `websockets.client.connect()
-                             <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+                             <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type ping_timeout: int or None
         :param close_timeout: The `close_timeout` parameter defines a maximum wait time in seconds for
                               completing the closing handshake and terminating the TCP connection. (default: 10)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type close_timeout: int or None
         :return: stream_id or 'False'
         """
@@ -2871,25 +2871,25 @@ class BinanceWebSocketApiManager(threading.Thread):
                            with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
                            remains unchanged and gets delivered as received from the endpoints
         :type new_output: str
-        :param new_ping_interval: Once the connection is open, a `Ping frame`_ is sent every
+        :param new_ping_interval: Once the connection is open, a `Ping frame` is sent every
                                   `ping_interval` seconds. This serves as a keepalive. It helps keeping
                                   the connection open, especially in the presence of proxies with short
                                   timeouts on inactive connections. Set `ping_interval` to `None` to
                                   disable this behavior. (default: 20)
                                   This parameter is passed through to the `websockets.client.connect()
-                                  <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+                                  <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type new_ping_interval: int or None
         :param new_ping_timeout: If the corresponding `Pong frame` isn't received within
                                  `ping_timeout` seconds, the connection is considered unusable and is closed with
                                  code 1011. This ensures that the remote endpoint remains responsive. Set
                                  `ping_timeout` to `None` to disable this behavior. (default: 20)
                                  This parameter is passed through to the `websockets.client.connect()
-                                 <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+                                 <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type new_ping_timeout: int or None
         :param new_close_timeout: The `close_timeout` parameter defines a maximum wait time in seconds for
                                   completing the closing handshake and terminating the TCP connection. (default: 10)
                                   This parameter is passed through to the `websockets.client.connect()
-                                  <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>_
+                                  <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type new_close_timeout: int or None
         :return: new_stream_id or 'False'
         """
