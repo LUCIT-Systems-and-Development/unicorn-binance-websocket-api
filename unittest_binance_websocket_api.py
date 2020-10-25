@@ -757,7 +757,8 @@ class TestRestApi(unittest.TestCase):
                    'wrxbtc', 'pptbtc', 'nknbtc', 'zecusdt', 'stormeth', 'qtumusdt']
 
         for channel in channels:
-            stream_id2 = binance_websocket_api_manager.create_stream(channel, markets, stream_buffer_name=channel)
+            stream_id2 = binance_websocket_api_manager.create_stream(channel, markets, stream_buffer_name=channel,
+                                                                     ping_interval=10, ping_timeout=10, close_timeout=5)
 
         stream_id3 = binance_websocket_api_manager.create_stream(channel, markets, stream_buffer_name=True)
         time.sleep(10)
@@ -769,8 +770,9 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
         binance_websocket_api_manager.pop_stream_data_from_stream_buffer(stream_buffer_name="invalid")
-        binance_websocket_api_manager.replace_stream(stream_id1, 'trade', 'kncbtc', "name")
-
+        stream_id_1_1 = binance_websocket_api_manager.replace_stream(stream_id1, 'trade', 'kncbtc', "name")
+        binance_websocket_api_manager.replace_stream(stream_id_1_1, 'trade', 'kncbtc', "name",
+                                                     new_ping_interval=10, new_ping_timeout=10, new_close_timeout=5)
         binance_websocket_api_manager.get_results_from_endpoints()
         binance_websocket_api_manager.get_binance_api_status()
         binance_websocket_api_manager.get_start_time()

@@ -1909,21 +1909,26 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.request_id += 1
             return self.request_id
 
-    def get_result_by_request_id(self, request_id=False):
+    def get_result_by_request_id(self, request_id=False, timeout=10):
         """
         Get the result related to the provided `request_id`
 
         :param request_id: if you run `get_stream_subscriptions()
                            <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions>`_
                            it returns a unique `request_id` - provide it to this method to receive the result.
+        :type request_id: stream_id (uuid)
+        :param timeout: seconds to wait to receive the result. If not there it returns 'False'
+        :type timeout: int
         :return: `result` or False
         """
         if request_id is False:
             return False
-        for result in self.ringbuffer_result:
-            result_dict = json.loads(result)
-            if result_dict['id'] == request_id:
-                return result
+        wait_till_timestamp = time.time() + timeout
+        while wait_till_timestamp >= time.time():
+            for result in self.ringbuffer_result:
+                result_dict = json.loads(result)
+                if result_dict['id'] == request_id:
+                    return result
         return False
 
     def get_results_from_endpoints(self):
