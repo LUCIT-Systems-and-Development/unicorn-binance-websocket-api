@@ -147,7 +147,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  output_default="raw_data"):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.25.0.dev"
+        self.version = "1.26.0"
         logging.info(f"New instance of {self.get_user_agent()} started ...")
         colorama.init()
         if process_stream_data is False:
