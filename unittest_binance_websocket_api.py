@@ -822,8 +822,6 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.get_current_receiving_speed_global()
         binance_websocket_api_manager.wait_till_stream_has_started(stream_id2)
         binance_websocket_api_manager.remove_ansi_escape_codes("test text")
-        time.sleep(10)
-        binance_websocket_api_manager.stop_manager_with_all_streams()
 
         # test to many subscriptions
         from binance.client import Client
@@ -836,6 +834,9 @@ class TestRestApi(unittest.TestCase):
         for item in data:
             markets.append(item['symbol'])
         binance_websocket_api_manager.create_stream("trade", markets, stream_label="to much!")
+
+        time.sleep(10)
+        binance_websocket_api_manager.stop_manager_with_all_streams()
 
 
 if __name__ == '__main__':
