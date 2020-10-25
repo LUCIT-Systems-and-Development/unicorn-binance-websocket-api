@@ -825,6 +825,18 @@ class TestRestApi(unittest.TestCase):
         time.sleep(10)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
+        # test to many subscriptions
+        from binance.client import Client
+
+        binance_api_key = ""
+        binance_api_secret = ""
+        binance_rest_client = Client(binance_api_key, binance_api_secret)
+        markets = []
+        data = binance_rest_client.get_all_tickers()
+        for item in data:
+            markets.append(item['symbol'])
+        binance_websocket_api_manager.create_stream("trade", markets, stream_label="to much!")
+
 
 if __name__ == '__main__':
     unittest.main()
