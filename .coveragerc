@@ -32,3 +32,4 @@ exclude_lines =
     if type
     if type(channels)
     if type(markets)
+    if sys.platform.startswith('Windows'):
