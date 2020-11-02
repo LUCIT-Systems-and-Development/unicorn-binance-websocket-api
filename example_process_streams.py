@@ -44,7 +44,7 @@ except ImportError:
 
 class BinanceWebSocketApiProcessStreams(object):
     @staticmethod
-    def process_stream_data(received_stream_data_json, exchange="binance.com"):
+    def process_stream_data(received_stream_data_json, exchange="binance.com", stream_buffer_name="False"):
         #
         #  START HERE!
         #
