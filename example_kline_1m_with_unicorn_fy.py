@@ -61,7 +61,7 @@ markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
            'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
            'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth'}
 
-binance_websocket_api_manager.create_stream('kline_1m', markets, stream_label="UnicornFy")
+binance_websocket_api_manager.create_stream('kline_1m', markets, stream_label="UnicornFy", output="UnicornFy")
 
 binance_websocket_api_manager.create_stream('kline_1m', markets, stream_label="dict", output="dict")
 
