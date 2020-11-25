@@ -18,6 +18,8 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="unicorn-binance-websocket-api Change Log" href="CHANGELOG.html" />
+    <link rel="prev" title="unicorn_binance_websocket_api" href="modules.html" />
     <link rel="shortcut icon" type="image/png" href="_static/py.png" />
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     
@@ -35,6 +37,12 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="CHANGELOG.html" title="unicorn-binance-websocket-api Change Log"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="unicorn_binance_websocket_api"
+             accesskey="P">previous</a> |</li>
     
     <li><img src="_static/github-logo.png" alt=""
              style="vertical-align: middle; margin-top: -1px"/></li>
@@ -44,6 +52,7 @@
     <a href="index.html">unicorn-binance-websocket-api 1.26.0 documentation</a> &#187;
     
 
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">unicorn_binance_websocket_api</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">unicorn_binance_websocket_api package</a></li>
     <li class="right">
         <a href="search.html" title="Search">search</a>
@@ -808,12 +817,15 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id">
-<code class="sig-name descname">get_result_by_request_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request_id</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_result_by_request_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request_id</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the result related to the provided <cite>request_id</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request_id</strong> – if you run <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions">get_stream_subscriptions()</a>
-it returns a unique <cite>request_id</cite> - provide it to this method to receive the result.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request_id</strong> (<em>stream_id</em><em> (</em><em>uuid</em><em>)</em>) – if you run <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions">get_stream_subscriptions()</a>
+it returns a unique <cite>request_id</cite> - provide it to this method to receive the result.</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – seconds to wait to receive the result. If not there it returns ‘False’</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><cite>result</cite> or False</p>
@@ -1804,6 +1816,12 @@ subscribed channels from the specific markets are going to be removed!</p>
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">unicorn_binance_websocket_api</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="CHANGELOG.html"
+                        title="next chapter">unicorn-binance-websocket-api Change Log</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -1853,6 +1871,12 @@ subscribed channels from the specific markets are going to be removed!</p>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="CHANGELOG.html" title="unicorn-binance-websocket-api Change Log"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="unicorn_binance_websocket_api"
+             >previous</a> |</li>
     
     <li><img src="_static/github-logo.png" alt=""
              style="vertical-align: middle; margin-top: -1px"/></li>
@@ -1862,6 +1886,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <a href="index.html">unicorn-binance-websocket-api 1.26.0 documentation</a> &#187;
     
 
+          <li class="nav-item nav-item-1"><a href="modules.html" >unicorn_binance_websocket_api</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">unicorn_binance_websocket_api package</a></li>
     <li class="right">
         <a href="search.html" title="Search">search</a>
@@ -1874,7 +1899,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
-    Last updated on Oct 25 2020 at 01:57 (CET).
+    Last updated on Nov 25 2020 at 19:25 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 

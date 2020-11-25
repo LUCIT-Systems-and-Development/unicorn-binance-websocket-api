@@ -1,5 +1,3 @@
-[![UNICORN Binance WebSocket API](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/logo/UNICORN_BINANCE_WEBSOCKET_API_FULLSIZE.png)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
-
 [![GitHub release](https://img.shields.io/github/release/oliver-zehentleitner/unicorn-binance-websocket-api.svg)](https://pypi.org/project/unicorn-binance-websocket-api/)
 [![GitHub](https://img.shields.io/github/license/oliver-zehentleitner/unicorn-binance-websocket-api.svg?color=blue)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/LICENSE)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg)](https://www.python.org/downloads/)
@@ -13,6 +11,8 @@
 [![Telegram](https://img.shields.io/badge/chat-telegram-yellow.svg)](https://t.me/unicorndevs)
 [![Donations/week](http://img.shields.io/liberapay/receives/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
 [![Patrons](http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
+
+# UNICORN Binance WebSocket API
 
 [Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#howto) |
 [Documentation](#documentation) | [Examples](#examples) | [Change Log](#change-log) | [Wiki](#wiki) | [Social](#social) |
@@ -226,10 +226,10 @@ Run in bash:
 
 `pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
 #### Windows
-Use the below command with the version (such as 1.18.2) you determined 
+Use the below command with the version (such as 1.27.0) you determined 
 [here](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/releases/latest):
 
-`pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.18.2.tar.gz --upgrade`
+`pip install https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/archive/1.27.0.tar.gz --upgrade`
 ### From the latest source (dev-stage) with PIP from [Github](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api)
 This is not a release version and can not be considered to be stable!
 
@@ -258,7 +258,9 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - [example_binance_jex.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_jex.py)
 - [example_binance_us.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_us.py)
 - [example_bookticker.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_bookticker.py)
+- [example_ctrl-c.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_ctrl-c.py)
 - [example_demo.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_demo.py)
+- [example_easy_migration_from_python-binance.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_easy_migration_from_python-binance.py)
 - [example_interactive_mode.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py)
 - [example_kline_1m_with_unicorn_fy.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_kline_1m_with_unicorn_fy.py)
 - [example_monitoring.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_monitoring.py)
