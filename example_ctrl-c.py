@@ -66,5 +66,4 @@ if __name__ == '__main__':
             time.sleep(60)
     except KeyboardInterrupt:
         print("\nStopping ... just wait a few seconds!")
-        binance_websocket_api_manager.stop_stream(kline_stream_id)
         binance_websocket_api_manager.stop_manager_with_all_streams()
