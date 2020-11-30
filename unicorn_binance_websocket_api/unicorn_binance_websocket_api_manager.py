@@ -144,45 +144,61 @@ class BinanceWebSocketApiManager(threading.Thread):
                  throw_exception_if_unrepairable=False,
                  restart_timeout=6,
                  show_secrets_in_logs=False,
-                 output_default="raw_data"):
+                 output_default="raw_data",
+                 enable_event_buffer=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.26.0.dev"
         logging.info(f"New instance of {self.get_user_agent()} started ...")
         colorama.init()
         if process_stream_data is False:
-            # no special method to process stream data provided, so we use write_to_stream_buffer:
+            # no special method to process stream data provided, so we use add_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
+            logging.info(f"using `stream_buffer`")
         else:
             # use the provided method to process stream data:
             self.process_stream_data = process_stream_data
+            logging.info(f"using `process_stream_data`")
         self.exchange = exchange
         if self.exchange == "binance.com":
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.com-testnet":
             self.websocket_base_uri = "wss://testnet.binance.vision/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.com-margin":
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.com-margin-testnet":
             self.websocket_base_uri = "wss://testnet.binance.vision/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.com-isolated_margin":
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.com-isolated_margin-testnet":
             self.websocket_base_uri = "wss://testnet.binance.vision/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.com-futures":
             self.websocket_base_uri = "wss://fstream.binance.com/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.com-futures-testnet":
             self.websocket_base_uri = "wss://stream.binancefuture.com/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.je":
             self.websocket_base_uri = "wss://stream.binance.je:9443/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.us":
             self.websocket_base_uri = "wss://stream.binance.us:9443/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "jex.com":
             self.websocket_base_uri = "wss://ws.jex.com/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.org":
             self.websocket_base_uri = "wss://dex.binance.org/api/"
+            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.org-testnet":
             self.websocket_base_uri = "wss://testnet-dex.binance.org/api/"
+            self.max_subscriptions_per_stream = 1024
         else:
             # Unknown Exchange
             error_msg = f"Unknown exchange '{str(self.exchange)}'! Read the docs to see a list of supported " \
@@ -214,7 +230,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                        'status': None}
         self.max_send_messages_per_second = 5
         self.max_send_messages_per_second_reserve = 2
-        self.max_subscriptions_per_stream = 1024
         self.most_receives_per_second = 0
         self.monitoring_api_server = False
         self.monitoring_total_received_bytes = 0
