@@ -135,6 +135,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                            received from the endpoints. Change this for a specific stream with the `output` parameter
                            of `create_stream()` and `replace_stream()`
     :type output_default: str
+    :param enable_stream_signal_buffer: set to True to enable the `stream_signal_buffer` and receive information about
+                                        disconnects and reconnects to manage a restore of the lost data during the
+                                        interruption or to recognize your bot got blind.
+    :type enable_stream_signal_buffer: bool
     """
 
     def __init__(self,
@@ -145,7 +149,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  restart_timeout=6,
                  show_secrets_in_logs=False,
                  output_default="raw_data",
-                 enable_event_buffer=False):
+                 enable_stream_signal_buffer=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.26.0.dev"
@@ -154,11 +158,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         if process_stream_data is False:
             # no special method to process stream data provided, so we use add_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
-            logging.info(f"using `stream_buffer`")
+            logging.info(f"Using `stream_buffer`")
         else:
             # use the provided method to process stream data:
             self.process_stream_data = process_stream_data
-            logging.info(f"using `process_stream_data`")
+            logging.info(f"Using `process_stream_data`")
         self.exchange = exchange
         if self.exchange == "binance.com":
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
@@ -215,6 +219,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    'timestamp': 0,
                                    'status_code': None}
         self.dex_user_address = False
+        self.enable_stream_signal_buffer = enable_stream_signal_buffer
         self.frequent_checks_list = {}
         self.frequent_checks_list_lock = threading.Lock()
         self.receiving_speed_average = 0

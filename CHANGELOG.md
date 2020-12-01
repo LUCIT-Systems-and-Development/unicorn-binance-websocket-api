@@ -10,7 +10,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `timeout=10` to [`get_result_by_request_id()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id): 
   Wait for `timeout` seconds to receive the requested result or return `False`
 - logging the use of stream_buffer or process_stream_data
-- individual `max_subscriptions_per_stream` for each exchange
+- individual `max_subscriptions_per_stream` for each endpoint
+- `stream_signal_buffer` to receive signals if a stream gets connected or disconnected
+### Changed
+- max subscriptions of futures endpoints to 200 [issue#127](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/127)
 ### Fixed
 -  Added a gracefull shutdown if the Python interpreter dies [issue#131](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/131)
  

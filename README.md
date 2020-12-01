@@ -135,7 +135,7 @@ per stream!)
 if you can not store your data in cause of a temporary technical issue, you can 
 [kick back the data to the `stream_buffer`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer) 
 which stores the receives in the RAM till you are able to process the data in the normal way again. 
-[Learn more!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py)
+[Learn more!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60)
 
 - Use separate `stream_buffers` for 
 [specific streams](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py) 
