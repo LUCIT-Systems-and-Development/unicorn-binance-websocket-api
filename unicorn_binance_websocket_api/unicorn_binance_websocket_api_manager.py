@@ -180,10 +180,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.com-futures":
             self.websocket_base_uri = "wss://fstream.binance.com/"
-            self.max_subscriptions_per_stream = 1024
+            self.max_subscriptions_per_stream = 200
         elif self.exchange == "binance.com-futures-testnet":
             self.websocket_base_uri = "wss://stream.binancefuture.com/"
-            self.max_subscriptions_per_stream = 1024
+            self.max_subscriptions_per_stream = 200
         elif self.exchange == "binance.je":
             self.websocket_base_uri = "wss://stream.binance.je:9443/"
             self.max_subscriptions_per_stream = 1024
