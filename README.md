@@ -97,7 +97,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 [org](https://docs.binance.org/api-reference/dex-api/paths.html)) in combination. 
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
-- Fully managed websockets and 100% auto-reconnect!
+- Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
 - Supported exchanges: 
 
 | Exchange | Exchange string | 
@@ -124,7 +124,7 @@ you dont need to deal with asyncio in your code!
 
 - Supports 
 [subscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream)
-on all exchanges! (Take a look to the max supported subscriptions per stream in the [endpoint configuration overview](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview) !)
+on all exchanges! (Take a look to the max supported subscriptions per stream in the [endpoint configuration overview](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview)!)
 
 - [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) respects Binance's API guidelines and protects you from avoidable reconnects and bans.
 
