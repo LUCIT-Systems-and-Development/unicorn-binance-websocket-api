@@ -198,7 +198,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.max_subscriptions_per_stream = 1024
         elif self.exchange == "jex.com":
             self.websocket_base_uri = "wss://ws.jex.com/"
-            self.max_subscriptions_per_stream = 1024
+            self.max_subscriptions_per_stream = 10
         elif self.exchange == "binance.org":
             self.websocket_base_uri = "wss://dex.binance.org/api/"
             self.max_subscriptions_per_stream = 1024
