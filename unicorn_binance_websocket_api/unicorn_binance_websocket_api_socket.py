@@ -146,11 +146,6 @@ class BinanceWebSocketApiSocket(object):
                             stream_buffer_name = self.manager.stream_list[self.stream_id]['stream_buffer_name']
                         except KeyError:
                             stream_buffer_name = False
-                        if self.manager.stream_list[self.stream_id]['last_received_data_record'] is None:
-                            self.manager.add_to_stream_signal_buffer("FIRST_RECEIVED_DATA",
-                                                                     self.stream_id,
-                                                                     received_stream_data)
-                        self.manager.stream_list[self.stream_id]['last_received_data_record'] = received_stream_data
                         self.manager.process_stream_data(received_stream_data,
                                                          stream_buffer_name=stream_buffer_name)
                         if "error" in received_stream_data_json:
@@ -163,6 +158,13 @@ class BinanceWebSocketApiSocket(object):
                                          str(self.stream_id) + ") "
                                          "- Received result message: " + str(received_stream_data_json))
                             self.manager.add_to_ringbuffer_result(received_stream_data_json)
+                        else:
+                            if self.manager.stream_list[self.stream_id]['last_received_data_record'] is None:
+                                self.manager.add_to_stream_signal_buffer("FIRST_RECEIVED_DATA",
+                                                                         self.stream_id,
+                                                                         received_stream_data)
+                            self.manager.stream_list[self.stream_id]['last_received_data_record'] = received_stream_data
+
                 except websockets.exceptions.ConnectionClosed as error_msg:
                     logging.critical("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed "

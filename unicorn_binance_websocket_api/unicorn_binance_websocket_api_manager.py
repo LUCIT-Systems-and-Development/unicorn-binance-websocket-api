@@ -3219,7 +3219,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['status'] = "crashed"
         if error_msg:
             self.stream_list[stream_id]['status'] += " - " + str(error_msg)
-        self.manager.add_to_stream_signal_buffer("DISCONNECT", stream_id)
+        self.add_to_stream_signal_buffer("DISCONNECT", stream_id)
 
     def stream_is_stopping(self, stream_id):
         """
@@ -3233,7 +3233,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             self.stream_list[stream_id]['has_stopped'] = time.time()
             self.stream_list[stream_id]['status'] = "stopped"
-            self.manager.add_to_stream_signal_buffer("DISCONNECT", stream_id)
+            self.add_to_stream_signal_buffer("DISCONNECT", stream_id)
             return True
         except KeyError:
             return False
