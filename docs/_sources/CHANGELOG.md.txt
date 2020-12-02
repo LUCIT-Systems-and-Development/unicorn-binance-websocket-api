@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Support for stream signals: `CONNECT`, `DISCONNECT`, `FIRST_RECEIVED_DATA` 
 ### Changed
 - max subscriptions of futures endpoints to 200 [issue#127](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/127)
+- max subscriptions of jex endpoint to 10
 ### Fixed
 -  Added a gracefull shutdown if the Python interpreter dies [issue#131](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/131)
  
