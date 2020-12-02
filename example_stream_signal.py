@@ -56,7 +56,6 @@ def print_stream_signals(binance_websocket_api_manager):
         if stream_signal is False:
             time.sleep(0.01)
         else:
-            # remove # to activate the print function:
             print(stream_signal)
 
 # start a worker process to process to move the received stream_data from the stream_buffer to a print function

@@ -12,7 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - logging the use of stream_buffer or process_stream_data
 - individual `max_subscriptions_per_stream` for each endpoint
 - `stream_signal_buffer` to receive signals if a stream gets connected or disconnected
-- ['add_to_stream_signal_buffer()']()
+- ['add_to_stream_signal_buffer()'](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=add_to_stream_signal_buffer#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer)
+- ['pop_stream_signal_from_stream_signal_buffer()'](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=pop_stream_signal#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_signal_from_stream_signal_buffer)
 - Support for stream signals: `CONNECT`, `DISCONNECT`, `FIRST_RECEIVED_DATA` 
 ### Changed
 - max subscriptions of futures endpoints to 200 [issue#127](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/127)

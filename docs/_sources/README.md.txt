@@ -272,6 +272,7 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - [example_stream_everything.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_everything.py)
 - [example_stream_management.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_management.py)
 - [example_stream_management_extended.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_management_extended.py)
+- [example_stream_signal.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_signal.py)
 - [example_subscribe.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_subscribe.py)
 - [example_ticker_and_miniticker.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_ticker_and_miniticker.py)
 - [example_trade_stream.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_trade_stream.py)
