@@ -251,13 +251,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.ringbuffer_result = []
         self.ringbuffer_result_max_size = 500
         self.show_secrets_in_logs = show_secrets_in_logs
-        self.stream_buffer_lock = threading.Lock()
-        self.stream_buffer_locks = {}
         self.start_time = time.time()
         self.stream_buffer = []
+        self.stream_buffer_lock = threading.Lock()
+        self.stream_buffer_locks = {}
         self.stream_buffers = {}
         self.stream_list = {}
         self.stream_list_lock = threading.Lock()
+        self.stream_signal_buffer = []
+        self.stream_signal_buffer_lock = threading.Lock()
         self.stream_threading_lock = {}
         self.throw_exception_if_unrepairable = throw_exception_if_unrepairable
         self.total_received_bytes = 0
@@ -385,6 +387,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'last_static_ping_listen_key': 0,
                                        'listen_key': False,
                                        'listen_key_cache_time':  30 * 60,
+                                       'last_received_data_record': None,
                                        'processed_receives_statistic': {},
                                        'transfer_rate_per_second': {'bytes': {}, 'speed': 0}}
         logging.info("BinanceWebSocketApiManager._add_stream_to_stream_list(" +
@@ -757,6 +760,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    provide a string to create and use a shared stream_buffer and read it via
                                    `pop_stream_data_from_stream_buffer('string')`.
         :type stream_buffer_name: bool or str
+        :return: bool
         """
         if stream_buffer_name is False:
             with self.stream_buffer_lock:
@@ -765,6 +769,39 @@ class BinanceWebSocketApiManager(threading.Thread):
             with self.stream_buffer_locks[stream_buffer_name]:
                 self.stream_buffers[stream_buffer_name].append(stream_data)
         self.last_entry_added_to_stream_buffer = time.time()
+        return True
+
+    def add_to_stream_signal_buffer(self, signal_type=False, stream_id=False, data_record=False):
+        """
+        Add signals about a stream to the
+        `stream_signal_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
+
+        :param signal_type: the data you want to write back to the buffer
+        :type signal_type: raw stream_data or unicorn_fied stream data
+        :param stream_id: id of a stream
+        :type stream_id: uuid
+        :param data_record: The last or first received data record
+        :type data_record: str or dict
+        :return: bool
+        """
+        stream_signal = {'type': signal_type,
+                         'stream_id': stream_id,
+                         'timestamp': time.time()}
+        if signal_type == "CONNECT":
+            # nothing to add ...
+            pass
+        elif signal_type == "DISCONNECT":
+            stream_signal['last_received_data_record'] = self.stream_list[stream_id]['last_received_data_record']
+        elif signal_type == "FIRST_RECEIVED_DATA":
+            stream_signal['first_received_data_record'] = data_record
+        else:
+            logging.error(f"BinanceWebSocketApiManager.add_to_stream_signal_buffer({signal_type}) - "
+                          f"Received invalid `signal_type`!")
+            return False
+        with self.stream_signal_buffer_lock:
+            self.stream_signal_buffer.append(stream_signal)
+        logging.info(f"BinanceWebSocketApiManager.add_to_stream_signal_buffer({stream_signal})")
+        return True
 
     def add_total_received_bytes(self, size):
         """
@@ -851,7 +888,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         payload.append(add_payload)
             else:
                 logging.critical("BinanceWebSocketApiManager.create_payload(" + str(stream_id) + ", "
-                                 + str(channels) + ", " + str(markets) + ") Allowed values for `method`: `subscribe` "
+                                 + str(channels) + ", " + str(markets) + ") - Allowed values for `method`: `subscribe` "
                                  "or `unsubscribe`!")
                 return False
         elif self.is_exchange_type("cex"):
@@ -906,11 +943,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                         payload = self.split_payload(params, "UNSUBSCRIBE")
             else:
                 logging.critical("BinanceWebSocketApiManager.create_payload(" + str(stream_id) + ", "
-                                 + str(channels) + ", " + str(markets) + ") Allowed values for `method`: `subscribe` "
+                                 + str(channels) + ", " + str(markets) + ") - Allowed values for `method`: `subscribe` "
                                  "or `unsubscribe`!")
                 return False
         logging.info("BinanceWebSocketApiManager.create_payload(" + str(stream_id) + ", "
-                     + str(channels) + ", " + str(markets) + ") Payload: " + str(payload))
+                     + str(channels) + ", " + str(markets) + ") - Payload: " + str(payload))
         logging.info("BinanceWebSocketApiManager.create_payload(" + str(stream_id) + ", " + str(channels) + ", " +
                      str(markets) + ") finished ...")
         return payload
@@ -3182,6 +3219,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['status'] = "crashed"
         if error_msg:
             self.stream_list[stream_id]['status'] += " - " + str(error_msg)
+        self.manager.add_to_stream_signal_buffer("DISCONNECT", stream_id)
 
     def stream_is_stopping(self, stream_id):
         """
@@ -3195,6 +3233,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             self.stream_list[stream_id]['has_stopped'] = time.time()
             self.stream_list[stream_id]['status'] = "stopped"
+            self.manager.add_to_stream_signal_buffer("DISCONNECT", stream_id)
             return True
         except KeyError:
             return False

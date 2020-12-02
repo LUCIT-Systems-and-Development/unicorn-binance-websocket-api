@@ -160,6 +160,7 @@ class BinanceWebSocketApiConnection(object):
             except KeyError:
                 pass
             self.manager.set_heartbeat(self.stream_id)
+            self.manager.add_to_stream_signal_buffer("CONNECT", stream_id)
         except ConnectionResetError as error_msg:
             logging.error("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) + ", " +
                           str(self.channels) + ", " + str(self.markets) + ")" + " - ConnectionResetError - " +
