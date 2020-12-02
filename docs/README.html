@@ -6,8 +6,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.26.0 documentation</title>
-    <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -149,7 +149,7 @@ provides an API to the Binance Websocket API`s of
 <a class="reference external" href="https://jexapi.github.io/api-doc/spot.html#web-socket-streams">Binance JEX</a>,
 <a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">Binance DEX</a> and
 <a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">Binance DEX Testnet</a> and supports the streaming of
-all public streams like trade, kline, ticker, depth, bookTicker, forceOrder and blockheight and also all private userData streams
+all public streams like trade, kline, ticker, depth, bookTicker, forceOrder, compositeIndex and blockheight and also all private userData streams
 which needs to be used with a valid api_key and api_secret from the Binance Exchange
 <a class="reference external" href="https://www.binance.com/userCenter/createApi.html">www.binance.com</a>,
 <a class="reference external" href="https://testnet.binance.vision/">testnet.binance.vision</a>,
@@ -167,7 +167,7 @@ on, you have to use the Binance Rest API (<a class="reference external" href="ht
 <div class="section" id="what-are-the-benefits-of-the-unicorn-binance-websocket-api">
 <h3>What are the benefits of the UNICORN Binance WebSocket API?<a class="headerlink" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>Fully managed websockets and 100% auto-reconnect!</p></li>
+<li><p>Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!</p></li>
 <li><p>Supported exchanges:</p></li>
 </ul>
 <table border="1" class="docutils">
@@ -238,15 +238,14 @@ you dont need to deal with asyncio in your code!</p></li>
 <a class="reference external" href="https://pypi.org/project/python-daemon/">python-daemon</a>).</p></li>
 <li><p>Supports
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream">subscribe</a>/<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a>
-on all exchanges! (Maximum <a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23">1024 subscriptions</a>
-per stream!)</p></li>
+on all exchanges! (Take a look to the max supported subscriptions per stream in the <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview">endpoint configuration overview</a>!)</p></li>
 <li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">UNICORN Binance WebSocket API</a> respects Binance’s API guidelines and protects you from avoidable reconnects and bans.</p></li>
 <li><p>Support for multiple private <code class="docutils literal notranslate"><span class="pre">!userData</span></code> streams with different <code class="docutils literal notranslate"><span class="pre">api_key</span></code> and <code class="docutils literal notranslate"><span class="pre">api_secret</span></code>. (<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py">example_multiple_userdata_streams.py</a>)</p></li>
 <li><p><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer">Pick up the received data from the <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code></a> -
 if you can not store your data in cause of a temporary technical issue, you can
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer">kick back the data to the <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code></a>
 which stores the receives in the RAM till you are able to process the data in the normal way again.
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py">Learn more!</a></p></li>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60">Learn more!</a></p></li>
 <li><p>Use separate <code class="docutils literal notranslate"><span class="pre">stream_buffers</span></code> for
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py">specific streams</a>
 or
@@ -615,7 +614,7 @@ my company <a class="reference external" href="https://www.lucit.co/desktop-and-
     &copy; <a href="copyright.html">Copyright</a> 2020, Oliver Zehentleitner.
     <br />
 
-    Last updated on Nov 25 2020 at 19:25 (CET).
+    Last updated on Dec 02 2020 at 03:33 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 
@@ -624,7 +623,7 @@ my company <a class="reference external" href="https://www.lucit.co/desktop-and-
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.2.1
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.3.1
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
