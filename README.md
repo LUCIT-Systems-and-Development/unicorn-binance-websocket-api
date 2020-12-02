@@ -297,6 +297,7 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 ## Social
 - [https://t.me/unicorndevs](https://t.me/unicorndevs)
 - [https://dev.binance.vision](https://dev.binance.vision)
+- [https://community.binance.org](https://community.binance.org)
 
 ## Receive Notifications
 To receive notifications on available updates you can 
