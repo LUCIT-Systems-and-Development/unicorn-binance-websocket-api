@@ -79,7 +79,7 @@ provides an API to the Binance Websocket API`s of
 [Binance JEX](https://jexapi.github.io/api-doc/spot.html#web-socket-streams), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
 [Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports the streaming of 
-all public streams like trade, kline, ticker, depth, bookTicker, forceOrder and blockheight and also all private userData streams 
+all public streams like trade, kline, ticker, depth, bookTicker, forceOrder, compositeIndex and blockheight and also all private userData streams 
 which needs to be used with a valid api_key and api_secret from the Binance Exchange 
 [www.binance.com](https://www.binance.com/userCenter/createApi.html), 
 [testnet.binance.vision](https://testnet.binance.vision/), 
@@ -97,7 +97,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 [org](https://docs.binance.org/api-reference/dex-api/paths.html)) in combination. 
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
-- Fully managed websockets and 100% auto-reconnect!
+- Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
 - Supported exchanges: 
 
 | Exchange | Exchange string | 
@@ -124,8 +124,7 @@ you dont need to deal with asyncio in your code!
 
 - Supports 
 [subscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream)
-on all exchanges! (Maximum [1024 subscriptions](https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23) 
-per stream!)
+on all exchanges! (Take a look to the max supported subscriptions per stream in the [endpoint configuration overview](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview)!)
 
 - [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) respects Binance's API guidelines and protects you from avoidable reconnects and bans.
 
@@ -135,12 +134,15 @@ per stream!)
 if you can not store your data in cause of a temporary technical issue, you can 
 [kick back the data to the `stream_buffer`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer) 
 which stores the receives in the RAM till you are able to process the data in the normal way again. 
-[Learn more!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py)
+[Learn more!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60)
 
 - Use separate `stream_buffers` for 
 [specific streams](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py) 
 or 
 [users](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py)!
+
+- Watch the `stream_signal_buffer` to receive `CONNECT`, `DISCONNECT` and `FIRST_RECEIVED_DATA` signals about the 
+streams! [Learn more!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60)
 
 - Get the received data unchanged as received, as Python dictionary or converted with 
 [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy) into well-formed Python dictionaries. Use the `output`
@@ -273,6 +275,7 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - [example_stream_everything.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_everything.py)
 - [example_stream_management.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_management.py)
 - [example_stream_management_extended.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_management_extended.py)
+- [example_stream_signal.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_stream_signal.py)
 - [example_subscribe.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_subscribe.py)
 - [example_ticker_and_miniticker.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_ticker_and_miniticker.py)
 - [example_trade_stream.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_trade_stream.py)
