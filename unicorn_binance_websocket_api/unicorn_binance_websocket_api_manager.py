@@ -448,6 +448,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                              f"https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/new/choose")
             loop.close()
         finally:
+            self.add_to_stream_signal_buffer("DISCONNECT", stream_id)
             loop.close()
 
     def _frequent_checks(self):
@@ -746,7 +747,9 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def add_to_stream_buffer(self, stream_data, stream_buffer_name=False):
         """
-        Kick back data to the stream_buffer
+        Kick back data to the
+        `stream_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+
 
         If it is not possible to process received stream data (for example, the database is restarting, so its not
         possible to save the data), you can return the data back into the stream_buffer. After a few seconds you stopped
@@ -784,24 +787,27 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type data_record: str or dict
         :return: bool
         """
-        stream_signal = {'type': signal_type,
-                         'stream_id': stream_id,
-                         'timestamp': time.time()}
-        if signal_type == "CONNECT":
-            # nothing to add ...
-            pass
-        elif signal_type == "DISCONNECT":
-            stream_signal['last_received_data_record'] = self.stream_list[stream_id]['last_received_data_record']
-        elif signal_type == "FIRST_RECEIVED_DATA":
-            stream_signal['first_received_data_record'] = data_record
+        if self.enable_stream_signal_buffer:
+            stream_signal = {'type': signal_type,
+                             'stream_id': stream_id,
+                             'timestamp': time.time()}
+            if signal_type == "CONNECT":
+                # nothing to add ...
+                pass
+            elif signal_type == "DISCONNECT":
+                stream_signal['last_received_data_record'] = self.stream_list[stream_id]['last_received_data_record']
+            elif signal_type == "FIRST_RECEIVED_DATA":
+                stream_signal['first_received_data_record'] = data_record
+            else:
+                logging.error(f"BinanceWebSocketApiManager.add_to_stream_signal_buffer({signal_type}) - "
+                              f"Received invalid `signal_type`!")
+                return False
+            with self.stream_signal_buffer_lock:
+                self.stream_signal_buffer.append(stream_signal)
+            logging.info(f"BinanceWebSocketApiManager.add_to_stream_signal_buffer({stream_signal})")
+            return True
         else:
-            logging.error(f"BinanceWebSocketApiManager.add_to_stream_signal_buffer({signal_type}) - "
-                          f"Received invalid `signal_type`!")
             return False
-        with self.stream_signal_buffer_lock:
-            self.stream_signal_buffer.append(stream_signal)
-        logging.info(f"BinanceWebSocketApiManager.add_to_stream_signal_buffer({stream_signal})")
-        return True
 
     def add_total_received_bytes(self, size):
         """
@@ -2489,12 +2495,14 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def pop_stream_data_from_stream_buffer(self, stream_buffer_name=False):
         """
-        Get oldest entry from stream_buffer and remove from stack (FIFO stack)
+        Get oldest entry from
+        `stream_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+        and remove from stack (FIFO stack)
 
         :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
                                    create_stream() or the string name of a shared stream_buffer.
         :type stream_buffer_name: bool or str
-        :return: raw_stream_data (set) or False
+        :return: stream_data - str, dict or False
         """
         if stream_buffer_name is False:
             try:
@@ -2512,6 +2520,21 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return False
             except KeyError:
                 return False
+
+    def pop_stream_signal_from_stream_signal_buffer(self):
+        """
+        Get oldest entry from
+        `stream_signal_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
+        and remove from stack (FIFO stack)
+
+        :return: stream_signal - dict or False
+        """
+        try:
+            with self.stream_signal_buffer_lock:
+                stream_signal = self.stream_signal_buffer.pop(0)
+            return stream_signal
+        except IndexError:
+            return False
 
     def print_stream_info(self, stream_id, add_string=""):
         """
@@ -3219,7 +3242,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['status'] = "crashed"
         if error_msg:
             self.stream_list[stream_id]['status'] += " - " + str(error_msg)
-        self.add_to_stream_signal_buffer("DISCONNECT", stream_id)
 
     def stream_is_stopping(self, stream_id):
         """
@@ -3233,7 +3255,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             self.stream_list[stream_id]['has_stopped'] = time.time()
             self.stream_list[stream_id]['status'] = "stopped"
-            self.add_to_stream_signal_buffer("DISCONNECT", stream_id)
             return True
         except KeyError:
             return False
