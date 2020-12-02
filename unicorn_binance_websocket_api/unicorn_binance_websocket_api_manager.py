@@ -135,7 +135,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                            received from the endpoints. Change this for a specific stream with the `output` parameter
                            of `create_stream()` and `replace_stream()`
     :type output_default: str
-    :param enable_stream_signal_buffer: set to True to enable the `stream_signal_buffer` and receive information about
+    :param enable_stream_signal_buffer: set to True to enable the
+                                        `stream_signal_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>_` and receive information about
                                         disconnects and reconnects to manage a restore of the lost data during the
                                         interruption or to recognize your bot got blind.
     :type enable_stream_signal_buffer: bool
