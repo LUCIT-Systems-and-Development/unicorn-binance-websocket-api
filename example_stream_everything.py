@@ -125,6 +125,6 @@ for channel in channels:
             i += 1
 
 while True:
-    #binance_websocket_api_manager.print_summary()
-    binance_websocket_api_manager.print_stream_info(arr_stream_id)
+    binance_websocket_api_manager.print_summary()
+    #binance_websocket_api_manager.print_stream_info(arr_stream_id)
     time.sleep(1)
