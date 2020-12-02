@@ -584,7 +584,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_live_run(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager()
+        binance_websocket_api_manager = BinanceWebSocketApiManager(enable_stream_signal_buffer=True)
         binance_websocket_api_manager.get_active_stream_list()
         binance_websocket_api_manager.get_limit_of_subscriptions_per_stream()
         binance_websocket_api_manager.get_stream_list()
@@ -822,6 +822,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.get_current_receiving_speed_global()
         binance_websocket_api_manager.wait_till_stream_has_started(stream_id2)
         binance_websocket_api_manager.remove_ansi_escape_codes("test text")
+        binance_websocket_api_manager.pop_stream_signal_from_stream_signal_buffer()
 
         # test to many subscriptions
         from binance.client import Client
