@@ -93,7 +93,7 @@ margin with more than one symbol. [issue#111](https://github.com/oliver-zehentle
  
 ## 1.19.0
 ### Added
-- [`UnicornFy`](https://github.com/oliver-zehentleitner/unicorn-fy) to
+- [`UnicornFy`](https://github.com/oliver-zehentleitner/unicorn-fy) to 
 [`create_stream(output='UnicornFy')`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream)
 ### Changed
 - Links in docstrings
@@ -514,7 +514,7 @@ available. but i recognized an API ban from github in cause of too many requests
 ### Fixed
 - Bug in class UnicornFy: kline_close_time had the value kline_start_time
 ### Changed
-- Moved UnicornFy from UNICORN Binance WebSocket API to its own [repository](https://github.com/oliver-zehentleitner/unicorn-fy)
+- Moved UnicornFy from UNICORN Binance WebSocket API to its own [repository](https://github.com/oliver-zehentleitner/unicorn-fy) 
 - connection handling (improved)
 
 ## 1.2.6
