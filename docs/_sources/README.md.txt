@@ -37,7 +37,7 @@ while True:
 
 Basically that's it, but there are more options:
 
-### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy):
+### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn-fy):
 ```
 unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_stream_data_from_stream_buffer)
 ```
@@ -145,7 +145,7 @@ or
 streams! [Learn more!](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60)
 
 - Get the received data unchanged as received, as Python dictionary or converted with 
-[UnicornFy](https://github.com/oliver-zehentleitner/unicorn_fy) into well-formed Python dictionaries. Use the `output`
+[UnicornFy](https://github.com/oliver-zehentleitner/unicorn-fy) into well-formed Python dictionaries. Use the `output`
 parameter of 
 [`create_stream()`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) 
 to control the output format.

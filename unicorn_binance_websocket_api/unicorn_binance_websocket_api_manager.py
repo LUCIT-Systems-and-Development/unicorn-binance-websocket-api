@@ -130,7 +130,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                  (default=False)
     :type show_secrets_in_logs: bool
     :param output_default: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to
-                           convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ -  otherwise
+                           convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_ -  otherwise
                            with the default setting "raw_data" the output remains unchanged and gets delivered as
                            received from the endpoints. Change this for a specific stream with the `output` parameter
                            of `create_stream()` and `replace_stream()`
@@ -155,7 +155,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.26.0.dev"
-        logging.info(f"New instance of {self.get_user_agent()} started ...")
+        logging.info(f"New instance of {self.get_user_agent()} on {str(platform.system())} {str(platform.release())} "
+                     f"started ...")
         colorama.init()
         if process_stream_data is False:
             # no special method to process stream data provided, so we use add_to_stream_buffer:
@@ -320,7 +321,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                        `output_default <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
                        of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
                        set `output` to "dict" to convert the received raw data to a python dict,  set to "UnicornFy" to
-                       convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ -  otherwise with
+                       convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_ -  otherwise with
                        the default setting "raw_data" the output remains unchanged and gets delivered as received from
                        the endpoints
         :param ping_interval: Once the connection is open, a `Ping frame` is sent every
@@ -1037,7 +1038,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                        `output_default <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
                        of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
                        set `output` to "dict" to convert the received raw data to a python dict,  set to "UnicornFy" to
-                       convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ -  otherwise with
+                       convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_ -  otherwise with
                        the default setting "raw_data" the output remains unchanged and gets delivered as received from
                        the endpoints
         :type output: str
@@ -2256,7 +2257,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_version_unicorn_fy(self):
         """
-        Get the package/module version of `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_
+        Get the package/module version of `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_
 
         :return: str
         """
@@ -2456,7 +2457,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def is_update_availabe_unicorn_fy(self):
         """
-        Is a new release of `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ available?
+        Is a new release of `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_ available?
 
         :return: bool
         """
@@ -2960,7 +2961,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type new_symbols: str
         :return: new stream_id
         :param new_output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
-                           with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn_fy>`_ - otherwise the output
+                           with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_ - otherwise the output
                            remains unchanged and gets delivered as received from the endpoints
         :type new_output: str
         :param new_ping_interval: Once the connection is open, a `Ping frame` is sent every

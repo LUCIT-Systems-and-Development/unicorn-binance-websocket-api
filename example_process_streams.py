@@ -56,7 +56,7 @@ class BinanceWebSocketApiProcessStreams(object):
         # `depth5` for example doesnt include the symbol, but the unicornfied set includes them, because the class
         # extracts it from the channel name, makes it upper size and adds it to the returned values.. just print both
         # to see the difference.
-        # Github: https://github.com/oliver-zehentleitner/unicorn_fy
+        # Github: https://github.com/oliver-zehentleitner/unicorn-fy
         # PyPI: https://pypi.org/project/unicorn-fy/
         if exchange == "binance.com" or exchange == "binance.com-testnet":
             unicorn_fied_stream_data = UnicornFy.binance_com_websocket(received_stream_data_json)

@@ -106,7 +106,7 @@
 <p>Basically that’s it, but there are more options:</p>
 </div>
 <div class="section" id="convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">
-<h2>Convert received raw webstream data into well-formed Python dictionaries with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a>:<a class="headerlink" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy" title="Permalink to this headline">¶</a></h2>
+<h2>Convert received raw webstream data into well-formed Python dictionaries with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-fy">UnicornFy</a>:<a class="headerlink" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unicorn_fied_stream_data</span> <span class="o">=</span> <span class="n">UnicornFy</span><span class="o">.</span><span class="n">binance_com_websocket</span><span class="p">(</span><span class="n">oldest_stream_data_from_stream_buffer</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -253,7 +253,7 @@ or
 <li><p>Watch the <code class="docutils literal notranslate"><span class="pre">stream_signal_buffer</span></code> to receive <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code>, <code class="docutils literal notranslate"><span class="pre">DISCONNECT</span></code> and <code class="docutils literal notranslate"><span class="pre">FIRST_RECEIVED_DATA</span></code> signals about the
 streams! <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60">Learn more!</a></p></li>
 <li><p>Get the received data unchanged as received, as Python dictionary or converted with
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn_fy">UnicornFy</a> into well-formed Python dictionaries. Use the <code class="docutils literal notranslate"><span class="pre">output</span></code>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-fy">UnicornFy</a> into well-formed Python dictionaries. Use the <code class="docutils literal notranslate"><span class="pre">output</span></code>
 parameter of
 <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream"><code class="docutils literal notranslate"><span class="pre">create_stream()</span></code></a>
 to control the output format.</p></li>
