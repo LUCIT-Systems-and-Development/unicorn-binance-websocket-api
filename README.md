@@ -331,7 +331,7 @@ If you dont find an issue related to your topic, please open a new [issue](https
 
 ## Contributing
 [UNICORN Binance WebSocket API](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api) is an open 
-source project which welcomes contributions which can be anything from simple documentation fixes to new features. To 
+source project which welcomes contributions which can be anything from simple documentation fixes and reporting dead links to new features. To 
 contribute follow 
 [this guide](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CONTRIBUTING.md).
  
