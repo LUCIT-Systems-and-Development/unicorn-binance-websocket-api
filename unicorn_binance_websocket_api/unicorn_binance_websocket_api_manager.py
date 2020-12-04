@@ -432,7 +432,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             loop.run_until_complete(socket.start_socket())
         except RuntimeError as error_msg:
-            if "cannot schedule new futures after interpreter shutdown" in error_msg:
+            if "cannot schedule new futures after interpreter shutdown" in str(error_msg):
                 logging.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                                  f" - RuntimeError error_msg:  - {str(error_msg)} - stopping and shutting down ...")
                 self.stop_manager_with_all_streams()
