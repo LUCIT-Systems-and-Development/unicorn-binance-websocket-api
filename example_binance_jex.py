@@ -59,10 +59,7 @@ logging.basicConfig(level=logging.DEBUG,
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="jex.com")
 
 # set api key and secret for userData stream
-binance_jex_api_key = ""
-binance_jex_api_secret = ""
-binance_websocket_api_manager.set_private_api_config(binance_jex_api_key, binance_jex_api_secret)
-userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"])
+userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"], api_key="aaa", api_secret="bb")
 
 omt_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!optionMiniTicker"])
 smt_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!spotMiniTicker"])

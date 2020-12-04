@@ -785,7 +785,6 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.get_errors_from_endpoints()
         binance_websocket_api_manager.get_monitoring_status_plain()
         binance_websocket_api_manager.get_ringbuffer_error_max_size()
-        binance_websocket_api_manager.set_private_api_config("aaaa", "bbbb")
         binance_websocket_api_manager.get_ringbuffer_result_max_size()
         binance_websocket_api_manager.get_websocket_uri_length('trade', 'kncbtc', False)
         binance_websocket_api_manager.set_ringbuffer_error_max_size(200)

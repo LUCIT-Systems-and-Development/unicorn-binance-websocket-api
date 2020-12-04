@@ -216,8 +216,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             raise UnknownExchange(error_msg)
         self.stop_manager_request = None
         self.all_subscriptions_number = 0
-        self.api_key = False
-        self.api_secret = False
         self.binance_api_status = {'weight': None,
                                    'timestamp': 0,
                                    'status_code': None}
@@ -346,12 +344,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type close_timeout: int or None
         :type output: str
         """
-        if api_key is not False and api_secret is not False:
-            add_api_key = api_key
-            add_api_secret = api_secret
-        else:
-            add_api_key = self.api_key
-            add_api_secret = self.api_secret
         if output is False:
             output = self.output_default
         self.stream_threading_lock[stream_id] = {'full_lock': threading.Lock(),
@@ -367,8 +359,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'output': copy.deepcopy(output),
                                        'subscriptions': 0,
                                        'payload': [],
-                                       'api_key': copy.deepcopy(add_api_key),
-                                       'api_secret': copy.deepcopy(add_api_secret),
+                                       'api_key': copy.deepcopy(api_key),
+                                       'api_secret': copy.deepcopy(api_secret),
                                        'dex_user_address': copy.deepcopy(self.dex_user_address),
                                        'ping_interval': copy.deepcopy(ping_interval),
                                        'ping_timeout': copy.deepcopy(ping_timeout),
@@ -3010,24 +3002,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread_frequent_checks.start()
         thread_keepalive_streams = threading.Thread(target=self._keepalive_streams)
         thread_keepalive_streams.start()
-
-    def set_private_api_config(self, binance_api_key, binance_api_secret):
-        """
-        DEPRICATED - Use `api_key` and `api_secret` in `create_stream()`
-        
-        Set binance_api_key and binance_api_secret
-
-        This settings are needed to acquire a listenKey from Binance to establish a userData stream
-
-        :param binance_api_key: The Binance API key
-        :type binance_api_key: str
-        :param binance_api_secret: The Binance API secret
-        :type binance_api_secret: str
-        """
-        logging.warning("BinanceWebSocketApiManager.set_private_config() - The method `set_private_api_config()` "
-                        "is deprecated! Please use `create_stream(markets, channels, api_key='aaa', api_secret='bbb')")
-        self.api_key = binance_api_key
-        self.api_secret = binance_api_secret
 
     def set_private_dex_config(self, binance_dex_user_address):
         """

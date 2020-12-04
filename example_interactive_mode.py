@@ -77,10 +77,6 @@ def print_stream(manager):
         time.sleep(10)
 
 
-binance_api_key = ""
-binance_api_secret = ""
-
-
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
             'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
@@ -88,6 +84,8 @@ arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
 markets = []
 
 try:
+    binance_api_key = ""
+    binance_api_secret = ""
     binance_rest_client = Client(binance_api_key, binance_api_secret)
     binance_websocket_api_manager = BinanceWebSocketApiManager()
 except requests.exceptions.ConnectionError:
@@ -105,9 +103,10 @@ data = binance_rest_client.get_all_tickers()
 for item in data:
     markets.append(item['symbol'])
 
-binance_websocket_api_manager.set_private_api_config(binance_api_key, binance_api_secret)
-binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Alice userData stream")
-binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Bobs userData stream")
+binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Alice userData stream",
+                                            api_key="aaa", api_secret="bbb")
+binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Bobs userData stream",
+                                            api_key="ccc", api_secret="ddd")
 
 binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
 
