@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.27.0.dev (development stage/unreleased/unstable)
 ### Changed
 - the stream signal `DISCONNECT` includes `last_received_data_record` which returns now `None` if there is no record available
+### Fixed
+- Cannot use `in` with RuntimeError, must convert to string first. [PR#136 thx @Bosma](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/136)
 ### Removed
 - Deprecated methods `set_private_api_config()` and `get_websocket_uri_length()`
 
