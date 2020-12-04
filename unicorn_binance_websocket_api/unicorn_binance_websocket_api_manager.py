@@ -2264,21 +2264,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         return unicorn_fy.get_version()
 
-    def get_websocket_uri_length(self, channels, markets, symbols=False):
-        """
-        Get the length of the generated websocket URI
-
-        :param channels: provide the channels to create the URI
-        :type channels: str, tuple, list, set
-        :param markets: provide the markets to create the URI
-        :type markets: str, tuple, list, set
-        :param symbols: provide the symbols for isolated_margin user_data streams
-        :type symbols: str
-        :return: int
-        """
-        uri = self.create_websocket_uri(channels, markets, symbols=symbols)
-        return len(uri)
-
     @staticmethod
     def help():
         """
