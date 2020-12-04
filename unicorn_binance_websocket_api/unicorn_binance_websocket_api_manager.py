@@ -790,7 +790,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                 # nothing to add ...
                 pass
             elif signal_type == "DISCONNECT":
-                stream_signal['last_received_data_record'] = self.stream_list[stream_id]['last_received_data_record']
+                try:
+                    stream_signal['last_received_data_record'] = self.stream_list[stream_id]['last_received_data_record']
+                except KeyError as error_msg:
+                    logging.critical(f"BinanceWebSocketApiManager.add_to_stream_signal_buffer({signal_type}) - "
+                                     f"Cant determine last_received_data_record! - error_msg: {error_msg}")
+                    stream_signal['last_received_data_record'] = None
             elif signal_type == "FIRST_RECEIVED_DATA":
                 stream_signal['first_received_data_record'] = data_record
             else:
