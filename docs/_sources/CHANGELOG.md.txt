@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.27.0.dev (development stage/unreleased/unstable)
+### Changed
+- the stream signal `DISCONNECT` includes `last_received_data_record` which returns now `None` if there is no record available
+### Fixed
+- Cannot use `in` with RuntimeError, must convert to string first. [PR#136 thx @Bosma](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/136)
+### Removed
+- Deprecated methods `set_private_api_config()` and `get_websocket_uri_length()`
 
 ## 1.27.0
 ### Added
@@ -43,21 +49,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - [`output_default`](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default)
   to `BinanceWebSocketApiManager` 
-## Removed
+### Removed
 - unused import of `ujson` in connection class
 - 4 parameters from `_create_stream_thread`
 
 ## 1.23.0
-## Added
+### Added
 - timestamp to `receiving_speed_peak` in manager
 - log warning if the cpu usage is > 95%
 - logging.info if new `highest_receiving_speed` is reached
-## Fixed
+### Fixed
 - `listen_key` was printed to logfiles
 - `listen_key` cache time was not set in `get_listen_key()` so it pinged immediately after its creation again, which caused
 a higher weight
 - restart stream if "The future belongs to a different loop than the one specified as the loop argument" [issue#121](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/121)
-## Changed
+### Changed
 - renamed `_add_socket_to_socket_list` to `_add_stream_to_stream_list`
  
 ## 1.22.0
