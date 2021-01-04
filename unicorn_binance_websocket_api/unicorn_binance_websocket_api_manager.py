@@ -2063,7 +2063,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_label: stream_label of the stream you search
         :type stream_label: str
-        :return: str or False
+        :return: stream_id or False
         """
         if stream_label:
             for stream_id in self.stream_list:
