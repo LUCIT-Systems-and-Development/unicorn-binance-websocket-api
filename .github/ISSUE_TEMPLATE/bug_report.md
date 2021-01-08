@@ -33,10 +33,19 @@ Check this or we will delete your issue. (fill in the checkbox with an X like so
 - [ ] Are you using the module on a Raspberry Pi?
 
 #### What kind of internet connection do you have?
+```
+Include here a description of your internet access like cable, lte and up and download rate.
+```
 
 #### Average system load (CPU)
+```
+Include here the ammount of cpu cores and the average system load.
+```
 
 #### Hardware specification 
+```
+Include here a description of the server hardware.
+```
 
 #### Operating System? (include version)
 - [ ] macOS
