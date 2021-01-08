@@ -47,17 +47,22 @@ Check this or we will delete your issue. (fill in the checkbox with an X like so
 - [ ] stream_buffer
 - [ ] process_stream_data
 
+#### Which endpoint do you connect?
+```
+Include here the endpint you are connecting to, like binance.com, binance.com-isolated_margin or binance.org-testnet
+```
+
 #### Python Version Requirement
 - [ ] I am using Python 3.6.1 or above
 
 #### Exact Python Version?
 ```
-Include here the response of 'python --version' or 'python3 --version'
+Include here the response of 'python --version' AND 'python3 --version'
 ```
 
 #### Pip Version?
 ```
-Include here the response of 'pip --version' or 'pip3 --version'
+Include here the response of 'python3 -m pip --version' or 'pip3 --version'
 ```
 
 #### Dependencies
