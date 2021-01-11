@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.27.0.dev (development stage/unreleased/unstable)
+## 1.28.0.dev (development stage/unreleased/unstable)
+
+## 1.28.0
 ### Changed
 - the stream signal `DISCONNECT` includes `last_received_data_record` which returns now `None` if there is no record available
 ### Fixed
