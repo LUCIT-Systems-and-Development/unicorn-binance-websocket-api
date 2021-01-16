@@ -1272,6 +1272,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             query = "stream?streams="
             final_market = "@arr"
+            market = ""
+            channel = ""
             for market in markets:
                 if "arr@" in market:
                     final_market = "@" + market
