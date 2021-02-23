@@ -6,15 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.28.0.dev (development stage/unreleased/unstable)
-
-## 1.28.0
 ### Added
 - `General Exception` handling in `start_socket()` [PR#142 thx @gronastech and @lordofserenity](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/142)
+### Fixed
+- `UnboundLocalError: local variable 'market' referenced before assignment` in `create_websocket_uri()` [PR#142 thx @gronastech and @lordofserenity](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/142)
+
+## 1.28.0
 ### Changed
 - the stream signal `DISCONNECT` includes `last_received_data_record` which returns now `None` if there is no record available
 ### Fixed
 - Cannot use `in` with RuntimeError, must convert to string first. [PR#136 thx @Bosma](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/136)
-- `UnboundLocalError: local variable 'market' referenced before assignment` in `create_websocket_uri()` [PR#142 thx @gronastech and @lordofserenity](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/142)
 ### Removed
 - Deprecated methods `set_private_api_config()` and `get_websocket_uri_length()`
 
