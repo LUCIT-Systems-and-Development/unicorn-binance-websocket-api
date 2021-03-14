@@ -544,27 +544,32 @@ class TestRestApi(unittest.TestCase):
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
-    def test_rest_binance_com_isolated_margin_testnet(self):
+    def test_rest_binance_com_futures_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures")
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
-    def test_rest_binance_com_isolated_margin_testnet(self):
+    def test_rest_binance_com_futures_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
-    def test_rest_binance_com_isolated_margin_testnet(self):
+    def test_rest_binance_je_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.je")
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
-    def test_rest_binance_com_isolated_margin_testnet(self):
+    def test_rest_binance_us_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us")
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
-    def test_rest_binance_com_isolated_margin_testnet(self):
+    def test_rest_trbinance_com_testnet(self):
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="trbinance.com")
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
+        binance_websocket_api_manager.stop_manager_with_all_streams()
+
+    def test_rest_jex_com_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="jex.com")
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()

@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.28.0.dev (development stage/unreleased/unstable)
 ### Added
 - `General Exception` handling in `start_socket()` [PR#142 thx @gronastech and @lordofserenity](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/142)
+- Support for trbinance.com Websockets 
 ### Fixed
 - `UnboundLocalError: local variable 'market' referenced before assignment` in `create_websocket_uri()` [PR#142 thx @gronastech and @lordofserenity](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/142)
 

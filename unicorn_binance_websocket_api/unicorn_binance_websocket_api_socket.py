@@ -130,6 +130,8 @@ class BinanceWebSocketApiSocket(object):
                                 received_stream_data = self.unicorn_fy.binance_je_websocket(received_stream_data_json)
                             elif self.exchange == "binance.us":
                                 received_stream_data = self.unicorn_fy.binance_us_websocket(received_stream_data_json)
+                            elif self.exchange == "trbinance.com":
+                                received_stream_data = self.unicorn_fy.binance_tr_websocket(received_stream_data_json)
                             elif self.exchange == "jex.com":
                                 received_stream_data = self.unicorn_fy.jex_com_websocket(received_stream_data_json)
                             elif self.exchange == "binance.org":

@@ -66,7 +66,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     This library supports two different kind of websocket endpoints:
 
-        - CEX (Centralized exchange): binance.com, binance.vision, binance.je, binance.us, jex.com
+        - CEX (Centralized exchange): binance.com, binance.vision, binance.je, binance.us, trbinance.com, jex.com
 
         - DEX (Decentralized exchange): binance.org
 
@@ -94,6 +94,10 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         - https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md
 
+    TRBinance.com websocket API documentation:
+
+        - https://www.trbinance.com/apidocs/#general-wss-information
+
     Jex.com websocket API documentation:
 
         - https://jexapi.github.io/api-doc/option.html#web-socket-streams
@@ -114,8 +118,8 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type process_stream_data: function
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
                      binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
-                     binance.com-futures-testnet, binance.je, binance.us, jex.com, binance.org or binance.org-testnet
-                     (default: binance.com)
+                     binance.com-futures-testnet, binance.je, binance.us, trbinance.com, jex.com, binance.org or
+                     binance.org-testnet (default: binance.com)
     :type exchange: str
     :param warn_on_update: set to `False` to disable the update warning
     :type warn_on_update: bool
@@ -196,6 +200,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.us":
             self.websocket_base_uri = "wss://stream.binance.us:9443/"
+            self.max_subscriptions_per_stream = 1024
+        elif self.exchange == "trbinance.com":
+            self.websocket_base_uri = "wss://stream.binance.cc/"
             self.max_subscriptions_per_stream = 1024
         elif self.exchange == "jex.com":
             self.websocket_base_uri = "wss://ws.jex.com/"
@@ -2372,6 +2379,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.exchange == "binance.com-futures-testnet" or \
                 self.exchange == "binance.je" or \
                 self.exchange == "binance.us" or \
+                self.exchange == "trbinance.com" or \
                 self.exchange == "jex.com":
             is_type = "cex"
         else:
