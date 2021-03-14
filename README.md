@@ -76,6 +76,7 @@ provides an API to the Binance Websocket API`s of
 ([+Testnet](https://testnet.binancefuture.com)), 
 [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
+[Binance TR](https://www.trbinance.com/apidocs), 
 [Binance JEX](https://jexapi.github.io/api-doc/spot.html#web-socket-streams), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
 [Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports the streaming of 
@@ -84,8 +85,7 @@ which needs to be used with a valid api_key and api_secret from the Binance Exch
 [www.binance.com](https://www.binance.com/userCenter/createApi.html), 
 [testnet.binance.vision](https://testnet.binance.vision/), 
 [www.binance.je](https://www.binance.je/userCenter/createApi.html),
-[www.binance.us](https://www.binance.us/userCenter/createApi.html),
-[www.trbinance.com](https://www.trbinance.com/apidocs/) or 
+[www.binance.us](https://www.binance.us/userCenter/createApi.html) or 
 [www.jex.com](https://www.jex.com/userCenter/createApi.html) - for the DEX you need a user address from 
 [www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create) 
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
