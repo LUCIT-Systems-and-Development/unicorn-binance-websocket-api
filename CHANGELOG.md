@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.28.0.dev (development stage/unreleased/unstable)
+## 1.29.0.dev (development stage/unreleased/unstable)
+
+## 1.29.0
 ### Added
 - `General Exception` handling in `start_socket()` [PR#142 thx @gronastech and @lordofserenity](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/142)
 - Support for trbinance.com Websockets 
