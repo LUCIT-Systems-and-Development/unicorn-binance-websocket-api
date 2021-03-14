@@ -17,9 +17,9 @@
 [Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#howto) |
 [Documentation](#documentation) | [Examples](#examples) | [Change Log](#change-log) | [Wiki](#wiki) | [Social](#social) |
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
-[Contributing](#contributing) | [Donate](#donate)
+[Contributing](#contributing) | [Commercial Support](#commercial-support) | [Donate](#donate)
 
-An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way. 
+An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, jersey, us, tr, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way. 
 ### [Create a multiplex websocket connection](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
 ```
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
@@ -84,7 +84,8 @@ which needs to be used with a valid api_key and api_secret from the Binance Exch
 [www.binance.com](https://www.binance.com/userCenter/createApi.html), 
 [testnet.binance.vision](https://testnet.binance.vision/), 
 [www.binance.je](https://www.binance.je/userCenter/createApi.html),
-[www.binance.us](https://www.binance.us/userCenter/createApi.html) or 
+[www.binance.us](https://www.binance.us/userCenter/createApi.html),
+[www.trbinance.com](https://www.trbinance.com/apidocs/) or 
 [www.jex.com](https://www.jex.com/userCenter/createApi.html) - for the DEX you need a user address from 
 [www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create) 
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
@@ -93,6 +94,7 @@ Be aware that the Binance websocket API just offers to receive data. If you woul
 on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), 
 [je](https://github.com/binance-jersey/binance-official-api-docs/), 
 [us](https://github.com/binance-us/binance-official-api-docs/), 
+[tr](https://www.trbinance.com/apidocs/), 
 [jex](https://jexapi.github.io/api-doc/spot.html#change-log), 
 [org](https://docs.binance.org/api-reference/dex-api/paths.html)) in combination. 
 
@@ -112,6 +114,7 @@ on, you have to use the Binance Rest API ([com](https://github.com/binance-excha
 | [Binance Futures Testnet](https://testnet.binancefuture.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")` |
 | [Binance Jersey](https://www.binance.je) | `BinanceWebSocketApiManager(exchange="binance.je")` |
 | [Binance US](https://www.binance.us) | `BinanceWebSocketApiManager(exchange="binance.us")` |
+| [Binance TR](https://www.trbinance.com) | `BinanceWebSocketApiManager(exchange="trbinance.com")` |
 | [Binance JEX](https://www.jex.com) | `BinanceWebSocketApiManager(exchange="jex.com")` |
 | [Binance DEX](https://www.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org")` |
 | [Binance DEX Testnet](https://testnet.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org-testnet")` |
@@ -205,9 +208,9 @@ If you like the project, please [![star](https://raw.githubusercontent.com/olive
 ## Live Demo
 This live demo script is streaming from binance.com!
 
-[Open live monitor!](https://ubwa-demo.lucit.co/print_summary.php)
+[Open live monitor!](https://www.lucit-development.co/unicorn-binance-websocket-api.html)
 
-[![live-demo](https://ubwa-demo.lucit.co/ps.png)](https://ubwa-demo.lucit.co/print_summary.php)
+[![live-demo](https://ubwa-demo.lucit.co/ps.png)](https://www.lucit-development.co/unicorn-binance-websocket-api.html)
 
 (Refresh update once a minute!)
 
@@ -279,6 +282,7 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - [example_subscribe.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_subscribe.py)
 - [example_ticker_and_miniticker.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_ticker_and_miniticker.py)
 - [example_trade_stream.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_trade_stream.py)
+- [example_trbinance.com.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_trbinance_com.py)
 - [example_userdata_stream.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_userdata_stream.py)
 - [example_userdata_stream_new_style.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_userdata_stream_new_style.py)
 - [example_version_of_this_package.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py)
@@ -340,6 +344,12 @@ contribute follow
 
 We ![love](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/heart.png) open source!
 
+## Commercial Support
+Need a Python developer or consulting? 
+
+Contact [me](https://about.me/oliver-zehentleitner) for a non-binding and free consultation via my company 
+[LUCIT](https://www.lucit.dev) from Vienna (Austria).
+
 ### Donate
 Since you are probably a developer yourself, you will understand very well that the creation of open source software is 
 not free - it requires technical knowledge, a lot of time and also financial expenditure.
@@ -350,12 +360,10 @@ If you would like to help me to dedicate my time and energy to this project, eve
 
 ```
 BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
+LUNA: terra1ncjg4a59x2pgvqy9qjyqprlj8lrwshm0wleht5 (Memo: 108157985)
 DASH: XsRhBuPkXGF9WvifdpkVhTGSmVT4VcuQZ7
 ETH: 0x1C15857Bf1E18D122dDd1E536705748aa529fc9C
 LTC: LYNzHMFUbee3siyHvNCPaCjqXxjyq8YRGJ
 XMR: 85dzsTRh6GRPGVSJoUbFDwAf9uwwAdim1HFpiGshLeKHgj2hVqKtYVPXMZvudioLsuLS1AegkUiQ12jwReRwWcFvF7kDAbF
 ZEC: t1WvQMPJMriGWD9qkZGDdE9tTJaawvmsBie
 ```
-## You need a Python Dev?
-If you would like to [hire me](https://about.me/oliver-zehentleitner) for a Python project, you can book me through 
-my company [LUCIT IT-Management GmbH](https://www.lucit.co/desktop-and-server-apps.html).
