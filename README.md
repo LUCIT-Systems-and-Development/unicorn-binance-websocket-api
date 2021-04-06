@@ -94,12 +94,7 @@ which needs to be used with a valid api_key and api_secret from the Binance Exch
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
-on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), 
-[je](https://github.com/binance-jersey/binance-official-api-docs/), 
-[us](https://github.com/binance-us/binance-official-api-docs/), 
-[tr](https://www.trbinance.com/apidocs/), 
-[jex](https://jexapi.github.io/api-doc/spot.html#change-log), 
-[org](https://docs.binance.org/api-reference/dex-api/paths.html)) in combination. 
+on, you can to use the [UNICORN Binance REST API](https://github.com/oliver-zehentleitner/unicorn-binance-rest-api) in combination. 
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
