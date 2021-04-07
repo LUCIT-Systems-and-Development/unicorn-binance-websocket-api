@@ -348,7 +348,7 @@ We ![love](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binanc
 Need a Python developer or consulting? 
 
 Contact [me](https://about.me/oliver-zehentleitner) for a non-binding and free consultation via my company 
-[LUCIT](https://www.lucit.dev) from Vienna (Austria).
+[LUCIT](https://www.lucit.dev) from Vienna (Austria) or via [Telegram](https://t.me/LUCIT_OZ).
 
 ### Donate
 Since you are probably a developer yourself, you will understand very well that the creation of open source software is 
