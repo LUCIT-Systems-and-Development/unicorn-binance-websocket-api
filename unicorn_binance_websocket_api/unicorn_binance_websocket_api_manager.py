@@ -228,6 +228,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    'status_code': None}
         self.dex_user_address = False
         self.enable_stream_signal_buffer = enable_stream_signal_buffer
+        self.event_loops = {}
         self.frequent_checks_list = {}
         self.frequent_checks_list_lock = threading.Lock()
         self.receiving_speed_average = 0
@@ -664,6 +665,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logging.critical(f"BinanceWebSocketApiManager.create_stream({str(stream_id)}) - OSError - "
                              f"error_msg: {str(error_msg)}")
             return False
+        self.event_loops[stream_id] = loop
         thread = threading.Thread(target=self._create_stream_thread,
                                   args=(loop,
                                         stream_id,
@@ -1128,6 +1130,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                              f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}) with stream_id="
                              f"{str(stream_id)} - OSError  - can not create stream - error_msg: {str(error_msg)}")
             return False
+        self.event_loops[stream_id] = loop
         thread = threading.Thread(target=self._create_stream_thread, args=(loop,
                                                                            stream_id,
                                                                            channels,
@@ -1447,14 +1450,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 pass
         return all_receives_last_second
 
-    def get_errors_from_endpoints(self):
-        """
-        Get all the stored error messages from the ringbuffer sent by the endpoints.
-
-        :return: list
-        """
-        return self.ringbuffer_error
-
     def get_binance_api_status(self):
         """
         Get used_weight, last status_code and the timestamp of the last status update
@@ -1498,6 +1493,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             logging.debug(f"BinanceWebSocketApiManager.get_current_receiving_speed_global() - RuntimeError: "
                           f"{str(error_msg)}")
             return 0
+        except TypeError as error_msg:
+            logging.debug(f"BinanceWebSocketApiManager.get_current_receiving_speed_global() - RuntimeError: "
+                          f"{str(error_msg)}")
+            return 0
         for stream_id in temp_stream_list:
             current_receiving_speed += self.get_current_receiving_speed(stream_id)
         return current_receiving_speed
@@ -1513,6 +1512,25 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         date = str(datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d, %H:%M:%S UTC'))
         return date
+
+    def get_errors_from_endpoints(self):
+        """
+        Get all the stored error messages from the ringbuffer sent by the endpoints.
+
+        :return: list
+        """
+        return self.ringbuffer_error
+
+    def get_event_loop_by_stream_id(self, stream_id=False):
+        """
+        Get the asyncio event loop used by a specific stream.
+
+        :return: asyncio event loop or False
+        """
+        if stream_id is False:
+            return False
+        else:
+            return self.event_loops[stream_id]
 
     def get_exchange(self):
         """

@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.29.0.dev (development stage/unreleased/unstable)
+### Added
+- The asyncio event loop is now saved to `self.stream_list[stream_id]['event_loop']`
+- `get_event_loop_by_stream_id()`
 
 ## 1.29.0
 ### Added
