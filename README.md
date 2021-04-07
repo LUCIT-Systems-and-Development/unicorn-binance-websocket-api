@@ -20,6 +20,9 @@
 [Contributing](#contributing) | [Commercial Support](#commercial-support) | [Donate](#donate)
 
 An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, jersey, us, tr, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way. 
+
+Part of ['UNICORN Binance Suite'](https://github.com/oliver-zehentleitner/unicorn-binance-suite).
+
 ### [Create a multiplex websocket connection](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
 ```
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
@@ -91,12 +94,7 @@ which needs to be used with a valid api_key and api_secret from the Binance Exch
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
-on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), 
-[je](https://github.com/binance-jersey/binance-official-api-docs/), 
-[us](https://github.com/binance-us/binance-official-api-docs/), 
-[tr](https://www.trbinance.com/apidocs/), 
-[jex](https://jexapi.github.io/api-doc/spot.html#change-log), 
-[org](https://docs.binance.org/api-reference/dex-api/paths.html)) in combination. 
+on, you can to use the [UNICORN Binance REST API](https://github.com/oliver-zehentleitner/unicorn-binance-rest-api) in combination. 
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
@@ -300,6 +298,8 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 
 ## Social
 - [https://t.me/unicorndevs](https://t.me/unicorndevs)
+- [Twitter](https://twitter.com/DevsUnicorn)
+- [unicorn-coding-club](https://github.com/oliver-zehentleitner/unicorn-coding-club)
 - [https://dev.binance.vision](https://dev.binance.vision)
 - [https://community.binance.org](https://community.binance.org)
 
@@ -359,8 +359,8 @@ If you would like to help me to dedicate my time and energy to this project, eve
 [![Donate using Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/oliver-zehentleitner/donate)
 
 ```
+Terra (LUNA, UST, ...): terra1yt34qmmycextztnj9mpt3mnjzqqvl8jtqqq7g9
 BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
-LUNA: terra1ncjg4a59x2pgvqy9qjyqprlj8lrwshm0wleht5 (Memo: 108157985)
 DASH: XsRhBuPkXGF9WvifdpkVhTGSmVT4VcuQZ7
 ETH: 0x1C15857Bf1E18D122dDd1E536705748aa529fc9C
 LTC: LYNzHMFUbee3siyHvNCPaCjqXxjyq8YRGJ
