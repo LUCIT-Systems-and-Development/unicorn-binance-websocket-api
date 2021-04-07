@@ -351,21 +351,33 @@ Contact [me](https://about.me/oliver-zehentleitner) for a non-binding and free c
 [LUCIT](https://www.lucit.dev) from Vienna (Austria) or via [Telegram](https://t.me/LUCIT_OZ).
 
 ## Donate
-Developing the UNICORN Binance Suite and supporting the community takes a lot of time and time is a form of cost. I am extremely happy to do this, but need a solution for sharing the costs.
+Developing, documenting and testing the UNICORN Binance Suite and supporting the community takes a lot of time and time 
+is a form of cost. I am extremely happy to do this, but need a solution for sharing the costs.
 
-I think we are lucky, as our community consists of traders and programmers I expect to find mostly rational thinking people who also benefit financially from these libraries.
+I think we are lucky, as our community consists of traders and programmers I expect to find mostly rational thinking 
+people who also benefit financially from these libraries.
 
-I would like to create a fair model for funding. My goals are that unicorn-binance-websocket-api, unicorn-binance-rest-api and unicorn-fy remain freely available as open source and that I am compensated at least to some extent and thus can invest my time more easily.
+I would like to create a fair model for funding. My goals are that unicorn-binance-websocket-api, 
+unicorn-binance-rest-api and unicorn-fy remain freely available as open source and that I am compensated at least to 
+some extent and thus can invest my time more easily.
 
-If you know the hooker principle from negotiation research or game theory, you know about the problem that people don't often pay for something out of their own impulse if they have already received it for free. 
+If you know the hooker principle from negotiation research or game theory, you know about the problem that people don't 
+often pay for something out of their own impulse if they have already received it for free. 
 
-So my idea is to give every donor who gives an amount over 50 EUR access to a private Github repository where Python classes for trading algos are provided (OrderBook, advanced stop-loss, ...). Moreover, maybe a nice ApiTrader community will be formed.
+So my idea is to give every donor who gives an amount over 50 EUR access to a private Github repository where Python 
+classes for trading algos are provided (OrderBook, advanced stop-loss, ...). Moreover, maybe a nice ApiTrader community 
+will be formed.
 
-So the donor not only helps to push the open source development but also gets access to a well maintained collection of practical code for little money. 
+So the donor not only helps to push the open source development but also gets access to a well maintained collection of 
+practical code for little money. 
 
-Furthermore community members can help me by donating own developments to make the unicorn-coding-club repository more attractive to create further incentives for new donors. This way we generate added value for all sides in an uncomplicated way.
+Furthermore community members can help me by donating own developments to make the 
+[unicorn-coding-club](https://github.com/oliver-zehentleitner/unicorn-coding-club) repository more attractive to create 
+further incentives for new donors. This way we generate added value for all sides in an uncomplicated way.
 
-If you donated at least 50 EUR (without transaction fee), please send me a message with a confirmation and your Github username via https://www.lucit-development.co/contact.html, I will invite you to the private repository as soon as possible.
+If you donated at least 50 EUR (without transaction fee), please send me a message with a confirmation and your Github 
+username via https://www.lucit-development.co/contact.html, I will invite you to the 
+[unicorn-coding-club](https://github.com/oliver-zehentleitner/unicorn-coding-club) as soon as possible.
 
 [![Donate using Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/oliver-zehentleitner/donate)
 
