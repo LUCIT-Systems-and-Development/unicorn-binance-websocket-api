@@ -25,7 +25,7 @@ jobs:
         pip install -r test-requirements.txt
         pip install pytest
     - name: Unit test
-      run: pytest
+      run: python unittest_binance_websocket_api.py
     - name: Coveralls
       uses: AndreMiras/coveralls-python-action@develop
       with:
