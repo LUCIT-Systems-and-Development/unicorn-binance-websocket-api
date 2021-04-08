@@ -23,9 +23,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r test-requirements.txt
+        pip install pytest
     - name: Unit test
-      run: |
-        coverage run --source unicorn_binance_websocket_api unittest_binance_websocket_api.py
+      run: pytest
     - name: Coveralls
       uses: AndreMiras/coveralls-python-action@develop
       with:
