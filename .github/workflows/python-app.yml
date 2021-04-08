@@ -13,7 +13,6 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
@@ -23,20 +22,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r test-requirements.txt
-        pip install pytest
+        pip install coveralls
     - name: Unit test
-      run: python unittest_binance_websocket_api.py
-    - name: Coveralls
-      uses: AndreMiras/coveralls-python-action@develop
+      run: coverage run --source unicorn_binance_websocket_api unittest_binance_websocket_api.py
+    - name: "Upload coverage to Codecov"
+      uses: codecov/codecov-action@v1
       with:
-        parallel: true
-        flag-name: Unit Test
-
-  coveralls_finish:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-    - name: Coveralls Finished
-      uses: AndreMiras/coveralls-python-action@develop
-      with:
-        parallel-finished: true
+        fail_ci_if_error: true
