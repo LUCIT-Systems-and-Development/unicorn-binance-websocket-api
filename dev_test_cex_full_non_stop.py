@@ -43,9 +43,9 @@ import time
 import threading
 
 try:
-    from binance.client import Client
+    import unicorn_binance_rest_api
 except ImportError:
-    print("Please install `python-binance`! https://pypi.org/project/python-binance/#description")
+    print("Please install `unicorn-binance-rest-api`! https://pypi.org/project/unicorn-binance-rest-api/")
     sys.exit(1)
 
 binance_api_key = ""
@@ -80,7 +80,7 @@ print("starting monitoring api!")
 binance_websocket_api_manager.start_monitoring_api()
 
 try:
-    binance_rest_client = Client(binance_api_key, binance_api_secret)
+    binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret)
     binance_websocket_api_manager = BinanceWebSocketApiManager()
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
