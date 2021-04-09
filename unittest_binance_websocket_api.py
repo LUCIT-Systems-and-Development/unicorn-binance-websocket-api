@@ -828,11 +828,11 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.pop_stream_signal_from_stream_signal_buffer()
 
         # test to many subscriptions
-        from binance.client import Client
+        import unicorn_binance_rest_api
 
         binance_api_key = ""
         binance_api_secret = ""
-        binance_rest_client = Client(binance_api_key, binance_api_secret)
+        binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret)
         markets = []
         data = binance_rest_client.get_all_tickers()
         for item in data:
