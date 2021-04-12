@@ -350,8 +350,10 @@ Contact [me](https://about.me/oliver-zehentleitner) for a non-binding and free c
 [LUCIT](https://www.lucit.dev) from Vienna (Austria) or via [Telegram](https://t.me/LUCIT_OZ).
 
 ## Donate
-Developing, documenting and testing the UNICORN Binance Suite and supporting the community takes a lot of time and time 
-is a form of cost. I am extremely happy to do this, but need a solution for sharing the costs.
+Developing, documenting and testing the 
+[UNICORN Binance Suite](https://github.com/oliver-zehentleitner/unicorn-binance-suite) and supporting the community 
+takes a lot of time and time is a form of cost. I am extremely happy to do this, but need a solution for sharing the 
+costs.
 
 I think we are lucky, as our community consists of traders and programmers I expect to find mostly rational thinking 
 people who also benefit financially from these libraries.
