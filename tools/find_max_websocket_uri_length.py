@@ -33,16 +33,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from websocket import create_connection
 import websocket
 import time
 
 
 def binance_test_uri_length(query):
-    websocket = create_connection("wss://stream.binance.com:9443/stream?streams=" + query)
+    websocket_con = websocket.create_connection("wss://stream.binance.com:9443/stream?streams=" + query)
     while True:
-        result = websocket.recv()
-        websocket.close()
+        result = websocket_con.recv()
+        websocket_con.close()
         print("Received '%s'\r\n" % result)
         break
 
