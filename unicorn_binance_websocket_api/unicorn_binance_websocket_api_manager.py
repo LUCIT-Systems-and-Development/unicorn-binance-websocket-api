@@ -118,8 +118,8 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type process_stream_data: function
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
                      binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
-                     binance.com-futures-testnet, binance.je, binance.us, trbinance.com, jex.com, binance.org or
-                     binance.org-testnet (default: binance.com)
+                     binance.com-futures-testnet, binance.com-coin-futures, binance.je, binance.us, trbinance.com,
+                     jex.com, binance.org or binance.org-testnet (default: binance.com)
     :type exchange: str
     :param warn_on_update: set to `False` to disable the update warning
     :type warn_on_update: bool
@@ -191,6 +191,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.com-futures":
             self.websocket_base_uri = "wss://fstream.binance.com/"
+            self.max_subscriptions_per_stream = 200
+        elif self.exchange == "binance.com-coin-futures":
+            self.websocket_base_uri = "wss://dstream.binance.com/"
             self.max_subscriptions_per_stream = 200
         elif self.exchange == "binance.com-futures-testnet":
             self.websocket_base_uri = "wss://stream.binancefuture.com/"
@@ -2395,6 +2398,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.exchange == "binance.com-isolated_margin-testnet" or \
                 self.exchange == "binance.com-futures" or \
                 self.exchange == "binance.com-futures-testnet" or \
+                self.exchange == "binance.com-coin-futures" or \
                 self.exchange == "binance.je" or \
                 self.exchange == "binance.us" or \
                 self.exchange == "trbinance.com" or \

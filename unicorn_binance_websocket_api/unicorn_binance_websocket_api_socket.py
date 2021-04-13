@@ -126,6 +126,7 @@ class BinanceWebSocketApiSocket(object):
                                 received_stream_data = self.unicorn_fy.binance_com_futures_websocket(received_stream_data_json)
                             elif self.exchange == "binance.com-futures-testnet":
                                 received_stream_data = self.unicorn_fy.binance_com_futures_websocket(received_stream_data_json)
+                            # TODO coin margined futures (What to do about it?)
                             elif self.exchange == "binance.je":
                                 received_stream_data = self.unicorn_fy.binance_je_websocket(received_stream_data_json)
                             elif self.exchange == "binance.us":
