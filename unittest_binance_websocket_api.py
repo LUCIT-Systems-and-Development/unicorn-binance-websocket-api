@@ -60,7 +60,8 @@ class TestBinanceComManager(unittest.TestCase):
     def setUp(self):
         self.binance_com_api_key = BINANCE_COM_API_KEY
         self.binance_com_api_secret = BINANCE_COM_API_SECRET
-        self.binance_com_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
+        self.binance_com_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com",
+                                                                            disable_colorama=True)
 
     def test_create_uri_miniticker_regular_com(self):
         self.assertEqual(self.binance_com_websocket_api_manager.create_websocket_uri(["!miniTicker"], ["arr"]),
