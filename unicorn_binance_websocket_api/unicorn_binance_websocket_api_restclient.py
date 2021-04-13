@@ -282,7 +282,12 @@ class BinanceWebSocketApiRestclient(object):
                 else:
                     response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol)})
             else:
-                response = self._request(method, self.path_userdata)
+                try:
+                    response = self._request(method, self.path_userdata)
+                except AttributeError as error_msg:
+                    logging.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
+                                     f"error_msg: {error_msg} - Can not acquire listen_key!")
+                    return False
             try:
                 self.listen_key = response['listenKey']
                 self.last_static_ping_listen_key = time.time()
