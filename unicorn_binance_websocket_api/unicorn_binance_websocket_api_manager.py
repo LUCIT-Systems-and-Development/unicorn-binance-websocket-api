@@ -145,6 +145,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         disconnects and reconnects to manage a restore of the lost data during the
                                         interruption or to recognize your bot got blind.
     :type enable_stream_signal_buffer: bool
+    :param disable_colorama: set to True to disable the use of `colorama <https://pypi.org/project/colorama/>`_
+    :type disable_colorama: bool
     """
 
     def __init__(self,
@@ -155,13 +157,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                  restart_timeout=6,
                  show_secrets_in_logs=False,
                  output_default="raw_data",
-                 enable_stream_signal_buffer=False):
+                 enable_stream_signal_buffer=False,
+                 disable_colorama=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.29.0.dev"
+        self.version = "1.30.0.dev"
         logging.info(f"New instance of {self.get_user_agent()} on {str(platform.system())} {str(platform.release())} "
                      f"started ...")
-        colorama.init()
+        if disable_colorama is not True:
+            colorama.init()
         if process_stream_data is False:
             # no special method to process stream data provided, so we use add_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
@@ -3200,6 +3204,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             del self.restart_requests[stream_id]
         except KeyError:
             pass
+        self.delete_listen_key_by_stream_id(stream_id)
         try:
             self.stream_list[stream_id]['stop_request'] = True
         except KeyError:

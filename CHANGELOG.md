@@ -5,10 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.29.0.dev (development stage/unreleased/unstable)
+## 1.30.0.dev (development stage/unreleased/unstable)
+
+## 1.30.0
 ### Added
-- The asyncio event loop is now saved to `self.stream_list[stream_id]['event_loop']`
 - `get_event_loop_by_stream_id()`
+- `disable_colorama` in `BinanceWebSocketApiManager()`: This is needed to make ubwa compatible with 
+  [SwiftBar](https://github.com/swiftbar/SwiftBar)
+### Changed
+- The asyncio event loop is now saved to `self.stream_list[stream_id]['event_loop']`
+- added `delete_listen_key_by_stream_id()` to `stop_stream()`
+  [issue#161](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/161#issuecomment-814934231)
 
 ## 1.29.0
 ### Added
