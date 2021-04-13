@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.29.0 documentation</title>
+    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.30.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     
@@ -48,7 +48,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.29.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.30.0 documentation</a> &#187;
     
 
         <li class="nav-item nav-item-this"><a href="">UNICORN Binance WebSocket API</a></li>
@@ -71,10 +71,9 @@
 <a class="reference external" href="https://pepy.tech/project/unicorn-binance-websocket-api"><img alt="Downloads" src="https://pepy.tech/badge/unicorn-binance-websocket-api" /></a>
 <a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/"><img alt="PyPI - Wheel" src="https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel" /></a>
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues"><img alt="PyPI - Status" src="https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg" /></a>
-<a class="reference external" href="https://travis-ci.com/oliver-zehentleitner/unicorn-binance-websocket-api"><img alt="Build Status" src="https://travis-ci.com/oliver-zehentleitner/unicorn-binance-websocket-api.svg?branch=master" /></a>
-<a class="reference external" href="https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/alerts/"><img alt="Total alerts" src="https://img.shields.io/lgtm/alerts/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&amp;logoWidth=18" /></a>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml"><img alt="Python application" src="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml/badge.svg" /></a><a class="reference external" href="https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/alerts/"><img alt="Total alerts" src="https://img.shields.io/lgtm/alerts/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&amp;logoWidth=18" /></a>
 <a class="reference external" href="https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/context:python"><img alt="Language grade: Python" src="https://img.shields.io/lgtm/grade/python/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&amp;logoWidth=18" /></a>
-<a class="reference external" href="https://coveralls.io/github/oliver-zehentleitner/unicorn-binance-websocket-api?branch=master"><img alt="Coverage Status" src="https://coveralls.io/repos/github/oliver-zehentleitner/unicorn-binance-websocket-api/badge.svg?branch=master" /></a>
+<a class="reference external" href="https://codecov.io/gh/oliver-zehentleitner/unicorn-binance-websocket-api"><img alt="codecov" src="https://codecov.io/gh/oliver-zehentleitner/unicorn-binance-websocket-api/branch/master/graph/badge.svg?token=Z6SEARA4W4" /></a>
 <a class="reference external" href="https://t.me/unicorndevs"><img alt="Telegram" src="https://img.shields.io/badge/chat-telegram-yellow.svg" /></a>
 <a class="reference external" href="https://liberapay.com/oliver-zehentleitner/donate"><img alt="Donations/week" src="http://img.shields.io/liberapay/receives/oliver-zehentleitner.svg?logo=liberapay" /></a>
 <a class="reference external" href="https://liberapay.com/oliver-zehentleitner/donate"><img alt="Patrons" src="http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay" /></a></p>
@@ -85,6 +84,7 @@
 <a class="reference external" href="#receive-notifications">Notifications</a> | <a class="reference external" href="#how-to-report-bugs-or-suggest-improvements">Bugs</a> |
 <a class="reference external" href="#contributing">Contributing</a> | <a class="reference external" href="#commercial-support">Commercial Support</a> | <a class="reference external" href="#donate">Donate</a></p>
 <p>An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, jersey, us, tr, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.</p>
+<p>Part of <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-suite">‘UNICORN Binance Suite’</a>.</p>
 <div class="section" id="create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code">
 <h2><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">Create a multiplex websocket connection</a> to Binance with just 3 lines of code:<a class="headerlink" href="#create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
@@ -145,6 +145,7 @@ provides an API to the Binance Websocket API`s of
 (<a class="reference external" href="https://testnet.binancefuture.com">+Testnet</a>),
 <a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/">Binance Jersey</a>,
 <a class="reference external" href="https://github.com/binance-us/binance-official-api-docs">Binance US</a>,
+<a class="reference external" href="https://www.trbinance.com/apidocs">Binance TR</a>,
 <a class="reference external" href="https://jexapi.github.io/api-doc/spot.html#web-socket-streams">Binance JEX</a>,
 <a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">Binance DEX</a> and
 <a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">Binance DEX Testnet</a> and supports the streaming of
@@ -153,18 +154,12 @@ which needs to be used with a valid api_key and api_secret from the Binance Exch
 <a class="reference external" href="https://www.binance.com/userCenter/createApi.html">www.binance.com</a>,
 <a class="reference external" href="https://testnet.binance.vision/">testnet.binance.vision</a>,
 <a class="reference external" href="https://www.binance.je/userCenter/createApi.html">www.binance.je</a>,
-<a class="reference external" href="https://www.binance.us/userCenter/createApi.html">www.binance.us</a>,
-<a class="reference external" href="https://www.trbinance.com/apidocs/">www.trbinance.com</a> or
+<a class="reference external" href="https://www.binance.us/userCenter/createApi.html">www.binance.us</a> or
 <a class="reference external" href="https://www.jex.com/userCenter/createApi.html">www.jex.com</a> - for the DEX you need a user address from
 <a class="reference external" href="https://www.binance.org/en/create">www.binance.org</a> or <a class="reference external" href="https://testnet.binance.org/en/create">testnet.binance.org</a>
 and you can <a class="reference external" href="https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account">get funds</a> for the testnet.</p>
 <p>Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so
-on, you have to use the Binance Rest API (<a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs">com</a>,
-<a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/">je</a>,
-<a class="reference external" href="https://github.com/binance-us/binance-official-api-docs/">us</a>,
-<a class="reference external" href="https://www.trbinance.com/apidocs/">tr</a>,
-<a class="reference external" href="https://jexapi.github.io/api-doc/spot.html#change-log">jex</a>,
-<a class="reference external" href="https://docs.binance.org/api-reference/dex-api/paths.html">org</a>) in combination.</p>
+on, you can to use the <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-rest-api">UNICORN Binance REST API</a> in combination.</p>
 <div class="section" id="what-are-the-benefits-of-the-unicorn-binance-websocket-api">
 <h3>What are the benefits of the UNICORN Binance WebSocket API?<a class="headerlink" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
@@ -425,6 +420,8 @@ and use:</p>
 <h2>Social<a class="headerlink" href="#social" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://t.me/unicorndevs">https://t.me/unicorndevs</a></p></li>
+<li><p><a class="reference external" href="https://twitter.com/DevsUnicorn">Twitter</a></p></li>
+<li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-coding-club">unicorn-coding-club</a></p></li>
 <li><p><a class="reference external" href="https://dev.binance.vision">https://dev.binance.vision</a></p></li>
 <li><p><a class="reference external" href="https://community.binance.org">https://community.binance.org</a></p></li>
 </ul>
@@ -475,22 +472,41 @@ contribute follow
 <h2>Commercial Support<a class="headerlink" href="#commercial-support" title="Permalink to this headline">¶</a></h2>
 <p>Need a Python developer or consulting?</p>
 <p>Contact <a class="reference external" href="https://about.me/oliver-zehentleitner">me</a> for a non-binding and free consultation via my company
-<a class="reference external" href="https://www.lucit.dev">LUCIT</a> from Vienna (Austria).</p>
+<a class="reference external" href="https://www.lucit.dev">LUCIT</a> from Vienna (Austria) or via <a class="reference external" href="https://t.me/LUCIT_OZ">Telegram</a>.</p>
+</div>
 <div class="section" id="donate">
-<h3>Donate<a class="headerlink" href="#donate" title="Permalink to this headline">¶</a></h3>
-<p>Since you are probably a developer yourself, you will understand very well that the creation of open source software is
-not free - it requires technical knowledge, a lot of time and also financial expenditure.</p>
-<p>If you would like to help me to dedicate my time and energy to this project, even small donations are very welcome.</p>
+<h2>Donate<a class="headerlink" href="#donate" title="Permalink to this headline">¶</a></h2>
+<p>Developing, documenting and testing the
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-suite">UNICORN Binance Suite</a> and supporting the community
+takes a lot of time and time is a form of cost. I am extremely happy to do this, but need a solution for sharing the
+costs.</p>
+<p>I think we are lucky, as our community consists of traders and programmers I expect to find mostly rational thinking
+people who also benefit financially from these libraries.</p>
+<p>I would like to create a fair model for funding. My goals are that unicorn-binance-websocket-api,
+unicorn-binance-rest-api and unicorn-fy remain freely available as open source and that I am compensated at least to
+some extent and thus can invest my time more easily.</p>
+<p>If you know the hooker principle from negotiation research or game theory, you know about the problem that people don’t
+often pay for something out of their own impulse if they have already received it for free.</p>
+<p>So my idea is to give every donor who gives an amount over 50 EUR access to a private Github repository where Python
+classes for trading algos are provided (OrderBook, advanced stop-loss, …). Moreover, maybe a nice ApiTrader community
+will be formed.</p>
+<p>So the donor not only helps to push the open source development but also gets access to a well maintained collection of
+practical code for little money.</p>
+<p>Furthermore community members can help me by donating own developments to make the
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-coding-club">unicorn-coding-club</a> repository more attractive to create
+further incentives for new donors. This way we generate added value for all sides in an uncomplicated way.</p>
+<p>If you donated at least 50 EUR (without transaction fee), please send me a message with a confirmation and your Github
+username via https://www.lucit-development.co/contact.html, I will invite you to the
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-coding-club">unicorn-coding-club</a> as soon as possible.</p>
 <p><a class="reference external" href="https://liberapay.com/oliver-zehentleitner/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" /></a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">BTC</span><span class="p">:</span> <span class="mi">39</span><span class="n">fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA</span>
-<span class="n">LUNA</span><span class="p">:</span> <span class="n">terra1ncjg4a59x2pgvqy9qjyqprlj8lrwshm0wleht5</span> <span class="p">(</span><span class="n">Memo</span><span class="p">:</span> <span class="mi">108157985</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Terra</span> <span class="p">(</span><span class="n">LUNA</span><span class="p">,</span> <span class="n">UST</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span> <span class="n">terra1yt34qmmycextztnj9mpt3mnjzqqvl8jtqqq7g9</span>
+<span class="n">BTC</span><span class="p">:</span> <span class="mi">39</span><span class="n">fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA</span>
 <span class="n">DASH</span><span class="p">:</span> <span class="n">XsRhBuPkXGF9WvifdpkVhTGSmVT4VcuQZ7</span>
 <span class="n">ETH</span><span class="p">:</span> <span class="mh">0x1C15857Bf1E18D122dDd1E536705748aa529fc9C</span>
 <span class="n">LTC</span><span class="p">:</span> <span class="n">LYNzHMFUbee3siyHvNCPaCjqXxjyq8YRGJ</span>
 <span class="n">XMR</span><span class="p">:</span> <span class="mi">85</span><span class="n">dzsTRh6GRPGVSJoUbFDwAf9uwwAdim1HFpiGshLeKHgj2hVqKtYVPXMZvudioLsuLS1AegkUiQ12jwReRwWcFvF7kDAbF</span>
 <span class="n">ZEC</span><span class="p">:</span> <span class="n">t1WvQMPJMriGWD9qkZGDdE9tTJaawvmsBie</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -538,10 +554,8 @@ not free - it requires technical knowledge, a lot of time and also financial exp
 <li><a class="reference internal" href="#contributors">Contributors</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#commercial-support">Commercial Support</a><ul>
+<li><a class="reference internal" href="#commercial-support">Commercial Support</a></li>
 <li><a class="reference internal" href="#donate">Donate</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -613,7 +627,7 @@ not free - it requires technical knowledge, a lot of time and also financial exp
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.29.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.30.0 documentation</a> &#187;
     
 
         <li class="nav-item nav-item-this"><a href="">UNICORN Binance WebSocket API</a></li>
@@ -628,7 +642,7 @@ not free - it requires technical knowledge, a lot of time and also financial exp
     &copy; <a href="copyright.html">Copyright</a> 2021, Oliver Zehentleitner.
     <br />
 
-    Last updated on Mar 14 2021 at 17:10 (CET).
+    Last updated on Apr 13 2021 at 22:54 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 
@@ -637,13 +651,13 @@ not free - it requires technical knowledge, a lot of time and also financial exp
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.2
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.4
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
         <a href="https://www.technopathy.club/2019/11/03/use-python-sphinx-on-github-pages-with-html-and-an-indivdual-theme">
     Create a GitHub Page like this one!</a>    <br />
-        Powered by <a href="https://www.lucit.co/desktop-and-server-apps.html">LUCIT - Python Development</a>
+        Sponsored by <a href="https://www.lucit-development.co">LUCIT - Python Development</a>
     </div>
 
   </body>

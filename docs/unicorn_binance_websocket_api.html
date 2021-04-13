@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.29.0 documentation</title>
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.30.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     
@@ -48,7 +48,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.29.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.30.0 documentation</a> &#187;
     
 
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">unicorn_binance_websocket_api</a> &#187;</li>
@@ -99,7 +99,7 @@
 <span id="unicorn-binance-websocket-api-unicorn-binance-websocket-api-manager-module"></span><h2>unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager module<a class="headerlink" href="#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.</span></code><code class="sig-name descname"><span class="pre">BinanceWebSocketApiManager</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_stream_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'binance.com'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn_on_update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_exception_if_unrepairable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restart_timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_secrets_in_logs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'raw_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_stream_signal_buffer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.</span></code><code class="sig-name descname"><span class="pre">BinanceWebSocketApiManager</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_stream_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'binance.com'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn_on_update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throw_exception_if_unrepairable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restart_timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_secrets_in_logs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'raw_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_stream_signal_buffer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_colorama</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
 <p>An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
 com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible,
@@ -189,6 +189,7 @@ of <cite>create_stream()</cite> and <cite>replace_stream()</cite></p></li>
 and receive information about
 disconnects and reconnects to manage a restore of the lost data during the
 interruption or to recognize your bot got blind.</p></li>
+<li><p><strong>disable_colorama</strong> (<em>bool</em>) – set to True to disable the use of <a class="reference external" href="https://pypi.org/project/colorama/">colorama</a></p></li>
 </ul>
 </dd>
 </dl>
@@ -561,6 +562,17 @@ BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you ca
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_event_loop_by_stream_id">
+<code class="sig-name descname"><span class="pre">get_event_loop_by_stream_id</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_event_loop_by_stream_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the asyncio event loop used by a specific stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>asyncio event loop or False</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1898,7 +1910,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.29.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.30.0 documentation</a> &#187;
     
 
           <li class="nav-item nav-item-1"><a href="modules.html" >unicorn_binance_websocket_api</a> &#187;</li>
@@ -1914,7 +1926,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     &copy; <a href="copyright.html">Copyright</a> 2021, Oliver Zehentleitner.
     <br />
 
-    Last updated on Mar 14 2021 at 17:10 (CET).
+    Last updated on Apr 13 2021 at 23:11 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 
@@ -1923,13 +1935,13 @@ subscribed channels from the specific markets are going to be removed!</p>
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.2
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.4
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
         <a href="https://www.technopathy.club/2019/11/03/use-python-sphinx-on-github-pages-with-html-and-an-indivdual-theme">
     Create a GitHub Page like this one!</a>    <br />
-        Powered by <a href="https://www.lucit.co/desktop-and-server-apps.html">LUCIT - Python Development</a>
+        Sponsored by <a href="https://www.lucit-development.co">LUCIT - Python Development</a>
     </div>
 
   </body>

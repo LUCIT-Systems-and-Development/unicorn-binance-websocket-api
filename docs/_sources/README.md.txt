@@ -4,10 +4,9 @@
 [![Downloads](https://pepy.tech/badge/unicorn-binance-websocket-api)](https://pepy.tech/project/unicorn-binance-websocket-api)
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel)](https://pypi.org/project/unicorn-binance-websocket-api/)
 [![PyPI - Status](https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues)
-[![Build Status](https://travis-ci.com/oliver-zehentleitner/unicorn-binance-websocket-api.svg?branch=master)](https://travis-ci.com/oliver-zehentleitner/unicorn-binance-websocket-api)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/alerts/)
+[![Python application](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml/badge.svg)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml)[![Total alerts](https://img.shields.io/lgtm/alerts/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/context:python)
-[![Coverage Status](https://coveralls.io/repos/github/oliver-zehentleitner/unicorn-binance-websocket-api/badge.svg?branch=master)](https://coveralls.io/github/oliver-zehentleitner/unicorn-binance-websocket-api?branch=master)
+[![codecov](https://codecov.io/gh/oliver-zehentleitner/unicorn-binance-websocket-api/branch/master/graph/badge.svg?token=Z6SEARA4W4)](https://codecov.io/gh/oliver-zehentleitner/unicorn-binance-websocket-api)
 [![Telegram](https://img.shields.io/badge/chat-telegram-yellow.svg)](https://t.me/unicorndevs)
 [![Donations/week](http://img.shields.io/liberapay/receives/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
 [![Patrons](http://img.shields.io/liberapay/patrons/oliver-zehentleitner.svg?logo=liberapay)](https://liberapay.com/oliver-zehentleitner/donate)
@@ -20,6 +19,9 @@
 [Contributing](#contributing) | [Commercial Support](#commercial-support) | [Donate](#donate)
 
 An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, jersey, us, tr, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way. 
+
+Part of ['UNICORN Binance Suite'](https://github.com/oliver-zehentleitner/unicorn-binance-suite).
+
 ### [Create a multiplex websocket connection](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
 ```
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
@@ -76,6 +78,7 @@ provides an API to the Binance Websocket API`s of
 ([+Testnet](https://testnet.binancefuture.com)), 
 [Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
+[Binance TR](https://www.trbinance.com/apidocs), 
 [Binance JEX](https://jexapi.github.io/api-doc/spot.html#web-socket-streams), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
 [Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports the streaming of 
@@ -84,19 +87,13 @@ which needs to be used with a valid api_key and api_secret from the Binance Exch
 [www.binance.com](https://www.binance.com/userCenter/createApi.html), 
 [testnet.binance.vision](https://testnet.binance.vision/), 
 [www.binance.je](https://www.binance.je/userCenter/createApi.html),
-[www.binance.us](https://www.binance.us/userCenter/createApi.html),
-[www.trbinance.com](https://www.trbinance.com/apidocs/) or 
+[www.binance.us](https://www.binance.us/userCenter/createApi.html) or 
 [www.jex.com](https://www.jex.com/userCenter/createApi.html) - for the DEX you need a user address from 
 [www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create) 
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
-on, you have to use the Binance Rest API ([com](https://github.com/binance-exchange/binance-official-api-docs), 
-[je](https://github.com/binance-jersey/binance-official-api-docs/), 
-[us](https://github.com/binance-us/binance-official-api-docs/), 
-[tr](https://www.trbinance.com/apidocs/), 
-[jex](https://jexapi.github.io/api-doc/spot.html#change-log), 
-[org](https://docs.binance.org/api-reference/dex-api/paths.html)) in combination. 
+on, you can to use the [UNICORN Binance REST API](https://github.com/oliver-zehentleitner/unicorn-binance-rest-api) in combination. 
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
@@ -300,6 +297,8 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 
 ## Social
 - [https://t.me/unicorndevs](https://t.me/unicorndevs)
+- [Twitter](https://twitter.com/DevsUnicorn)
+- [unicorn-coding-club](https://github.com/oliver-zehentleitner/unicorn-coding-club)
 - [https://dev.binance.vision](https://dev.binance.vision)
 - [https://community.binance.org](https://community.binance.org)
 
@@ -348,19 +347,44 @@ We ![love](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binanc
 Need a Python developer or consulting? 
 
 Contact [me](https://about.me/oliver-zehentleitner) for a non-binding and free consultation via my company 
-[LUCIT](https://www.lucit.dev) from Vienna (Austria).
+[LUCIT](https://www.lucit.dev) from Vienna (Austria) or via [Telegram](https://t.me/LUCIT_OZ).
 
-### Donate
-Since you are probably a developer yourself, you will understand very well that the creation of open source software is 
-not free - it requires technical knowledge, a lot of time and also financial expenditure.
+## Donate
+Developing, documenting and testing the 
+[UNICORN Binance Suite](https://github.com/oliver-zehentleitner/unicorn-binance-suite) and supporting the community 
+takes a lot of time and time is a form of cost. I am extremely happy to do this, but need a solution for sharing the 
+costs.
 
-If you would like to help me to dedicate my time and energy to this project, even small donations are very welcome.
+I think we are lucky, as our community consists of traders and programmers I expect to find mostly rational thinking 
+people who also benefit financially from these libraries.
+
+I would like to create a fair model for funding. My goals are that unicorn-binance-websocket-api, 
+unicorn-binance-rest-api and unicorn-fy remain freely available as open source and that I am compensated at least to 
+some extent and thus can invest my time more easily.
+
+If you know the hooker principle from negotiation research or game theory, you know about the problem that people don't 
+often pay for something out of their own impulse if they have already received it for free. 
+
+So my idea is to give every donor who gives an amount over 50 EUR access to a private Github repository where Python 
+classes for trading algos are provided (OrderBook, advanced stop-loss, ...). Moreover, maybe a nice ApiTrader community 
+will be formed.
+
+So the donor not only helps to push the open source development but also gets access to a well maintained collection of 
+practical code for little money. 
+
+Furthermore community members can help me by donating own developments to make the 
+[unicorn-coding-club](https://github.com/oliver-zehentleitner/unicorn-coding-club) repository more attractive to create 
+further incentives for new donors. This way we generate added value for all sides in an uncomplicated way.
+
+If you donated at least 50 EUR (without transaction fee), please send me a message with a confirmation and your Github 
+username via https://www.lucit-development.co/contact.html, I will invite you to the 
+[unicorn-coding-club](https://github.com/oliver-zehentleitner/unicorn-coding-club) as soon as possible.
 
 [![Donate using Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/oliver-zehentleitner/donate)
 
 ```
+Terra (LUNA, UST, ...): terra1yt34qmmycextztnj9mpt3mnjzqqvl8jtqqq7g9
 BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
-LUNA: terra1ncjg4a59x2pgvqy9qjyqprlj8lrwshm0wleht5 (Memo: 108157985)
 DASH: XsRhBuPkXGF9WvifdpkVhTGSmVT4VcuQZ7
 ETH: 0x1C15857Bf1E18D122dDd1E536705748aa529fc9C
 LTC: LYNzHMFUbee3siyHvNCPaCjqXxjyq8YRGJ
