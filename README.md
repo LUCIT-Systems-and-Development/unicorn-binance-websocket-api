@@ -382,6 +382,7 @@ username via https://www.lucit-development.co/contact.html, I will invite you to
 
 [![Donate using Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/oliver-zehentleitner/donate)
 
+[:heart: Sponsor (GitHub)](https://github.com/sponsors/oliver-zehentleitner/)
 ```
 Terra (LUNA, UST, ...): terra1yt34qmmycextztnj9mpt3mnjzqqvl8jtqqq7g9
 BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
