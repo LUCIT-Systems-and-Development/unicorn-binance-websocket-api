@@ -545,13 +545,18 @@ class TestRestApi(unittest.TestCase):
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
-    def test_rest_binance_com_futures_testnet(self):
+    def test_rest_binance_com_futures(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures")
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_futures_testnet(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")
+        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
+        binance_websocket_api_manager.stop_manager_with_all_streams()
+
+    def test_rest_binance_com_coin_futures(self):
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin-futures")
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
