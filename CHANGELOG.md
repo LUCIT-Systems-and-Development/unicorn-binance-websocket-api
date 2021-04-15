@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.30.0.dev (development stage/unreleased/unstable)
+### Added 
+- Added partial support for wss://dstream.binance.com - perpetual coin futures! [PR#163](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/163) - Thanks to [M3tz3l](https://github.com/M3tz3l)
 ### Fixed
 - Exception Handling listen_key [issue#143](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/143)
 
