@@ -8,4 +8,4 @@ requests
 ujson
 unicorn-fy
 websocket-client
-websockets==8.1
+websockets==9.1
