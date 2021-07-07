@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.30.0.dev (development stage/unreleased/unstable)
 ### Added 
 - Added partial support for wss://dstream.binance.com - perpetual coin futures! [PR#163](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/163) - Thanks to [M3tz3l](https://github.com/M3tz3l)
+### Changed
+- Bump websockets from 8.1 to 9.1 [PR#176](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/176)
 ### Fixed
 - Exception Handling listen_key [issue#143](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/143)
 
