@@ -76,6 +76,7 @@ channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h
 markets_1 = ['bnbbtc', 'ethbtc']
 channels_1 = ['trade', 'kline_1m', '!ticker']
 stream_id = binance_websocket_api_manager.create_stream(channels_1, markets_1)
+binance_websocket_api_manager.unsubscribe_from_stream(stream_id=stream_id, markets="BNBBTC")
 
 
 markets_2 = ['batbtc', 'adabnb', 'etcusdt', 'qtumusdt', 'xmrbtc', 'trxeth', 'adatusd', 'trxxrp', 'trxbnb',

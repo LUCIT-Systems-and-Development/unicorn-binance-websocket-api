@@ -3380,6 +3380,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.stream_list[stream_id]['channels'].remove(channel)
             except ValueError:
                 pass
+        for i in range(len(markets)):
+            markets[i] = markets[i].lower()
         for market in markets:
             if re.match(r'[a-zA-Z0-9]{41,43}', market) is None:
                 try:
