@@ -107,8 +107,9 @@ on, you can to use the [UNICORN Binance REST API](https://github.com/oliver-zehe
 | [Binance Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-margin-testnet")` |
 | [Binance Isolated Margin](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")` |
 | [Binance Isolated Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")` |
-| [Binance Futures](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures")` |
-| [Binance Futures Testnet](https://testnet.binancefuture.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")` |
+| [Binance USD-M Futures](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures")` |
+| [Binance USD-M Futures Testnet](https://testnet.binancefuture.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")` |
+| [Binance Coin-M Futures](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-coin-futures")` |
 | [Binance Jersey](https://www.binance.je) | `BinanceWebSocketApiManager(exchange="binance.je")` |
 | [Binance US](https://www.binance.us) | `BinanceWebSocketApiManager(exchange="binance.us")` |
 | [Binance TR](https://www.trbinance.com) | `BinanceWebSocketApiManager(exchange="trbinance.com")` |
@@ -253,6 +254,7 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - [Modules](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html)
 
 ## Examples
+- [example_binance_coin_futures.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_coin_futures.py)
 - [example_binance_dex.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_dex.py)
 - [example_binance_futures.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_futures.py)
 - [example_binance_futures_1s.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_futures_1s.py)
@@ -382,6 +384,7 @@ username via https://www.lucit-development.co/contact.html, I will invite you to
 
 [![Donate using Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/oliver-zehentleitner/donate)
 
+[:heart: Sponsor (GitHub)](https://github.com/sponsors/oliver-zehentleitner/)
 ```
 Terra (LUNA, UST, ...): terra1yt34qmmycextztnj9mpt3mnjzqqvl8jtqqq7g9
 BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA

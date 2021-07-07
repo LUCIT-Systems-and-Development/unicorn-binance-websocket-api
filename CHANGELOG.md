@@ -5,14 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.30.0.dev (development stage/unreleased/unstable)
+## 1.31.0.dev (development stage/unreleased/unstable)
+
+## 1.31.0
 ### Added 
 - Added partial support for wss://dstream.binance.com - perpetual coin futures! [PR#163](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/163) - Thanks to [M3tz3l](https://github.com/M3tz3l)
 ### Changed
 - Bump websockets from 8.1 to 9.1 [PR#176](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/176)
 ### Fixed
 - Exception Handling listen_key [issue#143](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/143)
-- unsubscribe_from_stream method doesn't handle uppercase symbols while subscribe_to_stream does [issue#167](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/167)
+- Unsubscribe_from_stream method doesn't handle uppercase symbols while subscribe_to_stream does [issue#167](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/167)
 
 ## 1.30.0
 ### Added
