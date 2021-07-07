@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Bump websockets from 8.1 to 9.1 [PR#176](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/176)
 ### Fixed
 - Exception Handling listen_key [issue#143](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/143)
+- unsubscribe_from_stream method doesn't handle uppercase symbols while subscribe_to_stream does [issue#167](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/167)
 
 ## 1.30.0
 ### Added
