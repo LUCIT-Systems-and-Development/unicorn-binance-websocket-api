@@ -86,7 +86,7 @@ print(first_multi_stream_id, "received", first_multi_stream_info['processed_rece
 binance_websocket_api_manager.stop_stream(first_multi_stream_id)
 binance_websocket_api_manager.stop_stream(miniticker_stream_id)
 print("############################################################################################################\r\n"
-      "# waiting, till stream", first_multi_stream_id, "has stopped!\r\n"
+      f"# waiting, till stream {first_multi_stream_id} has stopped!\r\n"
       "############################################################################################################")
 binance_websocket_api_manager.wait_till_stream_has_stopped(first_multi_stream_id)
 print("############################################################################################################\r\n" 
