@@ -1,0 +1,9 @@
+
+# Configure LGTM for this package
+
+extraction:
+  test:
+    - exclude: example_stream_management_extended.py
+  python:
+    python_setup:
+      version: 3
