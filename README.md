@@ -18,7 +18,7 @@
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
 [Contributing](#contributing) | [Commercial Support](#commercial-support) | [Donate](#donate)
 
-An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, jersey, us, tr, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way. 
+An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, us, tr, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way. 
 
 Part of ['UNICORN Binance Suite'](https://github.com/oliver-zehentleitner/unicorn-binance-suite).
 
@@ -76,7 +76,6 @@ provides an API to the Binance Websocket API`s of
 ([+Testnet](https://testnet.binance.vision/)), 
 [Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams) 
 ([+Testnet](https://testnet.binancefuture.com)), 
-[Binance Jersey](https://github.com/binance-jersey/binance-official-api-docs/), 
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
 [Binance TR](https://www.trbinance.com/apidocs), 
 [Binance JEX](https://jexapi.github.io/api-doc/spot.html#web-socket-streams), 
@@ -110,7 +109,6 @@ on, you can to use the [UNICORN Binance REST API](https://github.com/oliver-zehe
 | [Binance USD-M Futures](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures")` |
 | [Binance USD-M Futures Testnet](https://testnet.binancefuture.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")` |
 | [Binance Coin-M Futures](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-coin-futures")` |
-| [Binance Jersey](https://www.binance.je) | `BinanceWebSocketApiManager(exchange="binance.je")` |
 | [Binance US](https://www.binance.us) | `BinanceWebSocketApiManager(exchange="binance.us")` |
 | [Binance TR](https://www.trbinance.com) | `BinanceWebSocketApiManager(exchange="trbinance.com")` |
 | [Binance JEX](https://www.jex.com) | `BinanceWebSocketApiManager(exchange="jex.com")` |
@@ -258,7 +256,6 @@ or the [current master branch](https://github.com/oliver-zehentleitner/unicorn-b
 - [example_binance_dex.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_dex.py)
 - [example_binance_futures.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_futures.py)
 - [example_binance_futures_1s.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_futures_1s.py)
-- [example_binance_jersey.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_jersey.py)
 - [example_binance_jex.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_jex.py)
 - [example_binance_us.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_us.py)
 - [example_bookticker.py](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_bookticker.py)
@@ -318,7 +315,6 @@ To receive news (like inspection windows/maintenance) about the Binance API`s su
 - [https://t.me/binance_api_announcements](https://t.me/binance_api_announcements)
 - [https://t.me/binance_api_english](https://t.me/binance_api_english)
 - [https://t.me/BinanceExchange](https://t.me/BinanceExchange)
-- [https://t.me/Binance_Jersey](https://t.me/Binance_Jersey)
 - [https://t.me/Binance_USA](https://t.me/Binance_USA)
 - [https://t.me/Binance_JEX_EN](https://t.me/Binance_JEX_EN)
 - [https://t.me/BinanceDEXchange](https://t.me/BinanceDEXchange)

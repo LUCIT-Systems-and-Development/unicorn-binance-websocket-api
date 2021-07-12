@@ -61,7 +61,7 @@ import ujson as json
 class BinanceWebSocketApiManager(threading.Thread):
     """
     An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
-    com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast, flexible,
+    com-isolated_margin+testnet, com-futures+testnet, us, jex, dex/chain+testnet) in a easy, fast, flexible,
     robust and fully-featured way.
 
     This library supports two different kind of websocket endpoints:
@@ -81,12 +81,6 @@ class BinanceWebSocketApiManager(threading.Thread):
     Binance.vision (Testnet) websocket API documentation:
 
         - https://testnet.binance.vision/
-
-    Binance.je websocket API documentation:
-
-        - https://github.com/binance-jersey/binance-official-api-docs/blob/master/web-socket-streams.md
-
-        - https://github.com/binance-jersey/binance-official-api-docs/blob/master/user-data-stream.md
 
     Binance.us websocket API documentation:
 
@@ -118,7 +112,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type process_stream_data: function
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
                      binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
-                     binance.com-futures-testnet, binance.com-coin-futures, binance.je, binance.us, trbinance.com,
+                     binance.com-futures-testnet, binance.com-coin-futures, binance.us, trbinance.com,
                      jex.com, binance.org or binance.org-testnet (default: binance.com)
     :type exchange: str
     :param warn_on_update: set to `False` to disable the update warning
@@ -202,9 +196,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         elif self.exchange == "binance.com-futures-testnet":
             self.websocket_base_uri = "wss://stream.binancefuture.com/"
             self.max_subscriptions_per_stream = 200
-        elif self.exchange == "binance.je":
-            self.websocket_base_uri = "wss://stream.binance.je:9443/"
-            self.max_subscriptions_per_stream = 1024
         elif self.exchange == "binance.us":
             self.websocket_base_uri = "wss://stream.binance.us:9443/"
             self.max_subscriptions_per_stream = 1024

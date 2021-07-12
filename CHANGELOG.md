@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - Exception Handling listen_key [issue#143](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/143)
 - Unsubscribe_from_stream method doesn't handle uppercase symbols while subscribe_to_stream does [issue#167](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/167)
+### Removed 
+- binance.je support (Binance Jersey has ceased operations.)
 
 ## 1.30.0
 ### Added
