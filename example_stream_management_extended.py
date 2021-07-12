@@ -74,27 +74,29 @@ channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h
 print("############################################################################################################\r\n")
 
 # create and start some streams
-first_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
-ticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])
+first_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets, stream_label="test1")
+ticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"], stream_label="ticker")
 miniticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])
 time.sleep(4)
 
 first_multi_stream_info = binance_websocket_api_manager.get_stream_info(first_multi_stream_id)
-print(first_multi_stream_id, "received", first_multi_stream_info['processed_receives_total'], "records till now! ##\r\n")
+print(binance_websocket_api_manager.get_stream_label(first_multi_stream_id), "received",
+      first_multi_stream_info['processed_receives_total'], "records till now! ##\r\n")
 
 # stop the streams
 binance_websocket_api_manager.stop_stream(first_multi_stream_id)
 binance_websocket_api_manager.stop_stream(miniticker_stream_id)
 print("############################################################################################################\r\n"
-      f"# waiting, till stream {first_multi_stream_id} has stopped!\r\n"
+      f"# waiting, till stream {binance_websocket_api_manager.get_stream_label(first_multi_stream_id)} has stopped!\r\n"
       "############################################################################################################")
 binance_websocket_api_manager.wait_till_stream_has_stopped(first_multi_stream_id)
 print("############################################################################################################\r\n" 
-      "#", first_multi_stream_id, "stopped\r\n"
+      "#", binance_websocket_api_manager.get_stream_label(first_multi_stream_id), "stopped\r\n"
       "############################################################################################################")
 first_multi_stream_runtime = time.time() - first_multi_stream_info['start_time']
 print("############################################################################################################\r\n" 
-      "# stopping ticker stream with ID", ticker_stream_id, "(received",
+      "# stopping ticker stream with label", binance_websocket_api_manager.get_stream_label(ticker_stream_id),
+      "(received",
       first_multi_stream_info['processed_receives_total'], "records in ", first_multi_stream_runtime, " seconds!)\r\n"
       "############################################################################################################")
 binance_websocket_api_manager.stop_stream(ticker_stream_id)
@@ -151,14 +153,16 @@ print("\r\ninfo second multi stream")
 print(binance_websocket_api_manager.get_stream_info(second_multi_stream_id))
 
 second_multi_stream_info = binance_websocket_api_manager.get_stream_info(second_multi_stream_id)
-print("\r\n####", second_multi_stream_id, "status", second_multi_stream_info['status'], "####\r\n")
+print("\r\n####", binance_websocket_api_manager.get_stream_label(second_multi_stream_id),
+      "status", second_multi_stream_info['status'], "####\r\n")
 
 while binance_websocket_api_manager.get_active_stream_list():
     print(binance_websocket_api_manager.get_active_stream_list())
     time.sleep(2)
 
 second_multi_stream_info = binance_websocket_api_manager.get_stream_info(second_multi_stream_id)
-print("\r\n####", second_multi_stream_id, "status:", second_multi_stream_info['status'], "and received",
+print("\r\n####", binance_websocket_api_manager.get_stream_label(second_multi_stream_id),
+      "status:", second_multi_stream_info['status'], "and received",
       second_multi_stream_info['processed_receives_total'], "records! ####\r\n")
 
 print("\r\ntrade_stream_list:")

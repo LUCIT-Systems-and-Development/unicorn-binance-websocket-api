@@ -134,6 +134,7 @@ channels = ['kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline
 for channel in channels:
     binance_websocket_api_manager.create_stream(channel, markets, stream_buffer_name=channel)
 
+
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     print("print trades only")
     time.sleep(10)
