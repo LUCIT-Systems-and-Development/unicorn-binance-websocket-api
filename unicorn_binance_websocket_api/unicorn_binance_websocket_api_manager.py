@@ -1454,7 +1454,18 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: dict
         """
+        logging.warning("`get_binance_api_status()` is obsolete and will be removed in future releases, please use"
+                        "`get_used_weight()` instead!")
         return self.binance_api_status
+
+    def get_used_weight(self):
+        """
+        Get used_weight, last status_code and the timestamp of the last status update
+
+        :return: dict
+        """
+        return self.binance_api_status
+
 
     def get_current_receiving_speed(self, stream_id):
         """

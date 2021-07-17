@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.31.0.dev (development stage/unreleased/unstable)
+### Changed
+- `get_used_weight()` replaces `get_binance_api_status()`
 
 ## 1.31.0
 ### Added 
