@@ -1450,7 +1450,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_binance_api_status(self):
         """
-        Get used_weight, last status_code and the timestamp of the last status update
+        `get_binance_api_status()` is obsolete and will be removed in future releases, please use `get_used_weight()`
+        instead!
 
         :return: dict
         """
