@@ -101,7 +101,7 @@ print("#########################################################################
       "############################################################################################################")
 binance_websocket_api_manager.stop_stream(ticker_stream_id)
 if binance_websocket_api_manager.wait_till_stream_has_stopped(ticker_stream_id):
-    print("\r\n#### ticker stream with id (", ticker_stream_id, "has stopped! ####")
+    print("\r\n#### ticker stream with stream_label (", binance_websocket_api_manager.get_stream_label(ticker_stream_id), "has stopped! ####")
 
 # get stream infos
 print("\r\n\r\ntrade_stream_info:")
