@@ -277,6 +277,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
     def tearDown(self):
         self.binance_com_testnet_websocket_api_manager.stop_manager_with_all_streams()
 
+
 class TestBinanceOrgManager(unittest.TestCase):
     # Test binance.org (Binance Chain Dex)
 
