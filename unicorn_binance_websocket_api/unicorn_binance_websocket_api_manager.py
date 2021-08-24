@@ -160,7 +160,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  stream_buffer_maxlen=None):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.31.0.dev"
+        self.version = "1.31.0"
         logging.info(f"New instance of {self.get_user_agent()} on {str(platform.system())} {str(platform.release())} "
                      f"for exchange {exchange} started ...")
         if disable_colorama is not True:

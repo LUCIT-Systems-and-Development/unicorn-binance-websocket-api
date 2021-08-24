@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.31.0 documentation</title>
+    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.32.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     
@@ -13,7 +13,6 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -49,7 +48,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.31.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.32.0 documentation</a> &#187;
     
 
         <li class="nav-item nav-item-this"><a href="">UNICORN Binance WebSocket API</a></li>
@@ -84,7 +83,7 @@
 <a class="reference external" href="#documentation">Documentation</a> | <a class="reference external" href="#examples">Examples</a> | <a class="reference external" href="#change-log">Change Log</a> | <a class="reference external" href="#wiki">Wiki</a> | <a class="reference external" href="#social">Social</a> |
 <a class="reference external" href="#receive-notifications">Notifications</a> | <a class="reference external" href="#how-to-report-bugs-or-suggest-improvements">Bugs</a> |
 <a class="reference external" href="#contributing">Contributing</a> | <a class="reference external" href="#commercial-support">Commercial Support</a> | <a class="reference external" href="#donate">Donate</a></p>
-<p>An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, jersey, us, tr, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.</p>
+<p>An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, us, tr, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.</p>
 <p>Part of <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-suite">‘UNICORN Binance Suite’</a>.</p>
 <div class="section" id="create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code">
 <h2><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">Create a multiplex websocket connection</a> to Binance with just 3 lines of code:<a class="headerlink" href="#create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code" title="Permalink to this headline">¶</a></h2>
@@ -144,7 +143,6 @@ provides an API to the Binance Websocket API`s of
 (<a class="reference external" href="https://testnet.binance.vision/">+Testnet</a>),
 <a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams">Binance Futures</a>
 (<a class="reference external" href="https://testnet.binancefuture.com">+Testnet</a>),
-<a class="reference external" href="https://github.com/binance-jersey/binance-official-api-docs/">Binance Jersey</a>,
 <a class="reference external" href="https://github.com/binance-us/binance-official-api-docs">Binance US</a>,
 <a class="reference external" href="https://www.trbinance.com/apidocs">Binance TR</a>,
 <a class="reference external" href="https://jexapi.github.io/api-doc/spot.html#web-socket-streams">Binance JEX</a>,
@@ -154,7 +152,6 @@ all public streams like trade, kline, ticker, depth, bookTicker, forceOrder, com
 which needs to be used with a valid api_key and api_secret from the Binance Exchange
 <a class="reference external" href="https://www.binance.com/userCenter/createApi.html">www.binance.com</a>,
 <a class="reference external" href="https://testnet.binance.vision/">testnet.binance.vision</a>,
-<a class="reference external" href="https://www.binance.je/userCenter/createApi.html">www.binance.je</a>,
 <a class="reference external" href="https://www.binance.us/userCenter/createApi.html">www.binance.us</a> or
 <a class="reference external" href="https://www.jex.com/userCenter/createApi.html">www.jex.com</a> - for the DEX you need a user address from
 <a class="reference external" href="https://www.binance.org/en/create">www.binance.org</a> or <a class="reference external" href="https://testnet.binance.org/en/create">testnet.binance.org</a>
@@ -210,10 +207,6 @@ on, you can to use the <a class="reference external" href="https://github.com/ol
 <tr>
 <td><a href="https://www.binance.com">Binance Coin-M Futures</a></td>
 <td><code>BinanceWebSocketApiManager(exchange="binance.com-coin-futures")</code></td>
-</tr>
-<tr>
-<td><a href="https://www.binance.je">Binance Jersey</a></td>
-<td><code>BinanceWebSocketApiManager(exchange="binance.je")</code></td>
 </tr>
 <tr>
 <td><a href="https://www.binance.us">Binance US</a></td>
@@ -377,7 +370,6 @@ and use:</p>
 <li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_dex.py">example_binance_dex.py</a></p></li>
 <li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_futures.py">example_binance_futures.py</a></p></li>
 <li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_futures_1s.py">example_binance_futures_1s.py</a></p></li>
-<li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_jersey.py">example_binance_jersey.py</a></p></li>
 <li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_jex.py">example_binance_jex.py</a></p></li>
 <li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_binance_us.py">example_binance_us.py</a></p></li>
 <li><p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/example_bookticker.py">example_bookticker.py</a></p></li>
@@ -447,7 +439,6 @@ or you use the
 <li><p><a class="reference external" href="https://t.me/binance_api_announcements">https://t.me/binance_api_announcements</a></p></li>
 <li><p><a class="reference external" href="https://t.me/binance_api_english">https://t.me/binance_api_english</a></p></li>
 <li><p><a class="reference external" href="https://t.me/BinanceExchange">https://t.me/BinanceExchange</a></p></li>
-<li><p><a class="reference external" href="https://t.me/Binance_Jersey">https://t.me/Binance_Jersey</a></p></li>
 <li><p><a class="reference external" href="https://t.me/Binance_USA">https://t.me/Binance_USA</a></p></li>
 <li><p><a class="reference external" href="https://t.me/Binance_JEX_EN">https://t.me/Binance_JEX_EN</a></p></li>
 <li><p><a class="reference external" href="https://t.me/BinanceDEXchange">https://t.me/BinanceDEXchange</a></p></li>
@@ -467,7 +458,7 @@ and Python version and explain how to reproduce the error. A demo script is appr
 <p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">UNICORN Binance WebSocket API</a> is an open
 source project which welcomes contributions which can be anything from simple documentation fixes and reporting dead links to new features. To
 contribute follow
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CONTRIBUTING">this guide</a>.</p>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CONTRIBUTING.md">this guide</a>.</p>
 <div class="section" id="contributors">
 <h3>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/graphs/contributors"><img alt="Contributors" src="https://contributors-img.web.app/image?repo=oliver-zehentleitner/unicorn-binance-websocket-api" /></a></p>
@@ -634,7 +625,7 @@ username via https://www.lucit-development.co/contact.html, I will invite you to
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.31.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.32.0 documentation</a> &#187;
     
 
         <li class="nav-item nav-item-this"><a href="">UNICORN Binance WebSocket API</a></li>
@@ -649,7 +640,7 @@ username via https://www.lucit-development.co/contact.html, I will invite you to
     &copy; <a href="copyright.html">Copyright</a> 2021, Oliver Zehentleitner.
     <br />
 
-    Last updated on Jul 07 2021 at 22:27 (CET).
+    Last updated on Aug 24 2021 at 19:44 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 
@@ -658,13 +649,13 @@ username via https://www.lucit-development.co/contact.html, I will invite you to
     <a href="https://www.python.org/psf/donations/">Please donate.</a>
     <br />
 
-    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.3.1
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.4
         with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
         <a href="https://www.technopathy.club/2019/11/03/use-python-sphinx-on-github-pages-with-html-and-an-indivdual-theme">
     Create a GitHub Page like this one!</a>    <br />
-        Powered by <a href="https://www.lucit.co/desktop-and-server-apps.html">LUCIT - Python Development</a>
+        Sponsored by <a href="https://www.lucit-development.co">LUCIT - Python Development</a>
     </div>
 
   </body>
