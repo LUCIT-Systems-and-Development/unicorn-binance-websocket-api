@@ -6,8 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.31.0.dev (development stage/unreleased/unstable)
+Now `stream_buffer` can be used as FIFO or LIFO stack and its possible to define a max length for it.
+### Added
+- `clear_stream_buffer()` to delete all items on the `stream_buffer` stack.
+- `get_stream_buffer_maxlen()` to get the maxlen value of the stack.
+- Support for `stream_buffer_maxlen` in methods of `BinanceWebSocketApiManager()` class `_create_stream_thread()`, `print_stream_info()`, `__init__()`, 
+`_add_stream_to_stream_list()`, `_create_stream_thread()`, `create_stream()`, `replace_stream()`.
+- Support for FIFO and LIFO in `pop_stream_data_from_stream_buffer(mode="FIFO")`
 ### Changed
 - `get_used_weight()` replaces `get_binance_api_status()`
+- `self.stream_buffer` and `self.stream_buffer[xxx]` is not a list anymore, its changed to `collections.deque()`  
 
 ## 1.31.0
 ### Added 

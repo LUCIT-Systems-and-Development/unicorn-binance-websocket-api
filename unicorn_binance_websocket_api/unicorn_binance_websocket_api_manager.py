@@ -39,6 +39,7 @@ from .unicorn_binance_websocket_api_socket import BinanceWebSocketApiSocket
 from .unicorn_binance_websocket_api_restclient import BinanceWebSocketApiRestclient
 from .unicorn_binance_websocket_api_restserver import BinanceWebSocketApiRestServer
 from cheroot import wsgi
+from collections import deque
 from datetime import datetime
 from flask import Flask, redirect
 from flask_restful import Api
@@ -141,6 +142,9 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type enable_stream_signal_buffer: bool
     :param disable_colorama: set to True to disable the use of `colorama <https://pypi.org/project/colorama/>`_
     :type disable_colorama: bool
+    :param stream_buffer_maxlen: Set a max len for the generic `stream_buffer`. This parameter can also be used within
+                                 `create_stream()` for a specific `stream_buffer`.
+    :type stream_buffer_maxlen: int or None
     """
 
     def __init__(self,
@@ -152,7 +156,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                  show_secrets_in_logs=False,
                  output_default="raw_data",
                  enable_stream_signal_buffer=False,
-                 disable_colorama=False):
+                 disable_colorama=False,
+                 stream_buffer_maxlen=None):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.31.0.dev"
@@ -259,7 +264,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.ringbuffer_result_max_size = 500
         self.show_secrets_in_logs = show_secrets_in_logs
         self.start_time = time.time()
-        self.stream_buffer = []
+        self.stream_buffer_maxlen = stream_buffer_maxlen
+        self.stream_buffer = deque(maxlen=self.stream_buffer_maxlen)
         self.stream_buffer_lock = threading.Lock()
         self.stream_buffer_locks = {}
         self.stream_buffers = {}
@@ -298,7 +304,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    output=False,
                                    ping_interval=False,
                                    ping_timeout=False,
-                                   close_timeout=False):
+                                   close_timeout=False,
+                                   stream_buffer_maxlen=None):
         """
         Create a list entry for new streams
 
@@ -328,6 +335,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                        convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_ -  otherwise with
                        the default setting "raw_data" the output remains unchanged and gets delivered as received from
                        the endpoints
+        :type output: str
         :param ping_interval: Once the connection is open, a `Ping frame` is sent every
                               `ping_interval` seconds. This serves as a keepalive. It helps keeping
                               the connection open, especially in the presence of proxies with short
@@ -348,7 +356,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                               This parameter is passed through to the `websockets.client.connect()
                               <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type close_timeout: int or None
-        :type output: str
+        :param stream_buffer_maxlen: Set a max len for the `stream_buffer`. Only used in combination with a non generic
+                                     `stream_buffer`. The generic `stream_buffer` uses always the value of
+                                     `BinanceWebSocketApiManager()`.
+        :type stream_buffer_maxlen: int or None
         """
         if output is False:
             output = self.output_default
@@ -361,6 +372,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'markets': copy.deepcopy(markets),
                                        'stream_label': copy.deepcopy(stream_label),
                                        'stream_buffer_name': copy.deepcopy(stream_buffer_name),
+                                       'stream_buffer_maxlen': copy.deepcopy(stream_buffer_maxlen),
                                        'symbols': copy.deepcopy(symbols),
                                        'output': copy.deepcopy(output),
                                        'subscriptions': 0,
@@ -393,7 +405,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'transfer_rate_per_second': {'bytes': {}, 'speed': 0}}
         logging.info("BinanceWebSocketApiManager._add_stream_to_stream_list(" +
                      str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
-                     + str(stream_buffer_name) + ", " + str(symbols) + ")")
+                     + str(stream_buffer_name) + ", " + str(stream_buffer_maxlen) + ", " + str(symbols) + ")")
 
     def _create_stream_thread(self,
                               loop,
@@ -401,6 +413,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                               channels,
                               markets,
                               stream_buffer_name=False,
+                              stream_buffer_maxlen=None,
                               restart=False):
         """
         Co function of self.create_stream to create a thread for the socket and to manage the coroutine
@@ -418,6 +431,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                            provide a string to create and use a shared stream_buffer and read it via
                            `pop_stream_data_from_stream_buffer('string')`.
         :type stream_buffer_name: bool or str
+        :param stream_buffer_maxlen: Set a max len for the `stream_buffer`. Only used in combination with a non generic
+                                     `stream_buffer`. The generic `stream_buffer` uses always the value of
+                                     `BinanceWebSocketApiManager()`.
+        :type stream_buffer_maxlen: int or None
         :param restart: set to `True`, if its a restart!
         :type restart: bool
         :return:
@@ -432,7 +449,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     if self.stream_buffers[stream_buffer_name]:
                         pass
                 except KeyError:
-                    self.stream_buffers[stream_buffer_name] = []
+                    self.stream_buffers[stream_buffer_name] = deque(maxlen=stream_buffer_maxlen)
         asyncio.set_event_loop(loop)
         socket = BinanceWebSocketApiSocket(self, stream_id, channels, markets)
         try:
@@ -670,6 +687,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         self.stream_list[stream_id]['channels'],
                                         self.stream_list[stream_id]['markets'],
                                         self.stream_list[stream_id]['stream_buffer_name'],
+                                        self.stream_list[stream_id]['stream_buffer_maxlen'],
                                         True))
         thread.start()
         return stream_id
@@ -828,6 +846,32 @@ class BinanceWebSocketApiManager(threading.Thread):
         with self.total_received_bytes_lock:
             self.total_received_bytes += int(size)
 
+    def clear_stream_buffer(self, stream_buffer_name=False):
+        """
+        Clear the
+        `stream_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+
+        :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
+                                   create_stream() or the string name of a shared stream_buffer.
+        :type stream_buffer_name: bool or str
+        :return: bool
+        """
+        if stream_buffer_name is False:
+            try:
+                self.stream_buffer.clear()
+                return True
+            except IndexError:
+                return False
+        else:
+            try:
+                with self.stream_buffer_locks[stream_buffer_name]:
+                    self.stream_buffers[stream_buffer_name].clear()
+                return True
+            except IndexError:
+                return False
+            except KeyError:
+                return False
+
     def create_payload(self, stream_id, method, channels=False, markets=False):
         """
         Create the payload for subscriptions
@@ -969,7 +1013,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def create_stream(self,
                       channels,
-                      markets, stream_label=None,
+                      markets,
+                      stream_label=None,
                       stream_buffer_name=False,
                       api_key=False,
                       api_secret=False,
@@ -977,7 +1022,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                       output=False,
                       ping_interval=20,
                       ping_timeout=20,
-                      close_timeout=10):
+                      close_timeout=10,
+                      stream_buffer_maxlen=None):
         """
         Create a websocket stream
 
@@ -1068,18 +1114,25 @@ class BinanceWebSocketApiManager(threading.Thread):
                               This parameter is passed through to the `websockets.client.connect()
                               <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type close_timeout: int or None
+        :param stream_buffer_maxlen: Set a max len for the `stream_buffer`. Only used in combination with a non generic
+                                     `stream_buffer`. The generic `stream_buffer` uses always the value of
+                                     `BinanceWebSocketApiManager()`.
+        :type stream_buffer_maxlen: int or None
         :return: stream_id or 'False'
         """
         # create a stream
         if isinstance(channels, bool):
             logging.error(f"BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets) + ", "
-                          + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ") - Parameter "
+                          + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
+                          str(stream_buffer_maxlen) + ") - Parameter "
                           f"`channels` must be str, tuple, list or a set!")
             return False
         elif isinstance(markets, bool):
-            logging.error(f"BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets) + ", "
-                          + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ") - Parameter "
-                          f"`markets` must be str, tuple, list or a set!")
+            if isinstance(channels, bool):
+                logging.error(f"BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets) + ", "
+                              + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
+                              str(stream_buffer_maxlen) + ") - Parameter "
+                              f"`markets` must be str, tuple, list or a set!")
             return False
         if type(channels) is str:
             channels = [channels]
@@ -1120,12 +1173,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         output=output,
                                         ping_interval=ping_interval,
                                         ping_timeout=ping_timeout,
-                                        close_timeout=close_timeout)
+                                        close_timeout=close_timeout,
+                                        stream_buffer_maxlen=stream_buffer_maxlen)
         try:
             loop = asyncio.new_event_loop()
         except OSError as error_msg:
             logging.critical(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
-                             f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}) with stream_id="
+                             f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}), {stream_buffer_maxlen} "
+                             f"with stream_id="
                              f"{str(stream_id)} - OSError  - can not create stream - error_msg: {str(error_msg)}")
             return False
         self.event_loops[stream_id] = loop
@@ -1134,6 +1189,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                                            channels,
                                                                            markets_new,
                                                                            stream_buffer_name,
+                                                                           stream_buffer_maxlen,
                                                                            False))
         thread.start()
         return stream_id
@@ -2202,6 +2258,33 @@ class BinanceWebSocketApiManager(threading.Thread):
             temp_stream_list[stream_id] = self.get_stream_info(stream_id)
         return temp_stream_list
 
+    def get_stream_buffer_maxlen(self, stream_buffer_name=False):
+        """
+        Get the maxlen value of the
+        `stream_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+
+        If maxlen is not specified or is None, `stream_buffer` may grow to an arbitrary length. Otherwise, the
+        `stream_buffer` is bounded to the specified maximum length. Once a bounded length `stream_buffer` is full, when
+        new items are added, a corresponding number of items are discarded from the opposite end.
+
+        :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
+                                   create_stream() or the string name of a shared stream_buffer.
+        :type stream_buffer_name: bool or str
+        :return: int or False
+        """
+        if stream_buffer_name is False:
+            try:
+                return self.stream_buffer.maxlen
+            except IndexError:
+                return False
+        else:
+            try:
+                return self.stream_buffers[stream_buffer_name].maxlen
+            except IndexError:
+                return False
+            except KeyError:
+                return False
+
     def get_stream_receives_last_second(self, stream_id):
         """
         Get the number of receives of specific stream from the last seconds
@@ -2519,28 +2602,40 @@ class BinanceWebSocketApiManager(threading.Thread):
         logging.info("BinanceWebSocketApiManager.kill_stream(" + str(stream_id) + ")")
         self.stream_list[stream_id]['kill_request'] = True
 
-    def pop_stream_data_from_stream_buffer(self, stream_buffer_name=False):
+    def pop_stream_data_from_stream_buffer(self, stream_buffer_name=False, mode="FIFO"):
         """
-        Get oldest entry from
+        Get oldest or latest entry from
         `stream_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
-        and remove from stack (FIFO stack)
+        and remove from FIFO/LIFO stack.
 
         :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
                                    create_stream() or the string name of a shared stream_buffer.
         :type stream_buffer_name: bool or str
+        :param mode: How to read from the `stream_buffer` - "FIFO" (default) or "LIFO".
+        :type mode: str
         :return: stream_data - str, dict or False
         """
         if stream_buffer_name is False:
             try:
                 with self.stream_buffer_lock:
-                    stream_data = self.stream_buffer.pop(0)
+                    if mode.upper() == "FIFO":
+                        stream_data = self.stream_buffer.popleft()
+                    elif mode.upper() == "LIFO":
+                        stream_data = self.stream_buffer.pop()
+                    else:
+                        return False
                 return stream_data
             except IndexError:
                 return False
         else:
             try:
                 with self.stream_buffer_locks[stream_buffer_name]:
-                    stream_data = self.stream_buffers[stream_buffer_name].pop(0)
+                    if mode.upper() == "FIFO":
+                        stream_data = self.stream_buffers[stream_buffer_name].popleft()
+                    elif mode.upper() == "LIFO":
+                        stream_data = self.stream_buffers[stream_buffer_name].pop()
+                    else:
+                        return False
                 return stream_data
             except IndexError:
                 return False
@@ -2665,6 +2760,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                   str(add_string) +
                   " stream_id:", str(stream_id), "\r\n" +
                   str(stream_label_row) +
+                  " stream_buffer_maxlen:", str(stream_info['stream_buffer_maxlen']), "\r\n" +
                   " channels (" + str(len(stream_info['channels'])) + "):", str(stream_info['channels']), "\r\n" +
                   " markets (" + str(len(stream_info['markets'])) + "):", str(stream_info['markets']), "\r\n" +
                   str(symbol_row) +
@@ -2867,6 +2963,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     " total_receives: " + str(self.total_receives) + "\r\n"
                     " total_received_bytes: " + str(total_received_bytes) + "\r\n"
                     " total_transmitted_payloads: " + str(self.total_transmitted) + "\r\n" +
+                    " stream_buffer_maxlen: " + str(self.stream_buffer_maxlen) + "\r\n" +
                     str(binance_api_status_row) +
                     " process_ressource_usage: cpu=" + str(self.get_process_usage_cpu()) + "%, memory=" +
                     str(self.get_process_usage_memory()) + ", threads=" + str(self.get_process_usage_threads()) +
@@ -2955,7 +3052,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                        new_output="raw_data",
                        new_ping_interval=20,
                        new_ping_timeout=20,
-                       new_close_timeout=10):
+                       new_close_timeout=10,
+                       new_stream_buffer_maxlen=None):
         """
         Replace a stream
 
@@ -3007,6 +3105,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                   This parameter is passed through to the `websockets.client.connect()
                                   <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
         :type new_close_timeout: int or None
+        :param new_stream_buffer_maxlen: Set a max len for the `stream_buffer`. Only used in combination with a non generic
+                                     `stream_buffer`. The generic `stream_buffer` uses always the value of
+                                     `BinanceWebSocketApiManager()`.
+        :type new_stream_buffer_maxlen: int or None
         :return: new_stream_id or 'False'
         """
         # starting a new socket and stop the old stream not before the new stream received its first record
@@ -3020,7 +3122,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                            new_output,
                                            new_ping_interval,
                                            new_ping_timeout,
-                                           new_close_timeout)
+                                           new_close_timeout,
+                                           new_stream_buffer_maxlen)
         if self.wait_till_stream_has_started(new_stream_id):
             self.stop_stream(stream_id)
         return new_stream_id
