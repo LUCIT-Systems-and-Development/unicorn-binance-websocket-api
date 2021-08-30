@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.32.0.dev (development stage/unreleased/unstable)
 ### Added
 - `process_stream_signals` callback support [issue#160](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/160)
+### Changed
+- `self.stream_signal_buffer` is not a list anymore, its changed to `collections.deque()`  
 
 ## 1.32.0
 Now `stream_buffer` can be used as FIFO or LIFO stack and its possible to define a max length for it.
@@ -19,7 +21,7 @@ Now `stream_buffer` can be used as FIFO or LIFO stack and its possible to define
 - Support for FIFO and LIFO in `pop_stream_data_from_stream_buffer(mode="FIFO")`
 ### Changed
 - `get_used_weight()` replaces `get_binance_api_status()`
-- `self.stream_buffer` and `self.stream_buffer[xxx]` is not a list anymore, its changed to `collections.deque()`  
+- `self.stream_buffer` and `self.stream_buffer[xxx]` are not lists anymore, their type has changed to `collections.deque()`  
 
 ## 1.31.0
 ### Added 

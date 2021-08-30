@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.32.0 documentation</title>
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.33.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     
@@ -48,7 +48,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.32.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.33.0 documentation</a> &#187;
     
 
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">unicorn_binance_websocket_api</a> &#187;</li>
@@ -253,7 +253,7 @@ provide a string to create and use a shared stream_buffer and read it via
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>signal_type</strong> (<em>raw stream_data</em><em> or </em><em>unicorn_fied stream data</em>) – the data you want to write back to the buffer</p></li>
+<li><p><strong>signal_type</strong> (<em>str</em>) – “CONNECT”, “DISCONNECT” or “FIRST_RECEIVED_DATA”</p></li>
 <li><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p></li>
 <li><p><strong>data_record</strong> (<em>str</em><em> or </em><em>dict</em>) – The last or first received data record</p></li>
 </ul>
@@ -1331,7 +1331,7 @@ create_stream() or the string name of a shared stream_buffer.</p></li>
 <code class="sig-name descname"><span class="pre">pop_stream_signal_from_stream_signal_buffer</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_signal_from_stream_signal_buffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get oldest entry from
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60">stream_signal_buffer</a>
-and remove from stack (FIFO stack)</p>
+and remove from stack/pipe (FIFO stack)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>stream_signal - dict or False</p>
@@ -1965,7 +1965,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.32.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.33.0 documentation</a> &#187;
     
 
           <li class="nav-item nav-item-1"><a href="modules.html" >unicorn_binance_websocket_api</a> &#187;</li>
@@ -1981,7 +1981,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     &copy; <a href="copyright.html">Copyright</a> 2021, Oliver Zehentleitner.
     <br />
 
-    Last updated on Aug 30 2021 at 23:30 (CET).
+    Last updated on Aug 30 2021 at 23:50 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 
