@@ -157,7 +157,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                  output_default="raw_data",
                  enable_stream_signal_buffer=False,
                  disable_colorama=False,
-                 stream_buffer_maxlen=None):
+                 stream_buffer_maxlen=None,
+                 process_stream_signals=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.32.0"
@@ -173,6 +174,14 @@ class BinanceWebSocketApiManager(threading.Thread):
             # use the provided method to process stream data:
             self.process_stream_data = process_stream_data
             logging.info(f"Using `process_stream_data`")
+        if process_stream_signals is False:
+            # no special method to process stream signals provided, so we use add_to_stream_signal_buffer:
+            self.process_stream_signals = self.add_to_stream_signal_buffer
+            logging.info(f"Using `stream_signal_buffer`")
+        else:
+            # use the provided method to process stream signals:
+            self.process_stream_signals = process_stream_signals
+            logging.info(f"Using `process_stream_signals`")
         self.exchange = exchange
         if self.exchange == "binance.com":
             self.websocket_base_uri = "wss://stream.binance.com:9443/"
@@ -468,7 +477,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                              f"https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/new/choose")
             loop.close()
         finally:
-            self.add_to_stream_signal_buffer("DISCONNECT", stream_id)
+            self.process_stream_signals("DISCONNECT", stream_id)
             loop.close()
 
     def _frequent_checks(self):

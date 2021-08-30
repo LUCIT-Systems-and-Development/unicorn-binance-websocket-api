@@ -164,9 +164,9 @@ class BinanceWebSocketApiSocket(object):
                             self.manager.add_to_ringbuffer_result(received_stream_data_json)
                         else:
                             if self.manager.stream_list[self.stream_id]['last_received_data_record'] is None:
-                                self.manager.add_to_stream_signal_buffer("FIRST_RECEIVED_DATA",
-                                                                         self.stream_id,
-                                                                         received_stream_data)
+                                self.manager.process_stream_signals("FIRST_RECEIVED_DATA",
+                                                                    self.stream_id,
+                                                                    received_stream_data)
                             self.manager.stream_list[self.stream_id]['last_received_data_record'] = received_stream_data
 
                 except websockets.exceptions.ConnectionClosed as error_msg:
