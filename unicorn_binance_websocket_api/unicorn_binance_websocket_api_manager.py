@@ -145,6 +145,14 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param stream_buffer_maxlen: Set a max len for the generic `stream_buffer`. This parameter can also be used within
                                  `create_stream()` for a specific `stream_buffer`.
     :type stream_buffer_maxlen: int or None
+    :param process_stream_signals: Provide a function/method to process the received stream signals. The function
+                                   will be called instead of
+                                   `add_to_stream_signal_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer>`_
+                                   like `process_stream_data(stream_data, stream_buffer_name)` where
+                                   `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
+                                   get stored in the stream_buffer! `How to read from stream_buffer!
+                                   <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives>`_
+    :type process_stream_signals: function
     """
 
     def __init__(self,
