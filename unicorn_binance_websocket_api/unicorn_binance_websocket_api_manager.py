@@ -285,7 +285,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_buffers = {}
         self.stream_list = {}
         self.stream_list_lock = threading.Lock()
-        self.stream_signal_buffer = []
+        self.stream_signal_buffer = deque()
         self.stream_signal_buffer_lock = threading.Lock()
         self.stream_threading_lock = {}
         self.throw_exception_if_unrepairable = throw_exception_if_unrepairable
@@ -815,8 +815,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         Add signals about a stream to the
         `stream_signal_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
 
-        :param signal_type: the data you want to write back to the buffer
-        :type signal_type: raw stream_data or unicorn_fied stream data
+        :param signal_type: "CONNECT", "DISCONNECT" or "FIRST_RECEIVED_DATA"
+        :type signal_type: str
         :param stream_id: id of a stream
         :type stream_id: uuid
         :param data_record: The last or first received data record
@@ -2660,13 +2660,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get oldest entry from
         `stream_signal_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
-        and remove from stack (FIFO stack)
+        and remove from stack/pipe (FIFO stack)
 
         :return: stream_signal - dict or False
         """
         try:
             with self.stream_signal_buffer_lock:
-                stream_signal = self.stream_signal_buffer.pop(0)
+                stream_signal = self.stream_signal_buffer.popleft()
             return stream_signal
         except IndexError:
             return False
