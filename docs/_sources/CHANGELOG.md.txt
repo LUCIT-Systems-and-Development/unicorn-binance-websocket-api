@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.32.0.dev (development stage/unreleased/unstable)
+## 1.33.0.dev (development stage/unreleased/unstable)
+
+## 1.33.0
 ### Added
 - `process_stream_signals` callback support [issue#160](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/160)
 ### Changed
