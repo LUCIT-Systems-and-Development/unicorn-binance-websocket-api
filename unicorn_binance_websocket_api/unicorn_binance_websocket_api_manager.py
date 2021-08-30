@@ -2983,7 +2983,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     str(self.get_process_usage_memory()) + ", threads=" + str(self.get_process_usage_threads()) +
                     "\r\n" + str(add_string) +
                     " ---------------------------------------------------------------------------------------------\r\n"
-                    "               stream_id              |   stream_label  |  last  |  average  |  most  | recon\r\n"
+                    "               stream_id              |   stream_label  |  last  |  average  |  peak  | recon\r\n"
                     " ---------------------------------------------------------------------------------------------\r\n"
                     " " + str(stream_rows) +
                     "---------------------------------------------------------------------------------------------\r\n"
