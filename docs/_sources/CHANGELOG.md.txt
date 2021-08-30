@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.32.0.dev (development stage/unreleased/unstable)
+### Added
+- `process_stream_signals` callback support [issue#160](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/160)
 
 ## 1.32.0
 Now `stream_buffer` can be used as FIFO or LIFO stack and its possible to define a max length for it.
