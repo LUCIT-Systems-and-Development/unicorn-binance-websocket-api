@@ -185,13 +185,10 @@ interruption or to recognize your bot got blind.</p></li>
 <li><p><strong>disable_colorama</strong> (<em>bool</em>) – set to True to disable the use of <a class="reference external" href="https://pypi.org/project/colorama/">colorama</a></p></li>
 <li><p><strong>stream_buffer_maxlen</strong> (<em>int</em><em> or </em><em>None</em>) – Set a max len for the generic <cite>stream_buffer</cite>. This parameter can also be used within
 <cite>create_stream()</cite> for a specific <cite>stream_buffer</cite>.</p></li>
-<li><p><strong>process_stream_signals</strong> (<em>function</em>) – <p>Provide a function/method to process the received stream signals. The function
+<li><p><strong>process_stream_signals</strong> (<em>function</em>) – Provide a function/method to process the received stream signals. The function
 will be called instead of
 <a class="reference external" href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer">add_to_stream_signal_buffer()</a>
-like <cite>process_stream_data(stream_data, stream_buffer_name)</cite> where
-<cite>stream_data</cite> cointains the raw_stream_data. If not provided, the raw stream_data will
-get stored in the stream_buffer! <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives">How to read from stream_buffer!</a></p>
-</p></li>
+like <cite>process_stream_data(signal_type=False, stream_id=False, data_record=False)</cite>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1984,7 +1981,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     &copy; <a href="copyright.html">Copyright</a> 2021, Oliver Zehentleitner.
     <br />
 
-    Last updated on Aug 30 2021 at 23:25 (CET).
+    Last updated on Aug 30 2021 at 23:28 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 

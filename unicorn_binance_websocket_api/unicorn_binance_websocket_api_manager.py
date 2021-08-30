@@ -148,10 +148,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param process_stream_signals: Provide a function/method to process the received stream signals. The function
                                    will be called instead of
                                    `add_to_stream_signal_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer>`_
-                                   like `process_stream_data(stream_data, stream_buffer_name)` where
-                                   `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
-                                   get stored in the stream_buffer! `How to read from stream_buffer!
-                                   <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives>`_
+                                   like `process_stream_data(signal_type=False, stream_id=False, data_record=False)`.
     :type process_stream_signals: function
     """
 
