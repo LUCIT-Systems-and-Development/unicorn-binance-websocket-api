@@ -37,7 +37,6 @@ from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import 
 import logging
 import os
 import time
-import threading
 
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.basicConfig(level=logging.INFO,
