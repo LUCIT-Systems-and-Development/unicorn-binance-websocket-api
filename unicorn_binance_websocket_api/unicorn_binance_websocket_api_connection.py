@@ -276,7 +276,7 @@ class BinanceWebSocketApiConnection(object):
             except KeyError:
                 pass
             if received_data_json is not None:
-                size = sys.getsizeof(received_data_json)
+                size = sys.getsizeof(str(received_data_json))
                 self.manager.increase_processed_receives_statistic(self.stream_id)
                 self.manager.add_total_received_bytes(size)
                 self.manager.increase_received_bytes_per_second(self.stream_id, size)
