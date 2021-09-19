@@ -62,7 +62,7 @@ Include here the endpint you are connecting to, like binance.com, binance.com-is
 ```
 
 #### Python Version Requirement
-- [ ] I am using Python 3.6.1 or above
+- [ ] I am using Python 3.7 or above
 
 #### Exact Python Version?
 ```

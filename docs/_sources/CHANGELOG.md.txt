@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.33.1.dev (development stage/unreleased/unstable)
+## 1.34.0.dev (development stage/unreleased/unstable)
+
+## 1.34.0
+### Changed
+- Bump websockets from 9.1 to 10.0 - Drop support for Python 3.6, added support for Python 3.10! 
+  [PR#195](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/pull/195)
 
 ## 1.33.1
 ### Added

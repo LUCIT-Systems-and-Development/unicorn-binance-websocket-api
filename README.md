@@ -211,7 +211,7 @@ This live demo script is streaming from binance.com!
 (Refresh update once a minute!)
 
 ## Installation and Upgrade
-The module requires Python 3.6.1 or above, as it depends on Pythons latest asyncio features for asynchronous/concurrent 
+The module requires Python 3.7 or above, as it depends on Pythons latest asyncio features for asynchronous/concurrent 
 processing. 
 
 The current dependencies are listed 
