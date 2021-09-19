@@ -57,6 +57,7 @@ import threading
 import time
 import uuid
 import ujson as json
+import websockets
 
 
 class BinanceWebSocketApiManager(threading.Thread):
@@ -167,10 +168,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.33.0.dev"
-        logging.info(f"New instance of {self.get_user_agent()} on {str(platform.system())} {str(platform.release())} "
-                     f"for exchange {exchange} started ...")
+        logging.info(f"New instance of {self.get_user_agent()} on "
+                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         if disable_colorama is not True:
+            logging.info(f"Initiating `colorama_{colorama.__version__}`")
             colorama.init()
+        logging.info(f"Using `websockets_{websockets.__version__}`")
         if process_stream_data is False:
             # no special method to process stream data provided, so we use add_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
@@ -186,7 +189,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             # use the provided method to process stream signals:
             self.process_stream_signals = process_stream_signals
-            logging.info(f"Using `process_stream_signals`")
+            logging.info(f"Using `process_stream_signals` ...")
         self.exchange = exchange
         if self.exchange == "binance.com":
             self.websocket_base_uri = "wss://stream.binance.com:9443/"

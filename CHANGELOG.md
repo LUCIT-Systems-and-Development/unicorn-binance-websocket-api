@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.33.0.dev (development stage/unreleased/unstable)
+### Added
+- Logging websockets version on start up (logging level: INFO)
 ### Changed 
 - `print_summary()` "most" to "peak".
 ### Fixed
