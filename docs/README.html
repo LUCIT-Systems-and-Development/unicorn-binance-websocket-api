@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.33.0 documentation</title>
+    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.33.1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     
@@ -48,7 +48,7 @@
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.33.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.33.1 documentation</a> &#187;
     
 
         <li class="nav-item nav-item-this"><a href="">UNICORN Binance WebSocket API</a></li>
@@ -71,7 +71,8 @@
 <a class="reference external" href="https://pepy.tech/project/unicorn-binance-websocket-api"><img alt="Downloads" src="https://pepy.tech/badge/unicorn-binance-websocket-api" /></a>
 <a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/"><img alt="PyPI - Wheel" src="https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel" /></a>
 <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues"><img alt="PyPI - Status" src="https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg" /></a>
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml"><img alt="Python application" src="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml/badge.svg" /></a><a class="reference external" href="https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/alerts/"><img alt="Total alerts" src="https://img.shields.io/lgtm/alerts/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&amp;logoWidth=18" /></a>
+<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml"><img alt="Python application" src="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml/badge.svg" /></a>
+<a class="reference external" href="https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/alerts/"><img alt="Total alerts" src="https://img.shields.io/lgtm/alerts/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&amp;logoWidth=18" /></a>
 <a class="reference external" href="https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/context:python"><img alt="Language grade: Python" src="https://img.shields.io/lgtm/grade/python/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&amp;logoWidth=18" /></a>
 <a class="reference external" href="https://codecov.io/gh/oliver-zehentleitner/unicorn-binance-websocket-api"><img alt="codecov" src="https://codecov.io/gh/oliver-zehentleitner/unicorn-binance-websocket-api/branch/master/graph/badge.svg?token=Z6SEARA4W4" /></a>
 <a class="reference external" href="https://t.me/unicorndevs"><img alt="Telegram" src="https://img.shields.io/badge/chat-telegram-yellow.svg" /></a>
@@ -89,28 +90,28 @@
 <h2><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">Create a multiplex websocket connection</a> to Binance with just 3 lines of code:<a class="headerlink" href="#create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
 
-<span class="n">binance_websocket_api_manager</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
-<span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">create_stream</span><span class="p">([</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">])</span>
+<span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
+<span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">([</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="and-4-more-lines-to-print-the-receives">
 <h2>And 4 more lines to print the receives:<a class="headerlink" href="#and-4-more-lines-to-print-the-receives" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="n">oldest_stream_data_from_stream_buffer</span> <span class="o">=</span> <span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">pop_stream_data_from_stream_buffer</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">oldest_stream_data_from_stream_buffer</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">oldest_stream_data_from_stream_buffer</span><span class="p">)</span>
+    <span class="n">oldest_data_from_stream_buffer</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">pop_stream_data_from_stream_buffer</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">oldest_data_from_stream_buffer</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">oldest_data_from_stream_buffer</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Basically that’s it, but there are more options:</p>
 </div>
 <div class="section" id="convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">
 <h2>Convert received raw webstream data into well-formed Python dictionaries with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-fy">UnicornFy</a>:<a class="headerlink" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unicorn_fied_stream_data</span> <span class="o">=</span> <span class="n">UnicornFy</span><span class="o">.</span><span class="n">binance_com_websocket</span><span class="p">(</span><span class="n">oldest_stream_data_from_stream_buffer</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unicorn_fied_stream_data</span> <span class="o">=</span> <span class="n">UnicornFy</span><span class="o">.</span><span class="n">binance_com_websocket</span><span class="p">(</span><span class="n">oldest_data_from_stream_buffer</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>or</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">create_stream</span><span class="p">([</span><span class="s1">&#39;trade&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;UnicornFy&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">([</span><span class="s1">&#39;trade&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;UnicornFy&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -119,11 +120,11 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">markets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;engbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;zileth&#39;</span><span class="p">]</span>
 <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;kline_5m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_15m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_30m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1h&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_12h&#39;</span><span class="p">,</span> <span class="s1">&#39;depth5&#39;</span><span class="p">]</span>
 
-<span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">subscribe_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">,</span> <span class="n">markets</span><span class="o">=</span><span class="n">markets</span><span class="p">)</span>
+<span class="n">ubwa</span><span class="o">.</span><span class="n">subscribe_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">,</span> <span class="n">markets</span><span class="o">=</span><span class="n">markets</span><span class="p">)</span>
 
-<span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">unsubscribe_from_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">markets</span><span class="o">=</span><span class="n">markets</span><span class="p">)</span>
+<span class="n">ubwa</span><span class="o">.</span><span class="n">unsubscribe_from_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">markets</span><span class="o">=</span><span class="n">markets</span><span class="p">)</span>
 
-<span class="n">binance_websocket_api_manager</span><span class="o">.</span><span class="n">unsubscribe_from_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">)</span>
+<span class="n">ubwa</span><span class="o">.</span><span class="n">unsubscribe_from_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html">Discover even more possibilities</a>
@@ -627,7 +628,7 @@ username via https://www.lucit-development.co/contact.html, I will invite you to
     <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.33.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.33.1 documentation</a> &#187;
     
 
         <li class="nav-item nav-item-this"><a href="">UNICORN Binance WebSocket API</a></li>
@@ -642,7 +643,7 @@ username via https://www.lucit-development.co/contact.html, I will invite you to
     &copy; <a href="copyright.html">Copyright</a> 2021, Oliver Zehentleitner.
     <br />
 
-    Last updated on Aug 30 2021 at 23:55 (CET).
+    Last updated on Sep 19 2021 at 23:14 (CET).
     <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 

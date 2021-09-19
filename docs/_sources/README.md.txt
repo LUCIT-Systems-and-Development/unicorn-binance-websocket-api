@@ -3,8 +3,9 @@
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg)](https://www.python.org/downloads/)
 [![Downloads](https://pepy.tech/badge/unicorn-binance-websocket-api)](https://pepy.tech/project/unicorn-binance-websocket-api)
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/unicorn-binance-websocket-api.svg?label=PyPI%20wheel)](https://pypi.org/project/unicorn-binance-websocket-api/)
-[![PyPI - Status](https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues)
-[![Python application](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml/badge.svg)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml)[![Total alerts](https://img.shields.io/lgtm/alerts/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/alerts/)
+[![PyPI - Status](https://img.shields.io/pypi/status/unicorn-binance-websocket-api.svg)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues) 
+[![Python application](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml/badge.svg)](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/actions/workflows/python-app.yml)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/alerts/) 
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/oliver-zehentleitner/unicorn-binance-websocket-api.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/oliver-zehentleitner/unicorn-binance-websocket-api/context:python)
 [![codecov](https://codecov.io/gh/oliver-zehentleitner/unicorn-binance-websocket-api/branch/master/graph/badge.svg?token=Z6SEARA4W4)](https://codecov.io/gh/oliver-zehentleitner/unicorn-binance-websocket-api)
 [![Telegram](https://img.shields.io/badge/chat-telegram-yellow.svg)](https://t.me/unicorndevs)
@@ -26,37 +27,37 @@ Part of ['UNICORN Binance Suite'](https://github.com/oliver-zehentleitner/unicor
 ```
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
-binance_websocket_api_manager.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
+ubwa = BinanceWebSocketApiManager(exchange="binance.com")
+ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
 ### And 4 more lines to print the receives:
 ```
 while True:
-    oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
-    if oldest_stream_data_from_stream_buffer:
-        print(oldest_stream_data_from_stream_buffer)
+    oldest_data_from_stream_buffer = ubwa.pop_stream_data_from_stream_buffer()
+    if oldest_data_from_stream_buffer:
+        print(oldest_data_from_stream_buffer)
 ```
 
 Basically that's it, but there are more options:
 
 ### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn-fy):
 ```
-unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_stream_data_from_stream_buffer)
+unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_data_from_stream_buffer)
 ```
 or 
 ```
-binance_websocket_api_manager.create_stream(['trade'], ['btcusdt'], output="UnicornFy")
+ubwa.create_stream(['trade'], ['btcusdt'], output="UnicornFy")
 ```
 ### [Subscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream) / [unsubscribe](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream) new markets and channels:
 ```
 markets = ['engbtc', 'zileth']
 channels = ['kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
 
-binance_websocket_api_manager.subscribe_to_stream(stream_id, channels=channels, markets=markets)
+ubwa.subscribe_to_stream(stream_id, channels=channels, markets=markets)
 
-binance_websocket_api_manager.unsubscribe_from_stream(stream_id, markets=markets)
+ubwa.unsubscribe_from_stream(stream_id, markets=markets)
 
-binance_websocket_api_manager.unsubscribe_from_stream(stream_id, channels=channels)
+ubwa.unsubscribe_from_stream(stream_id, channels=channels)
 ```
 
 [Discover even more possibilities](https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html)
