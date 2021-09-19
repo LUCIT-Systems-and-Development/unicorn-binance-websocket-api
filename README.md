@@ -33,16 +33,16 @@ ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ### And 4 more lines to print the receives:
 ```
 while True:
-    oldest_stream_from_stream_buffer = ubwa.pop_stream_data_from_stream_buffer()
-    if oldest_stream_from_stream_buffer:
-        print(oldest_stream_from_stream_buffer)
+    oldest_data_from_stream_buffer = ubwa.pop_stream_data_from_stream_buffer()
+    if oldest_data_from_stream_buffer:
+        print(oldest_data_from_stream_buffer)
 ```
 
 Basically that's it, but there are more options:
 
 ### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://github.com/oliver-zehentleitner/unicorn-fy):
 ```
-unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_stream_from_stream_buffer)
+unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_data_from_stream_buffer)
 ```
 or 
 ```
