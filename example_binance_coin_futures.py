@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_binance_futures.py
+# File: example_binance_coin_futures.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
@@ -61,12 +61,12 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin-futures")
 
 # set api key and secret for userData stream
-binance_je_api_key = ""
-binance_je_api_secret = ""
+binance_api_key = ""
+binance_api_secret = ""
 userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"],
                                                                  ["!userData"],
-                                                                 api_key=binance_je_api_key,
-                                                                 api_secret=binance_je_api_secret)
+                                                                 api_key=binance_api_key,
+                                                                 api_secret=binance_api_secret)
 
 bookticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!bookTicker"])
 

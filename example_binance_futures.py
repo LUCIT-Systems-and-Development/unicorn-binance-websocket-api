@@ -58,12 +58,12 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures")
 
 # set api key and secret for userData stream
-binance_je_api_key = ""
-binance_je_api_secret = ""
+binance_api_key = ""
+binance_api_secret = ""
 userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"],
                                                                  ["!userData"],
-                                                                 api_key=binance_je_api_key,
-                                                                 api_secret=binance_je_api_secret)
+                                                                 api_key=binance_api_key,
+                                                                 api_secret=binance_api_secret)
 
 bookticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!bookTicker"])
 
@@ -91,7 +91,7 @@ binance_websocket_api_manager.create_stream(["depth20"], markets)
 binance_websocket_api_manager.create_stream(["compositeIndex"], markets, stream_label="compositeIndex")
 
 channels = {'aggTrade', 'markPrice' 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h',
-            'miniTicker', 'depth20@100ms', 'bookTicker', 'forceOrder', '!forceOrder', 'kline_1w@250ms',
+            '!miniTicker', 'depth20@100ms', 'bookTicker', '!forceOrder', 'kline_1w@250ms',
             'compositeIndex'}
 binance_websocket_api_manager.create_stream(channels, markets)
 
