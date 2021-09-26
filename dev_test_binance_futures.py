@@ -48,7 +48,6 @@ binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com
 
 binance_websocket_api_manager.create_stream('arr', '!miniTicker')
 
-# show an overview
 while True:
     if binance_websocket_api_manager.is_manager_stopping():
         exit(0)
