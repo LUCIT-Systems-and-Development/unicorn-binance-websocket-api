@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.34.0.dev (development stage/unreleased/unstable)
+### Changed
+- logging of restclient._request()
 
 ## 1.34.0
 ### Changed
