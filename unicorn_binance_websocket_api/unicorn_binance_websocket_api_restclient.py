@@ -218,10 +218,10 @@ class BinanceWebSocketApiRestclient(object):
             else:
                 request_handler = False
         except requests.exceptions.ConnectionError as error_msg:
-            logging.critical(f"BinanceWebSocketApiRestclient._request() - error_msg: {str(error_msg)}")
+            logging.critical(f"BinanceWebSocketApiRestclient._request() - error: 9 -  error_msg: {str(error_msg)}")
             return False
         except socket.gaierror as error_msg:
-            logging.critical(f"BinanceWebSocketApiRestclient._request() - error_msg: {str(error_msg)}")
+            logging.critical(f"BinanceWebSocketApiRestclient._request() - error: 10 -  error_msg: {str(error_msg)}")
             return False
         if request_handler.status_code == "418":
             logging.critical("BinanceWebSocketApiRestclient._request() - error_msg: received status_code 418 from binance! You got"

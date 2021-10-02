@@ -36,11 +36,10 @@
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import logging
 import time
-import threading
-import os
+# import os
 
 logging.basicConfig(level=logging.DEBUG,
-                    filename=os.path.basename(__file__) + '.log',
+                    # filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
