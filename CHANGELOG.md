@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.34.1.dev (development stage/unreleased/unstable)
 
 ## 1.34.1
+### Added
+- Exception handling for `websockets.exceptions.NegotiationError` in connection class.
 ### Changed
 - Logging of `restclient._request()`
 ### Fixed

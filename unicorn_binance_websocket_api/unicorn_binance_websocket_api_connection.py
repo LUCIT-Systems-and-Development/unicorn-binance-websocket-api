@@ -125,13 +125,12 @@ class BinanceWebSocketApiConnection(object):
 
         # the lib websockets is supporting a new feature that is not support by all endpoints so we have to disable it
         # non supporting exchanges with `compression=None`:
-        if self.manager.exchange == "binance.com-futures" and self.manager.exchange == "binance.com-testnet":
+        if self.manager.exchange == "binance.com-futures":
             self._conn = connect(uri,
                                  ping_interval=self.ping_interval,
                                  ping_timeout=self.ping_timeout,
                                  close_timeout=self.close_timeout,
                                  compression=None,
-                                 extensions=[ClientPerMessageDeflateFactory()],
                                  extra_headers={'User-Agent': str(self.manager.get_user_agent())})
         else:
             self._conn = connect(uri,
