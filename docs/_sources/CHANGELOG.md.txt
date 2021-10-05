@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.34.0.dev (development stage/unreleased/unstable)
+## 1.34.1.dev (development stage/unreleased/unstable)
+
+## 1.34.1
+### Added
+- Exception handling for `websockets.exceptions.NegotiationError` in connection class.
+### Changed
+- Logging of `restclient._request()`
+### Fixed
+- No data received from binance.com-futures with websockets==10.0 [issue#199](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/199) 
 
 ## 1.34.0
 ### Changed
