@@ -12,4 +12,4 @@ dependencies:
   - ujson
   - unicorn-fy
   - websocket-client
-  - websockets==8.1
+  - websockets==10.0

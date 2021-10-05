@@ -5,9 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.34.0.dev (development stage/unreleased/unstable)
+## 1.34.1.dev (development stage/unreleased/unstable)
+
+## 1.34.1
 ### Changed
-- logging of restclient._request()
+- Logging of `restclient._request()`
+### Fixed
+- No data received from binance.com-futures if websockets==10.0 [issue#199](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/199) 
 
 ## 1.34.0
 ### Changed
