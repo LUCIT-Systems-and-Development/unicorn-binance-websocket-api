@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Changed
 - Logging of `restclient._request()`
 ### Fixed
-- No data received from binance.com-futures if websockets==10.0 [issue#199](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/199) 
+- No data received from binance.com-futures with websockets==10.0 [issue#199](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/199) 
 
 ## 1.34.0
 ### Changed
