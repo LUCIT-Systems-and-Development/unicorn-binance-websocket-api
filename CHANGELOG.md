@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Semantic Versioning](http://semver.org/).
 
 ## 1.34.1.dev (development stage/unreleased/unstable)
+### Fixed
+- fix "Default argument value is mutable" error of `subscribe_from_stream()`
 
 ## 1.34.1
 ### Added
