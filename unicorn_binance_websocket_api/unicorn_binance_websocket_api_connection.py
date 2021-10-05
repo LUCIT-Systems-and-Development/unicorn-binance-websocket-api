@@ -173,6 +173,10 @@ class BinanceWebSocketApiConnection(object):
                 pass
             self.manager.set_heartbeat(self.stream_id)
             self.manager.process_stream_signals("CONNECT", self.stream_id)
+        except websockets.exceptions.NegotiationError as error_msg:
+            logging.error("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) + ", " +
+                          str(self.channels) + ", " + str(self.markets) + ")" + " - NegotiationError - " +
+                          "error_msg: " + str(error_msg))
         except ConnectionResetError as error_msg:
             logging.error("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) + ", " +
                           str(self.channels) + ", " + str(self.markets) + ")" + " - ConnectionResetError - " +
