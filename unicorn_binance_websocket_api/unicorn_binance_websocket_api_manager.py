@@ -3470,7 +3470,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                      ", " + str(markets) + ") finished ...")
         return True
 
-    def unsubscribe_from_stream(self, stream_id, channels=[], markets=[]):
+    def unsubscribe_from_stream(self, stream_id, channels=None, markets=None):
         """
         Unsubscribe channels and/or markets to an existing stream
 
@@ -3490,6 +3490,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logging.info("BinanceWebSocketApiManager.unsubscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                      ", " + str(markets) + ") started ...")
+        if markets is None:
+            markets = []
+        if channels is None:
+            channels = []
         if type(channels) is str:
             channels = [channels]
         if type(markets) is str:
