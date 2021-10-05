@@ -131,6 +131,7 @@ class BinanceWebSocketApiConnection(object):
                                  ping_timeout=self.ping_timeout,
                                  close_timeout=self.close_timeout,
                                  compression=None,
+                                 extensions=[ClientPerMessageDeflateFactory()],
                                  extra_headers={'User-Agent': str(self.manager.get_user_agent())})
         else:
             self._conn = connect(uri,
