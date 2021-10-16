@@ -96,7 +96,7 @@ on, you can to use the [UNICORN Binance REST API](https://github.com/oliver-zehe
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
-- Supported exchanges: 
+- [Supported exchanges](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview): 
 
 | Exchange | Exchange string | 
 | -------- | --------------- | 
