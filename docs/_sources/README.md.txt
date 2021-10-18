@@ -19,7 +19,9 @@
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
 [Contributing](#contributing) | [Commercial Support](#commercial-support) | [Donate](#donate)
 
-An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, us, tr, jex, dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way. 
+An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
+com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, jex, dex/chain+testnet) 
+in a easy, fast, flexible, robust and fully-featured way. 
 
 Part of ['UNICORN Binance Suite'](https://github.com/oliver-zehentleitner/unicorn-binance-suite).
 
@@ -77,6 +79,7 @@ provides an API to the Binance Websocket API`s of
 ([+Testnet](https://testnet.binance.vision/)), 
 [Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams) 
 ([+Testnet](https://testnet.binancefuture.com)), 
+[Binance COIN-M Futures](https://binance-docs.github.io/apidocs/delivery/en/#change-log),
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
 [Binance TR](https://www.trbinance.com/apidocs), 
 [Binance JEX](https://jexapi.github.io/api-doc/spot.html#web-socket-streams), 
