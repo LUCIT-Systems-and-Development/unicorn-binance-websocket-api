@@ -5,9 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.34.1.dev (development stage/unreleased/unstable)
+## 1.34.2.dev (development stage/unreleased/unstable)
+
+## 1.34.2
+### Changed
+- "binance.com-coin-futures" to "binance.com-coin_futures"
 ### Fixed
 - fix "Default argument value is mutable" error of `subscribe_from_stream()`
+- No data received from binance.com-coin-futures with websockets==10.0 [issue#208](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/208) 
 
 ## 1.34.1
 ### Added

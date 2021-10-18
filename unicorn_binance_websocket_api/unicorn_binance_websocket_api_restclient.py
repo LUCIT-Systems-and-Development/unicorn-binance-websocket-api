@@ -81,7 +81,7 @@ class BinanceWebSocketApiRestclient(object):
         elif self.manager.exchange == "binance.com-futures-testnet":
             self.restful_base_uri = "https://testnet.binancefuture.com/"
             self.path_userdata = "fapi/v1/listenKey"
-        elif self.manager.exchange == "binance.com-coin-futures":
+        elif self.manager.exchange == "binance.com-coin-futures" or self.manager.exchange == "binance.com-coin_futures":
             self.restful_base_uri = "https://dapi.binance.com/"
             self.path_userdata = "dapi/v1/listenKey"
         elif self.manager.exchange == "binance.je":

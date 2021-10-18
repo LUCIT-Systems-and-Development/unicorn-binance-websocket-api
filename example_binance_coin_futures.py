@@ -58,7 +58,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             time.sleep(0.01)
 
 # create instance of BinanceWebSocketApiManager for Binance.com Futures
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin-futures")
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin_futures")
 
 # set api key and secret for userData stream
 binance_api_key = ""
