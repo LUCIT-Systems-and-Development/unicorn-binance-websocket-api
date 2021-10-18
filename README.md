@@ -77,6 +77,7 @@ provides an API to the Binance Websocket API`s of
 ([+Testnet](https://testnet.binance.vision/)), 
 [Binance Futures](https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams) 
 ([+Testnet](https://testnet.binancefuture.com)), 
+[Binance COIN-M Futures](https://binance-docs.github.io/apidocs/delivery/en/#change-log),
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
 [Binance TR](https://www.trbinance.com/apidocs), 
 [Binance JEX](https://jexapi.github.io/api-doc/spot.html#web-socket-streams), 
