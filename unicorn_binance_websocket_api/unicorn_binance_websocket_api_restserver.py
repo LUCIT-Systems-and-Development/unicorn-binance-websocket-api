@@ -36,6 +36,9 @@
 from flask_restful import Resource
 import logging
 
+logger = logging.getLogger(__name__)
+
+
 
 class BinanceWebSocketApiRestServer(Resource):
     """
@@ -67,10 +70,10 @@ class BinanceWebSocketApiRestServer(Resource):
         :rtype: list (status string, http status code)
         """
         if statusformat == "icinga":
-            logging.info(f"BinanceWebSocketApiRestServer.get({statusformat}, {str(checkcommandversion)}) - 200")
+            logger.info(f"BinanceWebSocketApiRestServer.get({statusformat}, {str(checkcommandversion)}) - 200")
             return self.manager.get_monitoring_status_icinga(check_command_version=checkcommandversion,
                                                              warn_on_update=self.warn_on_update), 200
         else:
-            logging.error(f"BinanceWebSocketApiRestServer.get({statusformat}, {str(checkcommandversion)}) - Service not"
+            logger.error(f"BinanceWebSocketApiRestServer.get({statusformat}, {str(checkcommandversion)}) - Service not"
                           f"found!")
             return "service not found", 404

@@ -40,6 +40,9 @@ import socket
 import threading
 import time
 
+logger = logging.getLogger(__name__)
+
+
 
 class BinanceWebSocketApiRestclient(object):
     def __init__(self, manager):
@@ -107,7 +110,7 @@ class BinanceWebSocketApiRestclient(object):
         :rtype: str or False
         """
         if action == "keepalive":
-            logging.info(f"BinanceWebSocketApiRestclient.keepalive_listen_key({str(self.listen_key_output)})")
+            logger.info(f"BinanceWebSocketApiRestclient.keepalive_listen_key({str(self.listen_key_output)})")
             method = "put"
             try:
                 response = self._request(method, self.path_userdata, False, {'listenKey': str(self.listen_key)})
@@ -118,18 +121,18 @@ class BinanceWebSocketApiRestclient(object):
             except TypeError:
                 return False
         elif action == "delete":
-            logging.info(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)})")
+            logger.info(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)})")
             method = "delete"
             try:
                 response = self._request(method, self.path_userdata, False, {'listenKey': str(self.listen_key)})
                 self.listen_key = False
                 return response
             except KeyError as error_msg:
-                logging.error(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)}) - "
+                logger.error(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)}) - "
                               f"KeyError - error_msg: {str(error_msg)}")
                 return False
             except TypeError as error_msg:
-                logging.error(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)}) - "
+                logger.error(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)}) - "
                               f"KeyError - error_msg: {str(error_msg)}")
                 return False
         else:
@@ -179,7 +182,7 @@ class BinanceWebSocketApiRestclient(object):
             if self.manager.show_secrets_in_logs is True:
                 self.listen_key_output = self.listen_key
         except KeyError as error_msg:
-            logging.error(f"BinanceWebSocketApiRestclient.init_vars() - TypeError - error_msg: {str(error_msg)}")
+            logger.error(f"BinanceWebSocketApiRestclient.init_vars() - TypeError - error_msg: {str(error_msg)}")
             return False
         return True
 
@@ -218,24 +221,24 @@ class BinanceWebSocketApiRestclient(object):
             else:
                 request_handler = False
         except requests.exceptions.ConnectionError as error_msg:
-            logging.critical(f"BinanceWebSocketApiRestclient._request() - error: 9 -  error_msg: {str(error_msg)}")
+            logger.critical(f"BinanceWebSocketApiRestclient._request() - error: 9 -  error_msg: {str(error_msg)}")
             return False
         except socket.gaierror as error_msg:
-            logging.critical(f"BinanceWebSocketApiRestclient._request() - error: 10 -  error_msg: {str(error_msg)}")
+            logger.critical(f"BinanceWebSocketApiRestclient._request() - error: 10 -  error_msg: {str(error_msg)}")
             return False
         if request_handler.status_code == "418":
-            logging.critical("BinanceWebSocketApiRestclient._request() - error_msg: received status_code 418 from binance! You got"
+            logger.critical("BinanceWebSocketApiRestclient._request() - error_msg: received status_code 418 from binance! You got"
                              "banned from the binance api! Read this: https://github.com/binance-exchange/binance-"
                              "official-api-sphinx/blob/master/rest-api.md#limits")
         elif request_handler.status_code == "429":
-            logging.critical("BinanceWebSocketApiRestclient._request() - error_msg: received status_code 429 from "
+            logger.critical("BinanceWebSocketApiRestclient._request() - error_msg: received status_code 429 from "
                              "binance! Back off or you are going to get banned! Read this: "
                              "https://github.com/binance-exchange/binance-official-api-sphinx/blob/master/"
                              "rest-api.md#limits")
         try:
             respond = request_handler.json()
         except json.decoder.JSONDecodeError as error_msg:
-            logging.error(f"BinanceWebSocketApiRestclient._request() - error_msg: {str(error_msg)}")
+            logger.error(f"BinanceWebSocketApiRestclient._request() - error_msg: {str(error_msg)}")
             return False
         self.manager.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
         self.manager.binance_api_status['timestamp'] = time.time()
@@ -265,7 +268,7 @@ class BinanceWebSocketApiRestclient(object):
         :return: listen_key
         :rtype: str or False
         """
-        logging.info(f"BinanceWebSocketApiRestclient.get_listen_key() symbol='{str(self.symbol)}' "
+        logger.info(f"BinanceWebSocketApiRestclient.get_listen_key() symbol='{str(self.symbol)}' "
                      f"stream_id='{str(stream_id)}')")
         if stream_id is False:
             return False
@@ -279,7 +282,7 @@ class BinanceWebSocketApiRestclient(object):
             if self.manager.exchange == "binance.com-isolated_margin" or \
                     self.manager.exchange == "binance.com-isolated_margin-testnet":
                 if self.symbol is False:
-                    logging.critical("BinanceWebSocketApiRestclient.get_listen_key() - error_msg: Parameter "
+                    logger.critical("BinanceWebSocketApiRestclient.get_listen_key() - error_msg: Parameter "
                                      "`symbol` is missing!")
                     return False
                 else:
@@ -288,7 +291,7 @@ class BinanceWebSocketApiRestclient(object):
                 try:
                     response = self._request(method, self.path_userdata)
                 except AttributeError as error_msg:
-                    logging.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
+                    logger.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
                                      f"error_msg: {error_msg} - Can not acquire listen_key!")
                     return False
             try:
@@ -319,7 +322,7 @@ class BinanceWebSocketApiRestclient(object):
         :return: the response
         :rtype: str or False
         """
-        logging.info(f"BinanceWebSocketApiRestclient.delete_listen_key() stream_id='{str(stream_id)}')")
+        logger.info(f"BinanceWebSocketApiRestclient.delete_listen_key() stream_id='{str(stream_id)}')")
         if stream_id is False:
             return False
         with self.threading_lock:
@@ -348,7 +351,7 @@ class BinanceWebSocketApiRestclient(object):
         :return: the response
         :rtype: str or False
         """
-        logging.info(f"BinanceWebSocketApiRestclient.get_listen_key() stream_id='{str(stream_id)}')")
+        logger.info(f"BinanceWebSocketApiRestclient.get_listen_key() stream_id='{str(stream_id)}')")
         if stream_id is False:
             return False
         with self.threading_lock:
