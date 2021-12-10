@@ -2,7 +2,6 @@ cheroot
 colorama
 flask
 flask_restful
-pathlib
 psutil
 requests
 ujson
