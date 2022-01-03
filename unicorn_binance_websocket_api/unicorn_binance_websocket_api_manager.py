@@ -3534,10 +3534,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         for item in payload:
             self.stream_list[stream_id]['payload'].append(item)
         self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
-
-        # Todo: Test to avoid "security" errors
-        blured_sid = str(stream_id)
-        logger.info("BinanceWebSocketApiManager.unsubscribe_to_stream(" + str(blured_sid) + ", " + str(channels) +
+        logger.info("BinanceWebSocketApiManager.unsubscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                     ", " + str(markets) + ") finished ...")
         return True
 
