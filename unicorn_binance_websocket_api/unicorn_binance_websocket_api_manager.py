@@ -1159,7 +1159,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             markets = [markets]
         if output is False:
             output = self.output_default
-        stream_id = uuid.uuid4()
+        stream_id = self.get_new_stream_id()
         markets_new = []
         if stream_buffer_name is True:
             stream_buffer_name = stream_id
@@ -2040,6 +2040,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.last_monitoring_check = result['timestamp']
         result['uptime'] = ((result['timestamp'] - self.start_time) / (60*60*24)).__round__(3)
         return result
+
+    @staticmethod
+    def get_new_stream_id():
+        """
+        Get a new unique stream_id.
+
+        :return: stream_id
+        """
+        stream_id = uuid.uuid4()
+        uuid_list = str(stream_id).split("-")
+        return f"{uuid_list[0]}-{uuid_list[3]}-{uuid_list[1]}-{uuid_list[2]}-{uuid_list[4]}"
 
     def get_process_usage_memory(self):
         """
