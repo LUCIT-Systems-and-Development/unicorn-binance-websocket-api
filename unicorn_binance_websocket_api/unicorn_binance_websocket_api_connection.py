@@ -4,14 +4,13 @@
 # File: unicorn_binance_websocket_api/unicorn_binance_websocket_api_connection.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
-# Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
-# Documentation: https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api
+# Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
+# Documentation: https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
-# Author: Oliver Zehentleitner
-#         https://about.me/oliver-zehentleitner
+# Author: LUCIT Systems and Development
 #
-# Copyright (c) 2019-2021, Oliver Zehentleitner
+# Copyright (c) 2019-2022, LUCIT Systems and Development (https://www.lucit.tech) and Oliver Zehentleitner
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -44,7 +43,6 @@ import websockets
 
 connect = websockets.connect
 logger = logging.getLogger(__name__)
-
 
 
 class BinanceWebSocketApiConnection(object):
@@ -127,8 +125,8 @@ class BinanceWebSocketApiConnection(object):
 
         # the lib websockets is supporting a new feature that is not support by all endpoints so we have to disable it
         # for non supporting exchanges with `compression=None`:
-        # https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/199
-        # https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/208
+        # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/199
+        # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/208
         if self.manager.exchange == "binance.com-futures" or \
                 self.manager.exchange == "binance.com-coin-futures" or \
                 self.manager.exchange == "binance.com-coin_futures":

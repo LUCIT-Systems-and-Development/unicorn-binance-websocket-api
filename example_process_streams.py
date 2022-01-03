@@ -4,14 +4,13 @@
 # File: example_process_streams.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
-# Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
-# Documentation: https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api
+# Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
+# Documentation: https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
-# Author: Oliver Zehentleitner
-#         https://about.me/oliver-zehentleitner
+# Author: LUCIT Systems and Development
 #
-# Copyright (c) 2019-2021, Oliver Zehentleitner
+# Copyright (c) 2019-2022, LUCIT Systems and Development (https://www.lucit.tech) and Oliver Zehentleitner
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -56,7 +55,7 @@ class BinanceWebSocketApiProcessStreams(object):
         # `depth5` for example doesnt include the symbol, but the unicornfied set includes them, because the class
         # extracts it from the channel name, makes it upper size and adds it to the returned values.. just print both
         # to see the difference.
-        # Github: https://github.com/oliver-zehentleitner/unicorn-fy
+        # Github: https://github.com/LUCIT-Systems-and-Development/unicorn-fy
         # PyPI: https://pypi.org/project/unicorn-fy/
         if exchange == "binance.com" or exchange == "binance.com-testnet":
             unicorn_fied_stream_data = UnicornFy.binance_com_websocket(received_stream_data_json)

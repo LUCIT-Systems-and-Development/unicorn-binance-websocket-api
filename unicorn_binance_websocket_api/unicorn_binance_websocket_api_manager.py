@@ -4,14 +4,13 @@
 # File: unicorn_binance_websocket_api/unicorn_binance_websocket_api_manager.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
-# Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
-# Documentation: https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api
+# Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
+# Documentation: https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
-# Author: Oliver Zehentleitner
-#         https://about.me/oliver-zehentleitner
+# Author: LUCIT Systems and Development
 #
-# Copyright (c) 2019-2021, Oliver Zehentleitner
+# Copyright (c) 2019-2022, LUCIT Systems and Development (https://www.lucit.tech) and Oliver Zehentleitner
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -113,7 +112,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 like `process_stream_data(stream_data, stream_buffer_name)` where
                                 `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
                                 get stored in the stream_buffer! `How to read from stream_buffer!
-                                <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives>`_
+                                <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives>`_
     :type process_stream_data: function
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
                      binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
@@ -133,13 +132,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                                  (default=False)
     :type show_secrets_in_logs: bool
     :param output_default: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to
-                           convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_ -  otherwise
+                           convert with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ -  otherwise
                            with the default setting "raw_data" the output remains unchanged and gets delivered as
                            received from the endpoints. Change this for a specific stream with the `output` parameter
                            of `create_stream()` and `replace_stream()`
     :type output_default: str
     :param enable_stream_signal_buffer: set to True to enable the
-                                        `stream_signal_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
+                                        `stream_signal_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
                                         and receive information about
                                         disconnects and reconnects to manage a restore of the lost data during the
                                         interruption or to recognize your bot got blind.
@@ -239,7 +238,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             # Unknown Exchange
             error_msg = f"Unknown exchange '{str(self.exchange)}'! Read the docs to see a list of supported " \
-                        "exchanges: https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_" \
+                        "exchanges: https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_" \
                         "binance_websocket_api.html#module-unicorn_binance_websocket_api.unicorn_binance_websocket_" \
                         "api_manager"
             logger.critical(error_msg)
@@ -307,7 +306,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.restclient = BinanceWebSocketApiRestclient(self)
         if warn_on_update and self.is_update_availabe():
             update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
-                         "please consider updating! (Changelog: https://github.com/oliver-zehentleitner/unicorn-" \
+                         "please consider updating! (Changelog: https://github.com/LUCIT-Systems-and-Development/unicorn-" \
                          "binance-websocket-api/blob/master/CHANGELOG.md)"
             print(update_msg)
             logger.warning(update_msg)
@@ -349,10 +348,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
         :param output: the default setting `raw_data` can be globaly overwritten with the parameter
-                       `output_default <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
+                       `output_default <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
                        of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
                        set `output` to "dict" to convert the received raw data to a python dict,  set to "UnicornFy" to
-                       convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_ -  otherwise with
+                       convert with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ -  otherwise with
                        the default setting "raw_data" the output remains unchanged and gets delivered as received from
                        the endpoints
         :type output: str
@@ -478,14 +477,14 @@ class BinanceWebSocketApiManager(threading.Thread):
             if "cannot schedule new futures after interpreter shutdown" in str(error_msg):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                                  f" - RuntimeError error_msg:  - {str(error_msg)} - stopping and shutting down - read "
-                                 f"https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/131"
+                                 f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131"
                                  f" for further information!")
                 self.stop_manager_with_all_streams()
                 sys.exit(1)
             logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                              f"error: 7 - {str(error_msg)} - if this stream did not restart after this error, please "
                              f"create an issue: "
-                             f"https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/new/choose")
+                             f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose")
             loop.close()
         finally:
             self.process_stream_signals("DISCONNECT", stream_id)
@@ -739,9 +738,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         @app.route('/status/')
         def redirect_to_wiki():
             logger.info("BinanceWebSocketApiManager._start_monitoring_api_thread() 200 - "
-                         "Visit https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-"
+                         "Visit https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-"
                          "Monitoring-API-Service for further information!")
-            return redirect("https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/"
+            return redirect("https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/"
                             "UNICORN-Monitoring-API-Service", code=302)
 
         api = Api(app)
@@ -790,7 +789,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def add_to_stream_buffer(self, stream_data, stream_buffer_name=False):
         """
         Kick back data to the
-        `stream_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
 
 
         If it is not possible to process received stream data (for example, the database is restarting, so its not
@@ -819,7 +818,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def add_to_stream_signal_buffer(self, signal_type=False, stream_id=False, data_record=False):
         """
         Add signals about a stream to the
-        `stream_signal_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
+        `stream_signal_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
 
         :param signal_type: "CONNECT", "DISCONNECT" or "FIRST_RECEIVED_DATA"
         :type signal_type: str
@@ -869,7 +868,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def clear_stream_buffer(self, stream_buffer_name=False):
         """
         Clear the
-        `stream_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
 
         :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
                                    create_stream() or the string name of a shared stream_buffer.
@@ -1058,7 +1057,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
 
         `There is a subscriptions limit per stream!
-        <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview>`_
+        <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview>`_
 
         Create `!userData` streams as single streams, because its using a different endpoint and can not get combined
         with other streams in a multiplexed stream!
@@ -1107,10 +1106,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
         :param output: the default setting `raw_data` can be globaly overwritten with the parameter
-                       `output_default <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
+                       `output_default <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
                        of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
                        set `output` to "dict" to convert the received raw data to a python dict,  set to "UnicornFy" to
-                       convert with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_ -  otherwise with
+                       convert with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ -  otherwise with
                        the default setting "raw_data" the output remains unchanged and gets delivered as received from
                        the endpoints
         :type output: str
@@ -1890,7 +1889,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         - reconnects
         - uptime
 
-        :param check_command_version: is the version of the calling `check_command <https://github.com/LUCIT-Development/check_lucit_collector.py>`_
+        :param check_command_version: is the version of the calling `check_command <https://github.com/LUCIT-Systems-and-Development/check_lucit_collector.py>`_
         :type check_command_version: str
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
@@ -1926,7 +1925,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         timestamp, update_msg, average_receives_per_second, average_speed_per_second, total_received_mb,
         stream_buffer_items, stream_buffer_mb, reconnects, uptime
 
-        :param check_command_version: is the version of the calling `check_command <https://github.com/LUCIT-Development/check_lucit_collector.py>`_
+        :param check_command_version: is the version of the calling `check_command <https://github.com/LUCIT-Systems-and-Development/check_lucit_collector.py>`_
         :type check_command_version: False or str
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
@@ -2097,7 +2096,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Get the result related to the provided `request_id`
 
         :param request_id: if you run `get_stream_subscriptions()
-                           <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions>`_
+                           <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions>`_
                            it returns a unique `request_id` - provide it to this method to receive the result.
         :type request_id: stream_id (uuid)
         :param timeout: seconds to wait to receive the result. If not there it returns 'False'
@@ -2231,9 +2230,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get a list of subscriptions of a specific stream from Binance endpoints - the result can be received via
         the `stream_buffer` and is also added to the results ringbuffer - `get_results_from_endpoints()
-        <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints>`_
+        <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints>`_
         to get all results or use `get_result_by_request_id(request_id)
-        <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id>`_
+        <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id>`_
         to get a specific one!
 
         This function is supported by CEX endpoints only!
@@ -2244,7 +2243,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: uuid
         :param request_id: id to use for the request - use `get_request_id()` to create a unique id. If not provided or
                            `False`, then this method is using `get_request_id()
-                           <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id>`_
+                           <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id>`_
                            automatically.
         :type request_id: int
         :return: request_id (int)
@@ -2281,7 +2280,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def get_stream_buffer_maxlen(self, stream_buffer_name=False):
         """
         Get the maxlen value of the
-        `stream_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
 
         If maxlen is not specified or is None, `stream_buffer` may grow to an arbitrary length. Otherwise, the
         `stream_buffer` is bounded to the specified maximum length. Once a bounded length `stream_buffer` is full, when
@@ -2396,7 +2395,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def get_version_unicorn_fy(self):
         """
-        Get the package/module version of `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_
+        Get the package/module version of `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_
 
         :return: str
         """
@@ -2584,7 +2583,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def is_update_availabe_unicorn_fy(self):
         """
-        Is a new release of `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_ available?
+        Is a new release of `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ available?
 
         :return: bool
         """
@@ -2626,7 +2625,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def pop_stream_data_from_stream_buffer(self, stream_buffer_name=False, mode="FIFO"):
         """
         Get oldest or latest entry from
-        `stream_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
         and remove from FIFO/LIFO stack.
 
         :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
@@ -2666,7 +2665,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def pop_stream_signal_from_stream_signal_buffer(self):
         """
         Get oldest entry from
-        `stream_signal_buffer <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
+        `stream_signal_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
         and remove from stack/pipe (FIFO stack)
 
         :return: stream_signal - dict or False
@@ -3017,11 +3016,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         Create a PNG image file with the console output of `print_summary()`
 
         *LINUX ONLY* It should not be hard to make it OS independent:
-        https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61
+        https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/61
 
         :param print_summary_export_path: If you want to export the output of print_summary() to an image,
                                           please provide a path like "/var/www/html/". `View the Wiki!
-                                          <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F>`_
+                                          <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F>`_
         :type print_summary_export_path: str
         :param hight_per_row: set the hight per row for the image hight calculation
         :type hight_per_row: int
@@ -3103,7 +3102,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type new_symbols: str
         :return: new stream_id
         :param new_output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
-                           with `UnicornFy <https://github.com/oliver-zehentleitner/unicorn-fy>`_ - otherwise the output
+                           with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ - otherwise the output
                            remains unchanged and gets delivered as received from the endpoints
         :type new_output: str
         :param new_ping_interval: Once the connection is open, a `Ping frame` is sent every
@@ -3278,7 +3277,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Start the monitoring API server
 
         Take a look into the
-        `Wiki <https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service>`_
+        `Wiki <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service>`_
         to see how this works!
 
         :param host: listening ip address, use 0.0.0.0 or a specific address (default: 127.0.0.1)
@@ -3400,7 +3399,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         and all subscribed channels are going to get added to the new market!
 
         `How are the parameter `channels` and `markets` used with
-        `subscriptions <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
+        `subscriptions <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
 
         :param stream_id: id of a stream
         :type stream_id: uuid
@@ -3482,7 +3481,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         subscribed channels from the specific markets are going to be removed!
 
         `How are the parameter `channels` and `markets` used with
-        `subscriptions <https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
+        `subscriptions <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
 
         :param stream_id: id of a stream
         :type stream_id: uuid

@@ -1,11 +1,11 @@
 # Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via 
-[issue](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/new/choose) 
+[issue](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose) 
 with the owners of this repository before making a change. 
 
 Please note we have a 
-[code of conduct](https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/blob/master/CODE_OF_CONDUCT.md), 
+[code of conduct](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/CODE_OF_CONDUCT.md), 
 please follow it in all your interactions with the project.
 
 ## Pull Request Process

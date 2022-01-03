@@ -14,7 +14,7 @@ Thank you for improving the security of `unicorn-binance-websocket-api`. We appr
 efforts and responsible disclosure and will make every effort to acknowledge your contributions.
 
 Report security bugs via our contact form: 
-https://www.lucit-development.co/contact.html
+https://www.lucit.tech/contact.html
 
 The lead maintainer will acknowledge your email within 48 hours, and will send a
 more detailed response within 48 hours indicating the next steps in handling

@@ -9,7 +9,7 @@ assignees: oliver-zehentleitner
 
 <!--
 Before opening a new issue, please ensure:
-- YOU HAVE READ THE ISSUE GUIDELINES! -> https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Issue-Guidelines
+- YOU HAVE READ THE ISSUE GUIDELINES! -> https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Issue-Guidelines
 - You search for existing bugs/feature requests
 - Remove extraneous template details
 - Do not prefix title with type of issue (Feature Request, Bug, etc.) The appropriate labels will be added during triage.

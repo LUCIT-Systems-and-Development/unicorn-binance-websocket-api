@@ -45,7 +45,7 @@
     
     <li><img src="_static/github-logo.png" alt=""
              style="vertical-align: middle; margin-top: -1px"/></li>
-    <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
+    <li><a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
     <a href="index.html">unicorn-binance-websocket-api 1.34.2 documentation</a> &#187;
@@ -159,7 +159,7 @@ will be called instead of
 <a class="reference external" href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer">add_to_stream_buffer()</a>
 like <cite>process_stream_data(stream_data, stream_buffer_name)</cite> where
 <cite>stream_data</cite> cointains the raw_stream_data. If not provided, the raw stream_data will
-get stored in the stream_buffer! <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives">How to read from stream_buffer!</a></p></li>
+get stored in the stream_buffer! <a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives">How to read from stream_buffer!</a></p></li>
 <li><p><strong>exchange</strong> (<em>str</em>) – Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
 binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
 binance.com-futures-testnet, binance.com-coin_futures, binance.us, trbinance.com,
@@ -173,12 +173,12 @@ initialized. Default is 6 seconds.</p></li>
 <li><p><strong>show_secrets_in_logs</strong> (<em>bool</em>) – set to True to show secrets like listen_key, api_key or api_secret in log file
 (default=False)</p></li>
 <li><p><strong>output_default</strong> (<em>str</em>) – set to “dict” to convert the received raw data to a python dict, set to “UnicornFy” to
-convert with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-fy">UnicornFy</a> -  otherwise
+convert with <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-fy">UnicornFy</a> -  otherwise
 with the default setting “raw_data” the output remains unchanged and gets delivered as
 received from the endpoints. Change this for a specific stream with the <cite>output</cite> parameter
 of <cite>create_stream()</cite> and <cite>replace_stream()</cite></p></li>
 <li><p><strong>enable_stream_signal_buffer</strong> (<em>bool</em>) – set to True to enable the
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60">stream_signal_buffer</a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60">stream_signal_buffer</a>
 and receive information about
 disconnects and reconnects to manage a restore of the lost data during the
 interruption or to recognize your bot got blind.</p></li>
@@ -224,7 +224,7 @@ like <cite>process_stream_data(signal_type=False, stream_id=False, data_record=F
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer">
 <code class="sig-name descname"><span class="pre">add_to_stream_buffer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream_buffer_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Kick back data to the
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60">stream_buffer</a></p>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60">stream_buffer</a></p>
 <p>If it is not possible to process received stream data (for example, the database is restarting, so its not
 possible to save the data), you can return the data back into the stream_buffer. After a few seconds you stopped
 writing data back to the stream_buffer, the BinanceWebSocketApiManager starts flushing back the data to normal
@@ -249,7 +249,7 @@ provide a string to create and use a shared stream_buffer and read it via
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer">
 <code class="sig-name descname"><span class="pre">add_to_stream_signal_buffer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_record</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add signals about a stream to the
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60">stream_signal_buffer</a></p>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60">stream_signal_buffer</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -279,7 +279,7 @@ provide a string to create and use a shared stream_buffer and read it via
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.clear_stream_buffer">
 <code class="sig-name descname"><span class="pre">clear_stream_buffer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_buffer_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.clear_stream_buffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear the
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60">stream_buffer</a></p>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60">stream_buffer</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>stream_buffer_name</strong> (<em>bool</em><em> or </em><em>str</em>) – <cite>False</cite> to read from generic stream_buffer, the stream_id if you used True in
@@ -323,7 +323,7 @@ create_stream() or the string name of a shared stream_buffer.</p>
 <p>Finally:  <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;trade">bnbbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;trade">ethbtc<span>&#64;</span>trade</a>, <a class="reference external" href="mailto:bnbbtc&#37;&#52;&#48;kline_1">bnbbtc<span>&#64;</span>kline_1</a>, <a class="reference external" href="mailto:ethbtc&#37;&#52;&#48;kline_1">ethbtc<span>&#64;</span>kline_1</a></p>
 </div></blockquote>
 </div></blockquote>
-<p><a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview">There is a subscriptions limit per stream!</a></p>
+<p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview">There is a subscriptions limit per stream!</a></p>
 <p>Create <cite>!userData</cite> streams as single streams, because its using a different endpoint and can not get combined
 with other streams in a multiplexed stream!</p>
 <blockquote>
@@ -368,10 +368,10 @@ provide a string to create and use a shared stream_buffer and read it via
 <li><p><strong>api_secret</strong> (<em>str</em>) – provide a valid Binance API secret</p></li>
 <li><p><strong>symbols</strong> (<em>str</em>) – provide the symbols for isolated_margin user_data streams</p></li>
 <li><p><strong>output</strong> (<em>str</em>) – <p>the default setting <cite>raw_data</cite> can be globaly overwritten with the parameter
-<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager">output_default</a>
+<a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager">output_default</a>
 of BinanceWebSocketApiManager`. To overrule the <cite>output_default</cite> value for this specific stream,
 set <cite>output</cite> to “dict” to convert the received raw data to a python dict,  set to “UnicornFy” to
-convert with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-fy">UnicornFy</a> -  otherwise with
+convert with <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-fy">UnicornFy</a> -  otherwise with
 the default setting “raw_data” the output remains unchanged and gets delivered as received from
 the endpoints</p>
 </p></li>
@@ -738,7 +738,7 @@ instead!</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>check_command_version</strong> (<em>str</em>) – is the version of the calling <a class="reference external" href="https://github.com/LUCIT-Development/check_lucit_collector.py">check_command</a></p></li>
+<li><p><strong>check_command_version</strong> (<em>str</em>) – is the version of the calling <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/check_lucit_collector.py">check_command</a></p></li>
 <li><p><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</p></li>
 </ul>
 </dd>
@@ -758,7 +758,7 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>check_command_version</strong> (<em>False</em><em> or </em><em>str</em>) – <p>is the version of the calling <a class="reference external" href="https://github.com/LUCIT-Development/check_lucit_collector.py">check_command</a></p>
+<li><p><strong>check_command_version</strong> (<em>False</em><em> or </em><em>str</em>) – <p>is the version of the calling <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/check_lucit_collector.py">check_command</a></p>
 </p></li>
 <li><p><strong>warn_on_update</strong> (<em>bool</em>) – set to <cite>False</cite> to disable the update warning</p></li>
 </ul>
@@ -886,7 +886,7 @@ stream_buffer_items, stream_buffer_mb, reconnects, uptime</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>request_id</strong> (<em>stream_id</em><em> (</em><em>uuid</em><em>)</em>) – if you run <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions">get_stream_subscriptions()</a>
+<li><p><strong>request_id</strong> (<em>stream_id</em><em> (</em><em>uuid</em><em>)</em>) – if you run <a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions">get_stream_subscriptions()</a>
 it returns a unique <cite>request_id</cite> - provide it to this method to receive the result.</p></li>
 <li><p><strong>timeout</strong> (<em>int</em>) – seconds to wait to receive the result. If not there it returns ‘False’</p></li>
 </ul>
@@ -967,7 +967,7 @@ it returns a unique <cite>request_id</cite> - provide it to this method to recei
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_buffer_maxlen">
 <code class="sig-name descname"><span class="pre">get_stream_buffer_maxlen</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_buffer_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_buffer_maxlen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the maxlen value of the
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60">stream_buffer</a></p>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60">stream_buffer</a></p>
 <p>If maxlen is not specified or is None, <cite>stream_buffer</cite> may grow to an arbitrary length. Otherwise, the
 <cite>stream_buffer</cite> is bounded to the specified maximum length. Once a bounded length <cite>stream_buffer</cite> is full, when
 new items are added, a corresponding number of items are discarded from the opposite end.</p>
@@ -1067,8 +1067,8 @@ create_stream() or the string name of a shared stream_buffer.</p>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions">
 <code class="sig-name descname"><span class="pre">get_stream_subscriptions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of subscriptions of a specific stream from Binance endpoints - the result can be received via
-the <cite>stream_buffer</cite> and is also added to the results ringbuffer - <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints">get_results_from_endpoints()</a>
-to get all results or use <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id">get_result_by_request_id(request_id)</a>
+the <cite>stream_buffer</cite> and is also added to the results ringbuffer - <a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints">get_results_from_endpoints()</a>
+to get all results or use <a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id">get_result_by_request_id(request_id)</a>
 to get a specific one!</p>
 <p>This function is supported by CEX endpoints only!</p>
 <p>Info: <a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions">https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions</a></p>
@@ -1077,7 +1077,7 @@ to get a specific one!</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream_id</strong> (<em>uuid</em>) – id of a stream</p></li>
 <li><p><strong>request_id</strong> (<em>int</em>) – id to use for the request - use <cite>get_request_id()</cite> to create a unique id. If not provided or
-<cite>False</cite>, then this method is using <a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id">get_request_id()</a>
+<cite>False</cite>, then this method is using <a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id">get_request_id()</a>
 automatically.</p></li>
 </ul>
 </dd>
@@ -1145,7 +1145,7 @@ automatically.</p></li>
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_version_unicorn_fy">
 <code class="sig-name descname"><span class="pre">get_version_unicorn_fy</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_version_unicorn_fy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the package/module version of <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-fy">UnicornFy</a></p>
+<dd><p>Get the package/module version of <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-fy">UnicornFy</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>str</p>
@@ -1284,7 +1284,7 @@ automatically.</p></li>
 <dl class="py method">
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_update_availabe_unicorn_fy">
 <code class="sig-name descname"><span class="pre">is_update_availabe_unicorn_fy</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.is_update_availabe_unicorn_fy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Is a new release of <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-fy">UnicornFy</a> available?</p>
+<dd><p>Is a new release of <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-fy">UnicornFy</a> available?</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>bool</p>
@@ -1310,7 +1310,7 @@ automatically.</p></li>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer">
 <code class="sig-name descname"><span class="pre">pop_stream_data_from_stream_buffer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_buffer_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'FIFO'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get oldest or latest entry from
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_buffer%60">stream_buffer</a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60">stream_buffer</a>
 and remove from FIFO/LIFO stack.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1330,7 +1330,7 @@ create_stream() or the string name of a shared stream_buffer.</p></li>
 <dt id="unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_signal_from_stream_signal_buffer">
 <code class="sig-name descname"><span class="pre">pop_stream_signal_from_stream_signal_buffer</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_signal_from_stream_signal_buffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get oldest entry from
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60">stream_signal_buffer</a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60">stream_signal_buffer</a>
 and remove from stack/pipe (FIFO stack)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -1375,12 +1375,12 @@ and remove from stack/pipe (FIFO stack)</p>
 <code class="sig-name descname"><span class="pre">print_summary_to_png</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">print_summary_export_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hight_per_row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.print_summary_to_png" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a PNG image file with the console output of <cite>print_summary()</cite></p>
 <p><em>LINUX ONLY</em> It should not be hard to make it OS independent:
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues/61</a></p>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/61">https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/61</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>print_summary_export_path</strong> (<em>str</em>) – If you want to export the output of print_summary() to an image,
-please provide a path like “/var/www/html/”. <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F">View the Wiki!</a></p></li>
+please provide a path like “/var/www/html/”. <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F">View the Wiki!</a></p></li>
 <li><p><strong>hight_per_row</strong> (<em>int</em>) – set the hight per row for the image hight calculation</p></li>
 </ul>
 </dd>
@@ -1426,7 +1426,7 @@ provide a string to create and use a shared stream_buffer and read it via
 <li><p><strong>new_api_secret</strong> (<em>str</em>) – provide a valid Binance API secret</p></li>
 <li><p><strong>new_symbols</strong> (<em>str</em>) – provide the symbols for isolated_margin user_data streams</p></li>
 <li><p><strong>new_output</strong> (<em>str</em>) – <p>set to “dict” to convert the received raw data to a python dict, set to “UnicornFy” to convert
-with <a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-fy">UnicornFy</a> - otherwise the output
+with <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-fy">UnicornFy</a> - otherwise the output
 remains unchanged and gets delivered as received from the endpoints</p>
 </p></li>
 <li><p><strong>new_ping_interval</strong> (<em>int</em><em> or </em><em>None</em>) – <p>Once the connection is open, a <cite>Ping frame</cite> is sent every
@@ -1574,7 +1574,7 @@ to keep the payload length under 8000 chars and avoid reconnects</p>
 <code class="sig-name descname"><span class="pre">start_monitoring_api</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64201</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn_on_update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.start_monitoring_api" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start the monitoring API server</p>
 <p>Take a look into the
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service">Wiki</a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service">Wiki</a>
 to see how this works!</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1667,7 +1667,7 @@ to see how this works!</p>
 <p>If you provide one channel and one market, then every subscribed market is going to get added to the new channel
 and all subscribed channels are going to get added to the new market!</p>
 <p><cite>How are the parameter `channels</cite> and <cite>markets</cite> used with
-<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">subscriptions</a></p>
+<a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">subscriptions</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1689,7 +1689,7 @@ and all subscribed channels are going to get added to the new market!</p>
 <p>If you provide one channel and one market, then all subscribed markets from the specific channel and all
 subscribed channels from the specific markets are going to be removed!</p>
 <p><cite>How are the parameter `channels</cite> and <cite>markets</cite> used with
-<a class="reference external" href="https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">subscriptions</a></p>
+<a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">subscriptions</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1820,7 +1820,7 @@ subscribed channels from the specific markets are going to be removed!</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">flask_restful.Resource</span></code></p>
 <p>Provide a REST API server</p>
 <p>Description:
-<a class="reference external" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service">https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service</a></p>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service">https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1923,19 +1923,19 @@ subscribed channels from the specific markets are going to be removed!</p>
 <script type="text/javascript">$('#searchbox').show(0);</script>
 <br />
     
-<a class="github-button" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api"
+<a class="github-button" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api"
    data-icon="octicon-star" data-show-count="true"
    aria-label="Star oliver-zehentleitner/unicorn-binance-websocket-api on GitHub">Star</a>
 <br />
-<a class="github-button" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/subscription"
+<a class="github-button" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/subscription"
    data-icon="octicon-eye" data-show-count="true"
    aria-label="Watch oliver-zehentleitner/unicorn-binance-websocket-api on GitHub">Watch</a>
 <br />
-<a class="github-button" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/fork"
+<a class="github-button" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/fork"
    data-icon="octicon-repo-forked" data-show-count="true"
    aria-label="Fork oliver-zehentleitner/unicorn-binance-websocket-api on GitHub">Fork</a>
 <br />
-<a class="github-button" href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues"
+<a class="github-button" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues"
    data-icon="octicon-issue-opened"
    data-show-count="true" aria-label="Issue oliver-zehentleitner/unicorn-binance-websocket-api on GitHub">Issue</a>
     
@@ -1962,7 +1962,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     
     <li><img src="_static/github-logo.png" alt=""
              style="vertical-align: middle; margin-top: -1px"/></li>
-    <li><a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
+    <li><a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
     <a href="index.html">unicorn-binance-websocket-api 1.34.2 documentation</a> &#187;
@@ -1982,7 +1982,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <br />
 
     Last updated on Oct 18 2021 at 21:50 (CET).
-    <a href="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/issues">Found a bug</a>?
+    <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues">Found a bug</a>?
     <br />
 
     <img src="_static/py.png" alt="" style="vertical-align: middle; margin-top: -1px" />
@@ -1991,12 +1991,12 @@ subscribed channels from the specific markets are going to be removed!</p>
     <br />
 
     Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.4
-        with <a href="https://github.com/oliver-zehentleitner/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
+        with <a href="https://github.com/LUCIT-Systems-and-Development/python-docs-theme-technopathy">python-docs-theme-technopathy</a>
         by <a href="https://about.me/oliver-zehentleitner">Oliver Zehentleitner</a>.
     <br />
         <a href="https://www.technopathy.club/2019/11/03/use-python-sphinx-on-github-pages-with-html-and-an-indivdual-theme">
     Create a GitHub Page like this one!</a>    <br />
-        Sponsored by <a href="https://www.lucit.dev">LUCIT Development</a>
+        Sponsored by <a href="https://www.lucit.tech">LUCIT Systems and Development</a>
     </div>
 
   </body>

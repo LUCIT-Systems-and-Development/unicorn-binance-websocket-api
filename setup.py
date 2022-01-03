@@ -4,14 +4,13 @@
 # File: setup.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
-# Project website: https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api
-# Documentation: https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api
+# Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
+# Documentation: https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
-# Author: Oliver Zehentleitner
-#         https://about.me/oliver-zehentleitner
+# Author: LUCIT Systems and Development
 #
-# Copyright (c) 2019-2021, Oliver Zehentleitner
+# Copyright (c) 2019-2022, LUCIT Systems and Development (https://www.lucit.tech) and Oliver Zehentleitner
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -45,7 +44,7 @@ setuptools.setup(
      name='unicorn-binance-websocket-api',
      version=str(ubwa.get_version()),
      author="Oliver Zehentleitner",
-     url="https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api",
+     url="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api",
      description="An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, "
                  "com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast"
                  ", flexible, robust and fully-featured way.",
@@ -59,8 +58,8 @@ setuptools.setup(
               'binance-futures, binance-margin',
      project_urls={
         'Howto': 'https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/',
-        'Documentation': 'https://oliver-zehentleitner.github.io/unicorn-binance-websocket-api/',
-        'Wiki': 'https://github.com/oliver-zehentleitner/unicorn-binance-websocket-api/wiki',
+        'Documentation': 'https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/',
+        'Wiki': 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki',
         'Author': 'https://about.me/oliver-zehentleitner/',
      },
      python_requires='>=3.7.0',
