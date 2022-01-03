@@ -346,21 +346,7 @@ contribute follow
 We ![love](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/heart.png) open source!
 
 ## Commercial Support
-Need a Python developer or consulting? 
+Do you need a developer, operator or consultant? 
 
-Contact us for a non-binding and free consultation via my company [LUCIT](https://www.lucit.tech) from Vienna (Austria) 
-or via [Telegram](https://t.me/LUCIT_OZ).
-
-## Donate
-[![Donate using Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/oliver-zehentleitner/donate)
-
-[:heart: Sponsor (GitHub)](https://github.com/sponsors/oliver-zehentleitner/)
-```
-Terra (LUNA, UST, ...): terra1yt34qmmycextztnj9mpt3mnjzqqvl8jtqqq7g9
-BTC: 39fS74fvcGnmEk8JUV8bG6P1wkdH29GtsA
-DASH: XsRhBuPkXGF9WvifdpkVhTGSmVT4VcuQZ7
-ETH: 0x1C15857Bf1E18D122dDd1E536705748aa529fc9C
-LTC: LYNzHMFUbee3siyHvNCPaCjqXxjyq8YRGJ
-XMR: 85dzsTRh6GRPGVSJoUbFDwAf9uwwAdim1HFpiGshLeKHgj2hVqKtYVPXMZvudioLsuLS1AegkUiQ12jwReRwWcFvF7kDAbF
-ZEC: t1WvQMPJMriGWD9qkZGDdE9tTJaawvmsBie
-```
+Contact me for a non-binding initial consultation via my company 
+[LUCIT](https://www.lucit.tech) from Vienna (Austria) or via [Telegram](https://t.me/LUCIT_OZ).
