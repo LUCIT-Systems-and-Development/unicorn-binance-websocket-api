@@ -190,18 +190,18 @@ and specific streams with
 "IPython (Interactive Python) is a command shell for interactive computing that offers introspection, 
 rich media, shell syntax, tab completion, and history." 
 ([example_interactive_mode.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py))
-[![iPython](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/ipython.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py)
+[![iPython](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ipython.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py)
 
 - Also nice to use with the [Jupyter Notebook](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/tree/master/ipynb) :)
 
 - [Monitoring API service](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service)
 and a [check_command](https://exchange.icinga.com/LUCIT/check_lucit_collector) 
 for [ICINGA](https://exchange.icinga.com/LUCIT/check_lucit_collector)/Nagios 
-[![icinga2-demo](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/icinga.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service)
+[![icinga2-demo](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/icinga.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service)
 
 - Excessively tested on Linux, Mac and Windows
 
-If you like the project, please [![star](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/star.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/stargazers) it on
+If you like the project, please [![star](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/star.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/stargazers) it on
 [GitHub](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)!
 
 ## Live Demo
@@ -308,7 +308,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 
 ## Receive Notifications
 To receive notifications on available updates you can 
-[![watch](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/watch.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/watchers)
+[![watch](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/watch.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/watchers)
 the repository on [GitHub](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api), write your
 [own script](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py)
 with using 
@@ -326,7 +326,7 @@ To receive news (like inspection windows/maintenance) about the Binance API`s su
 
 ## How to report Bugs or suggest Improvements?
 [List of planned features](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) -
-click ![thumbs-up](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/thumbup.png) if you need one of them or suggest a new feature!
+click ![thumbs-up](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/thumbup.png) if you need one of them or suggest a new feature!
 
 Before you report a bug, [try the latest release](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS
 and Python version and explain how to reproduce the error. A demo script is appreciated.
@@ -344,7 +344,7 @@ contribute follow
 ### Contributors
 [![Contributors](https://contributors-img.web.app/image?repo=oliver-zehentleitner/unicorn-binance-websocket-api)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/graphs/contributors)
 
-We ![love](https://raw.githubusercontent.com/oliver-zehentleitner/unicorn-binance-websocket-api/master/images/misc/heart.png) open source!
+We ![love](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/heart.png) open source!
 
 ## Commercial Support
 Need a Python developer or consulting? 
