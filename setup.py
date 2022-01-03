@@ -43,7 +43,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
      name='unicorn-binance-websocket-api',
      version=str(ubwa.get_version()),
-     author="Oliver Zehentleitner",
+     author="LUCIT Systems and Development",
      url="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api",
      description="An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, "
                  "com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast"
@@ -51,16 +51,16 @@ setuptools.setup(
      long_description=long_description,
      long_description_content_type="text/markdown",
      license='MIT License',
-     install_requires=['colorama', 'pathlib', 'requests', 'websocket-client', 'websockets==10.0', 'flask_restful',
+     install_requires=['colorama', 'requests', 'websocket-client', 'websockets==10.1', 'flask_restful',
                        'cheroot', 'flask', 'ujson', 'psutil', 'unicorn-fy'],
      keywords='binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
               'binance-websocket, binance-webstream, webstream, websocket, api, binance-jersey, binance-dex, '
               'binance-futures, binance-margin',
      project_urls={
-        'Howto': 'https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/',
-        'Documentation': 'https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/',
+        'Howto': 'https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api',
+        'Documentation': 'https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api',
         'Wiki': 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki',
-        'Author': 'https://about.me/oliver-zehentleitner/',
+        'Author': 'https://www.lucit.tech',
      },
      python_requires='>=3.7.0',
      packages=setuptools.find_packages(),
