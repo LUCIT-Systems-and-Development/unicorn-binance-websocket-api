@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
-## 1.34.2.dev (development stage/unreleased/unstable)
+## 1.35.0.dev (development stage/unreleased/unstable)
+
+## 1.35.0
+### Changed
+- Correctly scope loggers so that it plays nicely with others. [PR#223](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/223), [issue#164](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/164) 
+- Removed pathlib from requirements [PR#224](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/224)
+- Moved from https://github.com/oliver-zehentleitner to https://github.com/LUCIT-Systems-and-Development/
 
 ## 1.34.2
 ### Changed
