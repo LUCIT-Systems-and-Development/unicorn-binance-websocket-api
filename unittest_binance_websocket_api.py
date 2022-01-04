@@ -775,8 +775,6 @@ class TestRestApi(unittest.TestCase):
         time.sleep(10)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
-        print("Debug")
-
 
 if __name__ == '__main__':
     unittest.main()
