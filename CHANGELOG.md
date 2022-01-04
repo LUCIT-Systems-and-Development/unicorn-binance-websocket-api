@@ -8,7 +8,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.35.0.dev (development stage/unreleased/unstable)
 
 ## 1.35.0
+### Added
+- `manager.get_new_stream_id()` to avoid security alerts like "CodeQL py/clear-text-logging-sensitive-data"
 ### Changed
+- `stream_id` is no longer a uuid, but a string from now on!
 - Correctly scope loggers so that it plays nicely with others. [PR#223](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/223), [issue#164](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/164) 
 - Removed pathlib from requirements [PR#224](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/224)
 - Moved from https://github.com/oliver-zehentleitner to https://github.com/LUCIT-Systems-and-Development/

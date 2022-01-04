@@ -442,8 +442,8 @@ class TestBinanceOrgManager(unittest.TestCase):
 class TestRestApi(unittest.TestCase):
 
     def setUp(self):
-        self.binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
-        self.stream_id = self.binance_websocket_api_manager.get_new_stream_id()
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
+        self.stream_id = binance_websocket_api_manager.get_new_stream_id()
 
     def test_rest_binance_com(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
