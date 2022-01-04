@@ -2048,14 +2048,11 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: stream_id
         """
+        import hashlib
+
         stream_id = uuid.uuid4()
-        uuid_list = str(stream_id).split("-")
-        new_id = ""
-        for id in uuid_list:
-            if new_id != "":
-                new_id += "-"
-            new_id += id[::-1]
-        return new_id
+        new_id = hashlib.md5(str(stream_id).encode()).hexdigest()
+        return str(new_id)
 
     def get_process_usage_memory(self):
         """
