@@ -437,6 +437,7 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     def tearDown(self):
         self.binance_org_websocket_api_manager.stop_manager_with_all_streams()
+        self.binance_websocket_api_manager.stop_manager_with_all_streams()
 
 
 class TestRestApi(unittest.TestCase):
@@ -444,6 +445,7 @@ class TestRestApi(unittest.TestCase):
     def setUp(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
         stream_id = binance_websocket_api_manager.get_new_stream_id()
+        binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
@@ -773,7 +775,8 @@ class TestRestApi(unittest.TestCase):
 
         time.sleep(10)
         binance_websocket_api_manager.stop_manager_with_all_streams()
-        exit()
+
+        print("Debug")
 
 
 if __name__ == '__main__':
