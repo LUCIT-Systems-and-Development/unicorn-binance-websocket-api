@@ -169,7 +169,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  process_stream_signals=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.35.0"
+        self.version = "1.35.0.dev"
         logger.info(f"New instance of {self.get_user_agent()} on "
                      f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         if disable_colorama is not True:
@@ -686,8 +686,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.warning("BinanceWebSocketApiManager._restart_stream() please use `set_restart_request() instead!")
             return False
         logger.info("BinanceWebSocketApiManager._restart_stream(" + str(stream_id) + ", " +
-                     str(self.stream_list[stream_id]['channels']) +
-                     ", " + str(self.stream_list[stream_id]['markets']) + ")")
+                    str(self.stream_list[stream_id]['channels']) +
+                    ", " + str(self.stream_list[stream_id]['markets']) + ")")
         self.restart_requests[stream_id] = {'status': "restarted"}
         self.restart_requests[stream_id]['last_restart_time'] = time.time()
         self.stream_list[stream_id]['status'] = "restarting"
