@@ -329,7 +329,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Create a list entry for new streams
 
         :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
-        :type stream_id: uuid
+        :type stream_id: str
         :param channels: provide the channels to create the URI
         :type channels: str, tuple, list, set
         :param markets: provide the markets to create the URI
@@ -440,7 +440,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param loop: provide a asynio loop
         :type loop: asyncio loop
         :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
-        :type stream_id: uuid
+        :type stream_id: str
         :param channels: provide the channels to create the URI
         :type channels: str, tuple, list, set
         :param markets: provide the markets to create the URI
@@ -672,7 +672,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         This is NOT stop/start! Its purpose is to start a died stream again! Use `set_restart_request()` for stop/start!
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
 
         :return: stream_id or False
         """
@@ -716,7 +716,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Wait till the old socket has closed and then start it again
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         """
         self._restart_stream(stream_id)
 
@@ -823,7 +823,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param signal_type: "CONNECT", "DISCONNECT" or "FIRST_RECEIVED_DATA"
         :type signal_type: str
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :param data_record: The last or first received data record
         :type data_record: str or dict
         :return: bool
@@ -896,7 +896,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Create the payload for subscriptions
 
         :param stream_id: provide a stream_id
-        :type stream_id: uuid
+        :type stream_id: str
         :param method: `SUBSCRIBE` or `UNSUBSCRIBE`
         :type method: str
         :param channels: provide the channels to create the URI
@@ -1222,7 +1222,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param markets: provide the markets to create the URI
         :type markets: str, tuple, list, set
         :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
-        :type stream_id: uuid
+        :type stream_id: str
         :param api_key: provide a valid Binance API key
         :type api_key: str
         :param api_secret: provide a valid Binance API secret
@@ -1403,7 +1403,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Delete a binance listen_key from a specific !userData stream
 
         :param stream_id: id of a !userData stream
-        :type stream_id: uuid
+        :type stream_id: str
         """
         try:
             if self.stream_list[stream_id]['listen_key'] is not False:
@@ -1420,7 +1420,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         BinanceWebSocketApiManager itself. If you want to tidy up the stream_list you can use this method.
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :return: bool
         """
         logger.info("BinanceWebSocketApiManager.delete_stream_from_stream_list(" + str(stream_id) + ")")
@@ -1783,7 +1783,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Get a new or cached (<30m) listen_key
 
         :param stream_id: provide a stream_id
-        :type stream_id: uuid
+        :type stream_id: str
         :param api_key: provide a valid Binance API key
         :type api_key: str
         :param api_secret: provide a valid Binance API secret
@@ -2201,7 +2201,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Get all infos about a specific stream
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :return: set
         """
         current_timestamp = time.time()
@@ -2231,7 +2231,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Get the stream_label of a specific stream
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :return: str or False
         """
         if stream_id:
@@ -2253,7 +2253,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Info: https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#listing-subscriptions
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :param request_id: id to use for the request - use `get_request_id()` to create a unique id. If not provided or
                            `False`, then this method is using `get_request_id()
                            <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id>`_
@@ -2322,7 +2322,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Get the number of receives of specific stream from the last seconds
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :return: int
         """
         last_second_timestamp = int(time.time()) - 1
@@ -2336,7 +2336,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Get the statistic of a specific stream
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :return: set
         """
         stream_statistic = {'stream_receives_per_second': 0,
@@ -2430,7 +2430,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Add the amount of received bytes per second
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :param size: amount of bytes to add
         :type size: int
         """
@@ -2450,7 +2450,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Add the number of processed receives
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         """
         current_timestamp = int(time.time())
         try:
@@ -2471,7 +2471,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Increase reconnect counter
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         """
         self.stream_list[stream_id]['logged_reconnects'].append(time.time())
         self.stream_list[stream_id]['reconnects'] += 1
@@ -2482,7 +2482,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Increase the counter of transmitted payloads
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         """
         self.stream_list[stream_id]['processed_transmitted_total'] += 1
         with self.total_transmitted_lock:
@@ -2541,7 +2541,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Has a specific stream a stop_request?
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :param exclude_kill_requests: if `True` this method returns `False` on kill_requests
         :type exclude_kill_requests: bool
         :return: bool
@@ -2564,7 +2564,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Has a specific stream a stop_as_crash_request?
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :return: bool
         """
         logger.debug("BinanceWebSocketApiManager.is_stop_as_crash_request(" + str(stream_id) + ")")
@@ -2628,7 +2628,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Kill a specific stream
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :return: bool
         """
         # stop a specific stream by stream_id
@@ -2695,7 +2695,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Print all infos about a specific stream, helps debugging :)
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :param add_string: text to add to the output
         :type add_string: str
         :return: bool
@@ -3095,7 +3095,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         consistent.
 
         :param stream_id: id of the old stream
-        :type stream_id: uuid
+        :type stream_id: str
         :param new_channels: the new channel list for the stream
         :type new_channels: str, tuple, list, set
         :param new_markets: the new markets list for the stream
@@ -3221,7 +3221,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Set a stream_label by stream_id
 
         :param stream_id: id of the stream
-        :type stream_id: uuid
+        :type stream_id: str
         :param stream_label: stream_label to set
         :type stream_label: str
         """
@@ -3241,7 +3241,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Set a restart request for a specific stream
 
         :param stream_id: id of the old stream
-        :type stream_id: uuid
+        :type stream_id: str
         """
         self.restart_requests[stream_id] = {'status': "new"}
         return True
@@ -3338,7 +3338,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Stop a specific stream
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :return: bool
         """
         # stop a specific stream by stream_id
@@ -3359,7 +3359,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Stop a specific stream with 'crashed' status
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :return: bool
         """
         # stop a specific stream by stream_id
@@ -3378,7 +3378,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         If a stream can not heal itself in cause of wrong parameter (wrong market, channel type) it calls this method
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :param error_msg: Error msg to add to the stream status!
         :type error_msg: str
         """
@@ -3393,7 +3393,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Streams report with this call their shutdowns
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :return: bool
         """
         logger.info("BinanceWebSocketApiManager.stream_is_stopping(" + str(stream_id) + ")")
@@ -3415,7 +3415,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         `subscriptions <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :param channels: provide the channels you wish to stream
         :type channels: str, tuple, list, set
         :param markets: provide the markets you wish to stream
@@ -3497,7 +3497,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         `subscriptions <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
         :param channels: provide the channels you wish to stream
         :type channels: str, tuple, list, set
         :param markets: provide the markets you wish to stream
@@ -3545,7 +3545,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Returns `True` as soon a specific stream has started
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
 
         :return: bool
         """
@@ -3562,7 +3562,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Returns `True` as soon a specific stream has stopped itself
 
         :param stream_id: id of a stream
-        :type stream_id: uuid
+        :type stream_id: str
 
         :return: bool
         """

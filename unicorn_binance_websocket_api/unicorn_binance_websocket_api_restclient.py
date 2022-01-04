@@ -148,7 +148,7 @@ class BinanceWebSocketApiRestclient(object):
         set default values and load values from stream_list
 
         :param stream_id: provide a stream_id (only needed for userData Streams (acquiring a listenKey)
-        :type stream_id: uuid
+        :type stream_id: str
         :param api_key: provide a valid Binance API key
         :type api_key: str
         :param api_secret: provide a valid Binance API secret
@@ -255,7 +255,7 @@ class BinanceWebSocketApiRestclient(object):
         Request a valid listen_key from binance
 
         :param stream_id: provide a stream_id
-        :type stream_id: uuid
+        :type stream_id: str
         :param api_key: provide a valid Binance API key
         :type api_key: str
         :param api_secret: provide a valid Binance API secret
@@ -311,7 +311,7 @@ class BinanceWebSocketApiRestclient(object):
         Delete a specific listen key
 
         :param stream_id: provide a stream_id
-        :type stream_id: uuid
+        :type stream_id: str
         :param api_key: provide a valid Binance API key
         :type api_key: str
         :param api_secret: provide a valid Binance API secret
@@ -338,7 +338,7 @@ class BinanceWebSocketApiRestclient(object):
         Ping a listenkey to keep it alive
 
         :param stream_id: provide a stream_id
-        :type stream_id: uuid
+        :type stream_id: str
         :param api_key: provide a valid Binance API key
         :type api_key: str
         :param api_secret: provide a valid Binance API secret
