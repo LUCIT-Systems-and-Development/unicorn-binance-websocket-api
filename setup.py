@@ -44,6 +44,7 @@ setuptools.setup(
      name='unicorn-binance-websocket-api',
      version=str(ubwa.get_version()),
      author="LUCIT Systems and Development",
+     author_email='info@lucit.tech',
      url="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api",
      description="An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, "
                  "com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast"

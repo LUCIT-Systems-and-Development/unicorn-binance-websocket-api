@@ -2052,8 +2052,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         import hashlib
 
         stream_id = uuid.uuid4()
-        new_id = hashlib.md5(str(stream_id).encode()).hexdigest()
-        return str(new_id)
+        new_id_hash = hashlib.md5(str(stream_id).encode()).hexdigest()
+        new_id = f"{new_id_hash[0:11]}-{new_id_hash[12:15]}-{new_id_hash[16:19]}-{new_id_hash[20:23]}-{new_id_hash[24:]}"
+        return new_id
 
     def get_process_usage_memory(self):
         """
