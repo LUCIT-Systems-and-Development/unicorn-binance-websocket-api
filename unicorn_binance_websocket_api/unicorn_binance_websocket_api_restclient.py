@@ -166,7 +166,7 @@ class BinanceWebSocketApiRestclient(object):
         self.listen_key = listen_key
         self.symbol = symbol
         self.last_static_ping_listen_key = last_static_ping_listen_key
-        self.listen_key_output = self.manager.replaced_secrets_text
+        self.listen_key_output = self.manager.replacement_text
         try:
             if self.api_key is False:
                 self.api_key = self.manager.stream_list[stream_id]['api_key']
