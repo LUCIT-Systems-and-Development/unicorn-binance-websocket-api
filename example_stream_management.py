@@ -37,8 +37,8 @@ import logging
 import time
 import os
 
-# https://docs.python.org/3/library/logging.html#logging-levels
-logging.basicConfig(level=logging.ERROR,
+logging.getLogger("unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager")
+logging.basicConfig(level=logging.INFO,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")

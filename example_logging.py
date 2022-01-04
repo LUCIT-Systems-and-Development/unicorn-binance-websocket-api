@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_bookticker.py
+# File: example_logging.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
@@ -34,9 +34,9 @@
 
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
 import logging
-import os
 import time
 import threading
+import os
 
 logging.getLogger("unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager")
 logging.basicConfig(level=logging.DEBUG,
@@ -45,27 +45,16 @@ logging.basicConfig(level=logging.DEBUG,
                     style="{")
 
 
-def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
-    while True:
-        if binance_websocket_api_manager.is_manager_stopping():
-            exit(0)
-        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
-        if oldest_stream_data_from_stream_buffer is False:
-            time.sleep(0.01)
-        else:
-            print(oldest_stream_data_from_stream_buffer)
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
 
+markets = ['bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
+           'neousdt', 'bnbusdt', 'adabtc', 'ethusdt', 'trxbtc', 'trxbtc', 'bchabcbtc', 'ltcbtc', 'xrpbtc',
+           'ontbtc', 'bttusdt', 'eosbtc', 'xlmbtc', 'bttbtc', 'tusdusdt', 'xlmusdt', 'qkcbtc', 'zrxbtc',
+           'neobtc', 'adaeth', 'icxusdt', 'btctusd', 'icxbtc', 'btcusdc', 'wanbtc', 'zecbtc', 'wtcbtc']
 
-# create instance of BinanceWebSocketApiManager and provide the function for stream processing
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures")
+channels = ['trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
 
-# start one worker process (or more) to move the received stream_data from the stream_buffer to a print function
-worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
-worker_thread.start()
+stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 
-# create streams
-bookTicker_arr_stream_id = binance_websocket_api_manager.create_stream("arr", "!bookTicker")
+print(f"Logging to {os.path.basename(__file__)}.log")
 
-while True:
-    binance_websocket_api_manager.print_stream_info(bookTicker_arr_stream_id)
-    time.sleep(1)

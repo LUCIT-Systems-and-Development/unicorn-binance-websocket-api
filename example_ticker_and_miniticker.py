@@ -41,7 +41,7 @@ import logging
 # import class to process stream data
 from example_process_streams import BinanceWebSocketApiProcessStreams
 
-# https://docs.python.org/3/library/logging.html#logging-levels
+logging.getLogger("unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager")
 logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
