@@ -38,7 +38,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-
 class BinanceWebSocketApiRestServer(Resource):
     """
     Provide a REST API server 

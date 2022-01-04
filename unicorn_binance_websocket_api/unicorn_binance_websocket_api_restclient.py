@@ -42,7 +42,6 @@ import time
 logger = logging.getLogger(__name__)
 
 
-
 class BinanceWebSocketApiRestclient(object):
     def __init__(self, manager):
         """
