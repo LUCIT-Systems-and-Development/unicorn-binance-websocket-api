@@ -2050,6 +2050,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         stream_id = uuid.uuid4()
         uuid_list = str(stream_id).split("-")
+        new_id = ""
+        for id in uuid_list:
+            if new_id != "":
+                new_id += "-"
+            new_id += id[::-1]
         return f"{uuid_list[4]}-{uuid_list[3]}-{uuid_list[1]}-{uuid_list[2]}-{uuid_list[0]}"
 
     def get_process_usage_memory(self):
