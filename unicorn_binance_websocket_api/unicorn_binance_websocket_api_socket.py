@@ -80,27 +80,27 @@ class BinanceWebSocketApiSocket(object):
                     try:
                         if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
                             logger.error(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
-                                          f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
-                                          f"recent_socket_id={str(self.socket_id)} - Sending payload - exit because its "
-                                          f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
-                                          f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
+                                         f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
+                                         f"recent_socket_id={str(self.socket_id)} - Sending payload - exit because its "
+                                         f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
+                                         f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
                             sys.exit(0)
                     except KeyError:
                         sys.exit(1)
                     while self.manager.stream_list[self.stream_id]['payload']:
                         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
-                                     f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
-                                     f"recent_socket_id={str(self.socket_id)} - Sending payload started ...")
+                                    f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
+                                    f"recent_socket_id={str(self.socket_id)} - Sending payload started ...")
                         if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
                             logger.error(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
-                                          f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
-                                          f"recent_socket_id={str(self.socket_id)} - Sending payload - exit because its "
-                                          f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
-                                          f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
+                                         f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
+                                         f"recent_socket_id={str(self.socket_id)} - Sending payload - exit because its "
+                                         f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
+                                         f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
                             sys.exit(0)
                         payload = self.manager.stream_list[self.stream_id]['payload'].pop(0)
                         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
-                                     f"{str(self.channels)}, {str(self.markets)} - Sending payload: {str(payload)}")
+                                    f"{str(self.channels)}, {str(self.markets)} - Sending payload: {str(payload)}")
                         await websocket.send(json.dumps(payload, ensure_ascii=False))
                         # To avoid a ban we respect the limits of binance:
                         # https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
@@ -157,13 +157,13 @@ class BinanceWebSocketApiSocket(object):
                                                              stream_buffer_name=stream_buffer_name)
                             if "error" in received_stream_data_json:
                                 logger.error("BinanceWebSocketApiSocket.start_socket(" +
-                                              str(self.stream_id) + ") "
-                                              "- Received error message: " + str(received_stream_data_json))
+                                             str(self.stream_id) + ") "
+                                             "- Received error message: " + str(received_stream_data_json))
                                 self.manager.add_to_ringbuffer_error(received_stream_data_json)
                             elif "result" in received_stream_data_json:
                                 logger.info("BinanceWebSocketApiSocket.start_socket(" +
-                                             str(self.stream_id) + ") "
-                                             "- Received result message: " + str(received_stream_data_json))
+                                            str(self.stream_id) + ") "
+                                            "- Received result message: " + str(received_stream_data_json))
                                 self.manager.add_to_ringbuffer_result(received_stream_data_json)
                             else:
                                 if self.manager.stream_list[self.stream_id]['last_received_data_record'] is None:
@@ -174,8 +174,8 @@ class BinanceWebSocketApiSocket(object):
 
                     except websockets.exceptions.ConnectionClosed as error_msg:
                         logger.critical("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
-                                         str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed "
-                                         "- error_msg: " + str(error_msg))
+                                        str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed "
+                                        "- error_msg: " + str(error_msg))
                         if "WebSocket connection is closed: code = 1008" in str(error_msg):
                             websocket.close()
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
@@ -191,15 +191,15 @@ class BinanceWebSocketApiSocket(object):
                             sys.exit(1)
                     except AttributeError as error_msg:
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
-                                      str(self.channels) + ", " + str(self.markets) + ") - Exception AttributeError - "
-                                      "error_msg: " + str(error_msg))
+                                     str(self.channels) + ", " + str(self.markets) + ") - Exception AttributeError - "
+                                     "error_msg: " + str(error_msg))
                         self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                         self.manager.set_restart_request(self.stream_id)
                         sys.exit(1)
 
                     except Exception as error_msg:
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
-                                      str(self.channels) + ", " + str(self.markets) + ") - Exception General Exception - "
+                                     str(self.channels) + ", " + str(self.markets) + ") - Exception General Exception - "
                                                                                       "error_msg: " + str(error_msg))
                         self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                         self.manager.set_restart_request(self.stream_id)

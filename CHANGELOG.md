@@ -15,10 +15,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Correctly scope loggers so that it plays nicely with others. [PR#223](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/223), [issue#164](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/164) 
 - Removed pathlib from requirements [PR#224](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/224)
 - Moved from https://github.com/oliver-zehentleitner to https://github.com/LUCIT-Systems-and-Development/
+### Fixed
+- asyncio.TimeoutError [issue#221](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/221) 
 ### Removed 
 - Support for the new compression feature introduced in websockets10.0 because the new feature is removed in further 
 websockets versions
-
 
 ## 1.34.2
 ### Changed
