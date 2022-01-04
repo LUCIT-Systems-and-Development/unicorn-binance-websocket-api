@@ -314,6 +314,8 @@ with using
 or you use the 
 [monitoring API service](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service).
 
+Follow us on [Twitter](https://twitter.com/LUCIT_SysDev) for general news about the unicorn-binance-suite!
+
 To receive news (like inspection windows/maintenance) about the Binance API`s subscribe to their telegram groups: 
 - [https://t.me/binance_api_announcements](https://t.me/binance_api_announcements)
 - [https://t.me/binance_api_english](https://t.me/binance_api_english)
