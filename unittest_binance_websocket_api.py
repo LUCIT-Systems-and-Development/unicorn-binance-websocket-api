@@ -245,7 +245,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_regular_com() "
                   "for binance.com-testnet")
         else:
-            stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
+            stream_id = self.binance_com_testnet_websocket_api_manager.get_new_stream_id()
             self.binance_com_testnet_websocket_api_manager._add_socket_to_socket_list(stream_id, ["!userData"], ["arr"])
             self.assertRegex(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["!userData"], ["arr"],
                                                                                          stream_id,
@@ -258,7 +258,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_reverse_com() "
                   "for binance.com-testnet")
         else:
-            stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
+            stream_id = self.binance_com_testnet_websocket_api_manager.get_new_stream_id()
             self.binance_com_testnet_websocket_api_manager._add_socket_to_socket_list(stream_id, ["arr"], ["!userData"])
             self.assertRegex(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["arr"], ["!userData"],
                                                                                          stream_id,
@@ -443,7 +443,7 @@ class TestRestApi(unittest.TestCase):
 
     def setUp(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
-        self.stream_id = binance_websocket_api_manager.get_new_stream_id()
+        stream_id = binance_websocket_api_manager.get_new_stream_id()
 
     def test_rest_binance_com(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
@@ -773,6 +773,7 @@ class TestRestApi(unittest.TestCase):
 
         time.sleep(10)
         binance_websocket_api_manager.stop_manager_with_all_streams()
+        exit()
 
 
 if __name__ == '__main__':
