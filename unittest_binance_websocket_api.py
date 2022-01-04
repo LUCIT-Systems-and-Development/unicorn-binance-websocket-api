@@ -208,6 +208,7 @@ class TestBinanceComManager(unittest.TestCase):
 
     def tearDown(self):
         self.binance_com_websocket_api_manager.stop_manager_with_all_streams()
+        self.binance_websocket_api_manager.stop_manager_with_all_streams()
 
 
 class TestBinanceComManagerTest(unittest.TestCase):
