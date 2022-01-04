@@ -46,6 +46,7 @@ import asyncio
 import colorama
 import copy
 import logging
+import hashlib
 import os
 import platform
 import psutil
@@ -59,7 +60,6 @@ import ujson as json
 import websockets
 
 logger = logging.getLogger(__name__)
-
 
 
 class BinanceWebSocketApiManager(threading.Thread):
@@ -2048,9 +2048,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: stream_id
         """
-        #Todo: uuid
-        import hashlib
-
         stream_id = uuid.uuid4()
         new_id_hash = hashlib.sha256(str(stream_id).encode()).hexdigest()
         new_id = f"{new_id_hash[0:12]}-{new_id_hash[12:16]}-{new_id_hash[16:20]}-{new_id_hash[20:24]}-" \

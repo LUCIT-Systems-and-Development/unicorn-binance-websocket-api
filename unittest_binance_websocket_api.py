@@ -428,7 +428,7 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     def test_create_payload(self):
         result = "[{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RAVEN-F66_BNB']}]"
-        stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
+        stream_id = self.binance_org_websocket_api_manager.get_new_stream_id()
         self.assertEqual(str(self.binance_org_websocket_api_manager.create_payload(stream_id,
                                                                                    "subscribe",
                                                                                    ['kline_1m'],
@@ -442,7 +442,8 @@ class TestBinanceOrgManager(unittest.TestCase):
 class TestRestApi(unittest.TestCase):
 
     def setUp(self):
-        self.stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
+        self.binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
+        self.stream_id = self.binance_websocket_api_manager.get_new_stream_id()
 
     def test_rest_binance_com(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
