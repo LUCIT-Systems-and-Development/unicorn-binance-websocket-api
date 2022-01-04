@@ -120,28 +120,13 @@ class BinanceWebSocketApiConnection(object):
                 sys.exit(1)
         except KeyError as error_msg:
             logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
-                             ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 1 - "
-                             + str(error_msg))
-
-        # the lib websockets is supporting a new feature that is not support by all endpoints so we have to disable it
-        # for non supporting exchanges with `compression=None`:
-        # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/199
-        # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/208
-        if self.manager.exchange == "binance.com-futures" or \
-                self.manager.exchange == "binance.com-coin-futures" or \
-                self.manager.exchange == "binance.com-coin_futures":
-            self._conn = connect(uri,
-                                 ping_interval=self.ping_interval,
-                                 ping_timeout=self.ping_timeout,
-                                 close_timeout=self.close_timeout,
-                                 compression=None,
-                                 extra_headers={'User-Agent': str(self.manager.get_user_agent())})
-        else:
-            self._conn = connect(uri,
-                                 ping_interval=self.ping_interval,
-                                 ping_timeout=self.ping_timeout,
-                                 close_timeout=self.close_timeout,
-                                 extra_headers={'User-Agent': str(self.manager.get_user_agent())})
+                            ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 1 - "
+                            + str(error_msg))
+        self._conn = connect(uri,
+                             ping_interval=self.ping_interval,
+                             ping_timeout=self.ping_timeout,
+                             close_timeout=self.close_timeout,
+                             extra_headers={'User-Agent': str(self.manager.get_user_agent())})
         try:
             try:
                 self.manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
