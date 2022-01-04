@@ -302,7 +302,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.total_transmitted_lock = threading.Lock()
         self.websocket_list = {}
         self.start()
-        self.replaced_secrets_text = "***SECRET_REMOVED***"
+        self.replacement_text = "***SECRET_REMOVED***"
         self.restclient = BinanceWebSocketApiRestclient(self)
         if warn_on_update and self.is_update_availabe():
             update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
@@ -1277,14 +1277,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                     if response:
                         try:
                             uri = self.websocket_base_uri + "ws/" + str(response['listenKey'])
-                            uri_hidden_secret = self.websocket_base_uri + "ws/" + self.replaced_secrets_text
+                            uri_hidden = self.websocket_base_uri + "ws/" + self.replacement_text
                             if self.show_secrets_in_logs is True:
                                 logger.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) +
                                              ", " + str(markets) + ", " + str(symbols) + ") - result: " + uri)
                             else:
                                 logger.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) +
                                              ", " + str(markets) + ", " + str(symbols) + ") - result: " +
-                                             uri_hidden_secret)
+                                             uri_hidden)
                             self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                             return uri
                         except KeyError:
@@ -2048,6 +2048,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: stream_id
         """
+        #Todo: uuid
         import hashlib
 
         stream_id = uuid.uuid4()

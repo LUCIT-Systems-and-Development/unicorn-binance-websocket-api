@@ -37,7 +37,6 @@ from unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient impo
 from unicorn_binance_websocket_api.unicorn_binance_websocket_api_restserver import BinanceWebSocketApiRestServer
 import logging
 import unittest
-import uuid
 import os
 import time
 
@@ -87,7 +86,7 @@ class TestBinanceComManager(unittest.TestCase):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_regular_com() "
                   "for binance.com")
         else:
-            stream_id = uuid.uuid4()
+            stream_id = self.binance_websocket_api_manager.get_new_stream_id()
             self.binance_com_websocket_api_manager._add_socket_to_socket_list(stream_id, ["!userData"], ["arr"])
             self.assertRegex(self.binance_com_websocket_api_manager.create_websocket_uri(["!userData"], ["arr"],
                                                                                          stream_id,
@@ -100,7 +99,7 @@ class TestBinanceComManager(unittest.TestCase):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_reverse_com() "
                   "for binance.com")
         else:
-            stream_id = uuid.uuid4()
+            stream_id = self.binance_websocket_api_manager.get_new_stream_id()
             self.binance_com_websocket_api_manager._add_socket_to_socket_list(stream_id, ["arr"], ["!userData"])
             self.assertRegex(self.binance_com_websocket_api_manager.create_websocket_uri(["arr"], ["!userData"],
                                                                                          stream_id,
@@ -141,17 +140,17 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(self.binance_com_websocket_api_manager.get_listen_key_from_restclient(), False)
 
     def test_get_listenkey_from_restclient(self):
-        stream_id = uuid.uuid4()
+        stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
         self.assertEqual(self.binance_com_websocket_api_manager.delete_listen_key_by_stream_id(stream_id), False)
 
     def test_keepalive_listen_key(self):
-        stream_id = uuid.uuid4()
+        stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
         binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.binance_com_websocket_api_manager)
         self.assertEqual(str(binance_websocket_api_restclient.keepalive_listen_key(stream_id, listen_key="invalid_testkey")),
                          "{'code': -2014, 'msg': 'API-key format invalid.'}")
 
     def test_delete_listen_key(self):
-        stream_id = uuid.uuid4()
+        stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
         binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.binance_com_websocket_api_manager)
         self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
                          "{'code': -2014, 'msg': 'API-key format invalid.'}")
@@ -161,7 +160,7 @@ class TestBinanceComManager(unittest.TestCase):
 
     def test_create_payload_subscribe(self):
         result = "[{'method': 'SUBSCRIBE', 'params': ['bnbbtc@kline_1m'], 'id': 1}]"
-        stream_id = uuid.uuid4()
+        stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
         self.assertEqual(str(self.binance_com_websocket_api_manager.create_payload(stream_id,
                                                                                    "subscribe",
                                                                                    ['kline_1m'],
@@ -200,7 +199,7 @@ class TestBinanceComManager(unittest.TestCase):
         self.binance_com_websocket_api_manager.print_stream_info(stream_id)
 
     def test_restart_stream(self):
-        self.assertFalse(bool(self.binance_com_websocket_api_manager._restart_stream(uuid.uuid4())))
+        self.assertFalse(bool(self.binance_com_websocket_api_manager._restart_stream(self.binance_com_websocket_api_manager.get_new_stream_id())))
 
     def test_start_monitoring_api(self):
         self.assertTrue(self.binance_com_websocket_api_manager.start_monitoring_api())
@@ -246,7 +245,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_regular_com() "
                   "for binance.com-testnet")
         else:
-            stream_id = uuid.uuid4()
+            stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
             self.binance_com_testnet_websocket_api_manager._add_socket_to_socket_list(stream_id, ["!userData"], ["arr"])
             self.assertRegex(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["!userData"], ["arr"],
                                                                                          stream_id,
@@ -259,7 +258,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_reverse_com() "
                   "for binance.com-testnet")
         else:
-            stream_id = uuid.uuid4()
+            stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
             self.binance_com_testnet_websocket_api_manager._add_socket_to_socket_list(stream_id, ["arr"], ["!userData"])
             self.assertRegex(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["arr"], ["!userData"],
                                                                                          stream_id,
@@ -429,7 +428,7 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     def test_create_payload(self):
         result = "[{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RAVEN-F66_BNB']}]"
-        stream_id = uuid.uuid4()
+        stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
         self.assertEqual(str(self.binance_org_websocket_api_manager.create_payload(stream_id,
                                                                                    "subscribe",
                                                                                    ['kline_1m'],
@@ -443,7 +442,7 @@ class TestBinanceOrgManager(unittest.TestCase):
 class TestRestApi(unittest.TestCase):
 
     def setUp(self):
-        self.stream_id = uuid.uuid4()
+        self.stream_id = self.binance_com_websocket_api_manager.get_new_stream_id()
 
     def test_rest_binance_com(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
@@ -725,7 +724,8 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.set_ringbuffer_error_max_size(200)
         binance_websocket_api_manager.set_ringbuffer_result_max_size(300)
         binance_websocket_api_manager.set_stream_label(stream_id2, "blub")
-        binance_websocket_api_manager._add_stream_to_stream_list(uuid.uuid4(), 'trade', 'btceth')
+        binance_websocket_api_manager._add_stream_to_stream_list(binance_websocket_api_manager.get_new_stream_id(),
+                                                                 'trade', 'btceth')
         binance_websocket_api_manager._restart_stream((stream_id1))
         binance_websocket_api_manager.delete_stream_from_stream_list(stream_id1)
         binance_websocket_api_manager.delete_listen_key_by_stream_id(stream_id1)
