@@ -300,7 +300,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 
 ## Social
 - [https://t.me/unicorndevs](https://t.me/unicorndevs)
-- [https://twitter.com/LUCIT_SysDev](https://twitter.com/LUCIT_SysDev)
+- [Discussions](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions)
 - [https://dev.binance.vision](https://dev.binance.vision)
 - [https://community.binance.org](https://community.binance.org)
 
