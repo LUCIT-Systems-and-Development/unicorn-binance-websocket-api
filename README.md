@@ -299,8 +299,8 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 [https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki)
 
 ## Social
-- [https://t.me/unicorndevs](https://t.me/unicorndevs)
 - [Discussions](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions)
+- [https://t.me/unicorndevs](https://t.me/unicorndevs)
 - [https://dev.binance.vision](https://dev.binance.vision)
 - [https://community.binance.org](https://community.binance.org)
 
