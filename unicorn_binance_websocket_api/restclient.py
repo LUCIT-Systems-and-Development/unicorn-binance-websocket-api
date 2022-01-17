@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: unicorn_binance_websocket_api/unicorn_binance_websocket_api_restclient.py
+# File: unicorn_binance_websocket_api/restclient.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api

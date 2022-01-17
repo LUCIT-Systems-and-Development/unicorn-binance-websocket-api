@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: unicorn_binance_websocket_api/unicorn_binance_websocket_api_connection.py
+# File: unicorn_binance_websocket_api/connection.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
@@ -32,7 +32,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from unicorn_binance_websocket_api.unicorn_binance_websocket_api_exceptions import StreamRecoveryError
+from unicorn_binance_websocket_api.exceptions import StreamRecoveryError
 import copy
 import logging
 import socket

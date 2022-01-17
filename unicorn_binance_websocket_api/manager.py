@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: unicorn_binance_websocket_api/unicorn_binance_websocket_api_manager.py
+# File: unicorn_binance_websocket_api/manager.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
@@ -33,10 +33,10 @@
 # IN THE SOFTWARE.
 
 
-from .unicorn_binance_websocket_api_exceptions import StreamRecoveryError, UnknownExchange
-from .unicorn_binance_websocket_api_socket import BinanceWebSocketApiSocket
-from .unicorn_binance_websocket_api_restclient import BinanceWebSocketApiRestclient
-from .unicorn_binance_websocket_api_restserver import BinanceWebSocketApiRestServer
+from .exceptions import StreamRecoveryError, UnknownExchange
+from .socket import BinanceWebSocketApiSocket
+from .restclient import BinanceWebSocketApiRestclient
+from .restserver import BinanceWebSocketApiRestServer
 from cheroot import wsgi
 from collections import deque
 from datetime import datetime
@@ -58,6 +58,7 @@ import time
 import uuid
 import ujson as json
 import websockets
+
 
 logger = logging.getLogger(__name__)
 
@@ -171,7 +172,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.35.0.dev"
         logger.info(f"New instance of {self.get_user_agent()} on "
-                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
+                    f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         if disable_colorama is not True:
             logger.info(f"Initiating `colorama_{colorama.__version__}`")
             colorama.init()
