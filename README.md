@@ -25,9 +25,9 @@ Part of ['UNICORN Binance Suite'](https://github.com/LUCIT-Systems-and-Developme
 
 ### [Create a multiplex websocket connection](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
 ```
-from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+import unicorn_binance_websocket_api
 
-ubwa = BinanceWebSocketApiManager(exchange="binance.com")
+ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(exchange="binance.com")
 ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
 ### And 4 more lines to print the receives:
