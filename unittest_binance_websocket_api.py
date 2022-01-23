@@ -49,6 +49,8 @@ logging.basicConfig(level=logging.DEBUG,
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
+print(f"Starting unittests:")
+
 
 class TestBinanceComManager(unittest.TestCase):
     # Test binance.com (Binance)
