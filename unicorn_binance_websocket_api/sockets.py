@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: unicorn_binance_websocket_api/socket.py
+# File: unicorn_binance_websocket_api/sockets.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
@@ -33,7 +33,7 @@
 # IN THE SOFTWARE.
 
 from __future__ import print_function
-from .connection import BinanceWebSocketApiConnection
+from unicorn_binance_websocket_api.connection import BinanceWebSocketApiConnection
 from unicorn_fy.unicorn_fy import UnicornFy
 import asyncio
 import ujson as json

@@ -33,10 +33,10 @@
 # IN THE SOFTWARE.
 
 
-from .exceptions import StreamRecoveryError, UnknownExchange
-from .socket import BinanceWebSocketApiSocket
-from .restclient import BinanceWebSocketApiRestclient
-from .restserver import BinanceWebSocketApiRestServer
+from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange
+from unicorn_binance_websocket_api.sockets import BinanceWebSocketApiSocket
+from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
+from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
 from cheroot import wsgi
 from collections import deque
 from datetime import datetime
