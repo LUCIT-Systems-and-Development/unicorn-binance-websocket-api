@@ -44,7 +44,7 @@ except ImportError:
     print("Please install `unicorn-fy`! https://pypi.org/project/unicorn-fy/")
     sys.exit(1)
 
-logging.getLogger("unicorn_binance_websocket_api.manager")
+logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.INFO,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",

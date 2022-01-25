@@ -39,7 +39,7 @@ import time
 import threading
 import os
 
-logging.getLogger("unicorn_binance_websocket_api.manager")
+logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
