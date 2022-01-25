@@ -48,6 +48,7 @@ or
 ```
 ubwa.create_stream(['trade'], ['btcusdt'], output="UnicornFy")
 ```
+
 ### [Subscribe](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.subscribe_to_stream) / [unsubscribe](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.unsubscribe_from_stream) new markets and channels:
 ```
 markets = ['engbtc', 'zileth']
@@ -58,6 +59,11 @@ ubwa.subscribe_to_stream(stream_id, channels=channels, markets=markets)
 ubwa.unsubscribe_from_stream(stream_id, markets=markets)
 
 ubwa.unsubscribe_from_stream(stream_id, channels=channels)
+```
+
+### [Logging](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_logging.py)
+```
+logging.getLogger("unicorn_binance_websocket_api")
 ```
 
 [Discover even more possibilities](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html)
