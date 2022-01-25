@@ -77,7 +77,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     Binance.com websocket API documentation:
 
-        - https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
+        - https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md
 
         - https://binance-docs.github.io/apidocs/futures/en/#user-data-streams
 
@@ -170,7 +170,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  process_stream_signals=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.35.0.dev"
+        self.version = "1.36.0.dev"
         logger.info(f"New instance of {self.get_user_agent()} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         if disable_colorama is not True:
