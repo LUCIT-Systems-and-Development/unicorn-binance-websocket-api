@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.36.0
 ### Changed
-- removed "unicorn_binance_websocket_api_"-part of the module file names (more info: [Discussions](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases))
+- removed "unicorn_binance_websocket_api_"-part of the module file names (more info: [Discussions](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/231))
 - renamed logger name of all modules to "unicorn_binance_websocket_api", in the implementation of 
 [PR#223](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/223) every module has had 
 its own logger name.
