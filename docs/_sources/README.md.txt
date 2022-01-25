@@ -25,9 +25,9 @@ Part of ['UNICORN Binance Suite'](https://github.com/LUCIT-Systems-and-Developme
 
 ### [Create a multiplex websocket connection](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
 ```
-from unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager import BinanceWebSocketApiManager
+import unicorn_binance_websocket_api
 
-ubwa = BinanceWebSocketApiManager(exchange="binance.com")
+ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(exchange="binance.com")
 ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
 ### And 4 more lines to print the receives:
@@ -93,7 +93,7 @@ which needs to be used with a valid api_key and api_secret from the Binance Exch
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
 Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so 
-on, you can to use the [UNICORN Binance REST API](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-rest-api) in combination. 
+on, you can use the [UNICORN Binance REST API](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-rest-api) in combination. 
 
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
@@ -299,8 +299,8 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 [https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki)
 
 ## Social
+- [Discussions](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions)
 - [https://t.me/unicorndevs](https://t.me/unicorndevs)
-- [https://twitter.com/LUCIT_SysDev](https://twitter.com/LUCIT_SysDev)
 - [https://dev.binance.vision](https://dev.binance.vision)
 - [https://community.binance.org](https://community.binance.org)
 

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.35.0 documentation</title>
+    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.36.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css" />
     
@@ -48,7 +48,7 @@
     <li><a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.35.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.36.0 documentation</a> &#187;
     
 
         <li class="nav-item nav-item-this"><a href="">UNICORN Binance WebSocket API</a></li>
@@ -88,9 +88,9 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 <p>Part of <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite">‘UNICORN Binance Suite’</a>.</p>
 <div class="section" id="create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code">
 <h2><a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream">Create a multiplex websocket connection</a> to Binance with just 3 lines of code:<a class="headerlink" href="#create-a-multiplex-websocket-connection-to-binance-with-just-3-lines-of-code" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unicorn_binance_websocket_api</span>
 
-<span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
+<span class="n">ubwa</span> <span class="o">=</span> <span class="n">unicorn_binance_websocket_api</span><span class="o">.</span><span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
 <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">([</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -159,7 +159,7 @@ which needs to be used with a valid api_key and api_secret from the Binance Exch
 <a class="reference external" href="https://www.binance.org/en/create">www.binance.org</a> or <a class="reference external" href="https://testnet.binance.org/en/create">testnet.binance.org</a>
 and you can <a class="reference external" href="https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account">get funds</a> for the testnet.</p>
 <p>Be aware that the Binance websocket API just offers to receive data. If you would like to set orders, withdraws and so
-on, you can to use the <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-rest-api">UNICORN Binance REST API</a> in combination.</p>
+on, you can use the <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-rest-api">UNICORN Binance REST API</a> in combination.</p>
 <div class="section" id="what-are-the-benefits-of-the-unicorn-binance-websocket-api">
 <h3>What are the benefits of the UNICORN Binance WebSocket API?<a class="headerlink" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
@@ -422,8 +422,8 @@ and use:</p>
 <div class="section" id="social">
 <h2>Social<a class="headerlink" href="#social" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions">Discussions</a></p></li>
 <li><p><a class="reference external" href="https://t.me/unicorndevs">https://t.me/unicorndevs</a></p></li>
-<li><p><a class="reference external" href="https://twitter.com/LUCIT_SysDev">https://twitter.com/LUCIT_SysDev</a></p></li>
 <li><p><a class="reference external" href="https://dev.binance.vision">https://dev.binance.vision</a></p></li>
 <li><p><a class="reference external" href="https://community.binance.org">https://community.binance.org</a></p></li>
 </ul>
@@ -594,7 +594,7 @@ contribute follow
     <li><a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.35.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.36.0 documentation</a> &#187;
     
 
         <li class="nav-item nav-item-this"><a href="">UNICORN Binance WebSocket API</a></li>
@@ -608,7 +608,7 @@ contribute follow
     <div class="footer">
         <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues">Found a bug</a>?
         <br />
-        Last updated on Jan 05 2022 at 00:40 (CET).
+        Last updated on Jan 25 2022 at 22:09 (CET).
         <br />
         &copy; <a href="copyright.html">Copyright</a> 2019-2022, LUCIT Systems and Development and Oliver Zehentleitner.
         <br />

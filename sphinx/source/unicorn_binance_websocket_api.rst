@@ -4,42 +4,42 @@ unicorn\_binance\_websocket\_api package
 Submodules
 ----------
 
-unicorn\_binance\_websocket\_api.unicorn\_binance\_websocket\_api\_connection module
+unicorn\_binance\_websocket\_api.connection module
 ------------------------------------------------------------------------------------
 
-.. automodule:: unicorn_binance_websocket_api.unicorn_binance_websocket_api_connection
+.. automodule:: unicorn_binance_websocket_api.connection
     :members:
     :undoc-members:
     :show-inheritance:
 
-unicorn\_binance\_websocket\_api.unicorn\_binance\_websocket\_api\_manager module
+unicorn\_binance\_websocket\_api.manager module
 ---------------------------------------------------------------------------------
 
-.. automodule:: unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager
+.. automodule:: unicorn_binance_websocket_api.manager
     :members:
     :undoc-members:
     :show-inheritance:
 
-unicorn\_binance\_websocket\_api.unicorn\_binance\_websocket\_api\_restclient module
+unicorn\_binance\_websocket\_api.restclient module
 ------------------------------------------------------------------------------------
 
-.. automodule:: unicorn_binance_websocket_api.unicorn_binance_websocket_api_restclient
+.. automodule:: unicorn_binance_websocket_api.restclient
     :members:
     :undoc-members:
     :show-inheritance:
 
-unicorn\_binance\_websocket\_api.unicorn\_binance\_websocket\_api\_restserver module
+unicorn\_binance\_websocket\_api.restserver module
 ------------------------------------------------------------------------------------
 
-.. automodule:: unicorn_binance_websocket_api.unicorn_binance_websocket_api_restserver
+.. automodule:: unicorn_binance_websocket_api.restserver
     :members:
     :undoc-members:
     :show-inheritance:
 
-unicorn\_binance\_websocket\_api.unicorn\_binance\_websocket\_api\_socket module
+unicorn\_binance\_websocket\_api.sockets module
 --------------------------------------------------------------------------------
 
-.. automodule:: unicorn_binance_websocket_api.unicorn_binance_websocket_api_socket
+.. automodule:: unicorn_binance_websocket_api.sockets
     :members:
     :undoc-members:
     :show-inheritance:
