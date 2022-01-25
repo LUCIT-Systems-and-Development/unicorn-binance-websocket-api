@@ -43,7 +43,7 @@ import time
 import uuid
 import websockets
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("unicorn_binance_websocket_api")
 
 
 class BinanceWebSocketApiSocket(object):

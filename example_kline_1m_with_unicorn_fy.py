@@ -38,7 +38,7 @@ import time
 import os
 
 
-logging.getLogger("unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager")
+logging.getLogger("unicorn_binance_websocket_api.manager")
 logging.basicConfig(level=logging.INFO,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
@@ -66,6 +66,8 @@ binance_websocket_api_manager.create_stream('kline_1m', markets, stream_label="d
 
 binance_websocket_api_manager.create_stream('kline_1m', markets, stream_label="raw_data", output="raw_data")
 
+print(f"Printing the closing klines:")
+
 while True:
     if binance_websocket_api_manager.is_manager_stopping():
         exit(0)
@@ -75,11 +77,14 @@ while True:
     else:
         if oldest_stream_data_from_stream_buffer is not None:
             try:
-                if oldest_stream_data_from_stream_buffer['event_time'] >= \
-                        oldest_stream_data_from_stream_buffer['kline']['kline_close_time']:
-                    # print only the last kline
+                if oldest_stream_data_from_stream_buffer['kline']['is_closed']:
                     print(f"UnicornFy: {oldest_stream_data_from_stream_buffer}")
             except KeyError:
-                print(f"dict: {oldest_stream_data_from_stream_buffer}")
+                try:
+                    if oldest_stream_data_from_stream_buffer['k']['x']:
+                        print(f"dict: {oldest_stream_data_from_stream_buffer}")
+                except KeyError:
+                    pass
             except TypeError:
-                print(f"raw_data: {oldest_stream_data_from_stream_buffer}")
+                if '"x":true' in oldest_stream_data_from_stream_buffer:
+                    print(f"raw_data: {oldest_stream_data_from_stream_buffer}")

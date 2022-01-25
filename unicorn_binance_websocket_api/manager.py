@@ -60,7 +60,7 @@ import ujson as json
 import websockets
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("unicorn_binance_websocket_api")
 
 
 class BinanceWebSocketApiManager(threading.Thread):
@@ -170,7 +170,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  process_stream_signals=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.36.0"
+        self.version = "1.36.0.dev"
         logger.info(f"New instance of {self.get_user_agent()} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         if disable_colorama is not True:

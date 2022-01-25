@@ -35,7 +35,7 @@
 from flask_restful import Resource
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("unicorn_binance_websocket_api")
 
 
 class BinanceWebSocketApiRestServer(Resource):

@@ -43,7 +43,7 @@ import time
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
 
-logging.getLogger("unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager")
+logging.getLogger("unicorn_binance_websocket_api.manager")
 logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",

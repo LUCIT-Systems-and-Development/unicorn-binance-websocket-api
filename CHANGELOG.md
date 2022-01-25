@@ -5,11 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to 
 [Semantic Versioning](http://semver.org/).
 
+[Discussion about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
+
 ## 1.36.0.dev (development stage/unreleased/unstable)
 
 ## 1.36.0
 ### Changed
-- removed "unicorn_binance_websocket_api_"-part of the module file names
+- removed "unicorn_binance_websocket_api_"-part of the module file names (more info: [Discussions](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases))
+- renamed logger name of all modules to "unicorn_binance_websocket_api", in the implementation of 
+[PR#223](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/223) every module has had 
+its own logger name.
  
 ## 1.35.0
 ### Added
