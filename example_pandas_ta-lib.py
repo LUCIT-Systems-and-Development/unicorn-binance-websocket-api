@@ -66,8 +66,7 @@ ubwa.create_stream('kline_1m', 'btcusdt')
 
 print(f"For our calculations we need the klines_1m of the last 10 minutes. Normally we would download the history\r\n"
       f"via REST API. In this demo, we wait 10 minutes for the websocket connection to receive 10 klines and then\r\n"
-      f"output the entire dataframe to the console every minute from then on. After 15 minutes we draw a chart\r\n"
-      f"with matplotlib with the price, RSI and SMA values.")
+      f"output the entire dataframe to the console every minute from then on.")
 print(f"Learn about pandas-ta: https://twopirllc.github.io/pandas-ta")
 
 while True:
@@ -98,17 +97,8 @@ while True:
                     df["sma10"] = ta.sma(df.close, length=10)
                     print(f"Extended dataframe with RSI ({df['rsi'].iloc[-1]}) and SMA10 ({df['sma10'].iloc[-1]}) for "
                           f"symbol '{data['symbol']}':\r\n{df}\r\n")
-        except TypeError as e:
-            print("TypeError: " + str(e))
-        except KeyError as e:
-            if "kline" not in str(e):
-                print("KeyError: " + str(e))
-        if len(data_list) > 15:
-            # Plotting the close price
-            plt.plot(df.date, df.close)
-            # Plotting the RSI
-            plt.plot(df.date, df.rsi)
-            # Plotting the SMA
-            plt.plot(df.date, df.sma10)
-            # Show the chart
-            plt.show()
+        except TypeError as error_msg:
+            print("TypeError: " + str(error_msg))
+        except KeyError as error_msg:
+            if "kline" not in str(error_msg):
+                print("KeyError: " + str(error_msg))
