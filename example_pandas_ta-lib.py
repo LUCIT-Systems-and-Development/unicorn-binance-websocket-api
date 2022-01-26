@@ -38,18 +38,18 @@ try:
     import matplotlib.pyplot as plt
 except ImportError:
     print("Please install `matplotlib`!")
-    sys.exit(1)
+    exit(1)
 import os
 try:
     import pandas as pd
 except ImportError:
     print("Please install `pandas`!")
-    sys.exit(1)
+    exit(1)
 try:
     import pandas_ta as ta
 except ImportError:
     print("Please install `pandas_ta`!")
-    sys.exit(1)
+    exit(1)
 import time
 
 data_list = []
