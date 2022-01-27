@@ -5,7 +5,7 @@
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
-# Documentation: https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api
+# Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
 # Author: LUCIT Systems and Development
@@ -59,7 +59,7 @@ setuptools.setup(
               'binance-futures, binance-margin',
      project_urls={
         'Howto': 'https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api',
-        'Documentation': 'https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api',
+        'Documentation': 'https://unicorn-binance-websocket-api.docs.lucit.tech',
         'Wiki': 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki',
         'Author': 'https://www.lucit.tech',
      },

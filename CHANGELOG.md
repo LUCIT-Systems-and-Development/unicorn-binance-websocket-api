@@ -114,13 +114,13 @@ Now `stream_buffer` can be used as FIFO or LIFO stack and its possible to define
 
 ## 1.27.0
 ### Added
-- `timeout=10` to [`get_result_by_request_id()`](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id): 
+- `timeout=10` to [`get_result_by_request_id()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_result_by_request_id): 
   Wait for `timeout` seconds to receive the requested result or return `False`
 - logging the use of stream_buffer or process_stream_data and the used OS plattform
 - individual `max_subscriptions_per_stream` for each endpoint
 - `stream_signal_buffer` to receive signals if a stream gets connected or disconnected
-- ['add_to_stream_signal_buffer()'](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=add_to_stream_signal_buffer#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer)
-- ['pop_stream_signal_from_stream_signal_buffer()'](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=pop_stream_signal#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_signal_from_stream_signal_buffer)
+- ['add_to_stream_signal_buffer()'](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=add_to_stream_signal_buffer#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer)
+- ['pop_stream_signal_from_stream_signal_buffer()'](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=pop_stream_signal#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_signal_from_stream_signal_buffer)
 - Support for stream signals: `CONNECT`, `DISCONNECT`, `FIRST_RECEIVED_DATA` 
 ### Changed
 - max subscriptions of futures endpoints to 200 [issue#127](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/127)
@@ -130,23 +130,23 @@ Now `stream_buffer` can be used as FIFO or LIFO stack and its possible to define
  
 ## 1.26.0
 ### Added
-- parameter `ping_interval`, `ping_timeout`, `close_timeout` to [`manager.create_stream()`](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream)
-  and [`replace_stream()`](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=replace_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream)
-- show `ping_interval`, `ping_timeout`, `close_timeout` in [`print_stream_info()`](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=print_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.print_stream_info)
+- parameter `ping_interval`, `ping_timeout`, `close_timeout` to [`manager.create_stream()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream)
+  and [`replace_stream()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=replace_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream)
+- show `ping_interval`, `ping_timeout`, `close_timeout` in [`print_stream_info()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=print_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.print_stream_info)
 - `manager.set_heartbeat()` to `connection.send()`
-- [`get_result_by_request_id()`](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id)
+- [`get_result_by_request_id()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_result_by_request_id)
 ### Changed
 - log warning about high cpu usage is logged after 5 seconds if > 95% 
 
 ## 1.25.0
 ### Added
-- [`get_user_agent()`](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_user_agent)
+- [`get_user_agent()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_user_agent)
 ### Changed
 - `get_stream_subscriptions()` returns now the used `request_id` instead of `True`
 
 ## 1.24.0
 ### Added
-- [`output_default`](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default)
+- [`output_default`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default)
   to `BinanceWebSocketApiManager` 
 ### Removed
 - unused import of `ujson` in connection class
@@ -183,7 +183,7 @@ a higher weight
 ## 1.21.0
 ### Added 
 - `is_update_availabe_unicorn_fy()` and `get_version_unicorn_fy()`
-- `new_output` to [`replace_stream()`](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=replace_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream)
+- `new_output` to [`replace_stream()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=replace_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream)
 ### Changed
 - Rewrite of `BinanceWebSocketApiRestclient()`, its more or less stateless but compatible to the current system. Now 
 we use one instance globally instead of creating a new one every time we need it. It will help to implement isolated
@@ -194,14 +194,14 @@ margin with more than one symbol. [issue#111](https://github.com/LUCIT-Systems-a
 
 ## 1.20.0
 ### Added
-- `dict` to [`create_stream(output='dict')`](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream)
+- `dict` to [`create_stream(output='dict')`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream)
 ### Fixed
 - StreamBuffer reset on restart [issue#119](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/119)
  
 ## 1.19.0
 ### Added
 - [`UnicornFy`](https://github.com/LUCIT-Systems-and-Development/unicorn-fy) to 
-[`create_stream(output='UnicornFy')`](https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream)
+[`create_stream(output='UnicornFy')`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream)
 ### Changed
 - Links in docstrings
 

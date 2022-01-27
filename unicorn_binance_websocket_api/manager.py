@@ -5,7 +5,7 @@
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
-# Documentation: https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api
+# Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
 # Author: LUCIT Systems and Development
@@ -109,11 +109,11 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     :param process_stream_data: Provide a function/method to process the received webstream data. The function
                                 will be called instead of
-                                `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
+                                `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
                                 like `process_stream_data(stream_data, stream_buffer_name)` where
                                 `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
                                 get stored in the stream_buffer! `How to read from stream_buffer!
-                                <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/README.html#and-4-more-lines-to-print-the-receives>`_
+                                <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
     :type process_stream_data: function
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
                      binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
@@ -151,7 +151,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type stream_buffer_maxlen: int or None
     :param process_stream_signals: Provide a function/method to process the received stream signals. The function
                                    will be called instead of
-                                   `add_to_stream_signal_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer>`_
+                                   `add_to_stream_signal_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer>`_
                                    like `process_stream_data(signal_type=False, stream_id=False, data_record=False)`.
     :type process_stream_signals: function
     """
@@ -239,7 +239,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             # Unknown Exchange
             error_msg = f"Unknown exchange '{str(self.exchange)}'! Read the docs to see a list of supported " \
-                        "exchanges: https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_" \
+                        "exchanges: https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_" \
                         "binance_websocket_api.html#module-unicorn_binance_websocket_api.unicorn_binance_websocket_" \
                         "api_manager"
             logger.critical(error_msg)
@@ -349,7 +349,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
         :param output: the default setting `raw_data` can be globaly overwritten with the parameter
-                       `output_default <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
+                       `output_default <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
                        of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
                        set `output` to "dict" to convert the received raw data to a python dict,  set to "UnicornFy" to
                        convert with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ -  otherwise with
@@ -1107,7 +1107,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
         :param output: the default setting `raw_data` can be globaly overwritten with the parameter
-                       `output_default <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
+                       `output_default <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
                        of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
                        set `output` to "dict" to convert the received raw data to a python dict,  set to "UnicornFy" to
                        convert with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ -  otherwise with
@@ -2110,7 +2110,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Get the result related to the provided `request_id`
 
         :param request_id: if you run `get_stream_subscriptions()
-                           <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_stream_subscriptions>`_
+                           <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_subscriptions>`_
                            it returns a unique `request_id` - provide it to this method to receive the result.
         :type request_id: stream_id (uuid)
         :param timeout: seconds to wait to receive the result. If not there it returns 'False'
@@ -2244,9 +2244,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get a list of subscriptions of a specific stream from Binance endpoints - the result can be received via
         the `stream_buffer` and is also added to the results ringbuffer - `get_results_from_endpoints()
-        <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_results_from_endpoints>`_
+        <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_results_from_endpoints>`_
         to get all results or use `get_result_by_request_id(request_id)
-        <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id>`_
+        <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_result_by_request_id>`_
         to get a specific one!
 
         This function is supported by CEX endpoints only!
@@ -2257,7 +2257,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: str
         :param request_id: id to use for the request - use `get_request_id()` to create a unique id. If not provided or
                            `False`, then this method is using `get_request_id()
-                           <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_request_id>`_
+                           <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_request_id>`_
                            automatically.
         :type request_id: int
         :return: request_id (int)
@@ -3413,7 +3413,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         and all subscribed channels are going to get added to the new market!
 
         `How are the parameter `channels` and `markets` used with
-        `subscriptions <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
+        `subscriptions <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>`_
 
         :param stream_id: id of a stream
         :type stream_id: str
@@ -3495,7 +3495,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         subscribed channels from the specific markets are going to be removed!
 
         `How are the parameter `channels` and `markets` used with
-        `subscriptions <https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream>`_
+        `subscriptions <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>`_
 
         :param stream_id: id of a stream
         :type stream_id: str

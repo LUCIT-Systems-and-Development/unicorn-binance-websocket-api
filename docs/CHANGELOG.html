@@ -70,7 +70,7 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a class="reference external" href="http://keepachangelog.com/">Keep a Changelog</a> and this project adheres to
 <a class="reference external" href="http://semver.org/">Semantic Versioning</a>.</p>
-<p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases">Discussion about unicorn-binance-websocket-api releases!</a></p>
+<p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases">Discussions about unicorn-binance-websocket-api releases!</a></p>
 <div class="section" id="dev-development-stage-unreleased-unstable">
 <h2>1.36.0.dev (development stage/unreleased/unstable)<a class="headerlink" href="#dev-development-stage-unreleased-unstable" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -310,13 +310,13 @@ websockets versions</p></li>
 <div class="section" id="id39">
 <h3>Added<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">timeout=10</span></code> to <a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id"><code class="docutils literal notranslate"><span class="pre">get_result_by_request_id()</span></code></a>:
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout=10</span></code> to <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_result_by_request_id"><code class="docutils literal notranslate"><span class="pre">get_result_by_request_id()</span></code></a>:
 Wait for <code class="docutils literal notranslate"><span class="pre">timeout</span></code> seconds to receive the requested result or return <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
 <li><p>logging the use of stream_buffer or process_stream_data and the used OS plattform</p></li>
 <li><p>individual <code class="docutils literal notranslate"><span class="pre">max_subscriptions_per_stream</span></code> for each endpoint</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">stream_signal_buffer</span></code> to receive signals if a stream gets connected or disconnected</p></li>
-<li><p><a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=add_to_stream_signal_buffer#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer">‘add_to_stream_signal_buffer()’</a></p></li>
-<li><p><a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=pop_stream_signal#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_signal_from_stream_signal_buffer">‘pop_stream_signal_from_stream_signal_buffer()’</a></p></li>
+<li><p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=add_to_stream_signal_buffer#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer">‘add_to_stream_signal_buffer()’</a></p></li>
+<li><p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=pop_stream_signal#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_signal_from_stream_signal_buffer">‘pop_stream_signal_from_stream_signal_buffer()’</a></p></li>
 <li><p>Support for stream signals: <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code>, <code class="docutils literal notranslate"><span class="pre">DISCONNECT</span></code>, <code class="docutils literal notranslate"><span class="pre">FIRST_RECEIVED_DATA</span></code></p></li>
 </ul>
 </div>
@@ -339,11 +339,11 @@ Wait for <code class="docutils literal notranslate"><span class="pre">timeout</s
 <div class="section" id="id43">
 <h3>Added<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>parameter <code class="docutils literal notranslate"><span class="pre">ping_interval</span></code>, <code class="docutils literal notranslate"><span class="pre">ping_timeout</span></code>, <code class="docutils literal notranslate"><span class="pre">close_timeout</span></code> to <a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream"><code class="docutils literal notranslate"><span class="pre">manager.create_stream()</span></code></a>
-and <a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=replace_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream"><code class="docutils literal notranslate"><span class="pre">replace_stream()</span></code></a></p></li>
-<li><p>show <code class="docutils literal notranslate"><span class="pre">ping_interval</span></code>, <code class="docutils literal notranslate"><span class="pre">ping_timeout</span></code>, <code class="docutils literal notranslate"><span class="pre">close_timeout</span></code> in <a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=print_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.print_stream_info"><code class="docutils literal notranslate"><span class="pre">print_stream_info()</span></code></a></p></li>
+<li><p>parameter <code class="docutils literal notranslate"><span class="pre">ping_interval</span></code>, <code class="docutils literal notranslate"><span class="pre">ping_timeout</span></code>, <code class="docutils literal notranslate"><span class="pre">close_timeout</span></code> to <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream"><code class="docutils literal notranslate"><span class="pre">manager.create_stream()</span></code></a>
+and <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=replace_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream"><code class="docutils literal notranslate"><span class="pre">replace_stream()</span></code></a></p></li>
+<li><p>show <code class="docutils literal notranslate"><span class="pre">ping_interval</span></code>, <code class="docutils literal notranslate"><span class="pre">ping_timeout</span></code>, <code class="docutils literal notranslate"><span class="pre">close_timeout</span></code> in <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=print_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.print_stream_info"><code class="docutils literal notranslate"><span class="pre">print_stream_info()</span></code></a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">manager.set_heartbeat()</span></code> to <code class="docutils literal notranslate"><span class="pre">connection.send()</span></code></p></li>
-<li><p><a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_result_by_request_id"><code class="docutils literal notranslate"><span class="pre">get_result_by_request_id()</span></code></a></p></li>
+<li><p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_result_by_request_id"><code class="docutils literal notranslate"><span class="pre">get_result_by_request_id()</span></code></a></p></li>
 </ul>
 </div>
 <div class="section" id="id44">
@@ -358,7 +358,7 @@ and <a class="reference external" href="https://lucit-systems-and-development.gi
 <div class="section" id="id46">
 <h3>Added<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_user_agent"><code class="docutils literal notranslate"><span class="pre">get_user_agent()</span></code></a></p></li>
+<li><p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_user_agent"><code class="docutils literal notranslate"><span class="pre">get_user_agent()</span></code></a></p></li>
 </ul>
 </div>
 <div class="section" id="id47">
@@ -373,7 +373,7 @@ and <a class="reference external" href="https://lucit-systems-and-development.gi
 <div class="section" id="id49">
 <h3>Added<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=output_default"><code class="docutils literal notranslate"><span class="pre">output_default</span></code></a>
+<li><p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default"><code class="docutils literal notranslate"><span class="pre">output_default</span></code></a>
 to <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager</span></code></p></li>
 </ul>
 </div>
@@ -445,7 +445,7 @@ a higher weight</p></li>
 <h3>Added<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">is_update_availabe_unicorn_fy()</span></code> and <code class="docutils literal notranslate"><span class="pre">get_version_unicorn_fy()</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">new_output</span></code> to <a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html?highlight=replace_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream"><code class="docutils literal notranslate"><span class="pre">replace_stream()</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">new_output</span></code> to <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=replace_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.replace_stream"><code class="docutils literal notranslate"><span class="pre">replace_stream()</span></code></a></p></li>
 </ul>
 </div>
 <div class="section" id="id61">
@@ -469,7 +469,7 @@ margin with more than one symbol. <a class="reference external" href="https://gi
 <div class="section" id="id64">
 <h3>Added<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">dict</span></code> to <a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream"><code class="docutils literal notranslate"><span class="pre">create_stream(output='dict')</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dict</span></code> to <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream"><code class="docutils literal notranslate"><span class="pre">create_stream(output='dict')</span></code></a></p></li>
 </ul>
 </div>
 <div class="section" id="id65">
@@ -485,7 +485,7 @@ margin with more than one symbol. <a class="reference external" href="https://gi
 <h3>Added<a class="headerlink" href="#id67" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-fy"><code class="docutils literal notranslate"><span class="pre">UnicornFy</span></code></a> to
-<a class="reference external" href="https://lucit-systems-and-development.github.io/unicorn-binance-websocket-api/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream"><code class="docutils literal notranslate"><span class="pre">create_stream(output='UnicornFy')</span></code></a></p></li>
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream"><code class="docutils literal notranslate"><span class="pre">create_stream(output='UnicornFy')</span></code></a></p></li>
 </ul>
 </div>
 <div class="section" id="id68">
@@ -2235,7 +2235,7 @@ flapping network connection</p></li>
     <div class="footer">
         <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues">Found a bug</a>?
         <br />
-        Last updated on Jan 25 2022 at 23:03 (CET).
+        Last updated on Jan 27 2022 at 01:58 (CET).
         <br />
         &copy; <a href="copyright.html">Copyright</a> 2019-2022, LUCIT Systems and Development and Oliver Zehentleitner.
         <br />
