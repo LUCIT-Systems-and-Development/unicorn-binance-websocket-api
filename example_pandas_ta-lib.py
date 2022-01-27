@@ -34,12 +34,9 @@
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 import logging
-try:
-    import matplotlib.pyplot as plt
-except ImportError:
-    print("Please install `matplotlib`!")
-    exit(1)
 import os
+import time
+
 try:
     import pandas as pd
 except ImportError:
@@ -50,7 +47,7 @@ try:
 except ImportError:
     print("Please install `pandas_ta`!")
     exit(1)
-import time
+
 
 data_list = []
 min_items = 11
