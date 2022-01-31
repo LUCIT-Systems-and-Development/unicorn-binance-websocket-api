@@ -357,5 +357,5 @@ We ![love](https://raw.githubusercontent.com/lucit-systems-and-development/unico
 
 Do you need a developer, operator or consultant? 
 
-Contact me for a non-binding initial consultation via my company 
+Contact [me](https://about.me/oliver-zehentleitner) for a non-binding initial consultation via my company 
 [LUCIT](https://www.lucit.tech) from Vienna (Austria) or via [Telegram](https://t.me/LUCIT_OZ).
