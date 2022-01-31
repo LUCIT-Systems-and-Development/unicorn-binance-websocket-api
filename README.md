@@ -355,7 +355,7 @@ We ![love](https://raw.githubusercontent.com/lucit-systems-and-development/unico
 ## Commercial Support
 [![LUCIT](https://www.lucit.tech/files/images/logos/LUCIT-LOGO.png)](https://www.lucit.tech)
 
-***Do you need a developer, operator or consultant? ***
+***Do you need a developer, operator or consultant?***
 
 Contact [me](https://about.me/oliver-zehentleitner) for a non-binding initial consultation via my company 
 [LUCIT](https://www.lucit.tech) from Vienna (Austria) or via [Telegram](https://t.me/LUCIT_OZ).
