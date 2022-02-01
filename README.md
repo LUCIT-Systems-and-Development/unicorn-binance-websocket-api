@@ -38,13 +38,16 @@ while True:
     if oldest_data_from_stream_buffer:
         print(oldest_data_from_stream_buffer)
 ```
+
 Basically that's it, but there are more options:
 
 ### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://github.com/LUCIT-Systems-and-Development/unicorn-fy):
 ```
 unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_data_from_stream_buffer)
 ```
+
 or
+
 ```
 ubwa.create_stream(['trade'], ['btcusdt'], output="UnicornFy")
 ```
