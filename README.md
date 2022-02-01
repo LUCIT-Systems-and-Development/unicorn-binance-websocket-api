@@ -30,6 +30,7 @@ import unicorn_binance_websocket_api
 ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(exchange="binance.com")
 ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
+
 ### And 4 more lines to print the receives:
 ```
 while True:
