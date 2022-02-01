@@ -24,7 +24,6 @@ in a easy, fast, flexible, robust and fully-featured way.
 Part of ['UNICORN Binance Suite'](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite).
 
 ### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
-
 ```
 import unicorn_binance_websocket_api
 
@@ -39,16 +38,13 @@ while True:
     if oldest_data_from_stream_buffer:
         print(oldest_data_from_stream_buffer)
 ```
-
 Basically that's it, but there are more options:
 
 ### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://github.com/LUCIT-Systems-and-Development/unicorn-fy):
 ```
 unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_data_from_stream_buffer)
 ```
-
-or 
-
+or
 ```
 ubwa.create_stream(['trade'], ['btcusdt'], output="UnicornFy")
 ```
