@@ -8,7 +8,9 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/context:python)
 [![codecov](https://codecov.io/gh/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/branch/master/graph/badge.svg?token=Z6SEARA4W4)](https://codecov.io/gh/oliver-zehentleitner/unicorn-binance-websocket-api)
-[![Telegram](https://img.shields.io/badge/chat-telegram-yellow.svg)](https://t.me/unicorndevs)
+[![Read the Docs](https://img.shields.io/badge/read-%20docs-yellow)](https://unicorn-binance-websocket-api.docs.lucit.tech/)
+[![Github](https://img.shields.io/badge/source-github-yellow)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)
+[![Telegram](https://img.shields.io/badge/chat-telegram-yellow)](https://t.me/unicorndevs)
 
 # UNICORN Binance WebSocket API
 
@@ -21,7 +23,7 @@ An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-ma
 com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, jex, dex/chain+testnet) 
 in a easy, fast, flexible, robust and fully-featured way. 
 
-Part of ['UNICORN Binance Suite'](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite).
+Part of ['UNICORN Binance Suite'](https://www.lucit.tech/unicorn-binance-suite.html).
 
 ### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
 ```
@@ -30,6 +32,7 @@ import unicorn_binance_websocket_api
 ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(exchange="binance.com")
 ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
+
 ### And 4 more lines to print the receives:
 ```
 while True:
@@ -38,13 +41,15 @@ while True:
         print(oldest_data_from_stream_buffer)
 ```
 
-Basically that's it, but there are more options:
+Basically that's it, but there are more options.
 
 ### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://github.com/LUCIT-Systems-and-Development/unicorn-fy):
 ```
 unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_data_from_stream_buffer)
 ```
-or 
+
+or
+
 ```
 ubwa.create_stream(['trade'], ['btcusdt'], output="UnicornFy")
 ```
@@ -211,9 +216,9 @@ If you like the project, please [![star](https://raw.githubusercontent.com/lucit
 ## Live Demo
 This live demo script is streaming from binance.com!
 
-[Open live monitor!](https://www.lucit.tech/unicorn-binance-websocket-api.html)
+[Open live monitor!](https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html)
 
-[![live-demo](https://ubwa-demo.lucit.co/ps.png)](https://www.lucit.tech/unicorn-binance-websocket-api.html)
+[![live-demo](https://ubwa-demo.lucit.tech/ps.png)](https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html)
 
 (Refresh update once a minute!)
 
