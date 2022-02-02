@@ -214,7 +214,7 @@ If you like the project, please [![star](https://raw.githubusercontent.com/lucit
 ## Live Demo
 This live demo script is streaming from binance.com!
 
-[Open live monitor!](https://www.lucit.tech/unicorn-binance-websocket-api.html)
+[Open live monitor!](https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html)
 
 [![live-demo](https://ubwa-demo.lucit.co/ps.png)](https://www.lucit.tech/unicorn-binance-websocket-api.html)
 
