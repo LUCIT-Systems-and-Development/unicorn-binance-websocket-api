@@ -4,7 +4,8 @@
 # File: pypi/install_packaging_tools.sh
 #
 # Part of ‘UNICORN Binance WebSocket API’
-# Project website: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
+# Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
+# Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
 # Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
 #
