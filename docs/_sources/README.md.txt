@@ -297,7 +297,6 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 ## Howto
 - [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
 - [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.technopathy.club/2019/11/02/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2/)
-- [Binance Python API – A Step-by-Step Guide](https://algotrading101.com/learn/binance-python-api-guide/#what-is-the-binance-api) ([GitHub Repo](https://github.com/PythonForForex/Binance-api-step-by-step-guide))
 
 ## Project Homepage
 [https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)
@@ -354,9 +353,9 @@ contribute follow
 We ![love](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/heart.png) open source!
 
 ## Commercial Support
-[![LUCIT](https://www.lucit.tech/files/images/logos/LUCIT-LOGO-TRANS-PLAIN-NEW.png)](https://www.lucit.tech)
+[![LUCIT](https://www.lucit.tech/files/images/logos/LUCIT-LOGO.png)](https://www.lucit.tech)
 
-Do you need a developer, operator or consultant? 
+***Do you need a developer, operator or consultant?***
 
-Contact me for a non-binding initial consultation via my company 
+Contact [me](https://about.me/oliver-zehentleitner) for a non-binding initial consultation via my company 
 [LUCIT](https://www.lucit.tech) from Vienna (Austria) or via [Telegram](https://t.me/LUCIT_OZ).
