@@ -78,7 +78,7 @@ to stream everything from "binance.com".
 This should be known by everyone using this lib: [Do you want consistent data from binance?](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/42)
 
 ## Description
-The Python module [UNICORN Binance WebSocket API](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api) 
+The Python package [UNICORN Binance WebSocket API](https://www.lucit.tech/unicorn-binance-websocket-api.html) 
 provides an API to the Binance Websocket API`s of 
 [Binance](https://github.com/binance-exchange/binance-official-api-docs) 
 ([+Testnet](https://testnet.binance.vision/)), 
