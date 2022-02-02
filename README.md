@@ -216,7 +216,7 @@ This live demo script is streaming from binance.com!
 
 [Open live monitor!](https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html)
 
-[![live-demo](https://ubwa-demo.lucit.co/ps.png)](https://www.lucit.tech/unicorn-binance-websocket-api.html)
+[![live-demo](https://ubwa-demo.lucit.tech/ps.png)](https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html)
 
 (Refresh update once a minute!)
 
