@@ -39,7 +39,7 @@ while True:
         print(oldest_data_from_stream_buffer)
 ```
 
-Basically that's it, but there are more options:
+Basically that's it, but there are more options.
 
 ### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://github.com/LUCIT-Systems-and-Development/unicorn-fy):
 ```
