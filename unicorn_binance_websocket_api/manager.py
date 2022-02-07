@@ -150,8 +150,8 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param stream_buffer_maxlen: Set a max len for the generic `stream_buffer`. This parameter can also be used within
                                  `create_stream()` for a specific `stream_buffer`.
     :type stream_buffer_maxlen: int or None
-    :param process_stream_signals: Provide a function/method to process the received stream signals. The function
-                                   will be called instead of
+    :param process_stream_signals: Provide a function/method to process the received stream signals. The function is running inside an asyncio loop and will be 
+                                   called instead of 
                                    `add_to_stream_signal_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer>`_
                                    like `process_stream_data(signal_type=False, stream_id=False, data_record=False)`.
     :type process_stream_signals: function
