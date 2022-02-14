@@ -205,7 +205,7 @@ class BinanceWebSocketApiSocket(object):
                         self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                         self.manager.set_restart_request(self.stream_id)
                         sys.exit(1)
-        except asyncio.TimeoutError:
+        except asyncio.TimeoutError as error_msg:
             # Catching https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/221
             self.manager.stream_is_crashing(self.stream_id, error_msg)
             self.manager.set_restart_request(self.stream_id)
