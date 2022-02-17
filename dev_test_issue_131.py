@@ -35,11 +35,9 @@
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 import logging
-import os
 
 logging.getLogger("unicorn_binance_websocket_api")
-logging.basicConfig(level=logging.INFO,
-                    filename=os.path.basename(__file__) + '.log',
+logging.basicConfig(level=logging.DEBUG,
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
