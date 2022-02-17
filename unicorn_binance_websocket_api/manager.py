@@ -425,8 +425,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'processed_receives_statistic': {},
                                        'transfer_rate_per_second': {'bytes': {}, 'speed': 0}}
         logger.info("BinanceWebSocketApiManager._add_stream_to_stream_list(" +
-                     str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
-                     + str(stream_buffer_name) + ", " + str(stream_buffer_maxlen) + ", " + str(symbols) + ")")
+                    str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
+                    + str(stream_buffer_name) + ", " + str(stream_buffer_maxlen) + ", " + str(symbols) + ")")
 
     def _create_stream_thread(self,
                               loop,
@@ -478,15 +478,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         except RuntimeError as error_msg:
             if "cannot schedule new futures after interpreter shutdown" in str(error_msg):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
-                                 f" - RuntimeError error_msg:  - {str(error_msg)} - stopping and shutting down - read "
-                                 f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131"
-                                 f" for further information!")
+                                f" - RuntimeError error_msg:  - {str(error_msg)} - stopping and shutting down - read "
+                                f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131"
+                                f" for further information!")
                 self.stop_manager_with_all_streams()
                 sys.exit(1)
             logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
-                             f"error: 7 - {str(error_msg)} - if this stream did not restart after this error, please "
-                             f"create an issue: "
-                             f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose")
+                            f"error: 7 - {str(error_msg)} - if this stream did not restart after this error, please "
+                            f"create an issue: "
+                            f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose")
             loop.close()
         finally:
             self.process_stream_signals("DISCONNECT", stream_id)

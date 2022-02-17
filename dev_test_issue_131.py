@@ -35,6 +35,7 @@
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 import logging
+import time
 
 logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.DEBUG,
@@ -43,3 +44,5 @@ logging.basicConfig(level=logging.DEBUG,
 
 ubwa = BinanceWebSocketApiManager(exchange="binance.com-futures")
 ubwa.create_stream("kline_1m", "btcusdt", stream_label="kline_1m")
+
+time.sleep(0.01)
