@@ -36,13 +36,6 @@
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 import logging
 import os
-import sys
-
-try:
-    import IPython
-except ImportError:
-    print("Please install `ipython`!")
-    sys.exit(1)
 
 binance_api_key = ""
 binance_api_secret = ""
@@ -56,5 +49,3 @@ logging.basicConfig(level=logging.INFO,
 ubwa = BinanceWebSocketApiManager(exchange="binance.com-futures")
 ubwa.create_stream("kline_1m", "btcusdt", stream_label="kline_1m")
 ubwa.create_stream('!userData', 'arr', stream_label="user_data", api_key=binance_api_key, api_secret=binance_api_secret)
-
-IPython.embed()
