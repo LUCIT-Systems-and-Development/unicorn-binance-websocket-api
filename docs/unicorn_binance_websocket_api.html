@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.36.0 documentation</title>
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.36.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css" />
     
@@ -48,7 +48,7 @@
     <li><a href="https://www.lucit.tech/unicorn-binance-websocket-api.html">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.36.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.36.1 documentation</a> &#187;
     
 
           <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">unicorn_binance_websocket_api</a> &#187;</li>
@@ -185,8 +185,8 @@ interruption or to recognize your bot got blind.</p></li>
 <li><p><strong>disable_colorama</strong> (<em>bool</em>) – set to True to disable the use of <a class="reference external" href="https://pypi.org/project/colorama/">colorama</a></p></li>
 <li><p><strong>stream_buffer_maxlen</strong> (<em>int</em><em> or </em><em>None</em>) – Set a max len for the generic <cite>stream_buffer</cite>. This parameter can also be used within
 <cite>create_stream()</cite> for a specific <cite>stream_buffer</cite>.</p></li>
-<li><p><strong>process_stream_signals</strong> (<em>function</em>) – Provide a function/method to process the received stream signals. The function
-will be called instead of
+<li><p><strong>process_stream_signals</strong> (<em>function</em>) – Provide a function/method to process the received stream signals. The function is running inside an asyncio loop and will be 
+called instead of 
 <a class="reference external" href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer">add_to_stream_signal_buffer()</a>
 like <cite>process_stream_data(signal_type=False, stream_id=False, data_record=False)</cite>.</p></li>
 </ul>
@@ -1998,7 +1998,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <li><a href="https://www.lucit.tech/unicorn-binance-websocket-api.html">unicorn-binance-websocket-api</a> &#187;</li>
     
     
-    <a href="index.html">unicorn-binance-websocket-api 1.36.0 documentation</a> &#187;
+    <a href="index.html">unicorn-binance-websocket-api 1.36.1 documentation</a> &#187;
     
 
           <li class="nav-item nav-item-1"><a href="modules.html" >unicorn_binance_websocket_api</a> &#187;</li>
@@ -2013,7 +2013,7 @@ subscribed channels from the specific markets are going to be removed!</p>
     <div class="footer">
         <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues">Found a bug</a>?
         <br />
-        Last updated on Feb 07 2022 at 22:56 (CET).
+        Last updated on Feb 18 2022 at 22:13 (CET).
         <br />
         &copy; <a href="copyright.html">Copyright</a> 2019-2022, LUCIT Systems and Development and Oliver Zehentleitner.
         <br />
