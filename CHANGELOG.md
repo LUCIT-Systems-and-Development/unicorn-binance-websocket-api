@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.36.0.dev (development stage/unreleased/unstable)
 ### Fixed
 - UnboundLocalError: local variable 'error_msg' referenced before assignment in sockets.py line 209 reported in [issue#235](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/235)
+- Avoid error 2 of this post: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131#issuecomment-1042747365
 
 ## 1.36.0
 ### Changed

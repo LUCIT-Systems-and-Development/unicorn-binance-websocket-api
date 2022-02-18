@@ -484,8 +484,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.stop_manager_with_all_streams()
                 sys.exit(1)
             logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
-                            f"error: 7 - {str(error_msg)} - if this stream did not restart after this error, please "
-                            f"create an issue: "
+                            f" - RuntimeError `error: 7` - error_msg: - {str(error_msg)} - Please create an issue: "
                             f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose")
             loop.close()
         finally:
@@ -711,6 +710,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         self.stream_list[stream_id]['stream_buffer_maxlen'],
                                         True))
         thread.start()
+        # Sleep to avoid error 2 of this post:
+        # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131#issuecomment-1042747365
+        time.sleep(0.3)
         return stream_id
 
     def _restart_stream_thread(self, stream_id):
@@ -1213,6 +1215,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                                            stream_buffer_maxlen,
                                                                            False))
         thread.start()
+        # Sleep to avoid error 2 of this post:
+        # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131#issuecomment-1042747365
+        time.sleep(0.3)
         return stream_id
 
     def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False, symbols=False):
