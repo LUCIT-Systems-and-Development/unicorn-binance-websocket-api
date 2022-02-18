@@ -45,4 +45,5 @@ logging.basicConfig(level=logging.DEBUG,
 ubwa = BinanceWebSocketApiManager(exchange="binance.com-futures")
 ubwa.create_stream("kline_1m", "btcusdt", stream_label="kline_1m")
 
-time.sleep(0.01)
+# fixed with release 1.36.1 and is not needed anymore:
+# time.sleep(0.01)
