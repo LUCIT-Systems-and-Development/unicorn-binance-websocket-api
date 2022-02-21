@@ -35,7 +35,7 @@
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 import logging
-import time
+# import time
 
 logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.DEBUG,
