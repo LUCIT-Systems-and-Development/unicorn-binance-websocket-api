@@ -1693,8 +1693,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: dict or False
         """
         try:
-            respond = requests.get('https://api.github.com/repos/oliver-zehentleitner/unicorn-binance-websocket-api/'
-                                   'releases/latest')
+            respond = requests.get('https://api.github.com/repos/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest')
             latest_release_info = respond.json()
             return latest_release_info
         except Exception:
