@@ -11,4 +11,4 @@ dependencies:
   - ujson
   - unicorn-fy
   - websocket-client
-  - websockets==10.1
+  - websockets==10.2
