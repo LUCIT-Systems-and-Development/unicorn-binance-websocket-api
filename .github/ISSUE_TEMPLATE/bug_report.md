@@ -9,7 +9,7 @@ assignees: oliver-zehentleitner
 
 <!--
 Before opening a new issue, please ensure:
-- YOU HAVE READ THE ISSUE GUIDELINES! -> https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Issue-Guidelines
+- YOU HAVE READ THE ISSUE GUIDELINES! -> https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/wiki/Issue-Guidelines
 - You search for existing bugs/feature requests
 - If related to `unicorn-fy` post to https://github.com/LUCIT-Systems-and-Development/unicorn-fy/issues
 - If related to `unicorn-binance-rest-api` post to https://github.com/LUCIT-Systems-and-Development/unicorn-binance-rest-api/issues
