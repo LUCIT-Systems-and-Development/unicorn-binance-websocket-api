@@ -2177,17 +2177,22 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         return round(total_received_bytes / total_receives * stream_buffer_length)
 
-    def get_stream_buffer_length(self):
+    def get_stream_buffer_length(self, stream_buffer_name=False):
         """
-        Get the current number of items in all stream_buffer
+        Get the current number of items in all stream_buffer or of a specific stream_buffer
 
+        :param stream_buffer_name: Name of the stream_buffer
+        :type stream_buffer_name: str or stream_id
         :return: int
         """
         number = 0
-        number += len(self.stream_buffer)
-        for stream_buffer_name in self.stream_buffers:
-            number += len(self.stream_buffers[stream_buffer_name])
-        return number
+        if stream_buffer_name:
+            return len(self.stream_buffers[stream_buffer_name])
+        else:
+            number += len(self.stream_buffer)
+            for stream_buffer_name in self.stream_buffers:
+                number += len(self.stream_buffers[stream_buffer_name])
+            return number
 
     def get_stream_id_by_label(self, stream_label=False):
         """

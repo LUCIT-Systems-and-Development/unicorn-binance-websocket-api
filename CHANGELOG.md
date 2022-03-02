@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
 ## 1.36.1.dev (development stage/unreleased/unstable)
+### Added
+- `get_stream_buffer_length()` can now return the size of all stream_buffers and also of a specific stream_buffer.
 
 ## 1.36.1
 ### Fixed
