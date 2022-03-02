@@ -171,7 +171,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  process_stream_signals=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.37.0.dev"
+        self.version = "1.37.1.dev"
         logger.info(f"New instance of {self.get_user_agent()} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         if disable_colorama is not True:
@@ -2186,7 +2186,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         number = 0
         if stream_buffer_name:
-            return len(self.stream_buffers[stream_buffer_name])
+            try:
+                return len(self.stream_buffers[stream_buffer_name])
+            except KeyError as error_msg:
+                logger.debug(f"BinanceWebSocketApiManager.get_stream_buffer_length() - KeyError - "
+                             f"error_msg: {error_msg}")
+                return 0
         else:
             number += len(self.stream_buffer)
             for stream_buffer_name in self.stream_buffers:
