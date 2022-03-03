@@ -44,6 +44,6 @@ class StreamRecoveryError(Exception):
 
 class UnknownExchange(Exception):
     """
-    Exception for if the manager class is started with an unkown exchange.
+    Exception if the manager class is started with an unkown exchange.
     """
     pass
