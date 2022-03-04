@@ -294,6 +294,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list_lock = threading.Lock()
         self.stream_signal_buffer = deque()
         self.stream_signal_buffer_lock = threading.Lock()
+        self.stream_thread_started = {}
         self.stream_threading_lock = {}
         self.throw_exception_if_unrepairable = throw_exception_if_unrepairable
         self.total_received_bytes = 0
@@ -460,6 +461,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type restart: bool
         :return:
         """
+        self.stream_thread_started[stream_id] = False
         if self.is_stop_request(stream_id):
             return False
         if restart is False:
@@ -523,7 +525,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     cpu_usage_time = time.time()
                 elif (time.time() - cpu_usage_time) > time_of_waiting:
                     logger.warning(f"BinanceWebSocketApiManager._frequent_checks() - High CPU usage since "
-                                    f"{str(time_of_waiting)} seconds: {str(cpu)}")
+                                   f"{str(time_of_waiting)} seconds: {str(cpu)}")
                     cpu_usage_time = False
             else:
                 cpu_usage_time = False
@@ -587,7 +589,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         str(error_msg))
                         except RuntimeError as error_msg:
                             logger.info("BinanceWebSocketApiManager._frequent_checks() - "
-                                         "Catched RuntimeError: " + str(error_msg))
+                                        "Catched RuntimeError: " + str(error_msg))
                     for timestamp_key in delete_index:
                         self.stream_list[stream_id]['transfer_rate_per_second']['bytes'].pop(timestamp_key, None)
             # set most_receives_per_second
@@ -596,10 +598,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.most_receives_per_second = int(total_most_stream_receives_last_timestamp)
             except ValueError as error_msg:
                 logger.error("BinanceWebSocketApiManager._frequent_checks() self.most_receives_per_second"
-                              "=" + str(self.most_receives_per_second) + " total_most_stream_receives_last_timestamp"
-                              "=" + str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_"
-                              "to_last_timestamp=" + str(total_most_stream_receives_next_to_last_timestamp) + " error_"
-                              "msg=" + str(error_msg))
+                             "=" + str(self.most_receives_per_second) + " total_most_stream_receives_last_timestamp"
+                             "=" + str(total_most_stream_receives_last_timestamp) + " total_most_stream_receives_next_"
+                             "to_last_timestamp=" + str(total_most_stream_receives_next_to_last_timestamp) + " error_"
+                             "msg=" + str(error_msg))
             # check receiving_speed_peak
             last_second_receiving_speed = self.get_current_receiving_speed_global()
             try:
@@ -607,9 +609,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.receiving_speed_peak['value'] = last_second_receiving_speed
                     self.receiving_speed_peak['timestamp'] = time.time()
                     logger.info(f"BinanceWebSocketApiManager._frequent_checks() - reached new "
-                                 f"`highest_receiving_speed` "
-                                 f"{str(self.get_human_bytesize(self.receiving_speed_peak['value'], '/s'))} at "
-                                 f"{self.get_date_of_timestamp(self.receiving_speed_peak['timestamp'])}")
+                                f"`highest_receiving_speed` "
+                                f"{str(self.get_human_bytesize(self.receiving_speed_peak['value'], '/s'))} at "
+                                f"{self.get_date_of_timestamp(self.receiving_speed_peak['timestamp'])}")
             except TypeError as error_msg:
                 pass
             # send keepalive for `!userData` streams every 30 minutes
@@ -630,7 +632,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
                             self.set_heartbeat(stream_id)
                             logger.info("BinanceWebSocketApiManager._frequent_checks() - sent listen_key keepalive "
-                                         "ping for stream_id=" + str(stream_id))
+                                        "ping for stream_id=" + str(stream_id))
         sys.exit(0)
 
     def _keepalive_streams(self):
@@ -641,9 +643,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.keepalive_streams_list[keepalive_streams_id] = {'last_heartbeat': 0,
                                                              'stop_request': None,
                                                              'has_stopped': False}
-        logger.info(
-            "BinanceWebSocketApiManager._keepalive_streams() new instance created with keepalive_streams_id=" +
-            str(keepalive_streams_id))
+        logger.info("BinanceWebSocketApiManager._keepalive_streams() new instance created with "
+                    "keepalive_streams_id=" + str(keepalive_streams_id))
         # threaded loop to restart crashed streams:
         while self.stop_manager_request is None and \
                 self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
@@ -680,7 +681,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             if self.restart_requests[stream_id]['status'] != "new":
                 logger.warning("BinanceWebSocketApiManager._restart_stream() please use `set_restart_request()` "
-                                "instead!")
+                               "instead!")
                 return False
         except KeyError:
             # no restart_request entry for this stream_id:
@@ -698,7 +699,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             loop = asyncio.new_event_loop()
         except OSError as error_msg:
             logger.critical(f"BinanceWebSocketApiManager.create_stream({str(stream_id)}) - OSError - "
-                             f"error_msg: {str(error_msg)}")
+                            f"error_msg: {str(error_msg)}")
             return False
         self.event_loops[stream_id] = loop
         thread = threading.Thread(target=self._create_stream_thread,
@@ -742,8 +743,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         @app.route('/status/')
         def redirect_to_wiki():
             logger.info("BinanceWebSocketApiManager._start_monitoring_api_thread() 200 - "
-                         "Visit https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-"
-                         "Monitoring-API-Service for further information!")
+                        "Visit https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-"
+                        "Monitoring-API-Service for further information!")
             return redirect("https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/"
                             "UNICORN-Monitoring-API-Service", code=302)
 
@@ -759,10 +760,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.monitoring_api_server.start()
         except RuntimeError as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
-                             "going down! - Info: " + str(error_msg))
+                            "going down! - Info: " + str(error_msg))
         except OSError as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
-                             "going down! - Info: " + str(error_msg))
+                            "going down! - Info: " + str(error_msg))
 
     def add_to_ringbuffer_error(self, error):
         """
@@ -844,13 +845,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                     stream_signal['last_received_data_record'] = self.stream_list[stream_id]['last_received_data_record']
                 except KeyError as error_msg:
                     logger.critical(f"BinanceWebSocketApiManager.add_to_stream_signal_buffer({signal_type}) - "
-                                     f"Cant determine last_received_data_record! - error_msg: {error_msg}")
+                                    f"Cant determine last_received_data_record! - error_msg: {error_msg}")
                     stream_signal['last_received_data_record'] = None
             elif signal_type == "FIRST_RECEIVED_DATA":
                 stream_signal['first_received_data_record'] = data_record
             else:
                 logger.error(f"BinanceWebSocketApiManager.add_to_stream_signal_buffer({signal_type}) - "
-                              f"Received invalid `signal_type`!")
+                             f"Received invalid `signal_type`!")
                 return False
             with self.stream_signal_buffer_lock:
                 self.stream_signal_buffer.append(stream_signal)
@@ -910,7 +911,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: payload (list) or False
         """
         logger.info("BinanceWebSocketApiManager.create_payload(" + str(stream_id) + ", " + str(channels) + ", " +
-                     str(markets) + ") started ...")
+                    str(markets) + ") started ...")
         if type(channels) is str:
             channels = [channels]
         if type(markets) is str:
@@ -970,8 +971,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                         payload.append(add_payload)
             else:
                 logger.critical("BinanceWebSocketApiManager.create_payload(" + str(stream_id) + ", "
-                                 + str(channels) + ", " + str(markets) + ") - Allowed values for `method`: `subscribe` "
-                                 "or `unsubscribe`!")
+                                + str(channels) + ", " + str(markets) + ") - Allowed values for `method`: `subscribe` "
+                                "or `unsubscribe`!")
                 return False
         elif self.is_exchange_type("cex"):
             final_market = "@arr"
@@ -1025,13 +1026,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                         payload = self.split_payload(params, "UNSUBSCRIBE")
             else:
                 logger.critical("BinanceWebSocketApiManager.create_payload(" + str(stream_id) + ", "
-                                 + str(channels) + ", " + str(markets) + ") - Allowed values for `method`: `subscribe` "
-                                 "or `unsubscribe`!")
+                                + str(channels) + ", " + str(markets) + ") - Allowed values for `method`: `subscribe` "
+                                "or `unsubscribe`!")
                 return False
         logger.info("BinanceWebSocketApiManager.create_payload(" + str(stream_id) + ", "
-                     + str(channels) + ", " + str(markets) + ") - Payload: " + str(payload))
+                    + str(channels) + ", " + str(markets) + ") - Payload: " + str(payload))
         logger.info("BinanceWebSocketApiManager.create_payload(" + str(stream_id) + ", " + str(channels) + ", " +
-                     str(markets) + ") finished ...")
+                    str(markets) + ") finished ...")
         return payload
 
     def create_stream(self,
@@ -1146,16 +1147,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         # create a stream
         if isinstance(channels, bool):
             logger.error(f"BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets) + ", "
-                          + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
-                          str(stream_buffer_maxlen) + ") - Parameter "
-                          f"`channels` must be str, tuple, list or a set!")
+                         + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
+                         str(stream_buffer_maxlen) + ") - Parameter "
+                         f"`channels` must be str, tuple, list or a set!")
             return False
         elif isinstance(markets, bool):
             if isinstance(channels, bool):
                 logger.error(f"BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets) + ", "
-                              + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
-                              str(stream_buffer_maxlen) + ") - Parameter "
-                              f"`markets` must be str, tuple, list or a set!")
+                             + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
+                             str(stream_buffer_maxlen) + ") - Parameter "
+                             f"`markets` must be str, tuple, list or a set!")
             return False
         if type(channels) is str:
             channels = [channels]
@@ -1183,8 +1184,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 elif self.is_exchange_type('cex'):
                     markets_new.append(str(market).lower())
         logger.info("BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets_new) + ", "
-                     + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ") with stream_id="
-                     + str(stream_id))
+                    + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ") with stream_id="
+                    + str(stream_id))
         self._add_stream_to_stream_list(stream_id,
                                         channels,
                                         markets_new,
@@ -1202,11 +1203,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             loop = asyncio.new_event_loop()
         except OSError as error_msg:
             logger.critical(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
-                             f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}), {stream_buffer_maxlen} "
-                             f"with stream_id="
-                             f"{str(stream_id)} - OSError  - can not create stream - error_msg: {str(error_msg)}")
+                            f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}), {stream_buffer_maxlen} "
+                            f"with stream_id={str(stream_id)} - OSError  - can not create stream - "
+                            f"error_msg: {str(error_msg)}")
             return False
         self.event_loops[stream_id] = loop
+        self.stream_thread_started[stream_id] = False
         thread = threading.Thread(target=self._create_stream_thread, args=(loop,
                                                                            stream_id,
                                                                            channels,
@@ -1215,9 +1217,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                                            stream_buffer_maxlen,
                                                                            False))
         thread.start()
-        # Sleep to avoid error 2 of this post:
-        # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131#issuecomment-1042747365
-        time.sleep(0.3)
+        while self.stream_thread_started[stream_id] is False:
+            logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
+                         f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}), {stream_buffer_maxlen} "
+                         f"with stream_id={str(stream_id)} - Waiting till new thread is started")
+            time.sleep(0.01)
         return stream_id
 
     def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False, symbols=False):

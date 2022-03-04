@@ -8,7 +8,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
 ## 1.37.1.dev (development stage/unreleased/unstable)
-
+### Changed
+- Replaced the time.sleep() in create_stream with self.stream_thread_started system
+ 
 ## 1.37.1
 ### Fixed
 - Catching `KeyError` in `manager.get_stream_buffer_length()` if buffer_name not exits
