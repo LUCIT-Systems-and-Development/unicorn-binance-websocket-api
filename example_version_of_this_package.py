@@ -39,7 +39,7 @@ import unicorn_binance_websocket_api
 binance_websocket_api_manager = unicorn_binance_websocket_api.BinanceWebSocketApiManager()
 
 # get version of the used UNICORN Binance WebSocket API
-if binance_websocket_api_manager.is_update_availabe():
+if binance_websocket_api_manager.is_update_available():
     print("Please upgrade to " + binance_websocket_api_manager.get_latest_version() + ", you are on",
           binance_websocket_api_manager.get_version())
 

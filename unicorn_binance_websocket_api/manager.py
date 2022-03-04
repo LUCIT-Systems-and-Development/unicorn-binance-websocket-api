@@ -306,7 +306,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.start()
         self.replacement_text = "***SECRET_REMOVED***"
         self.restclient = BinanceWebSocketApiRestclient(self)
-        if warn_on_update and self.is_update_availabe():
+        if warn_on_update and self.is_update_available():
             update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
                          "please consider updating! (Changelog: https://github.com/LUCIT-Systems-and-Development/unicorn-" \
                          "binance-websocket-api/blob/master/CHANGELOG.md)"
@@ -1953,7 +1953,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             from unicorn_fy.unicorn_fy import UnicornFy
             unicorn_fy = UnicornFy()
-            is_update_available_unicorn_fy = unicorn_fy.is_update_availabe()
+            is_update_available_unicorn_fy = unicorn_fy.is_update_available()
         except ModuleNotFoundError:
             logger.critical("BinanceWebSocketApiManager.get_monitoring_status_plain() - UnicornFy not installed!")
             is_update_available_unicorn_fy = False
@@ -1981,18 +1981,18 @@ class BinanceWebSocketApiManager(threading.Thread):
                 result['restarting_streams'] += 1
             elif "crashed" in self.stream_list[stream_id]['status']:
                 result['crashed_streams'] += 1
-        if self.is_update_availabe() and is_update_available_unicorn_fy and is_update_available_check_command:
+        if self.is_update_available() and is_update_available_unicorn_fy and is_update_available_check_command:
             result['update_msg'] = " Update available: UNICORN Binance WebSocket API, UnicornFy and " \
                                    "check_lucit_collector.py!"
             if warn_on_update is True:
                 result['status_text'] = "WARNING"
                 result['return_code'] = 1
-        elif self.is_update_availabe() and is_update_available_unicorn_fy:
+        elif self.is_update_available() and is_update_available_unicorn_fy:
             result['update_msg'] = " Update available: UNICORN Binance WebSocket API and UnicornFy"
             if warn_on_update is True:
                 result['status_text'] = "WARNING"
                 result['return_code'] = 1
-        elif self.is_update_availabe() and is_update_available_check_command:
+        elif self.is_update_available() and is_update_available_check_command:
             result['update_msg'] = " Update available: UNICORN Binance WebSocket API and check_lucit_collector.py!"
             if warn_on_update is True:
                 result['status_text'] = "WARNING"
@@ -2002,7 +2002,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             if warn_on_update is True:
                 result['status_text'] = "WARNING"
                 result['return_code'] = 1
-        elif self.is_update_availabe():
+        elif self.is_update_available():
             result['update_msg'] = " Update " + str(self.get_latest_version()) + " available!"
             if warn_on_update is True:
                 result['status_text'] = "WARNING"
@@ -2594,7 +2594,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return False
 
-    def is_update_availabe(self):
+    def is_update_available(self):
         """
         Is a new release of this package available?
 
@@ -2620,7 +2620,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         unicorn_fy = UnicornFy()
 
-        return unicorn_fy.is_update_availabe()
+        return unicorn_fy.is_update_available()
 
     def is_update_availabe_check_command(self, check_command_version=False):
         """

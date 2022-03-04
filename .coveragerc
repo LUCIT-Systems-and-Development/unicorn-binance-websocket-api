@@ -5,7 +5,7 @@ relative_files = True
 exclude_lines =
     pragma: no cover
     except
-    if warn_on_update and self.is_update_availabe()
+    if warn_on_update and self.is_update_available()
     if sys.platform.startswith('Windows')
     self.process_stream_data = process_stream_data
     self.websocket_base_uri = "

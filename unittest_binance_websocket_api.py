@@ -117,7 +117,7 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(self.binance_com_websocket_api_manager.is_exchange_type("dex"), False)
 
     def test_is_update_available(self):
-        self.assertEqual(self.binance_com_websocket_api_manager.is_update_availabe(), False)
+        self.assertEqual(self.binance_com_websocket_api_manager.is_update_available(), False)
 
     def test_is_manager_stopping(self):
         self.assertEqual(self.binance_com_websocket_api_manager.is_manager_stopping(), False)
