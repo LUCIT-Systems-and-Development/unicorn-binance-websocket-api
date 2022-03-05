@@ -461,7 +461,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type restart: bool
         :return:
         """
-        self.stream_thread_started[stream_id] = False
+        self.stream_thread_started[stream_id] = True
         if self.is_stop_request(stream_id):
             return False
         if restart is False:
@@ -1221,6 +1221,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
                          f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}), {stream_buffer_maxlen} "
                          f"with stream_id={str(stream_id)} - Waiting till new thread is started")
+            print("bähhhh")
             time.sleep(0.01)
         return stream_id
 
