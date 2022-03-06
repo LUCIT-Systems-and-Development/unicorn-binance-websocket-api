@@ -3404,6 +3404,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type error_msg: str
         """
         logger.critical("BinanceWebSocketApiManager.stream_is_crashing(" + str(stream_id) + ")")
+        self.process_stream_signals("DISCONNECT", stream_id)
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "crashed"
         if error_msg:
