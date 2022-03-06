@@ -12,6 +12,14 @@ unicorn\_binance\_websocket\_api.connection module
     :undoc-members:
     :show-inheritance:
 
+unicorn\_binance\_websocket\_api.exceptions module
+------------------------------------------------------------------------------------
+
+.. automodule:: unicorn_binance_websocket_api.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 unicorn\_binance\_websocket\_api.manager module
 ---------------------------------------------------------------------------------
 

@@ -7,9 +7,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
-## 1.37.1.dev (development stage/unreleased/unstable)
+## 1.37.2.dev (development stage/unreleased/unstable)
+
+## 1.37.2
 ### Fixed 
-- `stream_is_crashing()` did not send stream_signal `DISCONNET` 
+- `stream_is_crashing()` did not send stream_signal `DISCONNECT` - Without this fix no stream_signal was sent in some 
+disconnect cases! 
 ### Changed
 - Replaced the time.sleep() in create_stream with self.stream_thread_started system
  
