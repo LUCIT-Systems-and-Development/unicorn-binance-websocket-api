@@ -50,6 +50,7 @@ logger = logging.getLogger("unicorn_binance_websocket_api")
 class BinanceWebSocketApiSocket(object):
     def __init__(self, manager, stream_id, channels, markets):
         self.manager = manager
+        self.manager.stream_thread_started[stream_id] = True
         self.stream_id = stream_id
         self.channels = channels
         self.markets = markets

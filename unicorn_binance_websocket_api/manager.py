@@ -461,7 +461,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type restart: bool
         :return:
         """
-        self.stream_thread_started[stream_id] = True
         if self.is_stop_request(stream_id):
             return False
         if restart is False:
@@ -481,13 +480,14 @@ class BinanceWebSocketApiManager(threading.Thread):
             if "cannot schedule new futures after interpreter shutdown" in str(error_msg):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                                 f" - RuntimeError error_msg:  - {str(error_msg)} - stopping and shutting down - read "
-                                f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131"
-                                f" for further information!")
+                                f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/"
+                                f"issues/131 for further information!")
                 self.stop_manager_with_all_streams()
                 sys.exit(1)
             logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                             f" - RuntimeError `error: 7` - error_msg: - {str(error_msg)} - Please create an issue: "
-                            f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose")
+                            f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/"
+                            f"new/choose")
             loop.close()
         finally:
             self.process_stream_signals("DISCONNECT", stream_id)
