@@ -2599,6 +2599,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return False
 
+    def is_stream_signal_buffer_enabled(self):
+        """
+        Is the stream_signal_buffer enabled?
+
+        :return: bool
+        """
+        return self.enable_stream_signal_buffer
+
     def is_update_available(self):
         """
         Is a new release of this package available?
