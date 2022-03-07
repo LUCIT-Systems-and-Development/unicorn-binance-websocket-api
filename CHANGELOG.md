@@ -7,10 +7,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
-## 1.38.0.dev (development stage/unreleased/unstable)
-### Changed 
-- Moved `self.stream_thread_started[stream_id] = True` to `BinanceWebSocketApiSocket().__init__()` trying to solve 
-[issue#131](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131)
+## 1.38.1.dev (development stage/unreleased/unstable)
+
+## 1.38.1
+### Fixed 
+- [issue#131](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131)
 
 ## 1.38.0
 ### Added
@@ -21,7 +22,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `stream_is_crashing()` did not send stream_signal `DISCONNECT` - Without this fix no stream_signal was sent in some 
 disconnect cases! 
 ### Changed
-- Replaced the time.sleep() in create_stream with self.stream_thread_started system
+- Replaced the time.sleep() in create_stream with self.socket_is_ready system
  
 ## 1.37.1
 ### Fixed

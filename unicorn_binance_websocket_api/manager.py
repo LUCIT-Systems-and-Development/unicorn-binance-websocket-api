@@ -294,7 +294,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list_lock = threading.Lock()
         self.stream_signal_buffer = deque()
         self.stream_signal_buffer_lock = threading.Lock()
-        self.stream_thread_started = {}
+        self.socket_is_ready = {}
         self.stream_threading_lock = {}
         self.throw_exception_if_unrepairable = throw_exception_if_unrepairable
         self.total_received_bytes = 0
@@ -479,13 +479,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         except RuntimeError as error_msg:
             if "cannot schedule new futures after interpreter shutdown" in str(error_msg):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
-                                f" - RuntimeError error_msg:  - {str(error_msg)} - stopping and shutting down - read "
+                                f" - RuntimeError `error: 11` - error_msg:  {str(error_msg)} - Please create an issue: "
                                 f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/"
-                                f"issues/131 for further information!")
+                                f"issues/new/choose")
                 self.stop_manager_with_all_streams()
                 sys.exit(1)
             logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
-                            f" - RuntimeError `error: 7` - error_msg: - {str(error_msg)} - Please create an issue: "
+                            f" - RuntimeError `error: 7` - error_msg: {str(error_msg)} - Please create an issue: "
                             f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/"
                             f"new/choose")
             loop.close()
@@ -1208,7 +1208,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             f"error_msg: {str(error_msg)}")
             return False
         self.event_loops[stream_id] = loop
-        self.stream_thread_started[stream_id] = False
+        self.socket_is_ready[stream_id] = False
         thread = threading.Thread(target=self._create_stream_thread, args=(loop,
                                                                            stream_id,
                                                                            channels,
@@ -1217,10 +1217,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                                            stream_buffer_maxlen,
                                                                            False))
         thread.start()
-        while self.stream_thread_started[stream_id] is False:
+        while self.socket_is_ready[stream_id] is False:
+            # This loop will wait till the thread and the asyncio init is ready. This avoids two possible errors as
+            # described here: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131
             logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
                          f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}), {stream_buffer_maxlen} "
-                         f"with stream_id={str(stream_id)} - Waiting till new thread is started")
+                         f"with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
             time.sleep(0.01)
         return stream_id
 

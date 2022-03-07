@@ -70,7 +70,7 @@ class BinanceWebSocketApiSocket(object):
                                                      self.channels,
                                                      self.markets,
                                                      symbols=self.symbols) as websocket:
-                self.manager.stream_thread_started[self.stream_id] = True
+                self.manager.socket_is_ready[self.stream_id] = True
                 while True:
                     if self.manager.is_stop_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
