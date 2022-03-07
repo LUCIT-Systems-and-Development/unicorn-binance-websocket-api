@@ -50,7 +50,6 @@ logger = logging.getLogger("unicorn_binance_websocket_api")
 class BinanceWebSocketApiSocket(object):
     def __init__(self, manager, stream_id, channels, markets):
         self.manager = manager
-        self.manager.stream_thread_started[stream_id] = True
         self.stream_id = stream_id
         self.channels = channels
         self.markets = markets
@@ -64,6 +63,7 @@ class BinanceWebSocketApiSocket(object):
     async def start_socket(self):
         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, {str(self.channels)}, "
                     f"{str(self.markets)}) socket_id={str(self.socket_id)} recent_socket_id={str(self.socket_id)}")
+        self.manager.stream_thread_started[self.stream_id] = True
         try:
             async with BinanceWebSocketApiConnection(self.manager,
                                                      self.stream_id,
