@@ -1221,9 +1221,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             # This loop will wait till the thread and the asyncio init is ready. This avoids two possible errors as
             # described here: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131
             logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
-                         f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}), {stream_buffer_maxlen} "
+                         f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}) "
                          f"with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
-            time.sleep(0.01)
+            time.sleep(1)
         return stream_id
 
     def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False, symbols=False):

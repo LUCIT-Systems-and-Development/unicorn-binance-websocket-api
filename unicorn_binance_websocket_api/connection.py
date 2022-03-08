@@ -80,7 +80,7 @@ class BinanceWebSocketApiConnection(object):
             # cant get a valid URI, so this stream has to crash
             error_msg = "Probably no internet connection?"
             logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                             str(self.channels) + ", " + str(self.markets) + ") - " + " error: 5 - " + str(error_msg))
+                            str(self.channels) + ", " + str(self.markets) + ") - " + " error: 5 - " + str(error_msg))
             self.manager.stream_is_crashing(self.stream_id, str(error_msg))
             self.manager.set_restart_request(self.stream_id)
             sys.exit(1)
@@ -99,22 +99,22 @@ class BinanceWebSocketApiConnection(object):
                     # -11001 = Isolated margin account does not exist.
                     # Cant get a valid listen_key, so this stream has to crash:
                     logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
-                                     ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 4 - " +
-                                     str(uri['msg']))
+                                    ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 4 - " +
+                                    str(uri['msg']))
                     try:
                         del self.manager.restart_requests[self.stream_id]
                     except KeyError as error_msg:
                         logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
-                                         ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 6 - "
-                                         + str(error_msg))
+                                        ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 6 - "
+                                        + str(error_msg))
                     except TypeError as error_msg:
                         logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
-                                         ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 3 - "
-                                         + str(error_msg))
+                                        ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 3 - "
+                                        + str(error_msg))
                 else:
                     logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
-                                     ", " + str(self.channels) + ", " + str(self.markets) + ") -  Received unknown"
-                                     " error msg from Binance: " + str(uri['msg']))
+                                    ", " + str(self.channels) + ", " + str(self.markets) + ") -  Received unknown"
+                                    " error msg from Binance: " + str(uri['msg']))
                 self.manager.stream_is_crashing(self.stream_id, str(uri['msg']))
                 if self.manager.throw_exception_if_unrepairable:
                     raise StreamRecoveryError("stream_id " + str(self.stream_id) + ": " + str(uri))
@@ -133,8 +133,8 @@ class BinanceWebSocketApiConnection(object):
                 self.manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
             except websockets.exceptions.InvalidMessage as error_msg:
                 logger.error("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
-                              ", " + str(self.channels) + ", " + str(self.markets) + ") - InvalidMessage error_msg:  " +
-                              str(error_msg))
+                             ", " + str(self.channels) + ", " + str(self.markets) + ") - InvalidMessage error_msg:  " +
+                             str(error_msg))
                 self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                 time.sleep(2)
                 self.manager.set_restart_request(self.stream_id)
