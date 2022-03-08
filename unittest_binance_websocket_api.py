@@ -135,11 +135,11 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(self.ubwa.get_exchange(), "binance.com")
 
     def test_get_listenkey_from_restclient(self):
-        self.assertEqual(self.ubwa.get_listen_key_from_restclient(), False)
+        self.assertEqual(self.ubwa.get_listen_key_from_restclient("id", "key", "sec"), False)
 
     def test_delete_listen_key_by_stream_id(self):
         stream_id = self.ubwa.get_new_stream_id()
-        self.assertEqual(self.ubwa.delete_listen_key_by_stream_id(stream_id, "", ""), False)
+        self.assertEqual(self.ubwa.delete_listen_key_by_stream_id(stream_id), False)
 
     def test_keepalive_listen_key(self):
         stream_id = self.ubwa.get_new_stream_id()
@@ -522,7 +522,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")
         stream_id = binance_websocket_api_manager.create_stream('arr', '!userData', symbols="CELRBTC", api_key="key", api_secret="secret")
         time.sleep(10)
-        print("")
+        print("\r\n")
         binance_websocket_api_manager.print_stream_info(stream_id)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
