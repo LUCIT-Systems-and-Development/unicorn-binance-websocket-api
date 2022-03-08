@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.38.1
 ### Fixed 
 - [issue#131](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131)
+- KeyError in `get_listen_key_from_restclient()`
 
 ## 1.38.0
 ### Added

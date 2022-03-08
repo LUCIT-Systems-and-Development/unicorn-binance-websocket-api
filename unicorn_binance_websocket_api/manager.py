@@ -1804,6 +1804,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type symbols: str
         :return: str or False
         """
+        try:
+            if self.stream_list[stream_id]:
+                pass
+        except KeyError:
+            return False
         if (self.stream_list[stream_id]['start_time'] + self.stream_list[stream_id]['listen_key_cache_time']) > \
                 time.time() or (self.stream_list[stream_id]['last_static_ping_listen_key'] +
                                 self.stream_list[stream_id]['listen_key_cache_time']) > time.time():

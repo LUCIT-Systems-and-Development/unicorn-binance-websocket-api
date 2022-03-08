@@ -98,9 +98,9 @@ class TestBinanceComManager(unittest.TestCase):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_reverse_com() "
                   "for binance.com")
         else:
-            stream_id = self.ubwa.get_new_stream_id()
-            self.ubwa._add_socket_to_socket_list(stream_id, ["arr"], ["!userData"])
-            self.assertRegex(self.ubwa.create_websocket_uri(["arr"], ["!userData"], stream_id,
+            self.stream_id = self.ubwa.get_new_stream_id()
+            self.ubwa._add_socket_to_socket_list(self.stream_id, ["arr"], ["!userData"])
+            self.assertRegex(self.ubwa.create_websocket_uri(["arr"], ["!userData"], self.stream_id,
                                                              self.binance_com_api_key,
                                                              self.binance_com_api_secret),
                                                              r'wss://stream.binance.com:9443/ws/.')
@@ -135,8 +135,7 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(self.ubwa.get_exchange(), "binance.com")
 
     def test_get_listenkey_from_restclient(self):
-        stream_id = self.ubwa.get_new_stream_id()
-        self.assertEqual(self.ubwa.get_listen_key_from_restclient(stream_id, "key", "sec"), False)
+        self.assertEqual(self.ubwa.get_listen_key_from_restclient(self.stream_id, "key", "sec"), False)
 
     def test_delete_listen_key_by_stream_id(self):
         stream_id = self.ubwa.get_new_stream_id()
