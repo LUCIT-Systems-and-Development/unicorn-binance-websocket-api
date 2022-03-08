@@ -187,7 +187,6 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertTrue(self.ubwa.set_restart_request(stream_id))
         time.sleep(10)
         self.ubwa.get_monitoring_status_icinga()
-        print()
         self.ubwa.print_summary()
         self.ubwa.print_stream_info(stream_id)
 
@@ -523,6 +522,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")
         stream_id = binance_websocket_api_manager.create_stream('arr', '!userData', symbols="CELRBTC", api_key="key", api_secret="secret")
         time.sleep(10)
+        print("")
         binance_websocket_api_manager.print_stream_info(stream_id)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
