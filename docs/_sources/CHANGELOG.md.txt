@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.39.0
 ### Changed
-- Send the "DISCONNECT" signal only on status change (one time!) and if previous status is not None
+- Send the `DISCONNECT` stream_signal only on status change (one time!) and if previous status is not None
 ### Fixed
 - KeyError in `get_listen_key_from_restclient()` if `stream_id` invalid
 - Added `socket_is_ready` to `stream_is_crashing()`
