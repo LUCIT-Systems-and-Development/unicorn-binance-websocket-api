@@ -172,12 +172,13 @@ class BinanceWebSocketApiSocket(object):
                                     self.manager.process_stream_signals("FIRST_RECEIVED_DATA",
                                                                         self.stream_id,
                                                                         received_stream_data)
+                                    self.manager.stream_list[self.stream_id]['last_stream_signal'] = "FIRST_RECEIVED_DATA"
                                 self.manager.stream_list[self.stream_id]['last_received_data_record'] = received_stream_data
 
                     except websockets.exceptions.ConnectionClosed as error_msg:
                         logger.critical("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
-                                        str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed "
-                                        "- error_msg: " + str(error_msg))
+                                        str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed"
+                                        " - error_msg: " + str(error_msg))
                         if "WebSocket connection is closed: code = 1008" in str(error_msg):
                             websocket.close()
                             self.manager.stream_is_crashing(self.stream_id, error_msg)

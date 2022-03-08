@@ -162,18 +162,19 @@ class BinanceWebSocketApiConnection(object):
                 pass
             self.manager.set_heartbeat(self.stream_id)
             self.manager.process_stream_signals("CONNECT", self.stream_id)
+            self.manager.stream_list[self.stream_id]['last_stream_signal'] = "CONNECT"
         except websockets.exceptions.NegotiationError as error_msg:
             logger.error("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                          str(self.channels) + ", " + str(self.markets) + ")" + " - NegotiationError - " +
-                          "error_msg: " + str(error_msg))
+                         str(self.channels) + ", " + str(self.markets) + ")" + " - NegotiationError - " +
+                         "error_msg: " + str(error_msg))
         except ConnectionResetError as error_msg:
             logger.error("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                          str(self.channels) + ", " + str(self.markets) + ")" + " - ConnectionResetError - " +
-                          "error_msg: " + str(error_msg))
+                         str(self.channels) + ", " + str(self.markets) + ")" + " - ConnectionResetError - " +
+                         "error_msg: " + str(error_msg))
         except socket.gaierror as error_msg:
             logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) + ", " +
-                             str(self.channels) + ", " + str(self.markets) + ")" + " - No internet connection? "
-                             "- error_msg: " + str(error_msg))
+                            str(self.channels) + ", " + str(self.markets) + ")" + " - No internet connection? "
+                            "- error_msg: " + str(error_msg))
             self.manager.stream_is_crashing(self.stream_id, f"{str(error_msg)} - No internet connection?")
             self.manager.set_restart_request(self.stream_id)
             sys.exit(1)

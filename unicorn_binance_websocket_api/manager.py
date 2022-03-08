@@ -491,7 +491,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                             f"new/choose")
             loop.close()
         finally:
-            if self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
+            if self.stream_list[stream_id]['last_stream_signal'] is not None and \
+                    self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
                 self.process_stream_signals("DISCONNECT", stream_id)
                 self.stream_list[stream_id]['last_stream_signal'] = "DISCONNECT"
             loop.close()
@@ -3421,7 +3422,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type error_msg: str
         """
         logger.critical("BinanceWebSocketApiManager.stream_is_crashing(" + str(stream_id) + ")")
-        if self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
+        if self.stream_list[stream_id]['last_stream_signal'] is not None and \
+                self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
             self.process_stream_signals("DISCONNECT", stream_id)
             self.stream_list[stream_id]['last_stream_signal'] = "DISCONNECT"
         self.stream_list[stream_id]['has_stopped'] = time.time()
