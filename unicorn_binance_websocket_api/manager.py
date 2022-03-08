@@ -1589,11 +1589,11 @@ class BinanceWebSocketApiManager(threading.Thread):
             temp_stream_list = copy.deepcopy(self.stream_list)
         except RuntimeError as error_msg:
             logger.debug(f"BinanceWebSocketApiManager.get_current_receiving_speed_global() - RuntimeError: "
-                          f"{str(error_msg)}")
+                         f"{str(error_msg)}")
             return 0
         except TypeError as error_msg:
             logger.debug(f"BinanceWebSocketApiManager.get_current_receiving_speed_global() - RuntimeError: "
-                          f"{str(error_msg)}")
+                         f"{str(error_msg)}")
             return 0
         for stream_id in temp_stream_list:
             current_receiving_speed += self.get_current_receiving_speed(stream_id)
@@ -1805,17 +1805,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: str or False
         """
         try:
-            if self.stream_list[stream_id]:
-                pass
+            if (self.stream_list[stream_id]['start_time'] + self.stream_list[stream_id]['listen_key_cache_time']) > \
+                    time.time() or (self.stream_list[stream_id]['last_static_ping_listen_key'] +
+                                    self.stream_list[stream_id]['listen_key_cache_time']) > time.time():
+                # listen_key is not older than 30 min
+                if self.stream_list[stream_id]['listen_key'] is not False:
+                    response = {'listenKey': self.stream_list[stream_id]['listen_key']}
+                    return response
         except KeyError:
+            logger.debug(f"BinanceWebSocketApiManager.get_listen_key_from_restclient() - KeyError")
             return False
-        if (self.stream_list[stream_id]['start_time'] + self.stream_list[stream_id]['listen_key_cache_time']) > \
-                time.time() or (self.stream_list[stream_id]['last_static_ping_listen_key'] +
-                                self.stream_list[stream_id]['listen_key_cache_time']) > time.time():
-            # listen_key is not older than 30 min
-            if self.stream_list[stream_id]['listen_key'] is not False:
-                response = {'listenKey': self.stream_list[stream_id]['listen_key']}
-                return response
         # no cached listen_key or listen_key is older than 30 min
         # acquire a new listen_key:
         response = self.restclient.get_listen_key(stream_id)
