@@ -3416,6 +3416,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.process_stream_signals("DISCONNECT", stream_id)
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "crashed"
+        self.socket_is_ready[stream_id] = True
         if error_msg:
             self.stream_list[stream_id]['status'] += " - " + str(error_msg)
 

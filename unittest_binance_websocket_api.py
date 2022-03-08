@@ -52,6 +52,8 @@ logging.basicConfig(level=logging.DEBUG,
 
 print(f"Starting unittests:")
 
+UBWA = BinanceWebSocketApiManager(exchange="binance.com", disable_colorama=True)
+
 
 class TestBinanceComManager(unittest.TestCase):
     # Test binance.com (Binance)
@@ -59,8 +61,7 @@ class TestBinanceComManager(unittest.TestCase):
     def setUp(self):
         self.binance_com_api_key = BINANCE_COM_API_KEY
         self.binance_com_api_secret = BINANCE_COM_API_SECRET
-        self.binance_com_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com",
-                                                                            disable_colorama=True)
+        self.binance_com_websocket_api_manager = UBWA
 
     def test_create_uri_miniticker_regular_com(self):
         self.assertEqual(self.binance_com_websocket_api_manager.create_websocket_uri(["!miniTicker"], ["arr"]),
@@ -213,13 +214,16 @@ class TestBinanceComManager(unittest.TestCase):
         self.binance_com_websocket_api_manager.stop_manager_with_all_streams()
 
 
+UBWA2 = BinanceWebSocketApiManager(exchange="binance.com-testnet")
+
+
 class TestBinanceComManagerTest(unittest.TestCase):
     # Test testnet.binance.vision (Binance Testnet)
 
     def setUp(self):
         self.binance_com_testnet_api_key = BINANCE_COM_API_KEY
         self.binance_com_testnet_api_secret = BINANCE_COM_API_SECRET
-        self.binance_com_testnet_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-testnet")
+        self.binance_com_testnet_websocket_api_manager = UBWA2
 
     def test_create_uri_miniticker_regular_com(self):
         self.assertEqual(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["!miniTicker"], ["arr"]),
@@ -264,9 +268,9 @@ class TestBinanceComManagerTest(unittest.TestCase):
             stream_id = self.binance_com_testnet_websocket_api_manager.get_new_stream_id()
             self.binance_com_testnet_websocket_api_manager._add_socket_to_socket_list(stream_id, ["arr"], ["!userData"])
             self.assertRegex(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["arr"], ["!userData"],
-                                                                                         stream_id,
-                                                                                         self.binance_com_testnet_api_key,
-                                                                                         self.binance_com_testnet_api_secret),
+                                                                                                 stream_id,
+                                                                                                 self.binance_com_testnet_api_key,
+                                                                                                 self.binance_com_testnet_api_secret),
                              r'wss://stream.binance.com:9443/ws/.')
 
     def test_is_exchange_type_cex(self):
@@ -279,11 +283,14 @@ class TestBinanceComManagerTest(unittest.TestCase):
         self.binance_com_testnet_websocket_api_manager.stop_manager_with_all_streams()
 
 
+UBWA3 = BinanceWebSocketApiManager(exchange="binance.org-testnet")
+
+
 class TestBinanceOrgManager(unittest.TestCase):
     # Test binance.org (Binance Chain Dex)
 
     def setUp(self):
-        self.binance_org_testnet = BinanceWebSocketApiManager(exchange="binance.org-testnet")
+        self.binance_org_testnet = UBWA3
         stream_id = self.binance_org_testnet.create_stream(['orders', 'transfers', 'accounts'],
                                                             "tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
         self.binance_org_testnet.unsubscribe_from_stream(stream_id, "tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
@@ -292,11 +299,14 @@ class TestBinanceOrgManager(unittest.TestCase):
         self.binance_org_testnet.stop_manager_with_all_streams()
 
 
+UBWA4 = BinanceWebSocketApiManager(exchange="binance.org")
+
+
 class TestBinanceOrgManager(unittest.TestCase):
     # Test binance.org (Binance Chain Dex)
 
     def setUp(self):
-        self.binance_org_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org")
+        self.binance_org_websocket_api_manager = UBWA4
 
     def test_create_uri_alltickers_regular_org_subscribe(self):
         self.assertEqual(self.binance_org_websocket_api_manager.create_websocket_uri(["$all"], ["allTickers"]),
@@ -442,10 +452,13 @@ class TestBinanceOrgManager(unittest.TestCase):
         self.binance_org_websocket_api_manager.stop_manager_with_all_streams()
 
 
+UBWA5 = BinanceWebSocketApiManager(exchange="binance.com")
+
+
 class TestRestApi(unittest.TestCase):
 
     def setUp(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
+        binance_websocket_api_manager = UBWA5
         stream_id = binance_websocket_api_manager.get_new_stream_id()
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
