@@ -171,7 +171,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  process_stream_signals=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.38.1.dev"
+        self.version = "1.39.0.dev"
         logger.info(f"New instance of {self.get_user_agent()} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         if disable_colorama is not True:
@@ -417,6 +417,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'seconds_since_has_stopped': None,
                                        'has_stopped': False,
                                        'reconnects': 0,
+                                       'last_stream_signal': None,
                                        'logged_reconnects': [],
                                        'processed_transmitted_total': 0,
                                        'last_static_ping_listen_key': 0,
@@ -490,7 +491,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                             f"new/choose")
             loop.close()
         finally:
-            self.process_stream_signals("DISCONNECT", stream_id)
+            if self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
+                self.process_stream_signals("DISCONNECT", stream_id)
+                self.stream_list[stream_id]['last_stream_signal'] = "DISCONNECT"
             loop.close()
 
     def _frequent_checks(self):
@@ -504,7 +507,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                              'stop_request': None,
                                                              'has_stopped': False}
         logger.info("BinanceWebSocketApiManager._frequent_checks() new instance created with frequent_checks_id=" +
-                     str(frequent_checks_id))
+                    str(frequent_checks_id))
         # threaded loop for min 1 check per second
         while self.stop_manager_request is None and self.frequent_checks_list[frequent_checks_id]['stop_request'] \
                 is None:
@@ -623,9 +626,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                         active_stream_list[stream_id]['channels'] = [active_stream_list[stream_id]['channels'], ]
                     if "!userData" in active_stream_list[stream_id]['markets'] or \
                             "!userData" in active_stream_list[stream_id]['channels']:
-                        if (active_stream_list[stream_id]['start_time'] + active_stream_list[stream_id]['listen_key_cache_time']) \
-                                < time.time() and (active_stream_list[stream_id]['last_static_ping_listen_key'] +
-                                                   active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
+                        if (active_stream_list[stream_id]['start_time'] +
+                            active_stream_list[stream_id]['listen_key_cache_time']) < time.time() and \
+                                (active_stream_list[stream_id]['last_static_ping_listen_key'] +
+                                 active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
                             # keep-alive the listenKey
                             self.restclient.keepalive_listen_key(stream_id)
                             # set last_static_ping_listen_key
@@ -3343,7 +3347,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         Stop the BinanceWebSocketApiManager with all streams and management threads
         """
         logger.info("BinanceWebSocketApiManager.stop_manager_with_all_streams() - Stopping "
-                     "unicorn_binance_websocket_api_manager " + self.version + " ...")
+                    "unicorn_binance_websocket_api_manager " + self.version + " ...")
         # send signal to all threads
         self.stop_manager_request = True
         # delete listenKeys
@@ -3364,7 +3368,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return True
         except AttributeError as error_msg:
             logger.info("BinanceWebSocketApiManager.stop_monitoring_api() - can not execute "
-                         "self.monitoring_api_server.stop() - info: " + str(error_msg))
+                        "self.monitoring_api_server.stop() - info: " + str(error_msg))
             return False
 
     def stop_stream(self, stream_id):
@@ -3417,7 +3421,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type error_msg: str
         """
         logger.critical("BinanceWebSocketApiManager.stream_is_crashing(" + str(stream_id) + ")")
-        self.process_stream_signals("DISCONNECT", stream_id)
+        if self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
+            self.process_stream_signals("DISCONNECT", stream_id)
+            self.stream_list[stream_id]['last_stream_signal'] = "DISCONNECT"
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "crashed"
         self.socket_is_ready[stream_id] = True
