@@ -137,9 +137,9 @@ class TestBinanceComManager(unittest.TestCase):
     def test_get_listenkey_from_restclient(self):
         self.assertEqual(self.ubwa.get_listen_key_from_restclient(), False)
 
-    def test_get_listenkey_from_restclient_two(self):
+    def test_delete_listen_key_by_stream_id(self):
         stream_id = self.ubwa.get_new_stream_id()
-        self.assertEqual(self.ubwa.delete_listen_key_by_stream_id(stream_id), False)
+        self.assertEqual(self.ubwa.delete_listen_key_by_stream_id(stream_id, "", ""), False)
 
     def test_keepalive_listen_key(self):
         stream_id = self.ubwa.get_new_stream_id()
