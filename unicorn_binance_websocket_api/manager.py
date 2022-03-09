@@ -59,6 +59,7 @@ import time
 import uuid
 import ujson as json
 import websockets
+from collections import deque
 
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
@@ -313,6 +314,27 @@ class BinanceWebSocketApiManager(threading.Thread):
                          "binance-websocket-api/blob/master/CHANGELOG.md)"
             print(update_msg)
             logger.warning(update_msg)
+
+
+    def clear_buffer(self, stream_buffer_name=False):
+        #self.stream_buffer_locks[stream_buffer_name] = threading.Lock()
+        #self.stream_buffers[stream_buffer_name] = []
+        if stream_buffer_name is False:
+            try:
+                with self.stream_buffer_lock:
+                    stream_data = self.stream_buffer = deque()
+                return stream_data
+            except IndexError:
+                return False
+        else:
+            try:
+                with self.stream_buffer_locks[stream_buffer_name]:
+                    stream_data = self.stream_buffers[stream_buffer_name] = deque()
+                return stream_data
+            except IndexError:
+                return False
+            except KeyError:
+                return False
 
     def _add_stream_to_stream_list(self,
                                    stream_id,
