@@ -1129,19 +1129,19 @@ class BinanceWebSocketApiManager(threading.Thread):
                               timeouts on inactive connections. Set `ping_interval` to `None` to
                               disable this behavior. (default: 20)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
+                              <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
         :type ping_interval: int or None
         :param ping_timeout: If the corresponding `Pong frame` isn't received within
                              `ping_timeout` seconds, the connection is considered unusable and is closed with
                              code 1011. This ensures that the remote endpoint remains responsive. Set
                              `ping_timeout` to `None` to disable this behavior. (default: 20)
                              This parameter is passed through to the `websockets.client.connect()
-                             <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
+                             <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
         :type ping_timeout: int or None
         :param close_timeout: The `close_timeout` parameter defines a maximum wait time in seconds for
                               completing the closing handshake and terminating the TCP connection. (default: 10)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
+                              <https://websockets.readthedocs.io/en/stable/topics/design.html?highlight=close_timeout#closing-handshake>`_
         :type close_timeout: int or None
         :param stream_buffer_maxlen: Set a max len for the `stream_buffer`. Only used in combination with a non generic
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
