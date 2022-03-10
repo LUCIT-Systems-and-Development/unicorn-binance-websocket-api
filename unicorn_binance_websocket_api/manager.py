@@ -175,6 +175,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                This parameter is passed through to the `websockets.client.connect()
                                <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
     :type ping_timeout_default: int
+    :param high_performance:
+    :type high_performance:  bool
     """
 
     def __init__(self,
@@ -189,9 +191,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                  disable_colorama=False,
                  stream_buffer_maxlen=None,
                  process_stream_signals=False,
-                 close_timeout_default: int = 1,
-                 ping_interval_default: int = 1,
-                 ping_timeout_default: int = 5):
+                 close_timeout_default: int = 5,
+                 ping_interval_default: int = 5,
+                 ping_timeout_default: int = 10,
+                 high_performance=False):
+        # todo: high_performance
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.39.0.dev"
@@ -281,6 +285,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.receiving_speed_average = 0
         self.receiving_speed_peak = {'value': 0,
                                      'timestamp': time.time()}
+        self.high_performance = high_performance
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
         self.last_entry_added_to_stream_buffer = 0
@@ -755,6 +760,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         self.stream_list[stream_id]['stream_buffer_maxlen'],
                                         True))
         thread.start()
+        while self.socket_is_ready[stream_id] is False and self.high_performance is False:
+            # This loop will wait till the thread and the asyncio init is ready. This avoids two possible errors as
+            # described here: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131
+            logger.debug(f"BinanceWebSocketApiManager.create_stream({str(stream_id)}) - Waiting till new socket and "
+                         f"asyncio is ready")
+            time.sleep(1)
         return stream_id
 
     def _restart_stream_thread(self, stream_id):
@@ -1089,7 +1100,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                       ping_timeout=None,
                       close_timeout=None,
                       stream_buffer_maxlen=None,
-                      process_stream_data=False):
+                      process_stream_data=None):
         """
         Create a websocket stream
 
@@ -1271,7 +1282,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                                            stream_buffer_maxlen,
                                                                            False))
         thread.start()
-        while self.socket_is_ready[stream_id] is False:
+        while self.socket_is_ready[stream_id] is False and self.high_performance is False:
             # This loop will wait till the thread and the asyncio init is ready. This avoids two possible errors as
             # described here: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131
             logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "

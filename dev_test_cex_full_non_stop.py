@@ -74,7 +74,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 
 # create instance of BinanceWebSocketApiManager
 #binance_websocket_api_manager = BinanceWebSocketApiManager(throw_exception_if_unrepairable=True)
-binance_websocket_api_manager = BinanceWebSocketApiManager(throw_exception_if_unrepairable=False)
+binance_websocket_api_manager = BinanceWebSocketApiManager(throw_exception_if_unrepairable=False, high_performance=True)
 
 print("starting monitoring api!")
 binance_websocket_api_manager.start_monitoring_api()
