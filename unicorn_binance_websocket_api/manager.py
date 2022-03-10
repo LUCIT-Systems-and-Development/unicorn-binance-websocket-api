@@ -1252,7 +1252,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         ping_timeout=ping_timeout,
                                         close_timeout=close_timeout,
                                         stream_buffer_maxlen=stream_buffer_maxlen,
-                                        process_stream_data=False)
+                                        process_stream_data=process_stream_data)
         try:
             loop = asyncio.new_event_loop()
         except OSError as error_msg:
