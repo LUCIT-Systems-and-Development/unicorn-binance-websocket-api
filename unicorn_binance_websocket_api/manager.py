@@ -175,7 +175,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                This parameter is passed through to the `websockets.client.connect()
                                <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
     :type ping_timeout_default: int
-    :param high_performance:
+    :param high_performance: Set to True makes `create_stream()` a non blocking function
     :type high_performance:  bool
     """
 
@@ -191,11 +191,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                  disable_colorama=False,
                  stream_buffer_maxlen=None,
                  process_stream_signals=False,
-                 close_timeout_default: int = 5,
+                 close_timeout_default: int = 2,
                  ping_interval_default: int = 5,
-                 ping_timeout_default: int = 10,
+                 ping_timeout_default: int = 15,
                  high_performance=False):
-        # todo: high_performance
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.39.0.dev"
@@ -359,7 +358,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    ping_timeout=None,
                                    close_timeout=None,
                                    stream_buffer_maxlen=None,
-                                   process_stream_data=False):
+                                   process_stream_data=None):
         """
         Create a list entry for new streams
 
