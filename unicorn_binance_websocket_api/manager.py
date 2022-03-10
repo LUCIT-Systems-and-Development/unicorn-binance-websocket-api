@@ -533,10 +533,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                             f"new/choose")
             loop.close()
         finally:
-            if self.stream_list[stream_id]['last_stream_signal'] is not None and \
-                    self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
-                self.process_stream_signals("DISCONNECT", stream_id)
-                self.stream_list[stream_id]['last_stream_signal'] = "DISCONNECT"
+            try:
+                if self.stream_list[stream_id]['last_stream_signal'] is not None and \
+                        self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
+                    self.process_stream_signals("DISCONNECT", stream_id)
+                    self.stream_list[stream_id]['last_stream_signal'] = "DISCONNECT"
+            except KeyError as error_msg:
+                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
+                             f"KeyError `error: 12` - {error_msg}")
             loop.close()
 
     def _frequent_checks(self):

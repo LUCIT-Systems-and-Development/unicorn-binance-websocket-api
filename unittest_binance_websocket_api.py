@@ -52,7 +52,7 @@ logging.basicConfig(level=logging.DEBUG,
 
 print(f"Starting unittests:")
 
-UBWA = BinanceWebSocketApiManager(exchange="binance.com", disable_colorama=True, high_performance=True)
+UBWA = BinanceWebSocketApiManager(exchange="binance.com", disable_colorama=True)
 
 
 class TestBinanceComManager(unittest.TestCase):
@@ -276,9 +276,10 @@ UBWA3 = BinanceWebSocketApiManager(exchange="binance.org-testnet", high_performa
 
 class TestBinanceOrgManagerTestnet(unittest.TestCase):
     # Test binance.org (Binance Chain Dex)
+    def setUp(self) -> None:
+        self.binance_org_testnet = UBWA3
 
     def test_testnet(self):
-        self.binance_org_testnet = UBWA3
         stream_id = self.binance_org_testnet.create_stream(['orders', 'transfers', 'accounts'],
                                                             "tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
         time.sleep(10)
@@ -293,7 +294,6 @@ UBWA4 = BinanceWebSocketApiManager(exchange="binance.org", high_performance=True
 
 class TestBinanceOrgManager(unittest.TestCase):
     # Test binance.org (Binance Chain Dex)
-
     def setUp(self):
         self.binance_org_websocket_api_manager = UBWA4
 
