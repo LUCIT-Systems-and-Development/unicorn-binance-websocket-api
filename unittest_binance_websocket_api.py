@@ -52,7 +52,7 @@ logging.basicConfig(level=logging.DEBUG,
 
 print(f"Starting unittests:")
 
-UBWA = BinanceWebSocketApiManager(exchange="binance.com", disable_colorama=True)
+UBWA = BinanceWebSocketApiManager(exchange="binance.com", disable_colorama=True, high_performance=True)
 
 
 class TestBinanceComManager(unittest.TestCase):
@@ -202,7 +202,7 @@ class TestBinanceComManager(unittest.TestCase):
         self.ubwa.stop_manager_with_all_streams()
 
 
-UBWA2 = BinanceWebSocketApiManager(exchange="binance.com-testnet")
+UBWA2 = BinanceWebSocketApiManager(exchange="binance.com-testnet", high_performance=True)
 
 
 class TestBinanceComManagerTest(unittest.TestCase):
@@ -271,13 +271,13 @@ class TestBinanceComManagerTest(unittest.TestCase):
         self.binance_com_testnet_websocket_api_manager.stop_manager_with_all_streams()
 
 
-UBWA3 = BinanceWebSocketApiManager(exchange="binance.org-testnet")
+UBWA3 = BinanceWebSocketApiManager(exchange="binance.org-testnet", high_performance=True)
 
 
 class TestBinanceOrgManagerTestnet(unittest.TestCase):
     # Test binance.org (Binance Chain Dex)
 
-    def setUp(self):
+    def test_testnet(self):
         self.binance_org_testnet = UBWA3
         stream_id = self.binance_org_testnet.create_stream(['orders', 'transfers', 'accounts'],
                                                             "tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
@@ -288,7 +288,7 @@ class TestBinanceOrgManagerTestnet(unittest.TestCase):
         self.binance_org_testnet.stop_manager_with_all_streams()
 
 
-UBWA4 = BinanceWebSocketApiManager(exchange="binance.org")
+UBWA4 = BinanceWebSocketApiManager(exchange="binance.org", high_performance=True)
 
 
 class TestBinanceOrgManager(unittest.TestCase):
@@ -441,85 +441,82 @@ class TestBinanceOrgManager(unittest.TestCase):
         self.binance_org_websocket_api_manager.stop_manager_with_all_streams()
 
 
-UBWA5 = BinanceWebSocketApiManager(exchange="binance.com")
-
-
 class TestRestApi(unittest.TestCase):
 
-    def setUp(self):
-        binance_websocket_api_manager = UBWA5
-        stream_id = binance_websocket_api_manager.get_new_stream_id()
+    def test_get_new_stream_id(self):
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com", high_performance=True)
+        binance_websocket_api_manager.get_new_stream_id()
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-testnet")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-testnet", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_margin(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-margin")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-margin", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_margin_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-margin-testnet")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-margin-testnet", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_isolated_margin(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_isolated_margin_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_futures(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_futures_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures-testnet", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_coin_futures(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin-futures")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin-futures", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_us_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_trbinance_com_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="trbinance.com")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="trbinance.com", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_jex_com_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="jex.com")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="jex.com", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_invalid_exchange(self):
         from unicorn_binance_websocket_api.exceptions import UnknownExchange
         try:
-            BinanceWebSocketApiManager(exchange="invalid-exchange.com")
+            BinanceWebSocketApiManager(exchange="invalid-exchange.com", high_performance=True)
         except UnknownExchange:
             pass
 
     def test_isolated_margin(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
         stream_id = binance_websocket_api_manager.create_stream('arr', '!userData', symbols="CELRBTC", api_key="key", api_secret="secret")
         time.sleep(10)
         print("\r\n")
@@ -527,7 +524,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_live_run(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(enable_stream_signal_buffer=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(enable_stream_signal_buffer=True, high_performance=True)
         binance_websocket_api_manager.get_active_stream_list()
         binance_websocket_api_manager.get_limit_of_subscriptions_per_stream()
         binance_websocket_api_manager.get_stream_list()
@@ -683,6 +680,7 @@ class TestRestApi(unittest.TestCase):
 
         binance_websocket_api_manager.create_stream(False, False, stream_label="error")
 
+        stream_id1 = ""
         for channel in channels:
             stream_id1 = binance_websocket_api_manager.create_stream(channel, markets, output="UnicornFy")
 
@@ -694,6 +692,7 @@ class TestRestApi(unittest.TestCase):
         restserver = BinanceWebSocketApiRestServer(binance_websocket_api_manager)
         restserver.get("icinga")
         restserver.get("invalid")
+        del restserver
 
         markets = ['xrpbearbusd', 'zeceth', 'cndbtc', 'dashbtc', 'atompax', 'perlbtc', 'ardreth', 'zecbnb',
                    'erdbnb', 'xrpbearusdt', 'stratbnb', 'cmtbtc', 'cvcbtc', 'kncbtc', 'rpxbnb', 'zenbnb', 'cndbnb',
@@ -780,7 +779,9 @@ class TestRestApi(unittest.TestCase):
 
         time.sleep(10)
         binance_websocket_api_manager.stop_manager_with_all_streams()
+        time.sleep(2)
 
 
 if __name__ == '__main__':
     unittest.main()
+
