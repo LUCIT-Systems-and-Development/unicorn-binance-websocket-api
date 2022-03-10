@@ -13,11 +13,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - `close_timeout_default`, `ping_interval_default`, `ping_timeout_default`
 - `socket_is_ready` system to `_restart_stream()`
-- `process_stream_data` parameter for callback function to 'create_stream()'
+- `process_stream_data` parameter for callback function to `create_stream()`
 - `high_performance` parameter to make `create_stream()` a non blocking
 - `title` to `print_summary()` and `print_stream_info()`
 ### Fixed
-- BinanceWebSocketApiManager.stop_stream() doesn't stop the stream immediately [issue#161](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/161)
+- `BinanceWebSocketApiManager.stop_stream()` doesn't stop the stream immediately [issue#161](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/161)
 
 ## 1.39.0
 ### Changed
