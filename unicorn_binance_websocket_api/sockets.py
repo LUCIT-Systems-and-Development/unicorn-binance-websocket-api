@@ -155,12 +155,18 @@ class BinanceWebSocketApiSocket(object):
                                 stream_buffer_name = self.manager.stream_list[self.stream_id]['stream_buffer_name']
                             except KeyError:
                                 stream_buffer_name = False
-                            if self.manager.stream_list[self.stream_id]['process_stream_data'] is None:
-                                self.manager.process_stream_data(received_stream_data,
-                                                                 stream_buffer_name=stream_buffer_name)
-                            else:
+                            if stream_buffer_name:
+                                # if create_stream() got a stram_buffer_name -> use it
+                                self.manager.add_to_stream_buffer(received_stream_data,
+                                                                  stream_buffer_name=stream_buffer_name)
+                            elif self.manager.stream_list[self.stream_id]['process_stream_data']:
+                                # if create_stream() got a callback function -> use it
                                 self.manager.stream_list[self.stream_id]['process_stream_data'](received_stream_data,
                                                                                                 stream_buffer_name=stream_buffer_name)
+                            else:
+                                # Use the default process_stream_data function provided to/by the manager class
+                                self.manager.process_stream_data(received_stream_data,
+                                                                 stream_buffer_name=stream_buffer_name)
                             if '"error":' in str(received_stream_data_json) or \
                                     '"code":' in str(received_stream_data_json):
                                 logger.error("BinanceWebSocketApiSocket.start_socket(" +
