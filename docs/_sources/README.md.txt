@@ -328,10 +328,11 @@ To receive news (like inspection windows/maintenance) about the Binance API`s su
 
 - [https://t.me/binance_api_announcements](https://t.me/binance_api_announcements)
 - [https://t.me/binance_api_english](https://t.me/binance_api_english)
-- [https://t.me/BinanceExchange](https://t.me/BinanceExchange)
-- [https://t.me/Binance_USA](https://t.me/Binance_USA)
 - [https://t.me/Binance_JEX_EN](https://t.me/Binance_JEX_EN)
+- [https://t.me/Binance_USA](https://t.me/Binance_USA)
+- [https://t.me/TRBinanceTR](https://t.me/TRBinanceTR)
 - [https://t.me/BinanceDEXchange](https://t.me/BinanceDEXchange)
+- [https://t.me/BinanceExchange](https://t.me/BinanceExchange)
 
 ## How to report Bugs or suggest Improvements?
 [List of planned features](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 
