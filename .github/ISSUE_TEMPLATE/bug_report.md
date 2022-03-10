@@ -12,6 +12,7 @@ Before opening a new issue, please ensure:
 - YOU HAVE READ THE ISSUE GUIDELINES! -> https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/wiki/Issue-Guidelines
 - You search for existing bugs/feature requests
 - If related to `unicorn-fy` post to https://github.com/LUCIT-Systems-and-Development/unicorn-fy/issues
+- If related to `unicorn-binance-local-depth-cache` post to https://github.com/LUCIT-Systems-and-Development/unicorn-binance-local-depth-cache/issues
 - If related to `unicorn-binance-rest-api` post to https://github.com/LUCIT-Systems-and-Development/unicorn-binance-rest-api/issues
 - Remove extraneous template details
 - Do not prefix title with type of issue (Feature Request, Bug, etc.) The appropriate labels will be added during triage.
@@ -82,7 +83,7 @@ Run `pip list > pip_list.txt` and upload the file.
 ```
 Did you upgrade to the latest release version with `pip install unicorn-binance-websocket-api --upgrade`?
 
-Please control what version you are using with this script and post the output: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/tools/get_used_module_version.py
+Please control what version you are using with this script and post the output: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/blob/master/tools/get_used_module_version.py
 ```
 
 #### Description of your issue
