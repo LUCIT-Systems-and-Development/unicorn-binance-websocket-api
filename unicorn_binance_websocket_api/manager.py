@@ -1226,7 +1226,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         close_timeout = close_timeout or self.close_timeout_default
         ping_interval = ping_interval or self.ping_interval_default
         ping_timeout = ping_timeout or self.ping_timeout_default
-
         stream_id = self.get_new_stream_id()
         markets_new = []
         if stream_buffer_name is True:
