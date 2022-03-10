@@ -42,11 +42,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-     name='unicorn-binance-websocket-api',
+     name='unicorn-binance-websocket-api-custom',
      version=str(ubwa.get_version()),
      author="LUCIT Systems and Development",
      author_email='info@lucit.tech',
-     url="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api",
+     url="https://github.com/happysms/unicorn-binance-websocket-api.git",
      description="An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, "
                  "com-isolated_margin+testnet, com-futures+testnet, jersey, us, jex, dex/chain+testnet) in a easy, fast"
                  ", flexible, robust and fully-featured way.",
