@@ -252,7 +252,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.websocket_base_uri = "wss://stream.binance.us:9443/"
             self.max_subscriptions_per_stream = 1024
         elif self.exchange == "trbinance.com":
-            self.websocket_base_uri = "wss://stream.binance.cc/"
+            self.websocket_base_uri = "wss://stream-cloud.trbinance.com"
             self.max_subscriptions_per_stream = 1024
         elif self.exchange == "jex.com":
             self.websocket_base_uri = "wss://ws.jex.com/"
@@ -2791,7 +2791,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except IndexError:
             return False
 
-    def print_stream_info(self, stream_id, add_string=""):
+    def print_stream_info(self, stream_id, add_string="", title=None):
         """
         Print all infos about a specific stream, helps debugging :)
 
@@ -2799,6 +2799,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: str
         :param add_string: text to add to the output
         :type add_string: str
+        :param title: set to `True` to use curses instead of print()
+        :type title: bool
         :return: bool
         """
         restart_requests_row = ""
@@ -2887,9 +2889,16 @@ class BinanceWebSocketApiManager(threading.Thread):
             close_timeout = f"{stream_info['close_timeout']} seconds"
         else:
             close_timeout = stream_info['close_timeout']
+        if title:
+            first_row = str(self.fill_up_space_centered(96, f" {title} ", "=")) + "\r\n"
+            last_row = str(self.fill_up_space_centered(96, f"Powered by {self.get_user_agent()} ", "=")) + "\r\n"
+        else:
+            first_row = str(self.fill_up_space_centered(96, f"{self.get_user_agent()} ", "=")) + "\r\n"
+            last_row = "========================================================================================" \
+                       "=======\r\n"
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
-            print(str(self.fill_up_space_centered(96, f" {self.get_user_agent()} ", "=")) + "\r\n" +
+            print(first_row +
                   " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
                   str(add_string) +
                   " stream_id:", str(stream_id), "\r\n" +
@@ -2933,12 +2942,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                   " stream_receives_per_hour:",
                   str(stream_info['processed_receives_statistic']['stream_receives_per_hour'].__round__(3)), "\r\n"
                   " stream_receives_per_day:",
-                  str(stream_info['processed_receives_statistic']['stream_receives_per_day'].__round__(3)), "\r\n"
-                  "===============================================================================================\r\n")
+                  str(stream_info['processed_receives_statistic']['stream_receives_per_day'].__round__(3)), "\r\n" +
+                  last_row)
         except KeyError:
             self.print_stream_info(stream_id)
 
-    def print_summary(self, add_string="", disable_print=False):
+    def print_summary(self, add_string="", disable_print=False, title=None):
         """
         Print an overview of all streams
         
@@ -2946,6 +2955,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type add_string: str
         :param disable_print: set to `True` to use curses instead of print()
         :type disable_print: bool
+        :param title: set to `True` to use curses instead of print()
+        :type title: bool
         """
         streams = len(self.stream_list)
         active_streams = 0
@@ -3077,9 +3088,17 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          str(datetime.utcfromtimestamp(
                                              self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
                                          ")\r\n"
+
+            if title:
+                first_row = str(self.fill_up_space_centered(96, f" {title} ", "=")) + "\r\n"
+                last_row = str(self.fill_up_space_centered(96, f"Powered by {self.get_user_agent()} ", "=")) + "\r\n"
+            else:
+                first_row = str(self.fill_up_space_centered(96, f"{self.get_user_agent()} ", "=")) + "\r\n"
+                last_row = "========================================================================================" \
+                           "=======\r\n"
             try:
                 print_text = (
-                    str(self.fill_up_space_centered(96, f" {self.get_user_agent()} ", "=")) + "\r\n" +
+                    first_row +
                     " exchange: " + str(self.stream_list[stream_id]['exchange']) + "\r\n" +
                     " uptime: " + str(self.get_human_uptime(time.time() - self.start_time)) + " since " +
                     str(self.get_date_of_timestamp(self.start_time)) + "\r\n" +
@@ -3112,7 +3131,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.fill_up_space_left(11, all_receives_per_second.__round__(2)) + "|" +
                     self.fill_up_space_left(8, self.most_receives_per_second) + "|" +
                     self.fill_up_space_left(8, self.reconnects) + "\r\n" +
-                    "===============================================================================================\r\n"
+                    last_row
                 )
                 if disable_print:
                     if sys.platform.startswith('Windows'):

@@ -187,8 +187,8 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertTrue(self.ubwa.set_restart_request(stream_id))
         time.sleep(10)
         self.ubwa.get_monitoring_status_icinga()
-        self.ubwa.print_summary()
-        self.ubwa.print_stream_info(stream_id)
+        self.ubwa.print_summary(title="Unittests")
+        self.ubwa.print_stream_info(stream_id, title="Unittests")
 
     def test_restart_stream(self):
         self.assertFalse(bool(self.ubwa._restart_stream(self.ubwa.get_new_stream_id())))

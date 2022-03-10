@@ -161,12 +161,12 @@ class BinanceWebSocketApiSocket(object):
                             else:
                                 self.manager.stream_list[self.stream_id]['process_stream_data'](received_stream_data,
                                                                                                 stream_buffer_name=stream_buffer_name)
-                            if "error" in received_stream_data_json:
+                            if '"error":' in received_stream_data_json or '"code":' in received_stream_data_json:
                                 logger.error("BinanceWebSocketApiSocket.start_socket(" +
                                              str(self.stream_id) + ") "
                                              "- Received error message: " + str(received_stream_data_json))
                                 self.manager.add_to_ringbuffer_error(received_stream_data_json)
-                            elif "result" in received_stream_data_json:
+                            elif '"result":' in received_stream_data_json:
                                 logger.info("BinanceWebSocketApiSocket.start_socket(" +
                                             str(self.stream_id) + ") "
                                             "- Received result message: " + str(received_stream_data_json))
