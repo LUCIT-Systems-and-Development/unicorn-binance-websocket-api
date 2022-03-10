@@ -47,7 +47,7 @@ logging.basicConfig(level=logging.DEBUG,
                     style="{")
 
 # create instance of BinanceWebSocketApiManager
-binance_websocket_api_manager = BinanceWebSocketApiManager()
+ubwa = BinanceWebSocketApiManager()
 
 
 markets = ['xrpbearbusd', 'zeceth', 'cndbtc', 'dashbtc', 'atompax', 'perlbtc', 'ardreth', 'zecbnb', 'bchabctusd',
@@ -132,16 +132,16 @@ channels = ['kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline
             'miniTicker', 'depth20']
 
 for channel in channels:
-    binance_websocket_api_manager.create_stream(channel, markets, stream_buffer_name=channel)
+    ubwa.create_stream(channel, markets, stream_buffer_name=channel)
 
 
-def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
+def print_stream_data_from_stream_buffer(ubwa):
     print("print trades only")
     time.sleep(10)
     while True:
-        if binance_websocket_api_manager.is_manager_stopping():
+        if ubwa.is_manager_stopping():
             exit(0)
-        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer("trade")
+        oldest_stream_data_from_stream_buffer = ubwa.pop_stream_data_from_stream_buffer("trade")
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
         else:
@@ -149,10 +149,10 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
                 print(oldest_stream_data_from_stream_buffer)
             except Exception:
                 # not able to process the data? write it back to the stream_buffer
-                binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
+                ubwa.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
 
 
 # start a worker process to process to move the received stream_data from the stream_buffer to a print function
-worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))
 worker_thread.start()
 
