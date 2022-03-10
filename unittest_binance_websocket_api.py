@@ -40,6 +40,10 @@ import logging
 import unittest
 import os
 import time
+#import tracemalloc
+
+
+#tracemalloc.start(25)
 
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
@@ -775,13 +779,10 @@ class TestRestApi(unittest.TestCase):
         data = binance_rest_client.get_all_tickers()
         for item in data:
             markets.append(item['symbol'])
-        binance_websocket_api_manager.create_stream("trade", markets, stream_label="to much!")
-
+        binance_websocket_api_manager.create_stream("trade", markets, stream_label="too much!")
         time.sleep(10)
         binance_websocket_api_manager.stop_manager_with_all_streams()
-        time.sleep(2)
 
 
 if __name__ == '__main__':
     unittest.main()
-

@@ -232,20 +232,23 @@ class BinanceWebSocketApiConnection(object):
                 self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                 sys.exit(1)
             else:
-                logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
-                                ", " + str(self.channels) + ", " + str(self.markets) + ") UnhandledException "
-                                "ConnectionClosed" + str(error_msg))
+                logger.critical(f"BinanceWebSocketApiConnection.await._conn.__aenter__({self.stream_id}, "
+                                f"{self.channels}, {self.markets}) - UnhandledException ConnectionClosed - {error_msg}")
         return self
 
     async def __aexit__(self, *args, **kwargs):
         try:
             await self._conn.__aexit__(*args, **kwargs)
+        except RuntimeError as error_msg:
+            logger.debug(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - RuntimeError - {error_msg}")
+            self.manager.stream_is_stopping(self.stream_id)
+            if self.manager.is_stop_request(self.stream_id) is False and \
+                    self.manager.is_stop_as_crash_request is False:
+                self.manager.set_restart_request(self.stream_id)
         except AttributeError as error_msg:
-            logger.error("BinanceWebSocketApiConnection.__aexit__(*args, **kwargs): "
-                         "AttributeError - " + str(error_msg))
+            logger.error(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - AttributeError - {error_msg}")
         except websockets.exceptions.ConnectionClosed as error_msg:
-            logger.error("BinanceWebSocketApiConnection.__aexit__(*args, **kwargs): "
-                         "ConnectionClosed - " + str(error_msg))
+            logger.error(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - ConnectionClosed - {error_msg}")
             self.manager.stream_is_stopping(self.stream_id)
             if self.manager.is_stop_request(self.stream_id) is False and \
                     self.manager.is_stop_as_crash_request is False:
@@ -261,8 +264,7 @@ class BinanceWebSocketApiConnection(object):
         except KeyError:
             logger.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) - Stream not found!")
         except RuntimeError as error_msg:
-            logger.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) - "
-                         f"RuntimeError: {str(error_msg)}")
+            logger.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) - RuntimeError: {str(error_msg)}")
         except ValueError as error_msg:
             # ValueError: The future belongs to a different loop than the one specified as the loop argument
             logger.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) socket_id="
@@ -276,6 +278,7 @@ class BinanceWebSocketApiConnection(object):
         self.manager.set_heartbeat(self.stream_id)
         try:
             received_data_json = await self.manager.websocket_list[self.stream_id].recv()
+#            received_data_json = await asyncio.wait_for(self.manager.websocket_list[self.stream_id].recv(), timeout=10)
             try:
                 if self.manager.restart_requests[self.stream_id]['status'] == "restarted":
                     self.manager.increase_reconnect_counter(self.stream_id)

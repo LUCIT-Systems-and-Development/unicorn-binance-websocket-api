@@ -1,4 +1,4 @@
 #!/bin/bash
 
-rm ../*.log
-rm ../.print*
+rm *.log
+rm .print*

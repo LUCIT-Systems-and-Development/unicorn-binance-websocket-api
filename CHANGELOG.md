@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `process_stream_data` parameter for callback function to 'create_stream()'
 - `high_performance` parameter to make `create_stream()` a non blocking
 - `title` to `print_summary()` and `print_stream_info()`
+### Fixed
+- BinanceWebSocketApiManager.stop_stream() doesn't stop the stream immediately [issue#161](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/161)
 
 ## 1.39.0
 ### Changed
@@ -26,7 +28,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.38.1
 ### Fixed 
-- [issue#131](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131)
+- Websocket fails to reconnect [issue#131](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131)
 
 ## 1.38.0
 ### Added
