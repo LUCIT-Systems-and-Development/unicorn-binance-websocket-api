@@ -155,6 +155,26 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    `add_to_stream_signal_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer>`_
                                    like `process_stream_data(signal_type=False, stream_id=False, data_record=False)`.
     :type process_stream_signals: function
+    :param close_timeout_default: The `close_timeout` parameter defines a maximum wait time in seconds for
+                                completing the closing handshake and terminating the TCP connection.
+                                This parameter is passed through to the `websockets.client.connect()
+                                <https://websockets.readthedocs.io/en/stable/topics/design.html?highlight=close_timeout#closing-handshake>`_
+    :type close_timeout_default: int
+    :param ping_interval_default: Once the connection is open, a `Ping frame` is sent every
+                                `ping_interval` seconds. This serves as a keepalive. It helps keeping
+                                the connection open, especially in the presence of proxies with short
+                                timeouts on inactive connections. Set `ping_interval` to `None` to
+                                disable this behavior.
+                                This parameter is passed through to the `websockets.client.connect()
+                                <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websock ets>`_
+    :type ping_interval_default: int
+    :param ping_timeout_default: If the corresponding `Pong frame` isn't received within
+                               `ping_timeout` seconds, the connection is considered unusable and is closed with
+                               code 1011. This ensures that the remote endpoint remains responsive. Set
+                               `ping_timeout` to `None` to disable this behavior.
+                               This parameter is passed through to the `websockets.client.connect()
+                               <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
+    :type ping_timeout_default: int
     """
 
     def __init__(self,
@@ -168,7 +188,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                  enable_stream_signal_buffer=False,
                  disable_colorama=False,
                  stream_buffer_maxlen=None,
-                 process_stream_signals=False):
+                 process_stream_signals=False,
+                 close_timeout_default: int = 1,
+                 ping_interval_default: int = 1,
+                 ping_timeout_default: int = 5):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.39.0.dev"
@@ -304,6 +327,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.total_transmitted = 0
         self.total_transmitted_lock = threading.Lock()
         self.websocket_list = {}
+        self.close_timeout_default = close_timeout_default
+        self.ping_interval_default = ping_interval_default
+        self.ping_timeout_default = ping_timeout_default
         self.start()
         self.replacement_text = "***SECRET_REMOVED***"
         self.restclient = BinanceWebSocketApiRestclient(self)
@@ -324,9 +350,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    api_secret=False,
                                    symbols=False,
                                    output=False,
-                                   ping_interval=False,
-                                   ping_timeout=False,
-                                   close_timeout=False,
+                                   ping_interval=None,
+                                   ping_timeout=None,
+                                   close_timeout=None,
                                    stream_buffer_maxlen=None):
         """
         Create a list entry for new streams
@@ -364,27 +390,29 @@ class BinanceWebSocketApiManager(threading.Thread):
                               timeouts on inactive connections. Set `ping_interval` to `None` to
                               disable this behavior. (default: 20)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
+                              <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
         :type ping_interval: int or None
         :param ping_timeout: If the corresponding `Pong frame` isn't received within
                              `ping_timeout` seconds, the connection is considered unusable and is closed with
                              code 1011. This ensures that the remote endpoint remains responsive. Set
                              `ping_timeout` to `None` to disable this behavior. (default: 20)
                              This parameter is passed through to the `websockets.client.connect()
-                             <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
+                             <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
         :type ping_timeout: int or None
         :param close_timeout: The `close_timeout` parameter defines a maximum wait time in seconds for
                               completing the closing handshake and terminating the TCP connection. (default: 10)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
+                              <https://websockets.readthedocs.io/en/stable/topics/design.html?highlight=close_timeout#closing-handshake>`_
         :type close_timeout: int or None
         :param stream_buffer_maxlen: Set a max len for the `stream_buffer`. Only used in combination with a non generic
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
                                      `BinanceWebSocketApiManager()`.
         :type stream_buffer_maxlen: int or None
         """
-        if output is False:
-            output = self.output_default
+        output = output or self.output_default
+        close_timeout = close_timeout or self.close_timeout_default
+        ping_interval = ping_interval or self.ping_interval_default
+        ping_timeout = ping_timeout or self.ping_timeout_default
         self.stream_threading_lock[stream_id] = {'full_lock': threading.Lock(),
                                                  'receives_statistic_last_second_lock': threading.Lock()}
         self.stream_list[stream_id] = {'exchange': self.exchange,
@@ -707,6 +735,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             f"error_msg: {str(error_msg)}")
             return False
         self.event_loops[stream_id] = loop
+        self.socket_is_ready[stream_id] = False
         thread = threading.Thread(target=self._create_stream_thread,
                                   args=(loop,
                                         stream_id,
@@ -716,9 +745,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         self.stream_list[stream_id]['stream_buffer_maxlen'],
                                         True))
         thread.start()
-        # Sleep to avoid error 2 of this post:
-        # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131#issuecomment-1042747365
-        time.sleep(0.3)
         return stream_id
 
     def _restart_stream_thread(self, stream_id):
@@ -1049,9 +1075,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                       api_secret=False,
                       symbols=False,
                       output=False,
-                      ping_interval=20,
-                      ping_timeout=20,
-                      close_timeout=10,
+                      ping_interval=None,
+                      ping_timeout=None,
+                      close_timeout=None,
                       stream_buffer_maxlen=None):
         """
         Create a websocket stream
@@ -1167,8 +1193,11 @@ class BinanceWebSocketApiManager(threading.Thread):
             channels = [channels]
         if type(markets) is str:
             markets = [markets]
-        if output is False:
-            output = self.output_default
+        output = output or self.output_default
+        close_timeout = close_timeout or self.close_timeout_default
+        ping_interval = ping_interval or self.ping_interval_default
+        ping_timeout = ping_timeout or self.ping_timeout_default
+
         stream_id = self.get_new_stream_id()
         markets_new = []
         if stream_buffer_name is True:
