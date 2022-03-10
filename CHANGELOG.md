@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - `close_timeout_default`, `ping_interval_default`, `ping_timeout_default`
 - `socket_is_ready` system to `_restart_stream()`
+- `process_stream_data` parameter for callback function to 'create_stream()'
 
 ## 1.39.0
 ### Changed

@@ -353,7 +353,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    ping_interval=None,
                                    ping_timeout=None,
                                    close_timeout=None,
-                                   stream_buffer_maxlen=None):
+                                   stream_buffer_maxlen=None,
+                                   process_stream_data=False):
         """
         Create a list entry for new streams
 
@@ -408,6 +409,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
                                      `BinanceWebSocketApiManager()`.
         :type stream_buffer_maxlen: int or None
+        :param process_stream_data: Provide a function/method to process the received webstream data. The function
+                            will be called instead of
+                            `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
+                            like `process_stream_data(stream_data, stream_buffer_name)` where
+                            `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
+                            get stored in the stream_buffer! `How to read from stream_buffer!
+                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
+        :type process_stream_data: function
         """
         output = output or self.output_default
         close_timeout = close_timeout or self.close_timeout_default
@@ -453,7 +462,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'listen_key_cache_time':  30 * 60,
                                        'last_received_data_record': None,
                                        'processed_receives_statistic': {},
-                                       'transfer_rate_per_second': {'bytes': {}, 'speed': 0}}
+                                       'transfer_rate_per_second': {'bytes': {}, 'speed': 0},
+                                       'process_stream_data': process_stream_data}
         logger.info("BinanceWebSocketApiManager._add_stream_to_stream_list(" +
                     str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
                     + str(stream_buffer_name) + ", " + str(stream_buffer_maxlen) + ", " + str(symbols) + ")")
@@ -1078,7 +1088,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                       ping_interval=None,
                       ping_timeout=None,
                       close_timeout=None,
-                      stream_buffer_maxlen=None):
+                      stream_buffer_maxlen=None,
+                      process_stream_data=False):
         """
         Create a websocket stream
 
@@ -1173,6 +1184,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
                                      `BinanceWebSocketApiManager()`.
         :type stream_buffer_maxlen: int or None
+        :param process_stream_data: Provide a function/method to process the received webstream data. The function
+                            will be called instead of
+                            `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
+                            like `process_stream_data(stream_data, stream_buffer_name)` where
+                            `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
+                            get stored in the stream_buffer! `How to read from stream_buffer!
+                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
+        :type process_stream_data: function
         :return: stream_id or 'False'
         """
         # create a stream
@@ -1232,7 +1251,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         ping_interval=ping_interval,
                                         ping_timeout=ping_timeout,
                                         close_timeout=close_timeout,
-                                        stream_buffer_maxlen=stream_buffer_maxlen)
+                                        stream_buffer_maxlen=stream_buffer_maxlen,
+                                        process_stream_data=False)
         try:
             loop = asyncio.new_event_loop()
         except OSError as error_msg:
