@@ -7,12 +7,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
-## 1.40.1.dev (development stage/unreleased/unstable)
+## 1.40.2.dev (development stage/unreleased/unstable)
 
-## 1.40.1
+## 1.40.2
+### Changed
+- default ping interval and timeout
 ### Fixed
 - `TypeError` in `print_summary()`
 - typo in `print_summary()` `title` text
+- Callback implementation of `create_stream()`
+
+## 1.40.1
+- test release
 
 ## 1.40.0
 ### Added
