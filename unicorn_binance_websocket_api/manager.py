@@ -193,17 +193,18 @@ class BinanceWebSocketApiManager(threading.Thread):
                  process_stream_signals=False,
                  close_timeout_default: int = 2,
                  ping_interval_default: int = 5,
-                 ping_timeout_default: int = 15,
+                 ping_timeout_default: int = 20,
                  high_performance=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.40.1"
+        self.version = "1.40.1.dev"
         logger.info(f"New instance of {self.get_user_agent()} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         if disable_colorama is not True:
             logger.info(f"Initiating `colorama_{colorama.__version__}`")
             colorama.init()
         logger.info(f"Using `websockets_{websockets.__version__}`")
+        self.specific_process_stream_data = {}
         if process_stream_data is False:
             # no special method to process stream data provided, so we use add_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
@@ -427,6 +428,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         close_timeout = close_timeout or self.close_timeout_default
         ping_interval = ping_interval or self.ping_interval_default
         ping_timeout = ping_timeout or self.ping_timeout_default
+        self.specific_process_stream_data[stream_id] = process_stream_data
         self.stream_threading_lock[stream_id] = {'full_lock': threading.Lock(),
                                                  'receives_statistic_last_second_lock': threading.Lock()}
         self.stream_list[stream_id] = {'exchange': self.exchange,
@@ -467,8 +469,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'listen_key_cache_time':  30 * 60,
                                        'last_received_data_record': None,
                                        'processed_receives_statistic': {},
-                                       'transfer_rate_per_second': {'bytes': {}, 'speed': 0},
-                                       'process_stream_data': process_stream_data}
+                                       'transfer_rate_per_second': {'bytes': {}, 'speed': 0}}
         logger.info("BinanceWebSocketApiManager._add_stream_to_stream_list(" +
                     str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
                     + str(stream_buffer_name) + ", " + str(stream_buffer_maxlen) + ", " + str(symbols) + ")")
@@ -3099,7 +3100,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
             if title:
                 first_row = str(self.fill_up_space_centered(96, f" {title} ", "=")) + "\r\n"
-                last_row = str(self.fill_up_space_centered(96, f"Powered by {self.get_user_agent()} ", "=")) + "\r\n"
+                last_row = str(self.fill_up_space_centered(96, f" Powered by {self.get_user_agent()} ", "=")) + "\r\n"
             else:
                 first_row = str(self.fill_up_space_centered(96, f"{self.get_user_agent()} ", "=")) + "\r\n"
                 last_row = "========================================================================================" \
