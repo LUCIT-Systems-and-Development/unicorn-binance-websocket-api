@@ -2892,11 +2892,11 @@ class BinanceWebSocketApiManager(threading.Thread):
             ping_timeout = stream_info['ping_timeout']
         if isinstance(stream_info['close_timeout'], int):
             close_timeout = f"{stream_info['close_timeout']} seconds"
-        else:
+        else: 
             close_timeout = stream_info['close_timeout']
         if title:
             first_row = str(self.fill_up_space_centered(96, f" {title} ", "=")) + "\r\n"
-            last_row = str(self.fill_up_space_centered(96, f"Powered by {self.get_user_agent()} ", "=")) + "\r\n"
+            last_row = str(self.fill_up_space_centered(96, f" Powered by {self.get_user_agent()} ", "=")) + "\r\n"
         else:
             first_row = str(self.fill_up_space_centered(96, f"{self.get_user_agent()} ", "=")) + "\r\n"
             last_row = "========================================================================================" \
