@@ -197,7 +197,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  high_performance=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.40.0.dev"
+        self.version = "1.40.1"
         logger.info(f"New instance of {self.get_user_agent()} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         if disable_colorama is not True:
@@ -2990,6 +2990,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             temp_stream_list = copy.deepcopy(self.stream_list)
         except RuntimeError:
+            return ""
+        except TypeError:
             return ""
         for stream_id in temp_stream_list:
             stream_row_color_prefix = ""
