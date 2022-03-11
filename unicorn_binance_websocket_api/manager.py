@@ -2960,8 +2960,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type add_string: str
         :param disable_print: set to `True` to use curses instead of print()
         :type disable_print: bool
-        :param title: set to `True` to use curses instead of print()
-        :type title: bool
+        :param title: set a title (first row) for print_summary output
+        :type title: str
         """
         streams = len(self.stream_list)
         active_streams = 0
