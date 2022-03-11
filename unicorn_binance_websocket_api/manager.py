@@ -291,6 +291,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.last_monitoring_check = time.time()
         self.last_update_check_github = {'timestamp': time.time(),
                                          'status': None}
+        self.last_update_check_github['status']: dict = None
         self.last_update_check_github_check_command = {'timestamp': time.time(),
                                                        'status': None}
         self.max_send_messages_per_second = 5
