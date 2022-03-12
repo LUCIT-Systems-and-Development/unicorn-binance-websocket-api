@@ -7,9 +7,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
-## 1.40.2.dev (development stage/unreleased/unstable)
+## 1.40.3.dev (development stage/unreleased/unstable)
+
+## 1.40.3
+### Changed
+- Not catching general eception anymore - we must catch the specific exceptions
 ### Fixed
 - Catch KeyError before the general exception in sockets to give better feedback within the callback.
+- Error in coroutine loop handling
 
 ## 1.40.2
 ### Changed

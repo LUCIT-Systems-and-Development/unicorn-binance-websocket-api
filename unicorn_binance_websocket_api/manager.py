@@ -197,7 +197,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  high_performance=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.40.2.dev"
+        self.version = "1.40.3.dev"
         logger.info(f"New instance of {self.get_user_agent()} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         if disable_colorama is not True:
@@ -520,7 +520,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         asyncio.set_event_loop(loop)
         socket = BinanceWebSocketApiSocket(self, stream_id, channels, markets)
         try:
-            asyncio.ensure_future(socket.start_socket())
+            loop.create_task(socket.start_socket())
             loop.run_forever()
         except RuntimeError as error_msg:
             if "cannot schedule new futures after interpreter shutdown" in str(error_msg):

@@ -40,10 +40,9 @@ import logging
 import unittest
 import os
 import time
-#import tracemalloc
 
-
-#tracemalloc.start(25)
+# import tracemalloc
+# tracemalloc.start(25)
 
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
