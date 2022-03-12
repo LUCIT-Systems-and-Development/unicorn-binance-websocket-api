@@ -199,6 +199,9 @@ class BinanceWebSocketApiSocket(object):
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
                             self.manager.set_restart_request(self.stream_id)
                             sys.exit(1)
+                        elif "sent 1011 (unexpected error) keepalive ping timeout" in str(error_msg):
+                            self.manager.stream_is_crashing(self.stream_id, error_msg)
+                            self.manager.set_restart_request(self.stream_id)
                         else:
                             self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                             self.manager.set_restart_request(self.stream_id)
@@ -212,12 +215,12 @@ class BinanceWebSocketApiSocket(object):
                         sys.exit(1)
                     except KeyError as error_msg:
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
-                                     str(self.channels) + ", " + str(self.markets) + ") - KeyError (possibly in the"
-                                     "callback function - error_msg: " + str(error_msg))
+                                     str(self.channels) + ", " + str(self.markets) + ") - KeyError (possibly within the"
+                                     "callback function) - error_msg: " + str(error_msg))
                     except Exception as error_msg:
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
-                                     str(self.channels) + ", " + str(self.markets) + ") - Exception General Exception -"
-                                     " error_msg: " + str(error_msg))
+                                     str(self.channels) + ", " + str(self.markets) + ") - Exception General Exception "
+                                     " (possibly within the callback function) - error_msg: " + str(error_msg))
                         self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                         self.manager.set_restart_request(self.stream_id)
                         sys.exit(1)
