@@ -40,7 +40,7 @@ import os
 import requests
 import sys
 import time
-import threading
+
 
 try:
     import unicorn_binance_rest_api
@@ -72,8 +72,6 @@ except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
 
-print("starting monitoring api!")
-binance_websocket_api_manager.start_monitoring_api()
 
 markets = []
 data = binance_rest_client.get_all_tickers()
