@@ -11,9 +11,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.40.3
 ### Changed
-- Not catching general eception anymore - we must catch the specific exceptions
+- Not catching general eception anymore - we must catch the specific exceptions: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/324f9fa191608946fb2973acc7de484e15f5030a/unicorn_binance_websocket_api/sockets.py#L220
 ### Fixed
-- Catch KeyError before the general exception in sockets to give better feedback within the callback.
+- Catch KeyError before the general exception in sockets to give better feedback within the callback function.
 - Error in coroutine loop handling
 
 ## 1.40.2
