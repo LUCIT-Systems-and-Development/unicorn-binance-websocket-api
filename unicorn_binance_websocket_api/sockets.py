@@ -161,8 +161,7 @@ class BinanceWebSocketApiSocket(object):
                                                                   stream_buffer_name=stream_buffer_name)
                             elif self.manager.specific_process_stream_data[self.stream_id] is not None:
                                 # if create_stream() got a callback function -> use it
-                                self.manager.specific_process_stream_data[self.stream_id](received_stream_data,
-                                                                                          stream_buffer_name=stream_buffer_name)
+                                self.manager.specific_process_stream_data[self.stream_id](received_stream_data)
                             else:
                                 # Use the default process_stream_data function provided to/by the manager class
                                 self.manager.process_stream_data(received_stream_data,
