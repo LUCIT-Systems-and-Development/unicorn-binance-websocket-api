@@ -108,12 +108,13 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         - https://docs.binance.org/api-reference/dex-api/ws-connection.html
 
-    :param process_stream_data: Provide a function/method to process the received webstream data. The function
+    :param process_stream_data: Provide a function/method to process the received webstream data (callback). The function
                                 will be called instead of
                                 `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
                                 like `process_stream_data(stream_data, stream_buffer_name)` where
                                 `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
-                                get stored in the stream_buffer! `How to read from stream_buffer!
+                                get stored in the stream_buffer or provided to a specific callback function of
+                                `create_stream()`! `How to read from stream_buffer!
                                 <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
     :type process_stream_data: function
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
@@ -191,13 +192,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                  disable_colorama=False,
                  stream_buffer_maxlen=None,
                  process_stream_signals=False,
-                 close_timeout_default: int = 2,
+                 close_timeout_default: int = 1,
                  ping_interval_default: int = 5,
-                 ping_timeout_default: int = 20,
+                 ping_timeout_default: int = 10,
                  high_performance=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.40.3.dev"
+        self.version = "1.40.4.dev"
         logger.info(f"New instance of {self.get_user_agent()} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         if disable_colorama is not True:
@@ -1201,12 +1202,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
                                      `BinanceWebSocketApiManager()`.
         :type stream_buffer_maxlen: int or None
-        :param process_stream_data: Provide a function/method to process the received webstream data. The function
-                            will be called instead of
+        :param process_stream_data: Provide a function/method to process the received webstream data (callback). The
+                            function will be called instead of
                             `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
-                            like `process_stream_data(stream_data, stream_buffer_name)` where
+                            like `process_stream_data(stream_data)` where
                             `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
-                            get stored in the stream_buffer! `How to read from stream_buffer!
+                            get stored in the stream_buffer or provided to the global callback function provided during
+                            object instantiation! `How to read from stream_buffer!
                             <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
         :type process_stream_data: function
         :return: stream_id or 'False'
