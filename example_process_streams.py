@@ -59,7 +59,6 @@ class BinanceWebSocketApiProcessStreams(object):
         # Github: https://github.com/LUCIT-Systems-and-Development/unicorn-fy
         # PyPI: https://pypi.org/project/unicorn-fy/
         exchange = "binance.com"
-
         if exchange == "binance.com" or exchange == "binance.com-testnet":
             unicorn_fied_stream_data = UnicornFy.binance_com_websocket(received_stream_data_json)
         elif exchange == "binance.com-futures" or exchange == "binance.com-futures-testnet":
