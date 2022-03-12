@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
 ## 1.40.3.dev (development stage/unreleased/unstable)
+### Removed
+- Passing `stream_buffer_name=stream_buffer_name` to `specific_process_stream_data()` 
 
 ## 1.40.3
 ### Changed
