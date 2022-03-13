@@ -39,12 +39,12 @@ Check this or we will delete your issue. (fill in the checkbox with an X like so
 Include here a description of your internet access like cable, lte and up and download rate.
 ```
 
-#### Average system load (CPU)
+#### Average System Load (CPU)
 ```
 Include here the ammount of cpu cores and the average system load.
 ```
 
-#### Hardware specification 
+#### Hardware Specification 
 ```
 Include here a description of the server hardware.
 ```
@@ -79,15 +79,15 @@ Include here the response of 'python3 -m pip --version' or 'pip3 --version'
 #### Dependencies
 Run `pip list > pip_list.txt` and upload the file.
 
-#### UNICORN Binance WebSocket API Version?
+#### Which Versions?
 ```
 Did you upgrade to the latest release version with `pip install unicorn-binance-websocket-api --upgrade`?
 
 Please control the versions you are using with this script and post the output: 
-https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/blob/master/tools/get_used_module_version.py
+https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/blob/master/tools/get_versions_of_unicorn_packages.py
 ```
 
-#### Description of your issue
+#### Description Of Your Issue
 ```
 Include the contents of the log file here. (REMOVE API_KEY, API_SECRET, LISTEN_KEY!!)
 ```
