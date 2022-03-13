@@ -75,7 +75,10 @@ logging.getLogger("unicorn_binance_websocket_api")
 or [use this script](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_everything.py) 
 to stream everything from "binance.com".
 
-This should be known by everyone using this lib: [Do you want consistent data from binance?](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/254)
+This should be known by everyone using this lib: 
+
+- [Best practice solutions for a maximum stable connection](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Best-practice-solutions-for-a-maximum-stable-connection!)
+- [Do you want consistent data from binance?](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/254)
 
 ## Description
 The Python package [UNICORN Binance WebSocket API](https://www.lucit.tech/unicorn-binance-websocket-api.html) 

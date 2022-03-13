@@ -186,9 +186,9 @@ class BinanceWebSocketApiSocket(object):
                                 self.manager.stream_list[self.stream_id]['last_received_data_record'] = received_stream_data
 
                     except websockets.exceptions.ConnectionClosed as error_msg:
-                        logger.critical("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
-                                        str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed"
-                                        " - error_msg: " + str(error_msg))
+                        logger.debug("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
+                                     str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed"
+                                     " - error_msg: " + str(error_msg))
                         if "WebSocket connection is closed: code = 1008" in str(error_msg):
                             websocket.close()
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
@@ -201,7 +201,11 @@ class BinanceWebSocketApiSocket(object):
                         elif "sent 1011 (unexpected error) keepalive ping timeout" in str(error_msg):
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
                             self.manager.set_restart_request(self.stream_id)
+                            sys.exit(1)
                         else:
+                            logger.error(f"BinanceWebSocketApiSocket.start_socket({self.stream_id}, {self.channels}, "
+                                         f"{self.markets}) - Unkown exception in ConnectionClosed - error_msg: "
+                                         f"{error_msg}")
                             self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                             self.manager.set_restart_request(self.stream_id)
                             sys.exit(1)

@@ -7,9 +7,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
-## 1.40.4.dev (development stage/unreleased/unstable)
+## 1.40.5.dev (development stage/unreleased/unstable)
 
-## 1.40.4.dev
+## 1.40.5
+### Fixed
+- Restart of error `sent 1011 (unexpected error) keepalive ping timeout` in sockets.py
+
+## 1.40.4
 ### Changed
 - Rebalanced default ping interval and timeout as well as closing timeout
 ### Removed
