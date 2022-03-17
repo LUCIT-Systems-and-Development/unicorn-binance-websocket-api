@@ -1,3 +1,8 @@
+# Changes must also be made in the following files:
+# ./environment.yml
+# ./setup.py
+# https://github.com/conda-forge/unicorn-binance-websocket-api-feedstock/blob/main/recipe/meta.yaml
+
 cheroot
 colorama
 flask
