@@ -7,7 +7,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
-## 1.40.5.dev (development stage/unreleased/unstable)
+## 1.40.6.dev (development stage/unreleased/unstable)
+
+## 1.40.6
+Codebase equal to 1.40.5, just preparing conda-forge packaging
 
 ## 1.40.5
 ### Fixed
