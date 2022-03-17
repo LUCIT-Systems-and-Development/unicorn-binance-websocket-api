@@ -1,4 +1,4 @@
-[![GitHub release](https://img.shields.io/github/release/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg)](https://pypi.org/project/unicorn-binance-websocket-api/)
+[![GitHub release](https://img.shields.io/github/release/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)
 [![GitHub](https://img.shields.io/github/license/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?color=blue)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/unicorn-binance-websocket-api.svg)](https://www.python.org/downloads/)
 [![Downloads](https://pepy.tech/badge/unicorn-binance-websocket-api)](https://pepy.tech/project/unicorn-binance-websocket-api)
