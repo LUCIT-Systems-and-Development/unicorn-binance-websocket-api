@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.40.7
 Codebase equal to 1.40.5, testing azure pipe
+### Changed
+- Exclude`tools` folder from package
 
 ## 1.40.6
 Codebase equal to 1.40.5, just preparing conda-forge packaging
