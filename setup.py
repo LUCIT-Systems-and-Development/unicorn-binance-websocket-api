@@ -65,7 +65,7 @@ setuptools.setup(
         'Author': 'https://www.lucit.tech',
      },
      python_requires='>=3.7.0',
-     packages=setuptools.find_packages(exclude=["tools", "images", "pypi", "sphinx", "docs", ".github"]),
+     packages=setuptools.find_packages(exclude=["tools", "images", "pypi", "sphinx", "docs", ".github", "ipynb"]),
      classifiers=[
          "Development Status :: 5 - Production/Stable",
          "Programming Language :: Python :: 3.7",
