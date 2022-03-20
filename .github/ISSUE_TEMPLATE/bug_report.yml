@@ -45,9 +45,9 @@ body:
       description: |
         In which operating system is the code executed?
       options:
+        - Linux
         - macOS
         - Windows
-        - Linux
         - Other (please explain)
 
   - type: dropdown
@@ -103,22 +103,22 @@ body:
       description: |
         To which endpoint do you connect?
       options:
+        - concerns all
         - binance.com
-        - binance.com-testnet
-        - binance.com-margin
-        - binance.com-margin-testnet
-        - binance.com-isolated_margin
-        - binance.com-isolated_margin-testnet
+        - binance.com-coin_futures
         - binance.com-futures
         - binance.com-futures-testnet
-        - binance.com-coin_futures
-        - binance.us
-        - trbinance.com
-        - jex.com
+        - binance.com-isolated_margin
+        - binance.com-isolated_margin-testnet
+        - binance.com-margin
+        - binance.com-margin-testnet
+        - binance.com-testnet
         - binance.org
-        - binance.org-testnet              
-        - concerns all
-         
+        - binance.org-testnet 
+        - binance.us
+        - jex.com
+        - trbinance.com
+ 
   - type: textarea
     id: Issue
     attributes:
