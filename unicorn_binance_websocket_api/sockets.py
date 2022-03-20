@@ -202,13 +202,20 @@ class BinanceWebSocketApiSocket(object):
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
                             self.manager.set_restart_request(self.stream_id)
                             sys.exit(1)
+                        elif "no close frame received or sent" in str(error_msg):
+                            self.manager.stream_is_crashing(self.stream_id, error_msg)
+                            self.manager.set_restart_request(self.stream_id)
+                            sys.exit(1)
                         else:
                             logger.error(f"BinanceWebSocketApiSocket.start_socket({self.stream_id}, {self.channels}, "
                                          f"{self.markets}) - Unkown exception in ConnectionClosed - error_msg: "
-                                         f"{error_msg}")
+                                         f"{error_msg} - Please create an issue with logfile and error stack on "
+                                         f"https://github.com/LUCIT-Systems-and-Development/"
+                                         f"unicorn-binance-websocket-api/issues/new?assignees=&labels=bug&"
+                                         f"template=bug_report.yml")
                             self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                             self.manager.set_restart_request(self.stream_id)
-                            sys.exit(1)
+                            sys.exit(1)  # Is shown as error stack in the log files
                     except AttributeError as error_msg:
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") - Exception AttributeError - "

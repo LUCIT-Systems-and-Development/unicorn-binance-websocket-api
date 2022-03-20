@@ -528,13 +528,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                                 f" - RuntimeError `error: 11` - error_msg:  {str(error_msg)} - Please create an issue: "
                                 f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/"
-                                f"issues/new/choose")
+                                f"issues/new?assignees=&labels=bug&template=bug_report.yml")
                 self.stop_manager_with_all_streams()
                 sys.exit(1)
             logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                             f" - RuntimeError `error: 7` - error_msg: {str(error_msg)} - Please create an issue: "
                             f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/"
-                            f"new/choose")
+                            f"new?assignees=&labels=bug&template=bug_report.yml")
             loop.close()
         finally:
             try:
