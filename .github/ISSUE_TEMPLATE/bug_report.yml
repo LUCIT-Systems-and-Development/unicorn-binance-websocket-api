@@ -1,0 +1,128 @@
+name: Bug report
+description: Report a bug with this library.
+labels: bug
+body:
+  - type: markdown
+    attributes:
+      value: | 
+        Please post here only issues concerning this repository and follow the [Issue-Guidelines](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/wiki/Issue-Guidelines). 
+        
+        Most of these fields are not mandatory, but please provide as much information as possible.
+  - type: textarea
+    id: Version
+    attributes:
+      label: Version of this library.
+      description: |
+        Please control what version you are using with [this script](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/blob/master/tools/get_versions_of_unicorn_packages.py) and post the output:
+    validations:
+      required: true
+      
+  - type: checkboxes
+    id: Confirmation
+    attributes:
+      label: Solution to Issue cannot be found in the documentation or other Issues and also occurs in the latest version of this library.
+      description: |
+        I have searched for other Issues with the same problem or similar feature requests and have looked in the documentation. This issue also affects the latest version of this library. 
+      options:
+        - label: I checked the documentation and other Issues. I am using the latest version of this library.
+          required: true
+
+  - type: dropdown
+    id: Hardware
+    attributes:
+      label: Hardware?
+      description: |
+        In which hardware environment is the code executed?
+      options:
+        - Local server/workstation
+        - Raspberry Pi
+        - VPS or other cloud hosting
+
+  - type: dropdown
+    id: OS
+    attributes:
+      label: Operating System?
+      description: |
+        In which operating system is the code executed?
+      options:
+        - macOS
+        - Windows
+        - Linux
+
+  - type: dropdown
+    id: Python
+    attributes:
+      label: Python version?
+      description: |
+        In which Python version is the code executed?
+      options:
+        - Python3.7
+        - Python3.8
+        - Python3.9
+        - Python3.10
+         
+  - type: textarea
+    id: Packages
+    attributes:
+      label: Installed packages
+      description: |
+        Please share your installed packages by running `pip list` or `conda list` and entering the output below:
+        _Note:_ This will be automatically formatted as code.
+      placeholder: "`pip list` or `conda list`"
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: Log
+    attributes:
+      label: Logging output
+      description: |
+        Please share the logging output here (REMOVE API_KEY, API_SECRET, LISTEN_KEY!!):
+        _Note:_ This will be automatically formatted as code.
+      placeholder: "logfile"
+      render: shell
+    validations:
+      required: false
+
+  - type: dropdown
+    id: Processing
+    attributes:
+      label: Processing method?
+      description: |
+        Are you using the `stream_buffer` or the `process_stream_data`-callback function?
+      options:
+        - stream_buffer
+        - process_stream_data
+         
+  - type: dropdown
+    id: Endpoint
+    attributes:
+      label: Used endpoint?
+      description: |
+        To which endpoint do you connect?
+      options:
+        - binance.com
+        - binance.com-testnet
+        - binance.com-margin
+        - binance.com-margin-testnet
+        - binance.com-isolated_margin
+        - binance.com-isolated_margin-testnet
+        - binance.com-futures
+        - binance.com-futures-testnet
+        - binance.com-coin_futures
+        - binance.us
+        - trbinance.com
+        - jex.com
+        - binance.org
+        - binance.org-testnet              
+         
+  - type: textarea
+    id: Issue
+    attributes:
+      label: Issue
+      description: |
+        Please describe the issue you are experiencing:
+    validations:
+      required: true
+      

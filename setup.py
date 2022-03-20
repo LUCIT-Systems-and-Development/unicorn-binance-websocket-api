@@ -59,10 +59,13 @@ setuptools.setup(
               'binance-websocket, binance-webstream, webstream, websocket, api, binance-jersey, binance-dex, '
               'binance-futures, binance-margin',
      project_urls={
-        'Howto': 'https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api',
-        'Documentation': 'https://unicorn-binance-websocket-api.docs.lucit.tech',
-        'Wiki': 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki',
-        'Author': 'https://www.lucit.tech',
+         'Howto': 'https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api',
+         'Documentation': 'https://unicorn-binance-websocket-api.docs.lucit.tech',
+         'Wiki': 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki',
+         'Author': 'https://www.lucit.tech',
+         'Changes': 'https://unicorn-binance-websocket-api.docs.lucit.tech//CHANGELOG.html',
+         'Issue Tracker': 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues',
+         'Chat': 'https://t.me/unicorndevs',
      },
      python_requires='>=3.7.0',
      packages=setuptools.find_packages(exclude=["tools", "images", "pypi", "sphinx", "docs", ".github", "ipynb"]),

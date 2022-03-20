@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: UNICORN Devs Chat
+    url: https://t.me/unicorndevs
+    about: Chat to us about the UNICORN Binance WebSocket API and ask general questions.
+  - name: UNICORN Binance WebSocket API Discussions
+    url: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions
+    about: Ask general questions.
+  - name: UNICORN Binance WebSocket API documentation
+    url: https://unicorn-binance-websocket-api.docs.lucit.tech/
+    about: The complete UNICORN Binance WebSocket API documentation.
