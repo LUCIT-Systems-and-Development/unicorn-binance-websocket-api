@@ -66,6 +66,7 @@ setuptools.setup(
          'Changes': 'https://unicorn-binance-websocket-api.docs.lucit.tech//CHANGELOG.html',
          'Issue Tracker': 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues',
          'Chat': 'https://gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api',
+         'Telegram': 'https://t.me/unicorndevs',
      },
      python_requires='>=3.7.0',
      packages=setuptools.find_packages(exclude=["tools", "images", "pypi", "sphinx", "docs", ".github", "ipynb"]),
