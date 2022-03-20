@@ -118,8 +118,8 @@ body:
         - binance.us
         - jex.com
         - trbinance.com
-      validations:
-        required: true
+    validations:
+      required: true
  
   - type: textarea
     id: Issue
