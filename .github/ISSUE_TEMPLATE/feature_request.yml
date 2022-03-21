@@ -1,6 +1,8 @@
 name: Feature request
 description: Suggest an idea for this library.
 labels: enhancement 
+assignees:
+  - oliver-zehentleitner
 body:
   - type: markdown
     attributes:
