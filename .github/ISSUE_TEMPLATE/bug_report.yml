@@ -1,6 +1,8 @@
 name: Bug report
 description: Report a bug with this library.
 labels: bug
+assignees:
+  - oliver-zehentleitner
 body:
   - type: markdown
     attributes:
