@@ -257,5 +257,4 @@ class BinanceWebSocketApiSocket(object):
         except SystemExit as error_msg:
             logger.error(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={self.stream_id} "
                          f"- SystemExit({str(error_msg)}) - Going to close thread and loop!")
-            quit(1)
-            #sys.exit(1)
+            sys.exit(1)
