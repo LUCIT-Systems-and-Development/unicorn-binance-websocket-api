@@ -35,6 +35,7 @@
 
 from __future__ import print_function
 from unicorn_binance_websocket_api.connection import BinanceWebSocketApiConnection
+from unicorn_binance_websocket_api.exceptions import StreamThreadClosing
 from unicorn_fy.unicorn_fy import UnicornFy
 import asyncio
 import ujson as json
@@ -107,7 +108,7 @@ class BinanceWebSocketApiSocket(object):
                         try:
                             await websocket.send(json.dumps(payload, ensure_ascii=False))
                         except SystemExit as error_msg:
-                            logger.error(f"BinanceWebSocketApiManager._create_stream_thread() stream_id="
+                            logger.error(f"BinanceWebSocketApiManager.start_socket() stream_id="
                                          f"{self.stream_id} - SystemExit({str(error_msg)}) - Going to close thread "
                                          f"and loop!")
                             keep_running = False
@@ -230,11 +231,6 @@ class BinanceWebSocketApiSocket(object):
                         self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                         self.manager.set_restart_request(self.stream_id)
                         sys.exit(1)
-#                    except SystemExit as error_msg:
-#                        logger.error(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={self.stream_id} "
-#                                     f"- SystemExit({str(error_msg)}) - Going to close thread and loop!")
-#                        keep_running = False
-                        #sys.exit(1)
                     except KeyError as error_msg:
                         # Todo: Test deactivation for better error stacks in the callback function
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
@@ -255,6 +251,8 @@ class BinanceWebSocketApiSocket(object):
             self.manager.set_restart_request(self.stream_id)
             sys.exit(1)
         except SystemExit as error_msg:
-            logger.error(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={self.stream_id} "
+            logger.error(f"BinanceWebSocketApiManager.start_socket() stream_id={self.stream_id} "
                          f"- SystemExit({str(error_msg)}) - Going to close thread and loop!")
-            sys.exit(1)
+            raise StreamThreadClosing("Thread closed!")
+
+

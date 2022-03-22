@@ -34,7 +34,7 @@
 # IN THE SOFTWARE.
 
 
-from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange
+from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange, StreamThreadClosing
 from unicorn_binance_websocket_api.sockets import BinanceWebSocketApiSocket
 from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
@@ -521,7 +521,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         asyncio.set_event_loop(loop)
         socket = BinanceWebSocketApiSocket(self, stream_id, channels, markets)
         try:
-            loop.create_task(socket.start_socket())
+            task = loop.create_task(socket.start_socket())
+            task.add_done_callback(self._handle_task_result)
             loop.run_forever()
         except SystemExit as error_msg:
             logger.info(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={stream_id} "
@@ -692,6 +693,18 @@ class BinanceWebSocketApiManager(threading.Thread):
                             logger.info("BinanceWebSocketApiManager._frequent_checks() - sent listen_key keepalive "
                                         "ping for stream_id=" + str(stream_id))
         sys.exit(0)
+
+    def _handle_task_result(self, task: asyncio.Task) -> None:
+        """
+        This method avoids the `Task exception was never retrieved` traceback:
+        https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/261
+        """
+        try:
+            task.result()
+        except asyncio.CancelledError:
+            pass  # Task cancellation should not be logged as an error.
+        except Exception:  # pylint: disable=broad-except
+            logging.debug('Exception raised by task = %r', task)
 
     def _keepalive_streams(self):
         """
@@ -1482,8 +1495,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             except KeyError:
                 pass
             logger.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
-                         str(markets) + ", " + ", " + str(symbols) + ") - Created websocket URI for stream_id=" +
-                         str(stream_id) + " is " + self.websocket_base_uri + str(query))
+                        str(markets) + ", " + ", " + str(symbols) + ") - Created websocket URI for stream_id=" +
+                        str(stream_id) + " is " + self.websocket_base_uri + str(query))
             return self.websocket_base_uri + str(query)
 
     def delete_listen_key_by_stream_id(self, stream_id):

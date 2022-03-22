@@ -178,7 +178,7 @@ class BinanceWebSocketApiConnection(object):
             self.manager.stream_is_crashing(self.stream_id, " - No internet connection? "
                                             "- error_msg: " + str(error_msg) + ": " + self.manager.websocket_base_uri)
             self.manager.set_restart_request(self.stream_id)
-            sys.exit(1)
+            #sys.exit(1)
         except OSError as error_msg:
             logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ")" + " - OSError - error_msg: " +
