@@ -35,7 +35,6 @@
 
 from __future__ import print_function
 from unicorn_binance_websocket_api.connection import BinanceWebSocketApiConnection
-from unicorn_binance_websocket_api.exceptions import StreamThreadClosing
 from unicorn_fy.unicorn_fy import UnicornFy
 import asyncio
 import ujson as json
@@ -64,7 +63,6 @@ class BinanceWebSocketApiSocket(object):
     async def start_socket(self):
         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, {str(self.channels)}, "
                     f"{str(self.markets)}) socket_id={str(self.socket_id)} recent_socket_id={str(self.socket_id)}")
-        keep_running = True
         try:
             async with BinanceWebSocketApiConnection(self.manager,
                                                      self.stream_id,
@@ -73,7 +71,7 @@ class BinanceWebSocketApiSocket(object):
                                                      self.markets,
                                                      symbols=self.symbols) as websocket:
                 self.manager.socket_is_ready[self.stream_id] = True
-                while keep_running:
+                while True:
                     if self.manager.is_stop_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
                         await websocket.close()
@@ -105,13 +103,7 @@ class BinanceWebSocketApiSocket(object):
                         payload = self.manager.stream_list[self.stream_id]['payload'].pop(0)
                         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
                                     f"{str(self.channels)}, {str(self.markets)} - Sending payload: {str(payload)}")
-                        try:
-                            await websocket.send(json.dumps(payload, ensure_ascii=False))
-                        except SystemExit as error_msg:
-                            logger.error(f"BinanceWebSocketApiManager.start_socket() stream_id="
-                                         f"{self.stream_id} - SystemExit({str(error_msg)}) - Going to close thread "
-                                         f"and loop!")
-                            keep_running = False
+                        await websocket.send(json.dumps(payload, ensure_ascii=False))
                         # To avoid a ban we respect the limits of binance:
                         # https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
                         # Limit: max 5 messages per second inclusive pings/pong
@@ -210,17 +202,10 @@ class BinanceWebSocketApiSocket(object):
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
                             self.manager.set_restart_request(self.stream_id)
                             sys.exit(1)
-                        elif "no close frame received or sent" in str(error_msg):
-                            self.manager.stream_is_crashing(self.stream_id, error_msg)
-                            self.manager.set_restart_request(self.stream_id)
-                            sys.exit(1)
                         else:
                             logger.error(f"BinanceWebSocketApiSocket.start_socket({self.stream_id}, {self.channels}, "
                                          f"{self.markets}) - Unkown exception in ConnectionClosed - error_msg: "
-                                         f"{error_msg} - Please create an issue with logfile and error stack on "
-                                         f"https://github.com/LUCIT-Systems-and-Development/"
-                                         f"unicorn-binance-websocket-api/issues/new?assignees=&labels=bug&"
-                                         f"template=bug_report.yml")
+                                         f"{error_msg}")
                             self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                             self.manager.set_restart_request(self.stream_id)
                             sys.exit(1)
@@ -232,7 +217,6 @@ class BinanceWebSocketApiSocket(object):
                         self.manager.set_restart_request(self.stream_id)
                         sys.exit(1)
                     except KeyError as error_msg:
-                        # Todo: Test deactivation for better error stacks in the callback function
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") - KeyError (possibly within the"
                                      "callback function) - error_msg: " + str(error_msg))
@@ -245,14 +229,9 @@ class BinanceWebSocketApiSocket(object):
 #                        sys.exit(1)
         except asyncio.TimeoutError as error_msg:
             # Catching https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/221
-            logger.error(f"BinanceWebSocketApiSocket.start_socket({self.stream_id}, {self.channels}, {self.markets}) - "
-                         f"asyncio.TimeoutError - error_msg: {error_msg}")
             self.manager.stream_is_crashing(self.stream_id, error_msg)
             self.manager.set_restart_request(self.stream_id)
             sys.exit(1)
         except SystemExit as error_msg:
-            logger.error(f"BinanceWebSocketApiManager.start_socket() stream_id={self.stream_id} "
+            logger.error(f"BinanceWebSocketApiSocket.start_socket() stream_id={self.stream_id} "
                          f"- SystemExit({str(error_msg)}) - Going to close thread and loop!")
-            raise StreamThreadClosing("Thread closed!")
-
-

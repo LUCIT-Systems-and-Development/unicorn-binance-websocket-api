@@ -34,7 +34,7 @@
 # IN THE SOFTWARE.
 
 
-from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange, StreamThreadClosing
+from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange
 from unicorn_binance_websocket_api.sockets import BinanceWebSocketApiSocket
 from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
@@ -521,7 +521,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         asyncio.set_event_loop(loop)
         socket = BinanceWebSocketApiSocket(self, stream_id, channels, markets)
         try:
-            task = loop.create_task(socket.start_socket())
+            task = loop.create_task(socket.start_socket(), name=f"{stream_id}_{time.time()}")
             task.add_done_callback(self._handle_task_result)
             loop.run_forever()
         except SystemExit as error_msg:
@@ -532,13 +532,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                                 f" - RuntimeError `error: 11` - error_msg:  {str(error_msg)} - Please create an issue: "
                                 f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/"
-                                f"issues/new?assignees=&labels=bug&template=bug_report.yml")
+                                f"issues/new/choose")
                 self.stop_manager_with_all_streams()
                 sys.exit(1)
             logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                             f" - RuntimeError `error: 7` - error_msg: {str(error_msg)} - Please create an issue: "
                             f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/"
-                            f"new?assignees=&labels=bug&template=bug_report.yml")
+                            f"new/choose")
             loop.close()
         finally:
             try:
@@ -702,9 +702,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             task.result()
         except asyncio.CancelledError:
-            pass  # Task cancellation should not be logged as an error.
-        except Exception:  # pylint: disable=broad-except
-            logging.debug('Exception raised by task = %r', task)
+            logger.debug('BinanceWebSocketApiManager._handle_task_result() - asyncio.CancelledError raised by task '
+                         '= %r', task)
+        except SystemExit as error_msg:
+            logger.debug(f'BinanceWebSocketApiManager._handle_task_result() - SystemExit({error_msg}) raised by task ='
+                         f' %r', task)
+        except Exception:
+            logger.critical('BinanceWebSocketApiManager._handle_task_result() - Exception raised by task = %r', task)
 
     def _keepalive_streams(self):
         """
@@ -1495,8 +1499,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             except KeyError:
                 pass
             logger.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
-                        str(markets) + ", " + ", " + str(symbols) + ") - Created websocket URI for stream_id=" +
-                        str(stream_id) + " is " + self.websocket_base_uri + str(query))
+                         str(markets) + ", " + ", " + str(symbols) + ") - Created websocket URI for stream_id=" +
+                         str(stream_id) + " is " + self.websocket_base_uri + str(query))
             return self.websocket_base_uri + str(query)
 
     def delete_listen_key_by_stream_id(self, stream_id):

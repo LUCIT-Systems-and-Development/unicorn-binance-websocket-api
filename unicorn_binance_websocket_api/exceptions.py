@@ -47,10 +47,3 @@ class UnknownExchange(Exception):
     Exception if the manager class is started with an unkown exchange.
     """
     pass
-
-
-class StreamThreadClosing(Exception):
-    """
-    Exception if the stream thread is closing.
-    """
-    pass
