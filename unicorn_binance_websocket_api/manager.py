@@ -696,19 +696,21 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def _handle_task_result(self, task: asyncio.Task) -> None:
         """
-        This method avoids the `Task exception was never retrieved` traceback:
+        This method is a callback for `loop.create_task()` to retrive the task exception and avoid the `Task exception
+        was never retrieved` traceback on stdout:
         https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/261
         """
         try:
             task.result()
         except asyncio.CancelledError:
-            logger.debug('BinanceWebSocketApiManager._handle_task_result() - asyncio.CancelledError raised by task '
-                         '= %r', task)
-        except SystemExit as error_msg:
-            logger.debug(f'BinanceWebSocketApiManager._handle_task_result() - SystemExit({error_msg}) raised by task ='
-                         f' %r', task)
-        except Exception:
-            logger.critical('BinanceWebSocketApiManager._handle_task_result() - Exception raised by task = %r', task)
+            logger.debug(f"BinanceWebSocketApiManager._handle_task_result() - asyncio.CancelledError raised by task "
+                         f"= {task}")
+        except SystemExit as error_code:
+            logger.debug(f"BinanceWebSocketApiManager._handle_task_result() - SystemExit({error_code}) raised by task "
+                         f"= {task}")
+        except Exception as error_msg:
+            logger.critical(f"BinanceWebSocketApiManager._handle_task_result() - Exception({error_msg}) raised by task "
+                            f"= {task}")
 
     def _keepalive_streams(self):
         """
@@ -736,6 +738,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     # restart streams with requests
                     if self.restart_requests[stream_id]['status'] == "new" or \
                             self.stream_list[stream_id]['kill_request'] is True:
+                        print(f"found stream_id to restart: {stream_id}")
                         self.kill_stream(stream_id)
                         thread = threading.Thread(target=self._restart_stream_thread, args=(stream_id,))
                         thread.start()
@@ -778,6 +781,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             return False
         self.event_loops[stream_id] = loop
         self.socket_is_ready[stream_id] = False
+        print(f"START NEW THREAD")
         thread = threading.Thread(target=self._create_stream_thread,
                                   args=(loop,
                                         stream_id,
