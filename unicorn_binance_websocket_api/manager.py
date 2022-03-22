@@ -254,7 +254,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.websocket_base_uri = "wss://stream.binance.us:9443/"
             self.max_subscriptions_per_stream = 1024
         elif self.exchange == "trbinance.com":
-            self.websocket_base_uri = "wss://stream-cloud.trbinance.com"
+            self.websocket_base_uri = "wss://stream-cloud.trbinance.com/"
             self.max_subscriptions_per_stream = 1024
         elif self.exchange == "jex.com":
             self.websocket_base_uri = "wss://ws.jex.com/"
@@ -524,7 +524,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             loop.create_task(socket.start_socket())
             loop.run_forever()
         except SystemExit as error_msg:
-            logger.info(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
+            logger.info(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={stream_id} "
                         f"- SystemExit({str(error_msg)}) - Going to close thread and loop!")
         except RuntimeError as error_msg:
             if "cannot schedule new futures after interpreter shutdown" in str(error_msg):

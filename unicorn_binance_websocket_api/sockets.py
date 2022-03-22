@@ -223,7 +223,11 @@ class BinanceWebSocketApiSocket(object):
                         self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                         self.manager.set_restart_request(self.stream_id)
                         sys.exit(1)
+                    except SystemExit as error_msg:
+                        logger.info(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={self.stream_id} "
+                                    f"- SystemExit({str(error_msg)}) - Going to close thread and loop!")
                     except KeyError as error_msg:
+                        # Todo: Test deactivation for better error stacks in the callback function
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") - KeyError (possibly within the"
                                      "callback function) - error_msg: " + str(error_msg))
@@ -236,6 +240,8 @@ class BinanceWebSocketApiSocket(object):
 #                        sys.exit(1)
         except asyncio.TimeoutError as error_msg:
             # Catching https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/221
+            logger.error(f"BinanceWebSocketApiSocket.start_socket({self.stream_id}, {self.channels}, {self.markets}) - "
+                         f"asyncio.TimeoutError - error_msg: {error_msg}")
             self.manager.stream_is_crashing(self.stream_id, error_msg)
             self.manager.set_restart_request(self.stream_id)
             sys.exit(1)
