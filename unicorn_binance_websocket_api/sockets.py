@@ -232,6 +232,6 @@ class BinanceWebSocketApiSocket(object):
             self.manager.stream_is_crashing(self.stream_id, error_msg)
             self.manager.set_restart_request(self.stream_id)
             sys.exit(1)
-        except SystemExit as error_msg:
+        except SystemExit as error_code:
             logger.error(f"BinanceWebSocketApiSocket.start_socket() stream_id={self.stream_id} "
-                         f"- SystemExit({str(error_msg)}) - Going to close thread and loop!")
+                         f"- SystemExit({str(error_code)}) - Going to close thread and loop!")

@@ -524,9 +524,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             task = loop.create_task(socket.start_socket(), name=f"{stream_id}_{time.time()}")
             task.add_done_callback(self._handle_task_result)
             loop.run_forever()
-        except SystemExit as error_msg:
-            logger.info(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={stream_id} "
-                        f"- SystemExit({str(error_msg)}) - Going to close thread and loop!")
+        except SystemExit as error_code:
+            logger.error(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={self.stream_id} "
+                         f"- SystemExit({str(error_code)}) - Going to close thread and loop!")
         except RuntimeError as error_msg:
             if "cannot schedule new futures after interpreter shutdown" in str(error_msg):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "

@@ -97,7 +97,7 @@ class BinanceWebSocketApiConnection(object):
                     # -2014 = API-key format invalid
                     # -2015 = Invalid API-key, IP, or permissions for action
                     # -11001 = Isolated margin account does not exist.
-                    # Cant get a valid listen_key, so this stream has to crash:
+                    # Can not get a valid listen_key, so this stream has to crash:
                     logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
                                     ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 4 - " +
                                     str(uri['msg']))
@@ -142,16 +142,16 @@ class BinanceWebSocketApiConnection(object):
             except websockets.exceptions.InvalidStatusCode as error_msg:
                 if "HTTP 429" in str(error_msg):
                     logger.error("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
-                                  ", " + str(self.channels) + ", " + str(self.markets) + ") InvalidStatusCode-HTTP429" +
-                                  str(error_msg))
+                                 ", " + str(self.channels) + ", " + str(self.markets) + ") InvalidStatusCode-HTTP429" +
+                                 str(error_msg))
                     self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                     time.sleep(2)
                     self.manager.set_restart_request(self.stream_id)
                     sys.exit(1)
                 else:
                     logger.error("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
-                                  ", " + str(self.channels) + ", " + str(self.markets) + ") - InvalidStatusCode" +
-                                  " error_msg: " + str(error_msg))
+                                 ", " + str(self.channels) + ", " + str(self.markets) + ") - InvalidStatusCode" +
+                                 " error_msg: " + str(error_msg))
             self.manager.stream_list[self.stream_id]['status'] = "running"
             self.manager.stream_list[self.stream_id]['has_stopped'] = False
             try:
