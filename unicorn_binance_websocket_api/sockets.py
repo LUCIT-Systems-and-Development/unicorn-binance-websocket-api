@@ -63,6 +63,7 @@ class BinanceWebSocketApiSocket(object):
     async def start_socket(self):
         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, {str(self.channels)}, "
                     f"{str(self.markets)}) socket_id={str(self.socket_id)} recent_socket_id={str(self.socket_id)}")
+        keep_running = True
         try:
             async with BinanceWebSocketApiConnection(self.manager,
                                                      self.stream_id,
@@ -71,7 +72,7 @@ class BinanceWebSocketApiSocket(object):
                                                      self.markets,
                                                      symbols=self.symbols) as websocket:
                 self.manager.socket_is_ready[self.stream_id] = True
-                while True:
+                while keep_running:
                     if self.manager.is_stop_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
                         await websocket.close()
@@ -103,7 +104,13 @@ class BinanceWebSocketApiSocket(object):
                         payload = self.manager.stream_list[self.stream_id]['payload'].pop(0)
                         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
                                     f"{str(self.channels)}, {str(self.markets)} - Sending payload: {str(payload)}")
-                        await websocket.send(json.dumps(payload, ensure_ascii=False))
+                        try:
+                            await websocket.send(json.dumps(payload, ensure_ascii=False))
+                        except SystemExit as error_msg:
+                            logger.error(f"BinanceWebSocketApiManager._create_stream_thread() stream_id="
+                                         f"{self.stream_id} - SystemExit({str(error_msg)}) - Going to close thread "
+                                         f"and loop!")
+                            keep_running = False
                         # To avoid a ban we respect the limits of binance:
                         # https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
                         # Limit: max 5 messages per second inclusive pings/pong
@@ -215,7 +222,7 @@ class BinanceWebSocketApiSocket(object):
                                          f"template=bug_report.yml")
                             self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                             self.manager.set_restart_request(self.stream_id)
-                            sys.exit(1)  # Is shown as error stack in the log files
+                            sys.exit(1)
                     except AttributeError as error_msg:
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") - Exception AttributeError - "
@@ -223,10 +230,11 @@ class BinanceWebSocketApiSocket(object):
                         self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                         self.manager.set_restart_request(self.stream_id)
                         sys.exit(1)
-                    except SystemExit as error_msg:
-                        logger.info(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={self.stream_id} "
-                                    f"- SystemExit({str(error_msg)}) - Going to close thread and loop!")
-                        sys.exit(1)
+#                    except SystemExit as error_msg:
+#                        logger.error(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={self.stream_id} "
+#                                     f"- SystemExit({str(error_msg)}) - Going to close thread and loop!")
+#                        keep_running = False
+                        #sys.exit(1)
                     except KeyError as error_msg:
                         # Todo: Test deactivation for better error stacks in the callback function
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
@@ -246,3 +254,8 @@ class BinanceWebSocketApiSocket(object):
             self.manager.stream_is_crashing(self.stream_id, error_msg)
             self.manager.set_restart_request(self.stream_id)
             sys.exit(1)
+        except SystemExit as error_msg:
+            logger.error(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={self.stream_id} "
+                         f"- SystemExit({str(error_msg)}) - Going to close thread and loop!")
+            quit(1)
+            #sys.exit(1)
