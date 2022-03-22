@@ -175,8 +175,8 @@ class BinanceWebSocketApiConnection(object):
             logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) + ", " +
                             str(self.channels) + ", " + str(self.markets) + ")" + " - No internet connection? "
                             "- error_msg: " + str(error_msg) + ": " + self.manager.websocket_base_uri)
-            #self.manager.stream_is_crashing(self.stream_id, " - No internet connection? "
-            #                                "- error_msg: " + str(error_msg) + ": " + self.manager.websocket_base_uri)
+            self.manager.stream_is_crashing(self.stream_id, " - No internet connection? "
+                                            "- error_msg: " + str(error_msg) + ": " + self.manager.websocket_base_uri)
             #self.manager.set_restart_request(self.stream_id)
             #sys.exit(1)
         except OSError as error_msg:
@@ -278,7 +278,6 @@ class BinanceWebSocketApiConnection(object):
         self.manager.set_heartbeat(self.stream_id)
         try:
             received_data_json = await self.manager.websocket_list[self.stream_id].recv()
-#            received_data_json = await asyncio.wait_for(self.manager.websocket_list[self.stream_id].recv(), timeout=10)
             try:
                 if self.manager.restart_requests[self.stream_id]['status'] == "restarted":
                     self.manager.increase_reconnect_counter(self.stream_id)
@@ -308,7 +307,7 @@ class BinanceWebSocketApiConnection(object):
         except KeyError as error_msg:
             logger.error("BinanceWebSocketApiConnection.receive(" +
                          str(self.stream_id) + ") - KeyError - error_msg: " + str(error_msg))
-            self.manager.stream_is_stopping(self.stream_id)
+            self.manager.stream_is_crashing(self.stream_id)
             if self.manager.is_stop_request(self.stream_id) is False:
                 self.manager.set_restart_request(self.stream_id)
             sys.exit(1)
