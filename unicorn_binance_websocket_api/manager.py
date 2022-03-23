@@ -793,7 +793,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             if self.event_loops[stream_id].is_running():
                 self.event_loops[stream_id].stop()
-                self.event_loops[stream_id].close()
+                #self.event_loops[stream_id].close()
         except AttributeError as error_msg:
             logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - AttributeError - {error_msg}")
         loop = asyncio.new_event_loop()
@@ -3565,6 +3565,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 if loop.is_running():
                     loop.stop()
+                    loop.close()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - AttributeError - {error_msg}")
         except RuntimeError as error_msg:

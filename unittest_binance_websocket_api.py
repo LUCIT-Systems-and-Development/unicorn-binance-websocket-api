@@ -40,6 +40,7 @@ import logging
 import unittest
 import os
 import time
+import threading
 
 # import tracemalloc
 # tracemalloc.start(25)
@@ -88,7 +89,7 @@ class TestBinanceComManager(unittest.TestCase):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_regular_com() "
                   "for binance.com")
         else:
-            stream_id = self.ubwa.get_new_stream_id()
+            stream_id = self.ubwa.get_new_uuid_id()
             self.ubwa._add_socket_to_socket_list(stream_id, ["!userData"], ["arr"])
             self.assertRegex(self.ubwa.create_websocket_uri(["!userData"], ["arr"],
                                                              stream_id,
@@ -101,7 +102,7 @@ class TestBinanceComManager(unittest.TestCase):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_reverse_com() "
                   "for binance.com")
         else:
-            self.stream_id = self.ubwa.get_new_stream_id()
+            self.stream_id = self.ubwa.get_new_uuid_id()
             self.ubwa._add_socket_to_socket_list(self.stream_id, ["arr"], ["!userData"])
             self.assertRegex(self.ubwa.create_websocket_uri(["arr"], ["!userData"], self.stream_id,
                                                              self.binance_com_api_key,
@@ -141,17 +142,17 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(self.ubwa.get_listen_key_from_restclient("ID", "key", "sec"), False)
 
     def test_delete_listen_key_by_stream_id(self):
-        stream_id = self.ubwa.get_new_stream_id()
+        stream_id = self.ubwa.get_new_uuid_id()
         self.assertEqual(self.ubwa.delete_listen_key_by_stream_id(stream_id), False)
 
     def test_keepalive_listen_key(self):
-        stream_id = self.ubwa.get_new_stream_id()
+        stream_id = self.ubwa.get_new_uuid_id()
         binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.ubwa )
         self.assertEqual(str(binance_websocket_api_restclient.keepalive_listen_key(stream_id, listen_key="invalid_testkey")),
                          "{'code': -2014, 'msg': 'API-key format invalid.'}")
 
     def test_delete_listen_key(self):
-        stream_id = self.ubwa.get_new_stream_id()
+        stream_id = self.ubwa.get_new_uuid_id()
         binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.ubwa )
         self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
                          "{'code': -2014, 'msg': 'API-key format invalid.'}")
@@ -161,7 +162,7 @@ class TestBinanceComManager(unittest.TestCase):
 
     def test_create_payload_subscribe(self):
         result = "[{'method': 'SUBSCRIBE', 'params': ['bnbbtc@kline_1m'], 'id': 1}]"
-        stream_id = self.ubwa.get_new_stream_id()
+        stream_id = self.ubwa.get_new_uuid_id()
         self.assertEqual(str(self.ubwa.create_payload(stream_id, "subscribe", ['kline_1m'], ['bnbbtc'])), result)
 
     def test_fill_up_space_centered(self):
@@ -194,7 +195,7 @@ class TestBinanceComManager(unittest.TestCase):
         self.ubwa.print_stream_info(stream_id, title="Unittests")
 
     def test_restart_stream(self):
-        self.assertFalse(bool(self.ubwa._restart_stream(self.ubwa.get_new_stream_id())))
+        self.assertFalse(bool(self.ubwa._restart_stream(self.ubwa.get_new_uuid_id())))
 
     def test_start_monitoring_api(self):
         self.assertTrue(self.ubwa.start_monitoring_api())
@@ -243,7 +244,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_regular_com() "
                   "for binance.com-testnet")
         else:
-            stream_id = self.binance_com_testnet_websocket_api_manager.get_new_stream_id()
+            stream_id = self.binance_com_testnet_websocket_api_manager.get_new_uuid_id()
             self.binance_com_testnet_websocket_api_manager._add_socket_to_socket_list(stream_id, ["!userData"], ["arr"])
             self.assertRegex(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["!userData"], ["arr"],
                                                                                                  stream_id,
@@ -256,7 +257,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_reverse_com() "
                   "for binance.com-testnet")
         else:
-            stream_id = self.binance_com_testnet_websocket_api_manager.get_new_stream_id()
+            stream_id = self.binance_com_testnet_websocket_api_manager.get_new_uuid_id()
             self.binance_com_testnet_websocket_api_manager._add_socket_to_socket_list(stream_id, ["arr"], ["!userData"])
             self.assertRegex(self.binance_com_testnet_websocket_api_manager.create_websocket_uri(["arr"], ["!userData"],
                                                                                                  stream_id,
@@ -433,7 +434,7 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     def test_create_payload(self):
         result = "[{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RAVEN-F66_BNB']}]"
-        stream_id = self.binance_org_websocket_api_manager.get_new_stream_id()
+        stream_id = self.binance_org_websocket_api_manager.get_new_uuid_id()
         self.assertEqual(str(self.binance_org_websocket_api_manager.create_payload(stream_id,
                                                                                    "subscribe",
                                                                                    ['kline_1m'],
@@ -446,9 +447,9 @@ class TestBinanceOrgManager(unittest.TestCase):
 
 class TestRestApi(unittest.TestCase):
 
-    def test_get_new_stream_id(self):
+    def test_get_new_uuid_id(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com", high_performance=True)
-        binance_websocket_api_manager.get_new_stream_id()
+        binance_websocket_api_manager.get_new_uuid_id()
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com(self):
@@ -734,7 +735,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.set_ringbuffer_error_max_size(200)
         binance_websocket_api_manager.set_ringbuffer_result_max_size(300)
         binance_websocket_api_manager.set_stream_label(stream_id2, "blub")
-        binance_websocket_api_manager._add_stream_to_stream_list(binance_websocket_api_manager.get_new_stream_id(),
+        binance_websocket_api_manager._add_stream_to_stream_list(binance_websocket_api_manager.get_new_uuid_id(),
                                                                  'trade', 'btceth')
         binance_websocket_api_manager._restart_stream((stream_id1))
         binance_websocket_api_manager.delete_stream_from_stream_list(stream_id1)
@@ -785,3 +786,10 @@ class TestRestApi(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+    print(f"threads:")
+    for thread in threading.enumerate():
+        print(thread.name)
+
+    print(f"stopping ...")
+    os._exit(0)
