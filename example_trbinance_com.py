@@ -40,11 +40,11 @@ import threading
 import os
 
 
-def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
+def print_stream_data_from_stream_buffer(ubwa):
     while True:
-        if binance_websocket_api_manager.is_manager_stopping():
+        if ubwa.is_manager_stopping():
             exit(0)
-        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+        oldest_stream_data_from_stream_buffer = ubwa.pop_stream_data_from_stream_buffer()
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
 
@@ -56,16 +56,17 @@ logging.basicConfig(level=logging.DEBUG,
                     style="{")
 
 # create instance of BinanceWebSocketApiManager for Binance Jersey
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="trbinance.com")
+ubwa = BinanceWebSocketApiManager(exchange="trbinance.com")
 
-binance_websocket_api_manager.create_stream("trade", ['btctry', 'ethtry', 'bnbtry', 'xrptry', 'usdttry'])
+ubwa.create_stream("trade", ['btctry', 'ethtry', 'bnbtry', 'xrptry', 'usdttry'])
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
-worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))
 worker_thread.start()
 
 # show an overview
 while True:
-    binance_websocket_api_manager.print_summary()
-    #binance_websocket_api_manager.print_stream_info(userdata_stream_id)
+    ubwa.print_summary()
+    #ubwa.print_stream_info(userdata_stream_id)
+    print(f"restart: {ubwa.restart_requests}")
     time.sleep(1)

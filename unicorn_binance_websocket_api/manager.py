@@ -736,15 +736,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                             self.restart_requests[stream_id]['last_restart_time']+self.restart_timeout < time.time():
                         self.restart_requests[stream_id]['status'] = "new"
                     # restart streams with requests
-                    if self.restart_requests[stream_id]['status'] == "new" or \
-                            self.stream_list[stream_id]['kill_request'] is True:
-                        print(f"found stream_id to restart: {stream_id}")
-                        self.kill_stream(stream_id)
-                        thread = threading.Thread(target=self._restart_stream_thread, args=(stream_id,))
-                        thread.start()
+                    if self.restart_requests[stream_id]['status'] == "new":
+                        if self.restart_requests[stream_id]['initiated'] is None or \
+                                self.restart_requests[stream_id]['initiated']+5 < time.time():
+                            self.restart_requests[stream_id]['initiated'] = time.time()
+                            thread = threading.Thread(target=self._restart_stream_thread, args=(stream_id,))
+                            thread.start()
                 except KeyError:
                     pass
-
         sys.exit(0)
 
     def _restart_stream(self, stream_id):
@@ -769,6 +768,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     str(self.stream_list[stream_id]['channels']) +
                     ", " + str(self.stream_list[stream_id]['markets']) + ")")
         self.restart_requests[stream_id] = {'status': "restarted"}
+        print(f"restarted at {time.time()}")
         self.restart_requests[stream_id]['last_restart_time'] = time.time()
         self.stream_list[stream_id]['status'] = "restarting"
         self.stream_list[stream_id]['kill_request'] = None
@@ -2757,18 +2757,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return True
 
-    def kill_stream(self, stream_id):
-        """
-        Kill a specific stream
-
-        :param stream_id: id of a stream
-        :type stream_id: str
-        :return: bool
-        """
-        # stop a specific stream by stream_id
-        logger.info("BinanceWebSocketApiManager.kill_stream(" + str(stream_id) + ")")
-        self.stream_list[stream_id]['kill_request'] = True
-
     def pop_stream_data_from_stream_buffer(self, stream_buffer_name=False, mode="FIFO"):
         """
         Get oldest or latest entry from
@@ -3398,7 +3386,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: id of the old stream
         :type stream_id: str
         """
-        self.restart_requests[stream_id] = {'status': "new"}
+        self.restart_requests[stream_id] = {'status': "new",
+                                            'initiated': None}
         return True
 
     def split_payload(self, params, method, max_items_per_request=350):
