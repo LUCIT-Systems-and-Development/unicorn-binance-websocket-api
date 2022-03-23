@@ -528,7 +528,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             task.add_done_callback(self._handle_task_result)
             loop.run_forever()
         except SystemExit as error_code:
-            logger.error(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={stream_id} "
+            logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={stream_id} "
                          f"- SystemExit({str(error_code)}) - Going to close thread and loop!")
             self.kill_stream(stream_id)
         except RuntimeError as error_msg:
@@ -2183,11 +2183,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         return result
 
     @staticmethod
-    def get_new_uuid_id():
+    def get_new_uuid_id() -> str:
         """
-        Get a new unique stream_id.
+        Get a new unique uuid in string format. This is used as 'stream_id' or 'socket_id'.
 
-        :return: stream_id
+        :return: uuid (str)
         """
         stream_id = uuid.uuid4()
         new_id_hash = hashlib.sha256(str(stream_id).encode()).hexdigest()
@@ -2792,8 +2792,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: bool
         """
         # stop a specific stream by stream_id
-        logger.info(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - called by "
-                    f"{str(traceback.format_stack()[-2]).strip()}")
+        logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - called by "
+                     f"{str(traceback.format_stack()[-2]).strip()}")
         try:
             loop = self.get_event_loop_by_stream_id(stream_id)
             try:
