@@ -3592,7 +3592,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stream_list[stream_id]['crash_request'] = True
         except KeyError:
             return False
-        # Todo: testing
         try:
             loop = self.get_event_loop_by_stream_id(stream_id)
             try:

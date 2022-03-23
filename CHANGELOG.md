@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `_handle_task_result()` - a callback for eventtasks to retrive exceptions from within the asyncio loop.
 ### Changed
 - `get_new_stream_id()` to `get_new_uuid_id()`
-- Improved exception handling and restarts.
+- Improved exception handling and restarts. This should have also positive effects to exection handling within the callback functions.
 ### Fixed
 - Catch non retrived exceptions of `loop.run_forever()` (manager.py) [issue#261](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/261)
 - TRBinance replaced old URL `stream.binance.cc` by the new URL `stream-cloud.trbinance.com` [issue#249](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/249)
