@@ -58,15 +58,21 @@ logging.basicConfig(level=logging.DEBUG,
 # create instance of BinanceWebSocketApiManager for Binance Jersey
 ubwa = BinanceWebSocketApiManager(exchange="trbinance.com")
 
-ubwa.create_stream("trade", ['btctry', 'ethtry', 'bnbtry', 'xrptry', 'usdttry'])
+stream_id = ubwa.create_stream("trade", ['btctry', 'ethtry', 'bnbtry', 'xrptry', 'usdttry'])
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))
 worker_thread.start()
 
+
+#time.sleep(5)
+#ubwa.stop_stream(stream_id=stream_id)
 # show an overview
 while True:
-    ubwa.print_summary()
+    #ubwa.print_summary()
     #ubwa.print_stream_info(userdata_stream_id)
     print(f"restart: {ubwa.restart_requests}")
+    for thread in threading.enumerate():
+        print(thread.name)
     time.sleep(1)
+    print("")
