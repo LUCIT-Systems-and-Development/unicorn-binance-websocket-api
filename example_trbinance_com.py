@@ -64,15 +64,9 @@ stream_id = ubwa.create_stream("trade", ['btctry', 'ethtry', 'bnbtry', 'xrptry',
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))
 worker_thread.start()
 
-
-#time.sleep(5)
-#ubwa.stop_stream(stream_id=stream_id)
 # show an overview
 while True:
-    #ubwa.print_summary()
+    ubwa.print_summary()
     #ubwa.print_stream_info(userdata_stream_id)
-    print(f"restart: {ubwa.restart_requests}")
-    for thread in threading.enumerate():
-        print(thread.name)
     time.sleep(1)
-    print("")
+

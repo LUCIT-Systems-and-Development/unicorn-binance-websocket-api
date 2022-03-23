@@ -41,7 +41,6 @@ import ujson as json
 import logging
 import sys
 import time
-import uuid
 import websockets
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
@@ -53,7 +52,7 @@ class BinanceWebSocketApiSocket(object):
         self.stream_id = stream_id
         self.channels = channels
         self.markets = markets
-        self.socket_id = uuid.uuid4()
+        self.socket_id = self.manager.get_new_uuid_id()
         self.manager.stream_list[self.stream_id]['recent_socket_id'] = self.socket_id
         self.symbols = self.manager.stream_list[self.stream_id]['symbols']
         self.output = self.manager.stream_list[self.stream_id]['output']
@@ -71,7 +70,8 @@ class BinanceWebSocketApiSocket(object):
                                                      self.markets,
                                                      symbols=self.symbols) as websocket:
                 self.manager.socket_is_ready[self.stream_id] = True
-                while True:
+                while self.manager.is_stop_request(self.stream_id) is False and \
+                        self.manager.is_stop_as_crash_request(self.stream_id) is False:
                     if self.manager.is_stop_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
                         await websocket.close()
@@ -216,6 +216,7 @@ class BinanceWebSocketApiSocket(object):
                         self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                         self.manager.set_restart_request(self.stream_id)
                         sys.exit(1)
+# Todo: Testing without:
 #                    except KeyError as error_msg:
 #                        logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
 #                                     str(self.channels) + ", " + str(self.markets) + ") - KeyError (possibly within the"
@@ -235,3 +236,4 @@ class BinanceWebSocketApiSocket(object):
         except SystemExit as error_code:
             logger.error(f"BinanceWebSocketApiSocket.start_socket() stream_id={self.stream_id} "
                          f"- SystemExit({str(error_code)}) - Going to close thread and loop!")
+            sys.exit(1)

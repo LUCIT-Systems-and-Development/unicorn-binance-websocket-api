@@ -524,14 +524,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         asyncio.set_event_loop(loop)
         socket = BinanceWebSocketApiSocket(self, stream_id, channels, markets)
         try:
-            task = loop.create_task(socket.start_socket(), name=f"{stream_id}_{time.time()}")
+            task = loop.create_task(socket.start_socket(), name=f" stream_id={stream_id}, time={time.time()}")
             task.add_done_callback(self._handle_task_result)
             loop.run_forever()
         except SystemExit as error_code:
-            logger.error(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={self.stream_id} "
+            logger.error(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={stream_id} "
                          f"- SystemExit({str(error_code)}) - Going to close thread and loop!")
             self.kill_stream(stream_id)
-            sys.exit(1)
         except RuntimeError as error_msg:
             if "cannot schedule new futures after interpreter shutdown" in str(error_msg):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
@@ -540,11 +539,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 f"issues/new/choose")
                 self.stop_manager_with_all_streams()
                 sys.exit(1)
-            logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
-                            f" - RuntimeError `error: 7` - error_msg: {str(error_msg)} - Please create an issue: "
-                            f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/"
-                            f"new/choose")
-            loop.close()
+            elif "This event loop is already running" in str(error_msg):
+                logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
+                                f" - RuntimeError - error_msg:  {str(error_msg)}")
+            else:
+                logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
+                                f" - RuntimeError `error: 7` - error_msg: {str(error_msg)} - Please create an issue: "
+                                f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/"
+                                f"new/choose")
         finally:
             try:
                 if self.stream_list[stream_id]['last_stream_signal'] is not None and \
@@ -554,7 +556,11 @@ class BinanceWebSocketApiManager(threading.Thread):
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 12` - {error_msg}")
+            task.cancel()
+            loop.stop()
             loop.close()
+            self.socket_is_ready[stream_id] = True
+            sys.exit(0)
 
     def _frequent_checks(self):
         """
@@ -744,14 +750,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                     # restart streams with requests
                     if self.restart_requests[stream_id]['status'] == "new" or \
                             self.stream_list[stream_id]['kill_request'] is not None:
-                        print(f"list: {self.restart_requests[stream_id]}")
                         self.kill_stream(stream_id)
                         if self.restart_requests[stream_id]['initiated'] is None or \
                                 self.restart_requests[stream_id]['initiated']+5 < time.time():
                             self.restart_requests[stream_id]['initiated'] = time.time()
                             thread = threading.Thread(target=self._restart_stream_thread,
                                                       args=(stream_id,),
-                                                      name=f"{stream_id}_{time.time()}")
+                                                      name=f"_restart_stream_thread:  stream_id={stream_id}, "
+                                                           f"time={time.time()}")
                             thread.start()
                 except KeyError:
                     pass
@@ -785,14 +791,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['kill_request'] = None
         self.stream_list[stream_id]['payload'] = []
         try:
-            loop = asyncio.new_event_loop()
-        except OSError as error_msg:
-            logger.critical(f"BinanceWebSocketApiManager.create_stream({str(stream_id)}) - OSError - "
-                            f"error_msg: {str(error_msg)}")
-            return False
-        self.event_loops[stream_id] = loop
+            if self.event_loops[stream_id].is_running():
+                self.event_loops[stream_id].stop()
+                self.event_loops[stream_id].close()
+        except AttributeError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - AttributeError - {error_msg}")
+        loop = asyncio.new_event_loop()
         self.socket_is_ready[stream_id] = False
-        print(f"START NEW THREAD")
         thread = threading.Thread(target=self._create_stream_thread,
                                   args=(loop,
                                         stream_id,
@@ -801,7 +806,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         self.stream_list[stream_id]['stream_buffer_name'],
                                         self.stream_list[stream_id]['stream_buffer_maxlen'],
                                         True),
-                                  name=f"{stream_id}_{time.time()}")
+                                  name=f"_create_stream_thread: stream_id={stream_id}, time={time.time()}")
         thread.start()
         self.stream_threads[stream_id] = thread
         while self.socket_is_ready[stream_id] is False and self.high_performance is False:
@@ -1276,7 +1281,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         close_timeout = close_timeout or self.close_timeout_default
         ping_interval = ping_interval or self.ping_interval_default
         ping_timeout = ping_timeout or self.ping_timeout_default
-        stream_id = self.get_new_stream_id()
+        stream_id = self.get_new_uuid_id()
         markets_new = []
         if stream_buffer_name is True:
             stream_buffer_name = stream_id
@@ -1330,7 +1335,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         stream_buffer_name,
                                         stream_buffer_maxlen,
                                         False),
-                                  name=f"{stream_id}_{time.time()}")
+                                  name=f"_create_stream_thread:  stream_id={stream_id}, time={time.time()}")
         thread.start()
         self.stream_threads[stream_id] = thread
         while self.socket_is_ready[stream_id] is False and self.high_performance is False:
@@ -2178,7 +2183,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         return result
 
     @staticmethod
-    def get_new_stream_id():
+    def get_new_uuid_id():
         """
         Get a new unique stream_id.
 
@@ -2794,6 +2799,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 if loop.is_running():
                     loop.stop()
+                    loop.close()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - AttributeError - {error_msg}")
         except RuntimeError as error_msg:
@@ -3434,7 +3440,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.debug(f"BinanceWebSocketApiManager.set_restart_request({stream_id}) - called by "
                      f"{str(traceback.format_stack()[-2]).strip()}")
         try:
-            print(f"last_restart_time: {self.restart_requests[stream_id]['last_restart_time']}")
             if self.restart_requests[stream_id]['last_restart_time'] + self.restart_timeout > time.time():
                 logger.debug(f"BinanceWebSocketApiManager.set_restart_request() - last_restart_time timeout, "
                              f"initiate new")
