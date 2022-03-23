@@ -556,9 +556,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 12` - {error_msg}")
-            task.cancel()
+            #task.cancel()
             loop.stop()
             loop.close()
+            time.sleep(5)
             self.socket_is_ready[stream_id] = True
             sys.exit(0)
 
