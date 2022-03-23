@@ -56,7 +56,7 @@ logging.basicConfig(level=logging.DEBUG,
                     style="{")
 
 # create instance of BinanceWebSocketApiManager for Binance Jersey
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="jex.com")
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="jex.com", high_performance=True)
 
 # set api key and secret for userData stream
 userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"], api_key="aaa", api_secret="bb")

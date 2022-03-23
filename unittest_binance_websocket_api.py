@@ -782,14 +782,17 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.create_stream("trade", markets, stream_label="too much!")
         time.sleep(10)
         binance_websocket_api_manager.stop_manager_with_all_streams()
+        UBWA.stop_manager_with_all_streams()
+        UBWA2.stop_manager_with_all_streams()
+        UBWA3.stop_manager_with_all_streams()
+        UBWA4.stop_manager_with_all_streams()
+        print(f"threads:")
+        for thread in threading.enumerate():
+            print(thread.name)
+
+        print(f"stopping ...")
+        os._exit(0)
 
 
 if __name__ == '__main__':
     unittest.main()
-
-    print(f"threads:")
-    for thread in threading.enumerate():
-        print(thread.name)
-
-    print(f"stopping ...")
-    os._exit(0)
