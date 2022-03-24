@@ -28,5 +28,3 @@ jobs:
       run: coverage run --source unicorn_binance_websocket_api unittest_binance_websocket_api.py
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v1
-      with:
-        fail_ci_if_error: true
