@@ -42,8 +42,8 @@ import os
 import time
 import threading
 
-# import tracemalloc
-# tracemalloc.start(25)
+import tracemalloc
+tracemalloc.start(25)
 
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
@@ -272,6 +272,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
         self.assertEqual(self.binance_com_testnet_websocket_api_manager.is_exchange_type("dex"), False)
 
     def test_stop_manager(self):
+        time.sleep(10)
         self.binance_com_testnet_websocket_api_manager.stop_manager_with_all_streams()
 
 
