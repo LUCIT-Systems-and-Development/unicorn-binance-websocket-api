@@ -27,7 +27,4 @@ jobs:
         pip install coverage
     - name: Unit test and Coverage
       run: coverage run -m unittest unittest_binance_websocket_api.py
-    - name: Upload Coverage to Codecov
-      uses: codecov/codecov-action@v2
-      with:
-        fail_ci_if_error: true
+
