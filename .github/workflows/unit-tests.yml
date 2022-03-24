@@ -25,7 +25,7 @@ jobs:
         pip install -r test-requirements.txt
         pip install coverage
     - name: Unit test
-      run: coverage run -m unittest unittest_binance_websocket_api.py
+      run: coverage run -m unittest 
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v1
       with:
