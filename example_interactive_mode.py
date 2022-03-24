@@ -54,7 +54,7 @@ except ImportError:
     sys.exit(1)
 
 logging.getLogger("unicorn_binance_websocket_api")
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
@@ -87,7 +87,7 @@ try:
     binance_api_key = ""
     binance_api_secret = ""
     binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret)
-    binance_websocket_api_manager = BinanceWebSocketApiManager()
+    binance_websocket_api_manager = BinanceWebSocketApiManager(high_performance=True)
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
@@ -100,18 +100,21 @@ print_summary_thread = threading.Thread(target=print_stream, args=(binance_webso
 print_summary_thread.start()
 
 data = binance_rest_client.get_all_tickers()
+
 for item in data:
     markets.append(item['symbol'])
+    if len(markets) == binance_websocket_api_manager.get_limit_of_subscriptions_per_stream():
+        break
 
-binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Alice userData stream",
-                                            api_key="aaa", api_secret="bbb")
-binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Bobs userData stream",
-                                            api_key="ccc", api_secret="ddd")
+#binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Alice userData stream",
+#                                            api_key="aaa", api_secret="bbb")
+#binance_websocket_api_manager.create_stream(["!userData"], ["arr"], "Bobs userData stream",
+#                                            api_key="ccc", api_secret="ddd")
 
 binance_websocket_api_manager.create_stream(arr_channels, "arr", stream_label="arr channels")
 
-for channel in channels:
-    binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
+#for channel in channels:
+#    binance_websocket_api_manager.create_stream(channel, markets, stream_label=channel)
 
 ubwa = binance_websocket_api_manager
 

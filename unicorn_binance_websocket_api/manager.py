@@ -524,7 +524,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         asyncio.set_event_loop(loop)
         socket = BinanceWebSocketApiSocket(self, stream_id, channels, markets)
         try:
-            task = loop.create_task(socket.start_socket(), name=f" stream_id={stream_id}, time={time.time()}")
+            task = loop.create_task(socket.start_socket(), name=f"stream_id={stream_id}, time={time.time()}")
             task.add_done_callback(self._handle_task_result)
             loop.run_forever()
         except SystemExit as error_code:
@@ -3565,7 +3565,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 if loop.is_running():
                     loop.stop()
-                    loop.close()
+#                    loop.close()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - AttributeError - {error_msg}")
         except RuntimeError as error_msg:
