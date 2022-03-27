@@ -92,9 +92,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     Binance.us websocket API documentation:
 
-        - https://github.com/binance-us/binance-official-api-docs/blob/master/web-socket-streams.md
-
-        - https://github.com/binance-us/binance-official-api-docs/blob/master/user-data-stream.md
+        - https://docs.binance.us/#introduction
 
     TRBinance.com websocket API documentation:
 
