@@ -34,6 +34,7 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.exceptions import StreamRecoveryError
+import asyncio
 import copy
 import logging
 import socket
@@ -65,6 +66,10 @@ class BinanceWebSocketApiConnection(object):
         self.channels = copy.deepcopy(channels)
         self.markets = copy.deepcopy(markets)
         self.symbols = copy.deepcopy(symbols)
+        self.add_timeout = True if "!userData" in str(str(channels) + str(markets)) else False
+        if self.add_timeout:
+            logger.error(f"BinanceWebSocketApiConnection.receive({str(self.stream_id)}) socket_id="
+                         f"{str(self.socket_id)}) - Adding timeout to `websocket.recv()` ")
 
     async def __aenter__(self):
         if self.manager.is_stop_request(self.stream_id):
@@ -277,8 +282,14 @@ class BinanceWebSocketApiConnection(object):
     async def receive(self):
         self.manager.set_heartbeat(self.stream_id)
         try:
-            received_data_json = await self.manager.websocket_list[self.stream_id].recv()
-#            received_data_json = await asyncio.wait_for(self.manager.websocket_list[self.stream_id].recv(), timeout=10)
+            if self.add_timeout:
+                # This is a dirty workaround and only a temporary solution
+                # using wait_for is slowing down the receiving by 50% under full load. But without userdata streams
+                # wont close without the awaited future
+                received_data_json = await asyncio.wait_for(self.manager.websocket_list[self.stream_id].recv(),
+                                                            timeout=2.0)
+            else:
+                received_data_json = await self.manager.websocket_list[self.stream_id].recv()
             try:
                 if self.manager.restart_requests[self.stream_id]['status'] == "restarted":
                     self.manager.increase_reconnect_counter(self.stream_id)

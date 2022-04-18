@@ -61,23 +61,21 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 # configure api key and secret for binance.com
 binance_com_api_key = ""
 binance_com_api_secret = ""
+binance_com_api_key = ""
+binance_com_api_secret = ""
 
-# configure api key and secret for binance.je
-binance_je_api_key = ""
-binance_je_api_secret = ""
 
 # configure api key and secret for binance.us
 binance_us_api_key = ""
 binance_us_api_secret = ""
 
 # configure api key and secret for binance.us
-binance_com_iso_api_key = ""
-binance_com_iso_api_secret = ""
+binance_com_iso_api_key = binance_com_api_key
+binance_com_iso_api_secret = binance_com_api_secret
 
 # create instances of BinanceWebSocketApiManager
 binance_com_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com",
                                                                throw_exception_if_unrepairable=True)
-binance_je_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.je")
 binance_us_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us")
 binance_com_isolated_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")
 
@@ -85,21 +83,16 @@ binance_com_isolated_websocket_api_manager = BinanceWebSocketApiManager(exchange
 binance_com_user_data_stream_id = binance_com_websocket_api_manager.create_stream('arr', '!userData',
                                                                                   api_key=binance_com_api_key,
                                                                                   api_secret=binance_com_api_secret)
-binance_je_user_data_stream_id = binance_je_websocket_api_manager.create_stream('arr', '!userData',
-                                                                                api_key=binance_je_api_key,
-                                                                                api_secret=binance_je_api_secret)
 binance_us_user_data_stream_id = binance_us_websocket_api_manager.create_stream('arr', '!userData',
                                                                                 api_key=binance_us_api_key,
                                                                                 api_secret=binance_us_api_secret)
 binance_com_iso_user_data_stream_id = binance_com_isolated_websocket_api_manager.create_stream('arr', '!userData',
-                                                                                               symbols="trxbtc",
+                                                                                               symbols="LUNAUSDT",
                                                                                                api_key=binance_com_iso_api_key,
                                                                                                api_secret=binance_com_iso_api_secret)
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_com_websocket_api_manager,))
-worker_thread.start()
-worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_je_websocket_api_manager,))
 worker_thread.start()
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_us_websocket_api_manager,))
 worker_thread.start()
@@ -108,10 +101,20 @@ worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer,
 worker_thread.start()
 
 # monitor the streams
+round = 0
 while True:
     binance_com_isolated_websocket_api_manager.print_stream_info(binance_com_iso_user_data_stream_id)
     binance_com_websocket_api_manager.print_summary()
-    binance_je_websocket_api_manager.print_summary()
     binance_us_websocket_api_manager.print_summary()
     binance_com_isolated_websocket_api_manager.print_summary()
-    time.sleep(5)
+    time.sleep(3)
+    round += 1
+    if round >= 7:
+        binance_com_isolated_websocket_api_manager.stop_stream(binance_com_iso_user_data_stream_id)
+        break
+
+print("Stopping ...")
+
+binance_com_websocket_api_manager.stop_manager_with_all_streams()
+binance_us_websocket_api_manager.stop_manager_with_all_streams()
+binance_com_isolated_websocket_api_manager.stop_manager_with_all_streams()

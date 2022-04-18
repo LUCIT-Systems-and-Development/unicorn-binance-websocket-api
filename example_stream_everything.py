@@ -50,13 +50,14 @@ except ImportError:
 
 binance_api_key = ""
 binance_api_secret = ""
+
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
             'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
 arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
 
 logging.getLogger("unicorn_binance_websocket_api")
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
@@ -78,7 +79,7 @@ except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
 
-ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(high_performance=True)
+ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(high_performance=True, debug=True)
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))

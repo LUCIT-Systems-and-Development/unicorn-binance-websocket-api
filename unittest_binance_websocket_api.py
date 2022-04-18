@@ -43,7 +43,7 @@ import time
 import threading
 
 import tracemalloc
-tracemalloc.start(25)
+#tracemalloc.start(25)
 
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
@@ -790,9 +790,7 @@ class TestRestApi(unittest.TestCase):
         print(f"threads:")
         for thread in threading.enumerate():
             print(thread.name)
-
         print(f"stopping ...")
-        os._exit(0)
 
 
 if __name__ == '__main__':

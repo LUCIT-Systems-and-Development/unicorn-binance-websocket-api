@@ -756,18 +756,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                     pass
         sys.exit(0)
 
-    def get_debug_log(self):
-        """
-        Get the debug log string.
-
-        :return: str
-        """
-        if self.debug:
-            debug_msg = f" - called by {str(traceback.format_stack()[-2]).strip()}"
-        else:
-            debug_msg = ""
-        return debug_msg
-
     def _restart_stream(self, stream_id):
         """
         This is NOT stop/start! Its purpose is to start a died stream again! Use `set_restart_request()` for stop/start!
@@ -794,13 +782,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['status'] = "restarting"
         self.stream_list[stream_id]['kill_request'] = None
         self.stream_list[stream_id]['payload'] = []
-        try:
-            if self.event_loops[stream_id].is_running():
-                logger.debug(f"BinanceWebSocketApiManager._restart_stream({stream_id}) - Closing event_loop "
-                             f"of stream_id {stream_id}")
-                self.event_loops[stream_id].close()
-        except AttributeError as error_msg:
-            logger.debug(f"BinanceWebSocketApiManager._restart_stream({stream_id}) - AttributeError - {error_msg}")
         loop = asyncio.new_event_loop()
         self.set_socket_is_not_ready(stream_id)
         thread = threading.Thread(target=self._create_stream_thread,
@@ -1671,6 +1652,18 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.warning("`get_binance_api_status()` is obsolete and will be removed in future releases, please use"
                         "`get_used_weight()` instead!")
         return self.binance_api_status
+
+    def get_debug_log(self):
+        """
+        Get the debug log string.
+
+        :return: str
+        """
+        if self.debug:
+            debug_msg = f" - called by {str(traceback.format_stack()[-2]).strip()}"
+        else:
+            debug_msg = ""
+        return debug_msg
 
     def get_used_weight(self):
         """
@@ -2722,7 +2715,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: str
         :return: bool
         """
-        logger.debug("BinanceWebSocketApiManager.is_stop_as_crash_request(" + str(stream_id) + ")")
+        logger.debug(f"BinanceWebSocketApiManager.is_stop_as_crash_request(" + str(stream_id) +
+                     f"){self.get_debug_log()}")
         try:
             if self.stream_list[stream_id]['crash_request'] is True:
                 return True
