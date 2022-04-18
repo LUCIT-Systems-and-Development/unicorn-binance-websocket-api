@@ -199,7 +199,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  debug=False):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.40.7.dev"
+        self.version = "1.41.0"
         logger.info(f"New instance of {self.get_user_agent()} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         self.debug = debug
