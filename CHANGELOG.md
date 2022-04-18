@@ -7,27 +7,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
-## 1.42.0.dev (development stage/unreleased/unstable)
+## 1.41.0.dev (development stage/unreleased/unstable)
 
-## 1.42.0.dev
+## 1.41.0
 ### Added
 - `debug` (bool) parameter to `BinanceWebSocketApiManager()`
 - `manager.get_debug_log()`
 - `manager.set_socket_is_ready()`
 - `manager.set_socket_is_not_ready()`
-### Fixing 
-- AsyncIO implementation and a temporary workaround for stopping userData streams 
-
-## 1.41.0
-### Added
 - `_handle_task_result()` - a callback for eventtasks to retrive exceptions from within the asyncio loop.
 ### Changed
 - `get_new_stream_id()` to `get_new_uuid_id()`
 - Improved exception handling and restarts. This should have also positive effects to exection handling within the callback functions.
-### Fixed
-- Catch non retrived exceptions of `loop.run_forever()` (manager.py) [issue#261](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/261)
+### Fixing 
+- AsyncIO implementation and a temporary workaround for stopping userData streams 
 - TRBinance replaced old URL `stream.binance.cc` by the new URL `stream-cloud.trbinance.com` [issue#249](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/249)
-- Clean up old threads and loops after a disconnect
 
 ## 1.40.7
 Codebase equal to 1.40.5, testing azure pipe
