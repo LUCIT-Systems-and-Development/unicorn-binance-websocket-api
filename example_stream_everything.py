@@ -78,7 +78,7 @@ except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
 
-ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager()
+ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(high_performance=True)
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))

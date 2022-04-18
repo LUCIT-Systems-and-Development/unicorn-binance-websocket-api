@@ -56,7 +56,7 @@ channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m
 arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
 
 logging.getLogger("unicorn_binance_websocket_api")
-logging.basicConfig(level=logging.WARNING,
+logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
