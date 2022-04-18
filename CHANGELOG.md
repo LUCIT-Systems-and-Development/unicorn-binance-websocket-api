@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `manager.get_debug_log()`
 - `manager.set_socket_is_ready()`
 - `manager.set_socket_is_not_ready()`
+### Fixing 
+- AsyncIO implementation and a temporary workaround for stopping userData streams 
 
 ## 1.41.0
 ### Added
