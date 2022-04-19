@@ -22,7 +22,7 @@
 [Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#howto) |
 [Documentation](#documentation) | [Examples](#examples) | [Change Log](#change-log) | [Wiki](#wiki) | [Social](#social) |
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
-[Contributing](#contributing) | [Commercial Support](#commercial-support)
+[Contributing](#contributing) | [Disclaimer](#disclaimer) | [Commercial Support](#commercial-support)
 
 An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
 com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, jex, dex/chain+testnet) 
@@ -371,6 +371,18 @@ contribute follow
 [![Contributors](https://contributors-img.web.app/image?repo=oliver-zehentleitner/unicorn-binance-websocket-api)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/graphs/contributors)
 
 We ![love](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/heart.png) open source!
+
+## Disclaimer
+This project is for informational purposes only. You should not construe this information or any other material as 
+legal, tax, investment, financial or other advice. Nothing contained herein constitutes a solicitation, recommendation, 
+endorsement or offer by us or any third party provider to buy or sell any securities or other financial instruments in 
+this or any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such 
+jurisdiction.
+
+***If you intend to use real money, use it at your own risk.***
+
+Under no circumstances will we be responsible or liable for any claims, damages, losses, expenses, costs or liabilities 
+of any kind, including but not limited to direct or indirect damages for loss of profits.
 
 ## Commercial Support
 [![LUCIT](https://www.lucit.tech/files/images/logos/LUCIT-LOGO.png)](https://www.lucit.tech)
