@@ -271,9 +271,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             # Unknown Exchange
             error_msg = f"Unknown exchange '{str(self.exchange)}'! Read the docs to see a list of supported " \
-                        "exchanges: https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_" \
-                        "binance_websocket_api.html#module-unicorn_binance_websocket_api.unicorn_binance_websocket_" \
-                        "api_manager"
+                        f"exchanges: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/" \
+                        f"Binance-websocket-endpoint-configuration-overview"
             logger.critical(error_msg)
             raise UnknownExchange(error_msg)
         self.stop_manager_request = None
