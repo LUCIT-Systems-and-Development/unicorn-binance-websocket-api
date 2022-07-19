@@ -1,5 +1,3 @@
-![LUCIT-UBS-Banner-GitHub](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/logo/LUCIT-UBS-Logo-GitHub.png)
-
 [![GitHub Release](https://img.shields.io/github/release/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?label=github)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/total?color=blue)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)
 [![Conda Release](https://img.shields.io/conda/vn/conda-forge/unicorn-binance-websocket-api.svg?color=blue)](https://anaconda.org/conda-forge/unicorn-binance-websocket-api)
@@ -18,6 +16,8 @@
 [![Github](https://img.shields.io/badge/source-github-yellow)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)
 [![Telegram](https://img.shields.io/badge/chat-telegram-yellow)](https://t.me/unicorndevs)
 [![Gitter](https://badges.gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api.svg)](https://gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+![LUCIT-UBS-Banner-GitHub](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/logo/LUCIT-UBS-Logo-GitHub.png)
 
 # UNICORN Binance WebSocket API
 
