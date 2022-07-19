@@ -17,7 +17,7 @@
 [![Telegram](https://img.shields.io/badge/chat-telegram-yellow)](https://t.me/unicorndevs)
 [![Gitter](https://badges.gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api.svg)](https://gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-![LUCIT-UBS-Banner-GitHub](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/logo/LUCIT-UBS-Logo-GitHub.png)
+![LUCIT-UBS-Banner-GitHub](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/logo/LUCIT-UBS-Banner-GitHub.png)
 
 # UNICORN Binance WebSocket API
 
