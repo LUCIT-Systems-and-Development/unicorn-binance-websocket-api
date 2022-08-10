@@ -87,7 +87,7 @@ binance_us_user_data_stream_id = binance_us_websocket_api_manager.create_stream(
                                                                                 api_key=binance_us_api_key,
                                                                                 api_secret=binance_us_api_secret)
 binance_com_iso_user_data_stream_id = binance_com_isolated_websocket_api_manager.create_stream('arr', '!userData',
-                                                                                               symbols="LUNAUSDT",
+                                                                                               symbols="BTCUSDT",
                                                                                                api_key=binance_com_iso_api_key,
                                                                                                api_secret=binance_com_iso_api_secret)
 
