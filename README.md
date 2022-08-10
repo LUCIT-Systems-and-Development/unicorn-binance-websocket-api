@@ -1,4 +1,4 @@
-![LUCIT-UBWA-Banner-GitHub](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/logo/LUCIT-UBWA-Banner-GitHub.png)
+[![LUCIT-UBWA-Banner-GitHub](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/logo/LUCIT-UBWA-Banner-GitHub.png)](https://www.lucit.tech/unicorn-binance-websocket-api.html)
 
 [![GitHub Release](https://img.shields.io/github/release/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?label=github)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/total?color=blue)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)
