@@ -36,6 +36,7 @@ Part of ['UNICORN Binance Suite'](https://www.lucit.tech/unicorn-binance-suite.h
 ```
 import unicorn_binance_websocket_api
 
+
 ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(exchange="binance.com")
 ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
@@ -46,6 +47,19 @@ while True:
     oldest_data_from_stream_buffer = ubwa.pop_stream_data_from_stream_buffer()
     if oldest_data_from_stream_buffer:
         print(oldest_data_from_stream_buffer)
+```
+
+### Or with a callback function:
+```
+from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+
+
+def process_new_receives(stream_data, stream_buffer_name=False):
+    print(str(stream_data))
+
+
+ubwa = BinanceWebSocketApiManager(exchange="binance.com")
+ubwa.create_stream('trade', ['ethbtc', 'btcusdt', 'bnbbtc', 'ethbtc'], process_stream_data=process_new_receives)
 ```
 
 Basically that's it, but there are more options.
