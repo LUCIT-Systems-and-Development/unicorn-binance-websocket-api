@@ -41,7 +41,7 @@ ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(exchange="binanc
 ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
 
-### And 4 more lines to print the receives:
+#### And 4 more lines to print the receives:
 ```
 while True:
     oldest_data_from_stream_buffer = ubwa.pop_stream_data_from_stream_buffer()
@@ -49,7 +49,7 @@ while True:
         print(oldest_data_from_stream_buffer)
 ```
 
-### Or with a callback function:
+### Or with a callback function just do:
 ```
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 
