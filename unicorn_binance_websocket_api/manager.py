@@ -1239,7 +1239,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
                             get stored in the stream_buffer or provided to the global callback function provided during
                             object instantiation! `How to read from stream_buffer!
-                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
+                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html?highlight=pop_stream_data_from_stream_buffer#and-4-more-lines-to-print-the-receives>`_
         :type process_stream_data: function
         :return: stream_id or 'False'
         """
