@@ -49,7 +49,7 @@ while True:
         print(oldest_data_from_stream_buffer)
 ```
 
-### Or with a callback function just do:
+### Or with a [callback function](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data) just do:
 ```
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 
