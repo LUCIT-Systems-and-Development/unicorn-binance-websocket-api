@@ -1,3 +1,5 @@
+[![LUCIT-UBWA-Banner](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/master/images/logo/LUCIT-UBWA-Banner-Readme.png)](https://www.lucit.tech/unicorn-binance-websocket-api.html)
+
 [![GitHub Release](https://img.shields.io/github/release/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?label=github)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/total?color=blue)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)
 [![Conda Release](https://img.shields.io/conda/vn/conda-forge/unicorn-binance-websocket-api.svg?color=blue)](https://anaconda.org/conda-forge/unicorn-binance-websocket-api)
@@ -22,7 +24,7 @@
 [Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#howto) |
 [Documentation](#documentation) | [Examples](#examples) | [Change Log](#change-log) | [Wiki](#wiki) | [Social](#social) |
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
-[Contributing](#contributing) | [Commercial Support](#commercial-support)
+[Contributing](#contributing) | [Disclaimer](#disclaimer) | [Commercial Support](#commercial-support)
 
 An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
 com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, jex, dex/chain+testnet) 
@@ -30,20 +32,35 @@ in a easy, fast, flexible, robust and fully-featured way.
 
 Part of ['UNICORN Binance Suite'](https://www.lucit.tech/unicorn-binance-suite.html).
 
-### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with just 3 lines of code:
+### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with a [`stream_buffer`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60) with just 3 lines of code:
+
 ```
 import unicorn_binance_websocket_api
+
 
 ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(exchange="binance.com")
 ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
 
-### And 4 more lines to print the receives:
+#### And 4 more lines to print the receives:
 ```
 while True:
     oldest_data_from_stream_buffer = ubwa.pop_stream_data_from_stream_buffer()
     if oldest_data_from_stream_buffer:
         print(oldest_data_from_stream_buffer)
+```
+
+### Or with a [callback function](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) just do:
+```
+from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+
+
+def process_new_receives(stream_data, stream_buffer_name=False):
+    print(str(stream_data))
+
+
+ubwa = BinanceWebSocketApiManager(exchange="binance.com")
+ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'], process_stream_data=process_new_receives)
 ```
 
 Basically that's it, but there are more options.
@@ -371,6 +388,18 @@ contribute follow
 [![Contributors](https://contributors-img.web.app/image?repo=oliver-zehentleitner/unicorn-binance-websocket-api)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/graphs/contributors)
 
 We ![love](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/heart.png) open source!
+
+## Disclaimer
+This project is for informational purposes only. You should not construe this information or any other material as 
+legal, tax, investment, financial or other advice. Nothing contained herein constitutes a solicitation, recommendation, 
+endorsement or offer by us or any third party provider to buy or sell any securities or other financial instruments in 
+this or any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such 
+jurisdiction.
+
+***If you intend to use real money, use it at your own risk.***
+
+Under no circumstances will we be responsible or liable for any claims, damages, losses, expenses, costs or liabilities 
+of any kind, including but not limited to direct or indirect damages for loss of profits.
 
 ## Commercial Support
 [![LUCIT](https://www.lucit.tech/files/images/logos/LUCIT-LOGO.png)](https://www.lucit.tech)
