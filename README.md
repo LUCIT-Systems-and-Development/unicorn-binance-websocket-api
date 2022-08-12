@@ -32,7 +32,7 @@ in a easy, fast, flexible, robust and fully-featured way.
 
 Part of ['UNICORN Binance Suite'](https://www.lucit.tech/unicorn-binance-suite.html).
 
-### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with a [`stream_buffer`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer)  with just 3 lines of code:
+### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with a [`stream_buffer`]([https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60))  with just 3 lines of code:
 ```
 import unicorn_binance_websocket_api
 
