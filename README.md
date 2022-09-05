@@ -408,5 +408,6 @@ of any kind, including but not limited to direct or indirect damages for loss of
 
 ***Do you need a developer, operator or consultant?***
 
-Contact [me](https://about.me/oliver-zehentleitner) for a non-binding initial consultation via my company 
-[LUCIT](https://www.lucit.tech) from Vienna (Austria) or via [Telegram](https://t.me/LUCIT_OZ)/[WhatsApp](https://wa.me/436602456535).
+[![Get professional and fast support](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/master/images/support/LUCIT-get-professional-and-fast-support.png)](https://shop.lucit.co/products/support)
+
+Contact us for a non-binding initial consultation via [LUCIT](https://www.lucit.tech).
