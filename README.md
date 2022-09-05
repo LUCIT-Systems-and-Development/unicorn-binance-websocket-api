@@ -19,6 +19,8 @@
 [![Telegram](https://img.shields.io/badge/chat-telegram-yellow)](https://t.me/unicorndevs)
 [![Gitter](https://badges.gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api.svg)](https://gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![Get professional and fast support](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/master/images/support/LUCIT-get-professional-and-fast-support.png)](https://shop.lucit.co/products/support)
+
 # UNICORN Binance WebSocket API
 
 [Description](#description) | [Live Demo](#live-demo) | [Installation](#installation-and-upgrade) | [How To](#howto) |
