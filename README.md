@@ -407,4 +407,4 @@ of any kind, including but not limited to direct or indirect damages for loss of
 
 [![Get professional and fast support](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/master/images/support/LUCIT-get-professional-and-fast-support.png)](https://shop.lucit.co/products/support)
 
-***Do you need a developer, operator or consultant?*** [Contact us](https://www.lucit.tech/contact.html) for a non-binding initial consultation.
+***Do you need a developer, operator or consultant?*** [Contact us](https://www.lucit.tech/contact.html) for a non-binding initial consultation!
