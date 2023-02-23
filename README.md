@@ -391,6 +391,9 @@ contribute follow
 
 We ![love](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/heart.png) open source!
 
+### You want to say thank you?
+We hope you are enjoying using our libraries and that they are proving to be useful to you. If you have a moment, we would greatly appreciate it if you could leave us a [review on Google](https://g.page/r/CbfHlcs8BfG8EAg/review). Thank you for your support!
+
 ## Disclaimer
 This project is for informational purposes only. You should not construe this information or any other material as 
 legal, tax, investment, financial or other advice. Nothing contained herein constitutes a solicitation, recommendation, 
