@@ -4,14 +4,17 @@ body {
     background-color: white;
     margin-left: 1em;
     margin-right: 1em;
-    font-size: 1.125em;
-    line-height: 1.4;
+}
+
+.mobile-nav,
+.menu-wrapper {
+    display: none;
 }
 
 div.related {
     margin-bottom: 1.2em;
     padding: 0.5em 0;
-    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     margin-top: 0.5em;
 }
 
@@ -19,17 +22,23 @@ div.related a:hover {
     color: #0095C4;
 }
 
-div.related:first-child {
-    border-top: 0;
-    border-bottom: 1px solid #ccc;
+div.related ~ div.related {
+    border-top: 1px solid #ccc;
+    border-bottom: none;
 }
 
-.flex.container {
-	display: flex;
+.related .switchers {
+    display: inline-flex;
 }
 
-.fill-width {
-	flex: 1;
+.switchers > div {
+    margin-right: 5px;
+}
+
+.version_switcher_placeholder,
+.language_switcher_placeholder {
+    padding-left: 5px;
+    background-color: white;
 }
 
 .inline-search {
@@ -42,15 +51,30 @@ form.inline-search input[type="submit"] {
     width: 40px;
 }
 
+div.document {
+    display: flex;
+}
+
 div.sphinxsidebar {
+    float: none;
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
     background-color: #eeeeee;
     border-radius: 5px;
-    line-height: 1.5;
-    font-size: .875em;
+    line-height: 130%;
+    font-size: smaller;
 }
 
 div.sphinxsidebar h3, div.sphinxsidebar h4 {
     margin-top: 1.5em;
+}
+
+div.sphinxsidebarwrapper {
+    box-sizing: border-box;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 div.sphinxsidebarwrapper > h3:first-child {
@@ -69,8 +93,7 @@ form.inline-search input,
 div.sphinxsidebar input {
     font-family: 'Lucida Grande',Arial,sans-serif;
     border: 1px solid #999999;
-    font-size: .875em;
-    line-height: 1.5;
+    font-size: smaller;
     border-radius: 3px;
 }
 
@@ -80,14 +103,12 @@ div.sphinxsidebar input[type=text] {
 
 div.body {
     padding: 0 0 0 1.2em;
-    max-width: 100%;
 }
 
-div.body p {
-    line-height: 140%;
+div.body p, div.body dd, div.body li, div.body blockquote {
     text-align: left;
+    line-height: 1.4;
 }
-
 div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6 {
     margin: 0;
     border: 0;
@@ -130,9 +151,8 @@ div.body a:hover {
 }
 
 tt, code, pre {
-    font-family: monospace, sans-serif;
-    font-size: .875em;
-    line-height: 1.5;
+    font-family: "monospace", monospace;
+    font-size: 96.5%;
 }
 
 div.body tt, div.body code {
@@ -140,8 +160,7 @@ div.body tt, div.body code {
 }
 
 div.body tt.descname, div.body code.descname {
-    font-size: .875em;
-    line-height: 1.5;
+    font-size: 120%;
 }
 
 div.body tt.xref, div.body a tt, div.body code.xref, div.body a code {
@@ -204,166 +223,302 @@ div.footer a:hover {
 }
 
 dl > dt span ~ em {
-    font-family: monospace, sans-serif;
+    font-family: "monospace", monospace;
 }
 
-
-@media screen and (max-width: 870px) {
-
-    div.sphinxsidebar {
-    	display: none;
-    }
-
-    div.document {
-       width: 100%;
-
-    }
-
-    div.documentwrapper {
-    	margin-left: 0;
-    	margin-top: 0;
-    	margin-right: 0;
-    	margin-bottom: 0;
-    }
-
-    div.bodywrapper {
-    	margin-top: 0;
-    	margin-right: 0;
-    	margin-bottom: 0;
-    	margin-left: 0;
-    }
-
-    ul {
-    	margin-left: 0;
-    }
-
-	li > ul {
-        /* Matches the 30px from the "ul, ol" selector above */
-		margin-left: 30px;
-	}
-
-    .document {
-    	width: auto;
-    }
-
-    .footer {
-    	width: auto;
-    }
-
-    .bodywrapper {
-    	margin: 0;
-    }
-
-    .footer {
-    	width: auto;
-    }
-
-    .github {
-        display: none;
-    }
-
-
-
+.toctree-wrapper ul {
+    padding-left: 20px;
 }
 
-
-
-@media screen and (max-width: 1124px) {
-
-    body {
-        margin: 0;
-        padding: 20px 30px;
-    }
-
-    div.documentwrapper {
-        float: none;
-        background: #fff;
-    }
-
-    div.related {
-        float: none:
-    }
-
-    div.sphinxsidebar {
-        display: block;
-        float: none;
-        width: 102.5%;
-        margin: 50px -30px -20px -30px;
-        padding: 10px 20px;
-        background: #333;
-        color: #FFF;
-    }
-
-    div.sphinxsidebar h3, div.sphinxsidebar h4, div.sphinxsidebar p,
-    div.sphinxsidebar h3 a {
-        color: #fff;
-    }
-
-    div.sphinxsidebar a {
-        color: #AAA;
-    }
-
-    div.sphinxsidebar p.logo {
-        display: none;
-    }
-
-    div.document {
-        width: 100%;
-        margin: 0;
-    }
-
-    div.bodywrapper {
-        margin: 0;
-    }
-
+@media (max-width: 1023px) {
+    /* Body layout */
     div.body {
-        min-height: 0;
+        min-width: 100%;
         padding: 0;
+        font-size: 0.875rem;
     }
-
-    div.related li.right {
+    div.bodywrapper {
+        margin: 0;
+    }
+    /* Typography */
+    div.body h1 {
+        font-size: 1.625rem;
+    }
+    div.body h2 {
+        font-size: 1.25rem;
+    }
+    div.body h3, div.body h4, div.body h5 {
+        font-size: 1rem;
+    }
+    /* Override default styles to make more readable */
+    div.body ul {
+        padding-inline-start: 1rem;
+    }
+    div.body blockquote {
+        margin-inline-start: 1rem;
+        margin-inline-end: 0;
+    }
+    /* Remove sidebar and top related bar */
+    div.related, .sphinxsidebar {
         display: none;
-        float: none;
+    }
+    /* Anchorlinks are not hidden by fixed-positioned navbar when scrolled to */
+    html {
+        scroll-padding-top: 40px;
     }
 
-    div.related li {
-        display: inline;
-        float: none;
+    /* Top navigation bar */
+    .mobile-nav {
+        display: block;
+        height: 40px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 0 2px 0;
+        z-index: 1;
+    }
+    .mobile-nav * {
+        box-sizing: border-box;
+    }
+    .nav-content {
+        position: absolute;
+        z-index: 2;
+        left: 0;
+        top: 0;
+        height: 40px;
+        width: 100%;
+        max-width: 100vw;
+        padding: 0 1rem 0 45px;
+        display: flex;
+        align-items: center;
+        background-color: white;
+    }
+    .nav-logo {
+        margin-right: 0.7rem;
+        display: flex;
+        flex: 0 0 auto;
+    }
+    .nav-content img {
+        width: 20px;
+        height: auto;
+    }
+    .version_switcher_placeholder {
+        flex: 0 1 0;
+        margin-right: 1rem;
+    }
+    .nav-content .search {
+        display: flex;
+        flex: 1 1 auto;
+        align-items: center;
+        padding: 0 0 0 2px;
+        border: 1px solid #a9a9a9;
+        height: 30px;
+        overflow: hidden;
+    }
+    .nav-content .search:hover {
+        box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
+        border-color: rgba(223,225,229,0);
+    }
+    .nav-content .search input[type=text] {
+        border: 0;
+        outline: 0;
+        box-shadow: none;
+        width: 40px;
+        height: 28px;
+        flex: 1 1 auto;
+    }
+    .nav-content .search input[type=submit] {
+        height: 100%;
+        appearance: none;
+        -webkit-appearance: none;
+        border: 1px solid transparent;
+        border-left-color: #a9a9a9;
+        box-shadow: none;
+        cursor: pointer;
+        background-color: #f0f0f0;
+        margin-right: 0;
+    }
+    .nav-content .search input[type=submit]:hover {
+        border-color: #a9a9a9;
+    }
+    .nav-content .search svg {
+        flex: 0 0 20px;
+        fill: #333;
+    }
+    .toggler__input {
+        width: 40px;
+        height: 40px;
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        z-index: 3;
+        margin: 0;
+    }
+    .toggler__label {
+        width: 40px;
+        height: 40px;
+        margin: 0;
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        background-color: transparent;
+        border: 1px solid white;
+        box-shadow: none;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 8px;
+    }
+    .toggler__label:focus {
+        background-color: #eee;
+        border: 1px solid #ededed;
+        box-shadow: rgba(0, 0, 0, 0.25) 1px 0 2px 0;
+    }
+    .toggler__label:hover {
+        background-color: #eee;
+        border: 1px solid #ededed;
+        box-shadow: rgba(0, 0, 0, 0.25) 1px 0 2px 0;
+    }
+    .toggler__label > span {
+        position: relative;
+        flex: none;
+        height: 2px;
+        width: 100%;
+        background: #444;
+        transition: all 400ms ease;
+    }
+    .toggler__label > span::before,
+    .toggler__label > span::after {
+        content: '';
+        height: 2px;
+        width: 100%;
+        background: inherit;
+        position: absolute;
+        left: 0;
+        top: -8px;
+    }
+    .toggler__label > span::after {
+        top: 8px;
+    }
+    .toggler__input:checked ~ .toggler__label span {
+        transform: rotate(135deg);
+    }
+    .toggler__input:checked ~ .toggler__label span::before {
+        transform: rotate(90deg);
+    }
+    .toggler__input:checked ~ .toggler__label span::before,
+    .toggler__input:checked ~ .toggler__label span::after {
+        top: 0;
+    }
+    .toggler__input:checked:hover ~ .toggler__label span {
+        transform: rotate(315deg);
+    }
+    .toggler__input:checked ~ .menu-wrapper {
+        visibility: visible;
+        left: 0;
     }
 
-    .rtd_doc_footer {
-        display: none;
+    /* Sliding side menu */
+    .menu-wrapper {
+        display: block;
+        position: fixed;
+        top: 0;
+        transition: left 400ms ease;
+        left: -310px;
+        width: 300px;
+        height: 100%;
+        background-color: #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
     }
-
+    .menu-wrapper.open {
+        visibility: visible;
+        left: 0;
+    }
+    .menu {
+        padding: 40px 10px 30px 20px;
+    }
+    .menu-wrapper h3,
+    .menu-wrapper h4 {
+        margin-bottom: 0;
+        font-weight: normal;
+    }
+    .menu-wrapper h4 {
+        font-size: 1.3em;
+    }
+    .menu-wrapper h3 {
+        color: #444444;
+        font-size: 1.4em;
+    }
+    .menu-wrapper h3 + p,
+    .menu-wrapper h4 + p {
+        margin-top: 0.5rem;
+    }
+    .menu a {
+        font-size: smaller;
+        color: #444444;
+        text-decoration: none;
+    }
+    .menu ul {
+        list-style: none;
+        line-height: 1.4;
+        overflow-wrap: break-word;
+        padding-left: 0;
+    }
+    .menu ul ul {
+        margin-left: 20px;
+        list-style: square;
+    }
+    .menu ul li {
+        margin-bottom: 0.5rem;
+    }
+    .language_switcher_placeholder,
+    .version_switcher_placeholder {
+        position: relative;
+        border: 1px solid #a8a8a8;
+        height: 30px;
+        padding-right: 7px;
+    }
+    .language_switcher_placeholder {
+        margin-top: 2rem;
+    }
+    .language_switcher_placeholder::after,
+    .version_switcher_placeholder::after {
+        content: url('../_static/caret-down.svg');
+        position: absolute;
+        top: 7px;
+        width: 15px;
+        height: 15px;
+        right: 0;
+        pointer-events: none;
+    }
+    .language_switcher_placeholder select,
+    .version_switcher_placeholder select {
+        -webkit-appearance: none;
+        appearance: none;
+        border: 0;
+        height: 100%;
+        background-color: white;
+    }
+    .language_switcher_placeholder:focus-visible,
+    .version_switcher_placeholder:focus-visible {
+        outline-offset: 5px;
+    }
+    .language_switcher_placeholder select {
+        width: 100%;
+    }
     .document {
-        width: auto;
+        padding-top: 40px;
+        position: relative;
+        z-index: 0;
     }
-
-    .footer {
-        width: auto;
+    /*Responsive tables*/
+    .responsive-table__container {
+        width: 100%;
+        overflow-x: auto;
     }
-}
-
-
-/* misc. */
-
-.revsys-inline {
-    display: none!important;
-}
-
-/* Make nested-list/multi-paragraph items look better in Releases changelog
- * pages. Without this, docutils' magical list fuckery causes inconsistent
- * formatting between different release sub-lists.
- */
-div#changelog > div.section > ul > li > p:only-child {
-    margin-bottom: 0;
-}
-
-/* Hide fugly table cell borders in ..bibliography:: directive output */
-table.docutils.citation, table.docutils.citation td, table.docutils.citation th {
-  border: none;
-  /* Below needed in some edge cases; if not applied, bottom shadows appear */
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
 }
