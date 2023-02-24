@@ -541,3 +541,7 @@ div.genindex-jumpbox a {
         margin-top: -2em;
     }
 }
+
+span.pre {
+  white-space: normal;
+}
