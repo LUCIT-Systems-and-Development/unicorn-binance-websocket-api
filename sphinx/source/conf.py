@@ -119,9 +119,6 @@ html_sidebars = {
     "**": ["searchbox.html"]
 }
 
-html_theme_options = {
-    "customsidebar": "<p>Your HTML</p>",
-}
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
