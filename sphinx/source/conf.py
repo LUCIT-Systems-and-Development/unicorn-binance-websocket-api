@@ -115,9 +115,6 @@ html_static_path = ['_static']
 # 'searchbox.docs']``.
 #
 # html_sidebars = {}
-html_sidebars = {
-    "**": ["searchbox.html"]
-}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
