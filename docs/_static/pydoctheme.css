@@ -151,7 +151,7 @@ div.body a:hover {
 }
 
 tt, code, pre {
-    font-family: "monospace", monospace;
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
     font-size: 96.5%;
 }
 
@@ -200,7 +200,6 @@ table.footnote, table.footnote td {
 
 div.footer {
     line-height: 150%;
-    margin-top: -2em;
     text-align: right;
     width: auto;
     margin-right: 10px;
@@ -223,11 +222,23 @@ div.footer a:hover {
 }
 
 dl > dt span ~ em {
-    font-family: "monospace", monospace;
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
 }
 
 .toctree-wrapper ul {
     padding-left: 20px;
+}
+
+div.genindex-jumpbox,
+div.genindex-jumpbox > p {
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+div.genindex-jumpbox a {
+    margin: 0 5px;
+    min-width: 30px;
+    text-align: center;
 }
 
 @media (max-width: 1023px) {
@@ -265,6 +276,9 @@ dl > dt span ~ em {
     /* Anchorlinks are not hidden by fixed-positioned navbar when scrolled to */
     html {
         scroll-padding-top: 40px;
+    }
+    body {
+        margin-top: 40px;
     }
 
     /* Top navigation bar */
@@ -512,7 +526,6 @@ dl > dt span ~ em {
         width: 100%;
     }
     .document {
-        padding-top: 40px;
         position: relative;
         z-index: 0;
     }
@@ -520,5 +533,11 @@ dl > dt span ~ em {
     .responsive-table__container {
         width: 100%;
         overflow-x: auto;
+    }
+}
+
+@media (min-width: 1024px) {
+    div.footer {
+        margin-top: -2em;
     }
 }
