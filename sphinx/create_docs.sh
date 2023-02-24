@@ -19,5 +19,5 @@
 # pip install recommonmark
 # add 'recommonmark' to extentions in conf.py
 
-#make html -d
-python3 -m sphinx source ../docs
+make html -d
+#python3 -m sphinx source ../docs
