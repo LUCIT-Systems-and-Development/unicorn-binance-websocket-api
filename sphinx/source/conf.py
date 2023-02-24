@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'unicorn-binance-websocket-api'
-copyright = '2019-2022, LUCIT Systems and Development and Oliver Zehentleitner'
+copyright = '2019-2023, LUCIT Systems and Development and Oliver Zehentleitner'
 author = 'LUCIT Systems and Development'
 
 # The short X.Y version

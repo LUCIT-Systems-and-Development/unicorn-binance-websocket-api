@@ -1879,6 +1879,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     def get_limit_of_subscriptions_per_stream(self):
         """
         Get the number of allowed active subscriptions per stream (limit of binance API)
+
         :return: int
         """
         return self.max_subscriptions_per_stream
@@ -1887,7 +1888,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get the amount of all stream subscriptions
 
-        :return: inf
+        :return: int
         """
         subscriptions = 0
         try:
