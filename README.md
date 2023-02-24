@@ -138,21 +138,21 @@ on, you can use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-bi
 - [Supported exchanges](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview): 
 
 | Exchange | Exchange string | 
-| -------- | --------------- | 
-| [Binance](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com")` |
-| [Binance Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-testnet")` |
-| [Binance Margin](https://www.binance.com) |  `BinanceWebSocketApiManager(exchange="binance.com-margin")` |
-| [Binance Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-margin-testnet")` |
-| [Binance Isolated Margin](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")` |
-| [Binance Isolated Margin Testnet](https://testnet.binance.vision/) | `BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")` |
-| [Binance USD-M Futures](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures")` |
-| [Binance USD-M Futures Testnet](https://testnet.binancefuture.com) | `BinanceWebSocketApiManager(exchange="binance.com-futures-testnet")` |
-| [Binance Coin-M Futures](https://www.binance.com) | `BinanceWebSocketApiManager(exchange="binance.com-coin_futures")` |
-| [Binance US](https://www.binance.us) | `BinanceWebSocketApiManager(exchange="binance.us")` |
-| [Binance TR](https://www.trbinance.com) | `BinanceWebSocketApiManager(exchange="trbinance.com")` |
-| [Binance JEX](https://www.jex.com) | `BinanceWebSocketApiManager(exchange="jex.com")` |
-| [Binance DEX](https://www.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org")` |
-| [Binance DEX Testnet](https://testnet.binance.org) | `BinanceWebSocketApiManager(exchange="binance.org-testnet")` |
+| -------- | ------------- | 
+| [Binance](https://www.binance.com) | `binance.com` |
+| [Binance Testnet](https://testnet.binance.vision/) | `binance.com-testnet` |
+| [Binance Margin](https://www.binance.com) |  `binance.com-margin` |
+| [Binance Margin Testnet](https://testnet.binance.vision/) | `binance.com-margin-testnet` |
+| [Binance Isolated Margin](https://www.binance.com) | `binance.com-isolated_margin` |
+| [Binance Isolated Margin Testnet](https://testnet.binance.vision/) | `binance.com-isolated_margin-testnet` |
+| [Binance USD-M Futures](https://www.binance.com) | `binance.com-futures` |
+| [Binance USD-M Futures Testnet](https://testnet.binancefuture.com) | `binance.com-futures-testnet` |
+| [Binance Coin-M Futures](https://www.binance.com) | `binance.com-coin_futures` |
+| [Binance US](https://www.binance.us) | `binance.us` |
+| [Binance TR](https://www.trbinance.com) | `trbinance.com` |
+| [Binance JEX](https://www.jex.com) | `jex.com` |
+| [Binance DEX](https://www.binance.org) | `binance.org` |
+| [Binance DEX Testnet](https://testnet.binance.org) | `binance.org-testnet` |
 
 - Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so 
 you dont need to deal with asyncio in your code!
@@ -391,7 +391,7 @@ contribute follow
 
 We ![love](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/heart.png) open source!
 
-## You want to say thank you?
+## You want to say Thank You?
 We hope you are enjoying using our libraries and that they are proving to be useful to you. If you have a moment, we would greatly appreciate it if you could leave us a [review on Google](https://g.page/r/CbfHlcs8BfG8EAg/review). Thank you for your support!
 
 ## Disclaimer
