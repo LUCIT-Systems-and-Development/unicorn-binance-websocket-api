@@ -1,4 +1,4 @@
-[![Get professional and fast support](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-suite/master/images/support/LUCIT-get-professional-and-fast-support.png)](https://shop.lucit.co/products/support)
+[![Get professional and fast support](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-suite/master/images/support/LUCIT-get-professional-and-fast-support.png)](https://www.lucit.tech/get-support.html)
 
 [![GitHub Release](https://img.shields.io/github/release/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?label=github)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/total?color=blue)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)
@@ -211,8 +211,7 @@ to control the output format.
 [`stop_manager_with_all_streams()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_manager_with_all_streams), 
 [`unsubscribe_from_stream()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream), 
 [`wait_till_stream_has_started()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.wait_till_stream_has_started) 
-and many more! Explore them 
-[here](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html).
+and many more! Explore them [here](https://unicorn-binance-websocket-api.docs.lucit.tech/modules.html).
 
 - Monitor the status of the created `BinanceWebSocketApiManager()` instance within your code with 
 [`get_monitoring_status_plain()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=plain#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_monitoring_status_plain)
@@ -408,6 +407,6 @@ of any kind, including but not limited to direct or indirect damages for loss of
 
 ## Commercial Support
 
-[![Get professional and fast support](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-suite/master/images/support/LUCIT-get-professional-and-fast-support.png)](https://shop.lucit.co/products/support)
+[![Get professional and fast support](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-suite/master/images/support/LUCIT-get-professional-and-fast-support.png)](https://www.lucit.tech/get-support.html)
 
 ***Do you need a developer, operator or consultant?*** [Contact us](https://www.lucit.tech/contact.html) for a non-binding initial consultation!
