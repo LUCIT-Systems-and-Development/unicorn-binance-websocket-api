@@ -38,12 +38,13 @@ from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, Unknow
 from unicorn_binance_websocket_api.sockets import BinanceWebSocketApiSocket
 from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
+from unicorn_binance_websocket_api.ws_connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, ws_connection_settings
 from cheroot import wsgi
 from collections import deque
 from datetime import datetime
 from flask import Flask, redirect
 from flask_restful import Api
-from typing import Optional, Union
+from typing import Literal, Optional, Union
 import asyncio
 import colorama
 import copy
@@ -120,7 +121,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
                      binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
                      binance.com-futures-testnet, binance.com-coin_futures, binance.us, trbinance.com,
-                     jex.com, binance.org or binance.org-testnet (default: binance.com)
+                     jex.com, binance.org, localhost, binance.org-testnet (default: binance.com)
     :type exchange: str
     :param warn_on_update: set to `False` to disable the update warning
     :type warn_on_update: bool
@@ -196,7 +197,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                  ping_interval_default: int = 5,
                  ping_timeout_default: int = 10,
                  high_performance=False,
-                 debug=False):
+                 debug=False,
+                 websocket_base_uri: Optional[str] = None,
+                 max_subscriptions_per_stream: Optional[int] = None,
+                 exchange_type: Optional[Literal['cex', 'dex']] = None):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.41.0.dev"
@@ -225,56 +229,30 @@ class BinanceWebSocketApiManager(threading.Thread):
             # use the provided method to process stream signals:
             self.process_stream_signals = process_stream_signals
             logger.info(f"Using `process_stream_signals` ...")
-        self.exchange = exchange
-        if self.exchange == "binance.com":
-            self.websocket_base_uri = "wss://stream.binance.com:9443/"
-            self.max_subscriptions_per_stream = 1024
-        elif self.exchange == "binance.com-testnet":
-            self.websocket_base_uri = "wss://testnet.binance.vision/"
-            self.max_subscriptions_per_stream = 1024
-        elif self.exchange == "binance.com-margin":
-            self.websocket_base_uri = "wss://stream.binance.com:9443/"
-            self.max_subscriptions_per_stream = 1024
-        elif self.exchange == "binance.com-margin-testnet":
-            self.websocket_base_uri = "wss://testnet.binance.vision/"
-            self.max_subscriptions_per_stream = 1024
-        elif self.exchange == "binance.com-isolated_margin":
-            self.websocket_base_uri = "wss://stream.binance.com:9443/"
-            self.max_subscriptions_per_stream = 1024
-        elif self.exchange == "binance.com-isolated_margin-testnet":
-            self.websocket_base_uri = "wss://testnet.binance.vision/"
-            self.max_subscriptions_per_stream = 1024
-        elif self.exchange == "binance.com-futures":
-            self.websocket_base_uri = "wss://fstream.binance.com/"
-            self.max_subscriptions_per_stream = 200
-        elif self.exchange == "binance.com-coin-futures" or self.exchange == "binance.com-coin_futures":
-            self.websocket_base_uri = "wss://dstream.binance.com/"
-            self.max_subscriptions_per_stream = 200
-        elif self.exchange == "binance.com-futures-testnet":
-            self.websocket_base_uri = "wss://stream.binancefuture.com/"
-            self.max_subscriptions_per_stream = 200
-        elif self.exchange == "binance.us":
-            self.websocket_base_uri = "wss://stream.binance.us:9443/"
-            self.max_subscriptions_per_stream = 1024
-        elif self.exchange == "trbinance.com":
-            self.websocket_base_uri = "wss://stream-cloud.trbinance.com/"
-            self.max_subscriptions_per_stream = 1024
-        elif self.exchange == "jex.com":
-            self.websocket_base_uri = "wss://ws.jex.com/"
-            self.max_subscriptions_per_stream = 10
-        elif self.exchange == "binance.org":
-            self.websocket_base_uri = "wss://dex.binance.org/api/"
-            self.max_subscriptions_per_stream = 1024
-        elif self.exchange == "binance.org-testnet":
-            self.websocket_base_uri = "wss://testnet-dex.binance.org/api/"
-            self.max_subscriptions_per_stream = 1024
-        else:
-            # Unknown Exchange
-            error_msg = f"Unknown exchange '{str(self.exchange)}'! Read the docs to see a list of supported " \
-                        f"exchanges: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/" \
-                        f"Binance-websocket-endpoint-configuration-overview"
+        if exchange not in ws_connection_settings:
+            error_msg = f"Unknown exchange '{str(exchange)}'! Read the docs to see a list of supported " \
+                        "exchanges: https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_" \
+                        "binance_websocket_api.html#module-unicorn_binance_websocket_api.unicorn_binance_websocket_" \
+                        "api_manager"
             logger.critical(error_msg)
             raise UnknownExchange(error_msg)
+
+        self.exchange = exchange
+        self.websocket_base_uri = websocket_base_uri or ws_connection_settings[self.exchange][0]
+        self.max_subscriptions_per_stream = max_subscriptions_per_stream or ws_connection_settings[self.exchange][1]
+
+        self.exchange_type = exchange_type
+        logger.info(f"{self.exchange_type=}")
+        if not self.exchange_type:
+            if self.exchange in DEX_EXCHANGES:
+                self.exchange_type = "dex"
+            elif self.exchange in CEX_EXCHANGES:
+                self.exchange_type = "cex"
+            else:
+                logger.critical(f"BinanceWebSocketApiManager.is_exchange_type() - Can not determine exchange type for"
+                                f"exchange={str(self.exchange)}")
+                self.exchange_type = None
+
         self.stop_manager_request = None
         self.all_subscriptions_number = 0
         self.binance_api_status = {'weight': None,
@@ -2655,34 +2633,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type exchange_type: str
         :return: bool
         """
-        if exchange_type is False:
+        if exchange_type is False or not self.exchange_type:
             return False
-        if self.exchange == "binance.org" or \
-                self.exchange == "binance.org-testnet":
-            is_type = "dex"
-        elif self.exchange == "binance.com" or \
-                self.exchange == "binance.com-testnet" or \
-                self.exchange == "binance.com-margin" or \
-                self.exchange == "binance.com-margin-testnet" or \
-                self.exchange == "binance.com-isolated_margin" or \
-                self.exchange == "binance.com-isolated_margin-testnet" or \
-                self.exchange == "binance.com-futures" or \
-                self.exchange == "binance.com-futures-testnet" or \
-                self.exchange == "binance.com-coin-futures" or \
-                self.exchange == "binance.com-coin_futures" or \
-                self.exchange == "binance.je" or \
-                self.exchange == "binance.us" or \
-                self.exchange == "trbinance.com" or \
-                self.exchange == "jex.com":
-            is_type = "cex"
-        else:
-            logger.critical(f"BinanceWebSocketApiManager.is_exchange_type() - Can not determine exchange type for"
-                             f"exchange={str(self.exchange)}")
-            return False
-        if is_type == exchange_type:
-            return True
-        else:
-            return False
+        return self.exchange_type == exchange_type
 
     def is_stop_request(self, stream_id, exclude_kill_requests=False):
         """
