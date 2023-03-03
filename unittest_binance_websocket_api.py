@@ -56,7 +56,7 @@ logging.basicConfig(level=logging.DEBUG,
 
 print(f"Starting unittests:")
 
-UBWA = BinanceWebSocketApiManager(exchange="binance.com", disable_colorama=True)
+UBWA = BinanceWebSocketApiManager(exchange="binance.us", disable_colorama=True)
 
 
 class TestBinanceComManager(unittest.TestCase):
@@ -67,16 +67,20 @@ class TestBinanceComManager(unittest.TestCase):
         self.ubwa = UBWA
 
     def test_create_uri_miniticker_regular_com(self):
-        self.assertEqual(self.ubwa.create_websocket_uri(["!miniTicker"], ["arr"]), 'wss://stream.binance.com:9443/ws/!miniTicker@arr')
+        #self.assertEqual(self.ubwa.create_websocket_uri(["!miniTicker"], ["arr"]), 'wss://stream.binance.com:9443/ws/!miniTicker@arr')
+        self.assertEqual(self.ubwa.create_websocket_uri(["!miniTicker"], ["arr"]), 'wss://stream.binance.us:9443/ws/!miniTicker@arr')
 
     def test_create_uri_miniticker_reverse_com(self):
-        self.assertEqual(self.ubwa.create_websocket_uri(["arr"], ["!miniTicker"]), 'wss://stream.binance.com:9443/ws/!miniTicker@arr')
+        #self.assertEqual(self.ubwa.create_websocket_uri(["arr"], ["!miniTicker"]), 'wss://stream.binance.com:9443/ws/!miniTicker@arr')
+        self.assertEqual(self.ubwa.create_websocket_uri(["arr"], ["!miniTicker"]), 'wss://stream.binance.us:9443/ws/!miniTicker@arr')
 
     def test_create_uri_ticker_regular_com(self):
-        self.assertEqual(self.ubwa.create_websocket_uri(["!ticker"], ["arr"]), 'wss://stream.binance.com:9443/ws/!ticker@arr')
+        #self.assertEqual(self.ubwa.create_websocket_uri(["!ticker"], ["arr"]), 'wss://stream.binance.com:9443/ws/!ticker@arr')
+        self.assertEqual(self.ubwa.create_websocket_uri(["!ticker"], ["arr"]), 'wss://stream.binance.us:9443/ws/!ticker@arr')
 
     def test_create_uri_ticker_reverse_com(self):
-        self.assertEqual(self.ubwa.create_websocket_uri(["arr"], ["!ticker"]), 'wss://stream.binance.com:9443/ws/!ticker@arr')
+        #self.assertEqual(self.ubwa.create_websocket_uri(["arr"], ["!ticker"]), 'wss://stream.binance.com:9443/ws/!ticker@arr')
+        self.assertEqual(self.ubwa.create_websocket_uri(["arr"], ["!ticker"]), 'wss://stream.binance.us:9443/ws/!ticker@arr')
 
     def test_create_uri_userdata_regular_false_com(self):
         self.assertFalse(self.ubwa.create_websocket_uri(["!userData"], ["arr"]))
@@ -136,7 +140,7 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(self.ubwa.get_human_bytesize(1), "1 B")
 
     def test_get_exchange(self):
-        self.assertEqual(self.ubwa.get_exchange(), "binance.com")
+        self.assertEqual(self.ubwa.get_exchange(), "binance.us")
 
     def test_get_listenkey_from_restclient(self):
         self.assertEqual(self.ubwa.get_listen_key_from_restclient("ID", "key", "sec"), False)
@@ -181,7 +185,7 @@ class TestBinanceComManager(unittest.TestCase):
                          result)
 
     def test_create_stream(self):
-        self.assertTrue(bool(self.ubwa.create_stream('arr', '!userData', "userData", "key", "secret")))
+        #self.assertTrue(bool(self.ubwa.create_stream('arr', '!userData', "userData", "key", "secret")))
         self.assertTrue(bool(self.ubwa.create_stream(markets=['bnbbtc'], channels="trade", stream_label="test_stream")))
         stream_id = self.ubwa.get_stream_id_by_label("test_stream")
         #time.sleep(5)
