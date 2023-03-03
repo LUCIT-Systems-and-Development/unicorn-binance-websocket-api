@@ -779,7 +779,8 @@ class TestRestApi(unittest.TestCase):
 
         binance_api_key = ""
         binance_api_secret = ""
-        binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret)
+        binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret,
+                                                                             exchange="binance.us")
         markets = []
         data = binance_rest_client.get_all_tickers()
         for item in data:
