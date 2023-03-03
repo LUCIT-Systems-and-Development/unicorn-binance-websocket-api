@@ -43,7 +43,7 @@ import time
 import threading
 
 import tracemalloc
-#tracemalloc.start(25)
+tracemalloc.start(25)
 
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
