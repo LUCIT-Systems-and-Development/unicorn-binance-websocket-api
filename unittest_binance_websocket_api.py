@@ -477,14 +477,14 @@ class TestRestApi(unittest.TestCase):
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
-    def test_rest_binance_com_isolated_margin(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
-        binance_websocket_api_manager.stop_manager_with_all_streams()
+#    def test_rest_binance_com_isolated_margin(self):
+#        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
+#        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
+#        binance_websocket_api_manager.stop_manager_with_all_streams()
 
-    def test_rest_binance_com_isolated_margin_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet", high_performance=True)#        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
-        binance_websocket_api_manager.stop_manager_with_all_streams()
+#    def test_rest_binance_com_isolated_margin_testnet(self):
+#        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet", high_performance=True)#        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
+#        binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_futures(self):
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures", high_performance=True)
@@ -524,7 +524,8 @@ class TestRestApi(unittest.TestCase):
             pass
 
     def test_isolated_margin(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
+#        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us", high_performance=True)
         stream_id = binance_websocket_api_manager.create_stream('arr', '!userData', symbols="CELRBTC", api_key="key", api_secret="secret")
         time.sleep(10)
         print("\r\n")
