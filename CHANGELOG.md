@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.41.0.dev (development stage/unreleased/unstable)
 ### Fixed
 - socket.py typo in `unicorn_fy.trbinance_com_websocket()`
+- `manager.get_stream_buffer_byte_size()` avoid division by zero error
 
 ## 1.41.0
 ### Added

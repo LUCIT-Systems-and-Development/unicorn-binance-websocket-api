@@ -2305,8 +2305,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         total_received_bytes = self.get_total_received_bytes()
         total_receives = self.get_total_receives()
         stream_buffer_length = self.get_stream_buffer_length()
-
-        return round(total_received_bytes / total_receives * stream_buffer_length)
+        if total_received_bytes == 0 or total_receives == 0:
+            return 0
+        else:
+            return round(total_received_bytes / total_receives * stream_buffer_length)
 
     def get_stream_buffer_length(self, stream_buffer_name=False):
         """
