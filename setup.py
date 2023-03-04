@@ -57,7 +57,7 @@ setuptools.setup(
                        'cheroot', 'flask', 'ujson', 'psutil', 'unicorn-fy'],
      keywords='binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
               'binance-websocket, binance-webstream, webstream, websocket, api, binance-jersey, binance-dex, '
-              'binance-futures, binance-margin',
+              'binance-futures, binance-margin, binance-us',
      project_urls={
          'Howto': 'https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api',
          'Documentation': 'https://unicorn-binance-websocket-api.docs.lucit.tech',
