@@ -470,7 +470,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'processed_transmitted_total': 0,
                                        'last_static_ping_listen_key': 0,
                                        'listen_key': False,
-                                       'listen_key_cache_time':  30 * 60,
+                                       'listen_key_cache_time':  10 * 60,
                                        'last_received_data_record': None,
                                        'processed_receives_statistic': {},
                                        'transfer_rate_per_second': {'bytes': {}, 'speed': 0}}
@@ -3351,7 +3351,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                            new_close_timeout,
                                            new_stream_buffer_maxlen)
         if self.wait_till_stream_has_started(new_stream_id):
-            self.stop_stream(stream_id)
+            self.stop_stream(stream_id=stream_id, delete_listen_key=False)
         return new_stream_id
 
     def run(self):
@@ -3557,12 +3557,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                         "self.monitoring_api_server.stop() - info: " + str(error_msg))
             return False
 
-    def stop_stream(self, stream_id):
+    def stop_stream(self, stream_id, delete_listen_key=True):
         """
         Stop a specific stream
 
         :param stream_id: id of a stream
         :type stream_id: str
+        :param delete_listen_key: If set to `True` (default), the `listen_key` gets deleted. Set to `False` if you run
+                                  more than one userData stream with this `listen_key`!
+        :type delete_listen_key: str
         :return: bool
         """
         # stop a specific stream by stream_id
@@ -3576,7 +3579,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             del self.restart_requests[stream_id]
         except KeyError:
             pass
-        self.delete_listen_key_by_stream_id(stream_id)
+        if delete_listen_key:
+            self.delete_listen_key_by_stream_id(stream_id)
         try:
             loop = self.get_event_loop_by_stream_id(stream_id)
             try:

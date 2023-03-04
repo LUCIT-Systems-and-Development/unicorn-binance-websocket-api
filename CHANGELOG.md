@@ -8,9 +8,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
 ## 1.41.0.dev (development stage/unreleased/unstable)
+### Added
+- Parameter `delete_listen_key` to `stop_stream()`, so its possible to disable the deletion of the `listen_key`
+### Changed 
+- The new `listen_key` keep alive interval is 10 min, with 30 min we have expired listenKeys in some cases. [issue#275](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/275)
 ### Fixed
 - socket.py typo in `unicorn_fy.trbinance_com_websocket()`
 - `manager.get_stream_buffer_byte_size()` avoid division by zero error
+- "Stream data not udpated after got event "listenKeyExpired" [issue#275](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/275)
 
 ## 1.41.0
 ### Added
