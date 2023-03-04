@@ -12,4 +12,4 @@ requests
 ujson
 unicorn-fy
 websocket-client
-websockets==10.3
+websockets==10.4
