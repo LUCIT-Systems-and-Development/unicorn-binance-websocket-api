@@ -68,7 +68,7 @@ class BinanceWebSocketApiConnection(object):
         self.symbols = copy.deepcopy(symbols)
         self.add_timeout = True if "!userData" in str(str(channels) + str(markets)) else False
         if self.add_timeout:
-            logger.error(f"BinanceWebSocketApiConnection.receive({str(self.stream_id)}) socket_id="
+            logger.debug(f"BinanceWebSocketApiConnection.receive({str(self.stream_id)}) socket_id="
                          f"{str(self.socket_id)}) - Adding timeout to `websocket.recv()` ")
 
     async def __aenter__(self):
