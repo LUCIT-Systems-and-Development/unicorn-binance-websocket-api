@@ -43,7 +43,7 @@ import time
 import threading
 
 try:
-    import unicorn_binance_rest_api
+    from unicorn_binance_rest_api.manager import BinanceRestApiManager
 except ImportError:
     print("Please install `unicorn-binance-rest-api`! https://pypi.org/project/unicorn-binance-rest-api/")
     sys.exit(1)
@@ -88,36 +88,37 @@ def print_stream_to_png(manager):
 
 
 try:
-    binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret)
-    ws_manager = BinanceWebSocketApiManager()
+    ubra = BinanceRestApiManager()
+    ubwa = BinanceWebSocketApiManager()
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
 
-worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ws_manager,))
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))
 worker_thread.start()
 
-export_thread = threading.Thread(target=print_stream_to_png, args=(ws_manager,))
+export_thread = threading.Thread(target=print_stream_to_png, args=(ubwa,))
 export_thread.start()
 
 markets = []
-data = binance_rest_client.get_all_tickers()
+data = ubra.get_all_tickers()
 for item in data:
     markets.append(item['symbol'])
 
-userdata_stream_id = ws_manager.create_stream(["!userData"],
-                                              ["arr"],
-                                              "userData stream",
-                                              api_key=binance_api_key,
-                                              api_secret=binance_api_secret)
-arr_stream_id = ws_manager.create_stream(arr_channels, "arr", "arr channels")
+userdata_stream_id = ubwa.create_stream(["!userData"],
+                                        ["arr"],
+                                        "userData stream",
+                                        api_key=binance_api_key,
+                                        api_secret=binance_api_secret)
 
-divisor = math.ceil(len(markets) / ws_manager.get_limit_of_subscriptions_per_stream())
+arr_stream_id = ubwa.create_stream(arr_channels, "arr", "arr channels")
+
+divisor = math.ceil(len(markets) / ubwa.get_limit_of_subscriptions_per_stream())
 max_subscriptions = math.ceil(len(markets) / divisor)
 
 for channel in channels:
     if len(markets) <= max_subscriptions:
-        ws_manager.create_stream(channel, markets, stream_label=channel)
+        ubwa.create_stream(channel, markets, stream_label=channel)
     else:
         loops = 1
         i = 1
@@ -125,7 +126,7 @@ for channel in channels:
         for market in markets:
             markets_sub.append(market)
             if i == max_subscriptions or loops*max_subscriptions + i == len(markets):
-                ws_manager.create_stream(channel, markets_sub, stream_label=str(channel+"_"+str(i)))
+                ubwa.create_stream(channel, markets_sub, stream_label=str(channel+"_"+str(i)))
                 markets_sub = []
                 i = 1
                 loops += 1
