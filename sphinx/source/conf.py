@@ -90,7 +90,7 @@ html_theme = 'python_docs_theme_lucit'
 html_context = {'github_user_name': 'LUCIT-Systems-and-Development',
                 'github_repo_name': 'unicorn-binance-websocket-api',
                 'project_name': project,
-                'matomo_url': "https://matomo.lucit.co/matomo.php?idsite=3&amp;rec=1",
+                'matomo_url': "https://webmon.lucit.services/matomo.php?idsite=3&amp;rec=1",
                 'freshchat_src': "//eu.fw-cdn.com/10659511/361973.js",
                 'lucit': True}
 
