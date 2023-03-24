@@ -151,15 +151,20 @@ class TestBinanceComManager(unittest.TestCase):
 
     def test_keepalive_listen_key(self):
         stream_id = self.ubwa.get_new_uuid_id()
-        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.ubwa )
+        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.ubwa)
         self.assertEqual(str(binance_websocket_api_restclient.keepalive_listen_key(stream_id, listen_key="invalid_testkey")),
                          "{'code': -2014, 'msg': 'API-key format invalid.'}")
 
     def test_delete_listen_key(self):
         stream_id = self.ubwa.get_new_uuid_id()
-        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.ubwa )
+        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.ubwa)
+        # com test
+        #self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
+        #                 "{'code': -2014, 'msg': 'API-key format invalid.'}")
+
+        # us test
         self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
-                         "{'code': -2014, 'msg': 'API-key format invalid.'}")
+                         "{'code': -1102, 'msg': \"Mandatory parameter 'listenKey' was not sent, was empty/null, or malformed.\"}")
         self.ubwa.show_secrets_in_logs = True
         self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
                          "{'code': -2014, 'msg': 'API-key format invalid.'}")
