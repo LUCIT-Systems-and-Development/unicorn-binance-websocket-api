@@ -167,7 +167,7 @@ class TestBinanceComManager(unittest.TestCase):
                          "{'code': -1102, 'msg': \"Mandatory parameter 'listenKey' was not sent, was empty/null, or malformed.\"}")
         self.ubwa.show_secrets_in_logs = True
         self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
-                         "{'code': -2014, 'msg': 'API-key format invalid.'}")
+                         "{'code': -1102, 'msg': \"Mandatory parameter 'listenKey' was not sent, was empty/null, or malformed.\"}")
 
     def test_create_payload_subscribe(self):
         result = "[{'method': 'SUBSCRIBE', 'params': ['bnbbtc@kline_1m'], 'id': 1}]"
