@@ -529,9 +529,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         except RuntimeError as error_msg:
             if "cannot schedule new futures after interpreter shutdown" in str(error_msg):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
-                                f" - RuntimeError `error: 11` - error_msg:  {str(error_msg)} - Please create an issue: "
-                                f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/"
-                                f"issues/new/choose")
+                                f" - RuntimeError `error: 11` - error_msg:  {str(error_msg)} - Info: https://github.com/"
+                                f"LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/299")
                 self.stop_manager_with_all_streams()
                 sys.exit(1)
             elif "This event loop is already running" in str(error_msg):
