@@ -15,7 +15,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Added [PR#305](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/305) of 
 [issue#304](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/304) thx to 
 [@dima-dmytruk23](https://github.com/dima-dmytruk23):
-New parameters to override websocket connection settings to `BinanceWebSocketApiManager`: `websocket_base_uri`, 
+New parameters to override websocket connection settings to 
+[`BinanceWebSocketApiManager`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager): `websocket_base_uri`, 
 `max_subscriptions_per_stream`, `restful_base_uri`, `restful_path_userdata`, `exchange_type`
 ### Changed
 - "binance.com-coin-futures" to choose coin futures is deprecated. Use "binance.com-coin_futures" instead!
