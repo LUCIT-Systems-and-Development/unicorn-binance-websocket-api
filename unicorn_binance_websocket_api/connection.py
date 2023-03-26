@@ -281,15 +281,16 @@ class BinanceWebSocketApiConnection(object):
 
     async def receive(self):
         self.manager.set_heartbeat(self.stream_id)
+        if self.manager.is_stop_request(self.stream_id):
+            return False
         try:
             if self.add_timeout:
-                # This is a dirty workaround and only a temporary solution
-                # using wait_for is slowing down the receiving by 50% under full load. But without userdata streams
-                # wont close without the awaited future
                 received_data_json = await asyncio.wait_for(self.manager.websocket_list[self.stream_id].recv(),
                                                             timeout=2.0)
             else:
                 received_data_json = await self.manager.websocket_list[self.stream_id].recv()
+            if self.manager.is_stop_request(self.stream_id):
+                return False
             try:
                 if self.manager.restart_requests[self.stream_id]['status'] == "restarted":
                     self.manager.increase_reconnect_counter(self.stream_id)

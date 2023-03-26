@@ -539,8 +539,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             else:
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                                 f" - RuntimeError `error: 7` - error_msg: {str(error_msg)} - Please create an issue: "
-                                f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/"
-                                f"new/choose")
+                                f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues"
+                                f"/new/choose")
         finally:
             try:
                 if self.stream_list[stream_id]['last_stream_signal'] is not None and \
@@ -808,10 +808,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: id of a stream
         :type stream_id: str
         """
-        logger.debug("BinanceWebSocketApiManager._restart_stream_thread(" + str(stream_id) + ", " +
-                     str(self.stream_list[stream_id]['channels']) +
-                     ", " + str(self.stream_list[stream_id]['markets']) + f"){self.get_debug_log()}")
+        try:
+            logger.debug(f"BinanceWebSocketApiManager._restart_stream_thread({stream_id}, "
+                         f"{self.stream_list[stream_id]['channels']}, {self.stream_list[stream_id]['markets']}) "
+                         f"{self.get_debug_log()}")
+        except KeyError as error_msg:
+            logger.error(f"BinanceWebSocketApiManager._restart_stream_thread({stream_id}) - KeyError {error_msg} - "
+                         f"restart canceled!{self.get_debug_log()}")
+            self.restart_requests[stream_id]['status'] = "canceled"
+            return False
         self._restart_stream(stream_id)
+        return True
 
     def _start_monitoring_api_thread(self, host, port, warn_on_update):
         """
@@ -3569,7 +3576,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         # stop a specific stream by stream_id
         logger.info(f"BinanceWebSocketApiManager.stop_stream({stream_id}){self.get_debug_log()}")
-        self.stream_is_stopping(stream_id)
         try:
             self.stream_list[stream_id]['stop_request'] = True
         except KeyError:
@@ -3593,6 +3599,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeError - {error_msg}")
         except RuntimeWarning as error_msg:
             logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeWarning - {error_msg}")
+        # Test (moved to connection and sockets
+        # self.stream_is_stopping(stream_id)
         return True
 
     def stop_stream_as_crash(self, stream_id):
@@ -3804,19 +3812,21 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def wait_till_stream_has_started(self, stream_id):
         """
-        Returns `True` as soon a specific stream has started
+        Returns `True` as soon a specific stream has started and received its first stream data
 
         :param stream_id: id of a stream
         :type stream_id: str
 
         :return: bool
         """
-        # will return `True` as soon the stream received the first data row
+        logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) started!")
         try:
             while self.stream_list[stream_id]['last_heartbeat'] is None:
                 time.sleep(0.1)
+            logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) finished with `True`!")
             return True
         except KeyError:
+            logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) finished with `False`!")
             return False
 
     def wait_till_stream_has_stopped(self, stream_id):
@@ -3828,9 +3838,12 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: bool
         """
+        logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) started!")
         try:
-            while self.stream_list[stream_id]['has_stopped'] is False:
+            while self.stream_list[stream_id]['status'] != "stopped":
                 time.sleep(0.1)
+            logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) finished with `True`!")
             return True
         except KeyError:
+            logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) finished with `False`!")
             return False

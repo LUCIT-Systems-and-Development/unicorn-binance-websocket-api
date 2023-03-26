@@ -121,6 +121,10 @@ class BinanceWebSocketApiSocket(object):
                                          f"{str(self.channels)}, {str(self.markets)} - Received inner "
                                          f"asyncio.TimeoutError")
                             continue
+                        if self.manager.is_stop_request(self.stream_id):
+                            self.manager.stream_is_stopping(self.stream_id)
+                            await websocket.close()
+                            sys.exit(0)
                         if received_stream_data_json is not None:
                             if self.output == "UnicornFy":
                                 if self.exchange == "binance.com":
