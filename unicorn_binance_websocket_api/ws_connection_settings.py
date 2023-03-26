@@ -21,7 +21,6 @@ class Exchanges(str, Enum):
     JEX = "jex.com"
     BINANCE_ORG = "binance.org"
     BINANCE_ORG_TESTNET = "binance.org-testnet"
-    LOCALHOST = "localhost"
 
 
 DEX_EXCHANGES = [Exchanges.BINANCE_ORG, Exchanges.BINANCE_ORG_TESTNET]
@@ -55,5 +54,4 @@ ws_connection_settings: dict[str, Tuple[WEBSOCKET_BASE_URI, MAX_SUBSCRIPTIONS_PE
     Exchanges.JEX: ("wss://ws.jex.com/", 10),
     Exchanges.BINANCE_ORG: ("wss://dex.binance.org/api/", 1024),
     Exchanges.BINANCE_ORG_TESTNET: ("wss://testnet-dex.binance.org/api/", 1024),
-    Exchanges.LOCALHOST: ("ws://127.0.0.1:8765/", 1024),
 }

@@ -11,9 +11,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Logging to `manager.wait_till_stream_has_started()`
 - Logging to `manager.wait_till_stream_has_stoped()`
+- Added [PR#305](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/305) of 
+[issue#304](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/304):
+New parameters to override websocket connection settings to `BinanceWebSocketApiManager`: `websocket_base_uri`, 
+`max_subscriptions_per_stream`, `exchange_type`
 ### Fixed
-- Better "stop" measuring in `manager.wait_till_stream_has_stoped()`
-
+- Better "stop" measuring in `manager.wait_till_stream_has_stoped()` [discussion#279](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/279#discussioncomment-2917403)
 
 ## 1.42.0
 ### Added

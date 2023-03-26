@@ -121,7 +121,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
                      binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
                      binance.com-futures-testnet, binance.com-coin_futures, binance.us, trbinance.com,
-                     jex.com, binance.org, localhost, binance.org-testnet (default: binance.com)
+                     jex.com, binance.org, binance.org-testnet (default: binance.com)
     :type exchange: str
     :param warn_on_update: set to `False` to disable the update warning
     :type warn_on_update: bool
@@ -177,8 +177,16 @@ class BinanceWebSocketApiManager(threading.Thread):
                                This parameter is passed through to the `websockets.client.connect()
                                <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
     :type ping_timeout_default: int
-    :param high_performance: Set to True makes `create_stream()` a non blocking function
+    :param high_performance: Set to True makes `create_stream()` a non-blocking function
     :type high_performance:  bool
+    :param debug: If True the lib adds additional information to logging outputs
+    :type debug:  bool
+    :param websocket_base_uri: Override `websocket_base_uri`. Example: `ws://127.0.0.1:8765/`
+    :type websocket_base_uri:  str
+    :param max_subscriptions_per_stream: Override the `max_subscriptions_per_stream` value. Example: 1024
+    :type max_subscriptions_per_stream:  int
+    :param max_subscriptions_per_stream: Override the exchange type. Valid options are: 'cex', 'dex'
+    :type max_subscriptions_per_stream:  str
     """
 
     def __init__(self,
@@ -188,7 +196,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  throw_exception_if_unrepairable=False,
                  restart_timeout=6,
                  show_secrets_in_logs=False,
-                 output_default="raw_data",
+                 output_default: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = "raw_data",
                  enable_stream_signal_buffer=False,
                  disable_colorama=False,
                  stream_buffer_maxlen=None,
@@ -230,10 +238,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.process_stream_signals = process_stream_signals
             logger.info(f"Using `process_stream_signals` ...")
         if exchange not in ws_connection_settings:
-            error_msg = f"Unknown exchange '{str(exchange)}'! Read the docs to see a list of supported " \
-                        "exchanges: https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_" \
-                        "binance_websocket_api.html#module-unicorn_binance_websocket_api.unicorn_binance_websocket_" \
-                        "api_manager"
+            error_msg = f"Unknown exchange '{str(exchange)}'! List of supported exchanges: " \
+                        f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/" \
+                        f"Binance-websocket-endpoint-configuration-overview"
             logger.critical(error_msg)
             raise UnknownExchange(error_msg)
 

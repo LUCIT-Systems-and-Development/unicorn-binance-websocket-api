@@ -152,7 +152,6 @@ on, you can use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-bi
 | [Binance JEX](https://www.jex.com)                                 | `jex.com` |
 | [Binance DEX](https://www.binance.org)                             | `binance.org` |
 | [Binance DEX Testnet](https://testnet.binance.org)                 | `binance.org-testnet` |
-| Localhost                                                          | `localhost`                           |
 
 - Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so 
 you dont need to deal with asyncio in your code!
