@@ -502,7 +502,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_coin_futures(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin-futures", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin_futures", high_performance=True)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 

@@ -291,7 +291,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 
 ## Documentation
 - [General](https://unicorn-binance-websocket-api.docs.lucit.tech)
-- [Modules](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html)
+- [Modules](https://unicorn-binance-websocket-api.docs.lucit.tech/modules.html)
 
 ## Examples
 - [example_binance_coin_futures.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_coin_futures.py)

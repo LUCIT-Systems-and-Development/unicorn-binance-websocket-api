@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.42.0.dev (development stage/unreleased/unstable)
 ### Added
+- Official support for Python 3.11
 - Logging to `manager.wait_till_stream_has_started()`
 - Logging to `manager.wait_till_stream_has_stoped()`
 - Added [PR#305](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/305) of 
