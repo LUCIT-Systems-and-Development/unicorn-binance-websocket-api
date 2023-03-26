@@ -12,11 +12,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Logging to `manager.wait_till_stream_has_started()`
 - Logging to `manager.wait_till_stream_has_stoped()`
 - Added [PR#305](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/305) of 
-[issue#304](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/304):
+[issue#304](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/304) thx to 
+[@dima-dmytruk23](https://github.com/dima-dmytruk23):
 New parameters to override websocket connection settings to `BinanceWebSocketApiManager`: `websocket_base_uri`, 
-`max_subscriptions_per_stream`, `exchange_type`
+`max_subscriptions_per_stream`, `restful_base_uri`, `restful_path_userdata`, `exchange_type`
+### Changed
+- "binance.com-coin-futures" to choose coin futures is deprecated. Use "binance.com-coin_futures" instead!
 ### Fixed
 - Better "stop" measuring in `manager.wait_till_stream_has_stoped()` [discussion#279](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/279#discussioncomment-2917403)
+
 
 ## 1.42.0
 ### Added
