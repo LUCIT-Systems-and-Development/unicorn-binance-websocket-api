@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
 ## 1.43.1.dev (development stage/unreleased/unstable)
+### Fixed
+- Added whitespace between left "=" and title in first line of `manager.print_summary()` output.
 
 ## 1.43.1
 ### Fixed
