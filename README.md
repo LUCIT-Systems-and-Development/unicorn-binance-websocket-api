@@ -232,7 +232,7 @@ for [ICINGA](https://exchange.icinga.com/LUCIT/check_lucit_collector)/Nagios
 
 - *Socks5 Proxy* support:
 ```
-ubwa = BinanceWebSocketApiManager(exchange="binance.com", socks5_proxy_address="127.0.0.1:9050") 
+ubwa = BinanceWebSocketApiManager(exchange="binance.com", socks5_proxy_server="127.0.0.1:9050") 
 ```
 Read the [docs](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager)
 for more information or try 

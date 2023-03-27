@@ -40,7 +40,8 @@ import logging
 import os
 
 
-socks5proxy = "127.0.0.1:9050"
+socks5_proxy = "127.0.0.1:9050"
+socks5_ssl_verification = True
 
 
 async def binance_stream(ubwa):
@@ -64,8 +65,8 @@ if __name__ == "__main__":
 
     try:
         ubwa = BinanceWebSocketApiManager(exchange='binance.com',
-                                          socks5_proxy_address=socks5proxy,
-                                          socks5_proxy_ssl_verification=True)
+                                          socks5_proxy_server=socks5_proxy,
+                                          socks5_proxy_ssl_verification=socks5_ssl_verification)
     except Socks5ProxyConnectionError as error_msg:
         print(f"Socks5ProxyConnectionError: {error_msg}")
         exit(1)

@@ -194,8 +194,8 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type max_subscriptions_per_stream:  int
     :param exchange_type: Override the exchange type. Valid options are: 'cex', 'dex'
     :type exchange_type:  str
-    :param socks5_proxy_address: Set this to activate the usage of a socks5 proxy. Example: '127.0.0.1:9050'
-    :type socks5_proxy_address:  str
+    :param socks5_proxy_server: Set this to activate the usage of a socks5 proxy. Example: '127.0.0.1:9050'
+    :type socks5_proxy_server:  str
     :param socks5_proxy_ssl_verification: Set to `False` to disable SSL server verification. Default is `True`.
     :type socks5_proxy_ssl_verification:  bool
     """
@@ -222,7 +222,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  websocket_base_uri: Optional[str] = None,
                  max_subscriptions_per_stream: Optional[int] = None,
                  exchange_type: Optional[Literal['cex', 'dex']] = None,
-                 socks5_proxy_address: Optional[str] = None,
+                 socks5_proxy_server: Optional[str] = None,
                  socks5_proxy_ssl_verification: Optional[bool] = True,):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
@@ -282,12 +282,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.exchange_type = "cex"
         logger.info(f"Using {self.exchange_type=}")
 
-        if socks5_proxy_address is None:
+        if socks5_proxy_server is None:
             self.socks5_proxy_address = None
+            self.socks5_proxy_port = None
         else:
             # Prepare Socks Proxy usage
             self.socks5_proxy_ssl_verification = socks5_proxy_ssl_verification
-            self.socks5_proxy_address, self.socks5_proxy_port = socks5_proxy_address.split(":")
+            self.socks5_proxy_address, self.socks5_proxy_port = socks5_proxy_server.split(":")
             websocket_ssl_context = ssl.SSLContext()
             if self.socks5_proxy_ssl_verification is False:
                 websocket_ssl_context.verify_mode = ssl.CERT_NONE
