@@ -244,7 +244,7 @@ If you like the project, please [![star](https://raw.githubusercontent.com/lucit
 [GitHub](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)!
 
 ## Live Demo
-This live demo script is streaming from [binance.com](https://www.binance.com) and is running on a *cx31* virtual 
+This live demo script is streaming from [binance.com](https://www.binance.com) and runs on a *cx31* virtual 
 machine of [HETZNER CLOUD](https://www.hetzner.com) - [get 20 EUR starting credit!](https://hetzner.cloud/?ref=rKgYRMq0l8fd)
 
 [Open live monitor!](https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html)
