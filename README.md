@@ -245,8 +245,7 @@ If you like the project, please [![star](https://raw.githubusercontent.com/lucit
 
 ## Live Demo
 This live demo script is streaming from [binance.com](https://www.binance.com) and is running on a *cx31* virtual 
-machine of [HETZNER CLOUD](https://hetzner.cloud/?ref=rKgYRMq0l8fd).
-[Get 20 EUR starting credit!](https://hetzner.cloud/?ref=rKgYRMq0l8fd)
+machine of [HETZNER CLOUD](https://www.hetzner.com) - [get 20 EUR starting credit!](https://hetzner.cloud/?ref=rKgYRMq0l8fd)
 
 [Open live monitor!](https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html)
 
