@@ -136,22 +136,22 @@ on, you can use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-bi
 - Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
 - [Supported exchanges](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview): 
 
-| Exchange                                                           | Exchange string | 
-|--------------------------------------------------------------------| ------------- | 
-| [Binance](https://www.binance.com)                                 | `binance.com` |
-| [Binance Testnet](https://testnet.binance.vision/)                 | `binance.com-testnet` |
-| [Binance Margin](https://www.binance.com)                          |  `binance.com-margin` |
-| [Binance Margin Testnet](https://testnet.binance.vision/)          | `binance.com-margin-testnet` |
-| [Binance Isolated Margin](https://www.binance.com)                 | `binance.com-isolated_margin` |
+| Exchange                                                           | Exchange string                       | 
+|--------------------------------------------------------------------|---------------------------------------|
+| [Binance](https://www.binance.com)                                 | `binance.com`                         |
+| [Binance Testnet](https://testnet.binance.vision/)                 | `binance.com-testnet`                 |
+| [Binance Margin](https://www.binance.com)                          | `binance.com-margin`                  |
+| [Binance Margin Testnet](https://testnet.binance.vision/)          | `binance.com-margin-testnet`          |
+| [Binance Isolated Margin](https://www.binance.com)                 | `binance.com-isolated_margin`         |
 | [Binance Isolated Margin Testnet](https://testnet.binance.vision/) | `binance.com-isolated_margin-testnet` |
-| [Binance USD-M Futures](https://www.binance.com)                   | `binance.com-futures` |
-| [Binance USD-M Futures Testnet](https://testnet.binancefuture.com) | `binance.com-futures-testnet` |
-| [Binance Coin-M Futures](https://www.binance.com)                  | `binance.com-coin_futures` |
-| [Binance US](https://www.binance.us)                               | `binance.us` |
-| [Binance TR](https://www.trbinance.com)                            | `trbinance.com` |
-| [Binance JEX](https://www.jex.com)                                 | `jex.com` |
-| [Binance DEX](https://www.binance.org)                             | `binance.org` |
-| [Binance DEX Testnet](https://testnet.binance.org)                 | `binance.org-testnet` |
+| [Binance USD-M Futures](https://www.binance.com)                   | `binance.com-futures`                 |
+| [Binance USD-M Futures Testnet](https://testnet.binancefuture.com) | `binance.com-futures-testnet`         |
+| [Binance Coin-M Futures](https://www.binance.com)                  | `binance.com-coin_futures`            |
+| [Binance US](https://www.binance.us)                               | `binance.us`                          |
+| [Binance TR](https://www.trbinance.com)                            | `trbinance.com`                       |
+| [Binance JEX](https://www.jex.com)                                 | `jex.com`                             |
+| [Binance DEX](https://www.binance.org)                             | `binance.org`                         |
+| [Binance DEX Testnet](https://testnet.binance.org)                 | `binance.org-testnet`                 |
 
 - Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so 
 you dont need to deal with asyncio in your code!
@@ -230,11 +230,13 @@ and a [check_command](https://exchange.icinga.com/LUCIT/check_lucit_collector)
 for [ICINGA](https://exchange.icinga.com/LUCIT/check_lucit_collector)/Nagios 
 [![icinga2-demo](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/icinga.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service)
 
-- Socks5 Proxy Support! 
+- *Socks5 Proxy* support:
 ```
 ubwa = BinanceWebSocketApiManager(exchange="binance.com", socks5_proxy_address="127.0.0.1:9050") 
 ```
-[example_socks5_proxy.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_socks5_proxy.py)
+Read the [docs](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager)
+for more information or try 
+[example_socks5_proxy.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_socks5_proxy.py).
 
 - Excessively tested on Linux, Mac and Windows
 

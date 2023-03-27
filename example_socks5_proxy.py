@@ -41,7 +41,6 @@ import os
 
 
 socks5proxy = "127.0.0.1:9050"
-socks5proxy = "95.216.194.236:1080"
 
 
 async def binance_stream(ubwa):
