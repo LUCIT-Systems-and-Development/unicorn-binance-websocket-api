@@ -59,7 +59,7 @@ setuptools.setup(
               'binance-websocket, binance-webstream, webstream, websocket, api, binance-jersey, binance-dex, '
               'binance-futures, binance-margin, binance-us',
      project_urls={
-         'Howto': 'https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api',
+         'Howto': 'https://www.lucit.tech/unicorn-binance-websocket-api.html#howto',
          'Documentation': 'https://unicorn-binance-websocket-api.docs.lucit.tech',
          'Wiki': 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki',
          'Author': 'https://www.lucit.tech',

@@ -1,11 +1,11 @@
 from enum import Enum
-from typing import Tuple
+from typing import Tuple, Type
 
 
-MAX_SUBSCRIPTIONS_PER_STREAM = int
-RESTFUL_BASE_URI = str
-RESTFUL_PATH_USERDATA = str
-WEBSOCKET_BASE_URI = str
+MAX_SUBSCRIPTIONS_PER_STREAM: Type[int] = int
+RESTFUL_BASE_URI: Type[str] = str
+RESTFUL_PATH_USERDATA: Type[str] = str
+WEBSOCKET_BASE_URI: Type[str] = str
 
 
 class Exchanges(str, Enum):
