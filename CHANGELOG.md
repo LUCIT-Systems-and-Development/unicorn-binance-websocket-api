@@ -7,7 +7,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
-## 1.42.0.dev (development stage/unreleased/unstable)
+## 1.43.0.dev (development stage/unreleased/unstable)
+
+## 1.43.0
 ### Added
 - Official support for Python 3.11
 - Socks5 proxy support for [websocket](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager) only: `socks5_proxy_server` and `socks5_proxy_ssl_verification`  and exception 

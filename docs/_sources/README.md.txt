@@ -244,9 +244,8 @@ If you like the project, please [![star](https://raw.githubusercontent.com/lucit
 [GitHub](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)!
 
 ## Live Demo
-This live demo script is streaming from [binance.com](https://www.binance.com) and is running on a *cx31* virtual 
-machine of [HETZNER CLOUD](https://hetzner.cloud/?ref=rKgYRMq0l8fd)! 
-[Get 20 EUR starting credit for HETZNER CLOUD](https://hetzner.cloud/?ref=rKgYRMq0l8fd)
+This live demo script is streaming from [binance.com](https://www.binance.com) and runs on a *cx31* virtual 
+machine of [HETZNER CLOUD](https://www.hetzner.com) - [get 20 EUR starting credit!](https://hetzner.cloud/?ref=rKgYRMq0l8fd)
 
 [Open live monitor!](https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html)
 
@@ -343,6 +342,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 ## Howto
 - [How to download Klines from Binance using Python?](https://medium.com/@oliverzehentleitner/how-to-download-data-from-binance-using-python-8f1b6e8f19f3)
 - [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
+- [How to Connect to binance.com Websockets using Python via a Socks5 Proxy](https://medium.com/@oliverzehentleitner/how-to-connect-to-binance-com-websockets-using-python-via-a-socks5-proxy-3c5a3e063f12)
 - [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.technopathy.club/2019/11/02/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2/)
 
 ## Project Homepage
