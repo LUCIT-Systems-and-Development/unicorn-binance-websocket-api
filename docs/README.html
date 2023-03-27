@@ -410,7 +410,7 @@ on, you can use the <a class="reference external" href="https://www.lucit.tech/u
 <td><code>binance.org-testnet</code></td>
 </tr>
 </tbody>
-</table><ul class="simple">
+</table><ul>
 <li><p>Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so
 you dont need to deal with asyncio in your code!</p></li>
 <li><p>Supports
@@ -475,15 +475,14 @@ rich media, shell syntax, tab completion, and history.”
 and a <a class="reference external" href="https://exchange.icinga.com/LUCIT/check_lucit_collector">check_command</a>
 for <a class="reference external" href="https://exchange.icinga.com/LUCIT/check_lucit_collector">ICINGA</a>/Nagios
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service"><img alt="icinga2-demo" src="https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/icinga.png" /></a></p></li>
-<li><p><em>Socks5 Proxy</em> support:</p></li>
-</ul>
+<li><p><em>Socks5 Proxy</em> support:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">,</span> <span class="n">socks5_proxy_server</span><span class="o">=</span><span class="s2">&quot;127.0.0.1:9050&quot;</span><span class="p">)</span> 
 </pre></div>
 </div>
 <p>Read the <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager">docs</a>
 for more information or try
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_socks5_proxy.py">example_socks5_proxy.py</a>.</p>
-<ul class="simple">
+</li>
 <li><p>Excessively tested on Linux, Mac and Windows</p></li>
 </ul>
 <p>If you like the project, please <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/stargazers"><img alt="star" src="https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/star.png" /></a> it on
@@ -492,7 +491,9 @@ for more information or try
 </section>
 <section id="live-demo">
 <h2>Live Demo<a class="headerlink" href="#live-demo" title="Permalink to this heading">¶</a></h2>
-<p>This live demo script is streaming from binance.com!</p>
+<p>This live demo script is streaming from <a class="reference external" href="https://www.binance.com">binance.com</a> and is running on a <em>cx31</em> virtual
+machine of <a class="reference external" href="https://hetzner.cloud/?ref=rKgYRMq0l8fd">HETZNER CLOUD</a>!
+<a class="reference external" href="https://hetzner.cloud/?ref=rKgYRMq0l8fd">Get 20 EUR starting credit for HETZNER CLOUD</a></p>
 <p><a class="reference external" href="https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html">Open live monitor!</a></p>
 <p><a class="reference external" href="https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html"><img alt="live-demo" src="https://ubwa-demo.lucit.tech/ps.png" /></a></p>
 <p>(Refresh update once a minute!)</p>
@@ -851,7 +852,7 @@ of any kind, including but not limited to direct or indirect damages for loss of
     <div class="footer">
     &copy; <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
     See <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">License</a> for more information.<br />
-    Last updated on Mar 27 2023 at 11:06 (CET).
+    Last updated on Mar 27 2023 at 14:08 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.

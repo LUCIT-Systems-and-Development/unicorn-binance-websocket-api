@@ -40,7 +40,7 @@ import logging
 import os
 
 
-socks5_proxy = "127.0.0.1:9050"
+socks5_proxy = "127.0.0.1:1080"
 socks5_ssl_verification = True
 
 
