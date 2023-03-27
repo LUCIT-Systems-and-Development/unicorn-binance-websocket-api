@@ -128,12 +128,14 @@ class BinanceWebSocketApiConnection(object):
             logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
                             ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 1 - "
                             + str(error_msg))
-        if self.manager.socks5_proxy_address is None:
+        if self.manager.socks5_proxy_address is None or self.manager.socks5_proxy_port is None:
             self._conn = connect(uri,
                                  ping_interval=self.ping_interval,
                                  ping_timeout=self.ping_timeout,
                                  close_timeout=self.close_timeout,
                                  extra_headers={'User-Agent': str(self.manager.get_user_agent())})
+            logger.info(f"BinanceWebSocketApiConnection.await._conn.__aenter__(\"{self.stream_id}, {self.channels}"
+                        f", {self.markets}\") - No proxy used!")
         else:
             self._conn = connect(uri,
                                  ssl=self.manager.websocket_ssl_context,
@@ -143,6 +145,9 @@ class BinanceWebSocketApiConnection(object):
                                  ping_timeout=self.ping_timeout,
                                  close_timeout=self.close_timeout,
                                  extra_headers={'User-Agent': str(self.manager.get_user_agent())})
+            logger.info(f"BinanceWebSocketApiConnection.await._conn.__aenter__(\"{self.stream_id}, {self.channels}"
+                        f", {self.markets}\") - Using proxy: {self.manager.socks5_proxy_address} "
+                        f"{self.manager.socks5_proxy_port} SSL: {self.manager.socks5_proxy_ssl_verification}")
         try:
             try:
                 self.manager.websocket_list[self.stream_id] = await self._conn.__aenter__()

@@ -194,8 +194,10 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type max_subscriptions_per_stream:  int
     :param exchange_type: Override the exchange type. Valid options are: 'cex', 'dex'
     :type exchange_type:  str
-    :param socks5_proxy: Set this to activate the usage of a socks5 proxy. Example: '127.0.0.1:9050'
-    :type socks5_proxy:  str
+    :param socks5_proxy_address: Set this to activate the usage of a socks5 proxy. Example: '127.0.0.1:9050'
+    :type socks5_proxy_address:  str
+    :param socks5_proxy_ssl_verification: Set to `False` to disable SSL server verification. Default is `True`.
+    :type socks5_proxy_ssl_verification:  bool
     """
 
     def __init__(self,
@@ -234,6 +236,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             colorama.init()
         logger.info(f"Using `websockets_{websockets.__version__}`")
         self.specific_process_stream_data = {}
+
         if process_stream_data is False:
             # no special method to process stream data provided, so we use add_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
@@ -242,6 +245,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             # use the provided method to process stream data:
             self.process_stream_data = process_stream_data
             logger.info(f"Using `process_stream_data`")
+
         if process_stream_signals is False:
             # no special method to process stream signals provided, so we use add_to_stream_signal_buffer:
             self.process_stream_signals = self.add_to_stream_signal_buffer
@@ -250,6 +254,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             # use the provided method to process stream signals:
             self.process_stream_signals = process_stream_signals
             logger.info(f"Using `process_stream_signals` ...")
+        self.enable_stream_signal_buffer = enable_stream_signal_buffer
+        if self.enable_stream_signal_buffer is True:
+            logger.info(f"Enabled `stream_signal_buffer` ...")
+
         if exchange not in CONNECTION_SETTINGS:
             error_msg = f"Unknown exchange '{str(exchange)}'! List of supported exchanges: " \
                         f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/" \
@@ -278,9 +286,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.socks5_proxy_address = None
         else:
             # Prepare Socks Proxy usage
+            self.socks5_proxy_ssl_verification = socks5_proxy_ssl_verification
             self.socks5_proxy_address, self.socks5_proxy_port = socks5_proxy_address.split(":")
             websocket_ssl_context = ssl.SSLContext()
-            if socks5_proxy_ssl_verification is False:
+            if self.socks5_proxy_ssl_verification is False:
                 websocket_ssl_context.verify_mode = ssl.CERT_NONE
                 websocket_ssl_context.check_hostname = False
             self.websocket_ssl_context = websocket_ssl_context
@@ -294,7 +303,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 host = netloc
                 port = 443
             try:
-                logger.info(f"Connect Socks Proxy to {host}:{port}")
+                logger.info(f"Connect socks5 proxy to {host}:{port}")
                 websocket_socks5_proxy.connect((host, int(port)))
                 self.websocket_socks5_proxy = websocket_socks5_proxy
                 self.websocket_server_hostname = netloc
@@ -311,7 +320,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    'timestamp': 0,
                                    'status_code': None}
         self.dex_user_address = False
-        self.enable_stream_signal_buffer = enable_stream_signal_buffer
         self.event_loops = {}
         self.frequent_checks_list = {}
         self.frequent_checks_list_lock = threading.Lock()
@@ -3061,6 +3069,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                                       f"(reached at " \
                                       f"{self.get_date_of_timestamp(self.receiving_speed_peak['timestamp'])})"
 
+        if self.socks5_proxy_address is not None and self.socks5_proxy_port is not None:
+            proxy = f"\r\n proxy: {self.socks5_proxy_address}:{self.socks5_proxy_port} (ssl:" \
+                    f"{self.socks5_proxy_ssl_verification})"
+        else:
+            proxy = ""
+
         if len(add_string) > 0:
             add_string = " " + str(add_string) + "\r\n"
         try:
@@ -3183,7 +3197,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 print_text = (
                     first_row +
-                    " exchange: " + str(self.stream_list[stream_id]['exchange']) + "\r\n" +
+                    " exchange: " + str(self.stream_list[stream_id]['exchange']) + f"{proxy}\r\n" +
                     " uptime: " + str(self.get_human_uptime(time.time() - self.start_time)) + " since " +
                     str(self.get_date_of_timestamp(self.start_time)) + "\r\n" +
                     " streams: " + str(streams) + "\r\n" +

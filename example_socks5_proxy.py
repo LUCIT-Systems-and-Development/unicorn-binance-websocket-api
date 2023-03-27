@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_ctrl-c.py
+# File: example_socks5_proxy.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
@@ -33,37 +33,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-# Thanks to mfiro https://github.com/mfiro for sharing this example!
-
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 
+import logging
+import os
 import time
-import threading
-
-
-def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
-    while True:
-        if binance_websocket_api_manager.is_manager_stopping():
-            exit(0)
-        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
-        if oldest_stream_data_from_stream_buffer is False:
-            time.sleep(0.01)
-        else:
-            try:
-                print(oldest_stream_data_from_stream_buffer)
-            except Exception:
-                # not able to process the data? write it back to the stream_buffer
-                binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
 
 
 if __name__ == '__main__':
-    binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
-    worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
-    worker_thread.start()
-    kline_stream_id = binance_websocket_api_manager.create_stream(['kline', 'kline_1m'], ['btcusdt'])
+    logging.getLogger("unicorn_binance_websocket_api")
+    logging.basicConfig(level=logging.DEBUG,
+                        filename=os.path.basename(__file__) + '.log',
+                        format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
+                        style="{")
+
+    ubwa = BinanceWebSocketApiManager(exchange="binance.com",
+                                      socks5_proxy_address="127.0.0.1:9050")
+    ubwa.create_stream(['kline', 'kline_1m'], ['btcusdt'])
     try:
         while True:
-            time.sleep(60)
+            ubwa.print_summary()
+            time.sleep(1)
     except KeyboardInterrupt:
         print("\nStopping ... just wait a few seconds!")
-        binance_websocket_api_manager.stop_manager_with_all_streams()
+        ubwa.stop_manager_with_all_streams()
