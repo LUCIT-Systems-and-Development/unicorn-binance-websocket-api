@@ -740,12 +740,16 @@
 <h3>Added<a class="headerlink" href="#added" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Official support for Python 3.11</p></li>
+<li><p>Socks5 proxy support for websocket: <code class="docutils literal notranslate"><span class="pre">socks5_proxy_address</span></code> and <code class="docutils literal notranslate"><span class="pre">socks5_proxy_ssl_verification</span></code>  and exception
+<code class="docutils literal notranslate"><span class="pre">Socks5ProxyConnectionError</span></code> - Currently, no REST support for <code class="docutils literal notranslate"><span class="pre">listenKey</span></code>, this will be added later after the
+UBRA update!</p></li>
 <li><p>Logging to <code class="docutils literal notranslate"><span class="pre">manager.wait_till_stream_has_started()</span></code></p></li>
 <li><p>Logging to <code class="docutils literal notranslate"><span class="pre">manager.wait_till_stream_has_stoped()</span></code></p></li>
 <li><p>Added <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/305">PR#305</a> of
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/304">issue#304</a> thx to
 <a class="reference external" href="https://github.com/dima-dmytruk23">&#64;dima-dmytruk23</a>:
-New parameters to override websocket connection settings to <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager</span></code>: <code class="docutils literal notranslate"><span class="pre">websocket_base_uri</span></code>,
+New parameters to override connection settings to
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager</span></code></a>: <code class="docutils literal notranslate"><span class="pre">websocket_base_uri</span></code>,
 <code class="docutils literal notranslate"><span class="pre">max_subscriptions_per_stream</span></code>, <code class="docutils literal notranslate"><span class="pre">restful_base_uri</span></code>, <code class="docutils literal notranslate"><span class="pre">restful_path_userdata</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_type</span></code></p></li>
 </ul>
 </section>
@@ -3263,7 +3267,7 @@ flapping network connection</p></li>
     <div class="footer">
     &copy; <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
     See <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">License</a> for more information.<br />
-    Last updated on Mar 27 2023 at 01:38 (CET).
+    Last updated on Mar 27 2023 at 10:40 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
