@@ -34,26 +34,45 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
-
+from unicorn_binance_websocket_api.exceptions import Socks5ProxyConnectionError
+import asyncio
 import logging
 import os
-import time
 
 
-if __name__ == '__main__':
+socks5proxy = "127.0.0.1:9050"
+
+
+async def binance_stream(ubwa):
+    def handle_socket_message(data):
+        print(f"received data: {data}")
+
+    ubwa.create_stream(channels=['kline', 'kline_1m'],
+                       markets=['btcusdt'],
+                       output="UnicornFy",
+                       process_stream_data=handle_socket_message)
+    while True:
+        await asyncio.sleep(1)
+
+
+if __name__ == "__main__":
     logging.getLogger("unicorn_binance_websocket_api")
     logging.basicConfig(level=logging.DEBUG,
                         filename=os.path.basename(__file__) + '.log',
                         format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                         style="{")
 
-    ubwa = BinanceWebSocketApiManager(exchange="binance.com",
-                                      socks5_proxy_address="127.0.0.1:9050")
-    ubwa.create_stream(['kline', 'kline_1m'], ['btcusdt'])
     try:
-        while True:
-            ubwa.print_summary()
-            time.sleep(1)
+        ubwa = BinanceWebSocketApiManager(exchange='binance.com',
+                                          socks5_proxy_address=socks5proxy,
+                                          socks5_proxy_ssl_verification=True)
+    except Socks5ProxyConnectionError as error_msg:
+        print(f"Socks5ProxyConnectionError: {error_msg}")
+        exit(1)
+
+    try:
+        asyncio.run(binance_stream(ubwa))
     except KeyboardInterrupt:
-        print("\nStopping ... just wait a few seconds!")
+        print("\r\nGracefully stopping the websocket manager...")
         ubwa.stop_manager_with_all_streams()
+

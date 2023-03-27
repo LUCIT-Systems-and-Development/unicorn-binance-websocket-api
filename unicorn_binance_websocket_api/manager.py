@@ -34,7 +34,7 @@
 # IN THE SOFTWARE.
 
 
-from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange
+from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange, Socks5ProxyConnectionError
 from unicorn_binance_websocket_api.sockets import BinanceWebSocketApiSocket
 from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
@@ -308,11 +308,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.websocket_socks5_proxy = websocket_socks5_proxy
                 self.websocket_server_hostname = netloc
             except socks.ProxyConnectionError as error_msg:
-                logger.critical(f"{error_msg} ({host}:{port})")
-                sys.exit(1)
+                error_msg = f"{error_msg} ({host}:{port})"
+                logger.critical(error_msg)
+                raise Socks5ProxyConnectionError(error_msg)
             except socks.GeneralProxyError as error_msg:
-                logger.critical(f"{error_msg} ({host}:{port})")
-                sys.exit(1)
+                error_msg = f"{error_msg} ({host}:{port})"
+                logger.critical(error_msg)
+                raise Socks5ProxyConnectionError(error_msg)
 
         self.stop_manager_request = None
         self.all_subscriptions_number = 0

@@ -10,8 +10,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.42.0.dev (development stage/unreleased/unstable)
 ### Added
 - Official support for Python 3.11
-- Socks5 proxy support for websocket: `socks5_proxy_address` and `socks5_proxy_ssl_verification` 
-Currently no REST support for `listenKey`, this will be added later after the UBRA Update!
+- Socks5 proxy support for websocket: `socks5_proxy_address` and `socks5_proxy_ssl_verification`  and exception 
+`Socks5ProxyConnectionError` - Currently, no REST support for `listenKey`, this will be added later after the 
+UBRA update!
 - Logging to `manager.wait_till_stream_has_started()`
 - Logging to `manager.wait_till_stream_has_stoped()`
 - Added [PR#305](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/305) of 
