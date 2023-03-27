@@ -10,12 +10,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.42.0.dev (development stage/unreleased/unstable)
 ### Added
 - Official support for Python 3.11
+- Socks5 proxy support for websocket. No Rest Support for `listenKey`, will be added later after UBRA Update!
 - Logging to `manager.wait_till_stream_has_started()`
 - Logging to `manager.wait_till_stream_has_stoped()`
 - Added [PR#305](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/305) of 
 [issue#304](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/304) thx to 
 [@dima-dmytruk23](https://github.com/dima-dmytruk23):
-New parameters to override websocket connection settings to 
+New parameters to override connection settings to 
 [`BinanceWebSocketApiManager`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager): `websocket_base_uri`, 
 `max_subscriptions_per_stream`, `restful_base_uri`, `restful_path_userdata`, `exchange_type`
 ### Changed

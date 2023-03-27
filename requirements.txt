@@ -8,6 +8,7 @@ colorama
 flask
 flask_restful
 psutil
+PySocks
 requests
 ujson
 unicorn-fy

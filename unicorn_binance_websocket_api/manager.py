@@ -45,6 +45,7 @@ from datetime import datetime
 from flask import Flask, redirect
 from flask_restful import Api
 from typing import Literal, Optional, Union
+from urllib.parse import urlparse
 import asyncio
 import colorama
 import copy
@@ -55,6 +56,8 @@ import platform
 import psutil
 import re
 import requests
+import socks  # PySocks https://pypi.org/project/PySocks/
+import ssl
 import sys
 import threading
 import time
@@ -191,6 +194,8 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type max_subscriptions_per_stream:  int
     :param exchange_type: Override the exchange type. Valid options are: 'cex', 'dex'
     :type exchange_type:  str
+    :param socks5_proxy: Set this to activate the usage of a socks5 proxy. Example: '127.0.0.1:9050'
+    :type socks5_proxy:  str
     """
 
     def __init__(self,
@@ -214,7 +219,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                  restful_path_userdata: Optional[str] = None,
                  websocket_base_uri: Optional[str] = None,
                  max_subscriptions_per_stream: Optional[int] = None,
-                 exchange_type: Optional[Literal['cex', 'dex']] = None,):
+                 exchange_type: Optional[Literal['cex', 'dex']] = None,
+                 socks5_proxy_address: Optional[str] = None,
+                 socks5_proxy_ssl_verification: Optional[bool] = True,):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "1.42.0.dev"
@@ -266,6 +273,37 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 f"exchange={str(self.exchange)}, resetting to default 'cex'")
                 self.exchange_type = "cex"
         logger.info(f"Using {self.exchange_type=}")
+
+        if socks5_proxy_address is None:
+            self.socks5_proxy_address = None
+        else:
+            # Prepare Socks Proxy usage
+            self.socks5_proxy_address, self.socks5_proxy_port = socks5_proxy_address.split(":")
+            websocket_ssl_context = ssl.SSLContext()
+            if socks5_proxy_ssl_verification is False:
+                websocket_ssl_context.verify_mode = ssl.CERT_NONE
+                websocket_ssl_context.check_hostname = False
+            self.websocket_ssl_context = websocket_ssl_context
+            websocket_socks5_proxy = socks.socksocket()
+            websocket_socks5_proxy.set_proxy(socks.SOCKS5, self.socks5_proxy_address, int(self.socks5_proxy_port))
+            netloc = urlparse(self.websocket_base_uri).netloc
+            try:
+                host, port = netloc.split(":")
+            except ValueError as error_msg:
+                logger.debug(f"{netloc=} split error: {error_msg}")
+                host = netloc
+                port = 443
+            try:
+                logger.info(f"Connect Socks Proxy to {host}:{port}")
+                websocket_socks5_proxy.connect((host, int(port)))
+                self.websocket_socks5_proxy = websocket_socks5_proxy
+                self.websocket_server_hostname = netloc
+            except socks.ProxyConnectionError as error_msg:
+                logger.critical(f"{error_msg} ({host}:{port})")
+                sys.exit(1)
+            except socks.GeneralProxyError as error_msg:
+                logger.critical(f"{error_msg} ({host}:{port})")
+                sys.exit(1)
 
         self.stop_manager_request = None
         self.all_subscriptions_number = 0

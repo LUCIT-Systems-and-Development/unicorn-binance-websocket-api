@@ -128,11 +128,21 @@ class BinanceWebSocketApiConnection(object):
             logger.critical("BinanceWebSocketApiConnection.await._conn.__aenter__(" + str(self.stream_id) +
                             ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 1 - "
                             + str(error_msg))
-        self._conn = connect(uri,
-                             ping_interval=self.ping_interval,
-                             ping_timeout=self.ping_timeout,
-                             close_timeout=self.close_timeout,
-                             extra_headers={'User-Agent': str(self.manager.get_user_agent())})
+        if self.manager.socks5_proxy_address is None:
+            self._conn = connect(uri,
+                                 ping_interval=self.ping_interval,
+                                 ping_timeout=self.ping_timeout,
+                                 close_timeout=self.close_timeout,
+                                 extra_headers={'User-Agent': str(self.manager.get_user_agent())})
+        else:
+            self._conn = connect(uri,
+                                 ssl=self.manager.websocket_ssl_context,
+                                 sock=self.manager.websocket_socks5_proxy,
+                                 server_hostname=self.manager.websocket_server_hostname,
+                                 ping_interval=self.ping_interval,
+                                 ping_timeout=self.ping_timeout,
+                                 close_timeout=self.close_timeout,
+                                 extra_headers={'User-Agent': str(self.manager.get_user_agent())})
         try:
             try:
                 self.manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
