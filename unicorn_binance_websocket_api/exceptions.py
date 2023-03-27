@@ -35,6 +35,13 @@
 
 
 # define Python user-defined exceptions
+class Socks5ProxyConnectionError(Exception):
+    """
+    Exception if the manager class is not able to establish a connection to the socks5 proxy.
+    """
+    pass
+
+
 class StreamRecoveryError(Exception):
     """
     Exception for non-recoverable streams.
@@ -45,12 +52,5 @@ class StreamRecoveryError(Exception):
 class UnknownExchange(Exception):
     """
     Exception if the manager class is started with an unkown exchange.
-    """
-    pass
-
-
-class Socks5ProxyConnectionError(Exception):
-    """
-    Exception if the manager class is not able to establish a connection to the socks5 proxy.
     """
     pass
