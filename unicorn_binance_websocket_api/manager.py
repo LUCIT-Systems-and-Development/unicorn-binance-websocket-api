@@ -280,7 +280,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.critical(f"BinanceWebSocketApiManager.is_exchange_type() - Can not determine exchange type for"
                                 f"exchange={str(self.exchange)}, resetting to default 'cex'")
                 self.exchange_type = "cex"
-        logger.info(f"Using {self.exchange_type=}")
+        logger.info(f"Using exchange_type '{self.exchange_type}' ...")
 
         if socks5_proxy_server is None:
             self.socks5_proxy_address = None
@@ -300,7 +300,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 host, port = netloc.split(":")
             except ValueError as error_msg:
-                logger.debug(f"{netloc=} split error: {error_msg}")
+                logger.debug(f"'netloc' split error: {netloc} - {error_msg}")
                 host = netloc
                 port = 443
             try:
