@@ -226,7 +226,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  socks5_proxy_ssl_verification: Optional[bool] = True,):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "1.43.3"
+        self.version = "1.43.3.dev"
         logger.info(f"New instance of {self.get_user_agent()} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         self.debug = debug
@@ -386,8 +386,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.restclient = BinanceWebSocketApiRestclient(self)
         if warn_on_update and self.is_update_available():
             update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
-                         "please consider updating! (Changelog: https://github.com/LUCIT-Systems-and-Development/" \
-                         "unicorn-binance-websocket-api/blob/master/CHANGELOG.md)"
+                         f"please consider updating! (Changelog: " \
+                         f"https://unicorn-binance-websocket-api.docs.lucit.tech/CHANGELOG.html)"
             print(update_msg)
             logger.warning(update_msg)
 

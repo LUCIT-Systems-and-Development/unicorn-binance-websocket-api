@@ -39,7 +39,8 @@ import asyncio
 import logging
 import os
 
-
+# How to:
+# https://medium.com/@oliverzehentleitner/how-to-connect-to-binance-com-websockets-using-python-via-a-socks5-proxy-3c5a3e063f12
 socks5_proxy = "1.2.3.4:1080"
 socks5_ssl_verification = True
 
