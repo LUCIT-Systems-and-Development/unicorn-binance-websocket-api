@@ -8,7 +8,7 @@ from typing import Tuple
 # RESTFUL_PATH_USERDATA: Type[str] = str
 # WEBSOCKET_BASE_URI: Type[str] = str
 
-# To keep backward compatibility we are using instead:
+# To maintain backward compatibility, we use instead:
 MAX_SUBSCRIPTIONS_PER_STREAM = int
 RESTFUL_BASE_URI = str
 RESTFUL_PATH_USERDATA = str
