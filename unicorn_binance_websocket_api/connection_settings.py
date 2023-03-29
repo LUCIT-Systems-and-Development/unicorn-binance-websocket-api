@@ -1,11 +1,18 @@
 from enum import Enum
-from typing import Tuple, Type
+from typing import Tuple
 
+# Works only in Python >= 3.9:
+# from typing import Tuple, Type
+# MAX_SUBSCRIPTIONS_PER_STREAM: Type[int] = int
+# RESTFUL_BASE_URI: Type[str] = str
+# RESTFUL_PATH_USERDATA: Type[str] = str
+# WEBSOCKET_BASE_URI: Type[str] = str
 
-MAX_SUBSCRIPTIONS_PER_STREAM: Type[int] = int
-RESTFUL_BASE_URI: Type[str] = str
-RESTFUL_PATH_USERDATA: Type[str] = str
-WEBSOCKET_BASE_URI: Type[str] = str
+# To keep backward compatibility we are using instead:
+MAX_SUBSCRIPTIONS_PER_STREAM = int
+RESTFUL_BASE_URI = str
+RESTFUL_PATH_USERDATA = str
+WEBSOCKET_BASE_URI = str
 
 
 class Exchanges(str, Enum):
