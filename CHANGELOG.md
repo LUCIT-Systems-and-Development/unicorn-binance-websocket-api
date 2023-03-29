@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [Discussions about unicorn-binance-websocket-api releases!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/categories/releases)
 
+[Upgrade to the latest version](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
+
 ## 1.43.3.dev (development stage/unreleased/unstable)
 
 ## 1.43.3
