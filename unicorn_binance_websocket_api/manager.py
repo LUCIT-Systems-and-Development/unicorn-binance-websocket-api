@@ -196,33 +196,39 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type exchange_type:  str
     :param socks5_proxy_server: Set this to activate the usage of a socks5 proxy. Example: '127.0.0.1:9050'
     :type socks5_proxy_server:  str
+    :param socks5_proxy_user: Set this to activate the usage of a socks5 proxy user. Example: 'alice'
+    :type socks5_proxy_user:  str
+    :param socks5_proxy_pass: Set this to activate the usage of a socks5 proxy password.
+    :type socks5_proxy_pass:  str
     :param socks5_proxy_ssl_verification: Set to `False` to disable SSL server verification. Default is `True`.
     :type socks5_proxy_ssl_verification:  bool
     """
 
     def __init__(self,
                  process_stream_data=False,
-                 exchange="binance.com",
-                 warn_on_update=True,
-                 throw_exception_if_unrepairable=False,
-                 restart_timeout=6,
-                 show_secrets_in_logs=False,
+                 exchange: str = "binance.com",
+                 warn_on_update: Optional[bool] = True,
+                 throw_exception_if_unrepairable: Optional[bool] = False,
+                 restart_timeout: int = 6,
+                 show_secrets_in_logs: Optional[bool] = False,
                  output_default: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = "raw_data",
-                 enable_stream_signal_buffer=False,
-                 disable_colorama=False,
-                 stream_buffer_maxlen=None,
+                 enable_stream_signal_buffer: Optional[bool] = False,
+                 disable_colorama: Optional[bool] = False,
+                 stream_buffer_maxlen: Optional[int] = None,
                  process_stream_signals=False,
                  close_timeout_default: int = 1,
                  ping_interval_default: int = 5,
                  ping_timeout_default: int = 10,
-                 high_performance=False,
-                 debug=False,
+                 high_performance: Optional[bool] = False,
+                 debug: Optional[bool] = False,
                  restful_base_uri: Optional[str] = None,
                  restful_path_userdata: Optional[str] = None,
                  websocket_base_uri: Optional[str] = None,
                  max_subscriptions_per_stream: Optional[int] = None,
                  exchange_type: Optional[Literal['cex', 'dex']] = None,
                  socks5_proxy_server: Optional[str] = None,
+                 socks5_proxy_user: Optional[str] = None,
+                 socks5_proxy_pass: Optional[str] = None,
                  socks5_proxy_ssl_verification: Optional[bool] = True,):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
@@ -284,10 +290,14 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         if socks5_proxy_server is None:
             self.socks5_proxy_address = None
+            self.socks5_proxy_user: Optional[str] = None
+            self.socks5_proxy_pass: Optional[str] = None
             self.socks5_proxy_port = None
         else:
             # Prepare Socks Proxy usage
             self.socks5_proxy_ssl_verification = socks5_proxy_ssl_verification
+            self.socks5_proxy_user = socks5_proxy_user
+            self.socks5_proxy_pass = socks5_proxy_pass
             self.socks5_proxy_address, self.socks5_proxy_port = socks5_proxy_server.split(":")
             websocket_ssl_context = ssl.SSLContext()
             if self.socks5_proxy_ssl_verification is False:
@@ -295,7 +305,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                 websocket_ssl_context.check_hostname = False
             self.websocket_ssl_context = websocket_ssl_context
             websocket_socks5_proxy = socks.socksocket()
-            websocket_socks5_proxy.set_proxy(socks.SOCKS5, self.socks5_proxy_address, int(self.socks5_proxy_port))
+            websocket_socks5_proxy.set_proxy(proxy_type=socks.SOCKS5,
+                                             addr=self.socks5_proxy_address,
+                                             port=int(self.socks5_proxy_port),
+                                             username=self.socks5_proxy_user,
+                                             password=self.socks5_proxy_pass)
             netloc = urlparse(self.websocket_base_uri).netloc
             try:
                 host, port = netloc.split(":")

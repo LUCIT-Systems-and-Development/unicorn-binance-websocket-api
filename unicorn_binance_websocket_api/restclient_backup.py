@@ -310,7 +310,7 @@ class BinanceWebSocketApiRestclient(object):
         :param listen_key: the listenkey you want to keepalive
         :type listen_key: str
         :param last_static_ping_listen_key: the `last_static_ping_listen_key` variable of the `listen_key` you want to
-                                                keepalive
+                                            keepalive
         :type last_static_ping_listen_key: int
         :return: the response
         :rtype: str or False

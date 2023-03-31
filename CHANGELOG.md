@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
 ## 1.43.3.dev (development stage/unreleased/unstable)
+### Added 
+- `socks5_proxy_user` and `socks5_proxy_pass` to [`BinanceWebSocketApiManager`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager)
+### Changed
+- restclient.py now relies on `unicorn-binance-rest-api`.
 
 ## 1.43.3
 ### Fixed

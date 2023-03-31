@@ -12,5 +12,6 @@ PySocks
 requests
 ujson
 unicorn-fy
+unicorn-binance-rest-api
 websocket-client
 websockets==10.4
