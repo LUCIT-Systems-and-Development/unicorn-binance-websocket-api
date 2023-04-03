@@ -341,10 +341,8 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 - [example_version_of_this_package.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py)
 
 ## Howto
-- [How to download Klines from Binance using Python?](https://medium.com/@oliverzehentleitner/how-to-download-data-from-binance-using-python-8f1b6e8f19f3)
-- [Howto: UNICORN Binance WebSocket API](https://www.technopathy.club/2019/11/02/howto-unicorn-binance-websocket-api/)
-- [How to Connect to binance.com Websockets using Python via a Socks5 Proxy](https://medium.com/@oliverzehentleitner/how-to-connect-to-binance-com-websockets-using-python-via-a-socks5-proxy-3c5a3e063f12)
-- [Howto: Monitoring UNICORN Binance WebSocket API Manager with ICINGA2](https://www.technopathy.club/2019/11/02/howto-monitoring-unicorn-binance-websocket-api-manager-with-icinga2/)
+- [How to download Klines from Binance using Python?](https://medium.lucit.tech/how-to-download-data-from-binance-using-python-8f1b6e8f19f3)
+- [How to Connect to binance.com Websockets using Python via a Socks5 Proxy](https://medium.lucit.tech/how-to-connect-to-binance-com-websockets-using-python-via-a-socks5-proxy-3c5a3e063f12)
 
 ## Project Homepage
 [https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)
