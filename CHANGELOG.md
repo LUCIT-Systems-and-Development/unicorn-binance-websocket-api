@@ -11,9 +11,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.43.3.dev (development stage/unreleased/unstable)
 ### Added 
+- [`BinanceRestApiManager()`](https://unicorn-binance-rest-api.docs.lucit.tech/unicorn_binance_rest_api.html#unicorn_binance_rest_api.manager.BinanceRestApiManager) - 
+  New parameter: `socks5_proxy_user` and `socks5_proxy_pass`
+- Dependency `unicorn-binance-rest-api` to `setup.py`, `requirements.txt`, `environment.yml` and conda feedstock recipe
 - `socks5_proxy_user` and `socks5_proxy_pass` to [`BinanceWebSocketApiManager`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager)
+- Full SOCKS5 Proxy support to REST API in `get_listen_key()`, `keepalive_listen_key()` and `delete_listen_key()` 
+- Show proxy info in `print_summary()` and `print_stream_info()`
 ### Changed
-- restclient.py now relies on `unicorn-binance-rest-api`.
+- `restclient.py` now relies on `unicorn-binance-rest-api`. REST config removed from `connection_settings.py`
+- Structure of `CONNECTION_SETTINGS`
+### Fixed
+- RuntimeError: dictionary changed size during iteration in manger.py line 788, https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/commit/f189b9a8420133ffe34e9c9948e461a06d92f0a2
+- `keepalive_listen_key()` and `delete_listen_key()` for isolated margin
+- Activated functionality of `restful_base_uri` in rest client
+- SOCKS5 proxy support only worked with one stream. Now it works with multiple streams.
+### Removed
+- `restful_path_userdata` from [`BinanceWebSocketApiManager`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager)
 
 ## 1.43.3
 ### Fixed

@@ -33,11 +33,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from unicorn_binance_websocket_api.exceptions import StreamRecoveryError
+from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, Socks5ProxyConnectionError
+from urllib.parse import urlparse
 import asyncio
 import copy
 import logging
 import socket
+import socks  # PySocks https://pypi.org/project/PySocks/
 import ssl
 import sys
 import time
@@ -137,10 +139,36 @@ class BinanceWebSocketApiConnection(object):
             logger.info(f"BinanceWebSocketApiConnection.await._conn.__aenter__(\"{self.stream_id}, {self.channels}"
                         f", {self.markets}\") - No proxy used!")
         else:
+            websocket_socks5_proxy = socks.socksocket()
+            websocket_socks5_proxy.set_proxy(proxy_type=socks.SOCKS5,
+                                             addr=self.manager.socks5_proxy_address,
+                                             port=int(self.manager.socks5_proxy_port),
+                                             username=self.manager.socks5_proxy_user,
+                                             password=self.manager.socks5_proxy_pass)
+            netloc = urlparse(self.manager.websocket_base_uri).netloc
+            try:
+                host, port = netloc.split(":")
+            except ValueError as error_msg:
+                logger.debug(f"'netloc' split error: {netloc} - {error_msg}")
+                host = netloc
+                port = 443
+            try:
+                logger.info(f"Connect socks5 proxy to {host}:{port}")
+                websocket_socks5_proxy.connect((host, int(port)))
+                websocket_server_hostname = netloc
+            except socks.ProxyConnectionError as error_msg:
+                error_msg = f"{error_msg} ({host}:{port})"
+                logger.critical(error_msg)
+                raise Socks5ProxyConnectionError(error_msg)
+            except socks.GeneralProxyError as error_msg:
+                error_msg = f"{error_msg} ({host}:{port})"
+                logger.critical(error_msg)
+                raise Socks5ProxyConnectionError(error_msg)
+
             self._conn = connect(uri,
                                  ssl=self.manager.websocket_ssl_context,
-                                 sock=self.manager.websocket_socks5_proxy,
-                                 server_hostname=self.manager.websocket_server_hostname,
+                                 sock=websocket_socks5_proxy,
+                                 server_hostname=websocket_server_hostname,
                                  ping_interval=self.ping_interval,
                                  ping_timeout=self.ping_timeout,
                                  close_timeout=self.close_timeout,

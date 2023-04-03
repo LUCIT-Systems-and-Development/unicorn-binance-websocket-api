@@ -39,6 +39,7 @@ import requests
 import socket
 import threading
 import time
+from unicorn_binance_rest_api import BinanceRestApiManager
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -60,45 +61,6 @@ class BinanceWebSocketApiRestclient(object):
         self.listen_key_output = False
         self.threading_lock = threading.Lock()
         self.restful_base_uri = self.manager.restful_base_uri
-        self.path_userdata = self.manager.restful_path_userdata
-
-    def _do_request(self, action=False):
-        """
-        Do a request!
-
-        :param action: choose "delete" or "keepalive"
-        :type action: str
-        :return: the response
-        :rtype: str or False
-        """
-        if action == "keepalive":
-            logger.info(f"BinanceWebSocketApiRestclient.keepalive_listen_key({str(self.listen_key_output)})")
-            method = "put"
-            try:
-                response = self._request(method, self.path_userdata, False, {'listenKey': str(self.listen_key)})
-                self.last_static_ping_listen_key = time.time()
-                return response
-            except KeyError:
-                return False
-            except TypeError:
-                return False
-        elif action == "delete":
-            logger.info(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)})")
-            method = "delete"
-            try:
-                response = self._request(method, self.path_userdata, False, {'listenKey': str(self.listen_key)})
-                self.listen_key = False
-                return response
-            except KeyError as error_msg:
-                logger.error(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)}) - "
-                             f"KeyError - error_msg: {str(error_msg)}")
-                return False
-            except TypeError as error_msg:
-                logger.error(f"BinanceWebSocketApiRestclient.delete_listen_key({str(self.listen_key_output)}) - "
-                             f"KeyError - error_msg: {str(error_msg)}")
-                return False
-        else:
-            return False
 
     def _init_vars(self,
                    stream_id,
@@ -148,67 +110,6 @@ class BinanceWebSocketApiRestclient(object):
             return False
         return True
 
-    def _request(self, method, path, query=False, data=False):
-        """
-        Do the request
-
-        :param method: choose the method to use (post, put or delete)
-        :type method: str
-        :param path: choose the path to use
-        :type path: str
-        :param query: choose the query to use
-        :type query: str
-        :param data: the payload for the post method
-        :type data: str
-        :return: the response
-        :rtype: str or False
-        """
-        requests_headers = {'Accept': 'application/json',
-                            'User-Agent': str(self.manager.get_user_agent()),
-                            'X-MBX-APIKEY': str(self.api_key)}
-        if query is not False:
-            uri = self.restful_base_uri + path + "?" + query
-        else:
-            uri = self.restful_base_uri + path
-        try:
-            if method == "post":
-                if data is False:
-                    request_handler = requests.post(uri, headers=requests_headers)
-                else:
-                    request_handler = requests.post(uri, headers=requests_headers, data=data)
-            elif method == "put":
-                request_handler = requests.put(uri, headers=requests_headers, data=data)
-            elif method == "delete":
-                request_handler = requests.delete(uri, headers=requests_headers)
-            else:
-                request_handler = False
-        except requests.exceptions.ConnectionError as error_msg:
-            logger.critical(f"BinanceWebSocketApiRestclient._request() - error: 9 -  error_msg: {str(error_msg)}")
-            return False
-        except socket.gaierror as error_msg:
-            logger.critical(f"BinanceWebSocketApiRestclient._request() - error: 10 -  error_msg: {str(error_msg)}")
-            return False
-        if request_handler.status_code == "418":
-            logger.critical("BinanceWebSocketApiRestclient._request() - error_msg: received status_code 418 from "
-                            "binance! You got"
-                            "banned from the binance api! Read this: https://github.com/binance-exchange/binance-"
-                            "official-api-sphinx/blob/master/rest-api.md#limits")
-        elif request_handler.status_code == "429":
-            logger.critical("BinanceWebSocketApiRestclient._request() - error_msg: received status_code 429 from "
-                            "binance! Back off or you are going to get banned! Read this: "
-                            "https://github.com/binance-exchange/binance-official-api-sphinx/blob/master/"
-                            "rest-api.md#limits")
-        try:
-            respond = request_handler.json()
-        except json.decoder.JSONDecodeError as error_msg:
-            logger.error(f"BinanceWebSocketApiRestclient._request() - error_msg: {str(error_msg)}")
-            return False
-        self.manager.binance_api_status['weight'] = request_handler.headers.get('X-MBX-USED-WEIGHT')
-        self.manager.binance_api_status['timestamp'] = time.time()
-        self.manager.binance_api_status['status_code'] = request_handler.status_code
-        request_handler.close()
-        return respond
-
     def get_listen_key(self,
                        stream_id=False,
                        api_key=False,
@@ -241,7 +142,11 @@ class BinanceWebSocketApiRestclient(object):
                             api_secret=api_secret,
                             symbol=symbol,
                             last_static_ping_listen_key=last_static_ping_listen_key)
-            method = "post"
+            ubra = BinanceRestApiManager(api_key=self.api_key, api_secret=self.api_secret,
+                                         exchange=self.manager.exchange,
+                                         socks5_proxy_server=self.manager.socks5_proxy_server,
+                                         socks5_proxy_user=self.manager.socks5_proxy_user,
+                                         socks5_proxy_pass=self.manager.socks5_proxy_pass)
             if self.manager.exchange == "binance.com-isolated_margin" or \
                     self.manager.exchange == "binance.com-isolated_margin-testnet":
                 if self.symbol is False:
@@ -249,10 +154,17 @@ class BinanceWebSocketApiRestclient(object):
                                     "`symbol` is missing!")
                     return False
                 else:
-                    response = self._request(method, self.path_userdata, False, {'symbol': str(self.symbol)})
+                    if self.manager.restful_base_uri is not None:
+                        ubra.MARGIN_API_URL = self.manager.restful_base_uri
+                    response = ubra.isolated_margin_stream_get_listen_key(symbol=str(self.symbol), output="raw_data",
+                                                                          throw_exception=False)
             else:
                 try:
-                    response = self._request(method, self.path_userdata)
+                    if self.manager.restful_base_uri is not None:
+                        ubra.API_URL = self.manager.restful_base_uri
+                    response = ubra.stream_get_listen_key(output="raw_data", throw_exception=False)
+                    self.manager.binance_api_status = ubra.get_used_weight()
+                    self.manager.binance_api_status['timestamp'] = time.time()
                 except AttributeError as error_msg:
                     logger.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
                                     f"error_msg: {error_msg} - Can not acquire listen_key!")
@@ -290,7 +202,26 @@ class BinanceWebSocketApiRestclient(object):
             return False
         with self.threading_lock:
             self._init_vars(stream_id, api_key, api_secret, listen_key)
-            return self._do_request("delete")
+            ubra = BinanceRestApiManager(api_key=self.api_key, api_secret=self.api_secret,
+                                         exchange=self.manager.exchange,
+                                         socks5_proxy_server=self.manager.socks5_proxy_server,
+                                         socks5_proxy_user=self.manager.socks5_proxy_user,
+                                         socks5_proxy_pass=self.manager.socks5_proxy_pass)
+            if self.manager.exchange == "binance.com-isolated_margin" or \
+                    self.manager.exchange == "binance.com-isolated_margin-testnet":
+                if self.manager.restful_base_uri is not None:
+                    ubra.MARGIN_API_URL = self.manager.restful_base_uri
+                result = ubra.isolated_margin_stream_close(symbol=str(self.symbol), listenKey=str(self.listen_key),
+                                                           throw_exception=False)
+                self.listen_key = False
+                self.symbol = False
+                return result
+            else:
+                if self.manager.restful_base_uri is not None:
+                    ubra.API_URL = self.manager.restful_base_uri
+                result = ubra.stream_close(listenKey=str(self.listen_key), throw_exception=False)
+                self.listen_key = False
+                return result
 
     def keepalive_listen_key(self,
                              stream_id=False,
@@ -320,4 +251,22 @@ class BinanceWebSocketApiRestclient(object):
             return False
         with self.threading_lock:
             self._init_vars(stream_id, api_key, api_secret, listen_key, last_static_ping_listen_key)
-            return self._do_request("keepalive")
+            ubra = BinanceRestApiManager(api_key=self.api_key, api_secret=self.api_secret,
+                                         exchange=self.manager.exchange,
+                                         socks5_proxy_server=self.manager.socks5_proxy_server,
+                                         socks5_proxy_user=self.manager.socks5_proxy_user,
+                                         socks5_proxy_pass=self.manager.socks5_proxy_pass)
+            if self.manager.exchange == "binance.com-isolated_margin" or \
+                    self.manager.exchange == "binance.com-isolated_margin-testnet":
+                if self.manager.restful_base_uri is not None:
+                    ubra.MARGIN_API_URL = self.manager.restful_base_uri
+                result = ubra.isolated_margin_stream_keepalive(symbol=str(self.symbol), listenKey=str(self.listen_key),
+                                                               throw_exception=False)
+                self.last_static_ping_listen_key = time.time()
+                return result
+            else:
+                if self.manager.restful_base_uri is not None:
+                    ubra.API_URL = self.manager.restful_base_uri
+                result = ubra.stream_keepalive(listenKey=str(self.listen_key), throw_exception=False)
+                self.last_static_ping_listen_key = time.time()
+                return result

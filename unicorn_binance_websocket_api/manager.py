@@ -34,7 +34,7 @@
 # IN THE SOFTWARE.
 
 
-from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange, Socks5ProxyConnectionError
+from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange
 from unicorn_binance_websocket_api.sockets import BinanceWebSocketApiSocket
 from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
@@ -45,7 +45,6 @@ from datetime import datetime
 from flask import Flask, redirect
 from flask_restful import Api
 from typing import Literal, Optional, Union
-from urllib.parse import urlparse
 import asyncio
 import colorama
 import copy
@@ -56,7 +55,6 @@ import platform
 import psutil
 import re
 import requests
-import socks  # PySocks https://pypi.org/project/PySocks/
 import ssl
 import sys
 import threading
@@ -186,8 +184,6 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type debug:  bool
     :param restful_base_uri: Override `restful_base_uri`. Example: `https://127.0.0.1`
     :type restful_base_uri:  str
-    :param restful_path_userdata: Override `restful_path_userdata`. Example: `api/v3/userDataStream`
-    :type restful_path_userdata:  str
     :param websocket_base_uri: Override `websocket_base_uri`. Example: `ws://127.0.0.1:8765/`
     :type websocket_base_uri:  str
     :param max_subscriptions_per_stream: Override the `max_subscriptions_per_stream` value. Example: 1024
@@ -222,7 +218,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                  high_performance: Optional[bool] = False,
                  debug: Optional[bool] = False,
                  restful_base_uri: Optional[str] = None,
-                 restful_path_userdata: Optional[str] = None,
                  websocket_base_uri: Optional[str] = None,
                  max_subscriptions_per_stream: Optional[int] = None,
                  exchange_type: Optional[Literal['cex', 'dex']] = None,
@@ -273,9 +268,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         self.exchange = exchange
         self.max_subscriptions_per_stream = max_subscriptions_per_stream or CONNECTION_SETTINGS[self.exchange][0]
-        self.restful_base_uri = restful_base_uri or CONNECTION_SETTINGS[self.exchange][1]
-        self.restful_path_userdata = restful_path_userdata or CONNECTION_SETTINGS[self.exchange][2]
-        self.websocket_base_uri = websocket_base_uri or CONNECTION_SETTINGS[self.exchange][3]
+        self.websocket_base_uri = websocket_base_uri or CONNECTION_SETTINGS[self.exchange][1]
+        self.restful_base_uri = restful_base_uri
         self.exchange_type = exchange_type
         if not self.exchange_type:
             if self.exchange in DEX_EXCHANGES:
@@ -288,6 +282,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.exchange_type = "cex"
         logger.info(f"Using exchange_type '{self.exchange_type}' ...")
 
+        self.socks5_proxy_server = socks5_proxy_server
         if socks5_proxy_server is None:
             self.socks5_proxy_address = None
             self.socks5_proxy_user: Optional[str] = None
@@ -304,32 +299,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 websocket_ssl_context.verify_mode = ssl.CERT_NONE
                 websocket_ssl_context.check_hostname = False
             self.websocket_ssl_context = websocket_ssl_context
-            websocket_socks5_proxy = socks.socksocket()
-            websocket_socks5_proxy.set_proxy(proxy_type=socks.SOCKS5,
-                                             addr=self.socks5_proxy_address,
-                                             port=int(self.socks5_proxy_port),
-                                             username=self.socks5_proxy_user,
-                                             password=self.socks5_proxy_pass)
-            netloc = urlparse(self.websocket_base_uri).netloc
-            try:
-                host, port = netloc.split(":")
-            except ValueError as error_msg:
-                logger.debug(f"'netloc' split error: {netloc} - {error_msg}")
-                host = netloc
-                port = 443
-            try:
-                logger.info(f"Connect socks5 proxy to {host}:{port}")
-                websocket_socks5_proxy.connect((host, int(port)))
-                self.websocket_socks5_proxy = websocket_socks5_proxy
-                self.websocket_server_hostname = netloc
-            except socks.ProxyConnectionError as error_msg:
-                error_msg = f"{error_msg} ({host}:{port})"
-                logger.critical(error_msg)
-                raise Socks5ProxyConnectionError(error_msg)
-            except socks.GeneralProxyError as error_msg:
-                error_msg = f"{error_msg} ({host}:{port})"
-                logger.critical(error_msg)
-                raise Socks5ProxyConnectionError(error_msg)
 
         self.stop_manager_request = None
         self.all_subscriptions_number = 0
@@ -843,16 +812,19 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['payload'] = []
         loop = asyncio.new_event_loop()
         self.set_socket_is_not_ready(stream_id)
-        thread = threading.Thread(target=self._create_stream_thread,
-                                  args=(loop,
-                                        stream_id,
-                                        self.stream_list[stream_id]['channels'],
-                                        self.stream_list[stream_id]['markets'],
-                                        self.stream_list[stream_id]['stream_buffer_name'],
-                                        self.stream_list[stream_id]['stream_buffer_maxlen'],
-                                        True),
-                                  name=f"_create_stream_thread: stream_id={stream_id}, time={time.time()}")
-        thread.start()
+        try:
+            thread = threading.Thread(target=self._create_stream_thread,
+                                      args=(loop,
+                                            stream_id,
+                                            self.stream_list[stream_id]['channels'],
+                                            self.stream_list[stream_id]['markets'],
+                                            self.stream_list[stream_id]['stream_buffer_name'],
+                                            self.stream_list[stream_id]['stream_buffer_maxlen'],
+                                            True),
+                                      name=f"_create_stream_thread: stream_id={stream_id}, time={time.time()}")
+            thread.start()
+        except OSError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager.create_stream({str(stream_id)}) - OSError - {error_msg}")
         self.stream_threads[stream_id] = thread
         while self.socket_is_ready[stream_id] is False and self.high_performance is False:
             # This loop will wait till the thread and the asyncio init is ready. This avoids two possible errors as
@@ -2929,6 +2901,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         stream_row_color_suffix = ""
         if len(add_string) > 0:
             add_string = " " + str(add_string) + "\r\n"
+        if self.socks5_proxy_address is not None and self.socks5_proxy_port is not None:
+            proxy = f"\r\n proxy: {self.socks5_proxy_address}:{self.socks5_proxy_port} (ssl:" \
+                    f"{self.socks5_proxy_ssl_verification})"
+        else:
+            proxy = ""
         try:
             if len(self.stream_list[stream_id]['logged_reconnects']) > 0:
                 logged_reconnects_row = "\r\n logged_reconnects: "
@@ -3012,7 +2989,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print(first_row +
-                  " exchange:", str(self.stream_list[stream_id]['exchange']), "\r\n" +
+                  " exchange: " + str(self.stream_list[stream_id]['exchange']) + f"{proxy}\r\n" +
                   str(add_string) +
                   " stream_id:", str(stream_id), "\r\n" +
                   str(stream_label_row) +

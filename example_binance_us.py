@@ -40,6 +40,9 @@ import threading
 import os
 
 
+socks5_proxy = "127.0.0.1:1080"
+
+
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     while True:
         if binance_websocket_api_manager.is_manager_stopping():
@@ -56,7 +59,7 @@ logging.basicConfig(level=logging.INFO,
                     style="{")
 
 # create instance of BinanceWebSocketApiManager for Binance Jersey
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us")
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us", socks5_proxy_server=socks5_proxy)
 
 userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"], api_key="aaa", api_secret="bb")
 

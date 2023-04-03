@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: example_socks5_proxy.py
+# File: dev_test_userdata.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
@@ -39,22 +39,26 @@ import asyncio
 import logging
 import os
 
-# How to:
-# https://medium.com/@oliverzehentleitner/how-to-connect-to-binance-com-websockets-using-python-via-a-socks5-proxy-3c5a3e063f12
-socks5_proxy = "1.2.3.4:1080"
+socks5_proxy = "127.0.0.1:1080"
 socks5_ssl_verification = True
+api_key = ""
+api_secret = ""
 
 
 async def binance_stream(ubwa):
     def handle_socket_message(data):
         print(f"received data: {data}")
 
-    ubwa.create_stream(channels=['kline', 'kline_1m'],
-                       markets=['btcusdt'],
-                       output="UnicornFy",
+    ubwa.create_stream(markets='arr', channels='!userData',
+                       api_key=api_key, api_secret=api_secret,
+                       stream_label="Bobs UserData",
                        process_stream_data=handle_socket_message)
+#    ubwa.create_stream("BTCUSDT", "kline_1m",
+#                       process_stream_data=handle_socket_message)
     while True:
         await asyncio.sleep(1)
+        ubwa.print_summary()
+        #ubwa.print_stream_info(ubwa.get_stream_id_by_label("Bobs UserData"))
 
 
 if __name__ == "__main__":
@@ -63,7 +67,6 @@ if __name__ == "__main__":
                         filename=os.path.basename(__file__) + '.log',
                         format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                         style="{")
-
     try:
         ubwa = BinanceWebSocketApiManager(exchange='binance.com',
                                           socks5_proxy_server=socks5_proxy,
