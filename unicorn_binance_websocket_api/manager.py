@@ -785,7 +785,13 @@ class BinanceWebSocketApiManager(threading.Thread):
             time.sleep(1)
             self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat'] = time.time()
             # restart streams with a restart_request (status == new)
-            temp_restart_requests = copy.deepcopy(self.restart_requests)
+            try:
+                temp_restart_requests = copy.deepcopy(self.restart_requests)
+            except RuntimeError as error_msg:
+                if "dictionary changed size during iteration" in error_msg:
+                    continue
+                else:
+                    raise RuntimeError(error_msg)
             for stream_id in temp_restart_requests:
                 try:
                     # find restarts that didnt work
