@@ -9,7 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
-## 1.43.3.dev (development stage/unreleased/unstable)
+## 1.44.0.dev (development stage/unreleased/unstable)
+
+# 1.44.0
 ### Added 
 - [`BinanceRestApiManager()`](https://unicorn-binance-rest-api.docs.lucit.tech/unicorn_binance_rest_api.html#unicorn_binance_rest_api.manager.BinanceRestApiManager) - 
   New parameter: `socks5_proxy_user` and `socks5_proxy_pass`
@@ -18,7 +20,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Full SOCKS5 Proxy support to REST API in `get_listen_key()`, `keepalive_listen_key()` and `delete_listen_key()` 
 - Show proxy info in `print_summary()` and `print_stream_info()`
 ### Changed
-- `restclient.py` now relies on `unicorn-binance-rest-api`. REST config removed from `connection_settings.py`
+- `restclient.py` now relies on `unicorn-binance-rest-api>=1.8.0`. REST config removed in `connection_settings.py`
 - Structure of `CONNECTION_SETTINGS`
 ### Fixed
 - RuntimeError: dictionary changed size during iteration in manger.py line 788, https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/commit/f189b9a8420133ffe34e9c9948e461a06d92f0a2
