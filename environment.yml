@@ -11,6 +11,6 @@ dependencies:
   - requests
   - ujson
   - unicorn-fy
-  - unicorn-binance-rest-api>=1.8.0
+  - unicorn-binance-rest-api>=1.8.1
   - websocket-client
   - websockets==10.4
