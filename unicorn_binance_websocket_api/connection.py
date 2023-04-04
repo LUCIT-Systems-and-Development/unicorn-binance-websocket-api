@@ -153,7 +153,8 @@ class BinanceWebSocketApiConnection(object):
                 host = netloc
                 port = 443
             try:
-                logger.info(f"Connect socks5 proxy to {host}:{port}")
+                logger.info(f"Connect to socks5 proxy {host}:{port} (ssl_verification: "
+                            f"{self.manager.socks5_proxy_ssl_verification})")
                 websocket_socks5_proxy.connect((host, int(port)))
                 websocket_server_hostname = netloc
             except socks.ProxyConnectionError as error_msg:
