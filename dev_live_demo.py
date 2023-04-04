@@ -88,8 +88,8 @@ def print_stream_to_png(manager):
 
 
 try:
-    ubra = BinanceRestApiManager()
-    ubwa = BinanceWebSocketApiManager()
+    ubra = BinanceRestApiManager(exchange="binance.com", socks5_proxy_server="127.0.0.1:1080")
+    ubwa = BinanceWebSocketApiManager(exchange="binance.com", socks5_proxy_server="127.0.0.1:1080")
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
