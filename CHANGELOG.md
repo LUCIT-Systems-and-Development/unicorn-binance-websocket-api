@@ -9,7 +9,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
-## 1.44.0.dev (development stage/unreleased/unstable)
+## 1.44.1.dev (development stage/unreleased/unstable)
+
+## 1.44.1
+### Added
+- Passing the variable `warn_on_update` to UBRA
+### Fixing 
+- Saving `binance_api_status` update in `delete_listen_key()` and `keepalive_listenkey()` did not work after the integration of UBRA
 
 ## 1.44.0
 ### Added 

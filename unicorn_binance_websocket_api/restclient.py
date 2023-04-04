@@ -146,7 +146,8 @@ class BinanceWebSocketApiRestclient(object):
                                          exchange=self.manager.exchange,
                                          socks5_proxy_server=self.manager.socks5_proxy_server,
                                          socks5_proxy_user=self.manager.socks5_proxy_user,
-                                         socks5_proxy_pass=self.manager.socks5_proxy_pass)
+                                         socks5_proxy_pass=self.manager.socks5_proxy_pass,
+                                         warn_on_update=self.manager.warn_on_update)
             if self.manager.exchange == "binance.com-isolated_margin" or \
                     self.manager.exchange == "binance.com-isolated_margin-testnet":
                 if self.symbol is False:
@@ -154,21 +155,26 @@ class BinanceWebSocketApiRestclient(object):
                                     "`symbol` is missing!")
                     return False
                 else:
-                    if self.manager.restful_base_uri is not None:
-                        ubra.MARGIN_API_URL = self.manager.restful_base_uri
-                    response = ubra.isolated_margin_stream_get_listen_key(symbol=str(self.symbol), output="raw_data",
-                                                                          throw_exception=False)
+                    try:
+                        if self.manager.restful_base_uri is not None:
+                            ubra.MARGIN_API_URL = self.manager.restful_base_uri
+                        response = ubra.isolated_margin_stream_get_listen_key(symbol=str(self.symbol), output="raw_data",
+                                                                              throw_exception=False)
+                    except AttributeError as error_msg:
+                        logger.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
+                                        f"error_msg: {error_msg} - Can not acquire listen_key for isolated_margin!")
+                        return False
             else:
                 try:
                     if self.manager.restful_base_uri is not None:
                         ubra.API_URL = self.manager.restful_base_uri
                     response = ubra.stream_get_listen_key(output="raw_data", throw_exception=False)
-                    self.manager.binance_api_status = ubra.get_used_weight()
-                    self.manager.binance_api_status['timestamp'] = time.time()
                 except AttributeError as error_msg:
                     logger.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
                                     f"error_msg: {error_msg} - Can not acquire listen_key!")
                     return False
+            self.manager.binance_api_status = ubra.get_used_weight()
+            self.manager.binance_api_status['timestamp'] = time.time()
             try:
                 self.listen_key = response['listenKey']
                 self.last_static_ping_listen_key = time.time()
@@ -206,22 +212,23 @@ class BinanceWebSocketApiRestclient(object):
                                          exchange=self.manager.exchange,
                                          socks5_proxy_server=self.manager.socks5_proxy_server,
                                          socks5_proxy_user=self.manager.socks5_proxy_user,
-                                         socks5_proxy_pass=self.manager.socks5_proxy_pass)
+                                         socks5_proxy_pass=self.manager.socks5_proxy_pass,
+                                         warn_on_update=self.manager.warn_on_update)
             if self.manager.exchange == "binance.com-isolated_margin" or \
                     self.manager.exchange == "binance.com-isolated_margin-testnet":
                 if self.manager.restful_base_uri is not None:
                     ubra.MARGIN_API_URL = self.manager.restful_base_uri
                 result = ubra.isolated_margin_stream_close(symbol=str(self.symbol), listenKey=str(self.listen_key),
                                                            throw_exception=False)
-                self.listen_key = False
                 self.symbol = False
-                return result
             else:
                 if self.manager.restful_base_uri is not None:
                     ubra.API_URL = self.manager.restful_base_uri
                 result = ubra.stream_close(listenKey=str(self.listen_key), throw_exception=False)
-                self.listen_key = False
-                return result
+            self.listen_key = False
+            self.manager.binance_api_status = ubra.get_used_weight()
+            self.manager.binance_api_status['timestamp'] = time.time()
+            return result
 
     def keepalive_listen_key(self,
                              stream_id=False,
@@ -255,7 +262,8 @@ class BinanceWebSocketApiRestclient(object):
                                          exchange=self.manager.exchange,
                                          socks5_proxy_server=self.manager.socks5_proxy_server,
                                          socks5_proxy_user=self.manager.socks5_proxy_user,
-                                         socks5_proxy_pass=self.manager.socks5_proxy_pass)
+                                         socks5_proxy_pass=self.manager.socks5_proxy_pass,
+                                         warn_on_update=self.manager.warn_on_update)
             if self.manager.exchange == "binance.com-isolated_margin" or \
                     self.manager.exchange == "binance.com-isolated_margin-testnet":
                 if self.manager.restful_base_uri is not None:
@@ -263,10 +271,11 @@ class BinanceWebSocketApiRestclient(object):
                 result = ubra.isolated_margin_stream_keepalive(symbol=str(self.symbol), listenKey=str(self.listen_key),
                                                                throw_exception=False)
                 self.last_static_ping_listen_key = time.time()
-                return result
             else:
                 if self.manager.restful_base_uri is not None:
                     ubra.API_URL = self.manager.restful_base_uri
                 result = ubra.stream_keepalive(listenKey=str(self.listen_key), throw_exception=False)
                 self.last_static_ping_listen_key = time.time()
-                return result
+            self.manager.binance_api_status = ubra.get_used_weight()
+            self.manager.binance_api_status['timestamp'] = time.time()
+            return result

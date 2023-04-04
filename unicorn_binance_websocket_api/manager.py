@@ -124,7 +124,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                      binance.com-futures-testnet, binance.com-coin_futures, binance.us, trbinance.com,
                      jex.com, binance.org, binance.org-testnet (default: binance.com)
     :type exchange: str
-    :param warn_on_update: set to `False` to disable the update warning
+    :param warn_on_update: set to `False` to disable the update warning of UBWA and also in UBRA used as submodule.
     :type warn_on_update: bool
     :param throw_exception_if_unrepairable: set to `True` to activate exceptions if a crashed stream is unrepairable
                                             (invalid API key, exceeded subscription limit) or an unknown exchange is
@@ -367,6 +367,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.start()
         self.replacement_text = "***SECRET_REMOVED***"
         self.restclient = BinanceWebSocketApiRestclient(self)
+        self.warn_on_update = warn_on_update
         if warn_on_update and self.is_update_available():
             update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
                          f"please consider updating! (Changelog: " \

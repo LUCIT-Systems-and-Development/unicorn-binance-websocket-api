@@ -39,8 +39,10 @@ import asyncio
 import logging
 import os
 
-socks5_proxy = "127.0.0.1:1080"
+#socks5_proxy = "127.0.0.1:1080"
+socks5_proxy = None
 socks5_ssl_verification = True
+
 api_key = ""
 api_secret = ""
 
