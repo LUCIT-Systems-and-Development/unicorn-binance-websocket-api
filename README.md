@@ -385,7 +385,7 @@ click ![thumbs-up](https://raw.githubusercontent.com/lucit-systems-and-developme
 Before you report a bug, [try the latest release](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS 
 and Python version and explain how to reproduce the error. A demo script is appreciated.
 
-If you dont find an issue related to your topic, please open a new [issue](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues)!
+If you don't find an issue related to your topic, please open a new [issue](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues)!
 
 [Report a security bug!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/security/policy)
 
@@ -401,7 +401,9 @@ contribute follow
 We ![love](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/heart.png) open source!
 
 ## You want to say Thank You?
-We hope you are enjoying using our libraries and that they are proving to be useful to you. If you have a moment, we would greatly appreciate it if you could leave us a [review on Google](https://g.page/r/CbfHlcs8BfG8EAg/review). Thank you for your support!
+We hope you are enjoying using our libraries and that they are proving to be useful to you. If you have a moment, we 
+would greatly appreciate it if you could leave us a [review on Google](https://g.page/r/CbfHlcs8BfG8EAg/review). 
+Thank you for your support!
 
 ## Disclaimer
 This project is for informational purposes only. You should not construe this information or any other material as 
@@ -415,8 +417,18 @@ jurisdiction.
 Under no circumstances will we be responsible or liable for any claims, damages, losses, expenses, costs or liabilities 
 of any kind, including but not limited to direct or indirect damages for loss of profits.
 
+### SOCKS5 Proxy / Geoblocking
+We would like to explicitly point out that in our opinion US citizens are exclusively authorized to trade on Binance.US 
+and that this restriction must not be circumvented!
+
+The purpose of supporting a SOCKS5 proxy in the UNICORN Binance Suite and its modules is to allow non-US citizens to use 
+US services. For example, Github actions with UBS will not work without a SOCKS5 proxy, as they will inevitably run on 
+servers in the US and be blocked by Binance.com. Moreover, it also seems justified that traders, data scientists and 
+companies from the US analyze binance.com market data - as long as they do not trade there.
+
 ## Commercial Support
 
 [![Get professional and fast support](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-suite/master/images/support/LUCIT-get-professional-and-fast-support.png)](https://www.lucit.tech/get-support.html)
 
-***Do you need a developer, operator or consultant?*** [Contact us](https://www.lucit.tech/contact.html) for a non-binding initial consultation!
+***Do you need a developer, operator or consultant?*** [Contact us](https://www.lucit.tech/contact.html) for a 
+non-binding initial consultation!
