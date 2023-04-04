@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
-    <link rel="next" title="&lt;no title&gt;" href="README.html" /><link rel="shortcut icon" type="image/png" href="_static/lucit.png" />
+    <link rel="next" title="UNICORN Binance WebSocket API" href="README.html" /><link rel="shortcut icon" type="image/png" href="_static/lucit.png" />
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     
     <script
@@ -65,7 +65,7 @@
   <div>
     <h4>Next topic</h4>
     <p class="topless"><a href="README.html"
-                          title="next chapter">&lt;no title&gt;</a></p>
+                          title="next chapter">UNICORN Binance WebSocket API</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -124,7 +124,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="README.html" title="&lt;no title&gt;"
+          <a href="README.html" title="UNICORN Binance WebSocket API"
              accesskey="N">next</a> |</li>
               
                   
@@ -165,20 +165,643 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Readme</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="README.html#create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code">Create a multiplex websocket connection to Binance with a <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> with just 3 lines of code:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="README.html#and-4-more-lines-to-print-the-receives">And 4 more lines to print the receives:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#or-with-a-callback-function-just-do">Or with a callback function just do:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received raw webstream data into well-formed Python dictionaries with UnicornFy:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#subscribe-unsubscribe-new-markets-and-channels">Subscribe / unsubscribe new markets and channels:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#get-the-right-logger">Get the right logger:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#description">Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="README.html#what-are-the-benefits-of-the-unicorn-binance-websocket-api">What are the benefits of the UNICORN Binance WebSocket API?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#live-demo">Live Demo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#installation-and-upgrade">Installation and Upgrade</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="README.html#a-wheel-and-a-source-file-of-the-latest-release-with-pip-from-pypi">A wheel and a source file of the latest release with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="README.html#a-conda-package-of-the-latest-release-with-conda-from-anaconda-via-conda-forge">A conda package of the latest release with <code class="docutils literal notranslate"><span class="pre">conda</span></code> from Anaconda via CONDA-FORGE.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="README.html#from-source-of-the-latest-release-with-pip-from-github">From source of the latest release with PIP from Github</a></li>
+<li class="toctree-l3"><a class="reference internal" href="README.html#from-the-latest-source-dev-stage-with-pip-from-github">From the latest source (dev-stage) with PIP from Github</a></li>
+<li class="toctree-l3"><a class="reference internal" href="README.html#conda-environment-virtualenv-or-plain-python">Conda environment, Virtualenv or plain Python</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#change-log">Change Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#howto">Howto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#project-homepage">Project Homepage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#wiki">Wiki</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#social">Social</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#receive-notifications">Receive Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#how-to-report-bugs-or-suggest-improvements">How to report Bugs or suggest Improvements?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#contributing">Contributing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="README.html#contributors">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#you-want-to-say-thank-you">You want to say Thank You?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#disclaimer">Disclaimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#commercial-support">Commercial Support</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="unicorn_binance_websocket_api.html">unicorn_binance_websocket_api package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.connection">unicorn_binance_websocket_api.connection module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#unicorn-binance-websocket-api-connection-module">unicorn_binance_websocket_api.connection module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.exceptions">unicorn_binance_websocket_api.exceptions module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.manager">unicorn_binance_websocket_api.manager module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.restclient">unicorn_binance_websocket_api.restclient module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.restserver">unicorn_binance_websocket_api.restserver module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.sockets">unicorn_binance_websocket_api.sockets module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#unicorn-binance-websocket-api-manager-module">unicorn_binance_websocket_api.manager module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#unicorn-binance-websocket-api-restclient-module">unicorn_binance_websocket_api.restclient module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#unicorn-binance-websocket-api-restserver-module">unicorn_binance_websocket_api.restserver module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#unicorn-binance-websocket-api-sockets-module">unicorn_binance_websocket_api.sockets module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unicorn_binance_websocket_api.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">unicorn-binance-websocket-api Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#dev-development-stage-unreleased-unstable">1.44.0.dev (development stage/unreleased/unstable)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html#id1">1.44.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#added">Added</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#changed">Changed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#fixed">Fixed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#removed">Removed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id2">1.43.3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id3">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id4">1.43.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id5">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id6">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id7">1.43.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id8">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id9">1.43.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id10">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id11">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id12">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id13">1.42.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id14">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id15">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id16">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id17">1.41.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id18">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id19">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#fixing">Fixing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id20">1.40.7</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id21">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id22">1.40.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id23">1.40.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id24">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id25">1.40.4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id26">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id27">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id28">1.40.3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id29">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id30">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id31">1.40.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id32">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id33">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id34">1.40.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id35">1.40.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id36">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id37">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id38">1.39.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id39">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id40">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id41">1.38.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id42">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id43">1.38.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id44">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id45">1.37.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id46">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id47">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id48">1.37.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id49">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id50">1.37.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id51">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id52">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id53">1.36.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id54">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id55">1.36.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id56">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id57">1.35.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id58">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id59">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id60">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id61">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id62">1.34.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id63">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id64">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id65">1.34.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id66">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id67">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id68">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id69">1.34.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id70">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id71">1.33.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id72">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id73">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id74">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id75">1.33.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id76">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id77">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id78">1.32.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id79">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id80">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id81">1.31.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id82">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id83">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id84">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id85">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id86">1.30.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id87">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id88">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id89">1.29.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id90">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id91">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id92">1.28.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id93">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id94">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id95">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id96">1.27.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id97">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id98">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id99">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id100">1.26.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id101">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id102">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id103">1.25.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id104">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id105">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id106">1.24.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id107">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id108">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id109">1.23.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id110">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id111">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id112">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id113">1.22.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id114">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id115">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id116">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id117">1.21.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id118">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id119">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id120">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id121">1.20.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id122">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id123">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id124">1.19.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id125">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id126">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id127">1.18.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id128">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id129">1.18.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id130">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id131">1.18.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id132">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id133">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id134">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id135">1.17.4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id136">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id137">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id138">1.17.3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id139">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id140">1.17.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id141">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id142">1.17.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id143">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id144">1.17.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id145">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id146">1.16.9</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id147">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id148">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id149">1.16.7</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id150">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id151">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id152">1.16.6</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id153">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id154">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id155">1.16.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id156">1.16.4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id157">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id158">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id159">1.16.3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id160">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id161">1.16.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id162">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id163">1.16.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id164">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id165">1.16.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id166">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id167">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id168">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id169">1.15.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id170">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id171">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id172">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id173">1.14.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id174">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id175">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id176">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id177">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id178">1.13.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id179">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id180">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id181">1.12.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#recommended-update">RECOMMENDED UPDATE!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id182">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id183">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id184">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id185">1.11.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id186">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id187">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id188">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id189">1.10.6</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id190">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id191">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id192">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id193">1.10.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id194">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id195">1.10.4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id196">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id197">1.10.3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id198">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id199">1.10.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id200">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id201">1.10.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id202">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id203">1.10.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#important-infos-please-read">Important infos, please read!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id204">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id205">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id206">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id207">1.9.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id208">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id209">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id210">1.9.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id211">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id212">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id213">1.8.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id214">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id215">1.8.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id216">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id217">1.8.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id218">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id219">1.7.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id220">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id221">1.6.6</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id222">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id223">1.6.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id224">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id225">1.6.4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id226">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#fix">Fix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id227">1.6.3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id228">Fix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id229">1.6.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id230">Fix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id231">1.6.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id232">Fix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id233">1.6.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id234">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id235">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id236">Removed!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id237">1.5.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id238">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id239">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id240">1.4.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id241">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id242">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id243">1.3.10</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id244">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id245">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id246">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id247">1.3.9</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id248">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id249">1.3.8</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id250">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id251">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id252">1.3.7</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id253">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id254">1.3.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id255">1.3.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id256">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id257">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id258">1.3.4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id259">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id260">1.3.3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id261">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#rewrite">Rewrite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id262">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id263">1.3.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id264">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id265">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id266">1.3.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id267">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id268">1.3.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id269">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id270">1.2.8</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id271">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id272">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id273">1.2.7</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id274">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id275">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id276">1.2.6</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id277">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id278">1.2.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id279">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id280">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id281">1.2.4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id282">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id283">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id284">1.2.3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id285">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id286">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id287">1.2.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id288">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id289">1.2.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id290">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id291">Fixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id292">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id293">1.2.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id294">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id295">1.1.20</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id296">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id297">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id298">1.1.19</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#change">Change</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id299">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id300">1.1.18</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id301">Removed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id302">1.1.17</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id303">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id304">1.1.16</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id305">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id306">1.1.15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id307">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id308">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id309">1.1.14</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id310">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id311">1.1.13</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id312">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id313">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id314">1.1.12</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id315">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id316">1.1.11</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id317">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id318">1.1.10</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id319">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id320">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id321">1.1.9</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id322">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id323">1.1.8</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id324">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id325">Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id326">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#failed-build">1.1.7 failed build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id327">1.1.6</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id328">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id329">1.1.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id330">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CHANGELOG.html#id331">Fixed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright</a></li>
 </ul>
 </div>
 </section>
@@ -215,7 +838,7 @@
   <div>
     <h4>Next topic</h4>
     <p class="topless"><a href="README.html"
-                          title="next chapter">&lt;no title&gt;</a></p>
+                          title="next chapter">UNICORN Binance WebSocket API</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -274,7 +897,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="README.html" title="&lt;no title&gt;"
+          <a href="README.html" title="UNICORN Binance WebSocket API"
              >next</a> |</li>
               
                   
@@ -307,7 +930,7 @@
     <div class="footer">
     &copy; <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
     See <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">License</a> for more information.<br />
-    Last updated on Apr 04 2023 at 01:31 (CET).
+    Last updated on Apr 04 2023 at 03:14 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
