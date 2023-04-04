@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.44.0.dev (development stage/unreleased/unstable)
 
-# 1.44.0
+## 1.44.0
 ### Added 
 - [`BinanceRestApiManager()`](https://unicorn-binance-rest-api.docs.lucit.tech/unicorn_binance_rest_api.html#unicorn_binance_rest_api.manager.BinanceRestApiManager) - 
   New parameter: `socks5_proxy_user` and `socks5_proxy_pass`
