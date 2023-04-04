@@ -3070,7 +3070,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                       f"{self.get_date_of_timestamp(self.receiving_speed_peak['timestamp'])})"
 
         if self.socks5_proxy_address is not None and self.socks5_proxy_port is not None:
-            proxy = f"\r\n proxy: {self.socks5_proxy_address}:{self.socks5_proxy_port} (ssl:" \
+            proxy = f"\r\n proxy: {self.socks5_proxy_address}:{self.socks5_proxy_port} (ssl_verification: " \
                     f"{self.socks5_proxy_ssl_verification})"
         else:
             proxy = ""
