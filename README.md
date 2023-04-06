@@ -232,7 +232,7 @@ for [ICINGA](https://exchange.icinga.com/LUCIT/check_lucit_collector)/Nagios
 
 - Integration of [test cases](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml) and [examples](#examples).
 
-- Customizable base URL and request timeout.
+- Customizable base URL.
 
 - *Socks5 Proxy* support:
   ```
