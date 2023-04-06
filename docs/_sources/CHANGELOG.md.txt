@@ -9,12 +9,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
-## 1.44.1.dev (development stage/unreleased/unstable)
+## 1.45.0.dev (development stage/unreleased/unstable)
+
+## 1.45.0
 ### Added
-- New methods to manager.py `get_timestamp()`, `generate_signature()`, `order_params()`, `add_payload_to_stream`
-- Support for the new [Binance Websocket API](https://developers.binance.com/docs/binance-trading-api/websocket_api):
+- This is the first code part to support the new [Binance Websocket API](https://developers.binance.com/docs/binance-trading-api/websocket_api)
+  [issue#319](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/319):
   - `WEBSOCKET_API_BASE_URI` to connection_settings.py and added URI for spot and testnet: `wss://ws-api.binance.com/ws-api/v3` and `wss://testnet.binance.vision/ws-api/v3`
   - Upgraded `print_stream_info()` to show if a userData stream is an Websocket API stream or not.
+  - New methods to manager.py `get_timestamp()`, `generate_signature()`, `order_params()`, `add_payload_to_stream`
   - ws_api.py to provide Binance websocket api functions in `ubwa.api.method(stream_id=stream_id)`.
     - `ubwa.api.cancel_open_orders()`
     - `ubwa.api.cancel_order()`
