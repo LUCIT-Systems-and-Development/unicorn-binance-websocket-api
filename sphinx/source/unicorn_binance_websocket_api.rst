@@ -52,6 +52,14 @@ unicorn\_binance\_websocket\_api.sockets module
     :undoc-members:
     :show-inheritance:
 
+unicorn\_binance\_websocket\_api.ws_api module
+------------------------------------------------------------------------------------
+
+.. automodule:: unicorn_binance_websocket_api.ws_api
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
