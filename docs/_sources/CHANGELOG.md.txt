@@ -10,6 +10,25 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
 ## 1.44.1.dev (development stage/unreleased/unstable)
+### Added
+- New methods to manager.py `get_timestamp()`, `generate_signature()`, `order_params()`, `add_payload_to_stream`
+- Support for the new [Binance Websocket API](https://developers.binance.com/docs/binance-trading-api/websocket_api):
+  - `WEBSOCKET_API_BASE_URI` to connection_settings.py and added URI for spot and testnet: `wss://ws-api.binance.com/ws-api/v3` and `wss://testnet.binance.vision/ws-api/v3`
+  - Upgraded `print_stream_info()` to show if a userData stream is an Websocket API stream or not.
+  - ws_api.py to provide Binance websocket api functions in `ubwa.api.method(stream_id=stream_id)`.
+    - `ubwa.api.cancel_open_orders()`
+    - `ubwa.api.cancel_order()`
+    - `ubwa.api.create_order()`
+    - `ubwa.api.get_account_status()`
+    - `ubwa.api.get_exchange_info()`
+    - `ubwa.api.get_open_orders()`
+    - `ubwa.api.get_order()`
+    - `ubwa.api.get_order_book()`
+    - `ubwa.api.get_server_time()`
+    - `ubwa.api.ping()`
+### Changed
+- `create_stream(channels=[], markets=[])` initiated as lists and are not mandatory anymore to enable the use of 
+  parameter `api` to create a Websocket API stream. 
 
 ## 1.44.1
 ### Added
