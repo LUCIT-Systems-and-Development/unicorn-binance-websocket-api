@@ -58,10 +58,9 @@ class BinanceWebSocketApiWsApi(object):
         :type stream_id: str
         :param symbol: The symbol you want to trade
         :type symbol: str
-
         :return: bool
-
         """
+
         if stream_id is None:
             return False
         method = "openOrders.cancelAll"
