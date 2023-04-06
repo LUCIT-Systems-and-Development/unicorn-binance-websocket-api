@@ -33,22 +33,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-
+from unicorn_binance_websocket_api.connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, CONNECTION_SETTINGS
 from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange
-from unicorn_binance_websocket_api.sockets import BinanceWebSocketApiSocket
 from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
-from unicorn_binance_websocket_api.connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, CONNECTION_SETTINGS
+from unicorn_binance_websocket_api.sockets import BinanceWebSocketApiSocket
+from unicorn_binance_websocket_api.ws_api import BinanceWebSocketApiWsApi
 from cheroot import wsgi
 from collections import deque
 from datetime import datetime
 from flask import Flask, redirect
 from flask_restful import Api
+from operator import itemgetter
 from typing import Literal, Optional, Union
 import asyncio
 import colorama
 import copy
 import logging
+import hmac
 import hashlib
 import os
 import platform
@@ -63,7 +65,6 @@ import traceback
 import uuid
 import ujson as json
 import websockets
-
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -186,6 +187,8 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type restful_base_uri:  str
     :param websocket_base_uri: Override `websocket_base_uri`. Example: `ws://127.0.0.1:8765/`
     :type websocket_base_uri:  str
+    :param websocket_api_base_uri: Override `websocket_api_base_uri`. Example: `ws://127.0.0.1:8765/`
+    :type websocket_api_base_uri:  str
     :param max_subscriptions_per_stream: Override the `max_subscriptions_per_stream` value. Example: 1024
     :type max_subscriptions_per_stream:  int
     :param exchange_type: Override the exchange type. Valid options are: 'cex', 'dex'
@@ -219,6 +222,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  debug: Optional[bool] = False,
                  restful_base_uri: Optional[str] = None,
                  websocket_base_uri: Optional[str] = None,
+                 websocket_api_base_uri: Optional[str] = None,
                  max_subscriptions_per_stream: Optional[int] = None,
                  exchange_type: Optional[Literal['cex', 'dex']] = None,
                  socks5_proxy_server: Optional[str] = None,
@@ -269,6 +273,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.exchange = exchange
         self.max_subscriptions_per_stream = max_subscriptions_per_stream or CONNECTION_SETTINGS[self.exchange][0]
         self.websocket_base_uri = websocket_base_uri or CONNECTION_SETTINGS[self.exchange][1]
+        self.websocket_api_base_uri = websocket_api_base_uri or CONNECTION_SETTINGS[self.exchange][2]
         self.restful_base_uri = restful_base_uri
         self.exchange_type = exchange_type
         if not self.exchange_type:
@@ -367,6 +372,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.start()
         self.replacement_text = "***SECRET_REMOVED***"
         self.restclient = BinanceWebSocketApiRestclient(self)
+        self.api = BinanceWebSocketApiWsApi(manager=self)
         self.warn_on_update = warn_on_update
         if warn_on_update and self.is_update_available():
             update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
@@ -389,6 +395,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    ping_timeout=None,
                                    close_timeout=None,
                                    stream_buffer_maxlen=None,
+                                   api=False,
                                    process_stream_data=None):
         """
         Create a list entry for new streams
@@ -444,6 +451,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
                                      `BinanceWebSocketApiManager()`.
         :type stream_buffer_maxlen: int or None
+        :param api: Setting this to `True` activates the creation of a Websocket API stream to send API requests via Websocket.
+                    Needs `api_key` and `api_secret` in combination. This type of stream can not be combined with a UserData
+                    stream or an other public endpoint. (Default is `False`)
+        :type api: bool
         :param process_stream_data: Provide a function/method to process the received webstream data. The function
                             will be called instead of
                             `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
@@ -472,6 +483,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'output': copy.deepcopy(output),
                                        'subscriptions': 0,
                                        'payload': [],
+                                       'api': copy.deepcopy(api),
                                        'api_key': copy.deepcopy(api_key),
                                        'api_secret': copy.deepcopy(api_secret),
                                        'dex_user_address': copy.deepcopy(self.dex_user_address),
@@ -498,7 +510,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'listen_key_cache_time':  10 * 60,
                                        'last_received_data_record': None,
                                        'processed_receives_statistic': {},
-                                       'transfer_rate_per_second': {'bytes': {}, 'speed': 0}}
+                                       'transfer_rate_per_second': {'bytes': {}, 'speed': 0},
+                                       'websocket_uri': None}
         logger.info("BinanceWebSocketApiManager._add_stream_to_stream_list(" +
                     str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
                     + str(stream_buffer_name) + ", " + str(stream_buffer_maxlen) + ", " + str(symbols) + ")")
@@ -577,6 +590,42 @@ class BinanceWebSocketApiManager(threading.Thread):
                              f"KeyError `error: 12` - {error_msg}")
             loop.close()
             self.set_socket_is_ready(stream_id)
+
+    def generate_signature(self, api_secret=None, data=None):
+        """
+        Signe the request.
+
+        :param api_secret:
+        :param data:
+
+        :return:
+        """
+        ordered_data = self.order_params(data)
+        query_string = '&'.join(["{}={}".format(d[0], d[1]) for d in ordered_data])
+        m = hmac.new(api_secret.encode('utf-8'), query_string.encode('utf-8'), hashlib.sha256)
+        return m.hexdigest()
+
+    @staticmethod
+    def order_params(data):
+        """
+        Convert params to list with signature as last element
+
+        :param data:
+        :return:
+
+        """
+        has_signature = False
+        params = []
+        for key, value in data.items():
+            if key == 'signature':
+                has_signature = True
+            else:
+                params.append((key, value))
+        # sort parameters by key
+        params.sort(key=itemgetter(0))
+        if has_signature:
+            params.append(('signature', data['signature']))
+        return params
 
     def _frequent_checks(self):
         """
@@ -706,19 +755,20 @@ class BinanceWebSocketApiManager(threading.Thread):
                         active_stream_list[stream_id]['markets'] = [active_stream_list[stream_id]['markets'], ]
                     if isinstance(active_stream_list[stream_id]['channels'], str):
                         active_stream_list[stream_id]['channels'] = [active_stream_list[stream_id]['channels'], ]
-                    if "!userData" in active_stream_list[stream_id]['markets'] or \
-                            "!userData" in active_stream_list[stream_id]['channels']:
-                        if (active_stream_list[stream_id]['start_time'] +
-                            active_stream_list[stream_id]['listen_key_cache_time']) < time.time() and \
-                                (active_stream_list[stream_id]['last_static_ping_listen_key'] +
-                                 active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
-                            # keep-alive the listenKey
-                            self.restclient.keepalive_listen_key(stream_id)
-                            # set last_static_ping_listen_key
-                            self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
-                            self.set_heartbeat(stream_id)
-                            logger.info("BinanceWebSocketApiManager._frequent_checks() - sent listen_key keepalive "
-                                        "ping for stream_id=" + str(stream_id))
+                    if active_stream_list[stream_id]['api'] is False:
+                        if "!userData" in active_stream_list[stream_id]['markets'] or \
+                                "!userData" in active_stream_list[stream_id]['channels']:
+                            if (active_stream_list[stream_id]['start_time'] +
+                                active_stream_list[stream_id]['listen_key_cache_time']) < time.time() and \
+                                    (active_stream_list[stream_id]['last_static_ping_listen_key'] +
+                                     active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
+                                # keep-alive the listenKey
+                                self.restclient.keepalive_listen_key(stream_id)
+                                # set last_static_ping_listen_key
+                                self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
+                                self.set_heartbeat(stream_id)
+                                logger.info("BinanceWebSocketApiManager._frequent_checks() - sent listen_key keepalive "
+                                            "ping for stream_id=" + str(stream_id))
         sys.exit(0)
 
     def _handle_task_result(self, task: asyncio.Task) -> None:
@@ -893,6 +943,22 @@ class BinanceWebSocketApiManager(threading.Thread):
         except OSError as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
                             "going down! - Info: " + str(error_msg))
+
+    def add_payload_to_stream(self, stream_id=None, payload: dict = None):
+        """
+        Add a payload to a stream by `stream_id`.
+
+        :param stream_id: id of a stream
+        :type stream_id: str
+        :param payload: The payload in JSON to add.
+        :type payload: dict
+        :return: bool
+        """
+        if payload is None or stream_id is None:
+            return False
+        else:
+            self.stream_list[stream_id]['payload'].append(payload)
+            return True
 
     def add_to_ringbuffer_error(self, error):
         """
@@ -1165,8 +1231,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         return payload
 
     def create_stream(self,
-                      channels,
-                      markets,
+                      channels=[],
+                      markets=[],
                       stream_label=None,
                       stream_buffer_name=False,
                       api_key=False,
@@ -1177,6 +1243,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                       ping_timeout=None,
                       close_timeout=None,
                       stream_buffer_maxlen=None,
+                      api=False,
                       process_stream_data=None):
         """
         Create a websocket stream
@@ -1272,6 +1339,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
                                      `BinanceWebSocketApiManager()`.
         :type stream_buffer_maxlen: int or None
+        :param api: Setting this to `True` activates the creation of a Websocket API stream to send API requests via Websocket.
+                    Needs `api_key` and `api_secret` in combination. This type of stream can not be combined with a UserData
+                    stream or an other public endpoint. (Default is `False`)
+        :type api: bool
         :param process_stream_data: Provide a function/method to process the received webstream data (callback). The
                             function will be called instead of
                             `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
@@ -1283,24 +1354,31 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type process_stream_data: function
         :return: stream_id or 'False'
         """
-        # create a stream
-        if isinstance(channels, bool):
-            logger.error(f"BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets) + ", "
-                         + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
-                         str(stream_buffer_maxlen) + ") - Parameter "
-                         f"`channels` must be str, tuple, list or a set!")
-            return False
-        elif isinstance(markets, bool):
+        # handle Websocket API streams: https://developers.binance.com/docs/binance-trading-api/websocket_api
+        if api is True:
+            if api_key is False or api_secret is False:
+                logger.error(f"BinanceWebSocketApiManager.create_stream(api={api}) - `api_key` and `api_secret` are "
+                             f"mandatory if `api=True`")
+                return False
+        else:
+            # create an ordinary stream
             if isinstance(channels, bool):
                 logger.error(f"BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets) + ", "
                              + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
                              str(stream_buffer_maxlen) + ") - Parameter "
-                             f"`markets` must be str, tuple, list or a set!")
-            return False
-        if type(channels) is str:
-            channels = [channels]
-        if type(markets) is str:
-            markets = [markets]
+                             f"`channels` must be str, tuple, list or a set!")
+                return False
+            elif isinstance(markets, bool):
+                if isinstance(channels, bool):
+                    logger.error(f"BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets) + ", "
+                                 + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
+                                 str(stream_buffer_maxlen) + ") - Parameter "
+                                 f"`markets` must be str, tuple, list or a set!")
+                return False
+            if type(channels) is str:
+                channels = [channels]
+            if type(markets) is str:
+                markets = [markets]
         output = output or self.output_default
         close_timeout = close_timeout or self.close_timeout_default
         ping_interval = ping_interval or self.ping_interval_default
@@ -1325,8 +1403,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 elif self.is_exchange_type('cex'):
                     markets_new.append(str(market).lower())
         logger.info("BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets_new) + ", "
-                    + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ") with stream_id="
-                    + str(stream_id))
+                    + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " + str(symbols) +
+                    ", " + str(api) + ") with stream_id=" + str(stream_id))
         self._add_stream_to_stream_list(stream_id,
                                         channels,
                                         markets_new,
@@ -1340,13 +1418,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         ping_timeout=ping_timeout,
                                         close_timeout=close_timeout,
                                         stream_buffer_maxlen=stream_buffer_maxlen,
+                                        api=api,
                                         process_stream_data=process_stream_data)
         try:
             loop = asyncio.new_event_loop()
         except OSError as error_msg:
             logger.critical(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
-                            f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}), {stream_buffer_maxlen} "
-                            f"with stream_id={str(stream_id)} - OSError  - can not create stream - "
+                            f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}), {stream_buffer_maxlen}, "
+                            f"{api} with stream_id={str(stream_id)} - OSError  - can not create stream - "
                             f"error_msg: {str(error_msg)}")
             return False
         self.event_loops[stream_id] = loop
@@ -1366,12 +1445,13 @@ class BinanceWebSocketApiManager(threading.Thread):
             # This loop will wait till the thread and the asyncio init is ready. This avoids two possible errors as
             # described here: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131
             logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
-                         f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}) "
-                         f"with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
+                         f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}), "
+                         f"{api} with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
             time.sleep(1)
         return stream_id
 
-    def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False, symbols=False):
+    def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False, symbols=False,
+                             api=False):
         """
         Create a websocket URI
 
@@ -1388,7 +1468,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
         :return: str or False
+        :param api: Setting this to `True` activates the creation of a Websocket API stream to send API requests via Websocket.
+                    Needs `api_key` and `api_secret` in combination. This type of stream can not be combined with a UserData
+                    stream or an other public endpoint. (Default is `False`)
+        :type api: bool
         """
+        if api is True:
+            logger.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
+                        str(markets) + ", " + ", " + str(symbols) + ", " + str(api) + " - Created websocket URI for "
+                        "stream_id=" + str(stream_id) + " is " + self.websocket_api_base_uri)
+            return self.websocket_api_base_uri
         if isinstance(channels, bool):
             logger.error(f"BinanceWebSocketApiManager.create_websocket_uri({str(channels)}, {str(markets)}"
                          f", {str(symbols)}) - error_msg: Parameter `channels` must be str, tuple, list "
@@ -1703,6 +1792,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             debug_msg = ""
         return debug_msg
+
+    @staticmethod
+    def get_timestamp() -> int:
+        """
+        Get a Binance conform Timestamp.
+
+        :return: int
+        """
+        return int(time.time() * 1000)
 
     def get_used_weight(self):
         """
@@ -2995,8 +3093,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                   " stream_id:", str(stream_id), "\r\n" +
                   str(stream_label_row) +
                   " stream_buffer_maxlen:", str(stream_info['stream_buffer_maxlen']), "\r\n" +
+                  f" api: {self.stream_list[stream_id]['api']}\r\n" +
                   " channels (" + str(len(stream_info['channels'])) + "):", str(stream_info['channels']), "\r\n" +
                   " markets (" + str(len(stream_info['markets'])) + "):", str(stream_info['markets']), "\r\n" +
+                  f" websocket_uri: {self.stream_list[stream_id]['websocket_uri']}\r\n" +
                   str(symbol_row) +
                   " subscriptions: " + str(self.stream_list[stream_id]['subscriptions']) + "\r\n" +
                   str(payload_row) +

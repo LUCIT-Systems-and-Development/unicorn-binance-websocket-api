@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: dev_test_userdata.py
+# File: dev_test_websocket_api.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
@@ -32,17 +32,12 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-import time
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
-from unicorn_binance_websocket_api.exceptions import Socks5ProxyConnectionError
 import asyncio
 import logging
 import os
-
-#socks5_proxy = "127.0.0.1:1080"
-socks5_proxy = None
-socks5_ssl_verification = True
+import time
 
 api_key = ""
 api_secret = ""
@@ -50,18 +45,32 @@ api_secret = ""
 
 async def binance_stream(ubwa):
     def handle_socket_message(data):
-        print(f"received data: {data}")
+        print(f"received data:\r\n{data}\r\n")
 
-    ubwa.create_stream(markets='arr', channels='!userData',
-                       api_key=api_key, api_secret=api_secret,
-                       stream_label="Bobs UserData",
-                       process_stream_data=handle_socket_message)
+    api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
+                                    stream_label="Bobs Websocket API",
+                                    process_stream_data=handle_socket_message)
+    print(f"Start:")
+    ubwa.api.get_server_time(stream_id=api_stream)
+    ubwa.api.get_account_status(stream_id=api_stream)
+    client_order_id = ubwa.api.create_order(stream_id=api_stream, price=1.0, order_type="LIMIT",
+                                            quantity=15.0, side="SELL", symbol="BUSDUSDT")
+    ubwa.api.create_order(stream_id=api_stream, price=1.0, order_type="LIMIT",
+                          quantity=12.0, side="SELL", symbol="BUSDUSDT", test=True)
 
-    while True:
-        await asyncio.sleep(1)
-        ubwa.print_summary()
-        #ubwa.print_stream_info(ubwa.get_stream_id_by_label("Bobs UserData"))
+    ubwa.api.ping(stream_id=api_stream)
+    ubwa.api.get_exchange_info(stream_id=api_stream, symbols=['BUSDUSDT'])
+    ubwa.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=10)
+    ubwa.api.get_order(stream_id=api_stream, symbol="BUSDUSDT", order_id=941354763)
+    time.sleep(3)
+    ubwa.api.cancel_order(stream_id=api_stream, symbol="BUSDUSDT", client_order_id=client_order_id)
+    ubwa.api.get_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
+    ubwa.api.cancel_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
 
+    print(f"Finished!")
+
+    await asyncio.sleep(5)
+    ubwa.stop_manager_with_all_streams()
 
 if __name__ == "__main__":
     logging.getLogger("unicorn_binance_websocket_api")
@@ -69,16 +78,10 @@ if __name__ == "__main__":
                         filename=os.path.basename(__file__) + '.log',
                         format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                         style="{")
-    try:
-        ubwa = BinanceWebSocketApiManager(exchange='binance.com',
-                                          socks5_proxy_server=socks5_proxy,
-                                          socks5_proxy_ssl_verification=socks5_ssl_verification)
-    except Socks5ProxyConnectionError as error_msg:
-        print(f"Socks5ProxyConnectionError: {error_msg}")
-        exit(1)
-
+    ubwa = BinanceWebSocketApiManager(exchange='binance.com')
     try:
         asyncio.run(binance_stream(ubwa))
     except KeyboardInterrupt:
         print("\r\nGracefully stopping the websocket manager...")
         ubwa.stop_manager_with_all_streams()
+

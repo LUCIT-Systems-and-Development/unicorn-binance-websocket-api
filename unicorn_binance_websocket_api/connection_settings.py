@@ -11,6 +11,7 @@ from typing import Tuple
 # To maintain backward compatibility, we use instead:
 MAX_SUBSCRIPTIONS_PER_STREAM = int
 WEBSOCKET_BASE_URI = str
+WEBSOCKET_API_BASE_URI = str
 
 
 class Exchanges(str, Enum):
@@ -46,19 +47,19 @@ CEX_EXCHANGES = [
     Exchanges.JEX,
 ]
 
-CONNECTION_SETTINGS: dict[str, Tuple[MAX_SUBSCRIPTIONS_PER_STREAM, WEBSOCKET_BASE_URI]] = {
-    Exchanges.BINANCE: (1024, "wss://stream.binance.com:9443/"),
-    Exchanges.BINANCE_TESTNET: (1024, "wss://testnet.binance.vision/"),
-    Exchanges.BINANCE_MARGIN: (1024, "wss://stream.binance.com:9443/"),
-    Exchanges.BINANCE_MARGIN_TESTNET: (1024, "wss://testnet.binance.vision/"),
-    Exchanges.BINANCE_ISOLATED_MARGIN: (1024, "wss://stream.binance.com:9443/"),
-    Exchanges.BINANCE_ISOLATED_MARGIN_TESTNET: (1024, "wss://testnet.binance.vision/"),
-    Exchanges.BINANCE_FUTURES: (200, "wss://fstream.binance.com/"),
-    Exchanges.BINANCE_FUTURES_TESTNET: (200, "wss://stream.binancefuture.com/"),
-    Exchanges.BINANCE_COIN_FUTURES: (200, "wss://dstream.binance.com/"),
-    Exchanges.BINANCE_US: (1024, "wss://stream.binance.us:9443/"),
-    Exchanges.TRBINANCE: (1024, "wss://stream-cloud.trbinance.com/"),
-    Exchanges.JEX: (10, "wss://ws.jex.com/"),
-    Exchanges.BINANCE_ORG: (1024, "wss://dex.binance.org/api/"),
-    Exchanges.BINANCE_ORG_TESTNET: (1024, "wss://testnet-dex.binance.org/api/"),
+CONNECTION_SETTINGS: dict[str, Tuple[MAX_SUBSCRIPTIONS_PER_STREAM, WEBSOCKET_BASE_URI, WEBSOCKET_API_BASE_URI]] = {
+    Exchanges.BINANCE: (1024, "wss://stream.binance.com:9443/", "wss://ws-api.binance.com/ws-api/v3"),
+    Exchanges.BINANCE_TESTNET: (1024, "wss://testnet.binance.vision/", "wss://testnet.binance.vision/ws-api/v3"),
+    Exchanges.BINANCE_MARGIN: (1024, "wss://stream.binance.com:9443/", ""),
+    Exchanges.BINANCE_MARGIN_TESTNET: (1024, "wss://testnet.binance.vision/", ""),
+    Exchanges.BINANCE_ISOLATED_MARGIN: (1024, "wss://stream.binance.com:9443/", ""),
+    Exchanges.BINANCE_ISOLATED_MARGIN_TESTNET: (1024, "wss://testnet.binance.vision/", ""),
+    Exchanges.BINANCE_FUTURES: (200, "wss://fstream.binance.com/", ""),
+    Exchanges.BINANCE_FUTURES_TESTNET: (200, "wss://stream.binancefuture.com/", ""),
+    Exchanges.BINANCE_COIN_FUTURES: (200, "wss://dstream.binance.com/", ""),
+    Exchanges.BINANCE_US: (1024, "wss://stream.binance.us:9443/", ""),
+    Exchanges.TRBINANCE: (1024, "wss://stream-cloud.trbinance.com/", ""),
+    Exchanges.JEX: (10, "wss://ws.jex.com/", ""),
+    Exchanges.BINANCE_ORG: (1024, "wss://dex.binance.org/api/", ""),
+    Exchanges.BINANCE_ORG_TESTNET: (1024, "wss://testnet-dex.binance.org/api/", ""),
 }

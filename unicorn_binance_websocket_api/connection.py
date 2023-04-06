@@ -68,7 +68,8 @@ class BinanceWebSocketApiConnection(object):
         self.channels = copy.deepcopy(channels)
         self.markets = copy.deepcopy(markets)
         self.symbols = copy.deepcopy(symbols)
-        self.add_timeout = True if "!userData" in str(str(channels) + str(markets)) else False
+        self.api = copy.deepcopy(self.manager.stream_list[stream_id]['api'])
+        self.add_timeout = True if "!userData" in str(str(channels) + str(markets)) or self.api is True else False
         if self.add_timeout:
             logger.debug(f"BinanceWebSocketApiConnection.receive({str(self.stream_id)}) socket_id="
                          f"{str(self.socket_id)}) - Adding timeout to `websocket.recv()` ")
@@ -82,7 +83,8 @@ class BinanceWebSocketApiConnection(object):
                                                 self.stream_id,
                                                 self.api_key,
                                                 self.api_secret,
-                                                symbols=self.symbols)
+                                                symbols=self.symbols,
+                                                api=self.manager.stream_list[self.stream_id]['api'])
         if uri is False:
             # cant get a valid URI, so this stream has to crash
             error_msg = "Probably no internet connection?"
@@ -91,6 +93,8 @@ class BinanceWebSocketApiConnection(object):
             self.manager.stream_is_crashing(self.stream_id, str(error_msg))
             self.manager.set_restart_request(self.stream_id)
             sys.exit(1)
+        else:
+            self.manager.stream_list[self.stream_id]['websocket_uri'] = uri
         try:
             if isinstance(uri, dict):
                 # dict = error, string = valid url
@@ -329,8 +333,12 @@ class BinanceWebSocketApiConnection(object):
             return False
         try:
             if self.add_timeout:
+                if self.api is True:
+                    timeout = 0.1
+                else:
+                    timeout = 1
                 received_data_json = await asyncio.wait_for(self.manager.websocket_list[self.stream_id].recv(),
-                                                            timeout=2.0)
+                                                            timeout=timeout)
             else:
                 received_data_json = await self.manager.websocket_list[self.stream_id].recv()
             if self.manager.is_stop_request(self.stream_id):

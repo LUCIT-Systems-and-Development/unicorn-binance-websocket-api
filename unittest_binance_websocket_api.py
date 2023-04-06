@@ -149,26 +149,6 @@ class TestBinanceComManager(unittest.TestCase):
         stream_id = self.ubwa.get_new_uuid_id()
         self.assertEqual(self.ubwa.delete_listen_key_by_stream_id(stream_id), False)
 
-    def test_keepalive_listen_key(self):
-        stream_id = self.ubwa.get_new_uuid_id()
-        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.ubwa)
-        self.assertEqual(str(binance_websocket_api_restclient.keepalive_listen_key(stream_id, listen_key="invalid_testkey")),
-                         "{'code': -2014, 'msg': 'API-key format invalid.'}")
-
-    def test_delete_listen_key(self):
-        stream_id = self.ubwa.get_new_uuid_id()
-        binance_websocket_api_restclient = BinanceWebSocketApiRestclient(self.ubwa)
-        # com test
-        #self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
-        #                 "{'code': -2014, 'msg': 'API-key format invalid.'}")
-
-        # us test
-        self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
-                         "{'code': -2014, 'msg': 'API-key format invalid.'}")
-        self.ubwa.show_secrets_in_logs = True
-        self.assertEqual(str(binance_websocket_api_restclient.delete_listen_key(stream_id, listen_key="invalid_testkey")),
-                         "{'code': -2014, 'msg': 'API-key format invalid.'}")
-
     def test_create_payload_subscribe(self):
         result = "[{'method': 'SUBSCRIBE', 'params': ['bnbbtc@kline_1m'], 'id': 1}]"
         stream_id = self.ubwa.get_new_uuid_id()

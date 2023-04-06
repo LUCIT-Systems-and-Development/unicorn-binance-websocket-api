@@ -270,7 +270,7 @@ If you run into errors during the installation take a look [here](https://github
 ### A wheel and a source file of the latest release with `pip` from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
 `pip install unicorn-binance-websocket-api --upgrade`
 
-### A conda package of the latest release with `conda` from [Anaconda](https://anaconda.org/conda-forge/unicorn-fy) via [CONDA-FORGE](https://conda-forge.org).
+### A conda package of the latest release with `conda` from [Anaconda](https://anaconda.org/conda-forge/unicorn-binance-websocket-api) via [CONDA-FORGE](https://conda-forge.org).
 `conda install -c conda-forge unicorn-binance-websocket-api`
 
 `conda update -c conda-forge unicorn-binance-websocket-api`
