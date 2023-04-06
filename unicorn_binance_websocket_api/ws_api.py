@@ -60,6 +60,7 @@ class BinanceWebSocketApiWsApi(object):
         :type symbol: str
 
         :return: bool
+
         """
         if stream_id is None:
             return False
