@@ -135,7 +135,9 @@ Use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-binance-rest-a
 - Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
 
 - Support for [Binance Websocket API](https://developers.binance.com/docs/binance-trading-api/websocket_api), send 
-  requests like create_order, cancel_open_orders and many more directly over websocket!
+  requests like [create_order](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.create_order),
+  [cancel_open_orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.cancel_open_orders)
+  and [many more](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.ws_api) directly over websocket!
 
 - [Supported exchanges](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview): 
 
