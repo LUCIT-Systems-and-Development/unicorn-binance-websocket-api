@@ -104,13 +104,16 @@ class BinanceWebSocketApiSocket(object):
                         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
                                     f"{str(self.channels)}, {str(self.markets)} - Sending payload: {str(payload)}")
                         await websocket.send(json.dumps(payload, ensure_ascii=False))
+
                         # To avoid a ban we respect the limits of binance:
                         # https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
                         # Limit: max 5 messages per second inclusive pings/pong
-                        max_subscriptions_per_second = self.manager.max_send_messages_per_second - \
-                                                       self.manager.max_send_messages_per_second_reserve
-                        idle_time = 1/max_subscriptions_per_second
-                        await asyncio.sleep(idle_time)
+                        # Websocket API does not seem to have this restriction!
+                        if self.manager.stream_list[self.stream_id]['api'] is False:
+                            max_subscriptions_per_second = self.manager.max_send_messages_per_second - \
+                                                           self.manager.max_send_messages_per_second_reserve
+                            idle_time = 1/max_subscriptions_per_second
+                            await asyncio.sleep(idle_time)
                     try:
                         try:
                             received_stream_data_json = await websocket.receive()

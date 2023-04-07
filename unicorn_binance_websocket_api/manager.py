@@ -1341,7 +1341,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_buffer_maxlen: int or None
         :param api: Setting this to `True` activates the creation of a Websocket API stream to send API requests via Websocket.
                     Needs `api_key` and `api_secret` in combination. This type of stream can not be combined with a UserData
-                    stream or an other public endpoint. (Default is `False`)
+                    stream or a other public endpoint. (Default is `False`)
         :type api: bool
         :param process_stream_data: Provide a function/method to process the received webstream data (callback). The
                             function will be called instead of
@@ -1424,8 +1424,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             loop = asyncio.new_event_loop()
         except OSError as error_msg:
             logger.critical(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
-                            f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}), {stream_buffer_maxlen}, "
-                            f"{api} with stream_id={str(stream_id)} - OSError  - can not create stream - "
+                            f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
+                            f"{api}) with stream_id={str(stream_id)} - OSError  - can not create stream - "
                             f"error_msg: {str(error_msg)}")
             return False
         self.event_loops[stream_id] = loop
@@ -1445,8 +1445,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             # This loop will wait till the thread and the asyncio init is ready. This avoids two possible errors as
             # described here: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131
             logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
-                         f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}), "
-                         f"{api} with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
+                         f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
+                         f"{api}) with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
             time.sleep(1)
         return stream_id
 
