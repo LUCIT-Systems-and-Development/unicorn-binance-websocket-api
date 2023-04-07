@@ -1113,15 +1113,98 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def test_create_order(self, stream_id=None, price: float = 0.0, order_type: str = None, quantity: float = 0.0,
-                          side: str = None, symbol: str = None, time_in_force: str = "GTC", recv_window=None,
-                          request_id: str = None) -> Union[int, bool]:
+    def test_create_order(self, stream_id=None, new_client_order_id: str = None, price: float = 0.0,
+                          order_type: str = None, quantity: float = 0.0, side: str = None, symbol: str = None,
+                          time_in_force: str = "GTC", recv_window=None, request_id: str = None) -> Union[int, bool]:
         """
         A wrapper for `create_order()` with `test='True'`
 
         Test order placement. Validates new order parameters and verifies your signature but does not send the order
         into the matching engine.
 
+        :param stream_id: id of a stream to send the request
+        :type stream_id: str
+        :param new_client_order_id: Set the `newClientOrderId`
+        :type new_client_order_id: str
+        :param order_type: `LIMIT` or `MARKET`
+        :type order_type: str
+        :param price: Price e.g. 10.223
+        :type price: float
+        :param quantity: Amount e.g. 20.5
+        :type quantity: float
+        :param side: `BUY` or `SELL`
+        :type side: str
+        :param symbol: The symbol you want to trade
+        :type symbol: str
+        :param time_in_force: Default `GTC`
+        :type time_in_force: str
+        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
+                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+        :type recv_window: int
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :return: `False` or `orig_client_order_id`
+
+
+        Message sent:
+
+        .. code-block:: json
+
+            {
+                "id": "56374a46-3061-486b-a311-99ee972eb648",
+                "method": "order.place",
+                "params": {
+                    "symbol": "BTCUSDT",
+                    "side": "SELL",
+                    "type": "LIMIT",
+                    "timeInForce": "GTC",
+                    "price": "23416.10000000",
+                    "quantity": "0.00847000",
+                    "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
+                    "signature": "15af09e41c36f3cc61378c2fbe2c33719a03dd5eba8d0f9206fbda44de717c88",
+                    "timestamp": 1660801715431
+                }
+            }
+
+
+        Response
+
+        .. code-block:: json
+
+            {
+                "id": "56374a46-3061-486b-a311-99ee972eb648",
+                "status": 200,
+                "result": {
+                    "symbol": "BTCUSDT",
+                    "orderId": 12569099453,
+                    "orderListId": -1,
+                    "clientOrderId": "4d96324ff9d44481926157ec08158a40",
+                    "transactTime": 1660801715639
+                },
+                "rateLimits": [
+                    {
+                        "rateLimitType": "ORDERS",
+                        "interval": "SECOND",
+                        "intervalNum": 10,
+                        "limit": 50,
+                        "count": 1
+                    },
+                    {
+                        "rateLimitType": "ORDERS",
+                        "interval": "DAY",
+                        "intervalNum": 1,
+                        "limit": 160000,
+                        "count": 1
+                    },
+                    {
+                        "rateLimitType": "REQUEST_WEIGHT",
+                        "interval": "MINUTE",
+                        "intervalNum": 1,
+                        "limit": 1200,
+                        "count": 1
+                    }
+                ]
+            }
         """
         return self.create_order(stream_id=stream_id, price=price, order_type=order_type, quantity=quantity, side=side,
                                  symbol=symbol, time_in_force=time_in_force, test=True, recv_window=recv_window,
