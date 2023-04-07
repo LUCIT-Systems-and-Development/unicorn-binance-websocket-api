@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.45.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 1.45.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?2022.1" />
@@ -231,6 +231,7 @@
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_order_book"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiWsApi.get_order_book()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_server_time"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiWsApi.get_server_time()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.ping"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiWsApi.ping()</span></code></a></li>
+<li><a class="reference internal" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.test_create_order"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiWsApi.test_create_order()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -747,7 +748,7 @@ This parameter is passed through to the <a class="reference external" href="http
 <cite>BinanceWebSocketApiManager()</cite>.</p></li>
 <li><p><strong>api</strong> (<em>bool</em>) – Setting this to <cite>True</cite> activates the creation of a Websocket API stream to send API requests via Websocket.
 Needs <cite>api_key</cite> and <cite>api_secret</cite> in combination. This type of stream can not be combined with a UserData
-stream or an other public endpoint. (Default is <cite>False</cite>)</p></li>
+stream or a other public endpoint. (Default is <cite>False</cite>)</p></li>
 <li><p><strong>process_stream_data</strong> (<em>function</em>) – <p>Provide a function/method to process the received webstream data (callback). The
 function will be called instead of
 <a class="reference external" href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer">add_to_stream_buffer()</a>
@@ -2356,7 +2357,7 @@ keepalive</p></li>
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">unicorn_binance_websocket_api.ws_api.</span></span><span class="sig-name descname"><span class="pre">BinanceWebSocketApiWsApi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manager</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Binance API via Websocket API</p>
+<p>Connect to Binance API via Websocket.</p>
 <p>Binance.com SPOT websocket API documentation:</p>
 <blockquote>
 <div><ul class="simple">
@@ -2365,29 +2366,141 @@ keepalive</p></li>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>manager</strong> – Provide the UBWA Manager instance.</p>
+<dd class="field-odd"><p><strong>manager</strong> (<em>BinanceWebsocketApiManager</em>) – Provide the initiated UNICORN Binance WebSocket API Manager instance.</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.cancel_open_orders">
-<span class="sig-name descname"><span class="pre">cancel_open_orders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.cancel_open_orders" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cancel_open_orders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recv_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.cancel_open_orders" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cancel all open orders on a symbol, including OCO orders.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p></li>
 <li><p><strong>symbol</strong> (<em>int</em>) – The symbol you want to trade</p></li>
+<li><p><strong>recv_window</strong> (<em>int</em>) – An additional parameter, <cite>recvWindow</cite>, may be sent to specify the number of milliseconds
+after timestamp the request is valid for. If <cite>recvWindow</cite> is not sent, it defaults to 5000.</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
+<p>Message Sent:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;778f938f-9041-4b88-9914-efbf64eeacc8&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;openOrders.cancelAll&quot;</span>
+<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;773f01b6e3c2c9e0c1d217bc043ce383c1ddd6f0e25f8d6070f2b66a6ceaf3a5&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660805557200</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;778f938f-9041-4b88-9914-efbf64eeacc8&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;origClientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;91fe37ce9e69c90d6358c0&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23416.10000000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;origQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;executedQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00001000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;cummulativeQuoteQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.23416100&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CANCELED&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;stopPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;trailingDelta&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;trailingTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;icebergQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;strategyId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">37463720</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;strategyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;selfTradePreventionMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">19431</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;contingencyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCO&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;listStatusType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ALL_DONE&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;listOrderStatus&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ALL_DONE&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;listClientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;iuVNVJYYrByz6C4yGOPPK0&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;transactionTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660803702431</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;orders&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bX5wROblo6YeDwa9iTLeyY&quot;</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099454</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tnu2IP0J5Y4mxw3IATBfmW&quot;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="nt">&quot;orderReports&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;origClientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bX5wROblo6YeDwa9iTLeyY&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">19431</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OFFXQtxVFZ6Nbcg4PgE2DA&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23450.50000000&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;origQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00850000&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;executedQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;cummulativeQuoteQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CANCELED&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;STOP_LOSS_LIMIT&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BUY&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;stopPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23430.00000000&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;selfTradePreventionMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;origClientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tnu2IP0J5Y4mxw3IATBfmW&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099454</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">19431</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OFFXQtxVFZ6Nbcg4PgE2DA&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23400.00000000&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;origQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00850000&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;executedQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;cummulativeQuoteQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CANCELED&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LIMIT_MAKER&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BUY&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;selfTradePreventionMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.cancel_order">
-<span class="sig-name descname"><span class="pre">cancel_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.cancel_order" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cancel_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orig_client_order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recv_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.cancel_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cancel an active order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2395,149 +2508,700 @@ keepalive</p></li>
 <li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p></li>
 <li><p><strong>symbol</strong> (<em>str</em>) – The symbol of the order you want to cancel</p></li>
 <li><p><strong>order_id</strong> (<em>str</em>) – Cancel by <cite>order_id</cite></p></li>
-<li><p><strong>client_order_id</strong> (<em>str</em>) – Cancel by <cite>origClientOrderId</cite></p></li>
+<li><p><strong>orig_client_order_id</strong> (<em>str</em>) – Cancel by <cite>origClientOrderId</cite></p></li>
+<li><p><strong>recv_window</strong> (<em>int</em>) – An additional parameter, <cite>recvWindow</cite>, may be sent to specify the number of milliseconds
+after timestamp the request is valid for. If <cite>recvWindow</cite> is not sent, it defaults to 5000.</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
+<p>Message sent:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5633b6a2-90a9-4192-83e7-925c90b6a2fd&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;order.cancel&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;origClientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;33d5b721f278ae17a52f004a82a6f68a70c68e7dd6776ed0be77a455ab855282&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715830</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5633b6a2-90a9-4192-83e7-925c90b6a2fd&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;origClientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;91fe37ce9e69c90d6358c0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23416.10000000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;origQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;executedQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00001000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;cummulativeQuoteQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.23416100&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CANCELED&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;stopPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;trailingDelta&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;trailingTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;icebergQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;strategyId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">37463720</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;strategyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;selfTradePreventionMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.create_order">
-<span class="sig-name descname"><span class="pre">create_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_in_force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GTC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.create_order" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the Binance server time.</p>
+<span class="sig-name descname"><span class="pre">create_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_client_order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_in_force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'GTC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recv_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.create_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p></li>
-<li><p><strong>price</strong> (<em>float</em>) – Price eg. 10.223</p></li>
-<li><p><strong>quantity</strong> (<em>float</em>) – Amount eg. 20.5</p></li>
+<li><p><strong>new_client_order_id</strong> (<em>str</em>) – Set the <cite>newClientOrderId</cite></p></li>
+<li><p><strong>order_type</strong> (<em>str</em>) – <cite>LIMIT</cite> or <cite>MARKET</cite></p></li>
+<li><p><strong>price</strong> (<em>float</em>) – Price e.g. 10.223</p></li>
+<li><p><strong>quantity</strong> (<em>float</em>) – Amount e.g. 20.5</p></li>
 <li><p><strong>side</strong> (<em>str</em>) – <cite>BUY</cite> or <cite>SELL</cite></p></li>
 <li><p><strong>symbol</strong> (<em>str</em>) – The symbol you want to trade</p></li>
 <li><p><strong>time_in_force</strong> (<em>str</em>) – Default <cite>GTC</cite></p></li>
-<li><p><strong>order_type</strong> (<em>str</em>) – <cite>LIMIT</cite> or <cite>MARKET</cite></p></li>
-<li><p><strong>test</strong> (<em>new_client_order_id</em><em> or </em><em>False</em>) – Test order placement. Validates new order parameters and verifies your signature but does not
+<li><p><strong>test</strong> (<em>bool</em>) – Test order placement. Validates new order parameters and verifies your signature but does not
 send the order into the matching engine.</p></li>
+<li><p><strong>recv_window</strong> (<em>int</em>) – An additional parameter, <cite>recvWindow</cite>, may be sent to specify the number of milliseconds
+after timestamp the request is valid for. If <cite>recvWindow</cite> is not sent, it defaults to 5000.</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>False</cite> or <cite>orig_client_order_id</cite></p>
+</dd>
+</dl>
+<p>Message sent:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;56374a46-3061-486b-a311-99ee972eb648&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;order.place&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23416.10000000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;15af09e41c36f3cc61378c2fbe2c33719a03dd5eba8d0f9206fbda44de717c88&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715431</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;56374a46-3061-486b-a311-99ee972eb648&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157ec08158a40&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;transactTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715639</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ORDERS&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SECOND&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ORDERS&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DAY&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">160000</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_account_status">
+<span class="sig-name descname"><span class="pre">get_account_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recv_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_account_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the user account status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p></li>
+<li><p><strong>recv_window</strong> (<em>int</em>) – An additional parameter, <cite>recvWindow</cite>, may be sent to specify the number of milliseconds
+after timestamp the request is valid for. If <cite>recvWindow</cite> is not sent, it defaults to 5000.</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_account_status">
-<span class="sig-name descname"><span class="pre">get_account_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_account_status" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the user account status.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
+<p>Message sent:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;account.status&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;83303b4a136ac1371795f465808367242685a9e3a42b22edb4d977d0696eb45c&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801839480</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;makerCommission&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;takerCommission&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;buyerCommission&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;sellerCommission&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;canTrade&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;canWithdraw&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;canDeposit&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;commissionRates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;maker&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00150000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;taker&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00150000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;buyer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;seller&quot;</span><span class="p">:</span><span class="s2">&quot;0.00000000&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;brokered&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;requireSelfTradePrevention&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801833000</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;accountType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SPOT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;balances&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BNB&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;free&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;locked&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTC&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;free&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.3447112&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;locked&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.08600000&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;USDT&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;free&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1021.21000000&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;locked&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;permissions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;SPOT&quot;</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_exchange_info">
-<span class="sig-name descname"><span class="pre">get_exchange_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbols=&lt;class</span> <span class="pre">'list'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_exchange_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the Exchange Information</p>
+<span class="sig-name descname"><span class="pre">get_exchange_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recv_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_exchange_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Exchange Information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p></li>
 <li><p><strong>symbols</strong> (<em>list</em>) – List of selected symbols</p></li>
+<li><p><strong>recv_window</strong> (<em>int</em>) – An additional parameter, <cite>recvWindow</cite>, may be sent to specify the number of milliseconds
+after timestamp the request is valid for. If <cite>recvWindow</cite> is not sent, it defaults to 5000.</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
+<p>Message sent:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5494febb-d167-46a2-996d-70533eb4d976&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;exchangeInfo&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;BNBBTC&quot;</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5494febb-d167-46a2-996d-70533eb4d976&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;timezone&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UTC&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;serverTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1655969291181</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">        </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ORDERS&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SECOND&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ORDERS&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DAY&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">160000</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;RAW_REQUESTS&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6100</span>
+<span class="w">    </span><span class="p">}],</span>
+<span class="w">    </span><span class="nt">&quot;exchangeFilters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">&quot;symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BNBBTC&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TRADING&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;baseAsset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BNB&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;baseAssetPrecision&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;quoteAsset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTC&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;quotePrecision&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;quoteAssetPrecision&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;baseCommissionPrecision&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;quoteCommissionPrecision&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;orderTypes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;LIMIT_MAKER&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;MARKET&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;STOP_LOSS_LIMIT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;TAKE_PROFIT_LIMIT&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;icebergAllowed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;ocoAllowed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;quoteOrderQtyMarketAllowed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;allowTrailingStop&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;cancelReplaceAllowed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;isSpotTradingAllowed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;isMarginTradingAllowed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;filters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">            </span><span class="nt">&quot;filterType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PRICE_FILTER&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;minPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000100&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;maxPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;100000.00000000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;tickSize&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000100&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;filterType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LOT_SIZE&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;minQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00100000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;maxQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;100000.00000000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;stepSize&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00100000&quot;</span>
+<span class="w">        </span><span class="p">}],</span>
+<span class="w">        </span><span class="nt">&quot;permissions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;SPOT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;MARGIN&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;TRD_GRP_004&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;defaultSelfTradePreventionMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;allowedSelfTradePreventionModes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;NONE&quot;</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}]},</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">        </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_open_orders">
-<span class="sig-name descname"><span class="pre">get_open_orders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_open_orders" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_open_orders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recv_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_open_orders" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query execution status of all open orders.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p></li>
 <li><p><strong>symbol</strong> (<em>str</em>) – The symbol you want to trade</p></li>
+<li><p><strong>recv_window</strong> (<em>int</em>) – An additional parameter, <cite>recvWindow</cite>, may be sent to specify the number of milliseconds
+after timestamp the request is valid for. If <cite>recvWindow</cite> is not sent, it defaults to 5000.</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
+<p>Message Sent:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;55f07876-4f6f-4c47-87dc-43e5fff3f2e7&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openOrders.status&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;d632b3fdb8a81dd44f82c7c901833309dd714fe508772a89b0a35b0ee0c48b89&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660813156812</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;55f07876-4f6f-4c47-87dc-43e5fff3f2e7&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23416.10000000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;origQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;executedQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00720000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;cummulativeQuoteQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.43931000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PARTIALLY_FILLED&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;stopPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;icebergQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715639</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801717945</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;isWorking&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;workingTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715639</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;origQuoteOrderQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;selfTradePreventionMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_order">
-<span class="sig-name descname"><span class="pre">get_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_order" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check execution status of an order.</p>
+<span class="sig-name descname"><span class="pre">get_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orig_client_order_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recv_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check execution status of a specific order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p></li>
 <li><p><strong>symbol</strong> (<em>str</em>) – The symbol you want to trade</p></li>
-<li><p><strong>order_id</strong> (<em>str</em>) – The order ID</p></li>
+<li><p><strong>order_id</strong> (<em>int</em>) – The orderId to select the order</p></li>
+<li><p><strong>orig_client_order_id</strong> (<em>str</em>) – The origClientOrderId to select the order</p></li>
+<li><p><strong>recv_window</strong> (<em>int</em>) – An additional parameter, <cite>recvWindow</cite>, may be sent to specify the number of milliseconds
+after timestamp the request is valid for. If <cite>recvWindow</cite> is not sent, it defaults to 5000.</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
+<p>Message sent:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aa62318a-5a97-4f3b-bdc7-640bbe33b291&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;order.status&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2c3aab5a078ee4ea465ecd95523b77289f61476c2f238ec10c55ea6cb11a6f35&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801720951</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aa62318a-5a97-4f3b-bdc7-640bbe33b291&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23416.10000000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;origQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;executedQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;cummulativeQuoteQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;198.33521500&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FILLED&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;stopPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;trailingDelta&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;trailingTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;icebergQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715639</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801717945</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;isWorking&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;workingTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715639</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;origQuoteOrderQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;strategyId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">37463720</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;strategyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;selfTradePreventionMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;preventedMatchId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;preventedQuantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.200000&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_order_book">
-<span class="sig-name descname"><span class="pre">get_order_book</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_order_book" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the order book</p>
+<span class="sig-name descname"><span class="pre">get_order_book</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recv_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_order_book" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the order book.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p></li>
 <li><p><strong>symbol</strong> (<em>str</em>) – The selected symbol</p></li>
-<li><p><strong>limit</strong> (<em>int</em>) – Depth limit</p></li>
+<li><p><strong>limit</strong> (<em>int</em>) – Depth limit, default is 500. Valid values 1-5000. -
+<a class="reference external" href="https://developers.binance.com/docs/binance-trading-api/websocket_api#order-book">https://developers.binance.com/docs/binance-trading-api/websocket_api#order-book</a></p></li>
+<li><p><strong>recv_window</strong> (<em>int</em>) – An additional parameter, <cite>recvWindow</cite>, may be sent to specify the number of milliseconds
+after timestamp the request is valid for. If <cite>recvWindow</cite> is not sent, it defaults to 5000.</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
+<p>Message sent:</p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5494febb-d167-46a2-996d-70533eb4d976&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;depth&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BNBBTC&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5494febb-d167-46a2-996d-70533eb4d976&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;lastUpdateId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2731179239</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;bids&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;0.01379900&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;3.43200000&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;0.01379800&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;3.24300000&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;0.01379700&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;10.45500000&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;0.01379600&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;3.82100000&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;0.01379500&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;10.26200000&quot;</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;asks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;0.01380000&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;5.91700000&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;0.01380100&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;6.01400000&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;0.01380200&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;0.26800000&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;0.01380300&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;0.33800000&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;0.01380400&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;0.26800000&quot;</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_server_time">
-<span class="sig-name descname"><span class="pre">get_server_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_server_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get te Binance server time.</p>
+<span class="sig-name descname"><span class="pre">get_server_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_server_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test connectivity to the WebSocket API and get the current server time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
+<p>Message sent:</p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;187d3cb2-942d-484c-8271-4e2141bbadb1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;time&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;187d3cb2-942d-484c-8271-4e2141bbadb1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;serverTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1656400526260</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">        </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.ping">
-<span class="sig-name descname"><span class="pre">ping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.ping" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ping the Binance Websocket API</p>
+<span class="sig-name descname"><span class="pre">ping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.ping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test connectivity to the WebSocket API.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream to send the request</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
+<p>Message sent:</p>
+<blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4e72973031d8-bff9-8481-c95b-c42414df&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ping&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4e72973031d8-bff9-8481-c95b-c42414df&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">        </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.test_create_order">
+<span class="sig-name descname"><span class="pre">test_create_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_in_force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'GTC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recv_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span></span><a class="headerlink" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.test_create_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for <cite>create_order()</cite> with <cite>test=’True’</cite></p>
+<p>Test order placement. Validates new order parameters and verifies your signature but does not send the order
+into the matching engine.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2737,6 +3401,7 @@ send the order into the matching engine.</p></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_order_book"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiWsApi.get_order_book()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.get_server_time"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiWsApi.get_server_time()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.ping"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiWsApi.ping()</span></code></a></li>
+<li><a class="reference internal" href="#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.test_create_order"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiWsApi.test_create_order()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2851,7 +3516,7 @@ send the order into the matching engine.</p></li>
     <div class="footer">
     &copy; <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
     See <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">License</a> for more information.<br />
-    Last updated on Apr 07 2023 at 15:49 (CET).
+    Last updated on Apr 07 2023 at 23:40 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
