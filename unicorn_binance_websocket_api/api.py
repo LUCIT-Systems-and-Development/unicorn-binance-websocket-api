@@ -1117,7 +1117,7 @@ class BinanceWebSocketApiApi(object):
                           order_type: str = None, quantity: float = 0.0, side: str = None, symbol: str = None,
                           time_in_force: str = "GTC", recv_window=None, request_id: str = None) -> Union[int, bool]:
         """
-        A wrapper for `create_order()` with `test='True'`
+        A wrapper for `create_order() <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order>`_ with `test='True'`
 
         Test order placement. Validates new order parameters and verifies your signature but does not send the order
         into the matching engine.
