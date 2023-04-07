@@ -103,10 +103,9 @@ api_secret = ""
 
 ubwa = BinanceWebSocketApiManager(exchange="binance.com")
 api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
-                                stream_label="Websocket API",
                                 process_stream_data=process_api_responses)
                                 
-orig_client_order_id = ubwa.api.create_order(stream_id=api_stream, price=1.0, order_type="LIMIT",
+orig_client_order_id = ubwa.api.create_order(stream_id=api_stream, price=1.1, order_type="LIMIT",
                                              quantity=15.0, side="SELL", symbol="BUSDUSDT")
 ubwa.api.cancel_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)                                             
 ```
