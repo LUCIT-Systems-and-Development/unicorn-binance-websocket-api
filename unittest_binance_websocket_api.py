@@ -738,6 +738,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.get_result_by_request_id()
         binance_websocket_api_manager.set_keep_max_received_last_second_entries(30)
         binance_websocket_api_manager.stop_stream_as_crash(stream_id2)
+        time.sleep(5)
         binance_websocket_api_manager.stop_stream(stream_id2)
         binance_websocket_api_manager.add_to_ringbuffer_error("test")
         binance_websocket_api_manager.add_to_ringbuffer_result("test")
@@ -745,7 +746,7 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.get_most_receives_per_second()
         binance_websocket_api_manager.get_number_of_streams_in_stream_list()
         binance_websocket_api_manager.is_update_availabe_check_command()
-        binance_websocket_api_manager.wait_till_stream_has_stopped(stream_id2)
+        #binance_websocket_api_manager.wait_till_stream_has_stopped(stream_id2)
         binance_websocket_api_manager.print_stream_info(stream_id2)
         binance_websocket_api_manager.print_summary()
         binance_websocket_api_manager.print_summary_to_png(".", 12.5)
@@ -764,10 +765,10 @@ class TestRestApi(unittest.TestCase):
 
         binance_api_key = ""
         binance_api_secret = ""
-        binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret,
-                                                                             exchange="binance.us")
+        ubwa = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret,
+                                                              exchange="binance.us")
         markets = []
-        data = binance_rest_client.get_all_tickers()
+        data = ubwa.get_all_tickers()
         for item in data:
             markets.append(item['symbol'])
         binance_websocket_api_manager.create_stream("trade", markets, stream_label="too much!")

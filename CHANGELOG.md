@@ -9,7 +9,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
-## 1.45.0.dev (development stage/unreleased/unstable)
+## 1.45.1.dev (development stage/unreleased/unstable)
+
+## 1.45.1
+### Changed
+- Revised ws_api.py .... Websocket API is still BETA and not fully ready!! Please share your experience and ideas to 
+  improve the implementation: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/319
 
 ## 1.45.0
 ### Added
