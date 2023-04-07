@@ -544,7 +544,8 @@ class BinanceWebSocketApiWsApi(object):
 
         return True
 
-    def get_exchange_info(self, stream_id=None, symbols=list, recv_window: int = None, request_id: str = None) -> bool:
+    def get_exchange_info(self, stream_id=None, symbols: list = [], recv_window: int = None,
+                          request_id: str = None) -> bool:
         """
         Get the Exchange Information.
 

@@ -56,7 +56,7 @@ while True:
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 
 
-def process_new_receives(stream_data, stream_buffer_name=False):
+def process_new_receives(stream_data):
     print(str(stream_data))
 
 
@@ -89,6 +89,30 @@ ubwa.unsubscribe_from_stream(stream_id, markets=markets)
 ubwa.unsubscribe_from_stream(stream_id, channels=channels)
 ```
 
+## [Place orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.create_order), 
+[cancel an order](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.cancel_order) 
+and [much more](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.ws_api) via a WebSocket connection.
+```
+from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+
+
+def process_api_responses(stream_data):
+    print(str(stream_data))
+
+
+api_key = ""
+api_secret = ""
+
+ubwa = BinanceWebSocketApiManager(exchange="binance.com")
+api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
+                                stream_label="Websocket API",
+                                process_stream_data=process_api_responses)
+                                
+orig_client_order_id = ubwa.api.create_order(stream_id=api_stream, price=1.0, order_type="LIMIT",
+                                             quantity=15.0, side="SELL", symbol="BUSDUSDT")
+ubwa.api.cancel_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)                                             
+```
+
 ### Get the right [logger](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Logging):
 ```
 logging.getLogger("unicorn_binance_websocket_api")
@@ -119,9 +143,10 @@ provides an API to the Binance Websocket API`s of
 [Binance TR](https://www.trbinance.com/apidocs), 
 [Binance JEX](https://jexapi.github.io/api-doc/spot.html#web-socket-streams), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
-[Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports the streaming of 
-all public streams like trade, kline, ticker, depth, bookTicker, forceOrder, compositeIndex and blockheight and also all private userData streams 
-which needs to be used with a valid api_key and api_secret from the Binance Exchange 
+[Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports sending requests 
+to the [Binance Websocket API](https://developers.binance.com/docs/binance-trading-api/websocket_api) and the streaming 
+of all public streams like trade, kline, ticker, depth, bookTicker, forceOrder, compositeIndex, blockheight etc. and 
+also all private userData streams which needs to be used with a valid api_key and api_secret from the Binance Exchange 
 [www.binance.com](https://www.binance.com/userCenter/createApi.html), 
 [testnet.binance.vision](https://testnet.binance.vision/), 
 [www.binance.us](https://www.binance.us/userCenter/createApi.html) or 
