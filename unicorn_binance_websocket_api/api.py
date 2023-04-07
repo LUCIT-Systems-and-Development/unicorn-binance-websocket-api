@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: unicorn_binance_websocket_api/ws_api.py
+# File: unicorn_binance_websocket_api/api.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
@@ -36,7 +36,7 @@
 from typing import Union
 
 
-class BinanceWebSocketApiWsApi(object):
+class BinanceWebSocketApiApi(object):
     """
     Connect to Binance API via Websocket.
 

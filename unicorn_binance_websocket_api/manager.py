@@ -38,7 +38,7 @@ from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, Unknow
 from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
 from unicorn_binance_websocket_api.sockets import BinanceWebSocketApiSocket
-from unicorn_binance_websocket_api.ws_api import BinanceWebSocketApiWsApi
+from unicorn_binance_websocket_api.api import BinanceWebSocketApiApi
 from cheroot import wsgi
 from collections import deque
 from datetime import datetime
@@ -371,8 +371,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.ping_timeout_default = ping_timeout_default
         self.start()
         self.replacement_text = "***SECRET_REMOVED***"
-        self.restclient = BinanceWebSocketApiRestclient(self)
-        self.api = BinanceWebSocketApiWsApi(manager=self)
+        self.api = BinanceWebSocketApiApi(manager=self)
+        self.restclient = BinanceWebSocketApiRestclient(manager=self)
         self.warn_on_update = warn_on_update
         if warn_on_update and self.is_update_available():
             update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
