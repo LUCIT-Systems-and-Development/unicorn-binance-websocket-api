@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: dev_test_websocket_api.py
+# File: example_websocket_api.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
@@ -82,4 +82,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\r\nGracefully stopping the websocket manager...")
         ubwa.stop_manager_with_all_streams()
+
+
 

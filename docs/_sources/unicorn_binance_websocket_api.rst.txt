@@ -5,6 +5,15 @@ Submodules
 ----------
 
 
+
+unicorn\_binance\_websocket\_api.api module
+------------------------------------------------------------------------------------
+
+.. automodule:: unicorn_binance_websocket_api.api
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 unicorn\_binance\_websocket\_api.connection module
 ------------------------------------------------------------------------------------
 
@@ -49,14 +58,6 @@ unicorn\_binance\_websocket\_api.sockets module
 --------------------------------------------------------------------------------
 
 .. automodule:: unicorn_binance_websocket_api.sockets
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-unicorn\_binance\_websocket\_api.api module
-------------------------------------------------------------------------------------
-
-.. automodule:: unicorn_binance_websocket_api.api
     :members:
     :undoc-members:
     :show-inheritance:
