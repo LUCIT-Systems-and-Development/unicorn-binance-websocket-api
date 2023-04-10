@@ -1,15 +1,10 @@
-import sys
 from enum import Enum
+from typing import Tuple
 
-if sys.version_info >= (3, 9):
-    from typing import Type
-    MAX_SUBSCRIPTIONS_PER_STREAM: Type[int] = int
-    WEBSOCKET_BASE_URI: Type[str] = str
-    WEBSOCKET_API_BASE_URI: Type[str] = str
-else:
-    MAX_SUBSCRIPTIONS_PER_STREAM = int
-    WEBSOCKET_BASE_URI = str
-    WEBSOCKET_API_BASE_URI = str
+
+MAX_SUBSCRIPTIONS_PER_STREAM = int
+WEBSOCKET_BASE_URI = str
+WEBSOCKET_API_BASE_URI = str
 
 
 class Exchanges(str, Enum):
@@ -45,8 +40,7 @@ CEX_EXCHANGES = [
     Exchanges.JEX,
 ]
 
-
-CONNECTION_SETTINGS = {
+CONNECTION_SETTINGS: dict[str, Tuple[MAX_SUBSCRIPTIONS_PER_STREAM, WEBSOCKET_BASE_URI, WEBSOCKET_API_BASE_URI]] = {
     Exchanges.BINANCE: (1024, "wss://stream.binance.com:9443/", "wss://ws-api.binance.com/ws-api/v3"),
     Exchanges.BINANCE_TESTNET: (1024, "wss://testnet.binance.vision/", "wss://testnet.binance.vision/ws-api/v3"),
     Exchanges.BINANCE_MARGIN: (1024, "wss://stream.binance.com:9443/", ""),
