@@ -15,3 +15,6 @@ unicorn-fy
 unicorn-binance-rest-api>=1.8.1
 websocket-client
 websockets==10.4
+
+# python <=3.7 support:
+typing_extensions

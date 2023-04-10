@@ -45,7 +45,12 @@ from datetime import datetime
 from flask import Flask, redirect
 from flask_restful import Api
 from operator import itemgetter
-from typing import Literal, Optional, Union
+from typing import Optional, Union
+try:
+    # python <=3.7 support
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 import asyncio
 import colorama
 import copy
