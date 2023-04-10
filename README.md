@@ -373,8 +373,8 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 - [example_websocket_api.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_websocket_api.py)
 
 ## Howto
-- [How to Download Klines from Binance using Python?](https://medium.lucit.tech/how-to-download-data-from-binance-using-python-8f1b6e8f19f3)
 - [Create and Cancel Orders via WebSocket on Binance](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404)
+- [How to Download Klines from Binance using Python?](https://medium.lucit.tech/how-to-download-data-from-binance-using-python-8f1b6e8f19f3)
 - [How to Connect to binance.com Websockets using Python via a Socks5 Proxy](https://medium.lucit.tech/how-to-connect-to-binance-com-websockets-using-python-via-a-socks5-proxy-3c5a3e063f12)
 
 ## Project Homepage
