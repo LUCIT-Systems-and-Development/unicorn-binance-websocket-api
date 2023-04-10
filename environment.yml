@@ -14,3 +14,4 @@ dependencies:
   - unicorn-binance-rest-api>=1.8.1
   - websocket-client
   - websockets==10.4
+  - typing_extensions

@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 
 # pip install sphinx
 # mkdir sphinx

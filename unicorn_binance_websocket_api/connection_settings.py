@@ -45,6 +45,8 @@ CEX_EXCHANGES = [
     Exchanges.JEX,
 ]
 
+# only python 3.9+
+# CONNECTION_SETTINGS: dict[str, Tuple[MAX_SUBSCRIPTIONS_PER_STREAM, WEBSOCKET_BASE_URI, WEBSOCKET_API_BASE_URI]] = {
 
 CONNECTION_SETTINGS = {
     Exchanges.BINANCE: (1024, "wss://stream.binance.com:9443/", "wss://ws-api.binance.com/ws-api/v3"),
