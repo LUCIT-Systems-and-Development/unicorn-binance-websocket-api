@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
 ## 1.45.2.dev (development stage/unreleased/unstable)
+### Changed
+- Use UnicornFy only for non api requests in sockets.py - if `output="UnicornFy"` is used for api then its just converted to a python dict.
 
 ## 1.45.2
 ### Fixed 

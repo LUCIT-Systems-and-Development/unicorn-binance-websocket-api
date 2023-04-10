@@ -130,36 +130,40 @@ class BinanceWebSocketApiSocket(object):
                             sys.exit(0)
                         if received_stream_data_json is not None:
                             if self.output == "UnicornFy":
-                                if self.exchange == "binance.com":
-                                    received_stream_data = self.unicorn_fy.binance_com_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.com-testnet":
-                                    received_stream_data = self.unicorn_fy.binance_com_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.com-margin":
-                                    received_stream_data = self.unicorn_fy.binance_com_margin_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.com-margin-testnet":
-                                    received_stream_data = self.unicorn_fy.binance_com_margin_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.com-isolated_margin":
-                                    received_stream_data = self.unicorn_fy.binance_com_isolated_margin_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.com-isolated_margin-testnet":
-                                    received_stream_data = self.unicorn_fy.binance_com_isolated_margin_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.com-futures":
-                                    received_stream_data = self.unicorn_fy.binance_com_futures_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.com-futures-testnet":
-                                    received_stream_data = self.unicorn_fy.binance_com_futures_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.com-coin-futures" or self.exchange == "binance.com-coin_futures":
-                                    received_stream_data = self.unicorn_fy.binance_com_coin_futures_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.je":
-                                    received_stream_data = self.unicorn_fy.binance_je_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.us":
-                                    received_stream_data = self.unicorn_fy.binance_us_websocket(received_stream_data_json)
-                                elif self.exchange == "trbinance.com":
-                                    received_stream_data = self.unicorn_fy.trbinance_com_websocket(received_stream_data_json)
-                                elif self.exchange == "jex.com":
-                                    received_stream_data = self.unicorn_fy.jex_com_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.org":
-                                    received_stream_data = self.unicorn_fy.binance_org_websocket(received_stream_data_json)
-                                elif self.exchange == "binance.org-testnet":
-                                    received_stream_data = self.unicorn_fy.binance_org_websocket(received_stream_data_json)
+                                if self.manager.stream_list[self.stream_id]['api'] is False:
+                                    if self.exchange == "binance.com":
+                                        received_stream_data = self.unicorn_fy.binance_com_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.com-testnet":
+                                        received_stream_data = self.unicorn_fy.binance_com_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.com-margin":
+                                        received_stream_data = self.unicorn_fy.binance_com_margin_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.com-margin-testnet":
+                                        received_stream_data = self.unicorn_fy.binance_com_margin_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.com-isolated_margin":
+                                        received_stream_data = self.unicorn_fy.binance_com_isolated_margin_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.com-isolated_margin-testnet":
+                                        received_stream_data = self.unicorn_fy.binance_com_isolated_margin_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.com-futures":
+                                        received_stream_data = self.unicorn_fy.binance_com_futures_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.com-futures-testnet":
+                                        received_stream_data = self.unicorn_fy.binance_com_futures_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.com-coin-futures" or self.exchange == "binance.com-coin_futures":
+                                        received_stream_data = self.unicorn_fy.binance_com_coin_futures_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.je":
+                                        received_stream_data = self.unicorn_fy.binance_je_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.us":
+                                        received_stream_data = self.unicorn_fy.binance_us_websocket(received_stream_data_json)
+                                    elif self.exchange == "trbinance.com":
+                                        received_stream_data = self.unicorn_fy.trbinance_com_websocket(received_stream_data_json)
+                                    elif self.exchange == "jex.com":
+                                        received_stream_data = self.unicorn_fy.jex_com_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.org":
+                                        received_stream_data = self.unicorn_fy.binance_org_websocket(received_stream_data_json)
+                                    elif self.exchange == "binance.org-testnet":
+                                        received_stream_data = self.unicorn_fy.binance_org_websocket(received_stream_data_json)
+                                    else:
+                                        # WS API does not need to get unicornfied, just turn it into a dict:
+                                        received_stream_data = received_stream_data_json
                                 else:
                                     received_stream_data = received_stream_data_json
                             elif self.output == "dict":
