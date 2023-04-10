@@ -34,11 +34,17 @@
 # IN THE SOFTWARE.
 
 from typing import Union
+import logging
+
+logger = logging.getLogger("unicorn_binance_websocket_api")
 
 
 class BinanceWebSocketApiApi(object):
     """
     Connect to Binance API via Websocket.
+
+    Read this how to to get started:
+    https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404
 
     Binance.com SPOT websocket API documentation:
 
@@ -51,13 +57,11 @@ class BinanceWebSocketApiApi(object):
     def __init__(self, manager=None):
         self.manager = manager
 
-    def cancel_open_orders(self, stream_id=None, symbol: str = None, recv_window: int = None,
-                           request_id: str = None) -> bool:
+    def cancel_open_orders(self, symbol: str = None, recv_window: int = None,
+                           request_id: str = None, stream_id: str = None, stream_label: str = None) -> bool:
         """
         Cancel all open orders on a symbol, including OCO orders.
 
-        :param stream_id: id of a stream to send the request
-        :type stream_id: str
         :param symbol: The symbol you want to trade
         :type symbol: int
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
@@ -65,6 +69,10 @@ class BinanceWebSocketApiApi(object):
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
         :return: bool
 
 
@@ -183,7 +191,14 @@ class BinanceWebSocketApiApi(object):
             }
         """
         if stream_id is None:
-            return False
+            if stream_label is not None:
+                stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self.manager.get_the_one_active_websocket_api()
+            if stream_id is False:
+                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
 
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
                   "symbol": str(symbol).upper(),
@@ -205,15 +220,11 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def cancel_order(self, stream_id=None, symbol: str = None, order_id: int = None,
-                     orig_client_order_id: str = None, recv_window: int = None, request_id: str = None) -> bool:
+    def cancel_order(self, order_id: int = None, orig_client_order_id: str = None, recv_window: int = None,
+                     request_id: str = None, stream_id=None, symbol: str = None, stream_label: str = None) -> bool:
         """
         Cancel an active order.
 
-        :param stream_id: id of a stream to send the request
-        :type stream_id: str
-        :param symbol: The symbol of the order you want to cancel
-        :type symbol: str
         :param order_id: Cancel by `order_id`
         :type order_id: str
         :param orig_client_order_id: Cancel by `origClientOrderId`
@@ -223,6 +234,12 @@ class BinanceWebSocketApiApi(object):
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param symbol: The symbol of the order you want to cancel
+        :type symbol: str
         :return: bool
 
 
@@ -284,7 +301,14 @@ class BinanceWebSocketApiApi(object):
             }
         """
         if stream_id is None:
-            return False
+            if stream_label is not None:
+                stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self.manager.get_the_one_active_websocket_api()
+            if stream_id is False:
+                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
 
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
                   "symbol": str(symbol).upper(),
@@ -310,14 +334,13 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def create_order(self, stream_id=None, new_client_order_id: str = None, order_type: str = None, price: float = 0.0,
-                     quantity: float = 0.0, side: str = None, symbol: str = None, time_in_force: str = "GTC",
-                     test: bool = False, recv_window: int = None, request_id: str = None) -> Union[int, bool]:
+    def create_order(self, new_client_order_id: str = None, order_type: str = None, price: float = 0.0,
+                     quantity: float = 0.0, recv_window: int = None, request_id: str = None, side: str = None,
+                     stream_id=None, stream_label: str = None, symbol: str = None, time_in_force: str = "GTC",
+                     test: bool = False) -> Union[int, bool]:
         """
         Create a new order.
 
-        :param stream_id: id of a stream to send the request
-        :type stream_id: str
         :param new_client_order_id: Set the `newClientOrderId`
         :type new_client_order_id: str
         :param order_type: `LIMIT` or `MARKET`
@@ -326,20 +349,25 @@ class BinanceWebSocketApiApi(object):
         :type price: float
         :param quantity: Amount e.g. 20.5
         :type quantity: float
-        :param side: `BUY` or `SELL`
-        :type side: str
-        :param symbol: The symbol you want to trade
-        :type symbol: str
-        :param time_in_force: Default `GTC`
-        :type time_in_force: str
-        :param test: Test order placement. Validates new order parameters and verifies your signature but does not
-                     send the order into the matching engine.
-        :type test: bool
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param side: `BUY` or `SELL`
+        :type side: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param symbol: The symbol you want to trade
+        :type symbol: str
+        :param test: Test order placement. Validates new order parameters and verifies your signature but does not
+                     send the order into the matching engine.
+        :type test: bool
+        :param time_in_force: Default `GTC`
+        :type time_in_force: str
+
         :return: `False` or `orig_client_order_id`
 
 
@@ -404,7 +432,14 @@ class BinanceWebSocketApiApi(object):
             }
         """
         if stream_id is None:
-            return False
+            if stream_label is not None:
+                stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self.manager.get_the_one_active_websocket_api()
+            if stream_id is False:
+                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
 
         new_client_order_id = new_client_order_id if new_client_order_id is not None else self.manager.get_request_id()
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
@@ -436,17 +471,20 @@ class BinanceWebSocketApiApi(object):
 
         return new_client_order_id
 
-    def get_account_status(self, stream_id=None, recv_window: int = None, request_id: str = None) -> bool:
+    def get_account_status(self, recv_window: int = None, request_id: str = None, stream_id=None,
+                           stream_label: str = None) -> bool:
         """
         Get the user account status.
 
-        :param stream_id: id of a stream to send the request
-        :type stream_id: str
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
         :return: bool
 
 
@@ -523,7 +561,14 @@ class BinanceWebSocketApiApi(object):
             }
         """
         if stream_id is None:
-            return False
+            if stream_label is not None:
+                stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self.manager.get_the_one_active_websocket_api()
+            if stream_id is False:
+                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
 
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
                   "timestamp": self.manager.get_timestamp()}
@@ -544,20 +589,22 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def get_exchange_info(self, stream_id=None, symbols: list = [], recv_window: int = None,
-                          request_id: str = None) -> bool:
+    def get_exchange_info(self, recv_window: int = None, request_id: str = None, stream_id=None,
+                          stream_label: str = None, symbols: list = None) -> bool:
         """
         Get the Exchange Information.
 
-        :param stream_id: id of a stream to send the request
-        :type stream_id: str
-        :param symbols: List of selected symbols
-        :type symbols: list
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param symbols: List of selected symbols
+        :type symbols: list
         :return: bool
 
 
@@ -667,7 +714,17 @@ class BinanceWebSocketApiApi(object):
             }
         """
         if stream_id is None:
-            return False
+            if stream_label is not None:
+                stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self.manager.get_the_one_active_websocket_api()
+            if stream_id is False:
+                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
+
+        if symbols is None:
+            symbols = []
 
         symbols = [symbol.upper() for symbol in symbols]
         params = {"symbols": symbols}
@@ -686,19 +743,22 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def get_open_orders(self, stream_id=None, symbol: str = None, recv_window: int = None, request_id: str = None) -> bool:
+    def get_open_orders(self, recv_window: int = None, request_id: str = None, stream_id=None, stream_label: str = None,
+                        symbol: str = None) -> bool:
         """
         Query execution status of all open orders.
 
-        :param stream_id: id of a stream to send the request
-        :type stream_id: str
-        :param symbol: The symbol you want to trade
-        :type symbol: str
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param symbol: The symbol you want to trade
+        :type symbol: str
         :return: bool
 
 
@@ -761,7 +821,14 @@ class BinanceWebSocketApiApi(object):
             }
         """
         if stream_id is None:
-            return False
+            if stream_label is not None:
+                stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self.manager.get_the_one_active_websocket_api()
+            if stream_id is False:
+                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
 
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
                   "symbol": str(symbol).upper(),
@@ -783,15 +850,11 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def get_order(self, stream_id=None, symbol: str = None, order_id: int = None, orig_client_order_id: str = None,
-                  recv_window: int = None, request_id: str = None) -> bool:
+    def get_order(self, order_id: int = None, orig_client_order_id: str = None, recv_window: int = None,
+                  request_id: str = None, stream_id=None, stream_label: str = None, symbol: str = None) -> bool:
         """
         Check execution status of a specific order.
 
-        :param stream_id: id of a stream to send the request
-        :type stream_id: str
-        :param symbol: The symbol you want to trade
-        :type symbol: str
         :param order_id: The orderId to select the order
         :type order_id: int
         :param orig_client_order_id: The origClientOrderId to select the order
@@ -801,6 +864,12 @@ class BinanceWebSocketApiApi(object):
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param symbol: The symbol you want to trade
+        :type symbol: str
         :return: bool
 
 
@@ -867,7 +936,14 @@ class BinanceWebSocketApiApi(object):
             }
         """
         if stream_id is None:
-            return False
+            if stream_label is not None:
+                stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self.manager.get_the_one_active_websocket_api()
+            if stream_id is False:
+                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
 
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
                   "symbol": symbol.upper(),
@@ -893,15 +969,11 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def get_order_book(self, stream_id=None, symbol: str = None, limit: int = 100, recv_window: int = None,
-                       request_id: str = None) -> bool:
+    def get_order_book(self, limit: int = 100, recv_window: int = None, request_id: str = None,
+                       stream_id=None, stream_label: str = None, symbol: str = None) -> bool:
         """
         Get the order book.
 
-        :param stream_id: id of a stream to send the request
-        :type stream_id: str
-        :param symbol: The selected symbol
-        :type symbol: str
         :param limit: Depth limit, default is 500. Valid values 1-5000. -
                       https://developers.binance.com/docs/binance-trading-api/websocket_api#order-book
         :type limit: int
@@ -910,6 +982,12 @@ class BinanceWebSocketApiApi(object):
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param symbol: The selected symbol
+        :type symbol: str
         :return: bool
 
 
@@ -993,7 +1071,14 @@ class BinanceWebSocketApiApi(object):
                 }
         """
         if stream_id is None:
-            return False
+            if stream_label is not None:
+                stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self.manager.get_the_one_active_websocket_api()
+            if stream_id is False:
+                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
 
         params = {"symbol": symbol.upper(),
                   "limit": str(limit)}
@@ -1011,14 +1096,16 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def get_server_time(self, stream_id=None, request_id: str = None) -> bool:
+    def get_server_time(self, request_id: str = None, stream_id=None, stream_label: str = None) -> bool:
         """
         Test connectivity to the WebSocket API and get the current server time.
 
-        :param stream_id: id of a stream to send the request
-        :type stream_id: str
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
         :return: bool
 
 
@@ -1052,7 +1139,14 @@ class BinanceWebSocketApiApi(object):
                 }
         """
         if stream_id is None:
-            return False
+            if stream_label is not None:
+                stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self.manager.get_the_one_active_websocket_api()
+            if stream_id is False:
+                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
 
         request_id = self.manager.get_new_uuid_id() if request_id is None else request_id
 
@@ -1063,14 +1157,16 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def ping(self, stream_id=None, request_id: str = None) -> bool:
+    def ping(self, request_id: str = None, stream_id=None, stream_label: str = None) -> bool:
         """
         Test connectivity to the WebSocket API.
 
-        :param stream_id: id of a stream to send the request
-        :type stream_id: str
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
         :return: bool
 
 
@@ -1102,7 +1198,14 @@ class BinanceWebSocketApiApi(object):
                 }
         """
         if stream_id is None:
-            return False
+            if stream_label is not None:
+                stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self.manager.get_the_one_active_websocket_api()
+            if stream_id is False:
+                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
 
         request_id = self.manager.get_new_uuid_id() if request_id is None else request_id
 
@@ -1113,17 +1216,16 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def test_create_order(self, stream_id=None, new_client_order_id: str = None, price: float = 0.0,
-                          order_type: str = None, quantity: float = 0.0, side: str = None, symbol: str = None,
-                          time_in_force: str = "GTC", recv_window=None, request_id: str = None) -> Union[int, bool]:
+    def test_create_order(self, new_client_order_id: str = None, order_type: str = None, price: float = 0.0,
+                          quantity: float = 0.0, recv_window=None, request_id: str = None,
+                          side: str = None, stream_id=None, stream_label: str = None, symbol: str = None,
+                          time_in_force: str = "GTC") -> Union[int, bool]:
         """
         A wrapper for `create_order() <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order>`_ with `test='True'`
 
         Test order placement. Validates new order parameters and verifies your signature but does not send the order
         into the matching engine.
 
-        :param stream_id: id of a stream to send the request
-        :type stream_id: str
         :param new_client_order_id: Set the `newClientOrderId`
         :type new_client_order_id: str
         :param order_type: `LIMIT` or `MARKET`
@@ -1134,6 +1236,10 @@ class BinanceWebSocketApiApi(object):
         :type quantity: float
         :param side: `BUY` or `SELL`
         :type side: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
         :param symbol: The symbol you want to trade
         :type symbol: str
         :param time_in_force: Default `GTC`
@@ -1206,6 +1312,7 @@ class BinanceWebSocketApiApi(object):
                 ]
             }
         """
-        return self.create_order(stream_id=stream_id, price=price, order_type=order_type, quantity=quantity, side=side,
-                                 symbol=symbol, time_in_force=time_in_force, test=True, recv_window=recv_window,
-                                 request_id=request_id)
+        return self.create_order(new_client_order_id=new_client_order_id, price=price, order_type=order_type,
+                                 quantity=quantity, recv_window=recv_window, request_id=request_id, side=side,
+                                 stream_id=stream_id, stream_label=stream_label, symbol=symbol,
+                                 time_in_force=time_in_force, test=True)

@@ -1480,7 +1480,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         if api is True:
             logger.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
-                        str(markets) + ", " + ", " + str(symbols) + ", " + str(api) + " - Created websocket URI for "
+                        str(markets) + ", " + ", " + str(symbols) + ", " + str(api) + ") - Created websocket URI for "
                         "stream_id=" + str(stream_id) + " is " + self.websocket_api_base_uri)
             return self.websocket_api_base_uri
         if isinstance(channels, bool):
@@ -2486,7 +2486,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         if stream_label:
             for stream_id in self.stream_list:
                 if self.stream_list[stream_id]['stream_label'] == stream_label:
+                    logger.debug(f"BinanceWebSocketApiManager.get_stream_id_by_label() - Found `stream_id` via `stream_label` "
+                                 f"`{stream_label}`")
                     return stream_id
+        logger.error(f"BinanceWebSocketApiManager.get_stream_id_by_label() - No `stream_id` found via `stream_label` "
+                     f"`{stream_label}`")
         return False
 
     def get_stream_info(self, stream_id):
@@ -2664,6 +2668,30 @@ class BinanceWebSocketApiManager(threading.Thread):
         if stream_statistic['uptime'] > 60 * 60 * 24 * 30 * 12:
             stream_statistic['stream_receives_per_year'] = stream_receives_per_second * 60 * 60 * 24 * 30 * 12
         return stream_statistic
+
+    def get_the_one_active_websocket_api(self):
+        """
+        This function is needed to simplify the access to the websocket API, if only one API stream exists it is clear
+        that only this stream can be used for the requests and therefore will be used.
+
+        :return: stream_id or False
+        """
+        found_entries = 0
+        found_stream_id = None
+        for stream_id in self.stream_list:
+            if self.stream_list[stream_id]['api'] is True:
+                found_entries += 1
+                found_stream_id = stream_id
+
+        if found_entries == 1:
+            # Its clear, there is only one valid connection to use, so we can take it!
+            logger.debug(f"BinanceWebSocketApiManager.get_the_one_active_websocket_api() - Found `stream_id` "
+                         f"`{found_stream_id}`")
+            return found_stream_id
+        else:
+            logger.error(f"BinanceWebSocketApiManager.get_the_one_active_websocket_api() - No valid `stream_id` found! "
+                         f"- `found_entries` = {found_entries}")
+            return False
 
     def get_total_received_bytes(self):
         """

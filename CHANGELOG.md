@@ -10,8 +10,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
 ## 1.45.2.dev (development stage/unreleased/unstable)
+### Added
+- `get_the_one_active_websocket_api()` to manger.py
+- Logging to `get_stream_id_by_label()`
 ### Changed
-- Use UnicornFy only for non api requests in sockets.py - if `output="UnicornFy"` is used for api then its just converted to a python dict.
+- Use UnicornFy only for non api requests in sockets.py - if `output="UnicornFy"` is used for api then its just 
+  converted to a python dict.
+- `ubwa.api.method()` does not need a `stream_id`/`stream_label` if there is only one valid websocket api. (Self-discovery 
+  of uniquely identifiable websocket api streams if no `stream_id` or `stream_label` was specified for identification.)
+### Fixed
+- Support for `new_client_order_id` in `test_create_order()`
 
 ## 1.45.2
 ### Fixed 

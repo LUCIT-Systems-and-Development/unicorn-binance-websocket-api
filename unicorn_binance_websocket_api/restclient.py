@@ -33,13 +33,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-import json
+from unicorn_binance_rest_api import BinanceRestApiManager
 import logging
-import requests
-import socket
 import threading
 import time
-from unicorn_binance_rest_api import BinanceRestApiManager
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 

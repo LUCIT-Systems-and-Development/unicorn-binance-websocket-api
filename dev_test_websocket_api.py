@@ -46,23 +46,21 @@ async def binance_stream(ubwa):
     def handle_socket_message(data):
         print(f"received data:\r\n{data}\r\n")
 
-    api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
-                                    stream_label="Bobs Websocket API",
-                                    process_stream_data=handle_socket_message)
+    ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret, process_stream_data=handle_socket_message)
     print(f"Start:")
-    ubwa.api.get_server_time(stream_id=api_stream)
-    ubwa.api.get_account_status(stream_id=api_stream)
-    orig_client_order_id = ubwa.api.create_order(stream_id=api_stream, price=1.0, order_type="LIMIT",
+    ubwa.api.get_server_time(stream_label="Bobs Websocket API")
+    ubwa.api.get_account_status(stream_label="Bobs Websocket API")
+    orig_client_order_id = ubwa.api.create_order(price=1.0, order_type="LIMIT",
                                                  quantity=15.0, side="SELL", symbol="BUSDUSDT")
-    ubwa.api.test_create_order(stream_id=api_stream, price=1.2, order_type="LIMIT",
+    ubwa.api.test_create_order(price=1.2, order_type="LIMIT",
                                quantity=12.0, side="SELL", symbol="BUSDUSDT")
-    ubwa.api.ping(stream_id=api_stream)
-    ubwa.api.get_exchange_info(stream_id=api_stream, symbols=['BUSDUSDT'])
-    ubwa.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
-    ubwa.api.cancel_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
-    ubwa.api.get_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
-    ubwa.api.cancel_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
-    ubwa.api.get_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
+    ubwa.api.ping()
+    ubwa.api.get_exchange_info(symbols=['BUSDUSDT'])
+    ubwa.api.get_order_book(symbol="BUSDUSDT", limit=2)
+    ubwa.api.cancel_order(symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
+    ubwa.api.get_open_orders(symbol="BUSDUSDT")
+    ubwa.api.cancel_open_orders(symbol="BUSDUSDT")
+    ubwa.api.get_order(symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
 
     print(f"Finished! Waiting for responses:")
     await asyncio.sleep(5)
