@@ -339,8 +339,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.monitoring_total_received_bytes = 0
         self.monitoring_total_receives = 0
         self.output_default = output_default
-        self.process_response_to_request = {}
-        self.process_response_to_request_lock = threading.Lock()
+        self.process_response = {}
+        self.process_response_lock = threading.Lock()
         self.reconnects = 0
         self.reconnects_lock = threading.Lock()
         self.request_id = 0

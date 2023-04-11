@@ -13,9 +13,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - `get_the_one_active_websocket_api()` to manger.py
 - Logging to `get_stream_id_by_label()`
-- `process_response_to_request` parameter to `ubwa.api` methods to provide specific callback functions for specific 
+- `process_response` parameter to `ubwa.api` methods to provide specific callback functions for specific 
   responses - records that are processed that way still get added to the stream_buffer/process_stream_data callback, 
-  but are tagged with `process_response_to_request=<function reference>`
+  but are tagged with `process_response=<function reference>
+- `return_response` parameter to `ubwa.api` methods to let the used method wait till the requested data is received via
+  websocket, and then it returns it.
 ### Changed
 - Use UnicornFy only for non api requests in sockets.py - if `output="UnicornFy"` is used for api then its just 
   converted to a python dict.
@@ -23,7 +25,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   of uniquely identifiable websocket api streams if no `stream_id` or `stream_label` was specified for identification.)
 - Renamed `ubwa.api.test_create_order()` to `ubwa.api.create_test_order()`
 ### Fixed
-- Support for `new_client_order_id` in `test_create_order()`
+- Support for `new_client_order_id` in `create_test_order()`
 
 ## 1.45.2
 ### Fixed 

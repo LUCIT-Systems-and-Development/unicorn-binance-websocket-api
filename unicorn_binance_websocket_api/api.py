@@ -66,14 +66,15 @@ class BinanceWebSocketApiApi(object):
     def __init__(self, manager=None):
         self.manager = manager
 
-    def cancel_open_orders(self, process_response_to_request=None, symbol: str = None, recv_window: int = None,
-                           request_id: str = None, stream_id: str = None, stream_label: str = None) -> bool:
+    def cancel_open_orders(self, process_response=None, return_response: bool = False, symbol: str = None,
+                           recv_window: int = None, request_id: str = None, stream_id: str = None,
+                           stream_label: str = None) -> bool:
         """
         Cancel all open orders on a symbol, including OCO orders.
 
-        :param process_response_to_request: Provide a function/method to process the received webstream data (callback)
-                                            of this specific request.
-        :type process_response_to_request: function
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
         :param symbol: The symbol you want to trade
         :type symbol: int
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
@@ -81,6 +82,10 @@ class BinanceWebSocketApiApi(object):
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
@@ -228,18 +233,28 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
-        if process_response_to_request is not None:
-            with self.manager.process_response_to_request_lock:
-                entry = {'callback_function': process_response_to_request}
-                self.manager.process_response_to_request[request_id] = entry
+        if process_response is not None:
+            with self.manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self.manager.process_response[request_id] = entry
 
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
+        if return_response is True:
+            with self.manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self.manager.return_response[request_id] = entry
+            self.manager.return_response[request_id]['event_return_response'].wait()
+            with self.manager.return_response_lock:
+                response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
+                del self.manager.return_response[request_id]
+            return response_value
+
         return True
 
-    def cancel_order(self, order_id: int = None, orig_client_order_id: str = None,
-                     recv_window: int = None, request_id: str = None, stream_id=None, symbol: str = None,
-                     stream_label: str = None) -> bool:
+    def cancel_order(self, order_id: int = None, orig_client_order_id: str = None, process_response=None,
+                     recv_window: int = None, request_id: str = None, return_response: bool = False,
+                     stream_id=None, symbol: str = None, stream_label: str = None) -> bool:
         """
         Cancel an active order.
 
@@ -247,11 +262,18 @@ class BinanceWebSocketApiApi(object):
         :type order_id: str
         :param orig_client_order_id: Cancel by `origClientOrderId`
         :type orig_client_order_id: str
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
@@ -348,14 +370,29 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if process_response is not None:
+            with self.manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self.manager.process_response[request_id] = entry
+
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if return_response is True:
+            with self.manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self.manager.return_response[request_id] = entry
+            self.manager.return_response[request_id]['event_return_response'].wait()
+            with self.manager.return_response_lock:
+                response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
+                del self.manager.return_response[request_id]
+            return response_value
 
         return True
 
     def create_order(self, new_client_order_id: str = None, order_type: str = None, price: float = 0.0,
-                     quantity: float = 0.0, recv_window: int = None, request_id: str = None, side: str = None,
-                     stream_id=None, stream_label: str = None, symbol: str = None, time_in_force: str = "GTC",
-                     test: bool = False) -> Union[int, bool]:
+                     process_response=None, quantity: float = 0.0, recv_window: int = None, request_id: str = None,
+                     return_response: bool = False, side: str = None, stream_id=None, stream_label: str = None,
+                     symbol: str = None, time_in_force: str = "GTC", test: bool = False) -> Union[int, bool]:
         """
         Create a new order.
 
@@ -365,6 +402,9 @@ class BinanceWebSocketApiApi(object):
         :type order_type: str
         :param price: Price e.g. 10.223
         :type price: float
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
         :param quantity: Amount e.g. 20.5
         :type quantity: float
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
@@ -372,6 +412,10 @@ class BinanceWebSocketApiApi(object):
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
         :param side: `BUY` or `SELL`
         :type side: str
         :param stream_id: ID of a stream to send the request
@@ -485,14 +529,29 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if process_response is not None:
+            with self.manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self.manager.process_response[request_id] = entry
+
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if return_response is True:
+            with self.manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self.manager.return_response[request_id] = entry
+            self.manager.return_response[request_id]['event_return_response'].wait()
+            with self.manager.return_response_lock:
+                response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
+                del self.manager.return_response[request_id]
+            return response_value
 
         return new_client_order_id
 
     def create_test_order(self, new_client_order_id: str = None, order_type: str = None, price: float = 0.0,
-                          quantity: float = 0.0, recv_window=None, request_id: str = None, side: str = None,
-                          stream_id=None, stream_label: str = None, symbol: str = None,
-                          time_in_force: str = "GTC") -> Union[int, bool]:
+                          process_response=None, quantity: float = 0.0, recv_window=None, request_id: str = None,
+                          return_response: bool = False, side: str = None, stream_id=None, stream_label: str = None,
+                          symbol: str = None, time_in_force: str = "GTC") -> Union[int, bool]:
         """
         A wrapper for `create_order() <https://unicorn-binance-websocket-api.docs.lucit.tech/
         unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order>`_
@@ -507,6 +566,9 @@ class BinanceWebSocketApiApi(object):
         :type order_type: str
         :param price: Price e.g. 10.223
         :type price: float
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
         :param quantity: Amount e.g. 20.5
         :type quantity: float
         :param side: `BUY` or `SELL`
@@ -524,6 +586,10 @@ class BinanceWebSocketApiApi(object):
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
         :return: `False` or `orig_client_order_id`
 
 
@@ -588,20 +654,27 @@ class BinanceWebSocketApiApi(object):
             }
         """
         return self.create_order(new_client_order_id=new_client_order_id, price=price, order_type=order_type,
-                                 quantity=quantity, recv_window=recv_window, request_id=request_id, side=side,
-                                 stream_id=stream_id, stream_label=stream_label, symbol=symbol,
-                                 time_in_force=time_in_force, test=True)
+                                 process_response=process_response, quantity=quantity, recv_window=recv_window,
+                                 request_id=request_id, return_response=return_response, side=side, stream_id=stream_id,
+                                 stream_label=stream_label, symbol=symbol, time_in_force=time_in_force, test=True)
 
-    def get_account_status(self, recv_window: int = None, request_id: str = None, stream_id=None,
-                           stream_label: str = None) -> bool:
+    def get_account_status(self, process_response=None, recv_window: int = None, request_id: str = None,
+                           return_response: bool = False, stream_id=None, stream_label: str = None) -> bool:
         """
         Get the user account status.
 
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
@@ -706,20 +779,43 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if process_response is not None:
+            with self.manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self.manager.process_response[request_id] = entry
+
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if return_response is True:
+            with self.manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self.manager.return_response[request_id] = entry
+            self.manager.return_response[request_id]['event_return_response'].wait()
+            with self.manager.return_response_lock:
+                response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
+                del self.manager.return_response[request_id]
+            return response_value
 
         return True
 
-    def get_exchange_info(self, recv_window: int = None, request_id: str = None, stream_id=None,
-                          stream_label: str = None, symbols: list = None) -> bool:
+    def get_exchange_info(self, process_response=None, recv_window: int = None, request_id: str = None,
+                          return_response: bool = False, stream_id=None, stream_label: str = None,
+                          symbols: list = None) -> bool:
         """
         Get the Exchange Information.
 
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
@@ -860,20 +956,43 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if process_response is not None:
+            with self.manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self.manager.process_response[request_id] = entry
+
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if return_response is True:
+            with self.manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self.manager.return_response[request_id] = entry
+            self.manager.return_response[request_id]['event_return_response'].wait()
+            with self.manager.return_response_lock:
+                response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
+                del self.manager.return_response[request_id]
+            return response_value
 
         return True
 
-    def get_open_orders(self, recv_window: int = None, request_id: str = None, stream_id=None, stream_label: str = None,
+    def get_open_orders(self, process_response=None, recv_window: int = None, request_id: str = None,
+                        return_response: bool = False, stream_id=None, stream_label: str = None,
                         symbol: str = None) -> bool:
         """
         Query execution status of all open orders.
 
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
@@ -967,12 +1086,28 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if process_response is not None:
+            with self.manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self.manager.process_response[request_id] = entry
+
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if return_response is True:
+            with self.manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self.manager.return_response[request_id] = entry
+            self.manager.return_response[request_id]['event_return_response'].wait()
+            with self.manager.return_response_lock:
+                response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
+                del self.manager.return_response[request_id]
+            return response_value
 
         return True
 
-    def get_order(self, order_id: int = None, orig_client_order_id: str = None, recv_window: int = None,
-                  request_id: str = None, stream_id=None, stream_label: str = None, symbol: str = None) -> bool:
+    def get_order(self, order_id: int = None, orig_client_order_id: str = None, process_response=None,
+                  recv_window: int = None, request_id: str = None, return_response: bool = False, stream_id=None,
+                  stream_label: str = None, symbol: str = None) -> bool:
         """
         Check execution status of a specific order.
 
@@ -980,11 +1115,18 @@ class BinanceWebSocketApiApi(object):
         :type order_id: int
         :param orig_client_order_id: The origClientOrderId to select the order
         :type orig_client_order_id: str
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
@@ -1086,23 +1228,46 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if process_response is not None:
+            with self.manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self.manager.process_response[request_id] = entry
+
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if return_response is True:
+            with self.manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self.manager.return_response[request_id] = entry
+            self.manager.return_response[request_id]['event_return_response'].wait()
+            with self.manager.return_response_lock:
+                response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
+                del self.manager.return_response[request_id]
+            return response_value
 
         return True
 
-    def get_order_book(self, limit: int = 100, recv_window: int = None, request_id: str = None,
-                       stream_id=None, stream_label: str = None, symbol: str = None) -> bool:
+    def get_order_book(self, process_response=None, limit: int = 100, recv_window: int = None, request_id: str = None,
+                       return_response: bool = False, stream_id=None, stream_label: str = None,
+                       symbol: str = None) -> bool:
         """
         Get the order book.
 
         :param limit: Depth limit, default is 500. Valid values 1-5000. -
                       https://developers.binance.com/docs/binance-trading-api/websocket_api#order-book
         :type limit: int
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
@@ -1213,20 +1378,39 @@ class BinanceWebSocketApiApi(object):
                    "method": "depth",
                    "params": params}
 
+        if process_response is not None:
+            with self.manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self.manager.process_response[request_id] = entry
+
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if return_response is True:
+            with self.manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self.manager.return_response[request_id] = entry
+            self.manager.return_response[request_id]['event_return_response'].wait()
+            with self.manager.return_response_lock:
+                response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
+                del self.manager.return_response[request_id]
+            return response_value
 
         return True
 
-    def get_server_time(self, process_response_to_request=None, request_id: str = None, stream_id=None,
-                        stream_label: str = None) -> bool:
+    def get_server_time(self, process_response=None, request_id: str = None, return_response: bool = False,
+                        stream_id=None, stream_label: str = None) -> bool:
         """
         Test connectivity to the WebSocket API and get the current server time.
 
-        :param process_response_to_request: Provide a function/method to process the received webstream data (callback)
+        :param process_response: Provide a function/method to process the received webstream data (callback)
                                             of this specific request.
-        :type process_response_to_request: function
+        :type process_response: function
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
@@ -1278,23 +1462,33 @@ class BinanceWebSocketApiApi(object):
         payload = {"id": request_id,
                    "method": "time"}
 
-        if process_response_to_request is not None:
-            with self.manager.process_response_to_request_lock:
-                entry = {'callback_function': process_response_to_request}
-                self.manager.process_response_to_request[request_id] = entry
+        if process_response is not None:
+            with self.manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self.manager.process_response[request_id] = entry
 
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
+        if return_response is True:
+            with self.manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self.manager.return_response[request_id] = entry
+            self.manager.return_response[request_id]['event_return_response'].wait()
+            with self.manager.return_response_lock:
+                response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
+                del self.manager.return_response[request_id]
+            return response_value
+
         return True
 
-    def ping(self, process_response_to_request=None, request_id: str = None, return_response: bool = False,
+    def ping(self, process_response=None, request_id: str = None, return_response: bool = False,
              stream_id=None, stream_label: str = None) -> bool:
         """
         Test connectivity to the WebSocket API.
 
-        :param process_response_to_request: Provide a function/method to process the received webstream data (callback)
-                                            of this specific request.
-        :type process_response_to_request: function
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
         :param request_id: Provide a custom id for the request
         :type request_id: str
         :param return_response: If `True` the response of the API request is waited for and returned directly.
@@ -1350,10 +1544,10 @@ class BinanceWebSocketApiApi(object):
         payload = {"id": request_id,
                    "method": "ping"}
 
-        if process_response_to_request is not None:
-            with self.manager.process_response_to_request_lock:
-                entry = {'callback_function': process_response_to_request}
-                self.manager.process_response_to_request[request_id] = entry
+        if process_response is not None:
+            with self.manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self.manager.process_response[request_id] = entry
 
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -1361,7 +1555,6 @@ class BinanceWebSocketApiApi(object):
             with self.manager.return_response_lock:
                 entry = {'event_return_response': threading.Event()}
                 self.manager.return_response[request_id] = entry
-            print(f"waiting ...")
             self.manager.return_response[request_id]['event_return_response'].wait()
             with self.manager.return_response_lock:
                 response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
