@@ -34,7 +34,9 @@
 # IN THE SOFTWARE.
 
 from typing import Union
+import copy
 import logging
+import threading
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -43,7 +45,14 @@ class BinanceWebSocketApiApi(object):
     """
     Connect to Binance API via Websocket.
 
-    Read this how to to get started:
+    This is valid for each `ubwa.api.method()`:
+
+    If no `stream_id` is provided, we try to find it via a provided `stream_label`, if also not available
+    we use the `stream_id` of the one active websocket api stream if there is one. But if there is not exactly
+    one valid websocket api stream, this will fail! It must be clear! The stream is also valid during a
+    stream restart, the payload is submitted as soon the stream is online again.
+
+    Read these instructions to get started:
     https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404
 
     Binance.com SPOT websocket API documentation:
@@ -57,11 +66,14 @@ class BinanceWebSocketApiApi(object):
     def __init__(self, manager=None):
         self.manager = manager
 
-    def cancel_open_orders(self, symbol: str = None, recv_window: int = None,
+    def cancel_open_orders(self, process_response_to_request=None, symbol: str = None, recv_window: int = None,
                            request_id: str = None, stream_id: str = None, stream_label: str = None) -> bool:
         """
         Cancel all open orders on a symbol, including OCO orders.
 
+        :param process_response_to_request: Provide a function/method to process the received webstream data (callback)
+                                            of this specific request.
+        :type process_response_to_request: function
         :param symbol: The symbol you want to trade
         :type symbol: int
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
@@ -216,12 +228,18 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if process_response_to_request is not None:
+            with self.manager.process_response_to_request_lock:
+                entry = {'callback_function': process_response_to_request}
+                self.manager.process_response_to_request[request_id] = entry
+
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         return True
 
-    def cancel_order(self, order_id: int = None, orig_client_order_id: str = None, recv_window: int = None,
-                     request_id: str = None, stream_id=None, symbol: str = None, stream_label: str = None) -> bool:
+    def cancel_order(self, order_id: int = None, orig_client_order_id: str = None,
+                     recv_window: int = None, request_id: str = None, stream_id=None, symbol: str = None,
+                     stream_label: str = None) -> bool:
         """
         Cancel an active order.
 
@@ -470,6 +488,109 @@ class BinanceWebSocketApiApi(object):
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         return new_client_order_id
+
+    def create_test_order(self, new_client_order_id: str = None, order_type: str = None, price: float = 0.0,
+                          quantity: float = 0.0, recv_window=None, request_id: str = None, side: str = None,
+                          stream_id=None, stream_label: str = None, symbol: str = None,
+                          time_in_force: str = "GTC") -> Union[int, bool]:
+        """
+        A wrapper for `create_order() <https://unicorn-binance-websocket-api.docs.lucit.tech/
+        unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order>`_
+        with `test='True'`
+
+        Test order placement. Validates new order parameters and verifies your signature but does not send the order
+        into the matching engine.
+
+        :param new_client_order_id: Set the `newClientOrderId`
+        :type new_client_order_id: str
+        :param order_type: `LIMIT` or `MARKET`
+        :type order_type: str
+        :param price: Price e.g. 10.223
+        :type price: float
+        :param quantity: Amount e.g. 20.5
+        :type quantity: float
+        :param side: `BUY` or `SELL`
+        :type side: str
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param symbol: The symbol you want to trade
+        :type symbol: str
+        :param time_in_force: Default `GTC`
+        :type time_in_force: str
+        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
+                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+        :type recv_window: int
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :return: `False` or `orig_client_order_id`
+
+
+        Message sent:
+
+        .. code-block:: json
+
+            {
+                "id": "56374a46-3061-486b-a311-99ee972eb648",
+                "method": "order.place",
+                "params": {
+                    "symbol": "BTCUSDT",
+                    "side": "SELL",
+                    "type": "LIMIT",
+                    "timeInForce": "GTC",
+                    "price": "23416.10000000",
+                    "quantity": "0.00847000",
+                    "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
+                    "signature": "15af09e41c36f3cc61378c2fbe2c33719a03dd5eba8d0f9206fbda44de717c88",
+                    "timestamp": 1660801715431
+                }
+            }
+
+
+        Response
+
+        .. code-block:: json
+
+            {
+                "id": "56374a46-3061-486b-a311-99ee972eb648",
+                "status": 200,
+                "result": {
+                    "symbol": "BTCUSDT",
+                    "orderId": 12569099453,
+                    "orderListId": -1,
+                    "clientOrderId": "4d96324ff9d44481926157ec08158a40",
+                    "transactTime": 1660801715639
+                },
+                "rateLimits": [
+                    {
+                        "rateLimitType": "ORDERS",
+                        "interval": "SECOND",
+                        "intervalNum": 10,
+                        "limit": 50,
+                        "count": 1
+                    },
+                    {
+                        "rateLimitType": "ORDERS",
+                        "interval": "DAY",
+                        "intervalNum": 1,
+                        "limit": 160000,
+                        "count": 1
+                    },
+                    {
+                        "rateLimitType": "REQUEST_WEIGHT",
+                        "interval": "MINUTE",
+                        "intervalNum": 1,
+                        "limit": 1200,
+                        "count": 1
+                    }
+                ]
+            }
+        """
+        return self.create_order(new_client_order_id=new_client_order_id, price=price, order_type=order_type,
+                                 quantity=quantity, recv_window=recv_window, request_id=request_id, side=side,
+                                 stream_id=stream_id, stream_label=stream_label, symbol=symbol,
+                                 time_in_force=time_in_force, test=True)
 
     def get_account_status(self, recv_window: int = None, request_id: str = None, stream_id=None,
                            stream_label: str = None) -> bool:
@@ -1096,10 +1217,14 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def get_server_time(self, request_id: str = None, stream_id=None, stream_label: str = None) -> bool:
+    def get_server_time(self, process_response_to_request=None, request_id: str = None, stream_id=None,
+                        stream_label: str = None) -> bool:
         """
         Test connectivity to the WebSocket API and get the current server time.
 
+        :param process_response_to_request: Provide a function/method to process the received webstream data (callback)
+                                            of this specific request.
+        :type process_response_to_request: function
         :param request_id: Provide a custom id for the request
         :type request_id: str
         :param stream_id: ID of a stream to send the request
@@ -1153,16 +1278,29 @@ class BinanceWebSocketApiApi(object):
         payload = {"id": request_id,
                    "method": "time"}
 
+        if process_response_to_request is not None:
+            with self.manager.process_response_to_request_lock:
+                entry = {'callback_function': process_response_to_request}
+                self.manager.process_response_to_request[request_id] = entry
+
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         return True
 
-    def ping(self, request_id: str = None, stream_id=None, stream_label: str = None) -> bool:
+    def ping(self, process_response_to_request=None, request_id: str = None, return_response: bool = False,
+             stream_id=None, stream_label: str = None) -> bool:
         """
         Test connectivity to the WebSocket API.
 
+        :param process_response_to_request: Provide a function/method to process the received webstream data (callback)
+                                            of this specific request.
+        :type process_response_to_request: function
         :param request_id: Provide a custom id for the request
         :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
@@ -1212,107 +1350,22 @@ class BinanceWebSocketApiApi(object):
         payload = {"id": request_id,
                    "method": "ping"}
 
+        if process_response_to_request is not None:
+            with self.manager.process_response_to_request_lock:
+                entry = {'callback_function': process_response_to_request}
+                self.manager.process_response_to_request[request_id] = entry
+
         self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
+        if return_response is True:
+            with self.manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self.manager.return_response[request_id] = entry
+            print(f"waiting ...")
+            self.manager.return_response[request_id]['event_return_response'].wait()
+            with self.manager.return_response_lock:
+                response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
+                del self.manager.return_response[request_id]
+            return response_value
+
         return True
-
-    def test_create_order(self, new_client_order_id: str = None, order_type: str = None, price: float = 0.0,
-                          quantity: float = 0.0, recv_window=None, request_id: str = None,
-                          side: str = None, stream_id=None, stream_label: str = None, symbol: str = None,
-                          time_in_force: str = "GTC") -> Union[int, bool]:
-        """
-        A wrapper for `create_order() <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order>`_ with `test='True'`
-
-        Test order placement. Validates new order parameters and verifies your signature but does not send the order
-        into the matching engine.
-
-        :param new_client_order_id: Set the `newClientOrderId`
-        :type new_client_order_id: str
-        :param order_type: `LIMIT` or `MARKET`
-        :type order_type: str
-        :param price: Price e.g. 10.223
-        :type price: float
-        :param quantity: Amount e.g. 20.5
-        :type quantity: float
-        :param side: `BUY` or `SELL`
-        :type side: str
-        :param stream_id: ID of a stream to send the request
-        :type stream_id: str
-        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
-        :type stream_label: str
-        :param symbol: The symbol you want to trade
-        :type symbol: str
-        :param time_in_force: Default `GTC`
-        :type time_in_force: str
-        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
-                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
-        :type recv_window: int
-        :param request_id: Provide a custom id for the request
-        :type request_id: str
-        :return: `False` or `orig_client_order_id`
-
-
-        Message sent:
-
-        .. code-block:: json
-
-            {
-                "id": "56374a46-3061-486b-a311-99ee972eb648",
-                "method": "order.place",
-                "params": {
-                    "symbol": "BTCUSDT",
-                    "side": "SELL",
-                    "type": "LIMIT",
-                    "timeInForce": "GTC",
-                    "price": "23416.10000000",
-                    "quantity": "0.00847000",
-                    "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
-                    "signature": "15af09e41c36f3cc61378c2fbe2c33719a03dd5eba8d0f9206fbda44de717c88",
-                    "timestamp": 1660801715431
-                }
-            }
-
-
-        Response
-
-        .. code-block:: json
-
-            {
-                "id": "56374a46-3061-486b-a311-99ee972eb648",
-                "status": 200,
-                "result": {
-                    "symbol": "BTCUSDT",
-                    "orderId": 12569099453,
-                    "orderListId": -1,
-                    "clientOrderId": "4d96324ff9d44481926157ec08158a40",
-                    "transactTime": 1660801715639
-                },
-                "rateLimits": [
-                    {
-                        "rateLimitType": "ORDERS",
-                        "interval": "SECOND",
-                        "intervalNum": 10,
-                        "limit": 50,
-                        "count": 1
-                    },
-                    {
-                        "rateLimitType": "ORDERS",
-                        "interval": "DAY",
-                        "intervalNum": 1,
-                        "limit": 160000,
-                        "count": 1
-                    },
-                    {
-                        "rateLimitType": "REQUEST_WEIGHT",
-                        "interval": "MINUTE",
-                        "intervalNum": 1,
-                        "limit": 1200,
-                        "count": 1
-                    }
-                ]
-            }
-        """
-        return self.create_order(new_client_order_id=new_client_order_id, price=price, order_type=order_type,
-                                 quantity=quantity, recv_window=recv_window, request_id=request_id, side=side,
-                                 stream_id=stream_id, stream_label=stream_label, symbol=symbol,
-                                 time_in_force=time_in_force, test=True)

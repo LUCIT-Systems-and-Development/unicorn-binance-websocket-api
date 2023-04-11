@@ -32,6 +32,7 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
+import time
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 import asyncio
@@ -46,15 +47,22 @@ async def binance_stream(ubwa):
     def handle_socket_message(data):
         print(f"received data:\r\n{data}\r\n")
 
-    ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret, process_stream_data=handle_socket_message)
+    def handle_ping_response(data):
+        print(f"Timestamp: {time.time()}")
+        print(f"received ping response:\r\n{data}\r\n")
+
+    def handle_servertime_response(data):
+        print(f"received server time response:\r\n{data}\r\n")
+
+    ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
+                       process_stream_data=handle_socket_message, stream_label="Bobs Websocket API")
     print(f"Start:")
-    ubwa.api.get_server_time(stream_label="Bobs Websocket API")
+    ubwa.api.get_server_time(process_response_to_request=handle_servertime_response, stream_label="Bobs Websocket API")
     ubwa.api.get_account_status(stream_label="Bobs Websocket API")
     orig_client_order_id = ubwa.api.create_order(price=1.0, order_type="LIMIT",
                                                  quantity=15.0, side="SELL", symbol="BUSDUSDT")
-    ubwa.api.test_create_order(price=1.2, order_type="LIMIT",
-                               quantity=12.0, side="SELL", symbol="BUSDUSDT")
-    ubwa.api.ping()
+    ubwa.api.create_test_order(price=1.2, order_type="LIMIT", quantity=12.0, side="SELL", symbol="BUSDUSDT")
+    ubwa.api.ping(process_response_to_request=handle_ping_response)
     ubwa.api.get_exchange_info(symbols=['BUSDUSDT'])
     ubwa.api.get_order_book(symbol="BUSDUSDT", limit=2)
     ubwa.api.cancel_order(symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
@@ -64,6 +72,25 @@ async def binance_stream(ubwa):
 
     print(f"Finished! Waiting for responses:")
     await asyncio.sleep(5)
+    print(f"Timestamp: {time.time()}")
+    print(f"Test WS ping:")
+    time1 = time.time()
+    ping = ubwa.api.ping(return_response=True)
+    print(f"Timestamp: {time.time()}")
+    print(f"Awaited ping response: {ping}")
+    print(f"Timestamp: {time.time()}")
+    time2 = time.time()
+    print(f"time: {time2-time1}")
+
+    print(f"Test REST ping:")
+    import unicorn_binance_rest_api
+    ubra = unicorn_binance_rest_api.BinanceRestApiManager()
+    time1 = time.time()
+    print(f"Timestamp: {time.time()}")
+    print(f"Awaited ping response: {ubra.get_server_time()}")
+    print(f"Timestamp: {time.time()}")
+    time2 = time.time()
+    print(f"time: {time2-time1}")
 
     print(f"Stopping!")
     ubwa.stop_manager_with_all_streams()
@@ -80,4 +107,3 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\r\nGracefully stopping the websocket manager...")
         ubwa.stop_manager_with_all_streams()
-

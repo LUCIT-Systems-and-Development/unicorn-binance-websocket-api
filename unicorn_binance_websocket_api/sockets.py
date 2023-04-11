@@ -118,7 +118,7 @@ class BinanceWebSocketApiSocket(object):
                         try:
                             received_stream_data_json = await websocket.receive()
                         except asyncio.TimeoutError:
-                            # Timeout from `asyncio.wait_for()` which we use to keep the loop running even if we dont
+                            # Timeout from `asyncio.wait_for()` which we use to keep the loop running even if we don't
                             # receive new records via websocket.
                             logger.debug(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
                                          f"{str(self.channels)}, {str(self.markets)} - Received inner "
@@ -129,8 +129,10 @@ class BinanceWebSocketApiSocket(object):
                             await websocket.close()
                             sys.exit(0)
                         if received_stream_data_json is not None:
+                            data_type = None
                             if self.output == "UnicornFy":
                                 if self.manager.stream_list[self.stream_id]['api'] is False:
+                                    data_type = "dict"
                                     if self.exchange == "binance.com":
                                         received_stream_data = self.unicorn_fy.binance_com_websocket(received_stream_data_json)
                                     elif self.exchange == "binance.com-testnet":
@@ -162,14 +164,55 @@ class BinanceWebSocketApiSocket(object):
                                     elif self.exchange == "binance.org-testnet":
                                         received_stream_data = self.unicorn_fy.binance_org_websocket(received_stream_data_json)
                                     else:
-                                        # WS API does not need to get unicornfied, just turn it into a dict:
+                                        data_type = "json"
                                         received_stream_data = received_stream_data_json
                                 else:
-                                    received_stream_data = received_stream_data_json
+                                    # WS API does not need to get unicornfied, just turn it into a dict:
+                                    data_type = "dict"
+                                    received_stream_data = json.loads(received_stream_data_json)
                             elif self.output == "dict":
+                                data_type = "dict"
                                 received_stream_data = json.loads(received_stream_data_json)
                             else:
+                                data_type = "json"
                                 received_stream_data = received_stream_data_json
+
+                            if self.manager.stream_list[self.stream_id]['api'] is True:
+                                return_response_by_request_id = None
+                                with self.manager.return_response_lock:
+                                    for request_id in self.manager.return_response:
+                                        if request_id in received_stream_data_json:
+                                            return_response_by_request_id = request_id
+                                            break
+                                if return_response_by_request_id is not None:
+                                    self.manager.return_response[return_response_by_request_id]['response_value'] = received_stream_data
+                                    self.manager.return_response[return_response_by_request_id]['event_return_response'].set()
+
+                                    if data_type == "dict":
+                                        received_stream_data['return_response'] = True
+                                    elif data_type == "json":
+                                        received_stream_data = json.loads(received_stream_data_json)
+                                        received_stream_data['return_response'] = str(True)
+                                        received_stream_data = json.dumps(received_stream_data)
+
+                            if self.manager.stream_list[self.stream_id]['api'] is True:
+                                process_by_request_id = None
+                                with self.manager.process_response_to_request_lock:
+                                    for request_id in self.manager.process_response_to_request:
+                                        if request_id in received_stream_data_json:
+                                            process_by_request_id = request_id
+                                            break
+                                if process_by_request_id is not None:
+                                    self.manager.process_response_to_request[process_by_request_id]['callback_function'](received_stream_data)
+                                    if data_type == "dict":
+                                        received_stream_data['process_response_to_request'] = self.manager.process_response_to_request[process_by_request_id]['callback_function']
+                                    elif data_type == "json":
+                                        received_stream_data = json.loads(received_stream_data_json)
+                                        received_stream_data['process_response_to_request'] = str(self.manager.process_response_to_request[process_by_request_id]['callback_function'])
+                                        received_stream_data = json.dumps(received_stream_data)
+                                    with self.manager.process_response_to_request_lock:
+                                        del self.manager.process_response_to_request[process_by_request_id]
+
                             try:
                                 stream_buffer_name = self.manager.stream_list[self.stream_id]['stream_buffer_name']
                             except KeyError:

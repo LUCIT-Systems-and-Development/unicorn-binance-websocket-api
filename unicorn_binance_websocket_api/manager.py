@@ -339,12 +339,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.monitoring_total_received_bytes = 0
         self.monitoring_total_receives = 0
         self.output_default = output_default
+        self.process_response_to_request = {}
+        self.process_response_to_request_lock = threading.Lock()
         self.reconnects = 0
         self.reconnects_lock = threading.Lock()
         self.request_id = 0
         self.request_id_lock = threading.Lock()
         self.restart_requests = {}
         self.restart_timeout = restart_timeout
+        self.return_response = {}
+        self.return_response_lock = threading.Lock()
         self.ringbuffer_error = []
         self.ringbuffer_error_max_size = 500
         self.ringbuffer_result = []
@@ -751,7 +755,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 f"`highest_receiving_speed` "
                                 f"{str(self.get_human_bytesize(self.receiving_speed_peak['value'], '/s'))} at "
                                 f"{self.get_date_of_timestamp(self.receiving_speed_peak['timestamp'])}")
-            except TypeError as error_msg:
+            except TypeError:
                 pass
             # send keepalive for `!userData` streams every 30 minutes
             if active_stream_list:
@@ -819,7 +823,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     raise RuntimeError(error_msg)
             for stream_id in temp_restart_requests:
                 try:
-                    # find restarts that didnt work
+                    # find restarts that didn't work
                     if self.restart_requests[stream_id]['status'] == "restarted" and \
                             self.restart_requests[stream_id]['last_restart_time']+self.restart_timeout < time.time():
                         self.restart_requests[stream_id] = {'status': "new",
