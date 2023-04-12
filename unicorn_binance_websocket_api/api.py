@@ -273,6 +273,7 @@ class BinanceWebSocketApiApi(object):
         If you cancel an order that is a part of an OCO pair, the entire OCO is canceled.
 
         Official documentation:
+
         https://developers.binance.com/docs/binance-trading-api/websocket_api#cancel-order-trade
 
         :param cancel_restrictions: Supported values:
@@ -457,6 +458,7 @@ class BinanceWebSocketApiApi(object):
         Create a new order.
 
         Official documentation:
+
         https://developers.binance.com/docs/binance-trading-api/websocket_api#place-new-order-trade
 
         :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
@@ -712,6 +714,7 @@ class BinanceWebSocketApiApi(object):
         Validates new order parameters and verifies your signature but does not send the order into the matching engine.
 
         Official documentation:
+
         https://developers.binance.com/docs/binance-trading-api/websocket_api#test-new-order-trade
 
         :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
@@ -882,6 +885,7 @@ class BinanceWebSocketApiApi(object):
         Get the user account status.
 
         Official documentation:
+
         https://developers.binance.com/docs/binance-trading-api/websocket_api#account-information-user_data
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
@@ -1032,6 +1036,7 @@ class BinanceWebSocketApiApi(object):
         order to list all active symbols on the exchange, you need to explicitly request all permissions
 
         Official documentation:
+
         https://developers.binance.com/docs/binance-trading-api/websocket_api#exchange-information
 
         :param permissions: Filter symbols by permissions. `permissions` accepts either a list of permissions, or a
@@ -1223,6 +1228,7 @@ class BinanceWebSocketApiApi(object):
         which symbol the orders belong to.
 
         Official documentation:
+
         https://developers.binance.com/docs/binance-trading-api/websocket_api#current-open-orders-user_data
 
         If you need to continuously monitor order status updates, please consider using
@@ -1364,6 +1370,7 @@ class BinanceWebSocketApiApi(object):
         Check execution status of an order.
 
         Official documentation:
+
         https://developers.binance.com/docs/binance-trading-api/websocket_api#query-order-user_data
 
         If both `orderId` and `origClientOrderId` parameters are specified, only `orderId` is used and
@@ -1525,6 +1532,7 @@ class BinanceWebSocketApiApi(object):
           - <symbol>@depth
 
         Official documentation:
+
         https://developers.binance.com/docs/binance-trading-api/websocket_api#order-book
 
         :param limit: Default 100; max 5000.
@@ -1678,6 +1686,7 @@ class BinanceWebSocketApiApi(object):
         Test connectivity to the WebSocket API and get the current server time.
 
         Official documentation:
+
         https://developers.binance.com/docs/binance-trading-api/websocket_api#check-server-time
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
@@ -1765,6 +1774,7 @@ class BinanceWebSocketApiApi(object):
         Test connectivity to the WebSocket API.
 
         Official documentation:
+
         https://developers.binance.com/docs/binance-trading-api/websocket_api#test-connectivity
 
         :param process_response: Provide a function/method to process the received webstream data (callback)

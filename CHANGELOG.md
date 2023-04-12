@@ -9,7 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
-## 1.45.2.dev (development stage/unreleased/unstable)
+## 1.46.0.dev (development stage/unreleased/unstable)
+
+## 1.46.0
 ### Added
 - `get_the_one_active_websocket_api()` to manger.py
 - Logging to `get_stream_id_by_label()`
@@ -24,6 +26,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `ubwa.api` methods do not need a `stream_id`/`stream_label` if there is only one valid websocket api. (Self-discovery 
   of uniquely identifiable websocket api streams if no `stream_id` or `stream_label` was specified for identification.)
 - Renamed `ubwa.api.test_create_order()` to `ubwa.api.create_test_order()`
+- Entire WS API implementation reworked
 ### Fixed
 - Support for `new_client_order_id` in `create_test_order()`
 - Get listenKey from Binance API for futures and coin futures userData stream
