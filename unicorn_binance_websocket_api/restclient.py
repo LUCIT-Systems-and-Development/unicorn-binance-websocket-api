@@ -186,8 +186,10 @@ class BinanceWebSocketApiRestclient(object):
                     response = ubra.stream_get_listen_key(output="raw_data", throw_exception=False)
                 except AttributeError as error_msg:
                     logger.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
-                                    f"error_msg: {error_msg} - Can not acquire listen_key!")
+                                    f"error_msg: {error_msg} - Can not acquire listen_key for exchange='"
+                                    f"{self.manager.exchange}'!")
                     return False
+            # used weight:
             self.manager.binance_api_status = ubra.get_used_weight()
             weight = self.manager.binance_api_status['weight']
             self.manager.binance_api_status['weight'] = 0 if weight is None else weight
@@ -251,7 +253,10 @@ class BinanceWebSocketApiRestclient(object):
                     ubra.API_URL = self.manager.restful_base_uri
                 result = ubra.stream_close(listenKey=str(self.listen_key), throw_exception=False)
             self.listen_key = False
+            # used weight:
             self.manager.binance_api_status = ubra.get_used_weight()
+            weight = self.manager.binance_api_status['weight']
+            self.manager.binance_api_status['weight'] = 0 if weight is None else weight
             self.manager.binance_api_status['timestamp'] = time.time()
             return result
 
@@ -308,6 +313,9 @@ class BinanceWebSocketApiRestclient(object):
                     ubra.API_URL = self.manager.restful_base_uri
                 result = ubra.stream_keepalive(listenKey=str(self.listen_key), throw_exception=False)
             self.last_static_ping_listen_key = time.time()
+            # used weight:
             self.manager.binance_api_status = ubra.get_used_weight()
+            weight = self.manager.binance_api_status['weight']
+            self.manager.binance_api_status['weight'] = 0 if weight is None else weight
             self.manager.binance_api_status['timestamp'] = time.time()
             return result
