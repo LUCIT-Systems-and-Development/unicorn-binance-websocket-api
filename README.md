@@ -41,7 +41,7 @@ import unicorn_binance_websocket_api
 
 
 ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(exchange="binance.com")
-ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'])
+ubwa.create_stream(channels=['trade', 'kline_1m'], markets=['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
 
 #### And 4 more lines to print the receives:
@@ -62,7 +62,8 @@ def process_new_receives(stream_data):
 
 
 ubwa = BinanceWebSocketApiManager(exchange="binance.com")
-ubwa.create_stream(['trade', 'kline_1m'], ['btcusdt', 'bnbbtc', 'ethbtc'], process_stream_data=process_new_receives)
+ubwa.create_stream(channels=['trade', 'kline_1m'], markets=['btcusdt', 'bnbbtc', 'ethbtc'], 
+                   process_stream_data=process_new_receives)
 ```
 
 Basically that's it, but there are more options.
@@ -83,11 +84,11 @@ ubwa.create_stream(['trade'], ['btcusdt'], output="UnicornFy")
 markets = ['engbtc', 'zileth']
 channels = ['kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
 
-ubwa.subscribe_to_stream(stream_id, channels=channels, markets=markets)
+ubwa.subscribe_to_stream(stream_id=stream_id, channels=channels, markets=markets)
 
-ubwa.unsubscribe_from_stream(stream_id, markets=markets)
+ubwa.unsubscribe_from_stream(stream_id=stream_id, markets=markets)
 
-ubwa.unsubscribe_from_stream(stream_id, channels=channels)
+ubwa.unsubscribe_from_stream(stream_id=stream_id, channels=channels)
 ```
 
 ## Send Requests to Binance WebSocket API
@@ -265,9 +266,11 @@ for [ICINGA](https://exchange.icinga.com/LUCIT/check_lucit_collector)/Nagios
 - Customizable base URL.
 
 - *Socks5 Proxy* support:
+
   ```
   ubwa = BinanceWebSocketApiManager(exchange="binance.com", socks5_proxy_server="127.0.0.1:9050") 
   ```
+  
   Read the [docs](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager)
   or this [how to](https://medium.com/@oliverzehentleitner/how-to-connect-to-binance-com-websockets-using-python-via-a-socks5-proxy-3c5a3e063f12) 
   for more information or try 
