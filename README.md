@@ -449,7 +449,7 @@ endorsement or offer by us or any third party provider to buy or sell any securi
 this or any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such 
 jurisdiction.
 
-***If you intend to use real money, use it at your own risk.***
+### If you intend to use real money, use it at your own risk!
 
 Under no circumstances will we be responsible or liable for any claims, damages, losses, expenses, costs or liabilities 
 of any kind, including but not limited to direct or indirect damages for loss of profits.
