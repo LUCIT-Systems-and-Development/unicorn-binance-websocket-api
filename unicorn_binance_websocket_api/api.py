@@ -59,6 +59,7 @@ class BinanceWebSocketApiApi(object):
     stream restart, the payload is submitted as soon the stream is online again.
 
     Read these instructions to get started:
+
     https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404
 
     Binance.com SPOT websocket API documentation:
@@ -79,7 +80,8 @@ class BinanceWebSocketApiApi(object):
         Cancel all open orders on a symbol, including OCO orders.
 
         Official documentation:
-        https://developers.binance.com/docs/binance-trading-api/websocket_api#cancel-open-orders-trade
+
+            - https://developers.binance.com/docs/binance-trading-api/websocket_api#cancel-open-orders-trade
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
@@ -274,7 +276,7 @@ class BinanceWebSocketApiApi(object):
 
         Official documentation:
 
-        https://developers.binance.com/docs/binance-trading-api/websocket_api#cancel-order-trade
+            - https://developers.binance.com/docs/binance-trading-api/websocket_api#cancel-order-trade
 
         :param cancel_restrictions: Supported values:
 
@@ -459,7 +461,7 @@ class BinanceWebSocketApiApi(object):
 
         Official documentation:
 
-        https://developers.binance.com/docs/binance-trading-api/websocket_api#place-new-order-trade
+            - https://developers.binance.com/docs/binance-trading-api/websocket_api#place-new-order-trade
 
         :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
                             `icebergQty`. An order with an `icebergQty` must have `timeInForce` set to `GTC`.
@@ -715,7 +717,7 @@ class BinanceWebSocketApiApi(object):
 
         Official documentation:
 
-        https://developers.binance.com/docs/binance-trading-api/websocket_api#test-new-order-trade
+            - https://developers.binance.com/docs/binance-trading-api/websocket_api#test-new-order-trade
 
         :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
                             `icebergQty`. An order with an `icebergQty` must have `timeInForce` set to `GTC`.
@@ -816,7 +818,7 @@ class BinanceWebSocketApiApi(object):
 
             {
                 "id": "56374a46-3061-486b-a311-99ee972eb648",
-                "method": "order.place",
+                "method": "order.test",
                 "params": {
                     "symbol": "BTCUSDT",
                     "side": "SELL",
@@ -886,7 +888,7 @@ class BinanceWebSocketApiApi(object):
 
         Official documentation:
 
-        https://developers.binance.com/docs/binance-trading-api/websocket_api#account-information-user_data
+            - https://developers.binance.com/docs/binance-trading-api/websocket_api#account-information-user_data
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
@@ -1037,7 +1039,7 @@ class BinanceWebSocketApiApi(object):
 
         Official documentation:
 
-        https://developers.binance.com/docs/binance-trading-api/websocket_api#exchange-information
+            - https://developers.binance.com/docs/binance-trading-api/websocket_api#exchange-information
 
         :param permissions: Filter symbols by permissions. `permissions` accepts either a list of permissions, or a
                             single permission name: "SPOT".
@@ -1229,7 +1231,7 @@ class BinanceWebSocketApiApi(object):
 
         Official documentation:
 
-        https://developers.binance.com/docs/binance-trading-api/websocket_api#current-open-orders-user_data
+            - https://developers.binance.com/docs/binance-trading-api/websocket_api#current-open-orders-user_data
 
         If you need to continuously monitor order status updates, please consider using
         'WebSocket Streams <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>'_:
@@ -1371,7 +1373,7 @@ class BinanceWebSocketApiApi(object):
 
         Official documentation:
 
-        https://developers.binance.com/docs/binance-trading-api/websocket_api#query-order-user_data
+            - https://developers.binance.com/docs/binance-trading-api/websocket_api#query-order-user_data
 
         If both `orderId` and `origClientOrderId` parameters are specified, only `orderId` is used and
         `origClientOrderId` is ignored.
@@ -1533,7 +1535,7 @@ class BinanceWebSocketApiApi(object):
 
         Official documentation:
 
-        https://developers.binance.com/docs/binance-trading-api/websocket_api#order-book
+            - https://developers.binance.com/docs/binance-trading-api/websocket_api#order-book
 
         :param limit: Default 100; max 5000.
         :type limit: int
@@ -1687,7 +1689,7 @@ class BinanceWebSocketApiApi(object):
 
         Official documentation:
 
-        https://developers.binance.com/docs/binance-trading-api/websocket_api#check-server-time
+            - https://developers.binance.com/docs/binance-trading-api/websocket_api#check-server-time
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
@@ -1775,7 +1777,7 @@ class BinanceWebSocketApiApi(object):
 
         Official documentation:
 
-        https://developers.binance.com/docs/binance-trading-api/websocket_api#test-connectivity
+            - https://developers.binance.com/docs/binance-trading-api/websocket_api#test-connectivity
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
