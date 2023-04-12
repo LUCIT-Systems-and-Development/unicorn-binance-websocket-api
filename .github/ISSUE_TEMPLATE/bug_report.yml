@@ -126,7 +126,6 @@ body:
         - binance.org
         - binance.org-testnet 
         - binance.us
-        - jex.com
         - trbinance.com
     validations:
       required: true

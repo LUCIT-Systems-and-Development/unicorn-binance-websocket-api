@@ -77,12 +77,12 @@ logger = logging.getLogger("unicorn_binance_websocket_api")
 class BinanceWebSocketApiManager(threading.Thread):
     """
     An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
-    com-isolated_margin+testnet, com-futures+testnet, us, jex, dex/chain+testnet) in a easy, fast, flexible,
+    com-isolated_margin+testnet, com-futures+testnet, us, dex/chain+testnet) in a easy, fast, flexible,
     robust and fully-featured way.
 
     This library supports two different kind of websocket endpoints:
 
-        - CEX (Centralized exchange): binance.com, binance.vision, binance.je, binance.us, trbinance.com, jex.com
+        - CEX (Centralized exchange): binance.com, binance.vision, binance.je, binance.us, trbinance.com
 
         - DEX (Decentralized exchange): binance.org
 
@@ -106,12 +106,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         - https://www.trbinance.com/apidocs/#general-wss-information
 
-    Jex.com websocket API documentation:
-
-        - https://jexapi.github.io/api-doc/option.html#web-socket-streams
-
-        - https://jexapi.github.io/api-doc/option.html#user-data-streams
-
     Binance.org websocket API documentation:
 
         - https://docs.binance.org/api-reference/dex-api/ws-connection.html
@@ -128,7 +122,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
                      binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
                      binance.com-futures-testnet, binance.com-coin_futures, binance.us, trbinance.com,
-                     jex.com, binance.org, binance.org-testnet (default: binance.com)
+                     binance.org, binance.org-testnet (default: binance.com)
     :type exchange: str
     :param warn_on_update: set to `False` to disable the update warning of UBWA and also in UBRA used as submodule.
     :type warn_on_update: bool

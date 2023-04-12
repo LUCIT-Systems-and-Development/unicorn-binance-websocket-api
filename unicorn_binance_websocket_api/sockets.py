@@ -42,7 +42,6 @@ import logging
 import sys
 import uuid
 import websockets
-# import websockets.speedups
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -155,8 +154,6 @@ class BinanceWebSocketApiSocket(object):
                                         received_stream_data = self.unicorn_fy.binance_us_websocket(received_stream_data_json)
                                     elif self.exchange == "trbinance.com":
                                         received_stream_data = self.unicorn_fy.trbinance_com_websocket(received_stream_data_json)
-                                    elif self.exchange == "jex.com":
-                                        received_stream_data = self.unicorn_fy.jex_com_websocket(received_stream_data_json)
                                     elif self.exchange == "binance.org":
                                         received_stream_data = self.unicorn_fy.binance_org_websocket(received_stream_data_json)
                                     elif self.exchange == "binance.org-testnet":

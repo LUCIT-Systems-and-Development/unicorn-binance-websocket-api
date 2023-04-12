@@ -27,6 +27,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - Support for `new_client_order_id` in `create_test_order()`
 - Get listenKey from Binance API for futures and coin futures userData stream
+### Removed
+- jex.com support
 
 ## 1.45.2
 ### Fixed 

@@ -28,11 +28,12 @@
 [Contributing](#contributing) | [Leave a review](#you-want-to-say-thank-you) | [Disclaimer](#disclaimer) | [Commercial Support](#commercial-support)
 
 An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
-com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, jex, dex/chain+testnet) 
+com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, dex/chain+testnet) 
 in a easy, fast, flexible, robust and fully-featured way. 
 
 Part of ['UNICORN Binance Suite'](https://www.lucit.tech/unicorn-binance-suite.html).
 
+## Receive Data from Binance WebSockets
 ### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with a [`stream_buffer`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60) with just 3 lines of code:
 
 ```
@@ -89,6 +90,7 @@ ubwa.unsubscribe_from_stream(stream_id, markets=markets)
 ubwa.unsubscribe_from_stream(stream_id, channels=channels)
 ```
 
+## Send Requests to Binance WebSocket API
 ### [Place orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order), [cancel orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.cancel_order) or [send other requests](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.api) via WebSocket.
 ```
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
@@ -105,9 +107,9 @@ ubwa = BinanceWebSocketApiManager(exchange="binance.com")
 api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
                                 process_stream_data=process_api_responses)
                                 
-orig_client_order_id = ubwa.api.create_order(stream_id=api_stream, price=1.1, order_type="LIMIT",
+orig_client_order_id = ubwa.api.create_order(order_type="LIMIT", price=1.1, 
                                              quantity=15.0, side="SELL", symbol="BUSDUSDT")
-ubwa.api.cancel_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)                                             
+ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                             
 ```
 
 ### Get the right [logger](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Logging):
@@ -138,16 +140,14 @@ provides an API to the Binance Websocket API`s of
 [Binance COIN-M Futures](https://binance-docs.github.io/apidocs/delivery/en/#change-log),
 [Binance US](https://github.com/binance-us/binance-official-api-docs), 
 [Binance TR](https://www.trbinance.com/apidocs), 
-[Binance JEX](https://jexapi.github.io/api-doc/spot.html#web-socket-streams), 
 [Binance DEX](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and 
 [Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports sending requests 
 to the [Binance Websocket API](https://developers.binance.com/docs/binance-trading-api/websocket_api) and the streaming 
 of all public streams like trade, kline, ticker, depth, bookTicker, forceOrder, compositeIndex, blockheight etc. and 
 also all private userData streams which needs to be used with a valid api_key and api_secret from the Binance Exchange 
 [www.binance.com](https://www.binance.com/userCenter/createApi.html), 
-[testnet.binance.vision](https://testnet.binance.vision/), 
-[www.binance.us](https://www.binance.us/userCenter/createApi.html) or 
-[www.jex.com](https://www.jex.com/userCenter/createApi.html) - for the DEX you need a user address from 
+[testnet.binance.vision](https://testnet.binance.vision/) or 
+[www.binance.us](https://www.binance.us/userCenter/createApi.html) - for the DEX you need a user address from 
 [www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create) 
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
@@ -176,7 +176,6 @@ Use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-binance-rest-a
 | [Binance Coin-M Futures](https://www.binance.com)                  | `binance.com-coin_futures`            |
 | [Binance US](https://www.binance.us)                               | `binance.us`                          |
 | [Binance TR](https://www.trbinance.com)                            | `trbinance.com`                       |
-| [Binance JEX](https://www.jex.com)                                 | `jex.com`                             |
 | [Binance DEX](https://www.binance.org)                             | `binance.org`                         |
 | [Binance DEX Testnet](https://testnet.binance.org)                 | `binance.org-testnet`                 |
 
@@ -339,7 +338,6 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 - [example_binance_dex.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_dex.py)
 - [example_binance_futures.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_futures.py)
 - [example_binance_futures_1s.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_futures_1s.py)
-- [example_binance_jex.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_jex.py)
 - [example_binance_us.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_us.py)
 - [example_bookticker.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_bookticker.py)
 - [example_ctrl-c.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_ctrl-c.py)
@@ -405,7 +403,6 @@ To receive news (like inspection windows/maintenance) about the Binance API`s su
 
 - [https://t.me/binance_api_announcements](https://t.me/binance_api_announcements)
 - [https://t.me/binance_api_english](https://t.me/binance_api_english)
-- [https://t.me/Binance_JEX_EN](https://t.me/Binance_JEX_EN)
 - [https://t.me/Binance_USA](https://t.me/Binance_USA)
 - [https://t.me/TRBinanceTR](https://t.me/TRBinanceTR)
 - [https://t.me/BinanceDEXchange](https://t.me/BinanceDEXchange)

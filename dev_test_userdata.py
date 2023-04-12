@@ -44,8 +44,8 @@ import os
 socks5_proxy = None
 socks5_ssl_verification = True
 
-api_key = ""
-api_secret = ""
+api_key = "3K6xTNPDPB8OPcjvXLVfhDlBpGbIbwFzUsZhK4UgrGv5GwDn7tAa86Pnq3Rx9dTA"
+api_secret = "OX4i6jH6iKM6not1mxAwhVvatCJkVQGFqcGI3pSgpa3NPpM8OWhN78spM99sNND3"
 
 
 async def binance_stream(ubwa):

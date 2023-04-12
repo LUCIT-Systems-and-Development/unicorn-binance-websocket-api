@@ -496,11 +496,6 @@ class TestRestApi(unittest.TestCase):
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
-    def test_rest_jex_com_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="jex.com", high_performance=True)
-        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
-        binance_websocket_api_manager.stop_manager_with_all_streams()
-
     def test_invalid_exchange(self):
         from unicorn_binance_websocket_api.exceptions import UnknownExchange
         try:
