@@ -161,6 +161,24 @@ class BinanceWebSocketApiRestclient(object):
                         logger.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
                                         f"error_msg: {error_msg} - Can not acquire listen_key for isolated_margin!")
                         return False
+            elif self.manager.exchange == "binance.com-futures":
+                try:
+                    if self.manager.restful_base_uri is not None:
+                        ubra.FUTURES_URL = self.manager.restful_base_uri
+                    response = ubra.futures_stream_get_listen_key(output="raw_data", throw_exception=False)
+                except AttributeError as error_msg:
+                    logger.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
+                                    f"error_msg: {error_msg} - Can not acquire listen_key for futures!!")
+                    return False
+            elif self.manager.exchange == "binance.com-coin_futures":
+                try:
+                    if self.manager.restful_base_uri is not None:
+                        ubra.FUTURES_COIN_URL = self.manager.restful_base_uri
+                    response = ubra.futures_coin_stream_get_listen_key(output="raw_data", throw_exception=False)
+                except AttributeError as error_msg:
+                    logger.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
+                                    f"error_msg: {error_msg} - Can not acquire listen_key for coin futures!!")
+                    return False
             else:
                 try:
                     if self.manager.restful_base_uri is not None:
@@ -171,6 +189,8 @@ class BinanceWebSocketApiRestclient(object):
                                     f"error_msg: {error_msg} - Can not acquire listen_key!")
                     return False
             self.manager.binance_api_status = ubra.get_used_weight()
+            weight = self.manager.binance_api_status['weight']
+            self.manager.binance_api_status['weight'] = 0 if weight is None else weight
             self.manager.binance_api_status['timestamp'] = time.time()
             try:
                 self.listen_key = response['listenKey']
@@ -218,6 +238,14 @@ class BinanceWebSocketApiRestclient(object):
                 result = ubra.isolated_margin_stream_close(symbol=str(self.symbol), listenKey=str(self.listen_key),
                                                            throw_exception=False)
                 self.symbol = False
+            elif self.manager.exchange == "binance.com-futures":
+                if self.manager.restful_base_uri is not None:
+                    ubra.FUTURES_URL = self.manager.restful_base_uri
+                result = ubra.futures_stream_close(listenKey=str(self.listen_key), throw_exception=False)
+            elif self.manager.exchange == "binance.com-coin_futures":
+                if self.manager.restful_base_uri is not None:
+                    ubra.FUTURES_COIN_URL = self.manager.restful_base_uri
+                result = ubra.futures_coin_stream_close(listenKey=str(self.listen_key), throw_exception=False)
             else:
                 if self.manager.restful_base_uri is not None:
                     ubra.API_URL = self.manager.restful_base_uri
@@ -267,12 +295,19 @@ class BinanceWebSocketApiRestclient(object):
                     ubra.MARGIN_API_URL = self.manager.restful_base_uri
                 result = ubra.isolated_margin_stream_keepalive(symbol=str(self.symbol), listenKey=str(self.listen_key),
                                                                throw_exception=False)
-                self.last_static_ping_listen_key = time.time()
+            elif self.manager.exchange == "binance.com-futures":
+                if self.manager.restful_base_uri is not None:
+                    ubra.FUTURES_URL = self.manager.restful_base_uri
+                result = ubra.futures_stream_keepalive(listenKey=str(self.listen_key), throw_exception=False)
+            elif self.manager.exchange == "binance.com-coin_futures":
+                if self.manager.restful_base_uri is not None:
+                    ubra.FUTURES_URL = self.manager.restful_base_uri
+                result = ubra.futures_stream_keepalive(listenKey=str(self.listen_key), throw_exception=False)
             else:
                 if self.manager.restful_base_uri is not None:
                     ubra.API_URL = self.manager.restful_base_uri
                 result = ubra.stream_keepalive(listenKey=str(self.listen_key), throw_exception=False)
-                self.last_static_ping_listen_key = time.time()
+            self.last_static_ping_listen_key = time.time()
             self.manager.binance_api_status = ubra.get_used_weight()
             self.manager.binance_api_status['timestamp'] = time.time()
             return result

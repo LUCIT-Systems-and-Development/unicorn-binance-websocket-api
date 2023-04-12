@@ -70,7 +70,7 @@ if __name__ == "__main__":
                         format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                         style="{")
     try:
-        ubwa = BinanceWebSocketApiManager(exchange='binance.com',
+        ubwa = BinanceWebSocketApiManager(exchange='binance.com-futures',
                                           socks5_proxy_server=socks5_proxy,
                                           socks5_proxy_ssl_verification=socks5_ssl_verification)
     except Socks5ProxyConnectionError as error_msg:

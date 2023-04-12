@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Renamed `ubwa.api.test_create_order()` to `ubwa.api.create_test_order()`
 ### Fixed
 - Support for `new_client_order_id` in `create_test_order()`
+- Get listenKey from Binance API for futures and coin futures userData stream
 
 ## 1.45.2
 ### Fixed 
