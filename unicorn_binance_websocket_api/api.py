@@ -60,7 +60,7 @@ class BinanceWebSocketApiApi(object):
 
     Read these instructions to get started:
 
-    https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404
+        - https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404
 
     Binance.com SPOT websocket API documentation:
 

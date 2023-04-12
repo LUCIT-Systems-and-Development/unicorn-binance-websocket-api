@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>&lt;no title&gt; &#8212; unicorn-binance-websocket-api 1.46.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 1.46.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?2022.1" />
@@ -55,6 +55,67 @@
                     <a href="https://www.lucit.tech/trading-tools.html" style="font-size: 0.85em;font-weight: 900">Tailored Bots for Your Unique Trading Needs</a>
                 </div>
             </p>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">UNICORN Binance WebSocket API</a><ul>
+<li><a class="reference internal" href="#receive-data-from-binance-websockets">Receive Data from Binance WebSockets</a><ul>
+<li><a class="reference internal" href="#create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code">Create a multiplex websocket connection to Binance with a <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> with just 3 lines of code:</a><ul>
+<li><a class="reference internal" href="#and-4-more-lines-to-print-the-receives">And 4 more lines to print the receives:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do:</a></li>
+<li><a class="reference internal" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received raw webstream data into well-formed Python dictionaries with UnicornFy:</a></li>
+<li><a class="reference internal" href="#subscribe-unsubscribe-new-markets-and-channels">Subscribe / unsubscribe new markets and channels:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#send-requests-to-binance-websocket-api">Send Requests to Binance WebSocket API</a><ul>
+<li><a class="reference internal" href="#place-orders-cancel-orders-or-send-other-requests-via-websocket">Place orders, cancel orders or send other requests via WebSocket:</a></li>
+<li><a class="reference internal" href="#get-the-right-logger">Get the right logger:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#description">Description</a><ul>
+<li><a class="reference internal" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api">What are the benefits of the UNICORN Binance WebSocket API?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#live-demo">Live Demo</a></li>
+<li><a class="reference internal" href="#installation-and-upgrade">Installation and Upgrade</a><ul>
+<li><a class="reference internal" href="#a-wheel-and-a-source-file-of-the-latest-release-with-pip-from-pypi">A wheel and a source file of the latest release with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from PyPI</a></li>
+<li><a class="reference internal" href="#a-conda-package-of-the-latest-release-with-conda-from-anaconda-via-conda-forge">A conda package of the latest release with <code class="docutils literal notranslate"><span class="pre">conda</span></code> from Anaconda via CONDA-FORGE.</a></li>
+<li><a class="reference internal" href="#from-source-of-the-latest-release-with-pip-from-github">From source of the latest release with PIP from Github</a><ul>
+<li><a class="reference internal" href="#linux-macos">Linux, macOS, …</a></li>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#from-the-latest-source-dev-stage-with-pip-from-github">From the latest source (dev-stage) with PIP from Github</a></li>
+<li><a class="reference internal" href="#conda-environment-virtualenv-or-plain-python">Conda environment, Virtualenv or plain Python</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#change-log">Change Log</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#howto">Howto</a></li>
+<li><a class="reference internal" href="#project-homepage">Project Homepage</a></li>
+<li><a class="reference internal" href="#wiki">Wiki</a></li>
+<li><a class="reference internal" href="#social">Social</a></li>
+<li><a class="reference internal" href="#receive-notifications">Receive Notifications</a></li>
+<li><a class="reference internal" href="#how-to-report-bugs-or-suggest-improvements">How to report Bugs or suggest Improvements?</a></li>
+<li><a class="reference internal" href="#contributing">Contributing</a><ul>
+<li><a class="reference internal" href="#contributors">Contributors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#you-want-to-say-thank-you">You want to say Thank You?</a></li>
+<li><a class="reference internal" href="#disclaimer">Disclaimer</a><ul>
+<li><a class="reference internal" href="#if-you-intend-to-use-real-money-use-it-at-your-own-risk">If you intend to use real money, use it at your own risk!</a></li>
+<li><a class="reference internal" href="#socks5-proxy-geoblocking">SOCKS5 Proxy / Geoblocking</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#commercial-support">Commercial Support</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="index.html"
@@ -138,7 +199,7 @@
               
               <a href="index.html">Docs</a> &#187;
               
-        <li class="nav-item nav-item-this"><a href="">&lt;no title&gt;</a></li>
+        <li class="nav-item nav-item-this"><a href="">UNICORN Binance WebSocket API</a></li>
                 <li class="right">
                     
 
@@ -161,7 +222,525 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <p>../../README.md</p>
+  <p><a class="reference external" href="https://www.lucit.tech/get-support.html"><img alt="Get professional and fast support" src="https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-suite/master/images/support/LUCIT-get-professional-and-fast-support.png" /></a></p>
+<p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases"><img alt="GitHub Release" src="https://img.shields.io/github/release/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?label=github" /></a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases"><img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/total?color=blue" /></a>
+<a class="reference external" href="https://anaconda.org/conda-forge/unicorn-binance-websocket-api"><img alt="Conda Release" src="https://img.shields.io/conda/vn/conda-forge/unicorn-binance-websocket-api.svg?color=blue" /></a>
+<a class="reference external" href="https://anaconda.org/conda-forge/unicorn-binance-websocket-api"><img alt="Conda Downloads" src="https://img.shields.io/conda/dn/conda-forge/unicorn-binance-websocket-api.svg?color=blue" /></a>
+<a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/"><img alt="PyPi Release" src="https://img.shields.io/pypi/v/unicorn-binance-websocket-api?color=blue" /></a>
+<a class="reference external" href="https://pepy.tech/project/unicorn-binance-websocket-api"><img alt="PyPi Downloads" src="https://pepy.tech/badge/unicorn-binance-websocket-api" /></a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?color=blue" /></a>
+<a class="reference external" href="https://www.python.org/downloads/"><img alt="Supported Python Version" src="https://img.shields.io/pypi/pyversions/unicorn_binance_websocket_api.svg" /></a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues"><img alt="PyPI - Status" src="https://img.shields.io/pypi/status/unicorn_binance_websocket_api.svg" /></a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/codeql-analysis.yml"><img alt="CodeQL" src="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/codeql-analysis.yml/badge.svg" /></a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml"><img alt="Unit Tests" src="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml/badge.svg" /></a>
+<a class="reference external" href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=15698&amp;branchName=main"><img alt="Azure Pipelines" src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/unicorn-binance-websocket-api-feedstock?branchName=main" /></a>
+<a class="reference external" href="https://codecov.io/gh/LUCIT-Systems-and-Development/unicorn-binance-websocket-api"><img alt="codecov" src="https://codecov.io/gh/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/branch/master/graph/badge.svg?token=5I03AZ3F5S" /></a>
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/"><img alt="Read the Docs" src="https://img.shields.io/badge/read-%20docs-yellow" /></a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api"><img alt="Github" src="https://img.shields.io/badge/source-github-yellow" /></a>
+<a class="reference external" href="https://t.me/unicorndevs"><img alt="Telegram" src="https://img.shields.io/badge/chat-telegram-yellow" /></a>
+<a class="reference external" href="https://gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img alt="Gitter" src="https://badges.gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api.svg" /></a></p>
+<p><a class="reference external" href="https://www.lucit.tech/unicorn-binance-websocket-api.html"><img alt="LUCIT-UBWA-Banner" src="https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/master/images/logo/LUCIT-UBWA-Banner-Readme.png" /></a></p>
+<section id="unicorn-binance-websocket-api">
+<h1>UNICORN Binance WebSocket API<a class="headerlink" href="#unicorn-binance-websocket-api" title="Permalink to this heading">¶</a></h1>
+<p><a class="reference external" href="#description">Description</a> | <a class="reference external" href="#live-demo">Live Demo</a> | <a class="reference external" href="#installation-and-upgrade">Installation</a> | <a class="reference external" href="#howto">How To</a> |
+<a class="reference external" href="#documentation">Documentation</a> | <a class="reference external" href="#examples">Examples</a> | <a class="reference external" href="#change-log">Change Log</a> | <a class="reference external" href="#wiki">Wiki</a> | <a class="reference external" href="#social">Social</a> |
+<a class="reference external" href="#receive-notifications">Notifications</a> | <a class="reference external" href="#how-to-report-bugs-or-suggest-improvements">Bugs</a> |
+<a class="reference external" href="#contributing">Contributing</a> | <a class="reference external" href="#you-want-to-say-thank-you">Leave a review</a> | <a class="reference external" href="#disclaimer">Disclaimer</a> | <a class="reference external" href="#commercial-support">Commercial Support</a></p>
+<p>An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
+com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, dex/chain+testnet)
+in a easy, fast, flexible, robust and fully-featured way.</p>
+<p>Part of <a class="reference external" href="https://www.lucit.tech/unicorn-binance-suite.html">‘UNICORN Binance Suite’</a>.</p>
+<section id="receive-data-from-binance-websockets">
+<h2>Receive Data from Binance WebSockets<a class="headerlink" href="#receive-data-from-binance-websockets" title="Permalink to this heading">¶</a></h2>
+<section id="create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code">
+<h3><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">Create a multiplex websocket connection</a> to Binance with a <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60"><code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code></a> with just 3 lines of code:<a class="headerlink" href="#create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unicorn_binance_websocket_api</span>
+
+
+<span class="n">ubwa</span> <span class="o">=</span> <span class="n">unicorn_binance_websocket_api</span><span class="o">.</span><span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
+<span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> <span class="n">markets</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<section id="and-4-more-lines-to-print-the-receives">
+<h4>And 4 more lines to print the receives:<a class="headerlink" href="#and-4-more-lines-to-print-the-receives" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">oldest_data_from_stream_buffer</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">pop_stream_data_from_stream_buffer</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">oldest_data_from_stream_buffer</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">oldest_data_from_stream_buffer</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="or-with-a-callback-function-just-do">
+<h3>Or with a <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">callback function</a> just do:<a class="headerlink" href="#or-with-a-callback-function-just-do" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api.manager</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
+
+
+<span class="k">def</span> <span class="nf">process_new_receives</span><span class="p">(</span><span class="n">stream_data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_data</span><span class="p">))</span>
+
+
+<span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
+<span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> <span class="n">markets</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">],</span> 
+                   <span class="n">process_stream_data</span><span class="o">=</span><span class="n">process_new_receives</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Basically that’s it, but there are more options.</p>
+</section>
+<section id="convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">
+<h3>Convert received raw webstream data into well-formed Python dictionaries with <a class="reference external" href="https://www.lucit.tech/unicorn-fy.html">UnicornFy</a>:<a class="headerlink" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unicorn_fied_stream_data</span> <span class="o">=</span> <span class="n">UnicornFy</span><span class="o">.</span><span class="n">binance_com_websocket</span><span class="p">(</span><span class="n">oldest_data_from_stream_buffer</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">([</span><span class="s1">&#39;trade&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;UnicornFy&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="subscribe-unsubscribe-new-markets-and-channels">
+<h3><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream">Subscribe</a> / <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a> new markets and channels:<a class="headerlink" href="#subscribe-unsubscribe-new-markets-and-channels" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">markets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;engbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;zileth&#39;</span><span class="p">]</span>
+<span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;kline_5m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_15m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_30m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1h&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_12h&#39;</span><span class="p">,</span> <span class="s1">&#39;depth5&#39;</span><span class="p">]</span>
+
+<span class="n">ubwa</span><span class="o">.</span><span class="n">subscribe_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">,</span> <span class="n">markets</span><span class="o">=</span><span class="n">markets</span><span class="p">)</span>
+
+<span class="n">ubwa</span><span class="o">.</span><span class="n">unsubscribe_from_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">markets</span><span class="o">=</span><span class="n">markets</span><span class="p">)</span>
+
+<span class="n">ubwa</span><span class="o">.</span><span class="n">unsubscribe_from_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="send-requests-to-binance-websocket-api">
+<h2>Send Requests to Binance WebSocket API<a class="headerlink" href="#send-requests-to-binance-websocket-api" title="Permalink to this heading">¶</a></h2>
+<section id="place-orders-cancel-orders-or-send-other-requests-via-websocket">
+<h3><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order">Place orders</a>, <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.cancel_order">cancel orders</a> or <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.api">send other requests</a> via WebSocket:<a class="headerlink" href="#place-orders-cancel-orders-or-send-other-requests-via-websocket" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api.manager</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
+
+
+<span class="k">def</span> <span class="nf">process_api_responses</span><span class="p">(</span><span class="n">stream_data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_data</span><span class="p">))</span>
+
+
+<span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;YOUR BINANCE API KEY&quot;</span>
+<span class="n">api_secret</span> <span class="o">=</span> <span class="s2">&quot;YOUR BINANCE API SECRET&quot;</span>
+
+<span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
+<span class="n">api_stream</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span> <span class="n">api_secret</span><span class="o">=</span><span class="n">api_secret</span><span class="p">,</span>
+                                <span class="n">process_stream_data</span><span class="o">=</span><span class="n">process_api_responses</span><span class="p">)</span>
+                                
+<span class="n">orig_client_order_id</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">create_order</span><span class="p">(</span><span class="n">order_type</span><span class="o">=</span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> 
+                                             <span class="n">quantity</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;BUSDUSDT&quot;</span><span class="p">)</span>
+<span class="n">ubwa</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">cancel_order</span><span class="p">(</span><span class="n">orig_client_order_id</span><span class="o">=</span><span class="n">orig_client_order_id</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;BUSDUSDT&quot;</span><span class="p">)</span>                                             
+</pre></div>
+</div>
+<p><a class="reference external" href="https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404">Here</a> you can find a complete
+guide on
+<a class="reference external" href="https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404">how to process requests via the Binance WebSocket API</a>!</p>
+</section>
+<section id="get-the-right-logger">
+<h3>Get the right <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Logging">logger</a>:<a class="headerlink" href="#get-the-right-logger" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;unicorn_binance_websocket_api&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html">Discover even more possibilities</a>
+or <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_everything.py">use this script</a>
+to stream everything from “binance.com”.</p>
+<p>This should be known by everyone using this lib:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Best-practice-solutions-for-a-maximum-stable-connection%21">Best practice solutions for a maximum stable connection</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/254">Do you want consistent data from binance?</a></p></li>
+</ul>
+</section>
+</section>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">¶</a></h2>
+<p>The Python package <a class="reference external" href="https://www.lucit.tech/unicorn-binance-websocket-api.html">UNICORN Binance WebSocket API</a>
+provides an API to the Binance Websocket API`s of
+<a class="reference external" href="https://github.com/binance-exchange/binance-official-api-docs">Binance</a>
+(<a class="reference external" href="https://testnet.binance.vision/">+Testnet</a>),
+<a class="reference external" href="https://binance-docs.github.io/apidocs/spot/en/#user-data-streams">Binance Margin</a>
+(<a class="reference external" href="https://testnet.binance.vision/">+Testnet</a>),
+<a class="reference external" href="https://binance-docs.github.io/apidocs/spot/en/#listen-key-isolated-margin">Binance Isolated Margin</a>
+(<a class="reference external" href="https://testnet.binance.vision/">+Testnet</a>),
+<a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#websocket-market-streams">Binance Futures</a>
+(<a class="reference external" href="https://testnet.binancefuture.com">+Testnet</a>),
+<a class="reference external" href="https://binance-docs.github.io/apidocs/delivery/en/#change-log">Binance COIN-M Futures</a>,
+<a class="reference external" href="https://github.com/binance-us/binance-official-api-docs">Binance US</a>,
+<a class="reference external" href="https://www.trbinance.com/apidocs">Binance TR</a>,
+<a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">Binance DEX</a> and
+<a class="reference external" href="https://docs.binance.org/api-reference/dex-api/ws-connection.html">Binance DEX Testnet</a> and supports sending requests
+to the <a class="reference external" href="https://developers.binance.com/docs/binance-trading-api/websocket_api">Binance Websocket API</a> and the streaming
+of all public streams like trade, kline, ticker, depth, bookTicker, forceOrder, compositeIndex, blockheight etc. and
+also all private userData streams which needs to be used with a valid api_key and api_secret from the Binance Exchange
+<a class="reference external" href="https://www.binance.com/userCenter/createApi.html">www.binance.com</a>,
+<a class="reference external" href="https://testnet.binance.vision/">testnet.binance.vision</a> or
+<a class="reference external" href="https://www.binance.us/userCenter/createApi.html">www.binance.us</a> - for the DEX you need a user address from
+<a class="reference external" href="https://www.binance.org/en/create">www.binance.org</a> or <a class="reference external" href="https://testnet.binance.org/en/create">testnet.binance.org</a>
+and you can <a class="reference external" href="https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account">get funds</a> for the testnet.</p>
+<p>Use the <a class="reference external" href="https://www.lucit.tech/unicorn-binance-rest-api.html">UNICORN Binance REST API</a> in combination.</p>
+<section id="what-are-the-benefits-of-the-unicorn-binance-websocket-api">
+<h3>What are the benefits of the UNICORN Binance WebSocket API?<a class="headerlink" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!</p></li>
+<li><p>Support for <a class="reference external" href="https://developers.binance.com/docs/binance-trading-api/websocket_api">Binance Websocket API</a>, send
+requests like <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.create_order">create_order</a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.cancel_open_orders">cancel_open_orders</a>
+and <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.ws_api">many more</a> directly over websocket!</p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview">Supported exchanges</a>:</p></li>
+</ul>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Exchange</th>
+<th>Exchange string</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.binance.com">Binance</a></td>
+<td><code>binance.com</code></td>
+</tr>
+<tr>
+<td><a href="https://testnet.binance.vision/">Binance Testnet</a></td>
+<td><code>binance.com-testnet</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.com">Binance Margin</a></td>
+<td><code>binance.com-margin</code></td>
+</tr>
+<tr>
+<td><a href="https://testnet.binance.vision/">Binance Margin Testnet</a></td>
+<td><code>binance.com-margin-testnet</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.com">Binance Isolated Margin</a></td>
+<td><code>binance.com-isolated_margin</code></td>
+</tr>
+<tr>
+<td><a href="https://testnet.binance.vision/">Binance Isolated Margin Testnet</a></td>
+<td><code>binance.com-isolated_margin-testnet</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.com">Binance USD-M Futures</a></td>
+<td><code>binance.com-futures</code></td>
+</tr>
+<tr>
+<td><a href="https://testnet.binancefuture.com">Binance USD-M Futures Testnet</a></td>
+<td><code>binance.com-futures-testnet</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.com">Binance Coin-M Futures</a></td>
+<td><code>binance.com-coin_futures</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.us">Binance US</a></td>
+<td><code>binance.us</code></td>
+</tr>
+<tr>
+<td><a href="https://www.trbinance.com">Binance TR</a></td>
+<td><code>trbinance.com</code></td>
+</tr>
+<tr>
+<td><a href="https://www.binance.org">Binance DEX</a></td>
+<td><code>binance.org</code></td>
+</tr>
+<tr>
+<td><a href="https://testnet.binance.org">Binance DEX Testnet</a></td>
+<td><code>binance.org-testnet</code></td>
+</tr>
+</tbody>
+</table><ul>
+<li><p>Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so
+you dont need to deal with asyncio in your code!</p></li>
+<li><p>Supports
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream">subscribe</a>/<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a>
+on all exchanges! (Take a look to the max supported subscriptions per stream in the <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview">endpoint configuration overview</a>!)</p></li>
+<li><p><a class="reference external" href="https://www.lucit.tech/unicorn-binance-websocket-api.html">UNICORN Binance WebSocket API</a> respects Binance’s API guidelines and protects you from avoidable reconnects and bans.</p></li>
+<li><p>Support for multiple private <code class="docutils literal notranslate"><span class="pre">!userData</span></code> streams with different <code class="docutils literal notranslate"><span class="pre">api_key</span></code> and <code class="docutils literal notranslate"><span class="pre">api_secret</span></code>. (<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py">example_multiple_userdata_streams.py</a>)</p></li>
+<li><p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer">Pick up the received data from the <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code></a> -
+if you can not store your data in cause of a temporary technical issue, you can
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer">kick back the data to the <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code></a>
+which stores the receives in the RAM till you are able to process the data in the normal way again.
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60">Learn more!</a></p></li>
+<li><p>Use separate <code class="docutils literal notranslate"><span class="pre">stream_buffers</span></code> for
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py">specific streams</a>
+or
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py">users</a>!</p></li>
+<li><p>Watch the <code class="docutils literal notranslate"><span class="pre">stream_signal_buffer</span></code> to receive <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code>, <code class="docutils literal notranslate"><span class="pre">DISCONNECT</span></code> and <code class="docutils literal notranslate"><span class="pre">FIRST_RECEIVED_DATA</span></code> signals about the
+streams! <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60">Learn more!</a></p></li>
+<li><p>Get the received data unchanged as received, as Python dictionary or converted with
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-fy">UnicornFy</a> into well-formed Python dictionaries. Use the <code class="docutils literal notranslate"><span class="pre">output</span></code>
+parameter of
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=create_stream#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.create_stream"><code class="docutils literal notranslate"><span class="pre">create_stream()</span></code></a>
+to control the output format.</p></li>
+<li><p>Helpful management features like
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_binance_api_status"><code class="docutils literal notranslate"><span class="pre">get_binance_api_status()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_current_receiving_speed"><code class="docutils literal notranslate"><span class="pre">get_current_receiving_speed()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_errors_from_endpoints"><code class="docutils literal notranslate"><span class="pre">get_errors_from_endpoints()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_limit_of_subscriptions_per_stream"><code class="docutils literal notranslate"><span class="pre">get_limit_of_subscriptions_per_stream()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_request_id"><code class="docutils literal notranslate"><span class="pre">get_request_id()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_result_by_request_id"><code class="docutils literal notranslate"><span class="pre">get_result_by_request_id()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_results_from_endpoints"><code class="docutils literal notranslate"><span class="pre">get_results_from_endpoints()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_buffer_length"><code class="docutils literal notranslate"><span class="pre">get_stream_buffer_length()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_info"><code class="docutils literal notranslate"><span class="pre">get_stream_info()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_list"><code class="docutils literal notranslate"><span class="pre">get_stream_list()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_id_by_label"><code class="docutils literal notranslate"><span class="pre">get_stream_id_by_label()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_statistic"><code class="docutils literal notranslate"><span class="pre">get_stream_statistic()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_subscriptions"><code class="docutils literal notranslate"><span class="pre">get_stream_subscriptions()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_version"><code class="docutils literal notranslate"><span class="pre">get_version()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.is_update_availabe"><code class="docutils literal notranslate"><span class="pre">is_update_available()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer"><code class="docutils literal notranslate"><span class="pre">pop_stream_data_from_stream_buffer()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.print_summary"><code class="docutils literal notranslate"><span class="pre">print_summary()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.replace_stream"><code class="docutils literal notranslate"><span class="pre">replace_stream()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.set_stream_label"><code class="docutils literal notranslate"><span class="pre">set_stream_label()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.set_ringbuffer_error_max_size"><code class="docutils literal notranslate"><span class="pre">set_ringbuffer_error_max_size()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream"><code class="docutils literal notranslate"><span class="pre">subscribe_to_stream()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_stream"><code class="docutils literal notranslate"><span class="pre">stop_stream()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_manager_with_all_streams"><code class="docutils literal notranslate"><span class="pre">stop_manager_with_all_streams()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream"><code class="docutils literal notranslate"><span class="pre">unsubscribe_from_stream()</span></code></a>,
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.wait_till_stream_has_started"><code class="docutils literal notranslate"><span class="pre">wait_till_stream_has_started()</span></code></a>
+and many more! Explore them <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/modules.html">here</a>.</p></li>
+<li><p>Monitor the status of the created <code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager()</span></code> instance within your code with
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=plain#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_monitoring_status_plain"><code class="docutils literal notranslate"><span class="pre">get_monitoring_status_plain()</span></code></a>
+and specific streams with
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_info"><code class="docutils literal notranslate"><span class="pre">get_stream_info()</span></code></a>.</p></li>
+<li><p>Nice to use with <a class="reference external" href="https://ipython.org/">iPython</a>:
+“IPython (Interactive Python) is a command shell for interactive computing that offers introspection,
+rich media, shell syntax, tab completion, and history.”
+(<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py">example_interactive_mode.py</a>)
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py"><img alt="iPython" src="https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ipython.png" /></a></p></li>
+<li><p>Also nice to use with the <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/tree/master/ipynb">Jupyter Notebook</a> :)</p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service">Monitoring API service</a>
+and a <a class="reference external" href="https://exchange.icinga.com/LUCIT/check_lucit_collector">check_command</a>
+for <a class="reference external" href="https://exchange.icinga.com/LUCIT/check_lucit_collector">ICINGA</a>/Nagios
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service"><img alt="icinga2-demo" src="https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/icinga.png" /></a></p></li>
+<li><p>Integration of <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml">test cases</a> and <a class="reference external" href="#examples">examples</a>.</p></li>
+<li><p>Customizable base URL.</p></li>
+<li><p><em>Socks5 Proxy</em> support:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">,</span> <span class="n">socks5_proxy_server</span><span class="o">=</span><span class="s2">&quot;127.0.0.1:9050&quot;</span><span class="p">)</span> 
+</pre></div>
+</div>
+<p>Read the <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager">docs</a>
+or this <a class="reference external" href="https://medium.com/&#64;oliverzehentleitner/how-to-connect-to-binance-com-websockets-using-python-via-a-socks5-proxy-3c5a3e063f12">how to</a>
+for more information or try
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_socks5_proxy.py">example_socks5_proxy.py</a>.</p>
+</li>
+<li><p>Excessively tested on Linux, Mac and Windows</p></li>
+</ul>
+<p>If you like the project, please <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/stargazers"><img alt="star" src="https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/star.png" /></a> it on
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">GitHub</a>!</p>
+</section>
+</section>
+<section id="live-demo">
+<h2>Live Demo<a class="headerlink" href="#live-demo" title="Permalink to this heading">¶</a></h2>
+<p>This live demo script is streaming from <a class="reference external" href="https://www.binance.com">binance.com</a> and runs on a <em>cx31</em> virtual
+machine of <a class="reference external" href="https://www.hetzner.com">HETZNER CLOUD</a> - <a class="reference external" href="https://hetzner.cloud/?ref=rKgYRMq0l8fd">get 20 EUR starting credit!</a></p>
+<p><a class="reference external" href="https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html">Open live monitor!</a></p>
+<p><a class="reference external" href="https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html"><img alt="live-demo" src="https://ubwa-demo.lucit.tech/ps.png" /></a></p>
+<p>(Refresh update once a minute!)</p>
+</section>
+<section id="installation-and-upgrade">
+<h2>Installation and Upgrade<a class="headerlink" href="#installation-and-upgrade" title="Permalink to this heading">¶</a></h2>
+<p>The module requires Python 3.7 or above, as it depends on Pythons latest asyncio features for asynchronous/concurrent
+processing.</p>
+<p>The current dependencies are listed
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/requirements.txt">here</a>.</p>
+<p>If you run into errors during the installation take a look <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Installation">here</a>.</p>
+<section id="a-wheel-and-a-source-file-of-the-latest-release-with-pip-from-pypi">
+<h3>A wheel and a source file of the latest release with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from <a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/">PyPI</a><a class="headerlink" href="#a-wheel-and-a-source-file-of-the-latest-release-with-pip-from-pypi" title="Permalink to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">unicorn-binance-websocket-api</span> <span class="pre">--upgrade</span></code></p>
+</section>
+<section id="a-conda-package-of-the-latest-release-with-conda-from-anaconda-via-conda-forge">
+<h3>A conda package of the latest release with <code class="docutils literal notranslate"><span class="pre">conda</span></code> from <a class="reference external" href="https://anaconda.org/conda-forge/unicorn-binance-websocket-api">Anaconda</a> via <a class="reference external" href="https://conda-forge.org">CONDA-FORGE</a>.<a class="headerlink" href="#a-conda-package-of-the-latest-release-with-conda-from-anaconda-via-conda-forge" title="Permalink to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">unicorn-binance-websocket-api</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">update</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">unicorn-binance-websocket-api</span></code></p>
+</section>
+<section id="from-source-of-the-latest-release-with-pip-from-github">
+<h3>From source of the latest release with PIP from <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">Github</a><a class="headerlink" href="#from-source-of-the-latest-release-with-pip-from-github" title="Permalink to this heading">¶</a></h3>
+<section id="linux-macos">
+<h4>Linux, macOS, …<a class="headerlink" href="#linux-macos" title="Permalink to this heading">¶</a></h4>
+<p>Run in bash:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/$(curl</span> <span class="pre">-s</span> <span class="pre">https://api.github.com/repos/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">-oP</span> <span class="pre">'&quot;tag_name&quot;:</span> <span class="pre">&quot;\K(.*)(?=&quot;)').tar.gz</span> <span class="pre">--upgrade</span></code></p>
+</section>
+<section id="windows">
+<h4>Windows<a class="headerlink" href="#windows" title="Permalink to this heading">¶</a></h4>
+<p>Use the below command with the version (such as 1.46.0) you determined
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest">here</a>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/1.46.0.tar.gz</span> <span class="pre">--upgrade</span></code></p>
+</section>
+</section>
+<section id="from-the-latest-source-dev-stage-with-pip-from-github">
+<h3>From the latest source (dev-stage) with PIP from <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">Github</a><a class="headerlink" href="#from-the-latest-source-dev-stage-with-pip-from-github" title="Permalink to this heading">¶</a></h3>
+<p>This is not a release version and can not be considered to be stable!</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/tarball/master</span> <span class="pre">--upgrade</span></code></p>
+</section>
+<section id="conda-environment-virtualenv-or-plain-python">
+<h3><a class="reference external" href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Conda environment</a>, <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">Virtualenv</a> or plain <a class="reference external" href="https://www.python.org">Python</a><a class="headerlink" href="#conda-environment-virtualenv-or-plain-python" title="Permalink to this heading">¶</a></h3>
+<p>Download the <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest">latest release</a>
+or the <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/master.zip">current master branch</a>
+and use:</p>
+<ul class="simple">
+<li><p>./environment.yml</p></li>
+<li><p>./requirements.txt</p></li>
+<li><p>./setup.py</p></li>
+</ul>
+</section>
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/CHANGELOG.html">https://unicorn-binance-websocket-api.docs.lucit.tech/CHANGELOG.html</a></p>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech">General</a></p></li>
+<li><p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/modules.html">Modules</a></p></li>
+</ul>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_coin_futures.py">example_binance_coin_futures.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_dex.py">example_binance_dex.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_futures.py">example_binance_futures.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_futures_1s.py">example_binance_futures_1s.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_us.py">example_binance_us.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_bookticker.py">example_bookticker.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_ctrl-c.py">example_ctrl-c.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_demo.py">example_demo.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_easy_migration_from_python-binance.py">example_easy_migration_from_python-binance.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py">example_interactive_mode.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_kline_1m_with_unicorn_fy.py">example_kline_1m_with_unicorn_fy.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_logging.py">example_logging.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_monitoring.py">example_monitoring.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multi_stream.py">example_multi_stream.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py">example_multiple_userdata_streams.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_pandas_ta-lib.py">example_pandas_ta-lib.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_plotting_last_price.py">example_plotting_last_price.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_process_streams.py">example_process_streams.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_socks5_proxy.py">example_socks5_proxy.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py">example_stream_buffer.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py">example_stream_buffer_extended.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_buffer_fifo-lifo.py">example_stream_buffer_fifo-lifo.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_everything.py">example_stream_everything.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_management.py">example_stream_management.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_management_extended.py">example_stream_management_extended.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_signals.py">example_stream_signals.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_signals_callback.py">example_stream_signals_callback.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_subscribe.py">example_subscribe.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_ticker_and_miniticker.py">example_ticker_and_miniticker.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_trade_stream.py">example_trade_stream.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_trbinance_com.py">example_trbinance.com.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_userdata_stream.py">example_userdata_stream.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_userdata_stream_new_style.py">example_userdata_stream_new_style.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py">example_version_of_this_package.py</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_websocket_api.py">example_websocket_api.py</a></p></li>
+</ul>
+</section>
+<section id="howto">
+<h2>Howto<a class="headerlink" href="#howto" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404">Create and Cancel Orders via WebSocket on Binance</a></p></li>
+<li><p><a class="reference external" href="https://medium.lucit.tech/how-to-download-data-from-binance-using-python-8f1b6e8f19f3">How to Download Klines from Binance using Python?</a></p></li>
+<li><p><a class="reference external" href="https://medium.lucit.tech/how-to-connect-to-binance-com-websockets-using-python-via-a-socks5-proxy-3c5a3e063f12">How to Connect to binance.com Websockets using Python via a Socks5 Proxy</a></p></li>
+</ul>
+</section>
+<section id="project-homepage">
+<h2>Project Homepage<a class="headerlink" href="#project-homepage" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api</a></p>
+</section>
+<section id="wiki">
+<h2>Wiki<a class="headerlink" href="#wiki" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki">https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki</a></p>
+</section>
+<section id="social">
+<h2>Social<a class="headerlink" href="#social" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions">Discussions</a></p></li>
+<li><p><a class="reference external" href="https://t.me/unicorndevs">https://t.me/unicorndevs</a></p></li>
+<li><p><a class="reference external" href="https://dev.binance.vision">https://dev.binance.vision</a></p></li>
+<li><p><a class="reference external" href="https://community.binance.org">https://community.binance.org</a></p></li>
+</ul>
+</section>
+<section id="receive-notifications">
+<h2>Receive Notifications<a class="headerlink" href="#receive-notifications" title="Permalink to this heading">¶</a></h2>
+<p>To receive notifications on available updates you can
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/watchers"><img alt="watch" src="https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/watch.png" /></a>
+the repository on <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">GitHub</a>, write your
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py">own script</a>
+with using
+<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.is_update_availabe"><code class="docutils literal notranslate"><span class="pre">is_update_available()</span></code></a>
+or you use the
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service">monitoring API service</a>.</p>
+<p>Follow us on <a class="reference external" href="https://twitter.com/LUCIT_SysDev">Twitter</a> or on <a class="reference external" href="https://www.facebook.com/lucit.systems.and.development">Facebook</a> for general news about the <a class="reference external" href="https://www.lucit.tech/unicorn-binance-suite.html">unicorn-binance-suite</a>!</p>
+<p>To receive news (like inspection windows/maintenance) about the Binance API`s subscribe to their telegram groups:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://t.me/binance_api_announcements">https://t.me/binance_api_announcements</a></p></li>
+<li><p><a class="reference external" href="https://t.me/binance_api_english">https://t.me/binance_api_english</a></p></li>
+<li><p><a class="reference external" href="https://t.me/Binance_USA">https://t.me/Binance_USA</a></p></li>
+<li><p><a class="reference external" href="https://t.me/TRBinanceTR">https://t.me/TRBinanceTR</a></p></li>
+<li><p><a class="reference external" href="https://t.me/BinanceDEXchange">https://t.me/BinanceDEXchange</a></p></li>
+<li><p><a class="reference external" href="https://t.me/BinanceExchange">https://t.me/BinanceExchange</a></p></li>
+</ul>
+</section>
+<section id="how-to-report-bugs-or-suggest-improvements">
+<h2>How to report Bugs or suggest Improvements?<a class="headerlink" href="#how-to-report-bugs-or-suggest-improvements" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement">List of planned features</a> -
+click <img alt="thumbs-up" src="https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/thumbup.png" /> if you need one of them or suggest a new feature!</p>
+<p>Before you report a bug, <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api#installation-and-upgrade">try the latest release</a>. If the issue still exists, provide the error trace, OS
+and Python version and explain how to reproduce the error. A demo script is appreciated.</p>
+<p>If you don’t find an issue related to your topic, please open a new <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues">issue</a>!</p>
+<p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/security/policy">Report a security bug!</a></p>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://www.lucit.tech/unicorn-binance-websocket-api.html">UNICORN Binance WebSocket API</a> is an open
+source project which welcomes contributions which can be anything from simple documentation fixes and reporting dead links to new features. To
+contribute follow
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/CONTRIBUTING.md">this guide</a>.</p>
+<section id="contributors">
+<h3>Contributors<a class="headerlink" href="#contributors" title="Permalink to this heading">¶</a></h3>
+<p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/graphs/contributors"><img alt="Contributors" src="https://contributors-img.web.app/image?repo=oliver-zehentleitner/unicorn-binance-websocket-api" /></a></p>
+<p>We <img alt="love" src="https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/heart.png" /> open source!</p>
+</section>
+</section>
+<section id="you-want-to-say-thank-you">
+<h2>You want to say Thank You?<a class="headerlink" href="#you-want-to-say-thank-you" title="Permalink to this heading">¶</a></h2>
+<p>We hope you are enjoying using our libraries and that they are proving to be useful to you. If you have a moment, we
+would greatly appreciate it if you could leave us a <a class="reference external" href="https://g.page/r/CbfHlcs8BfG8EAg/review">review on Google</a>.
+Thank you for your support!</p>
+</section>
+<section id="disclaimer">
+<h2>Disclaimer<a class="headerlink" href="#disclaimer" title="Permalink to this heading">¶</a></h2>
+<p>This project is for informational purposes only. You should not construe this information or any other material as
+legal, tax, investment, financial or other advice. Nothing contained herein constitutes a solicitation, recommendation,
+endorsement or offer by us or any third party provider to buy or sell any securities or other financial instruments in
+this or any other jurisdiction in which such solicitation or offer would be unlawful under the securities laws of such
+jurisdiction.</p>
+<section id="if-you-intend-to-use-real-money-use-it-at-your-own-risk">
+<h3>If you intend to use real money, use it at your own risk!<a class="headerlink" href="#if-you-intend-to-use-real-money-use-it-at-your-own-risk" title="Permalink to this heading">¶</a></h3>
+<p>Under no circumstances will we be responsible or liable for any claims, damages, losses, expenses, costs or liabilities
+of any kind, including but not limited to direct or indirect damages for loss of profits.</p>
+</section>
+<section id="socks5-proxy-geoblocking">
+<h3>SOCKS5 Proxy / Geoblocking<a class="headerlink" href="#socks5-proxy-geoblocking" title="Permalink to this heading">¶</a></h3>
+<p>We would like to explicitly point out that in our opinion US citizens are exclusively authorized to trade on Binance.US
+and that this restriction must not be circumvented!</p>
+<p>The purpose of supporting a SOCKS5 proxy in the UNICORN Binance Suite and its modules is to allow non-US citizens to use
+US services. For example, Github actions with UBS will not work without a SOCKS5 proxy, as they will inevitably run on
+servers in the US and be blocked by Binance.com. Moreover, it also seems justified that traders, data scientists and
+companies from the US analyze binance.com market data - as long as they do not trade there.</p>
+</section>
+</section>
+<section id="commercial-support">
+<h2>Commercial Support<a class="headerlink" href="#commercial-support" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://www.lucit.tech/get-support.html"><img alt="Get professional and fast support" src="https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-suite/master/images/support/LUCIT-get-professional-and-fast-support.png" /></a></p>
+<p><em><strong>Do you need a developer, operator or consultant?</strong></em> <a class="reference external" href="https://www.lucit.tech/contact.html">Contact us</a> for a
+non-binding initial consultation!</p>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -176,6 +755,67 @@
                     <a href="https://www.lucit.tech/trading-tools.html" style="font-size: 0.85em;font-weight: 900">Tailored Bots for Your Unique Trading Needs</a>
                 </div>
             </p>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">UNICORN Binance WebSocket API</a><ul>
+<li><a class="reference internal" href="#receive-data-from-binance-websockets">Receive Data from Binance WebSockets</a><ul>
+<li><a class="reference internal" href="#create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code">Create a multiplex websocket connection to Binance with a <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> with just 3 lines of code:</a><ul>
+<li><a class="reference internal" href="#and-4-more-lines-to-print-the-receives">And 4 more lines to print the receives:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do:</a></li>
+<li><a class="reference internal" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received raw webstream data into well-formed Python dictionaries with UnicornFy:</a></li>
+<li><a class="reference internal" href="#subscribe-unsubscribe-new-markets-and-channels">Subscribe / unsubscribe new markets and channels:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#send-requests-to-binance-websocket-api">Send Requests to Binance WebSocket API</a><ul>
+<li><a class="reference internal" href="#place-orders-cancel-orders-or-send-other-requests-via-websocket">Place orders, cancel orders or send other requests via WebSocket:</a></li>
+<li><a class="reference internal" href="#get-the-right-logger">Get the right logger:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#description">Description</a><ul>
+<li><a class="reference internal" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api">What are the benefits of the UNICORN Binance WebSocket API?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#live-demo">Live Demo</a></li>
+<li><a class="reference internal" href="#installation-and-upgrade">Installation and Upgrade</a><ul>
+<li><a class="reference internal" href="#a-wheel-and-a-source-file-of-the-latest-release-with-pip-from-pypi">A wheel and a source file of the latest release with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from PyPI</a></li>
+<li><a class="reference internal" href="#a-conda-package-of-the-latest-release-with-conda-from-anaconda-via-conda-forge">A conda package of the latest release with <code class="docutils literal notranslate"><span class="pre">conda</span></code> from Anaconda via CONDA-FORGE.</a></li>
+<li><a class="reference internal" href="#from-source-of-the-latest-release-with-pip-from-github">From source of the latest release with PIP from Github</a><ul>
+<li><a class="reference internal" href="#linux-macos">Linux, macOS, …</a></li>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#from-the-latest-source-dev-stage-with-pip-from-github">From the latest source (dev-stage) with PIP from Github</a></li>
+<li><a class="reference internal" href="#conda-environment-virtualenv-or-plain-python">Conda environment, Virtualenv or plain Python</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#change-log">Change Log</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#howto">Howto</a></li>
+<li><a class="reference internal" href="#project-homepage">Project Homepage</a></li>
+<li><a class="reference internal" href="#wiki">Wiki</a></li>
+<li><a class="reference internal" href="#social">Social</a></li>
+<li><a class="reference internal" href="#receive-notifications">Receive Notifications</a></li>
+<li><a class="reference internal" href="#how-to-report-bugs-or-suggest-improvements">How to report Bugs or suggest Improvements?</a></li>
+<li><a class="reference internal" href="#contributing">Contributing</a><ul>
+<li><a class="reference internal" href="#contributors">Contributors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#you-want-to-say-thank-you">You want to say Thank You?</a></li>
+<li><a class="reference internal" href="#disclaimer">Disclaimer</a><ul>
+<li><a class="reference internal" href="#if-you-intend-to-use-real-money-use-it-at-your-own-risk">If you intend to use real money, use it at your own risk!</a></li>
+<li><a class="reference internal" href="#socks5-proxy-geoblocking">SOCKS5 Proxy / Geoblocking</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#commercial-support">Commercial Support</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="index.html"
@@ -259,7 +899,7 @@
               
               <a href="index.html">Docs</a> &#187;
               
-        <li class="nav-item nav-item-this"><a href="">&lt;no title&gt;</a></li>
+        <li class="nav-item nav-item-this"><a href="">UNICORN Binance WebSocket API</a></li>
                 <li class="right">
                     
 
@@ -279,7 +919,7 @@
     <div class="footer">
     &copy; <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
     See <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">License</a> for more information.<br />
-    Last updated on Apr 12 2023 at 22:11 (CET).
+    Last updated on Apr 12 2023 at 23:23 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
