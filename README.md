@@ -91,7 +91,7 @@ ubwa.unsubscribe_from_stream(stream_id, channels=channels)
 ```
 
 ## Send Requests to Binance WebSocket API
-### [Place orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order), [cancel orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.cancel_order) or [send other requests](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.api) via WebSocket.
+### [Place orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order), [cancel orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.cancel_order) or [send other requests](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.api) via WebSocket:
 ```
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 
@@ -111,6 +111,10 @@ orig_client_order_id = ubwa.api.create_order(order_type="LIMIT", price=1.1,
                                              quantity=15.0, side="SELL", symbol="BUSDUSDT")
 ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                             
 ```
+
+[Here](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404) you can find a complete 
+guide on 
+[how to process requests via the Binance WebSocket API](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404)!
 
 ### Get the right [logger](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Logging):
 ```
