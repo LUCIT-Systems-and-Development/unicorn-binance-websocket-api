@@ -16,8 +16,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `get_the_one_active_websocket_api()` to manger.py
 - Logging to `get_stream_id_by_label()`
 - `process_response` parameter to `ubwa.api` methods to provide specific callback functions for specific 
-  responses - records that are processed that way still get added to the stream_buffer/process_stream_data callback, 
-  but are tagged with `process_response=<function reference>
+  responses
 - `return_response` parameter to `ubwa.api` methods to let the used method wait till the requested data is received via
   websocket, and then it returns it.
 ### Changed
