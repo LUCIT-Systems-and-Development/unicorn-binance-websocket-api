@@ -33,10 +33,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from typing import Union
+from typing import Optional, Union
+try:
+    # python <=3.7 support
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 import copy
 import logging
 import threading
+
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -72,6 +78,9 @@ class BinanceWebSocketApiApi(object):
         """
         Cancel all open orders on a symbol, including OCO orders.
 
+        Official documentation:
+        https://developers.binance.com/docs/binance-trading-api/websocket_api#cancel-open-orders-trade
+
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
         :type process_response: function
@@ -79,6 +88,7 @@ class BinanceWebSocketApiApi(object):
         :type symbol: int
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
@@ -218,11 +228,11 @@ class BinanceWebSocketApiApi(object):
                 return False
 
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
-                  "symbol": str(symbol).upper(),
+                  "symbol": symbol.upper(),
                   "timestamp": self.manager.get_timestamp()}
 
         if recv_window is not None:
-            params['recvWindow'] = recv_window
+            params['recvWindow'] = str(recv_window)
 
         method = "openOrders.cancelAll"
         api_secret = self.manager.stream_list[stream_id]['api_secret']
@@ -252,21 +262,48 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def cancel_order(self, order_id: int = None, orig_client_order_id: str = None, process_response=None,
-                     recv_window: int = None, request_id: str = None, return_response: bool = False,
-                     stream_id=None, symbol: str = None, stream_label: str = None) -> bool:
+    def cancel_order(self, cancel_restrictions: Optional[Literal['ONLY_NEW', 'ONLY_PARTIALLY_FILLED']] = None,
+                     new_client_order_id: str = None, order_id: int = None, orig_client_order_id: str = None,
+                     process_response=None, recv_window: int = None, request_id: str = None,
+                     return_response: bool = False, stream_id=None, symbol: str = None,
+                     stream_label: str = None) -> bool:
         """
         Cancel an active order.
 
-        :param order_id: Cancel by `order_id`
+        If you cancel an order that is a part of an OCO pair, the entire OCO is canceled.
+
+        Official documentation:
+        https://developers.binance.com/docs/binance-trading-api/websocket_api#cancel-order-trade
+
+        :param cancel_restrictions: Supported values:
+
+                                      - ONLY_NEW: Cancel will succeed if the order status is `NEW`.
+
+                                      - ONLY_PARTIALLY_FILLED: Cancel will succeed if order status is
+                                        `PARTIALLY_FILLED`.
+
+                                    If the cancelRestrictions value is not any of the supported values, the error will
+                                    be: `{"code": -1145,"msg": "Invalid cancelRestrictions"}`
+
+                                    If the order did not pass the conditions for cancelRestrictions, the error will be:
+                                    `{"code": -2011,"msg": "Order was not canceled due to cancel restrictions."}`
+        :type cancel_restrictions: str
+        :param new_client_order_id: New ID for the canceled order. Automatically generated if not sent.
+                                    `newClientOrderId` will replace `clientOrderId` of the canceled order, freeing it
+                                    up for new orders.
+        :type new_client_order_id: str
+        :param order_id: Cancel by `order_id`. If both `orderId` and `origClientOrderId` parameters are specified, only
+                         `orderId` is used and `origClientOrderId` is ignored.
         :type order_id: str
-        :param orig_client_order_id: Cancel by `origClientOrderId`
+        :param orig_client_order_id: Cancel by `origClientOrderId`. If both `orderId` and `origClientOrderId` parameters
+                                     are specified, only `orderId` is used and `origClientOrderId` is ignored.
         :type orig_client_order_id: str
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
         :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
@@ -351,15 +388,19 @@ class BinanceWebSocketApiApi(object):
                 return False
 
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
-                  "symbol": str(symbol).upper(),
+                  "symbol": symbol.upper(),
                   "timestamp": self.manager.get_timestamp()}
 
+        if cancel_restrictions is not None:
+            params['cancelRestrictions'] = cancel_restrictions
+        if new_client_order_id is not None:
+            params['newClientOrderId'] = new_client_order_id
         if order_id is not None:
             params['orderId'] = order_id
         if orig_client_order_id is not None:
             params['origClientOrderId'] = orig_client_order_id
         if recv_window is not None:
-            params['recvWindow'] = recv_window
+            params['recvWindow'] = str(recv_window)
 
         method = "order.cancel"
         api_secret = self.manager.stream_list[stream_id]['api_secret']
@@ -389,16 +430,64 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def create_order(self, new_client_order_id: str = None, order_type: str = None, price: float = 0.0,
-                     process_response=None, quantity: float = 0.0, recv_window: int = None, request_id: str = None,
-                     return_response: bool = False, side: str = None, stream_id=None, stream_label: str = None,
-                     symbol: str = None, time_in_force: str = "GTC", test: bool = False) -> Union[int, bool]:
+    def create_order(self, iceberg_qty: float = None,
+                     new_client_order_id: str = None,
+                     new_order_resp_type: Optional[Literal['ACK', 'RESULT', 'FULL']] = None,
+                     order_type: Optional[Literal['LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS', 'STOP_LOSS_LIMIT',
+                                                  'TAKE_PROFIT', 'TAKE_PROFIT_LIMIT']] = None,
+                     price: float = 0.0,
+                     process_response=None,
+                     quantity: float = 0.0,
+                     recv_window: int = None,
+                     request_id: str = None,
+                     return_response: bool = False,
+                     self_trade_prevention_mode: Optional[Literal['EXPIRE_TAKER', 'EXPIRE_MAKER',
+                                                                  'EXPIRE_BOTH', 'NONE']] = None,
+                     side: Optional[Literal['BUY', 'SELL']] = None,
+                     stop_price: float = None,
+                     strategy_id: int = None,
+                     strategy_type: int = None,
+                     stream_id=None,
+                     stream_label: str = None,
+                     symbol: str = None,
+                     time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
+                     test: bool = False,
+                     trailing_delta: int = None) -> Union[int, bool]:
         """
         Create a new order.
 
-        :param new_client_order_id: Set the `newClientOrderId`
+        Official documentation:
+        https://developers.binance.com/docs/binance-trading-api/websocket_api#place-new-order-trade
+
+        :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
+                            `icebergQty`. An order with an `icebergQty` must have `timeInForce` set to `GTC`.
+        :type iceberg_qty: float
+        :param new_client_order_id: `newClientOrderId` specifies `clientOrderId` value for the order. A new order with
+                                    the same 'clientOrderId' is accepted only when the previous one is filled or
+                                    expired.
         :type new_client_order_id: str
-        :param order_type: `LIMIT` or `MARKET`
+        :param new_order_resp_type: Select response format: `ACK`, `RESULT`, `FULL`.
+                                    'MARKET' and 'LIMIT' orders use `FULL` by default, other order types default to
+                                    'ACK'
+        :type new_order_resp_type: str
+        :param order_type: 'LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS', 'STOP_LOSS_LIMIT', 'TAKE_PROFIT',
+                           'TAKE_PROFIT_LIMIT'
+
+                           Mandatory parameters per `order_type`:
+
+                             - LIMIT: 'timeInForce', 'price', 'quantity'
+
+                             - LIMIT_MAKER: 'price', 'quantity'
+
+                             - MARKET: 'quantity' or 'quoteOrderQty'
+
+                             - STOP_LOSS: 'quantity', 'stopPrice' or 'trailingDelta'
+
+                             - STOP_LOSS_LIMIT: 'timeInForce', 'price', 'quantity', 'stopPrice' or 'trailingDelta'
+
+                             - TAKE_PROFIT: 'quantity', 'stopPrice' or 'trailingDelta'
+
+                             - TAKE_PROFIT_LIMIT: 'timeInForce', 'price', 'quantity', 'stopPrice' or 'trailingDelta'
         :type order_type: str
         :param price: Price e.g. 10.223
         :type price: float
@@ -409,6 +498,7 @@ class BinanceWebSocketApiApi(object):
         :type quantity: float
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
@@ -416,19 +506,51 @@ class BinanceWebSocketApiApi(object):
                                 However, this increases the execution time of the function by the duration until the
                                 response is received from the Binance API.
         :type return_response: bool
+        :param self_trade_prevention_mode: The allowed enums for `selfTradePreventionMode` is dependent on what is
+                                           configured on the symbol. The possible supported values are `EXPIRE_TAKER`,
+                                           `EXPIRE_MAKER`, `EXPIRE_BOTH`, `NONE`.
+        :type self_trade_prevention_mode: str
         :param side: `BUY` or `SELL`
         :type side: str
+        :param strategy_id: Arbitrary numeric value identifying the order within an order strategy.
+        :type strategy_id: int
+        :param strategy_type: Arbitrary numeric value identifying the order strategy. Values smaller than 1000000 are
+                              reserved and cannot be used.
+        :type strategy_type: int
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
         :type stream_label: str
+        :param stop_price: Trigger order price rules for STOP_LOSS/TAKE_PROFIT orders:
+
+                             - `stopPrice` must be above market price: STOP_LOSS BUY, TAKE_PROFIT SELL
+
+                             - stopPrice must be below market price: STOP_LOSS SELL, TAKE_PROFIT BUY
+        :type stop_price: float
         :param symbol: The symbol you want to trade
         :type symbol: str
         :param test: Test order placement. Validates new order parameters and verifies your signature but does not
                      send the order into the matching engine.
         :type test: bool
-        :param time_in_force: Default `GTC`
+        :param time_in_force: Available timeInForce options, setting how long the order should be active before
+                              expiration:
+
+                                - GTC: Good 'til Canceled – the order will remain on the book until you cancel it, or
+                                  the order is completely filled.
+
+                                - IOC: Immediate or Cancel – the order will be filled for as much as possible, the
+                                  unfilled quantity immediately expires.
+
+                                - FOK: Fill or Kill – the order will expire unless it cannot be immediately filled for
+                                  the entire quantity.
+
+                              `MARKET` orders using `quoteOrderQty` follow `LOT_SIZE` filter rules. The order will
+                              execute a quantity that has notional value as close as possible to requested
+                              `quoteOrderQty`.
         :type time_in_force: str
+        :param trailing_delta: For more details on SPOT implementation on trailing stops, please refer to
+                               `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`_
+        :type trailing_delta: int
 
         :return: `False` or `orig_client_order_id`
 
@@ -514,11 +636,25 @@ class BinanceWebSocketApiApi(object):
                   "timestamp": self.manager.get_timestamp(),
                   "type": order_type}
 
+        if iceberg_qty is not None:
+            params['icebergQty'] = str(iceberg_qty)
+        if new_order_resp_type is not None:
+            params['newOrderRespType'] = new_order_resp_type
         if side.upper() == "LIMIT":
             params['price'] = str(price)
             params['timeInForce'] = time_in_force
         if recv_window is not None:
-            params['recvWindow'] = recv_window
+            params['recvWindow'] = str(recv_window)
+        if self_trade_prevention_mode is not None:
+            params['selfTradePreventionMode'] = self_trade_prevention_mode
+        if stop_price is not None:
+            params['stopPrice'] = str(stop_price)
+        if strategy_id is not None:
+            params['strategyId'] = str(strategy_id)
+        if strategy_type is not None:
+            params['strategyType'] = str(strategy_type)
+        if trailing_delta is not None:
+            params['trailingDelta'] = str(trailing_delta)
 
         method = "order.test" if test is True else "order.place"
         api_secret = self.manager.stream_list[stream_id]['api_secret']
@@ -548,21 +684,65 @@ class BinanceWebSocketApiApi(object):
 
         return new_client_order_id
 
-    def create_test_order(self, new_client_order_id: str = None, order_type: str = None, price: float = 0.0,
-                          process_response=None, quantity: float = 0.0, recv_window=None, request_id: str = None,
-                          return_response: bool = False, side: str = None, stream_id=None, stream_label: str = None,
-                          symbol: str = None, time_in_force: str = "GTC") -> Union[int, bool]:
+    def create_test_order(self, iceberg_qty: float = None,
+                          new_client_order_id: str = None,
+                          new_order_resp_type: Optional[Literal['ACK', 'RESULT', 'FULL']] = None,
+                          order_type: Optional[Literal['LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS', 'STOP_LOSS_LIMIT',
+                                                       'TAKE_PROFIT', 'TAKE_PROFIT_LIMIT']] = None,
+                          price: float = 0.0,
+                          process_response=None,
+                          quantity: float = 0.0,
+                          recv_window: int = None,
+                          request_id: str = None,
+                          return_response: bool = False,
+                          self_trade_prevention_mode: Optional[Literal['EXPIRE_TAKER', 'EXPIRE_MAKER',
+                                                                       'EXPIRE_BOTH', 'NONE']] = None,
+                          side: Optional[Literal['BUY', 'SELL']] = None,
+                          stop_price: float = None,
+                          strategy_id: int = None,
+                          strategy_type: int = None,
+                          stream_id=None,
+                          stream_label: str = None,
+                          symbol: str = None,
+                          time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
+                          trailing_delta: int = None) -> Union[int, bool]:
         """
-        A wrapper for `create_order() <https://unicorn-binance-websocket-api.docs.lucit.tech/
-        unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order>`_
-        with `test='True'`
+        Test order placement.
 
-        Test order placement. Validates new order parameters and verifies your signature but does not send the order
-        into the matching engine.
+        Validates new order parameters and verifies your signature but does not send the order into the matching engine.
 
-        :param new_client_order_id: Set the `newClientOrderId`
+        Official documentation:
+        https://developers.binance.com/docs/binance-trading-api/websocket_api#test-new-order-trade
+
+        :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
+                            `icebergQty`. An order with an `icebergQty` must have `timeInForce` set to `GTC`.
+        :type iceberg_qty: float
+        :param new_client_order_id: `newClientOrderId` specifies `clientOrderId` value for the order. A new order with
+                                    the same 'clientOrderId' is accepted only when the previous one is filled or
+                                    expired.
         :type new_client_order_id: str
-        :param order_type: `LIMIT` or `MARKET`
+        :param new_order_resp_type: Select response format: `ACK`, `RESULT`, `FULL`.
+                                    'MARKET' and 'LIMIT' orders use `FULL` by default, other order types default to
+                                    'ACK'
+        :type new_order_resp_type: str
+        :param order_type: 'LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS', 'STOP_LOSS_LIMIT', 'TAKE_PROFIT',
+                           'TAKE_PROFIT_LIMIT'
+
+                           Mandatory parameters per `order_type`:
+
+                             - LIMIT: 'timeInForce', 'price', 'quantity'
+
+                             - LIMIT_MAKER: 'price', 'quantity'
+
+                             - MARKET: 'quantity' or 'quoteOrderQty'
+
+                             - STOP_LOSS: 'quantity', 'stopPrice' or 'trailingDelta'
+
+                             - STOP_LOSS_LIMIT: 'timeInForce', 'price', 'quantity', 'stopPrice' or 'trailingDelta'
+
+                             - TAKE_PROFIT: 'quantity', 'stopPrice' or 'trailingDelta'
+
+                             - TAKE_PROFIT_LIMIT: 'timeInForce', 'price', 'quantity', 'stopPrice' or 'trailingDelta'
         :type order_type: str
         :param price: Price e.g. 10.223
         :type price: float
@@ -571,18 +751,9 @@ class BinanceWebSocketApiApi(object):
         :type process_response: function
         :param quantity: Amount e.g. 20.5
         :type quantity: float
-        :param side: `BUY` or `SELL`
-        :type side: str
-        :param stream_id: ID of a stream to send the request
-        :type stream_id: str
-        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
-        :type stream_label: str
-        :param symbol: The symbol you want to trade
-        :type symbol: str
-        :param time_in_force: Default `GTC`
-        :type time_in_force: str
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
@@ -590,6 +761,49 @@ class BinanceWebSocketApiApi(object):
                                 However, this increases the execution time of the function by the duration until the
                                 response is received from the Binance API.
         :type return_response: bool
+        :param self_trade_prevention_mode: The allowed enums for `selfTradePreventionMode` is dependent on what is
+                                           configured on the symbol. The possible supported values are `EXPIRE_TAKER`,
+                                           `EXPIRE_MAKER`, `EXPIRE_BOTH`, `NONE`.
+        :type self_trade_prevention_mode: str
+        :param side: `BUY` or `SELL`
+        :type side: str
+        :param strategy_id: Arbitrary numeric value identifying the order within an order strategy.
+        :type strategy_id: int
+        :param strategy_type: Arbitrary numeric value identifying the order strategy. Values smaller than 1000000 are
+                              reserved and cannot be used.
+        :type strategy_type: int
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param stop_price: Trigger order price rules for STOP_LOSS/TAKE_PROFIT orders:
+
+                             - `stopPrice` must be above market price: STOP_LOSS BUY, TAKE_PROFIT SELL
+
+                             - stopPrice must be below market price: STOP_LOSS SELL, TAKE_PROFIT BUY
+        :type stop_price: float
+        :param symbol: The symbol you want to trade
+        :type symbol: str
+        :param time_in_force: Available timeInForce options, setting how long the order should be active before
+                              expiration:
+
+                                - GTC: Good 'til Canceled – the order will remain on the book until you cancel it, or
+                                  the order is completely filled.
+
+                                - IOC: Immediate or Cancel – the order will be filled for as much as possible, the
+                                  unfilled quantity immediately expires.
+
+                                - FOK: Fill or Kill – the order will expire unless it cannot be immediately filled for
+                                  the entire quantity.
+
+                              `MARKET` orders using `quoteOrderQty` follow `LOT_SIZE` filter rules. The order will
+                              execute a quantity that has notional value as close as possible to requested
+                              `quoteOrderQty`.
+        :type time_in_force: str
+        :param trailing_delta: For more details on SPOT implementation on trailing stops, please refer to
+                               `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`_
+        :type trailing_delta: int
+
         :return: `False` or `orig_client_order_id`
 
 
@@ -653,21 +867,29 @@ class BinanceWebSocketApiApi(object):
                 ]
             }
         """
-        return self.create_order(new_client_order_id=new_client_order_id, price=price, order_type=order_type,
+        return self.create_order(iceberg_qty=iceberg_qty, new_client_order_id=new_client_order_id,
+                                 new_order_resp_type=new_order_resp_type, price=price, order_type=order_type,
                                  process_response=process_response, quantity=quantity, recv_window=recv_window,
-                                 request_id=request_id, return_response=return_response, side=side, stream_id=stream_id,
-                                 stream_label=stream_label, symbol=symbol, time_in_force=time_in_force, test=True)
+                                 request_id=request_id, return_response=return_response,
+                                 self_trade_prevention_mode=self_trade_prevention_mode, side=side,
+                                 stop_price=stop_price, strategy_id=strategy_id, strategy_type=strategy_type,
+                                 stream_id=stream_id, stream_label=stream_label, symbol=symbol,
+                                 time_in_force=time_in_force, test=True, trailing_delta=trailing_delta)
 
     def get_account_status(self, process_response=None, recv_window: int = None, request_id: str = None,
                            return_response: bool = False, stream_id=None, stream_label: str = None) -> bool:
         """
         Get the user account status.
 
+        Official documentation:
+        https://developers.binance.com/docs/binance-trading-api/websocket_api#account-information-user_data
+
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
         :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
@@ -768,7 +990,7 @@ class BinanceWebSocketApiApi(object):
                   "timestamp": self.manager.get_timestamp()}
 
         if recv_window is not None:
-            params['recvWindow'] = recv_window
+            params['recvWindow'] = str(recv_window)
 
         method = "account.status"
         api_secret = self.manager.stream_list[stream_id]['api_secret']
@@ -798,17 +1020,30 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def get_exchange_info(self, process_response=None, recv_window: int = None, request_id: str = None,
-                          return_response: bool = False, stream_id=None, stream_label: str = None,
-                          symbols: list = None) -> bool:
+    def get_exchange_info(self, permissions: list = None, process_response=None, recv_window: int = None,
+                          request_id: str = None, return_response: bool = False, stream_id=None,
+                          stream_label: str = None, symbol: str = None, symbols: list = None) -> bool:
         """
         Get the Exchange Information.
 
+        Only one of `symbol`, `symbols`, `permissions` parameters can be specified.
+
+        Without parameters, `exchangeInfo` displays all symbols with ["SPOT, "MARGIN", "LEVERAGED"] permissions. In
+        order to list all active symbols on the exchange, you need to explicitly request all permissions
+
+        Official documentation:
+        https://developers.binance.com/docs/binance-trading-api/websocket_api#exchange-information
+
+        :param permissions: Filter symbols by permissions. `permissions` accepts either a list of permissions, or a
+                            single permission name: "SPOT".
+                            `Available Permissions <https://developers.binance.com/docs/binance-trading-api/websocket_api#permissions>`_
+        :type permissions: list
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
         :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
@@ -820,7 +1055,9 @@ class BinanceWebSocketApiApi(object):
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
         :type stream_label: str
-        :param symbols: List of selected symbols
+        :param symbol: Describe a single symbol
+        :type symbol: str
+        :param symbols: Describe multiple symbols.
         :type symbols: list
         :return: bool
 
@@ -939,15 +1176,16 @@ class BinanceWebSocketApiApi(object):
                 logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
-
+        if symbol is None:
+            params = {"symbol": symbol}
         if symbols is None:
-            symbols = []
-
-        symbols = [symbol.upper() for symbol in symbols]
-        params = {"symbols": symbols}
+            symbols = [symbol.upper() for symbol in symbols]
+            params = {"symbols": symbols}
+        if permissions is None:
+            params = {"permissions": permissions}
 
         if recv_window is not None:
-            params['recvWindow'] = recv_window
+            params['recvWindow'] = str(recv_window)
 
         method = "exchangeInfo"
         request_id = self.manager.get_new_uuid_id() if request_id is None else request_id
@@ -981,11 +1219,25 @@ class BinanceWebSocketApiApi(object):
         """
         Query execution status of all open orders.
 
+        Open orders are always returned as a flat list. If all symbols are requested, use the symbol field to tell
+        which symbol the orders belong to.
+
+        Official documentation:
+        https://developers.binance.com/docs/binance-trading-api/websocket_api#current-open-orders-user_data
+
+        If you need to continuously monitor order status updates, please consider using
+        'WebSocket Streams <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>'_:
+
+          - `userData`
+
+          - `executionReport` user data stream event
+
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
         :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
@@ -997,7 +1249,7 @@ class BinanceWebSocketApiApi(object):
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
         :type stream_label: str
-        :param symbol: The symbol you want to trade
+        :param symbol: If omitted, open orders for all symbols are returned.
         :type symbol: str
         :return: bool
 
@@ -1071,11 +1323,11 @@ class BinanceWebSocketApiApi(object):
                 return False
 
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
-                  "symbol": str(symbol).upper(),
+                  "symbol": symbol.upper(),
                   "timestamp": self.manager.get_timestamp()}
 
         if recv_window is not None:
-            params['recvWindow'] = recv_window
+            params['recvWindow'] = str(recv_window)
 
         method = "openOrders.status"
         api_secret = self.manager.stream_list[stream_id]['api_secret']
@@ -1109,17 +1361,27 @@ class BinanceWebSocketApiApi(object):
                   recv_window: int = None, request_id: str = None, return_response: bool = False, stream_id=None,
                   stream_label: str = None, symbol: str = None) -> bool:
         """
-        Check execution status of a specific order.
+        Check execution status of an order.
 
-        :param order_id: The orderId to select the order
+        Official documentation:
+        https://developers.binance.com/docs/binance-trading-api/websocket_api#query-order-user_data
+
+        If both `orderId` and `origClientOrderId` parameters are specified, only `orderId` is used and
+        `origClientOrderId` is ignored.
+
+        For some historical orders the `cummulativeQuoteQty` response field may be negative, meaning the data is not
+        available at this time.
+
+        :param order_id: Lookup order by `orderId`.
         :type order_id: int
-        :param orig_client_order_id: The origClientOrderId to select the order
+        :param orig_client_order_id: Lookup order by `clientOrderId`.
         :type orig_client_order_id: str
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
         :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
@@ -1217,7 +1479,7 @@ class BinanceWebSocketApiApi(object):
         if orig_client_order_id is not None:
             params['origClientOrderId'] = str(orig_client_order_id)
         if recv_window is not None:
-            params['recvWindow'] = recv_window
+            params['recvWindow'] = str(recv_window)
 
         method = "order.status"
         api_secret = self.manager.stream_list[stream_id]['api_secret']
@@ -1247,20 +1509,32 @@ class BinanceWebSocketApiApi(object):
 
         return True
 
-    def get_order_book(self, process_response=None, limit: int = 100, recv_window: int = None, request_id: str = None,
+    def get_order_book(self, process_response=None, limit: int = None, recv_window: int = None, request_id: str = None,
                        return_response: bool = False, stream_id=None, stream_label: str = None,
                        symbol: str = None) -> bool:
         """
-        Get the order book.
+        Get current order book.
 
-        :param limit: Depth limit, default is 500. Valid values 1-5000. -
-                      https://developers.binance.com/docs/binance-trading-api/websocket_api#order-book
+        Note that this request returns limited market depth.
+
+        If you need to continuously monitor order book updates, please consider using
+        'WebSocket Streams <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>'_:
+
+          - <symbol>@depth<levels>
+
+          - <symbol>@depth
+
+        Official documentation:
+        https://developers.binance.com/docs/binance-trading-api/websocket_api#order-book
+
+        :param limit: Default 100; max 5000.
         :type limit: int
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
         :type process_response: function
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
         :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
@@ -1366,11 +1640,12 @@ class BinanceWebSocketApiApi(object):
                                 f"found!")
                 return False
 
-        params = {"symbol": symbol.upper(),
-                  "limit": str(limit)}
+        params = {"symbol": symbol.upper()}
 
+        if limit is not None:
+            params['limit'] = str(limit)
         if recv_window is not None:
-            params['recvWindow'] = recv_window
+            params['recvWindow'] = str(recv_window)
 
         request_id = self.manager.get_new_uuid_id() if request_id is None else request_id
 
@@ -1402,8 +1677,11 @@ class BinanceWebSocketApiApi(object):
         """
         Test connectivity to the WebSocket API and get the current server time.
 
+        Official documentation:
+        https://developers.binance.com/docs/binance-trading-api/websocket_api#check-server-time
+
         :param process_response: Provide a function/method to process the received webstream data (callback)
-                                            of this specific request.
+                                 of this specific request.
         :type process_response: function
         :param request_id: Provide a custom id for the request
         :type request_id: str
@@ -1485,6 +1763,9 @@ class BinanceWebSocketApiApi(object):
              stream_id=None, stream_label: str = None) -> bool:
         """
         Test connectivity to the WebSocket API.
+
+        Official documentation:
+        https://developers.binance.com/docs/binance-trading-api/websocket_api#test-connectivity
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
