@@ -176,7 +176,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                code 1011. This ensures that the remote endpoint remains responsive. Set
                                `ping_timeout` to `None` to disable this behavior.
                                This parameter is passed through to the `websockets.client.connect()
-                               <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
+                               <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_timeout#keepalive-in-websockets>`_
     :type ping_timeout_default: int
     :param high_performance: Set to True makes `create_stream()` a non-blocking function
     :type high_performance:  bool

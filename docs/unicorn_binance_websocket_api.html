@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
-    <link rel="next" title="unicorn-binance-websocket-api Change Log" href="CHANGELOG.html" />
+    <link rel="next" title="&lt;no title&gt;" href="CHANGELOG.html" />
     <link rel="prev" title="unicorn_binance_websocket_api" href="modules.html" /><link rel="shortcut icon" type="image/png" href="_static/lucit.png" />
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     
@@ -251,7 +251,7 @@
   <div>
     <h4>Next topic</h4>
     <p class="topless"><a href="CHANGELOG.html"
-                          title="next chapter">unicorn-binance-websocket-api Change Log</a></p>
+                          title="next chapter">&lt;no title&gt;</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -310,7 +310,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="CHANGELOG.html" title="unicorn-binance-websocket-api Change Log"
+          <a href="CHANGELOG.html" title="&lt;no title&gt;"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="modules.html" title="unicorn_binance_websocket_api"
@@ -1176,7 +1176,7 @@ which symbol the orders belong to.</p>
 </ul>
 </div></blockquote>
 <p>If you need to continuously monitor order status updates, please consider using
-‘WebSocket Streams &lt;<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream</a>&gt;’_:</p>
+‘WebSocket Streams &lt;<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream</a>&gt;`_</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><cite>userData</cite></p></li>
@@ -1362,7 +1362,7 @@ response is received from the Binance API.</p></li>
 <dd><p>Get current order book.</p>
 <p>Note that this request returns limited market depth.</p>
 <p>If you need to continuously monitor order book updates, please consider using
-‘WebSocket Streams &lt;<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream</a>&gt;’_:</p>
+‘WebSocket Streams &lt;<a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream</a>&gt;’_</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>&lt;symbol&gt;&#64;depth&lt;levels&gt;</p></li>
@@ -1735,7 +1735,7 @@ This parameter is passed through to the <a class="reference external" href="http
 <cite>ping_timeout</cite> seconds, the connection is considered unusable and is closed with
 code 1011. This ensures that the remote endpoint remains responsive. Set
 <cite>ping_timeout</cite> to <cite>None</cite> to disable this behavior.
-This parameter is passed through to the <a class="reference external" href="https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets">websockets.client.connect()</a></p>
+This parameter is passed through to the <a class="reference external" href="https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_timeout#keepalive-in-websockets">websockets.client.connect()</a></p>
 </p></li>
 <li><p><strong>high_performance</strong> (<em>bool</em>) – Set to True makes <cite>create_stream()</cite> a non-blocking function</p></li>
 <li><p><strong>debug</strong> (<em>bool</em>) – If True the lib adds additional information to logging outputs</p></li>
@@ -3565,8 +3565,10 @@ keepalive</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.restserver.BinanceWebSocketApiRestServer.methods">
-<span class="sig-name descname"><span class="pre">methods</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">t.List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'GET'}</span></em><a class="headerlink" href="#unicorn_binance_websocket_api.restserver.BinanceWebSocketApiRestServer.methods" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of methods this view can handle.</p>
+<span class="sig-name descname"><span class="pre">methods</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">t.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">t.Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'GET'}</span></em><a class="headerlink" href="#unicorn_binance_websocket_api.restserver.BinanceWebSocketApiRestServer.methods" title="Permalink to this definition">¶</a></dt>
+<dd><p>The methods this view is registered for. Uses the same default
+(<code class="docutils literal notranslate"><span class="pre">[&quot;GET&quot;,</span> <span class="pre">&quot;HEAD&quot;,</span> <span class="pre">&quot;OPTIONS&quot;]</span></code>) as <code class="docutils literal notranslate"><span class="pre">route</span></code> and
+<code class="docutils literal notranslate"><span class="pre">add_url_rule</span></code> by default.</p>
 </dd></dl>
 
 </dd></dl>
@@ -3800,7 +3802,7 @@ keepalive</p></li>
   <div>
     <h4>Next topic</h4>
     <p class="topless"><a href="CHANGELOG.html"
-                          title="next chapter">unicorn-binance-websocket-api Change Log</a></p>
+                          title="next chapter">&lt;no title&gt;</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -3859,7 +3861,7 @@ keepalive</p></li>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="CHANGELOG.html" title="unicorn-binance-websocket-api Change Log"
+          <a href="CHANGELOG.html" title="&lt;no title&gt;"
              >next</a> |</li>
         <li class="right" >
           <a href="modules.html" title="unicorn_binance_websocket_api"
@@ -3896,7 +3898,7 @@ keepalive</p></li>
     <div class="footer">
     &copy; <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
     See <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">License</a> for more information.<br />
-    Last updated on Apr 12 2023 at 23:47 (CET).
+    Last updated on Apr 13 2023 at 09:28 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.

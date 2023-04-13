@@ -1234,7 +1234,7 @@ class BinanceWebSocketApiApi(object):
             - https://developers.binance.com/docs/binance-trading-api/websocket_api#current-open-orders-user_data
 
         If you need to continuously monitor order status updates, please consider using
-        'WebSocket Streams <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>'_:
+        'WebSocket Streams <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>`_
 
           - `userData`
 
@@ -1527,7 +1527,7 @@ class BinanceWebSocketApiApi(object):
         Note that this request returns limited market depth.
 
         If you need to continuously monitor order book updates, please consider using
-        'WebSocket Streams <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>'_:
+        'WebSocket Streams <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>'_
 
           - <symbol>@depth<levels>
 
