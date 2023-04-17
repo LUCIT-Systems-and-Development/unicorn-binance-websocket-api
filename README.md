@@ -150,10 +150,11 @@ provides an API to the Binance Websocket API`s of
 [Binance DEX Testnet](https://docs.binance.org/api-reference/dex-api/ws-connection.html) and supports sending requests 
 to the [Binance Websocket API](https://developers.binance.com/docs/binance-trading-api/websocket_api) and the streaming 
 of all public streams like trade, kline, ticker, depth, bookTicker, forceOrder, compositeIndex, blockheight etc. and 
-also all private userData streams which needs to be used with a valid api_key and api_secret from the Binance Exchange 
-[www.binance.com](https://www.binance.com/userCenter/createApi.html), 
+also all private userData streams which needs to be used with a valid 
+[api_key and api_secret](https://medium.lucit.tech/how-to-create-a-binance-api-key-and-api-secret-3bb5f47e360d)
+from the Binance Exchange [www.binance.com](https://www.binance.com/), 
 [testnet.binance.vision](https://testnet.binance.vision/) or 
-[www.binance.us](https://www.binance.us/userCenter/createApi.html) - for the DEX you need a user address from 
+[www.binance.us](https://www.binance.us) - for the DEX you need a user address from 
 [www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create) 
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
