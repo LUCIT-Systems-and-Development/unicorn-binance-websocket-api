@@ -37,7 +37,7 @@ from unicorn_binance_rest_api import BinanceRestApiManager
 import logging
 import threading
 import time
-from typing import Optional
+from typing import Optional, Union
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -55,7 +55,7 @@ class BinanceWebSocketApiRestclient(object):
         self.api_secret = False
         self.symbol = False
         self.listen_key = False
-        self.last_static_ping_listen_key: Optional[bool, int] = False
+        self.last_static_ping_listen_key: Optional[Union[bool, int]] = False
         self.listen_key_output = False
         self.threading_lock = threading.Lock()
         self.restful_base_uri = self.manager.restful_base_uri
@@ -66,7 +66,7 @@ class BinanceWebSocketApiRestclient(object):
                    api_secret=False,
                    symbol=False,
                    listen_key=False,
-                   last_static_ping_listen_key: Optional[bool, int] = False):
+                   last_static_ping_listen_key: Optional[Union[bool, int]] = False):
         """
         set default values and load values from stream_list
 
