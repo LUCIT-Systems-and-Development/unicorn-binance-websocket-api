@@ -49,7 +49,6 @@ async def binance_stream(ubwa):
         print(f"received data:\r\n{data}\r\n")
 
     def handle_ping_response(data):
-        print(f"Timestamp: {time.time()}")
         print(f"received ping response:\r\n{data}\r\n")
 
     def handle_servertime_response(data):

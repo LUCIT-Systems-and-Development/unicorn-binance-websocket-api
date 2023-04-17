@@ -82,6 +82,3 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\r\nGracefully stopping the websocket manager...")
         ubwa.stop_manager_with_all_streams()
-
-
-

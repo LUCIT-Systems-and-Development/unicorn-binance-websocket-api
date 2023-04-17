@@ -37,6 +37,7 @@ from unicorn_binance_rest_api import BinanceRestApiManager
 import logging
 import threading
 import time
+from typing import Optional
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -54,7 +55,7 @@ class BinanceWebSocketApiRestclient(object):
         self.api_secret = False
         self.symbol = False
         self.listen_key = False
-        self.last_static_ping_listen_key = False
+        self.last_static_ping_listen_key: Optional[bool, int] = False
         self.listen_key_output = False
         self.threading_lock = threading.Lock()
         self.restful_base_uri = self.manager.restful_base_uri
@@ -65,7 +66,7 @@ class BinanceWebSocketApiRestclient(object):
                    api_secret=False,
                    symbol=False,
                    listen_key=False,
-                   last_static_ping_listen_key=False):
+                   last_static_ping_listen_key: Optional[bool, int] = False):
         """
         set default values and load values from stream_list
 
@@ -145,7 +146,17 @@ class BinanceWebSocketApiRestclient(object):
                                          socks5_proxy_user=self.manager.socks5_proxy_user,
                                          socks5_proxy_pass=self.manager.socks5_proxy_pass,
                                          warn_on_update=self.manager.warn_on_update)
-            if self.manager.exchange == "binance.com-isolated_margin" or \
+            if self.manager.exchange == "binance.com-margin" or \
+                    self.manager.exchange == "binance.com-margin-testnet":
+                try:
+                    if self.manager.restful_base_uri is not None:
+                        ubra.MARGIN_API_URL = self.manager.restful_base_uri
+                    response = ubra.margin_stream_get_listen_key(output="raw_data", throw_exception=False)
+                except AttributeError as error_msg:
+                    logger.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
+                                    f"error_msg: {error_msg} - Can not acquire listen_key for margin!")
+                    return False
+            elif self.manager.exchange == "binance.com-isolated_margin" or \
                     self.manager.exchange == "binance.com-isolated_margin-testnet":
                 if self.symbol is False:
                     logger.critical("BinanceWebSocketApiRestclient.get_listen_key() - error_msg: Parameter "
@@ -233,7 +244,12 @@ class BinanceWebSocketApiRestclient(object):
                                          socks5_proxy_user=self.manager.socks5_proxy_user,
                                          socks5_proxy_pass=self.manager.socks5_proxy_pass,
                                          warn_on_update=self.manager.warn_on_update)
-            if self.manager.exchange == "binance.com-isolated_margin" or \
+            if self.manager.exchange == "binance.com-margin" or \
+                    self.manager.exchange == "binance.com-margin-testnet":
+                if self.manager.restful_base_uri is not None:
+                    ubra.MARGIN_API_URL = self.manager.restful_base_uri
+                result = ubra.margin_stream_close(listenKey=str(self.listen_key), throw_exception=False)
+            elif self.manager.exchange == "binance.com-isolated_margin" or \
                     self.manager.exchange == "binance.com-isolated_margin-testnet":
                 if self.manager.restful_base_uri is not None:
                     ubra.MARGIN_API_URL = self.manager.restful_base_uri
@@ -294,7 +310,12 @@ class BinanceWebSocketApiRestclient(object):
                                          socks5_proxy_user=self.manager.socks5_proxy_user,
                                          socks5_proxy_pass=self.manager.socks5_proxy_pass,
                                          warn_on_update=self.manager.warn_on_update)
-            if self.manager.exchange == "binance.com-isolated_margin" or \
+            if self.manager.exchange == "binance.com-margin" or \
+                    self.manager.exchange == "binance.com-margin-testnet":
+                if self.manager.restful_base_uri is not None:
+                    ubra.MARGIN_API_URL = self.manager.restful_base_uri
+                result = ubra.margin_stream_keepalive(listenKey=str(self.listen_key), throw_exception=False)
+            elif self.manager.exchange == "binance.com-isolated_margin" or \
                     self.manager.exchange == "binance.com-isolated_margin-testnet":
                 if self.manager.restful_base_uri is not None:
                     ubra.MARGIN_API_URL = self.manager.restful_base_uri
