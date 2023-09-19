@@ -1,3 +1,4 @@
+from unicorn_binance_websocket_api.api import BinanceWebSocketApiApi
 from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange
 from unicorn_binance_websocket_api.connection import BinanceWebSocketApiConnection
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager

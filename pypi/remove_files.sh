@@ -35,3 +35,6 @@
 rm ./build -r
 rm ./dist -r
 rm ./unicorn_binance_websocket_api.egg-info -r
+
+rm unicorn_binance_websocket_api/*.so
+rm unicorn_binance_websocket_api/*.c
