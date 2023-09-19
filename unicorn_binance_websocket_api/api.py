@@ -1183,12 +1183,12 @@ class BinanceWebSocketApiApi(object):
                 logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
-        if symbol is None:
+        if symbol is not None:
             params = {"symbol": symbol}
-        if symbols is None:
+        if symbols is not None:
             symbols = [symbol.upper() for symbol in symbols]
             params = {"symbols": symbols}
-        if permissions is None:
+        if permissions is not None:
             params = {"permissions": permissions}
 
         if recv_window is not None:
