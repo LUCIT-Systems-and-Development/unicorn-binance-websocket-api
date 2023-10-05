@@ -1,72 +1,22 @@
-LUCIT General Open Source License
+MIT License
+===========
 
-Version 1.0, September 2023
+Copyright (c) 2022-2023 LUCIT Systems and Development (https://www.lucit.tech) and Oliver Zehentleitner (https://about.me/oliver-zehentleitner)
 
-1. INTRODUCTION
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-The "LUCIT General Open Source License" is a license that governs the use and distribution of the UNICORN Binance
-WebSocket API. This API is part of the UNICORN Binance Suite, developed by LUCIT IT-Management GmbH. It enables the
-seamless integration of Binance functionalities into various applications.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-
-2. PROJECT INFORMATION
-
-    Project name: UNICORN Binance WebSocket API
-    Project page: https://www.lucit.tech/unicorn-binance-websocket-api.html
-    GitHub repository: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
-    PyPI repository: https://pypi.org/project/unicorn-binance-websocket-api/
-
-
-3. LICENSE CONDITIONS
-
-The use of the UNICORN Binance WebSocket API now requires authentication using a license key and an API secret of the
-"UNICORN Binance Suite". This license allows you to run multiple instances of the submodules, including the
-UNICORN Binance WebSocket API. You can purchase the license here:
-https://shop.lucit.services/software/unicorn-binance-suite.
-
-
-4. LICENSE PURCHASE
-
-In order to use the UNICORN Binance Suite, including the UNICORN Binance WebSocket API, a corresponding license must be
-purchased through our store. For more information on license purchase, please visit:
-https://shop.lucit.services/software/unicorn-binance-suite.
-
-
-5. CONTRIBUTING CODE
-
-By submitting pull requests on GitHub, you contribute to the project. However, please note that donated code
-automatically becomes the property, copyright and usability of LUCIT IT-Management GmbH. Our address is:
-
-LUCIT IT-Management GmbH
-At the mountain 391
-3970 Weitra
-Austria
-https://www.lucit.tech/imprint.html
-
-
-6. USAGE AND DISTRIBUTION
-
-The UNICORN Binance WebSocket API and other open source projects of LUCIT IT-Management GmbH can be used by the
-community and integrated into various applications. However, please note that a valid license is required for execution.
-
-For information about special license models and volume licenses please contact our sales team: sales@lucit.tech.
-
-
-7. DATA COLLECTION AND LICENSE CONTROL
-
-To ensure that license policies are followed and subscription quotas are not exceeded, we collect certain information.
-This includes the IP addresses of the users as well as log data about the launched instances. In addition, we collect
-the Python version used and the operating system. This data is only used for license control and is subject to strict
-privacy policies. We undertake to treat your information confidentially and not to pass it on to third parties. For
-more details, please see our privacy policy.
-
-
-
-Thank you for using the UNICORN Binance WebSocket API and the products of LUCIT IT-Management GmbH. We appreciate your
-trust in our technologies.
-
-LUCIT IT-Management GmbH
-At the mountain 391
-3970 Weitra
-Austria
-www.lucit.tech
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
