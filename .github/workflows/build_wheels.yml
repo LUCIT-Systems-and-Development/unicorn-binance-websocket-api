@@ -11,13 +11,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04, windows-2019, macos-11]
-    env:
-      PATH: /usr/share/rust/.cargo/bin:$PATH
     steps:
       - uses: actions/checkout@v4
       - name: Set up Environment
         run: |
           echo "CIBW_SKIP=pp36-* pp37-* pp38-*" >> $GITHUB_ENV
+          echo "/home/runner/.cargo/bin" >> $GITHUB_PATH
           python -m pip install --upgrade pip
       - name: Check Rust Version
         run: rustc --version
