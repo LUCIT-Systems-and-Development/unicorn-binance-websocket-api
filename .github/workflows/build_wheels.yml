@@ -4,6 +4,7 @@ on:
 permissions:
   contents: write
   discussions: write
+
 jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
@@ -22,11 +23,21 @@ jobs:
       - name: Check ENV
         if: matrix.os == 'ubuntu-20.04'
         run: echo $PATH
-      - name: Build wheels
+      - name: Build wheels Linux
+        if: matrix.os == 'ubuntu-20.04'
+        uses: pypa/cibuildwheel@v2.16.2
+        env:
+          CIBW_BEFORE_ALL: "bash scripts/install_rust_and_pip.sh"
+      - name: Build wheels Mac
+        if: matrix.os == 'macos-11'
+        uses: pypa/cibuildwheel@v2.16.2
+      - name: Build wheels Windows
+        if: matrix.os == 'windows-2019'
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
+
   build_sdist:
     name: Build source distribution
     runs-on: ubuntu-latest
@@ -37,6 +48,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           path: dist/*.tar.gz
+
   Release:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
