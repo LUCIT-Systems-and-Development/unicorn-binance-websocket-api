@@ -13,8 +13,10 @@ jobs:
         os: [ubuntu-20.04, windows-2019, macos-11]
     steps:
       - uses: actions/checkout@v4
-      - name: Set up environment variables
-        run: echo "CIBW_SKIP=pp36-* pp37-* pp38-*" >> $GITHUB_ENV
+      - name: Set up Environment
+        run: |
+          echo "CIBW_SKIP=pp36-* pp37-* pp38-*" >> $GITHUB_ENV
+          python -m pip install --upgrade pip
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
