@@ -37,10 +37,10 @@ jobs:
       - name: Ensure pip is installed
         if: matrix.os == 'ubuntu-20.04'
         run: |
-          sudo apt install python3-pip
           python -m pip --version
           python -m pip install wheel
       - name: Install cryptography
+        if: matrix.os == 'ubuntu-20.04'
         run: python -m pip install cryptography
       - name: Check cryptography
         run: |
