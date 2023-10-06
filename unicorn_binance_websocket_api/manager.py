@@ -3720,7 +3720,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stop_monitoring_api()
         # close lucit license manger and the api session
         if close_api_session is True:
-            self._llm.close()
+            self.llm.close()
         # send signal to all threads
         self.stop_manager_request = True
         return True
