@@ -225,7 +225,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
         self.version = "2.0.0"
-        self._sigterm = False
+        self.stop_manager_request = None
         logger.info(f"New instance of {self.get_user_agent()}-{'compiled' if cython.compiled else 'source'} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         self.debug = debug
@@ -320,7 +320,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 websocket_ssl_context.check_hostname = False
             self.websocket_ssl_context = websocket_ssl_context
 
-        self.stop_manager_request = None
         self.all_subscriptions_number = 0
         self.binance_api_status = {'weight': None,
                                    'timestamp': 0,
@@ -659,8 +658,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.info("BinanceWebSocketApiManager._frequent_checks() new instance created with frequent_checks_id=" +
                     str(frequent_checks_id))
         # threaded loop for min 1 check per second
-        while self.stop_manager_request is None and self.frequent_checks_list[frequent_checks_id]['stop_request'] \
-                is None and self._sigterm is False:
+        while self.stop_manager_request is None \
+                and self.frequent_checks_list[frequent_checks_id]['stop_request'] is None:
             with self.frequent_checks_list_lock:
                 self.frequent_checks_list[frequent_checks_id]['last_heartbeat'] = time.time()
             time.sleep(0.3)
@@ -3711,6 +3710,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logger.info("BinanceWebSocketApiManager.stop_manager_with_all_streams() - Stopping "
                     "unicorn_binance_websocket_api_manager " + self.version + " ...")
+        # send signal to all threads
+        self.stop_manager_request = True
         try:
             for stream_id in self.stream_list:
                 self.stop_stream(stream_id)
@@ -3721,8 +3722,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         # close lucit license manger and the api session
         if close_api_session is True:
             self.llm.close()
-        # send signal to all threads
-        self.stop_manager_request = True
         return True
 
     def stop_monitoring_api(self) -> bool:
