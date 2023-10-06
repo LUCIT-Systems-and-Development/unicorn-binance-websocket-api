@@ -17,7 +17,7 @@ jobs:
         run: |
           echo "CIBW_SKIP=pp36-* pp37-* pp38-*" >> $GITHUB_ENV
           python -m pip install --upgrade pip
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           source $HOME/.cargo/env
           echo "Rust version:"
           rustc --version
