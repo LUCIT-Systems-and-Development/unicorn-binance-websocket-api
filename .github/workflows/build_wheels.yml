@@ -59,7 +59,7 @@ jobs:
         if: matrix.os == 'ubuntu-20.04'
         run: source venv/bin/activate
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.15.0
+        uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
