@@ -38,6 +38,8 @@ jobs:
         run: |
           sudo apt install python3-pip
           python -m pip --version
+      - name: Install cryptography
+        run: python -m pip install cryptography
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
