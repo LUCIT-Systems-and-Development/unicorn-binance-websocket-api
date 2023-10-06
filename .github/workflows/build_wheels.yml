@@ -1,0 +1,57 @@
+name: Build and Publish
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  discussions: write
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, windows-2019, macos-11]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.16.2
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./wheelhouse/*.whl
+  build_sdist:
+    name: Build source distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build sdist
+        run: pipx run build --sdist
+      - uses: actions/upload-artifact@v3
+        with:
+          path: dist/*.tar.gz
+  Release:
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifact
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: |
+            Please read the [CHANGELOG](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/main/CHANGELOG.md) for further information.
+          discussion_category_name: releases
+          draft: false
+          files: | 
+            dist/*.tar.gz
+            dist/*.whl
+          generate_release_notes: true
+          name: unicorn-binance-websocket-api
+          prerelease: false
+          tag_name: 1.46.3
+          token: ${{ secrets.RELEASE_TOKEN }}

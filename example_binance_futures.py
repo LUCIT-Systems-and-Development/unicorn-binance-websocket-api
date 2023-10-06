@@ -7,11 +7,11 @@
 # Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
 # Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
 # Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
-# PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
+# PyPI: https://pypi.org/project/unicorn-binance-websocket-api
 #
 # Author: LUCIT Systems and Development
 #
-# Copyright (c) 2019-2023, LUCIT Systems and Development (https://www.lucit.tech) and Oliver Zehentleitner
+# Copyright (c) 2019-2023, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -21,9 +21,6 @@
 # tribute, sublicense, and/or sell copies of the Software, and to permit
 # persons to whom the Software is furnished to do so, subject to the fol-
 # lowing conditions:
-#
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABIL-
@@ -54,10 +51,18 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if oldest_stream_data_from_stream_buffer is False:
             time.sleep(0.01)
 
-# create instance of BinanceWebSocketApiManager for Binance.com Futures
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures")
 
-# set api key and secret for userData stream
+# To use this library you need a valid UNICORN Binance Suite License Token and API Secret:
+# https://shop.lucit.services/software/unicorn-binance-suite
+lucit_api_secret = ""
+lucit_license_token = ""
+
+# create instance of BinanceWebSocketApiManager for Binance.com Futures
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures",
+                                                           lucit_api_secret=lucit_api_secret,
+                                                           lucit_license_token=lucit_license_token)
+
+# Set api_key and secret for userData stream
 binance_api_key = ""
 binance_api_secret = ""
 userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"],

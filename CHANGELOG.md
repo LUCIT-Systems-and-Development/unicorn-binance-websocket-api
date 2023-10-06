@@ -9,7 +9,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
-## 1.46.2.dev (development stage/unreleased/unstable)
+## 2.0.0.dev (development stage/unreleased/unstable)
+
+## 2.0.0
+### Added
+- Integration of the `lucit-licensing-python` library for verifying the UNICORN Binance Suite license. A license can be 
+  purchased in our store: https://shop.lucit.services/software/unicorn-binance-suite
+### Changed
+- License change from MIT to LSOSL - LUCIT Synergetic Open Source License: 
+  https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE
+- Conversion to a C++ compiled Cython package with precompiled as well as PyPy and source code wheels. 
+- Setup of a "Trusted Publisher" deployment chain. The source code is transparently packaged into wheels directly from 
+  the GitHub repository by a GitHub action for all possible platforms and published directly as a new release on GitHub 
+  and PyPi. A second process from Conda-Forge then uploads it to Anaconda. Thus, the entire deployment process is 
+  transparent and the user can be sure that the compilation of a version fully corresponds to the source code.
+- Added `@staticmethod` to many static mehtods.
+### Fixed
+- Typos and formatting
+- Shadow of a Python built-in in `manager.get_human_bytesize()`: `bytes` to `amount_bytes`
+- `manager.get_new_uuid_id()` returned not str()
+- Removed 3 unused parameter of `manager.get_listen_key_from_restclient()`, now it is only accepting `stream_id`. 
 
 ## 1.46.2
 ### Fixed
@@ -57,7 +76,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - This is the first code part to support the new [Binance Websocket API](https://developers.binance.com/docs/binance-trading-api/websocket_api)
   [issue#319](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/319):
   - `WEBSOCKET_API_BASE_URI` to connection_settings.py and added URI for spot and testnet: `wss://ws-api.binance.com/ws-api/v3` and `wss://testnet.binance.vision/ws-api/v3`
-  - Upgraded `print_stream_info()` to show if a userData stream is an Websocket API stream or not.
+  - Upgraded `print_stream_info()` to show if a userData stream is a Websocket API stream or not.
   - New methods to manager.py `get_timestamp()`, `generate_signature()`, `order_params()`, `add_payload_to_stream`
   - ws_api.py to provide Binance websocket api functions in `ubwa.api.method(stream_id=stream_id)`.
     - `ubwa.api.cancel_open_orders()`
@@ -135,7 +154,7 @@ New parameters to override connection settings to
 
 ## 1.42.0
 ### Added
-- Parameter `delete_listen_key` to `stop_stream()`, so its possible to disable the deletion of the `listen_key`
+- Parameter `delete_listen_key` to `stop_stream()`, so it's possible to disable the deletion of the `listen_key`
 ### Changed 
 - The new `listen_key` keep alive interval is 10 min, with 30 min we have expired listenKeys in some cases. [issue#275](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/275)
 - `websockets` version 10.3 to 10.4
@@ -253,7 +272,7 @@ its own logger name.
 ### Added
 - `manager.get_new_stream_id()` to avoid security alerts like "CodeQL py/clear-text-logging-sensitive-data"
 ### Changed
-- `stream_id` is no longer a uuid, but a string from now on!
+- `stream_id` is no longer an uuid, but a string from now on!
 - Correctly scope loggers so that it plays nicely with others. [PR#223](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/223), [issue#164](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/164) 
 - Removed pathlib from requirements [PR#224](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/pull/224)
 - Moved from https://github.com/oliver-zehentleitner to https://github.com/LUCIT-Systems-and-Development/
@@ -295,13 +314,13 @@ websockets versions
 ### Added
 - `process_stream_signals` callback support [issue#160](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/160)
 ### Changed
-- `self.stream_signal_buffer` is not a list anymore, its changed to `collections.deque()`  
+- `self.stream_signal_buffer` is not a list anymore, it's changed to `collections.deque()`  
 
 ## 1.32.0
-Now `stream_buffer` can be used as FIFO or LIFO stack and its possible to define a max length for it.
+Now `stream_buffer` can be used as FIFO or LIFO stack, and it's possible to define a max length for it.
 ### Added
 - `clear_stream_buffer()` to delete all items on the `stream_buffer` stack.
-- `get_stream_buffer_maxlen()` to get the maxlen value of the stack.
+- `get_stream_buffer_maxlen()` to get the `maxlen` value of the stack.
 - Support for `stream_buffer_maxlen` in methods of `BinanceWebSocketApiManager()` class `_create_stream_thread()`, `print_stream_info()`, `__init__()`, 
 `_add_stream_to_stream_list()`, `_create_stream_thread()`, `create_stream()`, `replace_stream()`.
 - Support for FIFO and LIFO in `pop_stream_data_from_stream_buffer(mode="FIFO")`
@@ -694,7 +713,7 @@ https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f
 
 ## 1.8.1
 ### Changed
-- Moved docs to github pages
+- Moved docs to GitHub pages
 
 ## 1.8.0
 ### Added 
@@ -711,7 +730,7 @@ https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/i
 
 ## 1.6.5
 ### Fixed
-- 'websockets>=7.0' to 'websockets==7.0': Websockets 8 is released and it seems to be not compatible
+- 'websockets>=7.0' to 'websockets==7.0': Websockets 8 is released, and it seems to be not compatible
 
 ## 1.6.4
 ### Added
@@ -755,8 +774,8 @@ https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/i
 - current_receiving_speed to print_summary() and print_stream_info()
 - get_exchange()
 - set_private_dex_config() **(not in use for now)**
-- subscribe_to_stream() - **(dont use in productive! Its not clean and will get rewritten and maybe change behaviour)**
-- unsubscribe_from_stream() - **(dont use in productive! Its not clean and will get rewritten and maybe change change 
+- subscribe_to_stream() - **(dont use in productive! It's not clean and will get rewritten and maybe change behaviour)**
+- unsubscribe_from_stream() - **(dont use in productive! It's not clean and will get rewritten and maybe change 
 behaviour)**
 - _create_payload()
 ### Changed 
@@ -781,14 +800,14 @@ behaviour)**
 - exception for `asyncio.base_futures.InvalidStateError` by DaWe35 
 https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/18
 ### Changed
-- create_stream() returns False if websocket URL is to long
+- create_stream() returns False if websocket URL is too long
 ### Fixed
-- `is_websocket_uri_length_valid()` to work with !userData on the pre test in `create_stream()` without api secrets
+- `is_websocket_uri_length_valid()` to work with !userData on the pre-test in `create_stream()` without api secrets
 
 ## 1.3.9
 ### Changed
 - Docstrings for `markets` and `channels` to support: str, tuple, list, set
-- Fine tuning of perfdata output in `get_monitoring_status_plain()` and `get_monitoring_status_icinga()`
+- Fine-tuning of perfdata output in `get_monitoring_status_plain()` and `get_monitoring_status_icinga()`
 
 ## 1.3.8
 ### Added
@@ -820,7 +839,7 @@ https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/p
 - get_monitoring_status_icinga(): reconnects and update check
 - get_monitoring_status_plain()
 - start_monitoring_api()
-- 1 hour cache for release checks on github
+- 1 hour cache for release checks on GitHub
 - stop_monitoring_api()
 ### Rewrite
 - ./tools/icinga/check_binance_websocket_api_manager (check_command for ICINGA)
@@ -831,7 +850,7 @@ https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/p
 ### Added
 - example_monitoring.py and tools/check_binance_websocket_api_manager
 - get_monitoring_status_icinga tests for available updates and changes the `return_code` to WARNING if an update is 
-available. but i recognized an API ban from github in cause of too many requests. i have to extend it ...
+available. but I recognized an API ban from GitHub in cause of too many requests. I have to extend it ...
 ### Changed
 - get_monitoring_status_icinga: changed `status` dict node to `return_code`
 
@@ -914,7 +933,7 @@ the stream_buffer.
 
 ## 1.1.18
 ### Removed
-- _forward_stream_buffer_data: system change - no pushing anymore, its better to buffer everything and run a import class
+- _forward_stream_buffer_data: system change - no pushing anymore, it's better to buffer everything and run an import class
  in a separate thread, that is able to reconnect to the database
 
 ## 1.1.17
@@ -929,12 +948,12 @@ the stream_buffer.
 ### Changed 
 - stream_buffer logging: log amount of items in buffer
 ### Fixed
-- added two mac os specific exceptions to connection class for better reconnect management
+- added two macOS specific exceptions to connection class for better reconnect management
 
 ## 1.1.14
 ### Fixed
 - updated the "update" methods in manager class (error handling while no internet connection)
-- trying other behaviour on `400 - bad request' error 
+- trying other behaviour on "400 - bad request" error 
 - added handling for -2015 error from get_listen_key_from_restclient in create_websocket_uri
 
 ## 1.1.13
@@ -957,13 +976,13 @@ the stream_buffer.
 - restarting streams row to print_summary()
 - show active restarting and stopped streams only if not 0
 - error message handling for userData streams
-- reconnect depends from disconnect reason now (network or api-settings)
+- reconnect depends on disconnect reason now (network or api-settings)
 ### Fixed
 - del restart request in stop_stream()
 
 ## 1.1.9
 ### Fixed
-- !miniTicker and !userData didnt work in cause of lower case all currencies. added an exception for them.
+- !miniTicker and !userData didn't work in cause of lower case all currencies. added an exception for them.
 
 ## 1.1.8
 ### Added

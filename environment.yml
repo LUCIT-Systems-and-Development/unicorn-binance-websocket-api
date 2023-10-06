@@ -4,8 +4,10 @@ dependencies:
 - pip:
   - cheroot
   - colorama
+  - Cython
   - flask
   - flask_restful
+  - lucit-licensing-python
   - psutil
   - PySocks
   - requests

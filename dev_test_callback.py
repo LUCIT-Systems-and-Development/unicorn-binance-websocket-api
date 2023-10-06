@@ -7,11 +7,11 @@
 # Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
 # Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
 # Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
-# PyPI: https://pypi.org/project/unicorn-binance-websocket-api/
+# PyPI: https://pypi.org/project/unicorn-binance-websocket-api
 #
 # Author: LUCIT Systems and Development
 #
-# Copyright (c) 2019-2023, LUCIT Systems and Development (https://www.lucit.tech) and Oliver Zehentleitner
+# Copyright (c) 2019-2023, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -21,9 +21,6 @@
 # tribute, sublicense, and/or sell copies of the Software, and to permit
 # persons to whom the Software is furnished to do so, subject to the fol-
 # lowing conditions:
-#
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABIL-
@@ -50,6 +47,12 @@ except ImportError:
 
 binance_api_key = ""
 binance_api_secret = ""
+
+# To use this library you need a valid UNICORN Binance Suite License Token and API Secret:
+# https://shop.lucit.services/software/unicorn-binance-suite
+lucit_api_secret = ""
+lucit_license_token = ""
+
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
             'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
@@ -65,9 +68,12 @@ logging.basicConfig(level=logging.INFO,
 def print_stream_data(stream_data, stream_buffer_name=False):
     print(str(stream_data))
 
+
 try:
     binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret)
-    binance_websocket_api_manager = BinanceWebSocketApiManager(high_performance=True)
+    binance_websocket_api_manager = BinanceWebSocketApiManager(high_performance=True,
+                                                               lucit_api_secret=lucit_api_secret,
+                                                               lucit_license_token=lucit_license_token)
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
