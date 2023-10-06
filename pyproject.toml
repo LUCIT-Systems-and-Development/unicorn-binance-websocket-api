@@ -4,4 +4,3 @@ requires = ['colorama', 'requests', 'websocket-client', 'websockets==10.4', 'fla
             'unicorn-binance-rest-api>=1.9.0', 'typing_extensions', 'Cython', 'setuptools', 'wheel',
             'pip', 'cryptography<3.5']
 build-backend = "setuptools.build_meta"
-requires = ["setuptools>=42", "wheel", "pip"]
