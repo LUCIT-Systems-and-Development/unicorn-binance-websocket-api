@@ -17,6 +17,12 @@ jobs:
         run: |
           echo "CIBW_SKIP=pp36-* pp37-* pp38-* pp39-* pp310-*" >> $GITHUB_ENV
           python -m pip install --upgrade pip
+      - name: Setup Rust for Ubuntu
+        if: matrix.os == 'ubuntu-20.04'
+        run: |
+          echo "CIBW_BEFORE_BUILD=chmod +x {project}/tools/github/install_rust.sh && {project}/tools/github/install_rust.sh" >> $GITHUB_ENV
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          source "$HOME/.cargo/env"
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
