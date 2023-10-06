@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.0.0
 ### Added
 - Integration of the `lucit-licensing-python` library for verifying the UNICORN Binance Suite license. A license can be 
-  purchased in our store: https://shop.lucit.services/software/unicorn-binance-suite
+  purchased in the LUCIT Online Shop: https://shop.lucit.services/software/unicorn-binance-suite
 ### Changed
 - License change from MIT to LSOSL - LUCIT Synergetic Open Source License: 
   https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE

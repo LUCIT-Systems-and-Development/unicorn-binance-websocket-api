@@ -7,11 +7,11 @@
 [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/unicorn-binance-websocket-api.svg?color=blue)](https://anaconda.org/conda-forge/unicorn-binance-websocket-api)
 [![PyPi Release](https://img.shields.io/pypi/v/unicorn-binance-websocket-api?color=blue)](https://pypi.org/project/unicorn-binance-websocket-api/)
 [![PyPi Downloads](https://pepy.tech/badge/unicorn-binance-websocket-api)](https://pepy.tech/project/unicorn-binance-websocket-api)
-[![License](https://img.shields.io/badge/license-LSOSL-blue)](https://github.com/LUCIT-Systems-and-Development/lucit-licensing-python)
+[![License](https://img.shields.io/badge/license-LSOSL-blue)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE)
 [![Supported Python Version](https://img.shields.io/pypi/pyversions/unicorn_binance_websocket_api.svg)](https://www.python.org/downloads/)
 [![PyPI - Status](https://img.shields.io/pypi/status/unicorn_binance_websocket_api.svg)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues)
 [![codecov](https://codecov.io/gh/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/branch/master/graph/badge.svg?token=5I03AZ3F5S)](https://codecov.io/gh/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)
-[![Build and Publish](https://github.com/LUCIT-Systems-and-Development/lucit-licensing-python/actions/workflows/build_wheels.yml/badge.svg)](https://github.com/LUCIT-Systems-and-Development/lucit-licensing-python/actions/workflows/build_wheels.yml)
+[![Build and Publish](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml/badge.svg)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml)
 [![CodeQL](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/codeql-analysis.yml)
 [![Unit Tests](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml)
 [![Azure Pipelines](https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/unicorn-binance-websocket-api-feedstock?branchName=main)](https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=15698&branchName=main)
@@ -35,12 +35,12 @@ in a easy, fast, flexible, robust and fully-featured way.
 
 Part of '[UNICORN Binance Suite](https://www.lucit.tech/unicorn-binance-suite.html)'.
 
+## Get a UNICORN Binance Suite License
+
+To run modules of the *UNICORN Binance Suite* you need a valid license from the
+[LUCIT Online Shop](https://shop.lucit.services/software/unicorn-binance-suite)!
+
 ## Receive Data from Binance WebSockets
-
-### Get a UNICORN Binance Suite License
-
-To run modules of the *UNICORN Binance Suite* you need a valid license from our 
-[web shop](https://shop.lucit.services/software/unicorn-binance-suite)!
 
 ### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with a [`stream_buffer`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60) with just 3 lines of code:
 
