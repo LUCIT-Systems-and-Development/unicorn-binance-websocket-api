@@ -39,8 +39,13 @@ jobs:
         run: |
           sudo apt install python3-pip
           python -m pip --version
+          python -m pip install wheel
       - name: Install cryptography
         run: python -m pip install cryptography
+      - name: Check cryptography
+        run: |
+          pip install pipdeptree
+          pipdeptree | grep -E 'cryptography|pyOpenSSL|service-identity'
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
