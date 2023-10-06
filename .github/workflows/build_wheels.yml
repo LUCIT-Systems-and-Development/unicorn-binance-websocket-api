@@ -25,8 +25,10 @@ jobs:
         shell: bash
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
+        shell: bash
       - name: Set up Environment
         run: echo "CIBW_SKIP=pp36-* pp37-* pp38-*" >> $GITHUB_ENV
+        shell: bash
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
