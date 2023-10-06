@@ -43,6 +43,7 @@ jobs:
         if: matrix.os == 'ubuntu-20.04'
         run: python -m pip install cryptography
       - name: Check cryptography
+        if: matrix.os == 'ubuntu-20.04'
         run: |
           pip install pipdeptree
           pipdeptree | grep -E 'cryptography|pyOpenSSL|service-identity'
