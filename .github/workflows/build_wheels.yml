@@ -11,17 +11,22 @@ jobs:
     env:
       CIBW_BEFORE_BUILD: "pip install -U pip"
       CIBW_ENVIRONMENT: "PATH=/home/runner/.cargo/bin:${PATH}"
-#      CIBW_BEFORE_BUILD: "pip uninstall -y cryptography pyOpenSSL service-identity"
     strategy:
       matrix:
         os: [ubuntu-20.04, windows-2019, macos-11]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
+      - name: Install Rust
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          echo "/home/runner/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Create Virtual Environment and Install Dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
       - name: Add rust to ENV
         if: matrix.os == 'ubuntu-20.04'
         run: echo "PATH=$PATH:/home/runner/.cargo/bin" >> $GITHUB_ENV
@@ -49,6 +54,9 @@ jobs:
       - name: Check ENV
         if: matrix.os == 'ubuntu-20.04'
         run: echo $PATH
+      - name: Activate Virtual Environment (Ubuntu)
+        if: matrix.os == 'ubuntu-20.04'
+        run: source venv/bin/activate
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
