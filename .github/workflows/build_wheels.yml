@@ -28,10 +28,16 @@ jobs:
         run: python -m pip install --upgrade pip
       - name: Set up Environment
         run: echo "CIBW_SKIP=pp36-* pp37-* pp38-* pp39-* pp310-*" >> $GITHUB_ENV
+      - name: Set up CIBuildWheel Environment
+        run: echo "CIBW_ENVIRONMENT=PATH=/home/runner/.cargo/bin:${PATH}" >> $GITHUB_ENV
       - name: Debug Rust
         run: |
           which rustc
           rustc --version
+      - name: Ensure pip is installed
+        run: |
+          python -m ensurepip
+          python -m pip --version
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
