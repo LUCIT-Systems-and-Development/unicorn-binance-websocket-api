@@ -15,20 +15,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Set up Environment
         run: |
-          echo "CIBW_SKIP=pp36-* pp37-* pp38-*" >> $GITHUB_ENV
+          echo "CIBW_SKIP=pp36-* pp37-* pp38-* pp39-* pp310-*" >> $GITHUB_ENV
           python -m pip install --upgrade pip
-      - name: Install Rust (Linux/macOS)
-        if: matrix.os != 'windows-2019'
-        run: |
-          echo "CIBW_BEFORE_BUILD=chmod +x {project}/tools/github/install_rust.sh && {project}/tools/github/install_rust.sh" >> $GITHUB_ENV
-          echo "/home/runner/.cargo/bin" >> $GITHUB_PATH
-          python -m pip install --upgrade pip
-      - name: Install Rust (Windows)
-        if: matrix.os == 'windows-2019'
-        run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://win.rustup.rs/x86_64 -o rustup-init.exe
-          ./rustup-init.exe -y
-          echo "$HOME/.cargo/bin" >> $env:GITHUB_PATH
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
