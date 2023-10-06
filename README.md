@@ -318,6 +318,8 @@ machine of [HETZNER CLOUD](https://www.hetzner.com) - [get 20 EUR starting credi
 The module requires Python 3.7 or above, as it depends on Pythons latest asyncio features for asynchronous/concurrent 
 processing. 
 
+For the PyPy interpreter we offer packages only from Python version 3.9 and higher.
+
 The current dependencies are listed 
 [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
