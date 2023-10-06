@@ -13,17 +13,15 @@ jobs:
         os: [ubuntu-20.04, windows-2019, macos-11]
     steps:
       - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
-      - name: Install Rust
-        if: matrix.os == 'ubuntu-20.04'
-        run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
       - name: Set up Environment
-        run: |
-          echo "CIBW_SKIP=pp36-* pp37-* pp38-* pp39-* pp310-*" >> $GITHUB_ENV
-          python -m pip install --upgrade pip
+        run: echo "CIBW_SKIP=pp36-* pp37-* pp38-* pp39-* pp310-*" >> $GITHUB_ENV
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
