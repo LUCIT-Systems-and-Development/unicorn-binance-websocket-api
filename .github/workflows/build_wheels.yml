@@ -10,6 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       CIBW_ENVIRONMENT: "PATH=/home/runner/.cargo/bin:${PATH}"
+      CIBW_BEFORE_BUILD: "pip uninstall -y cryptography pyOpenSSL service-identity"
     strategy:
       matrix:
         os: [ubuntu-20.04, windows-2019, macos-11]
