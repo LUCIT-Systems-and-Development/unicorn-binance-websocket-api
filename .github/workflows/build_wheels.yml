@@ -18,10 +18,12 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
+      - name: Add rust to ENV
+        run: export PATH=$PATH:/home/runner/.cargo/bin
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
       - name: Set up Environment
-        run: echo "CIBW_SKIP=pp36-* pp37-* pp38-* pp39-* pp310-*" >> $GITHUB_ENV
+        run: echo "CIBW_SKIP=pp36-* pp37-* pp38-*" >> $GITHUB_ENV
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
