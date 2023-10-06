@@ -11,16 +11,14 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04, windows-2019, macos-11]
+    env:
+      PATH: /usr/share/rust/.cargo/bin:${{ env.PATH }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Environment
         run: |
           echo "CIBW_SKIP=pp36-* pp37-* pp38-*" >> $GITHUB_ENV
           python -m pip install --upgrade pip
-      - name: Install Rust
-        run: |
-          curl '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          echo "PATH=$HOME/.cargo/bin:$PATH" >> $GITHUB_ENV
       - name: Check Rust Version
         run: rustc --version
       - name: Build wheels
