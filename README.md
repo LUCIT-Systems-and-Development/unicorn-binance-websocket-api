@@ -33,16 +33,26 @@ An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-ma
 com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, dex/chain+testnet) 
 in a easy, fast, flexible, robust and fully-featured way. 
 
-Part of ['UNICORN Binance Suite'](https://www.lucit.tech/unicorn-binance-suite.html).
+Part of '[UNICORN Binance Suite](https://www.lucit.tech/unicorn-binance-suite.html)'.
 
 ## Receive Data from Binance WebSockets
+
+### Get a UNICORN Binance Suite License
+
+To run modules of the *UNICORN Binance Suite* you need a valid license from our 
+[web shop](https://shop.lucit.services/software/unicorn-binance-suite)!
+
 ### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with a [`stream_buffer`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60) with just 3 lines of code:
 
 ```
 import unicorn_binance_websocket_api
 
+lucit_api_secret = "YOUR_LUCIT_API_SECRET"
+lucit_license_token = "YOUR_LUCIT_LICENSE_TOKEN"
 
-ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(exchange="binance.com")
+ubwa = BinanceWebSocketApiManager(exchange="binance.com", 
+                                  lucit_api_secret=lucit_api_secret, 
+                                  lucit_license_token=lucit_license_token)
 ubwa.create_stream(channels=['trade', 'kline_1m'], markets=['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
 
@@ -63,7 +73,12 @@ def process_new_receives(stream_data):
     print(str(stream_data))
 
 
-ubwa = BinanceWebSocketApiManager(exchange="binance.com")
+lucit_api_secret = "YOUR_LUCIT_API_SECRET"
+lucit_license_token = "YOUR_LUCIT_LICENSE_TOKEN"
+
+ubwa = BinanceWebSocketApiManager(exchange="binance.com", 
+                                  lucit_api_secret=lucit_api_secret, 
+                                  lucit_license_token=lucit_license_token)
 ubwa.create_stream(channels=['trade', 'kline_1m'], markets=['btcusdt', 'bnbbtc', 'ethbtc'], 
                    process_stream_data=process_new_receives)
 ```
@@ -103,10 +118,15 @@ def process_api_responses(stream_data):
     print(str(stream_data))
 
 
-api_key = "YOUR BINANCE API KEY"
-api_secret = "YOUR BINANCE API SECRET"
+api_key = "YOUR_BINANCE_API_KEY"
+api_secret = "YOUR_BINANCE_API_SECRET"
 
-ubwa = BinanceWebSocketApiManager(exchange="binance.com")
+lucit_api_secret = "YOUR_LUCIT_API_SECRET"
+lucit_license_token = "YOUR_LUCIT_LICENSE_TOKEN"
+
+ubwa = BinanceWebSocketApiManager(exchange="binance.com", 
+                                  lucit_api_secret=lucit_api_secret, 
+                                  lucit_license_token=lucit_license_token)
 api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
                                 process_stream_data=process_api_responses)
                                 
@@ -188,7 +208,7 @@ Use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-binance-rest-a
 | [Binance DEX Testnet](https://testnet.binance.org)                 | `binance.org-testnet`                 |
 
 - Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so 
-you dont need to deal with asyncio in your code!
+you don't need to deal with asyncio in your code!
 
 - Supports 
 [subscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream)
