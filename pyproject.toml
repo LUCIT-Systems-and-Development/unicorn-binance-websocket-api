@@ -1,3 +1,3 @@
 [build-system]
-requires = ['setuptools', 'wheel', 'pip']
+requires = ['setuptools', 'wheel', 'pip', 'Cython']
 build-backend = "setuptools.build_meta"
