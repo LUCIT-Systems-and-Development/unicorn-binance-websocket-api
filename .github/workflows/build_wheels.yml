@@ -20,8 +20,9 @@ jobs:
       - name: Install Rust (Linux/macOS)
         if: matrix.os != 'windows-2019'
         run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          echo "CIBW_BEFORE_BUILD=tools/github/install_rust.sh" >> $GITHUB_ENV
+          echo "/home/runner/.cargo/bin" >> $GITHUB_PATH
+          python -m pip install --upgrade pip
       - name: Install Rust (Windows)
         if: matrix.os == 'windows-2019'
         run: |
