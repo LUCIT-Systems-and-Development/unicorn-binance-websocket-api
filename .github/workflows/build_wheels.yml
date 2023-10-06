@@ -28,8 +28,6 @@ jobs:
         run: python -m pip install --upgrade pip
       - name: Set up Environment
         run: echo "CIBW_SKIP=pp36-* pp37-* pp38-* pp39-* pp310-*" >> $GITHUB_ENV
-      - name: Set up CIBuildWheel Environment
-        run: echo "CIBW_ENVIRONMENT=PATH=/home/runner/.cargo/bin:${PATH}" >> $GITHUB_ENV
       - name: Debug Rust
         run: |
           which rustc
