@@ -6,6 +6,7 @@
 
 cheroot
 colorama
+cryptography
 Cython
 flask
 flask_restful
