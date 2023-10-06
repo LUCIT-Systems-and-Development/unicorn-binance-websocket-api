@@ -36,7 +36,7 @@ jobs:
           rustc --version
       - name: Ensure pip is installed
         run: |
-          apt install python3-pip
+          sudo apt install python3-pip
           python -m pip --version
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
