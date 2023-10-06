@@ -20,7 +20,7 @@ jobs:
       - name: Install Rust (Linux/macOS)
         if: matrix.os != 'windows-2019'
         run: |
-          echo "CIBW_BEFORE_BUILD=tools/github/install_rust.sh" >> $GITHUB_ENV
+          echo "CIBW_BEFORE_BUILD=chmod +x {project}/tools/github/install_rust.sh && {project}/tools/github/install_rust.sh" >> $GITHUB_ENV
           echo "/home/runner/.cargo/bin" >> $GITHUB_PATH
           python -m pip install --upgrade pip
       - name: Install Rust (Windows)
