@@ -26,7 +26,7 @@ jobs:
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
       - name: Set up Environment
-        run: echo "CIBW_SKIP=pp36-* pp37-* pp38-* pp39-*" >> $GITHUB_ENV
+        run: echo "CIBW_SKIP=pp36-* pp37-* pp38-* pp39-* pp310-*" >> $GITHUB_ENV
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
