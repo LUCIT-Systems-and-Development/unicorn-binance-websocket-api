@@ -224,7 +224,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  lucit_license_token: str = None):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "2.0.0"
+        self.version = "1.46.2"
         self.stop_manager_request = None
         logger.info(f"New instance of {self.get_user_agent()}-{'compiled' if cython.compiled else 'source'} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
