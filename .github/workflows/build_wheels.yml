@@ -47,6 +47,9 @@ jobs:
         run: |
           pip install pipdeptree
           pipdeptree | grep -E 'cryptography|pyOpenSSL|service-identity'
+      - name: Check ENV
+        if: matrix.os == 'ubuntu-20.04'
+        run: echo $PATH
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
