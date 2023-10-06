@@ -22,6 +22,11 @@ jobs:
         with:
           toolchain: stable
           override: true
+          components: rustfmt, clippy
+      - name: Run cargo check
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
       - uses: actions/upload-artifact@v3
