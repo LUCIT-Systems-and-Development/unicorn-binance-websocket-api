@@ -48,7 +48,7 @@ setup(
     license='MIT License',
     install_requires=['colorama', 'requests', 'websocket-client', 'websockets==10.4', 'flask_restful',
                       'cheroot', 'flask', 'lucit-licensing-python', 'ujson', 'psutil', 'PySocks', 'unicorn-fy',
-                      'unicorn-binance-rest-api>=1.9.0', 'typing_extensions', 'Cython', 'cryptography'],
+                      'unicorn-binance-rest-api>=1.9.0', 'typing_extensions', 'Cython'],
     keywords='binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
              'binance-websocket, binance-webstream, webstream, websocket, api, binance-jersey, binance-dex, '
             'binance-futures, binance-margin, binance-us',
