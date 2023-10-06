@@ -9,7 +9,7 @@ jobs:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
-      CIBW_BEFORE_BUILD: "pip install -U pip && rustup install stable && rustup default stable"
+      CIBW_BEFORE_BUILD: "pip install -U pip"
       CIBW_ENVIRONMENT: "PATH=/home/runner/.cargo/bin:${PATH}"
 #      CIBW_BEFORE_BUILD: "pip uninstall -y cryptography pyOpenSSL service-identity"
     strategy:
