@@ -40,6 +40,9 @@ Part of '[UNICORN Binance Suite](https://www.lucit.tech/unicorn-binance-suite.ht
 To run modules of the *UNICORN Binance Suite* you need a valid license from the
 [LUCIT Online Shop](https://shop.lucit.services/software/unicorn-binance-suite)!
 
+If you want to know more about the background of our licensing, please 
+[read this article](https://www.lucit.tech/article/a-new-chapter-in-our-journey-merging-open-source-spirit-with-sustainable-development.html).
+
 ## Receive Data from Binance WebSockets
 
 ### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with a [`stream_buffer`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60) with just 3 lines of code:
