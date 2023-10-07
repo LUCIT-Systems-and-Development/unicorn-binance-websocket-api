@@ -812,13 +812,9 @@
 <section id="added">
 <h3>Added<a class="headerlink" href="#added" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
+<li><p>Support for Python 3.11 and 3.12</p></li>
 <li><p>Integration of the <code class="docutils literal notranslate"><span class="pre">lucit-licensing-python</span></code> library for verifying the UNICORN Binance Suite license. A license can be
 purchased in the LUCIT Online Shop: https://shop.lucit.services/software/unicorn-binance-suite</p></li>
-</ul>
-</section>
-<section id="changed">
-<h3>Changed<a class="headerlink" href="#changed" title="Permalink to this heading">¶</a></h3>
-<ul class="simple">
 <li><p>License change from MIT to LSOSL - LUCIT Synergetic Open Source License:
 https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE</p></li>
 <li><p>Conversion to a C++ compiled Cython package with precompiled as well as PyPy and source code wheels.</p></li>
@@ -826,6 +822,11 @@ https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/b
 the GitHub repository by a GitHub action for all possible platforms and published directly as a new release on GitHub
 and PyPi. A second process from Conda-Forge then uploads it to Anaconda. Thus, the entire deployment process is
 transparent and the user can be sure that the compilation of a version fully corresponds to the source code.</p></li>
+</ul>
+</section>
+<section id="changed">
+<h3>Changed<a class="headerlink" href="#changed" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">&#64;staticmethod</span></code> to many static mehtods.</p></li>
 </ul>
 </section>
@@ -835,7 +836,6 @@ transparent and the user can be sure that the compilation of a version fully cor
 <li><p>Typos and formatting</p></li>
 <li><p>Shadow of a Python built-in in <code class="docutils literal notranslate"><span class="pre">manager.get_human_bytesize()</span></code>: <code class="docutils literal notranslate"><span class="pre">bytes</span></code> to <code class="docutils literal notranslate"><span class="pre">amount_bytes</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">manager.get_new_uuid_id()</span></code> returned not str()</p></li>
-<li><p>Removed 3 unused parameter of <code class="docutils literal notranslate"><span class="pre">manager.get_listen_key_from_restclient()</span></code>, now it is only accepting <code class="docutils literal notranslate"><span class="pre">stream_id</span></code>.</p></li>
 </ul>
 </section>
 </section>
@@ -3643,7 +3643,7 @@ flapping network connection</p></li>
     <div class="footer">
     &copy; <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
     See <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE">License</a> for more information.<br />
-    Last updated on Oct 07 2023 at 04:26 (CET).
+    Last updated on Oct 07 2023 at 04:45 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
