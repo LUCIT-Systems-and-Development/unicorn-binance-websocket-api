@@ -74,5 +74,5 @@ jobs:
           generate_release_notes: true
           name: unicorn-binance-websocket-api
           prerelease: false
-          tag_name: 1.46.3
+          tag_name: 2.0.0
           token: ${{ secrets.RELEASE_TOKEN }}

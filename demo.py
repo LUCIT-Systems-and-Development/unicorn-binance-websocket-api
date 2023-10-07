@@ -1,14 +1,16 @@
 import logging
 import os
+import time
+
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
-lucit_api_secret = "bf7df011327b09b80fb0c6bfbc8661633fdb0c58d42629c94abb5188d8b0115a"
-lucit_license_token = "5e84cbc7-acfa-489f-a8bd-t7d1b615af40d"
+lucit_api_secret = "a43135e0273ca69eddee7d954b14848622d70856ada57752ecafbf1b6b6cb420"
+lucit_license_token = "5622267f-72f4-4e04-aafb-t75c065d688d9"
 
 ubwa = BinanceWebSocketApiManager(lucit_api_secret=lucit_api_secret,
                                   lucit_license_token=lucit_license_token)
@@ -16,6 +18,7 @@ ubwa.create_stream("trade", "btcusdt", output="UnicornFy")
 
 try:
     while ubwa.is_manager_stopping() is False:
+        time.sleep(1)
         print(f"Trades: {ubwa.pop_stream_data_from_stream_buffer()}")
 except KeyboardInterrupt:
     print(f"Stopping ...")

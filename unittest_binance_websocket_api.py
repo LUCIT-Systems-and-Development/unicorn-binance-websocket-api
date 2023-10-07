@@ -45,6 +45,9 @@ tracemalloc.start(25)
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
 
+LUCIT_API_SECRET = "a43135e0273ca69eddee7d954b14848622d70856ada57752ecafbf1b6b6cb420"
+LUCIT_LICENSE_TOKEN = "5622267f-72f4-4e04-aafb-t75c065d688d9"
+
 logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
@@ -53,7 +56,9 @@ logging.basicConfig(level=logging.DEBUG,
 
 print(f"Starting unittests:")
 
-UBWA = BinanceWebSocketApiManager(exchange="binance.us", disable_colorama=True)
+UBWA = BinanceWebSocketApiManager(exchange="binance.us", disable_colorama=True,
+                                  lucit_api_secret=LUCIT_API_SECRET,
+                                  lucit_license_token=LUCIT_LICENSE_TOKEN)
 
 
 class TestBinanceComManager(unittest.TestCase):
@@ -192,7 +197,9 @@ class TestBinanceComManager(unittest.TestCase):
         self.ubwa.stop_manager_with_all_streams()
 
 
-UBWA2 = BinanceWebSocketApiManager(exchange="binance.com-testnet", high_performance=True)
+UBWA2 = BinanceWebSocketApiManager(exchange="binance.com-testnet", high_performance=True,
+                                   lucit_api_secret=LUCIT_API_SECRET,
+                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
 
 
 class TestBinanceComManagerTest(unittest.TestCase):
@@ -262,7 +269,9 @@ class TestBinanceComManagerTest(unittest.TestCase):
         self.binance_com_testnet_websocket_api_manager.stop_manager_with_all_streams()
 
 
-UBWA3 = BinanceWebSocketApiManager(exchange="binance.org-testnet", high_performance=True)
+UBWA3 = BinanceWebSocketApiManager(exchange="binance.org-testnet", high_performance=True,
+                                   lucit_api_secret=LUCIT_API_SECRET,
+                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
 
 
 class TestBinanceOrgManagerTestnet(unittest.TestCase):
@@ -280,7 +289,9 @@ class TestBinanceOrgManagerTestnet(unittest.TestCase):
         self.binance_org_testnet.stop_manager_with_all_streams()
 
 
-UBWA4 = BinanceWebSocketApiManager(exchange="binance.org", high_performance=True)
+UBWA4 = BinanceWebSocketApiManager(exchange="binance.org", high_performance=True,
+                                   lucit_api_secret=LUCIT_API_SECRET,
+                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
 
 
 class TestBinanceOrgManager(unittest.TestCase):
@@ -435,32 +446,44 @@ class TestBinanceOrgManager(unittest.TestCase):
 class TestRestApi(unittest.TestCase):
 
     def test_get_new_uuid_id(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com", high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         binance_websocket_api_manager.get_new_uuid_id()
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com", high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-testnet", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-testnet", high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_margin(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-margin", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-margin", high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_margin_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-margin-testnet", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-margin-testnet", high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
 #    def test_rest_binance_com_isolated_margin(self):
-#        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
+#        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True,
+    #                                                                    lucit_api_secret=LUCIT_API_SECRET,
+    #                                                                    lucit_license_token=LUCIT_LICENSE_TOKEN)
 #        BinanceWebSocketApiRestclient(binance_websocket_api_manager)
 #        binance_websocket_api_manager.stop_manager_with_all_streams()
 
@@ -469,40 +492,55 @@ class TestRestApi(unittest.TestCase):
 #        binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_futures(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures", high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_futures_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures-testnet", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures-testnet", high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_com_coin_futures(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin_futures", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin_futures", high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_binance_us_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us", high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_rest_trbinance_com_testnet(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="trbinance.com", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="trbinance.com", high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         BinanceWebSocketApiRestclient(binance_websocket_api_manager)
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_invalid_exchange(self):
         from unicorn_binance_websocket_api.exceptions import UnknownExchange
         try:
-            BinanceWebSocketApiManager(exchange="invalid-exchange.com", high_performance=True)
+            BinanceWebSocketApiManager(exchange="invalid-exchange.com",
+                                       high_performance=True,
+                                       lucit_api_secret=LUCIT_API_SECRET,
+                                       lucit_license_token=LUCIT_LICENSE_TOKEN)
         except UnknownExchange:
             pass
 
     def test_isolated_margin(self):
 #        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
-        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us", high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us", high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         stream_id = binance_websocket_api_manager.create_stream('arr', '!userData', symbols="CELRBTC", api_key="key", api_secret="secret")
         time.sleep(10)
         print("\r\n")
@@ -510,7 +548,9 @@ class TestRestApi(unittest.TestCase):
         binance_websocket_api_manager.stop_manager_with_all_streams()
 
     def test_live_run(self):
-        binance_websocket_api_manager = BinanceWebSocketApiManager(enable_stream_signal_buffer=True, high_performance=True)
+        binance_websocket_api_manager = BinanceWebSocketApiManager(enable_stream_signal_buffer=True, high_performance=True,
+                                                                   lucit_api_secret=LUCIT_API_SECRET,
+                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
         binance_websocket_api_manager.get_active_stream_list()
         binance_websocket_api_manager.get_limit_of_subscriptions_per_stream()
         binance_websocket_api_manager.get_stream_list()

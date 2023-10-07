@@ -42,7 +42,12 @@ logging.basicConfig(level=logging.DEBUG,
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
-binance_websocket_api_manager = BinanceWebSocketApiManager()
+# To use this library you need a valid UNICORN Binance Suite License Token and API Secret:
+# https://shop.lucit.services/software/unicorn-binance-suite
+lucit_api_secret = ""
+lucit_license_token = ""
+
+ubwa = BinanceWebSocketApiManager(lucit_api_secret=lucit_api_secret, lucit_license_token=lucit_license_token)
 
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
@@ -62,7 +67,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 
 
 # start a worker process to process to move the received stream_data from the stream_buffer to a print function
-worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))
 worker_thread.start()
 
 print("\r\n========================================== Starting aggTrade ==========================================\r\n")
@@ -76,68 +81,68 @@ markets = ['xrpbearbusd', 'zeceth', 'cndbtc', 'dashbtc', 'atompax', 'perlbtc', '
            'neobnb', 'cosbtc', 'powreth', 'rlcusdt', 'hbarbnb', 'wabieth', 'bqxeth', 'aionbtc', 'aeeth', 'mthbtc',
            'wrxbtc', 'pptbtc', 'nknbtc', 'zecusdt', 'stormeth', 'qtumusdt']
 
-aggtrade_stream_id = binance_websocket_api_manager.create_stream(["aggTrade"], markets)
+aggtrade_stream_id = ubwa.create_stream(["aggTrade"], markets)
 time.sleep(7)
 # stop
-binance_websocket_api_manager.stop_stream(aggtrade_stream_id)
+ubwa.stop_stream(aggtrade_stream_id)
 time.sleep(2)
 print("\r\n=========================================== Stopped aggTrade ==========================================\r\n")
 
 print("\r\n====================================== Starting trade and kline_1m ====================================\r\n")
-trade_stream_id = binance_websocket_api_manager.create_stream(["trade"], markets)
-kline_1m_stream_id = binance_websocket_api_manager.create_stream("kline_1m", markets)
+trade_stream_id = ubwa.create_stream(["trade"], markets)
+kline_1m_stream_id = ubwa.create_stream("kline_1m", markets)
 time.sleep(7)
-binance_websocket_api_manager.stop_stream(trade_stream_id)
-binance_websocket_api_manager.stop_stream(kline_1m_stream_id)
+ubwa.stop_stream(trade_stream_id)
+ubwa.stop_stream(kline_1m_stream_id)
 time.sleep(2)
 print("\r\n====================================== Stopped trade and kline_1m =====================================\r\n")
 
 print("\r\n======================================== Starting ticker ==============================================\r\n")
-ticker_bnbbtc_stream_id = binance_websocket_api_manager.create_stream(["ticker"], markets)
+ticker_bnbbtc_stream_id = ubwa.create_stream(["ticker"], markets)
 time.sleep(7)
-binance_websocket_api_manager.stop_stream(ticker_bnbbtc_stream_id)
+ubwa.stop_stream(ticker_bnbbtc_stream_id)
 time.sleep(2)
 print("\r\n======================================== Stopped ticker ===============================================\r\n")
 
 print("\r\n========================================== Starting miniticker ========================================\r\n")
-miniticker_stream_id = binance_websocket_api_manager.create_stream(["miniTicker"], markets)
+miniticker_stream_id = ubwa.create_stream(["miniTicker"], markets)
 time.sleep(7)
-binance_websocket_api_manager.stop_stream(miniticker_stream_id)
+ubwa.stop_stream(miniticker_stream_id)
 time.sleep(2)
 print("\r\n========================================= Stopped miniticker  =========================================\r\n")
 
 print("\r\n========================================== Starting kline_5m ==========================================\r\n")
-kline_5m_stream_id = binance_websocket_api_manager.create_stream(["kline_5m"], markets)
+kline_5m_stream_id = ubwa.create_stream(["kline_5m"], markets)
 time.sleep(7)
-binance_websocket_api_manager.stop_stream(kline_5m_stream_id)
+ubwa.stop_stream(kline_5m_stream_id)
 time.sleep(2)
 print("\r\n========================================= Stopped kline_5m  ===========================================\r\n")
 
 print("\r\n=========================================== Starting depth5 ===========================================\r\n")
-depth5_stream_id = binance_websocket_api_manager.create_stream(["depth5"], markets)
+depth5_stream_id = ubwa.create_stream(["depth5"], markets)
 time.sleep(7)
-binance_websocket_api_manager.stop_stream(depth5_stream_id)
+ubwa.stop_stream(depth5_stream_id)
 time.sleep(2)
 print("\r\n========================================== Stopped depth5  ============================================\r\n")
 
 print("\r\n========================================== Starting depth =============================================\r\n")
-depth_stream_id = binance_websocket_api_manager.create_stream(["depth"], markets)
+depth_stream_id = ubwa.create_stream(["depth"], markets)
 time.sleep(7)
-binance_websocket_api_manager.stop_stream(depth_stream_id)
+ubwa.stop_stream(depth_stream_id)
 time.sleep(2)
 print("\r\n============================================ Stopped depth  ===========================================\r\n")
 
 print("\r\n========================================== Starting !miniticker ========================================\r\n")
-miniticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])
+miniticker_stream_id = ubwa.create_stream(["arr"], ["!miniTicker"])
 time.sleep(7)
-binance_websocket_api_manager.stop_stream(miniticker_stream_id)
+ubwa.stop_stream(miniticker_stream_id)
 time.sleep(2)
 print("\r\n========================================= Stopped !miniticker  =========================================\r\n")
 
 print("\r\n========================================== Starting ticker all ========================================\r\n")
-ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])
+ticker_all_stream_id = ubwa.create_stream(["arr"], ["!ticker"])
 time.sleep(7)
-binance_websocket_api_manager.stop_stream(ticker_all_stream_id)
+ubwa.stop_stream(ticker_all_stream_id)
 time.sleep(2)
 print("\r\n=========================================== Stopped ticker all ========================================\r\n")
 
@@ -147,22 +152,22 @@ channels = {'trade', 'kline_1', 'kline_5', 'kline_15', 'kline_30', 'kline_1h', '
 print(channels)
 print(markets, "\r\n")
 time.sleep(3)
-multi_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+multi_multi_stream_id = ubwa.create_stream(channels, markets)
 time.sleep(3)
-binance_websocket_api_manager.stop_stream(multi_multi_stream_id)
+ubwa.stop_stream(multi_multi_stream_id)
 time.sleep(2)
 print("\r\n================================== Stopped multi multi socket  ========================================\r\n")
 
 print("\r\n============================= Starting multi multi socket subscribe ===================================\r\n")
 channels = {'trade', 'kline_1', 'kline_5', 'kline_15', 'kline_30', 'kline_1h', 'kline_12h', 'kline_1w',
             'miniTicker', 'depth20', '!miniTicker', '!ticker'}
-multi_multi_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+multi_multi_stream_id = ubwa.create_stream(channels, markets)
 time.sleep(5)
-binance_websocket_api_manager.stop_stream(multi_multi_stream_id)
+ubwa.stop_stream(multi_multi_stream_id)
 time.sleep(2)
 print("\r\n============================== Stopped multi multi socket subscribe ===================================\r\n")
 
 
 print("\r\n=============================== Stopping BinanceWebSocketManager ======================================\r\n")
-binance_websocket_api_manager.stop_manager_with_all_streams()
+ubwa.stop_manager_with_all_streams()
 print("finished!")
