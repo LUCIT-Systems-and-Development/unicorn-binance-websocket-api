@@ -145,7 +145,7 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(self.ubwa.get_exchange(), "binance.us")
 
     def test_get_listenkey_from_restclient(self):
-        self.assertEqual(self.ubwa.get_listen_key_from_restclient("ID", "key", "sec"), False)
+        self.assertEqual(self.ubwa.get_listen_key_from_restclient("ID"), False)
 
     def test_delete_listen_key_by_stream_id(self):
         stream_id = self.ubwa.get_new_uuid_id()
