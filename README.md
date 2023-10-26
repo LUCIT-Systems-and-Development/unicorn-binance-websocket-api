@@ -194,21 +194,21 @@ Use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-binance-rest-a
 
 - [Supported exchanges](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview): 
 
-| Exchange                                                           | Exchange string                       | 
-|--------------------------------------------------------------------|---------------------------------------|
-| [Binance](https://www.binance.com)                                 | `binance.com`                         |
-| [Binance Testnet](https://testnet.binance.vision/)                 | `binance.com-testnet`                 |
-| [Binance Margin](https://www.binance.com)                          | `binance.com-margin`                  |
-| [Binance Margin Testnet](https://testnet.binance.vision/)          | `binance.com-margin-testnet`          |
-| [Binance Isolated Margin](https://www.binance.com)                 | `binance.com-isolated_margin`         |
-| [Binance Isolated Margin Testnet](https://testnet.binance.vision/) | `binance.com-isolated_margin-testnet` |
-| [Binance USD-M Futures](https://www.binance.com)                   | `binance.com-futures`                 |
-| [Binance USD-M Futures Testnet](https://testnet.binancefuture.com) | `binance.com-futures-testnet`         |
-| [Binance Coin-M Futures](https://www.binance.com)                  | `binance.com-coin_futures`            |
-| [Binance US](https://www.binance.us)                               | `binance.us`                          |
-| [Binance TR](https://www.trbinance.com)                            | `trbinance.com`                       |
-| [Binance DEX](https://www.binance.org)                             | `binance.org`                         |
-| [Binance DEX Testnet](https://testnet.binance.org)                 | `binance.org-testnet`                 |
+| Exchange                                                           | Exchange string                       | WS API                                                                                                                               |
+|--------------------------------------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| [Binance](https://www.binance.com)                                 | `binance.com`                         | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) |
+| [Binance Testnet](https://testnet.binance.vision/)                 | `binance.com-testnet`                 | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) |
+| [Binance Margin](https://www.binance.com)                          | `binance.com-margin`                  | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |                                                                                                                                     
+| [Binance Margin Testnet](https://testnet.binance.vision/)          | `binance.com-margin-testnet`          | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
+| [Binance Isolated Margin](https://www.binance.com)                 | `binance.com-isolated_margin`         | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
+| [Binance Isolated Margin Testnet](https://testnet.binance.vision/) | `binance.com-isolated_margin-testnet` | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
+| [Binance USD-M Futures](https://www.binance.com)                   | `binance.com-futures`                 | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
+| [Binance USD-M Futures Testnet](https://testnet.binancefuture.com) | `binance.com-futures-testnet`         | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
+| [Binance Coin-M Futures](https://www.binance.com)                  | `binance.com-coin_futures`            | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
+| [Binance US](https://www.binance.us)                               | `binance.us`                          | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
+| [Binance TR](https://www.trbinance.com)                            | `trbinance.com`                       | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
+| [Binance DEX](https://www.binance.org)                             | `binance.org`                         | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
+| [Binance DEX Testnet](https://testnet.binance.org)                 | `binance.org-testnet`                 | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
 
 - Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so 
 you don't need to deal with asyncio in your code!
@@ -469,11 +469,6 @@ contribute follow
 [![Contributors](https://contributors-img.web.app/image?repo=oliver-zehentleitner/unicorn-binance-websocket-api)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/graphs/contributors)
 
 We ![love](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/heart.png) open source!
-
-## You want to say Thank You?
-We hope you are enjoying using our libraries and that they are proving to be useful to you. If you have a moment, we 
-would greatly appreciate it if you could leave us a [review on Google](https://g.page/r/CbfHlcs8BfG8EAg/review). 
-Thank you for your support!
 
 ## Disclaimer
 This project is for informational purposes only. You should not construe this information or any other material as 
