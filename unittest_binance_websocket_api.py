@@ -36,6 +36,7 @@ from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServ
 import logging
 import unittest
 import os
+import sys
 import time
 import threading
 
@@ -814,6 +815,7 @@ class TestRestApi(unittest.TestCase):
         for thread in threading.enumerate():
             print(thread.name)
         print(f"stopping ...")
+        sys.exit()
 
 
 if __name__ == '__main__':

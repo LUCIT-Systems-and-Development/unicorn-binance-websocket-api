@@ -43,8 +43,10 @@ html_last_updated_fmt = "%b %d %Y at %H:%M (CET)"
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.githubpages',
-    'recommonmark',
-    'sphinx_markdown_tables'
+    'myst_parser',
+    'sphinx_markdown_tables',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.viewcode',
 ]
 
 source_parsers = {
@@ -94,6 +96,7 @@ html_context = {'github_user_name': 'LUCIT-Systems-and-Development',
                 'freshchat_src': "//eu.fw-cdn.com/10659511/361973.js",
                 'lucit': True}
 
+myst_heading_anchors = 3
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

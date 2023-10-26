@@ -17,24 +17,18 @@
 # Copyright (c) 2019-2023, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-# pip install sphinx
-# mkdir sphinx
-# cd sphinx
-# sphinx-quickstart
+rm source/changelog.md
+rm source/code_of_conduct.md
+rm source/contributing.md
+rm source/license.rst
+rm source/readme.md
+rm source/security.md
 
-## edit source/conf.py
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('../..'))
-
-# sphinx-apidoc -f -o source/ ../unicorn_binance_websocket_api/
-
-# pip install python_docs_theme
-## edit source/conf.py:
-# html_theme = 'python_docs_theme'
-
-# pip install recommonmark
-# add 'recommonmark' to extentions in conf.py
+cp ../CHANGELOG.md source/changelog.md
+cp ../CODE_OF_CONDUCT.md source/code_of_conduct.md
+cp ../CONTRIBUTING.md source/contributing.md
+cp ../LICENSE source/license.rst
+cp ../README.md source/readme.md
+cp ../SECURITY.md source/security.md
 
 make html -d
-#python3 -m sphinx source ../docs

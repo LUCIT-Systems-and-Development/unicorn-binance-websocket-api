@@ -10,10 +10,13 @@ Welcome to unicorn-binance-websocket-api's documentation!
    :maxdepth: 3
    :caption: Contents:
 
-   Readme <README.md>
+   Readme <readme.md>
    Modules <modules.rst>
-   ChangeLog <CHANGELOG.md>
-   Copyright <copyright.rst>
+   ChangeLog <changelog.md>
+   Code of Conduct <code_of_conduct.md>
+   Contributing <contributing.md>
+   License <license.rst>
+   Security <security.md>
 
 
 Indices and tables

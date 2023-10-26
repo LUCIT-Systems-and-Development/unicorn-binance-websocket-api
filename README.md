@@ -363,7 +363,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 - ./setup.py
 
 ## Change Log
-[https://unicorn-binance-websocket-api.docs.lucit.tech/CHANGELOG.html](https://unicorn-binance-websocket-api.docs.lucit.tech/CHANGELOG.html)
+[https://unicorn-binance-websocket-api.docs.lucit.tech/changelog.html](https://unicorn-binance-websocket-api.docs.lucit.tech/changelog.html)
 
 ## Documentation
 - [General](https://unicorn-binance-websocket-api.docs.lucit.tech)
@@ -421,6 +421,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 
 ## Social
 - [Discussions](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions)
+- [Gitter](https://gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api)
 - [https://t.me/unicorndevs](https://t.me/unicorndevs)
 - [https://dev.binance.vision](https://dev.binance.vision)
 - [https://community.binance.org](https://community.binance.org)
