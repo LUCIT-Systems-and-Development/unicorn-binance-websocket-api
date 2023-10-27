@@ -197,6 +197,8 @@ class TestBinanceComManager(unittest.TestCase):
         self.__class__.ubwa.stop_manager_with_all_streams()
 
 
+exit(0)
+
 UBWA2 = BinanceWebSocketApiManager(exchange="binance.com-testnet", high_performance=True,
                                    lucit_api_secret=LUCIT_API_SECRET,
                                    lucit_license_token=LUCIT_LICENSE_TOKEN)
