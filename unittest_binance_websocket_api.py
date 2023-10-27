@@ -538,7 +538,7 @@ class TestRestApi(unittest.TestCase):
             pass
 
     def test_isolated_margin(self):
-#        binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
+        # binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
         binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us", high_performance=True,
                                                                    lucit_api_secret=LUCIT_API_SECRET,
                                                                    lucit_license_token=LUCIT_LICENSE_TOKEN)
@@ -815,7 +815,7 @@ class TestRestApi(unittest.TestCase):
         for thread in threading.enumerate():
             print(thread.name)
         print(f"stopping ...")
-        sys.exit()
+        #sys.exit()
 
 
 if __name__ == '__main__':
