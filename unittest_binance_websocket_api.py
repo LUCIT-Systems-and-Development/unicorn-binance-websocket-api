@@ -46,8 +46,8 @@ tracemalloc.start(25)
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
 
-LUCIT_API_SECRET = "a43135e0273ca69eddee7d954b14848622d70856ada57752ecafbf1b6b6cb420"
-LUCIT_LICENSE_TOKEN = "5622267f-72f4-4e04-aafb-t75c065d688d9"
+LUCIT_API_SECRET = os.environ['LUCIT_API_SECRET']
+LUCIT_LICENSE_TOKEN = os.environ['LUCIT_LICENSE_TOKEN']
 
 logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.DEBUG,
