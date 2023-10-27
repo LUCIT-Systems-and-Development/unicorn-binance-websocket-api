@@ -33,11 +33,15 @@
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
+from configparser import ConfigParser, ExtendedInterpolation
+from pathlib import Path
+import gc
 import logging
 import unittest
 import os
 import time
 import threading
+import sys
 
 import tracemalloc
 tracemalloc.start(25)
@@ -45,8 +49,16 @@ tracemalloc.start(25)
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
 
-LUCIT_API_SECRET = os.environ['LUCIT_API_SECRET']
-LUCIT_LICENSE_TOKEN = os.environ['LUCIT_LICENSE_TOKEN']
+input_config_file = f"{Path.home()}/.lucit/lucit_license.ini"
+if os.path.isfile(input_config_file):
+    print(f"Loading configuration file `{input_config_file}`")
+    config = ConfigParser(interpolation=ExtendedInterpolation())
+    config.read(input_config_file)
+    LUCIT_API_SECRET = config['LUCIT']['api_secret']
+    LUCIT_LICENSE_TOKEN = config['LUCIT']['license_token']
+else:
+    LUCIT_API_SECRET = os.environ['LUCIT_API_SECRET']
+    LUCIT_LICENSE_TOKEN = os.environ['LUCIT_LICENSE_TOKEN']
 
 logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.DEBUG,
@@ -203,8 +215,8 @@ class TestBinanceComManagerTest(unittest.TestCase):
                                               high_performance=True,
                                               lucit_api_secret=LUCIT_API_SECRET,
                                               lucit_license_token=LUCIT_LICENSE_TOKEN)
-        cls.binance_com_api_key = BINANCE_COM_API_KEY
-        cls.binance_com_api_secret = BINANCE_COM_API_SECRET
+        cls.binance_com_testnet_api_key = BINANCE_COM_API_KEY
+        cls.binance_com_testnet_api_secret = BINANCE_COM_API_SECRET
 
     @classmethod
     def tearDownClass(cls):
@@ -233,7 +245,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
         self.assertFalse(self.__class__.ubwa.create_websocket_uri(["arr"], ["!userData"]))
 
     def test_create_uri_userdata_regular_com(self):
-        if len(self.binance_com_testnet_api_key) == 0 or len(self.binance_com_testnet_api_secret) == 0:
+        if len(self.__class__.binance_com_testnet_api_key) == 0 or len(self.__class__.binance_com_testnet_api_secret) == 0:
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_regular_com() "
                   "for binance.com-testnet")
         else:
@@ -241,12 +253,12 @@ class TestBinanceComManagerTest(unittest.TestCase):
             self.__class__.ubwa._add_socket_to_socket_list(stream_id, ["!userData"], ["arr"])
             self.assertRegex(self.__class__.ubwa.create_websocket_uri(["!userData"], ["arr"],
                                                                       stream_id,
-                                                                      self.binance_com_testnet_api_key,
-                                                                      self.binance_com_testnet_api_secret),
+                                                                      self.__class__.binance_com_testnet_api_key,
+                                                                      self.__class__.binance_com_testnet_api_secret),
                              r'wss://testnet.binance.vision/ws/.')
 
     def test_create_uri_userdata_reverse_com(self):
-        if len(self.binance_com_testnet_api_key) == 0 or len(self.binance_com_testnet_api_secret) == 0:
+        if len(self.__class__.binance_com_testnet_api_key) == 0 or len(self.__class__.binance_com_testnet_api_secret) == 0:
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_reverse_com() "
                   "for binance.com-testnet")
         else:
@@ -305,7 +317,7 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.__class__.ubwa.stop_manager_with_all_streams()
+        cls.ubwa.stop_manager_with_all_streams()
 
     def test_create_uri_alltickers_regular_org_subscribe(self):
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["$all"], ["allTickers"]),
@@ -812,7 +824,9 @@ class TestRestApi(unittest.TestCase):
         for thread in threading.enumerate():
             print(thread.name)
         print(f"stopping ...")
+        gc.collect()
 
 
 if __name__ == '__main__':
     unittest.main()
+    sys.exit(0)
