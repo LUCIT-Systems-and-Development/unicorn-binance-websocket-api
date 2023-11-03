@@ -1,3 +1,5 @@
+from configparser import ConfigParser, ExtendedInterpolation
+from pathlib import Path
 import logging
 import os
 import time
@@ -9,11 +11,19 @@ logging.basicConfig(level=logging.DEBUG,
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
-lucit_api_secret = "a43135e0273ca69eddee7d954b14848622d70856ada57752ecafbf1b6b6cb420"
-lucit_license_token = "5622267f-72f4-4e04-aafb-t75c065d688d9"
+input_config_file = f"{Path.home()}/.lucit/lucit_license.ini"
+if os.path.isfile(input_config_file):
+    print(f"Loading configuration file `{input_config_file}`")
+    config = ConfigParser(interpolation=ExtendedInterpolation())
+    config.read(input_config_file)
+    LUCIT_API_SECRET = config['LUCIT']['api_secret']
+    LUCIT_LICENSE_TOKEN = config['LUCIT']['license_token']
+else:
+    LUCIT_API_SECRET = os.environ['LUCIT_API_SECRET']
+    LUCIT_LICENSE_TOKEN = os.environ['LUCIT_LICENSE_TOKEN']
 
-ubwa = BinanceWebSocketApiManager(lucit_api_secret=lucit_api_secret,
-                                  lucit_license_token=lucit_license_token)
+ubwa = BinanceWebSocketApiManager(lucit_api_secret=LUCIT_API_SECRET,
+                                  lucit_license_token=LUCIT_LICENSE_TOKEN)
 ubwa.create_stream("trade", "btcusdt", output="UnicornFy")
 
 try:

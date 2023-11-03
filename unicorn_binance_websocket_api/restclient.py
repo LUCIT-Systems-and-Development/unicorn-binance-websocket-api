@@ -124,12 +124,16 @@ class BinanceWebSocketApiRestclient(object):
                             api_secret=api_secret,
                             symbol=symbol,
                             last_static_ping_listen_key=last_static_ping_listen_key)
-            ubra = BinanceRestApiManager(api_key=self.api_key, api_secret=self.api_secret,
-                                         exchange=self.manager.exchange,
-                                         socks5_proxy_server=self.manager.socks5_proxy_server,
-                                         socks5_proxy_user=self.manager.socks5_proxy_user,
-                                         socks5_proxy_pass=self.manager.socks5_proxy_pass,
-                                         warn_on_update=self.manager.warn_on_update)
+            try:
+                ubra = BinanceRestApiManager(api_key=self.api_key, api_secret=self.api_secret,
+                                             exchange=self.manager.exchange,
+                                             socks5_proxy_server=self.manager.socks5_proxy_server,
+                                             socks5_proxy_user=self.manager.socks5_proxy_user,
+                                             socks5_proxy_pass=self.manager.socks5_proxy_pass,
+                                             warn_on_update=self.manager.warn_on_update)
+            except ResourceWarning as error_msg:
+                logger.error(f"BinanceWebSocketApiManager.get_listen_key() - ResourceWarning: {error_msg}")
+                return False
             if self.manager.exchange == "binance.com-margin" or \
                     self.manager.exchange == "binance.com-margin-testnet":
                 try:

@@ -31,6 +31,8 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from configparser import ConfigParser, ExtendedInterpolation
+from pathlib import Path
 import logging
 import math
 import os
@@ -50,8 +52,16 @@ binance_api_secret = ""
 
 # To use this library you need a valid UNICORN Binance Suite License Token and API Secret:
 # https://shop.lucit.services/software/unicorn-binance-suite
-lucit_api_secret = ""
-lucit_license_token = ""
+input_config_file = f"{Path.home()}/.lucit/lucit_license.ini"
+if os.path.isfile(input_config_file):
+    print(f"Loading configuration file `{input_config_file}`")
+    config = ConfigParser(interpolation=ExtendedInterpolation())
+    config.read(input_config_file)
+    LUCIT_API_SECRET = config['LUCIT']['api_secret']
+    LUCIT_LICENSE_TOKEN = config['LUCIT']['license_token']
+else:
+    LUCIT_API_SECRET = os.environ['LUCIT_API_SECRET']
+    LUCIT_LICENSE_TOKEN = os.environ['LUCIT_LICENSE_TOKEN']
 
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
@@ -80,8 +90,8 @@ try:
     binance_websocket_api_manager = BinanceWebSocketApiManager(high_performance=True,
                                                                ping_interval_default=20,
                                                                ping_timeout_default=20,
-                                                               lucit_api_secret=lucit_api_secret,
-                                                               lucit_license_token=lucit_license_token)
+                                                               lucit_api_secret=LUCIT_API_SECRET,
+                                                               lucit_license_token=LUCIT_LICENSE_TOKEN)
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)

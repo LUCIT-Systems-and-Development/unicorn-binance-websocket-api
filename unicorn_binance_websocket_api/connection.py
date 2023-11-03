@@ -44,15 +44,15 @@ class BinanceWebSocketApiConnection(object):
         self.manager = manager
         self.stream_id = copy.deepcopy(stream_id)
         self.socket_id = copy.deepcopy(socket_id)
-        self.api_key = copy.deepcopy(self.manager.stream_list[stream_id]['api_key'])
-        self.api_secret = copy.deepcopy(self.manager.stream_list[stream_id]['api_secret'])
-        self.ping_interval = copy.deepcopy(self.manager.stream_list[stream_id]['ping_interval'])
-        self.ping_timeout = copy.deepcopy(self.manager.stream_list[stream_id]['ping_timeout'])
-        self.close_timeout = copy.deepcopy(self.manager.stream_list[stream_id]['close_timeout'])
+        self.api_key = copy.deepcopy(self.manager.stream_list[self.stream_id]['api_key'])
+        self.api_secret = copy.deepcopy(self.manager.stream_list[self.stream_id]['api_secret'])
+        self.ping_interval = copy.deepcopy(self.manager.stream_list[self.stream_id]['ping_interval'])
+        self.ping_timeout = copy.deepcopy(self.manager.stream_list[self.stream_id]['ping_timeout'])
+        self.close_timeout = copy.deepcopy(self.manager.stream_list[self.stream_id]['close_timeout'])
         self.channels = copy.deepcopy(channels)
         self.markets = copy.deepcopy(markets)
         self.symbols = copy.deepcopy(symbols)
-        self.api = copy.deepcopy(self.manager.stream_list[stream_id]['api'])
+        self.api = copy.deepcopy(self.manager.stream_list[self.stream_id]['api'])
         self.add_timeout = True if "!userData" in str(str(channels) + str(markets)) or self.api is True else False
         if self.add_timeout:
             logger.debug(f"BinanceWebSocketApiConnection.receive({str(self.stream_id)}) socket_id="

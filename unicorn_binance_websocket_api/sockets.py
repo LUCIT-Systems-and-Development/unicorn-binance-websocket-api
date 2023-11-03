@@ -58,10 +58,10 @@ class BinanceWebSocketApiSocket(object):
                     if self.manager.is_stop_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
                         await websocket.close()
-                        sys.exit(0)
+                        return False
                     elif self.manager.is_stop_as_crash_request(self.stream_id):
                         await websocket.close()
-                        sys.exit(1)
+                        return False
                     try:
                         if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
                             logger.error(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
@@ -69,9 +69,9 @@ class BinanceWebSocketApiSocket(object):
                                          f"recent_socket_id={str(self.socket_id)} - Sending payload - exit because its "
                                          f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
                                          f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
-                            sys.exit(0)
+                            return False
                     except KeyError:
-                        sys.exit(1)
+                        return False
                     while self.manager.stream_list[self.stream_id]['payload']:
                         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
                                     f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
@@ -82,8 +82,11 @@ class BinanceWebSocketApiSocket(object):
                                          f"recent_socket_id={str(self.socket_id)} - Sending payload - exit because its "
                                          f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
                                          f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
-                            sys.exit(0)
-                        payload = self.manager.stream_list[self.stream_id]['payload'].pop(0)
+                            return False
+                        try:
+                            payload = self.manager.stream_list[self.stream_id]['payload'].pop(0)
+                        except IndexError as error_msg:
+                            logger.debug(f"BinanceWebSocketApiSocket.start_socket() IndexError: {error_msg}")
                         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
                                     f"{str(self.channels)}, {str(self.markets)} - Sending payload: {str(payload)}")
                         await websocket.send(json.dumps(payload, ensure_ascii=False))
@@ -110,7 +113,7 @@ class BinanceWebSocketApiSocket(object):
                         if self.manager.is_stop_request(self.stream_id):
                             self.manager.stream_is_stopping(self.stream_id)
                             await websocket.close()
-                            sys.exit(0)
+                            return False
                         if received_stream_data_json is not None:
                             if self.output == "UnicornFy":
                                 if self.manager.stream_list[self.stream_id]['api'] is False:
@@ -215,24 +218,27 @@ class BinanceWebSocketApiSocket(object):
                             websocket.close()
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
                             self.manager.set_restart_request(self.stream_id)
-                            sys.exit(1)
+                            return False
                         elif "WebSocket connection is closed: code = 1006" in str(error_msg):
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
                             self.manager.set_restart_request(self.stream_id)
-                            sys.exit(1)
+                            return False
                         else:
                             self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                             self.manager.set_restart_request(self.stream_id)
-                            sys.exit(1)
+                            return False
                     except AttributeError as error_msg:
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") - Exception AttributeError - "
                                      "error_msg: " + str(error_msg))
                         self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                         self.manager.set_restart_request(self.stream_id)
-                        sys.exit(1)
+                        return False
         except asyncio.TimeoutError as error_msg:
             # Catching https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/221
             self.manager.stream_is_crashing(self.stream_id, error_msg)
             self.manager.set_restart_request(self.stream_id)
-            sys.exit(1)
+            return False
+        except KeyError as error_msg:
+            logger.debug(f"BinanceWebSocketApiSocket.start_socket() KeyError: {error_msg}")
+            return False
