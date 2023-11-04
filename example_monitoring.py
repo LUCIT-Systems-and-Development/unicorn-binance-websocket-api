@@ -31,6 +31,8 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from configparser import ConfigParser, ExtendedInterpolation
+from pathlib import Path
 import logging
 import os
 import sys
@@ -44,6 +46,22 @@ logging.basicConfig(level=logging.DEBUG,
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
+# To use this library you need a valid UNICORN Binance Suite License Token and API Secret:
+# https://shop.lucit.services/software/unicorn-binance-suite
+input_config_file = f"{Path.home()}/.lucit/lucit_license.ini"
+if os.path.isfile(input_config_file):
+    print(f"Loading configuration file `{input_config_file}`")
+    config = ConfigParser(interpolation=ExtendedInterpolation())
+    config.read(input_config_file)
+    LUCIT_API_SECRET = config['LUCIT']['api_secret']
+    LUCIT_LICENSE_TOKEN = config['LUCIT']['license_token']
+else:
+    LUCIT_API_SECRET = os.environ['LUCIT_API_SECRET']
+    LUCIT_LICENSE_TOKEN = os.environ['LUCIT_LICENSE_TOKEN']
+
+print(f"API SECRET: '{LUCIT_API_SECRET}'")
+print(f"LICENSE_TOKEN: '{LUCIT_LICENSE_TOKEN}'")
+
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     while True:
@@ -55,19 +73,20 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         else:
             try:
                 # remove # to activate the print function:
-                print(oldest_stream_data_from_stream_buffer)
+                # print(oldest_stream_data_from_stream_buffer)
+                pass
             except KeyError:
                 # Any kind of error...
-                # not able to process the data? write it back to the stream_buffer
+                # not able to process the data? write it back to the stream_buffer to pick it up later.
                 binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
 
 
 # create instance of BinanceWebSocketApiManager and provide the function for stream processing
-binance_websocket_api_manager = BinanceWebSocketApiManager()
+ubwa = BinanceWebSocketApiManager(lucit_api_secret=LUCIT_API_SECRET, lucit_license_token=LUCIT_LICENSE_TOKEN)
 
 # create streams
-ticker_all_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!ticker"])
-miniticker_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])
+ticker_all_stream_id = ubwa.create_stream(["arr"], ["!ticker"])
+miniticker_stream_id = ubwa.create_stream(["arr"], ["!miniTicker"])
 
 markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
            'neousdt', 'bnbusdt', 'adabtc', 'ethusdt', 'trxbtc', 'bchabcbtc', 'ltcbtc', 'xrpbtc',
@@ -82,21 +101,21 @@ markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
            'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb',
            'wanbnb', 'zrxbnb', 'agibnb', 'funeth', 'arketh', 'engeth'}
 
-binance_websocket_api_manager.create_stream(["aggTrade"], markets)
-binance_websocket_api_manager.create_stream(["trade"], markets)
-binance_websocket_api_manager.create_stream(["kline_1m"], markets)
-binance_websocket_api_manager.create_stream(["kline_5m"], markets)
-binance_websocket_api_manager.create_stream(["kline_15m"], markets)
-binance_websocket_api_manager.create_stream(["kline_1h"], markets)
-binance_websocket_api_manager.create_stream(["kline_12h"], markets)
-binance_websocket_api_manager.create_stream(["kline_1w"], markets)
-binance_websocket_api_manager.create_stream(["ticker"], markets)
-binance_websocket_api_manager.create_stream(["miniTicker"], markets)
-binance_websocket_api_manager.create_stream(["depth"], markets)
-binance_websocket_api_manager.create_stream(["depth5"], markets)
-binance_websocket_api_manager.create_stream(["depth10"], markets)
-binance_websocket_api_manager.create_stream(["depth20"], markets)
-binance_websocket_api_manager.create_stream(["aggTrade"], markets)
+ubwa.create_stream(["aggTrade"], markets)
+ubwa.create_stream(["trade"], markets)
+ubwa.create_stream(["kline_1m"], markets)
+ubwa.create_stream(["kline_5m"], markets)
+ubwa.create_stream(["kline_15m"], markets)
+ubwa.create_stream(["kline_1h"], markets)
+ubwa.create_stream(["kline_12h"], markets)
+ubwa.create_stream(["kline_1w"], markets)
+ubwa.create_stream(["ticker"], markets)
+ubwa.create_stream(["miniTicker"], markets)
+ubwa.create_stream(["depth"], markets)
+ubwa.create_stream(["depth5"], markets)
+ubwa.create_stream(["depth10"], markets)
+ubwa.create_stream(["depth20"], markets)
+ubwa.create_stream(["aggTrade"], markets)
 
 markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'ltcusdt', 'adausdt', 'eosusdt',
            'neobtc', 'adaeth', 'icxusdt', 'btctusd', 'icxbtc', 'btcusdc', 'wanbtc', 'zecbtc', 'wtcbtc',
@@ -105,20 +124,20 @@ markets = {'bnbbtc', 'ethbtc', 'btcusdt', 'bchabcusdt', 'xrpusdt', 'rvnbtc', 'lt
            'bnbpax', 'linkusdt', 'hceth', 'zrxeth', 'icxeth', 'xmreth', 'neobnb', 'etceth', 'zeceth', 'xmrbnb'}
 channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w',
             'miniTicker', 'depth20'}
-binance_websocket_api_manager.create_stream(channels, markets)
+ubwa.create_stream(channels, markets)
 
 # start a worker process to process to move the received stream_data from the stream_buffer to a print function
-worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
+worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))
 worker_thread.start()
 
 # start a restful api server to report the current status to 'tools/icinga/check_binance_websocket_manager' which can be
 # used as a check_command for ICINGA/Nagios
-#binance_websocket_api_manager.start_monitoring_api(warn_on_update=False)
-binance_websocket_api_manager.start_monitoring_api()
+#ubwa.start_monitoring_api(warn_on_update=False)
+ubwa.start_monitoring_api()
 
 # if you like to not only listen on localhost use 'host="0.0.0.0"'
 # for a specific port do 'port=80'
-# binance_websocket_api_manager.start_monitoring_api(host="0.0.0.0", port=80)
+# ubwa.start_monitoring_api(host="0.0.0.0", port=80)
 
 print("18 websockets started!")
 print("Continue here: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/"

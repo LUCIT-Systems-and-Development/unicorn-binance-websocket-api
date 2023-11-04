@@ -10,6 +10,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
 ## 2.0.0.dev (development stage/unreleased/unstable)
+### Added
+- Handling of not retrieved error messages in AsyncIO loops
+- Debug mode for AsyncIO tasks
+- `manager.stop()` alias for `manager.stop_manager_with_all_streams()` 
+### Fixed
+- Exceptions in `socket.start_stocket() coroutine and replaced `sys.exit()` with `return Fales`
+- AsyncIO Loop handling and closing
+- Graceful shutdown in exception `UnknownExchange`
+- `manager.wait_till_stream_has_stopped()`
 
 ## 2.0.0
 ### Added

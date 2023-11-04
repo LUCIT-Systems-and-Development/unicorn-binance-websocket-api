@@ -71,7 +71,9 @@ class TestBinanceComManager(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print(f"\r\nTestBinanceComManager:")
-        cls.ubwa = BinanceWebSocketApiManager(exchange="binance.us", disable_colorama=True, debug=True,
+        cls.ubwa = BinanceWebSocketApiManager(exchange="binance.us",
+                                              disable_colorama=True,
+                                              debug=True,
                                               lucit_api_secret=LUCIT_API_SECRET,
                                               lucit_license_token=LUCIT_LICENSE_TOKEN)
         cls.binance_com_api_key = BINANCE_COM_API_KEY
@@ -79,6 +81,7 @@ class TestBinanceComManager(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        cls.ubwa.stop_monitoring_api()
         cls.ubwa.stop_manager_with_all_streams()
         print(f"\r\nTestBinanceComManager threads:")
         for thread in threading.enumerate():
@@ -193,7 +196,7 @@ class TestBinanceComManager(unittest.TestCase):
         #self.__class__.ubwa.unsubscribe_from_stream(stream_id, markets=['bnbbtc'])
         #self.__class__.ubwa.unsubscribe_from_stream(stream_id, channels=['trade'])
         time.sleep(6)
-        # Todo: self.assertTrue(self.__class__.ubwa.set_restart_request(stream_id))
+        self.assertTrue(self.__class__.ubwa.set_restart_request(stream_id))
         # time.sleep(6)
         self.__class__.ubwa.get_monitoring_status_icinga()
         self.__class__.ubwa.print_summary(title="Unittests")
@@ -203,9 +206,14 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertFalse(bool(self.__class__.ubwa._restart_stream(self.__class__.ubwa.get_new_uuid_id())))
 
     def test_start_monitoring_api(self):
-        self.assertTrue(self.__class__.ubwa.start_monitoring_api())
-        time.sleep(6)
-        self.assertTrue(self.__class__.ubwa.stop_monitoring_api())
+        with BinanceWebSocketApiManager(exchange="binance.com-testnet",
+                                        high_performance=True,
+                                        debug=True,
+                                        lucit_api_secret=LUCIT_API_SECRET,
+                                        lucit_license_token=LUCIT_LICENSE_TOKEN) as ubwa:
+            self.assertTrue(ubwa.start_monitoring_api())
+            time.sleep(6)
+            self.assertTrue(ubwa.stop_monitoring_api())
 
 
 class TestBinanceComManagerTest(unittest.TestCase):
@@ -292,6 +300,7 @@ class TestBinanceOrgManagerTestnet(unittest.TestCase):
     def setUpClass(cls):
         print(f"\r\nTestBinanceOrgManagerTestnet:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.org-testnet",
+                                              debug=True,
                                               high_performance=True,
                                               lucit_api_secret=LUCIT_API_SECRET,
                                               lucit_license_token=LUCIT_LICENSE_TOKEN)
@@ -321,6 +330,7 @@ class TestBinanceOrgManager(unittest.TestCase):
     def setUpClass(cls):
         print(f"\r\nTestBinanceOrgManager:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.org",
+                                              debug=True,
                                               high_performance=True,
                                               lucit_api_secret=LUCIT_API_SECRET,
                                               lucit_license_token=LUCIT_LICENSE_TOKEN)
@@ -477,6 +487,7 @@ class TestApiLive(unittest.TestCase):
     def setUpClass(cls):
         print(f"\r\nTestApiLive:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.us",
+                                              debug=True,
                                               enable_stream_signal_buffer=True,
                                               high_performance=True,
                                               lucit_api_secret=LUCIT_API_SECRET,
@@ -518,7 +529,7 @@ class TestApiLive(unittest.TestCase):
             pass
 
 # Todo: Ubra Update
-#def test_isolated_margin(self):
+#   def test_isolated_margin(self):
 #        # self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
 #        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.us", high_performance=False,
 #                                                                   lucit_api_secret=LUCIT_API_SECRET,
@@ -757,7 +768,7 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.get_most_receives_per_second()
         self.__class__.ubwa.get_number_of_streams_in_stream_list()
         self.__class__.ubwa.is_update_availabe_check_command()
-        # Todo: self.__class__.ubwa.wait_till_stream_has_stopped(stream_id2)
+        self.__class__.ubwa.wait_till_stream_has_stopped(stream_id2)
         self.__class__.ubwa.print_stream_info(stream_id2)
         self.__class__.ubwa.print_summary()
         self.__class__.ubwa.print_summary_to_png(".", 12.5)
@@ -776,9 +787,7 @@ class TestApiLive(unittest.TestCase):
 
         # test to many subscriptions
 # Todo: Ubra Update
-#
 #        import unicorn_binance_rest_api
-#
 #        binance_api_key = ""
 #        binance_api_secret = ""
 #        try:
