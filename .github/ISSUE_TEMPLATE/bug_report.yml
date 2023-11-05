@@ -55,7 +55,7 @@ body:
         - Other (please explain)
     validations:
       required: true
-      
+
   - type: dropdown
     id: Python
     attributes:
@@ -71,6 +71,19 @@ body:
         - Python3.12
     validations:
       required: true
+
+  - type: textarea
+    id: Wheel Info
+    attributes:
+      label: Installed package version
+      description: |
+        Please share your installed package files of this library.
+      placeholder: | 
+        'pip show unicorn-binance-websocket-api --files | grep \"  \"' or 
+        'conda list -f unicorn-binance-websocket-api  | grep \"  \"'
+      render: shell
+    validations:
+      required: false
       
   - type: textarea
     id: Packages

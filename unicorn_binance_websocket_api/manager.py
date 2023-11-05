@@ -401,14 +401,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.start()
 
     def __enter__(self):
-        print("UBWA is entering the with-context")
+        logger.debug(f"Entering 'with-context' ...")
         return self
 
     def __exit__(self, exc_type, exc_value, error_traceback):
-        print("UBWA is leaving the with-context")
+        logger.debug(f"Leaving 'with-context' ...")
         self.stop_manager_with_all_streams()
         if exc_type:
-            print(f"An exception occurred: {exc_value}")
+            logger.critical(f"An exception occurred: {exc_type} - {exc_value} - {error_traceback}")
 
     def _add_stream_to_stream_list(self,
                                    stream_id,

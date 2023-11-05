@@ -15,7 +15,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Debug mode for AsyncIO tasks
 - `manager.stop()` alias for `manager.stop_manager_with_all_streams()` 
 ### Fixed
-- Exceptions in `socket.start_stocket() coroutine and replaced `sys.exit()` with `return Fales`
+- Exceptions in `socket.start_stocket() coroutine and replaced `sys.exit()` with `return False`
 - AsyncIO Loop handling and closing
 - Graceful shutdown in exception `UnknownExchange`
 - `manager.wait_till_stream_has_stopped()`
