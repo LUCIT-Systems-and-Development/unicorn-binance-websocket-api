@@ -51,7 +51,7 @@ def callback_signals(signal_type=False, stream_id=False, data_record=False):
 
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/-87b0088124a8
+# https://medium.lucit.tech/87b0088124a8
 ubwa = BinanceWebSocketApiManager(exchange="binance.com", process_stream_signals=callback_signals)
 stream_id = ubwa.create_stream('depth20@1000ms', 'BNBBUSD', output='dict', process_stream_data=callback_data)
 time.sleep(5)

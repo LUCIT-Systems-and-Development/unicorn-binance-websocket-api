@@ -42,8 +42,8 @@ logging.basicConfig(level=logging.DEBUG,
                     style="{")
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/-87b0088124a8
-ubwa = BinanceWebSocketApiManager()
+# https://medium.lucit.tech/87b0088124a8
+ubwa = BinanceWebSocketApiManager(lucit_license_profile="BAD")
 
 ubwa.create_stream("trade", "btcusdt", output="UnicornFy")
 

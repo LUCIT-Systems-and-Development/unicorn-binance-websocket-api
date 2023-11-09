@@ -139,8 +139,8 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param stream_buffer_maxlen: Set a max len for the generic `stream_buffer`. This parameter can also be used within
                                  `create_stream()` for a specific `stream_buffer`.
     :type stream_buffer_maxlen: int or None
-    :param process_stream_signals: Provide a function/method to process the received stream signals. The function is running inside an asyncio loop and will be 
-                                   called instead of 
+    :param process_stream_signals: Provide a function/method to process the received stream signals. The function is running inside an asyncio loop and will be
+                                   called instead of
                                    `add_to_stream_signal_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer>`_
                                    like `process_stream_data(signal_type=False, stream_id=False, data_record=False)`.
     :type process_stream_signals: function
@@ -189,6 +189,11 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param lucit_api_secret: The `api_secret` of your UNICORN Binance Suite license from
                              https://shop.lucit.services/software/unicorn-binance-suite
     :type lucit_api_secret:  str
+    :param lucit_license_ini: Specify the path including filename to the config file (ex: `~/license_a.ini`). If not
+                              provided lucitlicmgr tries to load a `lucit_license.ini` from `/home/oliver/.lucit/`.
+    :type lucit_license_ini:  str
+    :param lucit_license_profile: The license profile to use. Default is 'LUCIT'.
+    :type lucit_license_profile:  str
     :param lucit_license_token: The `license_token` of your UNICORN Binance Suite license from
                                 https://shop.lucit.services/software/unicorn-binance-suite
     :type lucit_license_token:  str
@@ -221,6 +226,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                  socks5_proxy_pass: Optional[str] = None,
                  socks5_proxy_ssl_verification: Optional[bool] = True,
                  lucit_api_secret: str = None,
+                 lucit_license_ini: str = None,
+                 lucit_license_profile: str = None,
                  lucit_license_token: str = None):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
@@ -231,11 +238,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.debug = debug
         logger.info(f"Debug is {self.debug}")
 
-        # LUCIT Licensing
         self.lucit_api_secret = lucit_api_secret
+        self.lucit_license_ini = lucit_license_ini
+        self.lucit_license_profile = lucit_license_profile
         self.lucit_license_token = lucit_license_token
-        self.llm = LucitLicensingManager(api_secret=self.lucit_api_secret, license_token=self.lucit_license_token,
-                                         parent_shutdown_function=self.stop_manager_with_all_streams,
+        self.llm = LucitLicensingManager(api_secret=self.lucit_api_secret,
+                                         license_ini=self.lucit_license_ini,
+                                         license_profile=self.lucit_license_profile,
+                                         license_token=self.lucit_license_token,
+                                         parent_shutdown_function=self.stop_manager,
                                          program_used="unicorn-binance-websocket-api",
                                          needed_license_type="UNICORN-BINANCE-SUITE", start=True)
 
@@ -394,7 +405,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def __exit__(self, exc_type, exc_value, error_traceback):
         logger.debug(f"Leaving 'with-context' ...")
-        self.stop_manager_with_all_streams()
+        self.stop_manager()
         if exc_type:
             logger.critical(f"An exception occurred: {exc_type} - {exc_value} - {error_traceback}")
 

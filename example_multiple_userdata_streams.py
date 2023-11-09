@@ -56,7 +56,7 @@ def print_stream_buffer_data(binance_websocket_api_manager, stream_id):
 
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/-87b0088124a8
+# https://medium.lucit.tech/87b0088124a8
 # create instances of BinanceWebSocketApiManager
 binance_com_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com")
 

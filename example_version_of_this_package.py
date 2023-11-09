@@ -33,7 +33,7 @@
 import unicorn_binance_websocket_api
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/-87b0088124a8
+# https://medium.lucit.tech/87b0088124a8
 # create instance of BinanceWebSocketApiManager
 binance_websocket_api_manager = unicorn_binance_websocket_api.BinanceWebSocketApiManager()
 
