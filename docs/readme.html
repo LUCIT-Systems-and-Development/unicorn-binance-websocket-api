@@ -261,10 +261,8 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 <p>Part of ‘<a class="reference external" href="https://www.lucit.tech/unicorn-binance-suite.html">UNICORN Binance Suite</a>’.</p>
 <section id="get-a-unicorn-binance-suite-license">
 <h2>Get a UNICORN Binance Suite License<a class="headerlink" href="#get-a-unicorn-binance-suite-license" title="Link to this heading">¶</a></h2>
-<p>To run modules of the <em>UNICORN Binance Suite</em> you need a valid license from the
-<a class="reference external" href="https://shop.lucit.services/software/unicorn-binance-suite">LUCIT Online Shop</a>!</p>
-<p>If you want to know more about the background of our licensing, please
-<a class="reference external" href="https://www.lucit.tech/article/a-new-chapter-in-our-journey-merging-open-source-spirit-with-sustainable-development.html">read this article</a>.</p>
+<p>To run modules of the <em>UNICORN Binance Suite</em> you need a<br />
+<a class="reference external" href="https://medium.lucit.tech/how-to-obtain-and-use-a-unicorn-binance-suite-license-key-and-run-the-ubs-module-according-to-best-87b0088124a8#4ca4">valid license</a>!</p>
 </section>
 <section id="receive-data-from-binance-websockets">
 <h2>Receive Data from Binance WebSockets<a class="headerlink" href="#receive-data-from-binance-websockets" title="Link to this heading">¶</a></h2>
@@ -296,7 +294,8 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 
 
 <span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
-<span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> <span class="n">markets</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">],</span> 
+<span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> 
+                   <span class="n">markets</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">],</span> 
                    <span class="n">process_stream_data</span><span class="o">=</span><span class="n">process_new_receives</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -342,11 +341,16 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 
 
 <span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
-<span class="n">api_stream</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span> <span class="n">api_secret</span><span class="o">=</span><span class="n">api_secret</span><span class="p">,</span>
+<span class="n">api_stream</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span> 
+                                <span class="n">api_secret</span><span class="o">=</span><span class="n">api_secret</span><span class="p">,</span>
                                 <span class="n">process_stream_data</span><span class="o">=</span><span class="n">process_api_responses</span><span class="p">)</span>
                                 
-<span class="n">orig_client_order_id</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">create_order</span><span class="p">(</span><span class="n">order_type</span><span class="o">=</span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> 
-                                             <span class="n">quantity</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;BUSDUSDT&quot;</span><span class="p">)</span>
+<span class="n">orig_client_order_id</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">create_order</span><span class="p">(</span><span class="n">order_type</span><span class="o">=</span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span> 
+                                             <span class="n">price</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> 
+                                             <span class="n">quantity</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span> 
+                                             <span class="n">side</span><span class="o">=</span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span> 
+                                             <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;BUSDUSDT&quot;</span><span class="p">)</span>
 <span class="n">ubwa</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">cancel_order</span><span class="p">(</span><span class="n">orig_client_order_id</span><span class="o">=</span><span class="n">orig_client_order_id</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;BUSDUSDT&quot;</span><span class="p">)</span>                                             
 </pre></div>
 </div>
@@ -959,7 +963,7 @@ non-binding initial consultation!</p>
     <div class="footer">
     &copy; <a href="/license.html">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Nov 09 2023 at 14:47 (CET).
+    Last updated on Nov 09 2023 at 14:57 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

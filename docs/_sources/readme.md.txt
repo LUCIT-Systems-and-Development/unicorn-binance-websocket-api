@@ -37,11 +37,8 @@ Part of '[UNICORN Binance Suite](https://www.lucit.tech/unicorn-binance-suite.ht
 
 ## Get a UNICORN Binance Suite License
 
-To run modules of the *UNICORN Binance Suite* you need a valid license from the
-[LUCIT Online Shop](https://shop.lucit.services/software/unicorn-binance-suite)!
-
-If you want to know more about the background of our licensing, please 
-[read this article](https://www.lucit.tech/article/a-new-chapter-in-our-journey-merging-open-source-spirit-with-sustainable-development.html).
+To run modules of the *UNICORN Binance Suite* you need a  
+[valid license](https://medium.lucit.tech/how-to-obtain-and-use-a-unicorn-binance-suite-license-key-and-run-the-ubs-module-according-to-best-87b0088124a8#4ca4)!
 
 ## Receive Data from Binance WebSockets
 
@@ -72,7 +69,8 @@ def process_new_receives(stream_data):
 
 
 ubwa = BinanceWebSocketApiManager(exchange="binance.com")
-ubwa.create_stream(channels=['trade', 'kline_1m'], markets=['btcusdt', 'bnbbtc', 'ethbtc'], 
+ubwa.create_stream(channels=['trade', 'kline_1m'], 
+                   markets=['btcusdt', 'bnbbtc', 'ethbtc'], 
                    process_stream_data=process_new_receives)
 ```
 
@@ -116,11 +114,16 @@ api_secret = "YOUR_BINANCE_API_SECRET"
 
 
 ubwa = BinanceWebSocketApiManager(exchange="binance.com")
-api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
+api_stream = ubwa.create_stream(api=True, 
+                                api_key=api_key, 
+                                api_secret=api_secret,
                                 process_stream_data=process_api_responses)
                                 
-orig_client_order_id = ubwa.api.create_order(order_type="LIMIT", price=1.1, 
-                                             quantity=15.0, side="SELL", symbol="BUSDUSDT")
+orig_client_order_id = ubwa.api.create_order(order_type="LIMIT", 
+                                             price=1.1, 
+                                             quantity=15.0, 
+                                             side="SELL", 
+                                             symbol="BUSDUSDT")
 ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                             
 ```
 
