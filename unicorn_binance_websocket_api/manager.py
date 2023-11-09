@@ -232,18 +232,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.info(f"Debug is {self.debug}")
 
         # LUCIT Licensing
-        if lucit_api_secret is None or lucit_license_token is None:
-            info_license = f"Please provide a valid 'UNICORN Binance Suite' license using the 'lucit_api_key' and " \
-                           f"'lucit_license_token' parameters. You can obtain a license here: " \
-                           f"https://shop.lucit.services/software/unicorn-binance-suite"
-            print(info_license)
-            logger.critical(info_license)
-            info = f"Stopping 'unicorn_binance_websocket_api'! (NO LICENSE)"
-            print(info)
-            logger.critical(info)
-            self.stop_manager_with_all_streams(close_api_session=False)
-            sys.exit(1)
-
         self.lucit_api_secret = lucit_api_secret
         self.lucit_license_token = lucit_license_token
         self.llm = LucitLicensingManager(api_secret=self.lucit_api_secret, license_token=self.lucit_license_token,

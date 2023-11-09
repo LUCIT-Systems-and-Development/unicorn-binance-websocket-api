@@ -4,6 +4,13 @@ labels: bug
 assignees:
   - oliver-zehentleitner
 body:
+  - type: markdown
+    id: Info
+    attributes:
+      value: | 
+        Please post here only issues concerning this repository and follow the [Issue-Guidelines](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/wiki/Issue-Guidelines). 
+        
+        Most of these fields are not mandatory, but please provide as much information as possible.
   - type: checkboxes
     id: Confirmation
     attributes:
@@ -13,12 +20,6 @@ body:
       options:
         - label: I checked the documentation and other Issues. I am using the latest version of this library.
           required: true
-  - type: markdown
-    attributes:
-      value: | 
-        Please post here only issues concerning this repository and follow the [Issue-Guidelines](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/wiki/Issue-Guidelines). 
-        
-        Most of these fields are not mandatory, but please provide as much information as possible.
   - type: textarea
     id: Version
     attributes:
@@ -68,7 +69,7 @@ body:
     validations:
       required: true
   - type: textarea
-    id: Wheel Info
+    id: WheelInfo
     attributes:
       label: Installed package version
       description: |
