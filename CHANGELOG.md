@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
 ## 2.1.0.dev (development stage/unreleased/unstable)
+### Adding
+- Passing UBS/LUCIT license parameter to `UBRA`.
 
 ## 2.1.0
 ### Added
@@ -17,7 +19,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Debug mode for AsyncIO tasks
 - `manager.stop_manager()` alias for `manager.stop_manager_with_all_streams()` 
 - Support for `with`-context
-- Passing UBS/LUCIT license parameter to `UBRA`.
 ### Fixed
 - Exceptions in `socket.start_stocket() coroutine and replaced `sys.exit()` with `return False`
 - AsyncIO Loop handling and closing
