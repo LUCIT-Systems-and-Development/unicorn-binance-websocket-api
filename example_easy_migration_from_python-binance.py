@@ -46,6 +46,8 @@ def order_status(msg):
     print("order_status: " + str(msg))
 
 
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
 bwsm = BinanceWebSocketApiManager()
 
 book_ticker_id = bwsm.create_stream("bookTicker", 'bnbbusd', stream_buffer_name=True)

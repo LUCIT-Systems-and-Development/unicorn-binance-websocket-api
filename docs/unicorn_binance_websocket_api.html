@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 2.0.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unicorn_binance_websocket_api package &#8212; unicorn-binance-websocket-api 2.1.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=fdf8e9ae" />
@@ -205,6 +205,7 @@
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.set_stream_label"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.set_stream_label()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.split_payload"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.split_payload()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.start_monitoring_api"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.start_monitoring_api()</span></code></a></li>
+<li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_manager"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.stop_manager()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_manager_with_all_streams"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.stop_manager_with_all_streams()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_monitoring_api"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.stop_monitoring_api()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_stream"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.stop_stream()</span></code></a></li>
@@ -3299,9 +3300,16 @@ to see how this works!</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_manager">
+<span class="sig-name descname"><span class="pre">stop_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">close_api_session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/unicorn_binance_websocket_api/manager.html#BinanceWebSocketApiManager.stop_manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_manager" title="Link to this definition">¶</a></dt>
+<dd><p>Stop the BinanceWebSocketApiManager with all streams, monitoring and management threads</p>
+<p>Alias of ‘stop_manager_with_all_streams()’</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_manager_with_all_streams">
 <span class="sig-name descname"><span class="pre">stop_manager_with_all_streams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">close_api_session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/unicorn_binance_websocket_api/manager.html#BinanceWebSocketApiManager.stop_manager_with_all_streams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_manager_with_all_streams" title="Link to this definition">¶</a></dt>
-<dd><p>Stop the BinanceWebSocketApiManager with all streams and management threads</p>
+<dd><p>Stop the BinanceWebSocketApiManager with all streams, monitoring and management threads</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3435,7 +3443,7 @@ subscribed channels from the specific markets are going to be removed!</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.wait_till_stream_has_stopped">
-<span class="sig-name descname"><span class="pre">wait_till_stream_has_stopped</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/unicorn_binance_websocket_api/manager.html#BinanceWebSocketApiManager.wait_till_stream_has_stopped"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.wait_till_stream_has_stopped" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">wait_till_stream_has_stopped</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_id</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/unicorn_binance_websocket_api/manager.html#BinanceWebSocketApiManager.wait_till_stream_has_stopped"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.wait_till_stream_has_stopped" title="Link to this definition">¶</a></dt>
 <dd><p>Returns <cite>True</cite> as soon a specific stream has stopped itself</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3760,6 +3768,7 @@ keepalive</p></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.set_stream_label"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.set_stream_label()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.split_payload"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.split_payload()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.start_monitoring_api"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.start_monitoring_api()</span></code></a></li>
+<li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_manager"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.stop_manager()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_manager_with_all_streams"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.stop_manager_with_all_streams()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_monitoring_api"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.stop_monitoring_api()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_stream"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiManager.stop_stream()</span></code></a></li>
@@ -3908,7 +3917,7 @@ keepalive</p></li>
     <div class="footer">
     &copy; <a href="/license.html">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Oct 26 2023 at 18:37 (CET).
+    Last updated on Nov 09 2023 at 14:37 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

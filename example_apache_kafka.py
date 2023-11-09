@@ -37,6 +37,9 @@
 # depends on: https://pypi.org/project/kafka-python/
 # must not be installed: https://pypi.org/project/kafka (https://github.com/dpkp/kafka-python/issues/1566)
 
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
+
 from aiokafka import AIOKafkaProducer
 from aiokafka.helpers import create_ssl_context
 from kafka.errors import KafkaConnectionError
@@ -99,14 +102,10 @@ if __name__ == "__main__":
              "user": "pfyrfgiv",
              "pass": "JUTrtwrJFYdMsYbEZGoL0Zt5m1WElPzS"}
 
-    # To use this library you need a valid UNICORN Binance Suite License Token and API Secret:
-    # https://shop.lucit.services/software/unicorn-binance-suite
-    lucit_api_secret = ""
-    lucit_license_token = ""
+    # To use this library you need a valid UNICORN Binance Suite License:
+    # https://medium.lucit.tech/-87b0088124a8
 
-    ubwa = BinanceWebSocketApiManager(exchange=exchange,
-                                      lucit_api_secret=lucit_api_secret,
-                                      lucit_license_token=lucit_license_token)
+    ubwa = BinanceWebSocketApiManager(exchange=exchange)
 
     try:
         asyncio.run(import_last_price_to_kafka(kafka_config=kafka, ubwa_manager=ubwa, markets=symbols))

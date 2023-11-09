@@ -55,15 +55,11 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             time.sleep(0.01)
 
 
-# To use this library you need a valid UNICORN Binance Suite License Token and API Secret:
-# https://shop.lucit.services/software/unicorn-binance-suite
-lucit_api_secret = ""
-lucit_license_token = ""
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
 
 # create instance of BinanceWebSocketApiManager for Binance.com Futures
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin_futures",
-                                                           lucit_api_secret=lucit_api_secret,
-                                                           lucit_license_token=lucit_license_token)
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-coin_futures")
 
 # set api key and secret for userData stream
 binance_api_key = ""

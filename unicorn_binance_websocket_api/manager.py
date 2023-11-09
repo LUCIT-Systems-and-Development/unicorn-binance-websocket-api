@@ -224,7 +224,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  lucit_license_token: str = None):
         threading.Thread.__init__(self)
         self.name = "unicorn-binance-websocket-api"
-        self.version = "2.0.0.dev"
+        self.version = "2.1.0"
         self.stop_manager_request = None
         logger.info(f"New instance of {self.get_user_agent()}-{'compiled' if cython.compiled else 'source'} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
@@ -3754,13 +3754,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread.start()
         return True
 
-    def stop(self, close_api_session=True):
+    def stop_manager(self, close_api_session=True):
         """
         Stop the BinanceWebSocketApiManager with all streams, monitoring and management threads
 
         Alias of 'stop_manager_with_all_streams()'
         """
-        logger.info("BinanceWebSocketApiManager.stop() - Stopping "
+        logger.info("BinanceWebSocketApiManager.stop_manager() - Stopping "
                     "unicorn_binance_websocket_api_manager " + self.version + " ...")
         self.stop_manager_with_all_streams(close_api_session=close_api_session)
 

@@ -59,14 +59,11 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
                 binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
 
 
-# To use this library you need a valid UNICORN Binance Suite License Token and API Secret:
-# https://shop.lucit.services/software/unicorn-binance-suite
-lucit_api_secret = ""
-lucit_license_token = ""
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
 
 # create instance of BinanceWebSocketApiManager and provide the function for stream processing
-binance_websocket_api_manager = BinanceWebSocketApiManager(lucit_api_secret=lucit_api_secret,
-                                                           lucit_license_token=lucit_license_token)
+binance_websocket_api_manager = BinanceWebSocketApiManager()
 
 # start a worker to process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))

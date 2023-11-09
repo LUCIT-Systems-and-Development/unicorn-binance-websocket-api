@@ -39,6 +39,8 @@ except ImportError:
     print("Please install `matplotlib`! https://pypi.org/project/matplotlib")
     exit(1)
 
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
 binance_websocket_api_manager = ubwam.BinanceWebSocketApiManager()
 binance_websocket_api_manager.create_stream("trade", "btcusdt", output="UnicornFy")
 

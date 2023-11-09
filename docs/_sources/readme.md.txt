@@ -11,9 +11,9 @@
 [![Supported Python Version](https://img.shields.io/pypi/pyversions/unicorn_binance_websocket_api.svg)](https://www.python.org/downloads/)
 [![PyPI - Status](https://img.shields.io/pypi/status/unicorn_binance_websocket_api.svg)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues)
 [![codecov](https://codecov.io/gh/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/branch/master/graph/badge.svg?token=5I03AZ3F5S)](https://codecov.io/gh/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)
-[![Build and Publish](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml/badge.svg)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml)
 [![CodeQL](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/codeql-analysis.yml)
 [![Unit Tests](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml)
+[![Build and Publish](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml/badge.svg)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml)
 [![Azure Pipelines](https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/unicorn-binance-websocket-api-feedstock?branchName=main)](https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=15698&branchName=main)
 [![Read the Docs](https://img.shields.io/badge/read-%20docs-yellow)](https://unicorn-binance-websocket-api.docs.lucit.tech)
 [![Read How To`s](https://img.shields.io/badge/read-%20howto-yellow)](https://medium.lucit.tech)
@@ -50,12 +50,7 @@ If you want to know more about the background of our licensing, please
 ```
 import unicorn_binance_websocket_api
 
-lucit_api_secret = "YOUR_LUCIT_API_SECRET"
-lucit_license_token = "YOUR_LUCIT_LICENSE_TOKEN"
-
-ubwa = BinanceWebSocketApiManager(exchange="binance.com", 
-                                  lucit_api_secret=lucit_api_secret, 
-                                  lucit_license_token=lucit_license_token)
+ubwa = BinanceWebSocketApiManager(exchange="binance.com")
 ubwa.create_stream(channels=['trade', 'kline_1m'], markets=['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
 
@@ -76,12 +71,7 @@ def process_new_receives(stream_data):
     print(str(stream_data))
 
 
-lucit_api_secret = "YOUR_LUCIT_API_SECRET"
-lucit_license_token = "YOUR_LUCIT_LICENSE_TOKEN"
-
-ubwa = BinanceWebSocketApiManager(exchange="binance.com", 
-                                  lucit_api_secret=lucit_api_secret, 
-                                  lucit_license_token=lucit_license_token)
+ubwa = BinanceWebSocketApiManager(exchange="binance.com")
 ubwa.create_stream(channels=['trade', 'kline_1m'], markets=['btcusdt', 'bnbbtc', 'ethbtc'], 
                    process_stream_data=process_new_receives)
 ```
@@ -124,12 +114,8 @@ def process_api_responses(stream_data):
 api_key = "YOUR_BINANCE_API_KEY"
 api_secret = "YOUR_BINANCE_API_SECRET"
 
-lucit_api_secret = "YOUR_LUCIT_API_SECRET"
-lucit_license_token = "YOUR_LUCIT_LICENSE_TOKEN"
 
-ubwa = BinanceWebSocketApiManager(exchange="binance.com", 
-                                  lucit_api_secret=lucit_api_secret, 
-                                  lucit_license_token=lucit_license_token)
+ubwa = BinanceWebSocketApiManager(exchange="binance.com")
 api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
                                 process_stream_data=process_api_responses)
                                 
@@ -408,6 +394,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 - [example_websocket_api.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_websocket_api.py)
 
 ## Howto
+- [How to Obtain and Use a Unicorn Binance Suite License Key and Run the UBS Module According to Best Practice](https://medium.lucit.tech/how-to-obtain-and-use-a-unicorn-binance-suite-license-key-and-run-the-ubs-module-according-to-best-87b0088124a8)
 - [Create and Cancel Orders via WebSocket on Binance](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404)
 - [How to Download Klines from Binance using Python?](https://medium.lucit.tech/how-to-download-data-from-binance-using-python-8f1b6e8f19f3)
 - [Passing Binance Market Data to Apache Kafka in Python with aiokafka](https://medium.lucit.tech/passing-binance-market-data-to-apache-kafka-in-python-with-aiokafka-570541574655)

@@ -32,8 +32,6 @@
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
-from configparser import ConfigParser, ExtendedInterpolation
-from pathlib import Path
 import logging
 import unittest
 import os
@@ -42,21 +40,9 @@ import threading
 
 import tracemalloc
 tracemalloc.start(25)
-#tracemalloc.stop()
 
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
-
-input_config_file = f"{Path.home()}/.lucit/lucit_license.ini"
-if os.path.isfile(input_config_file):
-    print(f"Loading configuration file `{input_config_file}`")
-    config = ConfigParser(interpolation=ExtendedInterpolation())
-    config.read(input_config_file)
-    LUCIT_API_SECRET = config['LUCIT']['api_secret']
-    LUCIT_LICENSE_TOKEN = config['LUCIT']['license_token']
-else:
-    LUCIT_API_SECRET = os.environ['LUCIT_API_SECRET']
-    LUCIT_LICENSE_TOKEN = os.environ['LUCIT_LICENSE_TOKEN']
 
 logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.DEBUG,
@@ -73,9 +59,7 @@ class TestBinanceComManager(unittest.TestCase):
         print(f"\r\nTestBinanceComManager:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.us",
                                               disable_colorama=True,
-                                              debug=True,
-                                              lucit_api_secret=LUCIT_API_SECRET,
-                                              lucit_license_token=LUCIT_LICENSE_TOKEN)
+                                              debug=True)
         cls.binance_com_api_key = BINANCE_COM_API_KEY
         cls.binance_com_api_secret = BINANCE_COM_API_SECRET
 
@@ -208,9 +192,7 @@ class TestBinanceComManager(unittest.TestCase):
     def test_start_monitoring_api(self):
         with BinanceWebSocketApiManager(exchange="binance.com-testnet",
                                         high_performance=True,
-                                        debug=True,
-                                        lucit_api_secret=LUCIT_API_SECRET,
-                                        lucit_license_token=LUCIT_LICENSE_TOKEN) as ubwa:
+                                        debug=True,) as ubwa:
             self.assertTrue(ubwa.start_monitoring_api())
             time.sleep(6)
             self.assertTrue(ubwa.stop_monitoring_api())
@@ -222,9 +204,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
         print(f"\r\nTestBinanceComManagerTest:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.com-testnet",
                                               high_performance=True,
-                                              debug=True,
-                                              lucit_api_secret=LUCIT_API_SECRET,
-                                              lucit_license_token=LUCIT_LICENSE_TOKEN)
+                                              debug=True)
         cls.binance_com_testnet_api_key = BINANCE_COM_API_KEY
         cls.binance_com_testnet_api_secret = BINANCE_COM_API_SECRET
 
@@ -301,9 +281,7 @@ class TestBinanceOrgManagerTestnet(unittest.TestCase):
         print(f"\r\nTestBinanceOrgManagerTestnet:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.org-testnet",
                                               debug=True,
-                                              high_performance=True,
-                                              lucit_api_secret=LUCIT_API_SECRET,
-                                              lucit_license_token=LUCIT_LICENSE_TOKEN)
+                                              high_performance=True)
         cls.binance_com_api_key = BINANCE_COM_API_KEY
         cls.binance_com_api_secret = BINANCE_COM_API_SECRET
 
@@ -331,9 +309,7 @@ class TestBinanceOrgManager(unittest.TestCase):
         print(f"\r\nTestBinanceOrgManager:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.org",
                                               debug=True,
-                                              high_performance=True,
-                                              lucit_api_secret=LUCIT_API_SECRET,
-                                              lucit_license_token=LUCIT_LICENSE_TOKEN)
+                                              high_performance=True)
         cls.binance_com_api_key = BINANCE_COM_API_KEY
         cls.binance_com_api_secret = BINANCE_COM_API_SECRET
 
@@ -489,9 +465,7 @@ class TestApiLive(unittest.TestCase):
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.us",
                                               debug=True,
                                               enable_stream_signal_buffer=True,
-                                              high_performance=True,
-                                              lucit_api_secret=LUCIT_API_SECRET,
-                                              lucit_license_token=LUCIT_LICENSE_TOKEN)
+                                              high_performance=True)
 
     @classmethod
     def tearDownClass(cls):
@@ -522,9 +496,7 @@ class TestApiLive(unittest.TestCase):
         from unicorn_binance_websocket_api.exceptions import UnknownExchange
         try:
             ubwa = BinanceWebSocketApiManager(exchange="invalid-exchange.com",
-                                              high_performance=True,
-                                              lucit_api_secret=LUCIT_API_SECRET,
-                                              lucit_license_token=LUCIT_LICENSE_TOKEN)
+                                              high_performance=True)
         except UnknownExchange:
             pass
 

@@ -58,8 +58,6 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 # configure api key and secret for binance.com
 binance_com_api_key = ""
 binance_com_api_secret = ""
-binance_com_api_key = ""
-binance_com_api_secret = ""
 
 
 # configure api key and secret for binance.us
@@ -69,6 +67,9 @@ binance_us_api_secret = ""
 # configure api key and secret for binance.us
 binance_com_iso_api_key = binance_com_api_key
 binance_com_iso_api_secret = binance_com_api_secret
+
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
 
 # create instances of BinanceWebSocketApiManager
 binance_com_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com",

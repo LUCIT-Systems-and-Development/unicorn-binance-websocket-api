@@ -36,7 +36,7 @@ setup(
          'unicorn_binance_websocket_api/sockets.py'],
         annotate=False),
     name='unicorn-binance-websocket-api',
-    version="2.0.0",
+    version="2.1.0",
     author="LUCIT Systems and Development",
     author_email='info@lucit.tech',
     url="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api",

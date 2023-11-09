@@ -46,21 +46,8 @@ logging.basicConfig(level=logging.DEBUG,
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
-# To use this library you need a valid UNICORN Binance Suite License Token and API Secret:
-# https://shop.lucit.services/software/unicorn-binance-suite
-input_config_file = f"{Path.home()}/.lucit/lucit_license.ini"
-if os.path.isfile(input_config_file):
-    print(f"Loading configuration file `{input_config_file}`")
-    config = ConfigParser(interpolation=ExtendedInterpolation())
-    config.read(input_config_file)
-    LUCIT_API_SECRET = config['LUCIT']['api_secret']
-    LUCIT_LICENSE_TOKEN = config['LUCIT']['license_token']
-else:
-    LUCIT_API_SECRET = os.environ['LUCIT_API_SECRET']
-    LUCIT_LICENSE_TOKEN = os.environ['LUCIT_LICENSE_TOKEN']
-
-print(f"API SECRET: '{LUCIT_API_SECRET}'")
-print(f"LICENSE_TOKEN: '{LUCIT_LICENSE_TOKEN}'")
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
 
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
@@ -82,7 +69,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 
 
 # create instance of BinanceWebSocketApiManager and provide the function for stream processing
-ubwa = BinanceWebSocketApiManager(lucit_api_secret=LUCIT_API_SECRET, lucit_license_token=LUCIT_LICENSE_TOKEN)
+ubwa = BinanceWebSocketApiManager()
 
 # create streams
 ticker_all_stream_id = ubwa.create_stream(["arr"], ["!ticker"])

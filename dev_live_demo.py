@@ -84,6 +84,8 @@ def print_stream_to_png(manager):
         time.sleep(10)
 
 
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
 try:
     ubra = BinanceRestApiManager(exchange="binance.com", socks5_proxy_server="127.0.0.1:1080")
     ubwa = BinanceWebSocketApiManager(exchange="binance.com", socks5_proxy_server="127.0.0.1:1080")

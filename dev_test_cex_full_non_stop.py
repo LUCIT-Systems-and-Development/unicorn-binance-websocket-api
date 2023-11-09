@@ -31,8 +31,6 @@
 # IN THE SOFTWARE.
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
-from configparser import ConfigParser, ExtendedInterpolation
-from pathlib import Path
 import logging
 import math
 import os
@@ -49,19 +47,6 @@ except ImportError:
 
 binance_api_key = ""
 binance_api_secret = ""
-
-# To use this library you need a valid UNICORN Binance Suite License Token and API Secret:
-# https://shop.lucit.services/software/unicorn-binance-suite
-input_config_file = f"{Path.home()}/.lucit/lucit_license.ini"
-if os.path.isfile(input_config_file):
-    print(f"Loading configuration file `{input_config_file}`")
-    config = ConfigParser(interpolation=ExtendedInterpolation())
-    config.read(input_config_file)
-    LUCIT_API_SECRET = config['LUCIT']['api_secret']
-    LUCIT_LICENSE_TOKEN = config['LUCIT']['license_token']
-else:
-    LUCIT_API_SECRET = os.environ['LUCIT_API_SECRET']
-    LUCIT_LICENSE_TOKEN = os.environ['LUCIT_LICENSE_TOKEN']
 
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
@@ -85,13 +70,13 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
             time.sleep(0.01)
 
 
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
 try:
     binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret)
     binance_websocket_api_manager = BinanceWebSocketApiManager(high_performance=True,
                                                                ping_interval_default=20,
-                                                               ping_timeout_default=20,
-                                                               lucit_api_secret=LUCIT_API_SECRET,
-                                                               lucit_license_token=LUCIT_LICENSE_TOKEN)
+                                                               ping_timeout_default=20)
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)

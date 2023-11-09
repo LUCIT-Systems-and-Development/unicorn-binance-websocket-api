@@ -1,5 +1,35 @@
-from configparser import ConfigParser, ExtendedInterpolation
-from pathlib import Path
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# File: dev_test_binance_futures.py
+#
+# Part of ‘UNICORN Binance WebSocket API’
+# Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
+# Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
+# Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
+# PyPI: https://pypi.org/project/unicorn-binance-websocket-api
+#
+# Author: LUCIT Systems and Development
+#
+# Copyright (c) 2019-2023, LUCIT Systems and Development (https://www.lucit.tech)
+# All rights reserved.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish, dis-
+# tribute, sublicense, and/or sell copies of the Software, and to permit
+# persons to whom the Software is furnished to do so, subject to the fol-
+# lowing conditions:
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABIL-
+# ITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+# SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+# IN THE SOFTWARE.
+
 import logging
 import os
 import time
@@ -11,19 +41,10 @@ logging.basicConfig(level=logging.DEBUG,
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
-input_config_file = f"{Path.home()}/.lucit/lucit_license.ini"
-if os.path.isfile(input_config_file):
-    print(f"Loading configuration file `{input_config_file}`")
-    config = ConfigParser(interpolation=ExtendedInterpolation())
-    config.read(input_config_file)
-    LUCIT_API_SECRET = config['LUCIT']['api_secret']
-    LUCIT_LICENSE_TOKEN = config['LUCIT']['license_token']
-else:
-    LUCIT_API_SECRET = os.environ['LUCIT_API_SECRET']
-    LUCIT_LICENSE_TOKEN = os.environ['LUCIT_LICENSE_TOKEN']
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
+ubwa = BinanceWebSocketApiManager()
 
-ubwa = BinanceWebSocketApiManager(lucit_api_secret=LUCIT_API_SECRET,
-                                  lucit_license_token=LUCIT_LICENSE_TOKEN)
 ubwa.create_stream("trade", "btcusdt", output="UnicornFy")
 
 try:

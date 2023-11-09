@@ -48,10 +48,8 @@ except ImportError:
 binance_api_key = ""
 binance_api_secret = ""
 
-# To use this library you need a valid UNICORN Binance Suite License Token and API Secret:
-# https://shop.lucit.services/software/unicorn-binance-suite
-lucit_api_secret = ""
-lucit_license_token = ""
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
 
 channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
             'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
@@ -69,11 +67,11 @@ def print_stream_data(stream_data, stream_buffer_name=False):
     print(str(stream_data))
 
 
+# To use this library you need a valid UNICORN Binance Suite License:
+# https://medium.lucit.tech/-87b0088124a8
 try:
     binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret)
-    binance_websocket_api_manager = BinanceWebSocketApiManager(high_performance=True,
-                                                               lucit_api_secret=lucit_api_secret,
-                                                               lucit_license_token=lucit_license_token)
+    binance_websocket_api_manager = BinanceWebSocketApiManager(high_performance=True)
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)

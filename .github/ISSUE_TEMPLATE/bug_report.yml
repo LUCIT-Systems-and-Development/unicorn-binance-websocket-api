@@ -71,12 +71,10 @@ body:
   - type: textarea
     id: WheelInfo
     attributes:
-      label: Installed package version
+      label: Installed wheel files
       description: |
-        Please share your installed package files of this library.
-      placeholder: | 
-        'pip show unicorn-binance-websocket-api --files | grep \"  \"' or 
-        'conda list -f unicorn-binance-websocket-api  | grep \"  \"'
+        Please share your installed wheel files of this library. Run `pip show unicorn-binance-websocket-api --files | 
+        grep '  '` or `conda list -f unicorn-binance-websocket-api | grep '  '` and post the result:
       render: shell
     validations:
       required: false
@@ -86,8 +84,6 @@ body:
       label: Installed packages
       description: |
         Please share your installed packages by running `pip list` or `conda list` and entering the output below:
-        _Note:_ This will be automatically formatted as code.
-      placeholder: "`pip list` or `conda list`"
       render: shell
     validations:
       required: false

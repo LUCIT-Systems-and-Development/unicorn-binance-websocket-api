@@ -1,7 +1,7 @@
 LSOSL - LUCIT Synergetic Open Source License
 ============================================
 
-Version 1.0, October 2023
+Version 1.0, November 2023
 
 1. INTRODUCTION
 2. PROJECT INFORMATION
@@ -29,18 +29,18 @@ Binance features into diverse applications.
 - Project page: https://www.lucit.tech/unicorn-binance-websocket-api.html
 - GitHub repository: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
 - PyPI repository: https://pypi.org/project/unicorn-binance-websocket-api
+- Get a license: https://shop.lucit.services/software
 
 
 3. LICENSE CONDITIONS AND VERIFICATION
 
-Utilization of the UNICORN Binance WebSocket API demands authentication through a license key and an API secret from
-the "UNICORN Binance Suite". This grants the operation of several submodule instances, encompassing the WebSocket API.
+The use of UNICORN Binance WebSocket API requires a license key and an API secret.
 
-Licenses are available at: https://shop.lucit.services/software/unicorn-binance-suite
+Licenses are available at: https://shop.lucit.services/software
 
-Verification is achieved via a client-side module, which forwards the license details to our backend for validation.
-Only those with a verified license operate as intended. This open-source procedure is integral to foster user trust,
-especially traders.
+Verification is done via a client-side module that forwards the license details to our backend for validation.
+The software may be used and distributed without restriction, the only condition is that the execution requires a valid
+license from LUCIT (https://shop.lucit.services/software) and must be operated with such a license.
 
 For transparency, our licensing client module is available on GitHub:
 https://github.com/LUCIT-Systems-and-Development/lucit-licensing-python
@@ -48,9 +48,9 @@ https://github.com/LUCIT-Systems-and-Development/lucit-licensing-python
 
 4. LICENSE PURCHASE
 
-Usage of the UNICORN Binance Suite and the WebSocket API necessitates obtaining a license from the LUCIT Online Shop.
+Usage of the our software necessitates obtaining a license from the LUCIT Online Shop.
 
-More details can be found at: https://shop.lucit.services/software/unicorn-binance-suite
+More details can be found at: https://shop.lucit.services/software
 
 
 5. CONTRIBUTING CODE
@@ -61,8 +61,11 @@ automatically becomes LUCIT IT-Management GmbH's property and copyright.
 
 6. USAGE AND DISTRIBUTION
 
-LUCIT IT-Management GmbH's open-source projects, including the WebSocket API, can be integrated into various
-applications. Execution requires a valid license. For details on unique licenses, reach out to: sales@lucit.tech.
+The LSOSL licensed projects of LUCIT IT-Management GmbH can be used and integrated into any application without
+restriction and distributed as desired. The only condition is that the execution of our software requires a valid
+license from LUCIT (https://shop.lucit.services/software) and must be operated with such a license.
+
+For information on library versions that do not contain a license requirement, please contact: sales@lucit.tech
 
 
 7. DATA COLLECTION AND LICENSE CONTROL
@@ -100,7 +103,7 @@ its sole discretion. Users are encouraged to review the license terms regularly 
 
 ------------------------------------------------------------------------------------------------------------------------
 
-Thank you for selecting the LUCIT Licensing Python and products from LUCIT IT-Management GmbH. We deeply value
+Thank you for selecting the UNICORN Binance WebSocket API and products from LUCIT IT-Management GmbH. We deeply value
 your trust in our technologies.
 
 LUCIT IT-Management GmbH - Am Berg 391, 3970 Weitra, AUSTRIA - https://www.lucit.tech

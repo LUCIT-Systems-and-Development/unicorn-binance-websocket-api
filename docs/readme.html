@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 2.0.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 2.1.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=fdf8e9ae" />
@@ -240,9 +240,9 @@
 <a class="reference external" href="https://www.python.org/downloads/"><img alt="Supported Python Version" src="https://img.shields.io/pypi/pyversions/unicorn_binance_websocket_api.svg" /></a>
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues"><img alt="PyPI - Status" src="https://img.shields.io/pypi/status/unicorn_binance_websocket_api.svg" /></a>
 <a class="reference external" href="https://codecov.io/gh/LUCIT-Systems-and-Development/unicorn-binance-websocket-api"><img alt="codecov" src="https://codecov.io/gh/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/branch/master/graph/badge.svg?token=5I03AZ3F5S" /></a>
-<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml"><img alt="Build and Publish" src="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml/badge.svg" /></a>
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/codeql-analysis.yml"><img alt="CodeQL" src="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/codeql-analysis.yml/badge.svg" /></a>
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml"><img alt="Unit Tests" src="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml/badge.svg" /></a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml"><img alt="Build and Publish" src="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml/badge.svg" /></a>
 <a class="reference external" href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=15698&amp;amp;branchName=main"><img alt="Azure Pipelines" src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/unicorn-binance-websocket-api-feedstock?branchName=main" /></a>
 <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech"><img alt="Read the Docs" src="https://img.shields.io/badge/read-%20docs-yellow" /></a>
 <a class="reference external" href="https://medium.lucit.tech"><img alt="Read How To`s" src="https://img.shields.io/badge/read-%20howto-yellow" /></a>
@@ -272,12 +272,7 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 <h3><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">Create a multiplex websocket connection</a> to Binance with a <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60"><code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code></a> with just 3 lines of code:<a class="headerlink" href="#create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unicorn_binance_websocket_api</span>
 
-<span class="n">lucit_api_secret</span> <span class="o">=</span> <span class="s2">&quot;YOUR_LUCIT_API_SECRET&quot;</span>
-<span class="n">lucit_license_token</span> <span class="o">=</span> <span class="s2">&quot;YOUR_LUCIT_LICENSE_TOKEN&quot;</span>
-
-<span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">,</span> 
-                                  <span class="n">lucit_api_secret</span><span class="o">=</span><span class="n">lucit_api_secret</span><span class="p">,</span> 
-                                  <span class="n">lucit_license_token</span><span class="o">=</span><span class="n">lucit_license_token</span><span class="p">)</span>
+<span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
 <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> <span class="n">markets</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -300,12 +295,7 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
     <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_data</span><span class="p">))</span>
 
 
-<span class="n">lucit_api_secret</span> <span class="o">=</span> <span class="s2">&quot;YOUR_LUCIT_API_SECRET&quot;</span>
-<span class="n">lucit_license_token</span> <span class="o">=</span> <span class="s2">&quot;YOUR_LUCIT_LICENSE_TOKEN&quot;</span>
-
-<span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">,</span> 
-                                  <span class="n">lucit_api_secret</span><span class="o">=</span><span class="n">lucit_api_secret</span><span class="p">,</span> 
-                                  <span class="n">lucit_license_token</span><span class="o">=</span><span class="n">lucit_license_token</span><span class="p">)</span>
+<span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
 <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> <span class="n">markets</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">],</span> 
                    <span class="n">process_stream_data</span><span class="o">=</span><span class="n">process_new_receives</span><span class="p">)</span>
 </pre></div>
@@ -350,12 +340,8 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 <span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;YOUR_BINANCE_API_KEY&quot;</span>
 <span class="n">api_secret</span> <span class="o">=</span> <span class="s2">&quot;YOUR_BINANCE_API_SECRET&quot;</span>
 
-<span class="n">lucit_api_secret</span> <span class="o">=</span> <span class="s2">&quot;YOUR_LUCIT_API_SECRET&quot;</span>
-<span class="n">lucit_license_token</span> <span class="o">=</span> <span class="s2">&quot;YOUR_LUCIT_LICENSE_TOKEN&quot;</span>
 
-<span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">,</span> 
-                                  <span class="n">lucit_api_secret</span><span class="o">=</span><span class="n">lucit_api_secret</span><span class="p">,</span> 
-                                  <span class="n">lucit_license_token</span><span class="o">=</span><span class="n">lucit_license_token</span><span class="p">)</span>
+<span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
 <span class="n">api_stream</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span> <span class="n">api_secret</span><span class="o">=</span><span class="n">api_secret</span><span class="p">,</span>
                                 <span class="n">process_stream_data</span><span class="o">=</span><span class="n">process_api_responses</span><span class="p">)</span>
                                 
@@ -690,6 +676,7 @@ and use:</p>
 <section id="howto">
 <h2>Howto<a class="headerlink" href="#howto" title="Link to this heading">¶</a></h2>
 <ul class="simple">
+<li><p><a class="reference external" href="https://medium.lucit.tech/how-to-obtain-and-use-a-unicorn-binance-suite-license-key-and-run-the-ubs-module-according-to-best-87b0088124a8">How to Obtain and Use a Unicorn Binance Suite License Key and Run the UBS Module According to Best Practice</a></p></li>
 <li><p><a class="reference external" href="https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404">Create and Cancel Orders via WebSocket on Binance</a></p></li>
 <li><p><a class="reference external" href="https://medium.lucit.tech/how-to-download-data-from-binance-using-python-8f1b6e8f19f3">How to Download Klines from Binance using Python?</a></p></li>
 <li><p><a class="reference external" href="https://medium.lucit.tech/passing-binance-market-data-to-apache-kafka-in-python-with-aiokafka-570541574655">Passing Binance Market Data to Apache Kafka in Python with aiokafka</a></p></li>
@@ -972,7 +959,7 @@ non-binding initial consultation!</p>
     <div class="footer">
     &copy; <a href="/license.html">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Oct 26 2023 at 18:37 (CET).
+    Last updated on Nov 09 2023 at 14:37 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
