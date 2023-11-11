@@ -317,10 +317,10 @@ The current dependencies are listed
 
 If you run into errors during the installation take a look [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Installation).
 
-### A binary, PyPy or source code based wheel of the latest version with `pip` from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
+### A Cython binary, PyPy or source code based CPython wheel of the latest version with `pip` from [PyPI](https://pypi.org/project/unicorn-binance-websocket-api/)
 `pip install unicorn-binance-websocket-api --upgrade`
 
-### A conda package of the latest release with `conda` from [Anaconda](https://anaconda.org/conda-forge/unicorn-binance-websocket-api) via [CONDA-FORGE](https://conda-forge.org).
+### A conda package of the latest release with `conda` from [Anaconda](https://anaconda.org/conda-forge/unicorn-binance-websocket-api) via [CONDA-FORGE](https://conda-forge.org)
 `conda install -c conda-forge unicorn-binance-websocket-api`
 
 `conda update -c conda-forge unicorn-binance-websocket-api`

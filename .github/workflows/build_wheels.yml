@@ -75,4 +75,4 @@ jobs:
           name: unicorn-binance-websocket-api
           prerelease: false
           tag_name: 2.1.0
-          token: ${{ secrets.RELEASE_TOKEN }}
+          token: ${{ secrets.PYPI_TOKEN }}

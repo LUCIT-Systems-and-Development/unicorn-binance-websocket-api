@@ -32,6 +32,7 @@
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
+from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
 import logging
 import unittest
 import os
@@ -66,7 +67,7 @@ class TestBinanceComManager(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.ubwa.stop_monitoring_api()
-        cls.ubwa.stop_manager_with_all_streams()
+        cls.ubwa.stop_manager()
         print(f"\r\nTestBinanceComManager threads:")
         for thread in threading.enumerate():
             print(thread.name)
@@ -210,7 +211,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.ubwa.stop_manager_with_all_streams()
+        cls.ubwa.stop_manager()
         print(f"\r\nTestBinanceComManagerTest threads:")
         for thread in threading.enumerate():
             print(thread.name)
@@ -272,7 +273,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
 
     def test_stop_manager(self):
         time.sleep(6)
-        self.__class__.ubwa.stop_manager_with_all_streams()
+        self.__class__.ubwa.stop_manager()
 
 
 class TestBinanceOrgManagerTestnet(unittest.TestCase):
@@ -287,7 +288,7 @@ class TestBinanceOrgManagerTestnet(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.ubwa.stop_manager_with_all_streams()
+        cls.ubwa.stop_manager()
         print(f"\r\nTestBinanceOrgManagerTestnet threads:")
         for thread in threading.enumerate():
             print(thread.name)
@@ -300,7 +301,7 @@ class TestBinanceOrgManagerTestnet(unittest.TestCase):
         self.__class__.ubwa.unsubscribe_from_stream(stream_id, "tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
 
     def test_stop_manager(self):
-        self.__class__.ubwa.stop_manager_with_all_streams()
+        self.__class__.ubwa.stop_manager()
 
 
 class TestBinanceOrgManager(unittest.TestCase):
@@ -315,7 +316,7 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.ubwa.stop_manager_with_all_streams()
+        cls.ubwa.stop_manager()
         print(f"\r\nTestBinanceOrgManager threads:")
         for thread in threading.enumerate():
             print(thread.name)
@@ -455,7 +456,7 @@ class TestBinanceOrgManager(unittest.TestCase):
                          result)
 
     def test_stop_manager(self):
-        self.__class__.ubwa.stop_manager_with_all_streams()
+        self.__class__.ubwa.stop_manager()
 
 
 class TestApiLive(unittest.TestCase):
@@ -469,7 +470,7 @@ class TestApiLive(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.ubwa.stop_manager_with_all_streams()
+        cls.ubwa.stop_manager()
         print(f"\r\nTestApiLive threads:")
         for thread in threading.enumerate():
             print(thread.name)
@@ -478,39 +479,36 @@ class TestApiLive(unittest.TestCase):
     def test_get_new_uuid_id(self):
         self.__class__.ubwa.get_new_uuid_id()
 
-#    def test_rest_binance_com(self):
-#        BinanceWebSocketApiRestclient(self.__class__.ubwa)
+    def test_rest_binance_com(self):
+        BinanceWebSocketApiRestclient(self.__class__.ubwa)
 
-#    def test_rest_binance_com_isolated_margin(self):
-#        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True,
-    #                                                                    lucit_api_secret=LUCIT_API_SECRET,
-    #                                                                    lucit_license_token=LUCIT_LICENSE_TOKEN)
-#        BinanceWebSocketApiRestclient(self.__class__.ubwa)
-#        self.__class__.ubwa.stop_manager_with_all_streams()
+    def test_rest_binance_com_isolated_margin(self):
+        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin",
+                                                         high_performance=True)
+        BinanceWebSocketApiRestclient(self.__class__.ubwa)
+        self.__class__.ubwa.stop_manager()
 
-#    def test_rest_binance_com_isolated_margin_testnet(self):
-#        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet", high_performance=True)#        BinanceWebSocketApiRestclient(self.__class__.ubwa)
-#        self.__class__.ubwa.stop_manager_with_all_streams()
+    def test_rest_binance_com_isolated_margin_testnet(self):
+        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet",
+                                                         high_performance=True)
+        BinanceWebSocketApiRestclient(self.__class__.ubwa)
+        self.__class__.ubwa.stop_manager()
 
     def test_invalid_exchange(self):
         from unicorn_binance_websocket_api.exceptions import UnknownExchange
         try:
-            ubwa = BinanceWebSocketApiManager(exchange="invalid-exchange.com",
-                                              high_performance=True)
+            ubwa = BinanceWebSocketApiManager(exchange="invalid-exchange.com", high_performance=True)
         except UnknownExchange:
             pass
 
-# Todo: Ubra Update
-#   def test_isolated_margin(self):
-#        # self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
-#        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.us", high_performance=False,
-#                                                                   lucit_api_secret=LUCIT_API_SECRET,
-#                                                                   lucit_license_token=LUCIT_LICENSE_TOKEN)
-#        stream_id = self.__class__.ubwa.create_stream('arr', '!userData', symbols="CELRBTC", api_key="key", api_secret="secret")
-#        time.sleep(10)
-#        print("\r\n")
-#        self.__class__.ubwa.print_stream_info(stream_id)
-#        self.__class__.ubwa.stop_manager_with_all_streams()
+    def test_isolated_margin(self):
+        # self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
+        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.us", high_performance=False)
+        stream_id = self.__class__.ubwa.create_stream('arr', '!userData', symbols="CELRBTC", api_key="key", api_secret="secret")
+        time.sleep(10)
+        print("\r\n")
+        self.__class__.ubwa.print_stream_info(stream_id)
+        self.__class__.ubwa.stop_manager()
 
     def test_live_run(self):
         self.__class__.ubwa.get_active_stream_list()
@@ -755,23 +753,23 @@ class TestApiLive(unittest.TestCase):
         print(f"Done!")
         self.__class__.ubwa.remove_ansi_escape_codes("test text")
         self.__class__.ubwa.pop_stream_signal_from_stream_signal_buffer()
-        self.__class__.ubwa.stop_manager_with_all_streams()
+        self.__class__.ubwa.stop_manager()
 
         # test to many subscriptions
-# Todo: Ubra Update
-#        import unicorn_binance_rest_api
-#        binance_api_key = ""
-#        binance_api_secret = ""
-#        try:
-#            ubra = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret,
-#                                                                  exchange="binance.us")
-#        except ResourceWarning as error_msg:
-#            print(f"Catched: {error_msg}")
-#        markets = []
-#        data = ubra.get_all_tickers()
-#        for item in data:
-#            markets.append(item['symbol'])
-#        self.__class__.ubwa.create_stream("trade", markets, stream_label="too much!")
+
+        import unicorn_binance_rest_api
+        binance_api_key = ""
+        binance_api_secret = ""
+        try:
+            ubra = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret,
+                                                                  exchange="binance.us")
+        except ResourceWarning as error_msg:
+            print(f"Catched: {error_msg}")
+        markets = []
+        data = ubra.get_all_tickers()
+        for item in data:
+            markets.append(item['symbol'])
+        self.__class__.ubwa.create_stream("trade", markets, stream_label="too much!")
 
 
 if __name__ == '__main__':

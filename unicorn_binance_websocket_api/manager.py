@@ -18,6 +18,7 @@
 # All rights reserved.
 
 from lucit_licensing_python.manager import LucitLicensingManager
+from lucit_licensing_python.exceptions import NoValidatedLucitLicense
 from unicorn_binance_websocket_api.connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, CONNECTION_SETTINGS
 from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange
 from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
@@ -248,7 +249,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          license_token=self.lucit_license_token,
                                          parent_shutdown_function=self.stop_manager,
                                          program_used="unicorn-binance-websocket-api",
-                                         needed_license_type="UNICORN-BINANCE-SUITE", start=True)
+                                         needed_license_type="UNICORN-BINANCE-SUITE",
+                                         start=True)
+        licensing_exception = self.llm.get_license_exception()
+        if licensing_exception is not None:
+            raise NoValidatedLucitLicense(licensing_exception)
 
         if disable_colorama is not True:
             logger.info(f"Initiating `colorama_{colorama.__version__}`")
@@ -282,7 +287,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/" \
                         f"Binance-websocket-endpoint-configuration-overview"
             logger.critical(error_msg)
-            self.stop_manager_with_all_streams()
+            self.stop_manager()
             raise UnknownExchange(error_msg)
 
         self.exchange = exchange
@@ -320,6 +325,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 websocket_ssl_context.check_hostname = False
             self.websocket_ssl_context = websocket_ssl_context
 
+        self.throw_exception_if_unrepairable = throw_exception_if_unrepairable
         self.all_subscriptions_number = 0
         self.binance_api_status = {'weight': None,
                                    'timestamp': 0,
@@ -376,7 +382,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.socket_is_ready = {}
         self.stream_threads = {}
         self.stream_threading_lock = {}
-        self.throw_exception_if_unrepairable = throw_exception_if_unrepairable
         self.total_received_bytes = 0
         self.total_received_bytes_lock = threading.Lock()
         self.total_receives = 0
@@ -600,7 +605,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                                 f" - RuntimeError `error: 11` - error_msg:  {str(error_msg)} - Info: https://github.com/"
                                 f"LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/299")
-                self.stop_manager_with_all_streams()
+                self.stop_manager()
                 sys.exit(1)
             elif "This event loop is already running" in str(error_msg):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
@@ -3765,21 +3770,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread.start()
         return True
 
-    def stop_manager(self, close_api_session=True):
+    def stop_manager(self, close_api_session: bool = True):
         """
         Stop the BinanceWebSocketApiManager with all streams, monitoring and management threads
-
-        Alias of 'stop_manager_with_all_streams()'
         """
         logger.info("BinanceWebSocketApiManager.stop_manager() - Stopping "
-                    "unicorn_binance_websocket_api_manager " + self.version + " ...")
-        self.stop_manager_with_all_streams(close_api_session=close_api_session)
-
-    def stop_manager_with_all_streams(self, close_api_session=True):
-        """
-        Stop the BinanceWebSocketApiManager with all streams, monitoring and management threads
-        """
-        logger.info("BinanceWebSocketApiManager.stop_manager_with_all_streams() - Stopping "
                     "unicorn_binance_websocket_api_manager " + self.version + " ...")
         # send signal to all threads
         self.stop_manager_request = True
@@ -3794,6 +3789,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         if close_api_session is True:
             self.llm.close()
         return True
+
+    def stop_manager_with_all_streams(self, close_api_session: bool = True):
+        """
+        Stop the BinanceWebSocketApiManager with all streams, monitoring and management threads
+
+        Alias of 'stop_manager()'
+        """
+        logger.info("BinanceWebSocketApiManager.stop_manager_with_all_streams() - Stopping "
+                    "unicorn_binance_websocket_api_manager " + self.version + " ...")
+
+        self.stop_manager(close_api_session=close_api_session)
 
     def stop_monitoring_api(self) -> bool:
         """
@@ -4106,4 +4112,3 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) finished with `True`!")
             return True
-        return False

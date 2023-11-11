@@ -112,6 +112,7 @@ class BinanceWebSocketApiConnection(object):
                                     " error msg from Binance: " + str(uri['msg']))
                 self.manager.stream_is_crashing(self.stream_id, str(uri['msg']))
                 if self.manager.throw_exception_if_unrepairable:
+                    self.manager.socket_is_ready[self.stream_id] = True
                     raise StreamRecoveryError("stream_id " + str(self.stream_id) + ": " + str(uri))
                 sys.exit(1)
         except KeyError as error_msg:

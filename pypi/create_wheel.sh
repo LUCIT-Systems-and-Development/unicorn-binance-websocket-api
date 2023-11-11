@@ -18,7 +18,7 @@
 # All rights reserved.
 
 security-check() {
-    echo -n "Did you change the version in \`build_wheels.yml\`, \`CHANGELOG.md\`, \`sphinx/source/conf.py\`, \`setup.py\` and \`/manager.py\`? [yes|NO] "
+    echo -n "Did you change the version in \`build_wheels.yml\`, \`CHANGELOG.md\`, \`sphinx/source/conf.py\`, \`setup.py\`, \`pyproject.toml\` and \`/manager.py\`? [yes|NO] "
     local SURE
     read SURE
     if [ "$SURE" != "yes" ]; then

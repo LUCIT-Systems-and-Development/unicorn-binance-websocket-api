@@ -32,18 +32,24 @@
 
 import logging
 import os
+import sys
 import time
-
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from lucit_licensing_python.exceptions import NoValidatedLucitLicense
+
 
 logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
-# To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/87b0088124a8
-ubwa = BinanceWebSocketApiManager(lucit_license_profile="BAD")
+try:
+    # To use this library you need a valid UNICORN Binance Suite License:
+    # https://medium.lucit.tech/87b0088124a8
+    ubwa = BinanceWebSocketApiManager(lucit_license_profile="LUCIT")
+except NoValidatedLucitLicense as error_msg:
+    print(f"ERROR LEVEL 1: {error_msg}")
+    sys.exit(1)
 
 ubwa.create_stream("trade", "btcusdt", output="UnicornFy")
 
@@ -53,4 +59,4 @@ try:
         print(f"Trades: {ubwa.pop_stream_data_from_stream_buffer()}")
 except KeyboardInterrupt:
     print(f"Stopping ...")
-    ubwa.stop_manager_with_all_streams()
+    ubwa.stop_manager()
