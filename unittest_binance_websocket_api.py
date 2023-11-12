@@ -74,16 +74,20 @@ class TestBinanceComManager(unittest.TestCase):
         print(f"TestBinanceComManager stopping:")
 
     def test_create_uri_miniticker_regular_com(self):
-        self.assertEqual(self.__class__.ubwa.create_websocket_uri(["!miniTicker"], ["arr"]), 'wss://stream.binance.us:9443/ws/!miniTicker@arr')
+        self.assertEqual(self.__class__.ubwa.create_websocket_uri(["!miniTicker"], ["arr"]),
+                         'wss://stream.binance.us:9443/ws/!miniTicker@arr')
 
     def test_create_uri_miniticker_reverse_com(self):
-        self.assertEqual(self.__class__.ubwa.create_websocket_uri(["arr"], ["!miniTicker"]), 'wss://stream.binance.us:9443/ws/!miniTicker@arr')
+        self.assertEqual(self.__class__.ubwa.create_websocket_uri(["arr"], ["!miniTicker"]),
+                         'wss://stream.binance.us:9443/ws/!miniTicker@arr')
 
     def test_create_uri_ticker_regular_com(self):
-        self.assertEqual(self.__class__.ubwa.create_websocket_uri(["!ticker"], ["arr"]), 'wss://stream.binance.us:9443/ws/!ticker@arr')
+        self.assertEqual(self.__class__.ubwa.create_websocket_uri(["!ticker"], ["arr"]),
+                         'wss://stream.binance.us:9443/ws/!ticker@arr')
 
     def test_create_uri_ticker_reverse_com(self):
-        self.assertEqual(self.__class__.ubwa.create_websocket_uri(["arr"], ["!ticker"]), 'wss://stream.binance.us:9443/ws/!ticker@arr')
+        self.assertEqual(self.__class__.ubwa.create_websocket_uri(["arr"], ["!ticker"]),
+                         'wss://stream.binance.us:9443/ws/!ticker@arr')
 
     def test_create_uri_userdata_regular_false_com(self):
         self.assertFalse(self.__class__.ubwa.create_websocket_uri(["!userData"], ["arr"]))
@@ -156,7 +160,8 @@ class TestBinanceComManager(unittest.TestCase):
     def test_create_payload_subscribe(self):
         result = "[{'method': 'SUBSCRIBE', 'params': ['bnbbtc@kline_1m'], 'id': 1}]"
         stream_id = self.__class__.ubwa.get_new_uuid_id()
-        self.assertEqual(str(self.__class__.ubwa.create_payload(stream_id, "subscribe", ['kline_1m'], ['bnbbtc'])), result)
+        self.assertEqual(str(self.__class__.ubwa.create_payload(stream_id, "subscribe",
+                                                                ['kline_1m'], ['bnbbtc'])), result)
 
     def test_fill_up_space_centered(self):
         result = "==========test text=========="
@@ -173,16 +178,20 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(str(self.__class__.ubwa.fill_up_space_left(30, "test text", "|")),
                          result)
 
+# Todo:
+#    def test_create_stream_userdata(self):
+#        self.assertTrue(bool(self.__class__.ubwa.create_stream('arr', '!userData', stream_label="userDataBad",
+#                                                               api_key="key", api_secret="secret")))
+
     def test_create_stream(self):
-        #self.assertTrue(bool(self.ubwa.create_stream('arr', '!userData', "userData", "key", "secret")))
-        self.assertTrue(bool(self.__class__.ubwa.create_stream(markets=['bnbbtc'], channels="trade", stream_label="test_stream")))
+        self.assertTrue(bool(self.__class__.ubwa.create_stream(markets=['bnbbtc'], channels="trade",
+                                                               stream_label="test_stream")))
         stream_id = self.__class__.ubwa.get_stream_id_by_label("test_stream")
-        #time.sleep(5)
-        #self.__class__.ubwa.unsubscribe_from_stream(stream_id, markets=['bnbbtc'])
-        #self.__class__.ubwa.unsubscribe_from_stream(stream_id, channels=['trade'])
+        time.sleep(5)
+        self.__class__.ubwa.unsubscribe_from_stream(stream_id, markets=['bnbbtc'])
+        self.__class__.ubwa.unsubscribe_from_stream(stream_id, channels=['trade'])
         time.sleep(6)
         self.assertTrue(self.__class__.ubwa.set_restart_request(stream_id))
-        # time.sleep(6)
         self.__class__.ubwa.get_monitoring_status_icinga()
         self.__class__.ubwa.print_summary(title="Unittests")
         self.__class__.ubwa.print_stream_info(stream_id, title="Unittests")
@@ -240,7 +249,8 @@ class TestBinanceComManagerTest(unittest.TestCase):
         self.assertFalse(self.__class__.ubwa.create_websocket_uri(["arr"], ["!userData"]))
 
     def test_create_uri_userdata_regular_com(self):
-        if len(self.__class__.binance_com_testnet_api_key) == 0 or len(self.__class__.binance_com_testnet_api_secret) == 0:
+        if (len(self.__class__.binance_com_testnet_api_key) == 0 or
+                len(self.__class__.binance_com_testnet_api_secret) == 0):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_regular_com() "
                   "for binance.com-testnet")
         else:
@@ -253,7 +263,8 @@ class TestBinanceComManagerTest(unittest.TestCase):
                              r'wss://testnet.binance.vision/ws/.')
 
     def test_create_uri_userdata_reverse_com(self):
-        if len(self.__class__.binance_com_testnet_api_key) == 0 or len(self.__class__.binance_com_testnet_api_secret) == 0:
+        if (len(self.__class__.binance_com_testnet_api_key) == 0 or
+                len(self.__class__.binance_com_testnet_api_secret) == 0):
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_reverse_com() "
                   "for binance.com-testnet")
         else:
@@ -404,9 +415,12 @@ class TestBinanceOrgManager(unittest.TestCase):
                                                      ['orders', 'transfers', 'accounts'],
                                                      'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
         self.assertEqual(str(payload),
-                         "[{'method': 'subscribe', 'topic': 'orders', 'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}, "
-                         "{'method': 'subscribe', 'topic': 'transfers', 'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}, "
-                         "{'method': 'subscribe', 'topic': 'accounts', 'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}]")
+                         "[{'method': 'subscribe', 'topic': 'orders', "
+                         "'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}, "
+                         "{'method': 'subscribe', 'topic': 'transfers', "
+                         "'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}, "
+                         "{'method': 'subscribe', 'topic': 'accounts', "
+                         "'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}]")
 
     def test_create_misc_single_org_subscribe(self):
         stream_id = self.__class__.ubwa.create_stream(["trades"], ["RAVEN-F66_BNB"])
@@ -450,9 +464,9 @@ class TestBinanceOrgManager(unittest.TestCase):
         result = "[{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RAVEN-F66_BNB']}]"
         stream_id = self.__class__.ubwa.get_new_uuid_id()
         self.assertEqual(str(self.__class__.ubwa.create_payload(stream_id,
-                                                                                   "subscribe",
-                                                                                   ['kline_1m'],
-                                                                                   ['RAVEN-F66_BNB'])),
+                                                                "subscribe",
+                                                                ['kline_1m'],
+                                                                ['RAVEN-F66_BNB'])),
                          result)
 
     def test_stop_manager(self):
@@ -480,36 +494,37 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.get_new_uuid_id()
 
     def test_rest_binance_com(self):
-        # Todo: BinanceWebSocketApiRestclient(self.__class__.ubwa)
-        pass
+        BinanceWebSocketApiRestclient(self.__class__.ubwa)
 
     def test_rest_binance_com_isolated_margin(self):
         self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin",
                                                          high_performance=True)
-        # Todo: BinanceWebSocketApiRestclient(self.__class__.ubwa)
+        BinanceWebSocketApiRestclient(self.__class__.ubwa)
         self.__class__.ubwa.stop_manager()
 
     def test_rest_binance_com_isolated_margin_testnet(self):
         self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet",
                                                          high_performance=True)
-        # Todo: BinanceWebSocketApiRestclient(self.__class__.ubwa)
+        BinanceWebSocketApiRestclient(self.__class__.ubwa)
         self.__class__.ubwa.stop_manager()
 
     def test_invalid_exchange(self):
         from unicorn_binance_websocket_api.exceptions import UnknownExchange
         try:
             ubwa = BinanceWebSocketApiManager(exchange="invalid-exchange.com", high_performance=True)
+            ubwa.stop_manager()
         except UnknownExchange:
             pass
 
-    #def test_isolated_margin(self):
-        # self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
-        #self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.us", high_performance=False)
-        #stream_id = self.__class__.ubwa.create_stream('arr', '!userData', symbols="CELRBTC", api_key="key", api_secret="secret")
-        #time.sleep(10)
-        #print("\r\n")
-        #self.__class__.ubwa.print_stream_info(stream_id)
-        #self.__class__.ubwa.stop_manager()
+# Todo: Needs a proxy ...
+#    def test_isolated_margin(self):
+#        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
+#        stream_id = self.__class__.ubwa.create_stream('arr', '!userData', symbols="CELRBTC",
+#                                                      api_key="key", api_secret="secret")
+#        time.sleep(10)
+#        print("\r\n")
+#        self.__class__.ubwa.print_stream_info(stream_id)
+#        self.__class__.ubwa.stop_manager()
 
     def test_live_run(self):
         self.__class__.ubwa.get_active_stream_list()
@@ -692,7 +707,7 @@ class TestApiLive(unittest.TestCase):
             streams.append(stream_id)
 
         stream_id2 = streams.pop()
-        stream_id3 = self.__class__.ubwa.create_stream(channel, markets, stream_buffer_name=True)
+        self.__class__.ubwa.create_stream('depth20', markets, stream_buffer_name=True)
         time.sleep(6)
         self.__class__.ubwa.stop_stream_as_crash(streams.pop())
         self.__class__.ubwa.create_websocket_uri(False, False, stream_id1)
@@ -702,9 +717,9 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.pop_stream_data_from_stream_buffer()
         self.__class__.ubwa.pop_stream_data_from_stream_buffer()
         self.__class__.ubwa.pop_stream_data_from_stream_buffer(stream_buffer_name="invalid")
-        # stream_id_1_1 = self.__class__.ubwa.replace_stream(stream_id1, 'trade', 'kncbtc', "name")
-#        self.__class__.ubwa.replace_stream(stream_id_1_1, 'trade', 'kncbtc', "name",
-#                                           new_ping_interval=10, new_ping_timeout=10, new_close_timeout=5)
+        stream_id_1_1 = self.__class__.ubwa.replace_stream(streams.pop(), 'trade', 'kncbtc', "name")
+        self.__class__.ubwa.replace_stream(stream_id_1_1, 'trade', 'kncbtc', "name2",
+                                           new_ping_interval=10, new_ping_timeout=10, new_close_timeout=5)
         self.__class__.ubwa.get_results_from_endpoints()
         self.__class__.ubwa.get_used_weight()
         self.__class__.ubwa.get_start_time()

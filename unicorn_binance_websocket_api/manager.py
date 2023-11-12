@@ -3774,21 +3774,22 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Stop the BinanceWebSocketApiManager with all streams, monitoring and management threads
         """
-        logger.info("BinanceWebSocketApiManager.stop_manager() - Stopping "
-                    "unicorn_binance_websocket_api_manager " + self.version + " ...")
-        # send signal to all threads
-        self.stop_manager_request = True
-        try:
-            for stream_id in self.stream_list:
-                self.stop_stream(stream_id)
-        except AttributeError:
-            pass
-        # stop monitoring API services
-        self.stop_monitoring_api()
-        # close lucit license manger and the api session
-        if close_api_session is True:
-            self.llm.close()
-        return True
+        if self.stop_manager_request is not True:
+            logger.info("BinanceWebSocketApiManager.stop_manager() - Stopping "
+                        "unicorn_binance_websocket_api_manager " + self.version + " ...")
+            # send signal to all threads
+            self.stop_manager_request = True
+            try:
+                for stream_id in self.stream_list:
+                    self.stop_stream(stream_id)
+            except AttributeError:
+                pass
+            # stop monitoring API services
+            self.stop_monitoring_api()
+            # close lucit license manger and the api session
+            if close_api_session is True:
+                self.llm.close()
+            return True
 
     def stop_manager_with_all_streams(self, close_api_session: bool = True):
         """
