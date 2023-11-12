@@ -639,7 +639,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             loop.close()
             try:
                 self.stream_list[stream_id]['loop_is_closing'] = False
-                self.stream_list[stream_id]['status'] = "stopped"
+                self.stream_is_stopping(stream_id)
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 15` - {error_msg}")
@@ -3858,8 +3858,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeError - {error_msg}")
         except RuntimeWarning as error_msg:
             logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeWarning - {error_msg}")
-        # Test (moved to connection and sockets
-        # self.stream_is_stopping(stream_id)
         return True
 
     def stop_stream_as_crash(self, stream_id):
@@ -4071,7 +4069,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         for item in payload:
             self.stream_list[stream_id]['payload'].append(item)
         self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
-        logger.info("BinanceWebSocketApiManager.unsubscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
+        logger.info("BinanceWebSocketApiManager.unsubscribe_from_stream(" + str(stream_id) + ", " + str(channels) +
                     ", " + str(markets) + ") finished ...")
         return True
 
@@ -4107,8 +4105,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             while self.stream_list[stream_id]['status'] != "stopped":
                 time.sleep(0.1)
-            logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) finished with `True`!")
-            return True
         except KeyError:
-            logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) finished with `True`!")
-            return True
+            pass
+        logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) finished with `True`!")
+        return True

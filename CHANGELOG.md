@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.1.0.dev (development stage/unreleased/unstable)
 ### Adding
 - Passing UBS/LUCIT license parameter to `UBRA`.
+### Fixed
+- `manager.wait_till_stream_has_stopped()`
 
 ## 2.1.0
 ### Added
@@ -24,7 +26,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - AsyncIO Loop handling and closing
 - Graceful shutdown in exception `UnknownExchange`
 - `manager.wait_till_stream_has_started()`
-- `manager.wait_till_stream_has_stopped()`
 
 ## 2.0.0
 ### Added

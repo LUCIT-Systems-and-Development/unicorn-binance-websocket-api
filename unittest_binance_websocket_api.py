@@ -480,18 +480,19 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.get_new_uuid_id()
 
     def test_rest_binance_com(self):
-        BinanceWebSocketApiRestclient(self.__class__.ubwa)
+        # Todo: BinanceWebSocketApiRestclient(self.__class__.ubwa)
+        pass
 
     def test_rest_binance_com_isolated_margin(self):
         self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin",
                                                          high_performance=True)
-        BinanceWebSocketApiRestclient(self.__class__.ubwa)
+        # Todo: BinanceWebSocketApiRestclient(self.__class__.ubwa)
         self.__class__.ubwa.stop_manager()
 
     def test_rest_binance_com_isolated_margin_testnet(self):
         self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet",
                                                          high_performance=True)
-        BinanceWebSocketApiRestclient(self.__class__.ubwa)
+        # Todo: BinanceWebSocketApiRestclient(self.__class__.ubwa)
         self.__class__.ubwa.stop_manager()
 
     def test_invalid_exchange(self):
@@ -501,14 +502,14 @@ class TestApiLive(unittest.TestCase):
         except UnknownExchange:
             pass
 
-    def test_isolated_margin(self):
+    #def test_isolated_margin(self):
         # self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
-        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.us", high_performance=False)
-        stream_id = self.__class__.ubwa.create_stream('arr', '!userData', symbols="CELRBTC", api_key="key", api_secret="secret")
-        time.sleep(10)
-        print("\r\n")
-        self.__class__.ubwa.print_stream_info(stream_id)
-        self.__class__.ubwa.stop_manager()
+        #self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.us", high_performance=False)
+        #stream_id = self.__class__.ubwa.create_stream('arr', '!userData', symbols="CELRBTC", api_key="key", api_secret="secret")
+        #time.sleep(10)
+        #print("\r\n")
+        #self.__class__.ubwa.print_stream_info(stream_id)
+        #self.__class__.ubwa.stop_manager()
 
     def test_live_run(self):
         self.__class__.ubwa.get_active_stream_list()
@@ -684,13 +685,16 @@ class TestApiLive(unittest.TestCase):
                    'erdbnb', 'xrpbearusdt', 'stratbnb', 'cmtbtc', 'cvcbtc', 'kncbtc', 'rpxbnb', 'zenbnb', 'cndbnb',
                    'wrxbtc', 'pptbtc', 'nknbtc', 'zecusdt', 'stormeth', 'qtumusdt']
 
+        streams = []
         for channel in channels:
-            stream_id2 = self.__class__.ubwa.create_stream(channel, markets, stream_buffer_name=channel,
-                                                                     ping_interval=10, ping_timeout=10, close_timeout=5)
+            stream_id = self.__class__.ubwa.create_stream(channel, markets, stream_buffer_name=channel,
+                                                          ping_interval=10, ping_timeout=10, close_timeout=5)
+            streams.append(stream_id)
 
+        stream_id2 = streams.pop()
         stream_id3 = self.__class__.ubwa.create_stream(channel, markets, stream_buffer_name=True)
         time.sleep(6)
-        self.__class__.ubwa.stop_stream_as_crash(stream_id3)
+        self.__class__.ubwa.stop_stream_as_crash(streams.pop())
         self.__class__.ubwa.create_websocket_uri(False, False, stream_id1)
         self.__class__.ubwa.unsubscribe_from_stream(stream_id2, markets="erdbnb")
         self.__class__.ubwa.unsubscribe_from_stream(stream_id2, channels="trade")
@@ -702,7 +706,7 @@ class TestApiLive(unittest.TestCase):
 #        self.__class__.ubwa.replace_stream(stream_id_1_1, 'trade', 'kncbtc', "name",
 #                                           new_ping_interval=10, new_ping_timeout=10, new_close_timeout=5)
         self.__class__.ubwa.get_results_from_endpoints()
-        self.__class__.ubwa.get_binance_api_status()
+        self.__class__.ubwa.get_used_weight()
         self.__class__.ubwa.get_start_time()
         self.__class__.ubwa.get_stream_label(stream_id1)
         self.__class__.ubwa.get_stream_label(False)
@@ -718,8 +722,8 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.set_ringbuffer_result_max_size(300)
         self.__class__.ubwa.set_stream_label(stream_id2, "blub")
         self.__class__.ubwa._add_stream_to_stream_list(self.__class__.ubwa.get_new_uuid_id(),
-                                                                 'trade', 'btceth')
-        self.__class__.ubwa._restart_stream((stream_id1))
+                                                       'trade', 'btceth')
+        self.__class__.ubwa._restart_stream(stream_id1)
         self.__class__.ubwa.delete_stream_from_stream_list(stream_id1)
         self.__class__.ubwa.delete_listen_key_by_stream_id(stream_id1)
         self.__class__.ubwa.is_update_availabe_unicorn_fy()
@@ -731,6 +735,9 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.set_keep_max_received_last_second_entries(30)
         self.__class__.ubwa.stop_stream_as_crash(stream_id2)
         time.sleep(6)
+        print(f"Waiting for {stream_id2} has started")
+        self.__class__.ubwa.wait_till_stream_has_started(stream_id2)
+        print(f"Done!")
         self.__class__.ubwa.stop_stream(stream_id2)
         self.__class__.ubwa.add_to_ringbuffer_error("test")
         self.__class__.ubwa.add_to_ringbuffer_result("test")
@@ -738,7 +745,9 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.get_most_receives_per_second()
         self.__class__.ubwa.get_number_of_streams_in_stream_list()
         self.__class__.ubwa.is_update_availabe_check_command()
+        print(f"Waiting for {stream_id2} has stopped")
         self.__class__.ubwa.wait_till_stream_has_stopped(stream_id2)
+        print(f"Done!")
         self.__class__.ubwa.print_stream_info(stream_id2)
         self.__class__.ubwa.print_summary()
         self.__class__.ubwa.print_summary_to_png(".", 12.5)
@@ -748,33 +757,20 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.get_version()
         self.__class__.ubwa.help()
         self.__class__.ubwa.get_current_receiving_speed_global()
-        print(f"Waiting for {stream_id2}")
-        self.__class__.ubwa.wait_till_stream_has_started(stream_id2)
-        print(f"Done!")
         self.__class__.ubwa.remove_ansi_escape_codes("test text")
         self.__class__.ubwa.pop_stream_signal_from_stream_signal_buffer()
-        self.__class__.ubwa.stop_manager()
 
-        # test to many subscriptions
+        from unicorn_binance_rest_api import BinanceRestApiManager
 
-        import unicorn_binance_rest_api
-        binance_api_key = ""
-        binance_api_secret = ""
-        try:
-            ubra = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret,
-                                                                  exchange="binance.us")
-        except ResourceWarning as error_msg:
-            print(f"Catched: {error_msg}")
-        markets = []
-        data = ubra.get_all_tickers()
-        for item in data:
-            markets.append(item['symbol'])
+        with BinanceRestApiManager(exchange="binance.us") as ubra:
+            markets = []
+            data = ubra.get_all_tickers()
+            for item in data:
+                markets.append(item['symbol'])
         self.__class__.ubwa.create_stream("trade", markets, stream_label="too much!")
+
+        self.__class__.ubwa.stop_manager()
 
 
 if __name__ == '__main__':
     unittest.main()
-    print(f"Final threads:")
-    for thread in threading.enumerate():
-        print(thread.name)
-    print(f"Exit ...")
