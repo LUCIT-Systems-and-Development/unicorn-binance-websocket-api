@@ -12,6 +12,11 @@ build:
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
+channels:
+  - conda-forge
+  - lucit
+  - default
+
 requirements:
   build:
     - {{ compiler('c') }}
@@ -49,11 +54,6 @@ requirements:
     - websockets ==10.4
     - typing_extensions
     - conda-forge::flask-restful
-
-channels:
-  - lucit
-  - conda-forge
-  - default
 
 dependencies:
   - anaconda-client
