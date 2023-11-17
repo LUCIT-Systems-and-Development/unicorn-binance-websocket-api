@@ -11,7 +11,7 @@ dependencies:
   - colorama
   - Cython
   - flask
-  - flask_restful
+  - conda-forge::flask_restful
   - lucit::lucit-licensing-python
   - psutil
   - PySocks
