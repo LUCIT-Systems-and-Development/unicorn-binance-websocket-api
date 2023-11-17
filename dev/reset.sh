@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
-rm *.py.log
+rm *.log
+rm dev/*.log
 
 rm build -r
 rm dist -r

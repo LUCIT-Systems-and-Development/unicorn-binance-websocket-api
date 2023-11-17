@@ -1,6 +1,7 @@
 .idea
 
 .print_summary.txt
+dev/unicorn_binance_websocket_api
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

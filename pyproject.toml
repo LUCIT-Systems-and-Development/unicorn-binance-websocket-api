@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "unicorn-binance-websocket-api"
-version = "2.0.1"
+version = "2.1.1"
 description = "An unofficial Python API to use the Binance REST API’s in a easy, fast, flexible, robust and fully-featured way."
 authors = ["LUCIT Systems and Development <info@lucit.tech>"]
 license = "LSOSL - LUCIT Synergetic Open Source License"
 readme = "README.md"
-homepage = "https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api"
+homepage = "https://www.lucit.tech/unicorn-binance-websocket-api.html"
 documentation = "https://unicorn-binance-websocket-api.docs.lucit.tech"
 repository = "https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api"
 
@@ -24,9 +24,20 @@ repository = "https://github.com/LUCIT-Systems-and-Development/unicorn-binance-w
 
 [tool.poetry.dependencies]
 python = ">=3.7.0"
+cheroot = "*"
+colorama = "*"
 Cython = "*"
+flask = "*"
+flask_restful = "*"
+lucit-licensing-python = ">=1.8.1"
+psutil = "*"
+PySocks = "*"
 requests = "*"
-simplejson = "*"
+ujson = "*"
+unicorn-fy = "*"
+unicorn-binance-rest-api = ">=2.1.2"
+websocket-client = "*"
+websockets = "10.4"
 
 [tool.poetry.dev-dependencies]
 

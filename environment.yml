@@ -1,19 +1,24 @@
 name: unicorn-binance-websocket-api
+
+channels:
+  - lucit
+  - conda-forge
+  - defaults
+
 dependencies:
-- python>=3.7
-- pip:
+  - python>=3.7
   - cheroot
   - colorama
   - Cython
   - flask
   - flask_restful
-  - lucit-licensing-python
+  - lucit::lucit-licensing-python>=1.8.1
   - psutil
   - PySocks
   - requests
   - ujson
-  - unicorn-fy
-  - unicorn-binance-rest-api>=1.9.0
+  - lucit::unicorn-fy
+  - lucit::unicorn-binance-rest-api>=2.1.2
   - websocket-client
   - websockets==10.4
   - typing_extensions

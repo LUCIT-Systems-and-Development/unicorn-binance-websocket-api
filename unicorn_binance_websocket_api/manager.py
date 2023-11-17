@@ -8,35 +8,16 @@
 # Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
 # Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api
+# LUCIT Online Shop: https://shop.lucit.services/software
 #
 # License: LSOSL - LUCIT Synergetic Open Source License
-# https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/main/LICENSE
+# https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE
 #
 # Author: LUCIT Systems and Development
 #
 # Copyright (c) 2019-2023, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-from lucit_licensing_python.manager import LucitLicensingManager
-from lucit_licensing_python.exceptions import NoValidatedLucitLicense
-from unicorn_binance_websocket_api.connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, CONNECTION_SETTINGS
-from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, UnknownExchange
-from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
-from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
-from unicorn_binance_websocket_api.sockets import BinanceWebSocketApiSocket
-from unicorn_binance_websocket_api.api import BinanceWebSocketApiApi
-from cheroot import wsgi
-from collections import deque
-from datetime import datetime
-from flask import Flask, redirect
-from flask_restful import Api
-from operator import itemgetter
-from typing import Optional, Union
-try:
-    # python <=3.7 support
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
 import asyncio
 import colorama
 import copy
@@ -57,6 +38,30 @@ import traceback
 import uuid
 import ujson as json
 import websockets
+from lucit_licensing_python.manager import LucitLicensingManager
+from lucit_licensing_python.exceptions import NoValidatedLucitLicense
+from unicorn_binance_rest_api.manager import BinanceRestApiManager
+from .connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, CONNECTION_SETTINGS
+from .exceptions import StreamRecoveryError, UnknownExchange
+from .restclient import BinanceWebSocketApiRestclient
+from .restserver import BinanceWebSocketApiRestServer
+from .sockets import BinanceWebSocketApiSocket
+from .api import BinanceWebSocketApiApi
+from cheroot import wsgi
+from collections import deque
+from datetime import datetime
+from flask import Flask, redirect
+from flask_restful import Api
+from operator import itemgetter
+from typing import Optional, Union
+try:
+    # python <=3.7 support
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
+
+__app_name__: str = "unicorn-binance-websocket-api"
+__version__: str = "2.1.1"
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -198,6 +203,8 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param lucit_license_token: The `license_token` of your UNICORN Binance Suite license from
                                 https://shop.lucit.services/software/unicorn-binance-suite
     :type lucit_license_token:  str
+    :param ubra_manager: Provide a shared unicorn_binance_rest_api.manager instance
+    :type ubra_manager: BinanceRestApiManager
     """
 
     def __init__(self,
@@ -229,15 +236,18 @@ class BinanceWebSocketApiManager(threading.Thread):
                  lucit_api_secret: str = None,
                  lucit_license_ini: str = None,
                  lucit_license_profile: str = None,
-                 lucit_license_token: str = None):
+                 lucit_license_token: str = None,
+                 ubra_manager: Optional[BinanceRestApiManager] = None,
+                 ):
         threading.Thread.__init__(self)
-        self.name = "unicorn-binance-websocket-api"
-        self.version = "2.1.0.dev"
+        self.name = __app_name__
+        self.version = __version__
         self.stop_manager_request = None
         logger.info(f"New instance of {self.get_user_agent()}-{'compiled' if cython.compiled else 'source'} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         self.debug = debug
         logger.info(f"Debug is {self.debug}")
+        self.ubra = ubra_manager
 
         self.lucit_api_secret = lucit_api_secret
         self.lucit_license_ini = lucit_license_ini
@@ -248,14 +258,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          license_profile=self.lucit_license_profile,
                                          license_token=self.lucit_license_token,
                                          parent_shutdown_function=self.stop_manager,
-                                         program_used="unicorn-binance-websocket-api",
+                                         program_used=self.name,
                                          needed_license_type="UNICORN-BINANCE-SUITE",
                                          start=True)
         licensing_exception = self.llm.get_license_exception()
         if licensing_exception is not None:
             raise NoValidatedLucitLicense(licensing_exception)
 
-        if disable_colorama is not True:
+        self.disable_colorama = disable_colorama
+        if self.disable_colorama is not True:
             logger.info(f"Initiating `colorama_{colorama.__version__}`")
             colorama.init()
         logger.info(f"Using `websockets_{websockets.__version__}`")
@@ -330,7 +341,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.binance_api_status = {'weight': None,
                                    'timestamp': 0,
                                    'status_code': None}
-        self.dex_user_address = False
+        self.dex_user_address = None
         self.event_loops = {}
         self.frequent_checks_list = {}
         self.frequent_checks_list_lock = threading.Lock()
@@ -394,7 +405,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.ping_timeout_default = ping_timeout_default
         self.replacement_text = "***SECRET_REMOVED***"
         self.api = BinanceWebSocketApiApi(manager=self)
-        self.restclient = BinanceWebSocketApiRestclient(manager=self)
         self.warn_on_update = warn_on_update
         if warn_on_update and self.is_update_available():
             update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
@@ -402,6 +412,18 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"https://unicorn-binance-websocket-api.docs.lucit.tech/CHANGELOG.html)"
             print(update_msg)
             logger.warning(update_msg)
+        self.restclient = BinanceWebSocketApiRestclient(debug=self.debug,
+                                                        disable_colorama=self.disable_colorama,
+                                                        exchange=self.exchange,
+                                                        lucit_api_secret=self.lucit_api_secret,
+                                                        lucit_license_ini=self.lucit_license_ini,
+                                                        lucit_license_profile=self.lucit_license_profile,
+                                                        lucit_license_token=self.lucit_license_token,
+                                                        socks5_proxy_server=self.socks5_proxy_server,
+                                                        socks5_proxy_user=self.socks5_proxy_user,
+                                                        socks5_proxy_pass=self.socks5_proxy_pass,
+                                                        stream_list=self.stream_list,
+                                                        warn_on_update=self.warn_on_update)
         self.start()
 
     def __enter__(self):
@@ -419,10 +441,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    channels,
                                    markets,
                                    stream_label=None,
-                                   stream_buffer_name=False,
-                                   api_key=False,
-                                   api_secret=False,
-                                   symbols=False,
+                                   stream_buffer_name=None,
+                                   api_key=None,
+                                   api_secret=None,
+                                   symbols=None,
                                    output=False,
                                    ping_interval=None,
                                    ping_timeout=None,
@@ -540,7 +562,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'logged_reconnects': [],
                                        'processed_transmitted_total': 0,
                                        'last_static_ping_listen_key': 0,
-                                       'listen_key': False,
+                                       'listen_key': None,
                                        'listen_key_cache_time':  10 * 60,
                                        'last_received_data_record': None,
                                        'processed_receives_statistic': {},
@@ -555,7 +577,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                               stream_id,
                               channels,
                               markets,
-                              stream_buffer_name=False,
+                              stream_buffer_name=None,
                               stream_buffer_maxlen=None,
                               restart=False):
         """
@@ -585,7 +607,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.is_stop_request(stream_id):
             return False
         if restart is False:
-            if stream_buffer_name is not False:
+            if stream_buffer_name is not None:
                 self.stream_buffer_locks[stream_buffer_name] = threading.Lock()
                 try:
                     # Not resetting the stream_buffer during a restart:
@@ -817,7 +839,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                     (active_stream_list[stream_id]['last_static_ping_listen_key'] +
                                      active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
                                 # keep-alive the listenKey
-                                self.restclient.keepalive_listen_key(stream_id)
+                                response, binance_api_status = self.restclient.keepalive_listen_key(stream_id)
+                                if binance_api_status is not None:
+                                    self.binance_api_status = binance_api_status
                                 # set last_static_ping_listen_key
                                 self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
                                 self.set_heartbeat(stream_id)
@@ -1060,7 +1084,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.ringbuffer_result.append(str(result))
         return True
 
-    def add_to_stream_buffer(self, stream_data, stream_buffer_name=False):
+    def add_to_stream_buffer(self, stream_data, stream_buffer_name=None):
         """
         Kick back data to the
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
@@ -1080,7 +1104,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_buffer_name: bool or str
         :return: bool
         """
-        if stream_buffer_name is False:
+        if stream_buffer_name is None:
             with self.stream_buffer_lock:
                 self.stream_buffer.append(stream_data)
         else:
@@ -1139,7 +1163,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         with self.total_received_bytes_lock:
             self.total_received_bytes += int(size)
 
-    def clear_stream_buffer(self, stream_buffer_name=False):
+    def clear_stream_buffer(self, stream_buffer_name=None):
         """
         Clear the
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
@@ -1149,7 +1173,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_buffer_name: bool or str
         :return: bool
         """
-        if stream_buffer_name is False:
+        if stream_buffer_name is None:
             try:
                 self.stream_buffer.clear()
                 return True
@@ -1209,12 +1233,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 payload.append(add_payload_from_market)
                                 continue
                             elif re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
-                                if self.stream_list[stream_id]['dex_user_address'] is False:
+                                if self.stream_list[stream_id]['dex_user_address'] is None:
                                     self.stream_list[stream_id]['dex_user_address'] = market
                             else:
                                 symbols.append(market)
                     try:
-                        if self.stream_list[stream_id]["dex_user_address"] is not False:
+                        if self.stream_list[stream_id]["dex_user_address"] is not None:
                             add_payload["address"] = self.stream_list[stream_id]["dex_user_address"]
                             payload.append(add_payload)
                     except KeyError:
@@ -1227,7 +1251,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     add_payload = {"method": method}
                     for market in markets:
                         if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
-                            if self.stream_list[stream_id]['dex_user_address'] is False:
+                            if self.stream_list[stream_id]['dex_user_address'] is None:
                                 self.stream_list[stream_id]['dex_user_address'] = market
                                 markets.remove(market)
                     if len(markets) > 0:
@@ -1308,10 +1332,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                       channels=[],
                       markets=[],
                       stream_label=None,
-                      stream_buffer_name=False,
-                      api_key=False,
-                      api_secret=False,
-                      symbols=False,
+                      stream_buffer_name=None,
+                      api_key=None,
+                      api_secret=None,
+                      symbols=None,
                       output=False,
                       ping_interval=None,
                       ping_timeout=None,
@@ -1459,7 +1483,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         ping_timeout = ping_timeout or self.ping_timeout_default
         stream_id = self.get_new_uuid_id()
         markets_new = []
-        if stream_buffer_name is True:
+        if stream_buffer_name is None:
             stream_buffer_name = stream_id
         for market in markets:
             if "!" in market \
@@ -1530,8 +1554,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             time.sleep(1)
         return stream_id
 
-    def create_websocket_uri(self, channels, markets, stream_id=False, api_key=False, api_secret=False, symbols=False,
-                             api=False):
+    def create_websocket_uri(self, channels, markets, stream_id=None, symbols=None, api=False):
         """
         Create a websocket URI
 
@@ -1541,10 +1564,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type markets: str, tuple, list, set
         :param stream_id: provide a stream_id - only needed for userData Streams (acquiring a listenKey)
         :type stream_id: str
-        :param api_key: provide a valid Binance API key
-        :type api_key: str
-        :param api_secret: provide a valid Binance API secret
-        :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
         :param api: Setting this to `True` activates the creation of a Websocket API stream to send API requests via Websocket.
@@ -1553,7 +1572,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api: bool
         :return: str or False
         """
-        if api is True:
+        if api is not False:
             logger.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
                         str(markets) + ", " + ", " + str(symbols) + ", " + str(api) + ") - Created websocket URI for "
                         "stream_id=" + str(stream_id) + " is " + self.websocket_api_base_uri)
@@ -1575,7 +1594,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             markets = [markets]
         if len(channels) == 1 and len(markets) == 1:
             if "!userData" in channels or "!userData" in markets:
-                if stream_id is not False:
+                if stream_id is not None:
                     response = self.get_listen_key_from_restclient(stream_id)
                     try:
                         if response['code'] == -1102 or \
@@ -1648,7 +1667,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             elif self.is_exchange_type("dex"):
                 if re.match(r'[a-zA-Z0-9]{41,43}', markets[0]) is not None:
                     try:
-                        if self.stream_list[stream_id]['dex_user_address'] is False:
+                        if self.stream_list[stream_id]['dex_user_address'] is None:
                             self.stream_list[stream_id]['dex_user_address'] = markets[0]
                         if self.stream_list[stream_id]['dex_user_address'] != markets[0]:
                             logger.error("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
@@ -1735,7 +1754,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             if self.stream_list[stream_id]['listen_key'] is not False:
                 logger.info("BinanceWebSocketApiManager.delete_listen_key_by_stream_id(" + str(stream_id) + ")")
-                self.restclient.delete_listen_key(stream_id)
+                response, binance_api_status = self.restclient.delete_listen_key(stream_id)
+                if binance_api_status is not None:
+                    self.binance_api_status = binance_api_status
         except KeyError:
             return False
 
@@ -2144,7 +2165,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     time.time() or (self.stream_list[stream_id]['last_static_ping_listen_key'] +
                                     self.stream_list[stream_id]['listen_key_cache_time']) > time.time():
                 # listen_key is not older than 30 min
-                if self.stream_list[stream_id]['listen_key'] is not False:
+                if self.stream_list[stream_id]['listen_key'] is not None:
                     response = {'listenKey': self.stream_list[stream_id]['listen_key']}
                     return response
         except KeyError:
@@ -2153,7 +2174,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         # no cached listen_key or listen_key is older than 30 min
         # acquire a new listen_key:
         try:
-            response = self.restclient.get_listen_key(stream_id)
+            response, binance_api_status = self.restclient.get_listen_key(stream_id)
+            if binance_api_status is not None:
+                self.binance_api_status = binance_api_status
         except ResourceWarning as error_msg:
             logger.error(f"BinanceWebSocketApiManager.get_listen_key_from_restclient() - ResourceWarning: {error_msg}")
             return False
@@ -2529,7 +2552,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return round(total_received_bytes / total_receives * stream_buffer_length)
 
-    def get_stream_buffer_length(self, stream_buffer_name=False):
+    def get_stream_buffer_length(self, stream_buffer_name=None):
         """
         Get the current number of items in all stream_buffer or of a specific stream_buffer
 
@@ -2663,7 +2686,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             temp_stream_list[stream_id] = self.get_stream_info(stream_id)
         return temp_stream_list
 
-    def get_stream_buffer_maxlen(self, stream_buffer_name=False):
+    def get_stream_buffer_maxlen(self, stream_buffer_name=None):
         """
         Get the maxlen value of the
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
@@ -2677,7 +2700,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_buffer_name: bool or str
         :return: int or False
         """
-        if stream_buffer_name is False:
+        if stream_buffer_name is None:
             try:
                 return self.stream_buffer.maxlen
             except IndexError:
@@ -2886,6 +2909,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         with self.total_transmitted_lock:
             self.total_transmitted += 1
 
+
     def is_manager_stopping(self):
         """
         Returns `True` if the manager has a stop request, 'False' if not.
@@ -3037,7 +3061,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - RuntimeWarning - {error_msg}")
         return True
 
-    def pop_stream_data_from_stream_buffer(self, stream_buffer_name=False, mode="FIFO"):
+    def pop_stream_data_from_stream_buffer(self, stream_buffer_name=None, mode="FIFO"):
         """
         Get oldest or latest entry from
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
@@ -3050,7 +3074,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type mode: str
         :return: stream_data - str, dict or False
         """
-        if stream_buffer_name is False:
+        if stream_buffer_name is None:
             try:
                 with self.stream_buffer_lock:
                     if mode.upper() == "FIFO":
@@ -3092,7 +3116,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except IndexError:
             return False
 
-    def print_stream_info(self, stream_id, add_string="", title=None):
+    def print_stream_info(self, stream_id, add_string=None, title=None):
         """
         Print all infos about a specific stream, helps debugging :)
 
@@ -3101,8 +3125,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param add_string: text to add to the output
         :type add_string: str
         :param title: set to `True` to use curses instead of print()
-        :type title: bool
-        :return: bool
+        :type title: str
         """
         restart_requests_row = ""
         binance_api_status_row = ""
@@ -3113,8 +3136,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         dex_user_address_row = ""
         last_static_ping_listen_key = ""
         stream_info = self.get_stream_info(stream_id)
-        if len(add_string) > 0:
-            add_string = " " + str(add_string) + "\r\n"
+        if add_string is None:
+            add_string = ""
+        else:
+            add_string = f" {add_string}\r\n"
         if self.socks5_proxy_address is not None and self.socks5_proxy_port is not None:
             proxy = f"\r\n proxy: {self.socks5_proxy_address}:{self.socks5_proxy_port} (ssl:" \
                     f"{self.socks5_proxy_ssl_verification})"
@@ -3173,11 +3198,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
                                      ")\r\n"
         current_receiving_speed = str(self.get_human_bytesize(self.get_current_receiving_speed(stream_id), "/s"))
-        if self.stream_list[stream_id]['symbols'] is not False:
+        if self.stream_list[stream_id]['symbols'] is not None:
             symbol_row = " symbols:" + str(stream_info['symbols']) + "\r\n"
         if self.stream_list[stream_id]["payload"]:
             payload_row = " payload: " + str(self.stream_list[stream_id]["payload"]) + "\r\n"
-        if self.stream_list[stream_id]["dex_user_address"] is not False:
+        if self.stream_list[stream_id]["dex_user_address"] is not None:
             dex_user_address_row = " user_address: " + str(self.stream_list[stream_id]["dex_user_address"]) + "\r\n"
         if self.stream_list[stream_id]["stream_label"] is not None:
             stream_label_row = " stream_label: " + self.stream_list[stream_id]["stream_label"] + "\r\n"
@@ -3253,7 +3278,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             self.print_stream_info(stream_id)
 
-    def print_summary(self, add_string="", disable_print=False, title=None):
+    def print_summary(self, add_string=None, disable_print=False, title=None):
         """
         Print an overview of all streams
         
@@ -3291,8 +3316,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             proxy = ""
 
-        if len(add_string) > 0:
-            add_string = " " + str(add_string) + "\r\n"
+        if add_string is None:
+            add_string = ""
+        else:
+            add_string = f" {add_string}\r\n"
         try:
             temp_stream_list = copy.deepcopy(self.stream_list)
         except RuntimeError:
@@ -3512,10 +3539,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                        new_channels,
                        new_markets,
                        new_stream_label=None,
-                       new_stream_buffer_name=False,
-                       new_api_key=False,
-                       new_api_secret=False,
-                       new_symbols=False,
+                       new_stream_buffer_name=None,
+                       new_api_key=None,
+                       new_api_secret=None,
+                       new_symbols=None,
                        new_output="raw_data",
                        new_ping_interval=20,
                        new_ping_timeout=20,
@@ -3786,6 +3813,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                 pass
             # stop monitoring API services
             self.stop_monitoring_api()
+            # stop restclient
+            try:
+                if self.restclient is not None:
+                    self.restclient.stop()
+            except AttributeError as error_msg:
+                logger.debug(f"stop_manager() - AttributeError: {error_msg}")
             # close lucit license manger and the api session
             if close_api_session is True:
                 self.llm.close()
@@ -3837,7 +3870,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             pass
         if delete_listen_key:
-            self.delete_listen_key_by_stream_id(stream_id)
+            if self.exchange_type != "dex":
+                self.delete_listen_key_by_stream_id(stream_id)
         try:
             loop = self.get_event_loop_by_stream_id(stream_id)
             logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - Closing event_loop "

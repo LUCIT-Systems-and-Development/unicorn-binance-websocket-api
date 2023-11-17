@@ -1,0 +1,111 @@
+name: Build and Publish Anaconda
+
+on:
+  workflow_dispatch:
+    branches:
+      - master
+
+jobs:
+  build_conda_packages:
+    name: Build conda on ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-20.04, windows-2019, macos-11]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        exclude:
+          - os: windows-2019
+            python-version: "3.7"
+          - os: windows-2019
+            python-version: "3.12"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Conda environment creation and activation
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          environment-file: environment.yml
+          auto-update-conda: false
+          auto-activate-base: false
+          show-channel-urls: true
+
+      - name: Install Conda Tools
+        run: |
+          conda install -c conda-forge conda-build
+          conda install conda-verify
+          conda install -c anaconda anaconda-client
+
+      - name: Configure PATH
+        run: echo "$CONDA/bin" >> $GITHUB_PATH
+
+      - name: Install Python Tools
+        run: |
+          pip install setuptools wheel --upgrade       
+
+      - name: Install macOS SDK (only on macOS)
+        if: runner.os == 'macOS'
+        run: |
+          sudo mkdir -p /opt/MacOSX10.10.sdk
+          sudo curl -L -o MacOSX10.10.sdk.tar.xz https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX10.10.sdk.tar.xz
+          sudo tar -xJf MacOSX10.10.sdk.tar.xz -C /opt/
+
+      - name: Set CONDA_BUILD_SYSROOT (only on macOS)
+        if: runner.os == 'macOS'
+        run: |
+          echo "CONDA_BUILD_SYSROOT: /opt/MacOSX10.10.sdk # [osx]" > conda_build_config.yaml
+
+      - name: Build and upload the conda packages
+        uses: uibcdf/action-build-and-upload-conda-packages@v1.2.0
+        with:
+          meta_yaml_dir: .
+          overwrite: False
+          python-version: ${{ matrix.python-version }}
+          user: lucit
+          label: main
+          token: ${{ secrets.ANACONDA_API_TOKEN }}
+
+  build_noarch_package:
+    name: Build conda noarch package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: false
+          auto-activate-base: false
+
+      - name: Install Conda Tools
+        run: |
+          conda install -c conda-forge conda-build
+          conda install conda-verify
+          conda install -c anaconda anaconda-client
+
+      - name: Configure PATH
+        run: echo "$CONDA/bin" >> $GITHUB_PATH
+
+      - name: Create conda_build_config.yaml
+        run: |
+          echo "" > conda_build_config.yaml
+
+      - name: Add "noarch python" to meta.yaml
+        run: |
+          sed -i 's/^build:$/build:\n  noarch: python/' meta.yaml
+
+      - name: "conda search: lucit::"
+        run: |
+          conda config --add channels conda-forge
+          conda config --add channels lucit
+          conda config --show channels
+          conda search lucit::lucit-licensing-python
+          conda search lucit::unicorn-binance-rest-api
+          conda search lucit::unicorn-fy
+
+      - name: Build noarch Conda package
+        run: |
+          conda build -c conda-forge --output-folder ./build-output --python 3.7 --variant-config-files conda_build_config.yaml .
+
+      - name: Upload noarch Conda package
+        run: |
+          anaconda --token ${{ secrets.ANACONDA_API_TOKEN }} upload --user lucit ./build-output/noarch/*.tar.bz2

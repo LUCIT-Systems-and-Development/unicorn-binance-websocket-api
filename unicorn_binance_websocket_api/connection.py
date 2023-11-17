@@ -8,9 +8,10 @@
 # Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
 # Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api
+# LUCIT Online Shop: https://shop.lucit.services/software
 #
 # License: LSOSL - LUCIT Synergetic Open Source License
-# https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/main/LICENSE
+# https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE
 #
 # Author: LUCIT Systems and Development
 #
@@ -65,8 +66,6 @@ class BinanceWebSocketApiConnection(object):
         uri = self.manager.create_websocket_uri(self.channels,
                                                 self.markets,
                                                 self.stream_id,
-                                                self.api_key,
-                                                self.api_secret,
                                                 symbols=self.symbols,
                                                 api=self.manager.stream_list[self.stream_id]['api'])
         if uri is False:

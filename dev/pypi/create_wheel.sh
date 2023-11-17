@@ -8,9 +8,10 @@
 # Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
 # Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api
+# LUCIT Online Shop: https://shop.lucit.services/software
 #
 # License: LSOSL - LUCIT Synergetic Open Source License
-# https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/main/LICENSE
+# https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE
 #
 # Author: LUCIT Systems and Development
 #
@@ -18,14 +19,14 @@
 # All rights reserved.
 
 security-check() {
-    echo -n "Did you change the version in \`build_wheels.yml\`, \`CHANGELOG.md\`, \`sphinx/source/conf.py\`, \`setup.py\`, \`pyproject.toml\` and \`/manager.py\`? [yes|NO] "
+    echo -n "Did you change the version in \`CHANGELOG.md\` and used \`dev/set_version.py\`? [yes|NO] "
     local SURE
     read SURE
     if [ "$SURE" != "yes" ]; then
         exit 1
     fi
     echo "https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml"
-    echo "Refresh conda-forge recipe!"
+    echo "https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_conda.yml"
 }
 
 compile-check() {

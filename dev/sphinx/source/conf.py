@@ -15,7 +15,7 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../../..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -27,7 +27,7 @@ author = 'LUCIT Systems and Development'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '2.1.0'
+release = '2.1.1'
 
 html_last_updated_fmt = "%b %d %Y at %H:%M (CET)"
 

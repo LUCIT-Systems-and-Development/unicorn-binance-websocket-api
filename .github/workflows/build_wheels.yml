@@ -1,6 +1,10 @@
-name: Build and Publish
+name: Build and Publish GH+PyPi
+
 on:
   workflow_dispatch:
+    branches:
+      - master
+
 jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
@@ -11,38 +15,53 @@ jobs:
       matrix:
         os: [ubuntu-20.04, windows-2019, macos-11]
     steps:
-      - uses: actions/checkout@v4
+      - name: GitHub Checkout
+        uses: actions/checkout@v4
+
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
+
       - name: Set up Environment
         run: echo "CIBW_SKIP=pp36-* pp37-*" >> $GITHUB_ENV
+
       - name: Check ENV
         if: matrix.os == 'ubuntu-20.04'
         run: echo $PATH
+
       - name: Build wheels Linux
         if: matrix.os == 'ubuntu-20.04'
         uses: pypa/cibuildwheel@v2.16.2
         env:
           CIBW_BEFORE_ALL: "bash tools/github/install_rust.sh"
+
       - name: Build wheels Mac
         if: matrix.os == 'macos-11'
         uses: pypa/cibuildwheel@v2.16.2
+
       - name: Build wheels Windows
         if: matrix.os == 'windows-2019'
         uses: pypa/cibuildwheel@v2.16.2
-      - uses: actions/upload-artifact@v3
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
+
   build_sdist:
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: GitHub Checkout
+        uses: actions/checkout@v4
+
       - name: Build sdist
         run: pipx run build --sdist
-      - uses: actions/upload-artifact@v3
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
         with:
           path: dist/*.tar.gz
+
   Release:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
@@ -52,11 +71,12 @@ jobs:
       discussions: write
       id-token: write
     steps:
-      - uses: actions/download-artifact@v3
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
         with:
           name: artifact
           path: dist
-      - uses: pypa/gh-action-pypi-publish@release/v1
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -70,5 +90,8 @@ jobs:
           generate_release_notes: true
           name: unicorn-binance-websocket-api
           prerelease: false
-          tag_name: 2.1.0
+          tag_name: 2.1.1
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create PyPi Release
+        uses: pypa/gh-action-pypi-publish@release/v1
