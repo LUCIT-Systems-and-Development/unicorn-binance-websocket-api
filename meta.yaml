@@ -19,7 +19,7 @@ requirements:
     - cheroot
     - colorama
     - Cython
-    - flask
+    - conda-forge::flask
     - lucit::lucit-licensing-python >=1.8.0
     - psutil
     - PySocks
@@ -31,13 +31,12 @@ requirements:
     - websocket-client
     - websockets ==10.4
     - typing_extensions
-    - pip
-      - flask-restful
+    - conda-forge::flask-restful
   run:
     - cheroot
     - colorama
     - Cython
-    - flask
+    - conda-forge::flask
     - lucit::lucit-licensing-python >=1.8.0
     - psutil
     - PySocks
@@ -49,8 +48,7 @@ requirements:
     - websocket-client
     - websockets ==10.4
     - typing_extensions
-    - pip
-      - flask-restful
+    - conda-forge::flask-restful
 
 channels:
   - lucit
