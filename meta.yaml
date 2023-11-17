@@ -16,40 +16,41 @@ requirements:
   build:
     - {{ compiler('c') }}
   host:
-    - pip
-      - python >=3.7
-      - cheroot
-      - colorama
-      - Cython
-      - flask
-      - flask-restful
-      - lucit::lucit-licensing-python >=1.8.1
-      - psutil
-      - PySocks
-      - requests
-      - ujson
-      - lucit::unicorn-fy
-      - lucit::unicorn-binance-rest-api >=2.1.2
-      - websocket-client
-      - websockets ==10.4
-      - typing_extensions
-  run:
     - cheroot
     - colorama
     - Cython
     - flask
-    - flask-restful
-    - lucit::lucit-licensing-python >=1.8.1
+    - lucit::lucit-licensing-python >=1.8.0
     - psutil
     - PySocks
     - python >=3.7
     - requests
     - ujson
     - lucit::unicorn-fy
-    - lucit::unicorn-binance-rest-api >=2.1.2
+    - lucit::unicorn-binance-rest-api >=2.1.1
     - websocket-client
     - websockets ==10.4
     - typing_extensions
+    - pip
+      - flask-restful
+  run:
+    - cheroot
+    - colorama
+    - Cython
+    - flask
+    - lucit::lucit-licensing-python >=1.8.0
+    - psutil
+    - PySocks
+    - python >=3.7
+    - requests
+    - ujson
+    - lucit::unicorn-fy
+    - lucit::unicorn-binance-rest-api >=2.1.1
+    - websocket-client
+    - websockets ==10.4
+    - typing_extensions
+    - pip
+      - flask-restful
 
 channels:
   - lucit
