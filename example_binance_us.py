@@ -8,6 +8,7 @@
 # Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
 # Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api
+# LUCIT Online Shop: https://shop.lucit.services/software
 #
 # Author: LUCIT Systems and Development
 #
@@ -37,9 +38,6 @@ import threading
 import os
 
 
-socks5_proxy = "127.0.0.1:1080"
-
-
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
     while True:
         if binance_websocket_api_manager.is_manager_stopping():
@@ -58,7 +56,7 @@ logging.basicConfig(level=logging.INFO,
 # To use this library you need a valid UNICORN Binance Suite License:
 # https://medium.lucit.tech/87b0088124a8
 # create instance of BinanceWebSocketApiManager for Binance Jersey
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us", socks5_proxy_server=socks5_proxy)
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us")
 
 userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"], api_key="aaa", api_secret="bb")
 

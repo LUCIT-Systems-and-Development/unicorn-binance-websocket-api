@@ -8,6 +8,7 @@
 # Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
 # Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api
+# LUCIT Online Shop: https://shop.lucit.services/software
 #
 # Author: LUCIT Systems and Development
 #
@@ -151,7 +152,7 @@ def print_stream_data_from_stream_buffer(ubwa):
                 ubwa.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
 
 
-# start a worker process to process to move the received stream_data from the stream_buffer to a print function
+# start a worker to process the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))
 worker_thread.start()
 

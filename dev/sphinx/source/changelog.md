@@ -9,9 +9,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
-## 2.1.0.dev (development stage/unreleased/unstable)
-### Adding
-- Passing UBS/LUCIT license parameter to `UBRA`.
+## 2.1.1.dev (development stage/unreleased/unstable)
+
+## 2.1.1
+### Changed
+- Rewrite of `restclient.py` and implementing usage of `**params` with `UBRA`.
+- `False` and `None` was used incorrectly in some cases, this has been unified.
+### Fixed
+- `manager.wait_till_stream_has_stopped()`
 
 ## 2.1.0
 ### Added
@@ -24,7 +29,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - AsyncIO Loop handling and closing
 - Graceful shutdown in exception `UnknownExchange`
 - `manager.wait_till_stream_has_started()`
-- `manager.wait_till_stream_has_stopped()`
 
 ## 2.0.0
 ### Added

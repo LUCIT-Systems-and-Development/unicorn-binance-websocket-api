@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: dev_test_userdata.py
+# File: test_userdata.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
 # Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
 # Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
 # PyPI: https://pypi.org/project/unicorn-binance-websocket-api
+# LUCIT Online Shop: https://shop.lucit.services/software
 #
 # Author: LUCIT Systems and Development
 #
@@ -36,8 +37,11 @@ from unicorn_binance_websocket_api.exceptions import Socks5ProxyConnectionError
 import asyncio
 import logging
 import os
+import threading
+import tracemalloc
+tracemalloc.start(25)
 
-#socks5_proxy = "127.0.0.1:1080"
+# socks5_proxy = "127.0.0.1:1080"
 socks5_proxy = None
 socks5_ssl_verification = True
 
@@ -54,14 +58,13 @@ async def binance_stream(ubwa):
                        stream_label="Bobs UserData",
                        process_stream_data=handle_socket_message)
 
-    while True:
+    while ubwa.is_manager_stopping() is False:
         await asyncio.sleep(1)
         ubwa.print_summary()
         #ubwa.print_stream_info(ubwa.get_stream_id_by_label("Bobs UserData"))
 
 
 if __name__ == "__main__":
-    logging.getLogger("unicorn_binance_websocket_api")
     logging.basicConfig(level=logging.DEBUG,
                         filename=os.path.basename(__file__) + '.log',
                         format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
@@ -69,7 +72,8 @@ if __name__ == "__main__":
     try:
         # To use this library you need a valid UNICORN Binance Suite License:
         # https://medium.lucit.tech/87b0088124a8
-        ubwa = BinanceWebSocketApiManager(exchange='binance.com-futures',
+        ubwa = BinanceWebSocketApiManager(exchange='binance.com',
+                                          show_secrets_in_logs=True,
                                           socks5_proxy_server=socks5_proxy,
                                           socks5_proxy_ssl_verification=socks5_ssl_verification)
     except Socks5ProxyConnectionError as error_msg:
@@ -80,4 +84,5 @@ if __name__ == "__main__":
         asyncio.run(binance_stream(ubwa))
     except KeyboardInterrupt:
         print("\r\nGracefully stopping the websocket manager...")
-        ubwa.stop_manager_with_all_streams()
+        ubwa.stop_manager()
+        print("Done! Good bye!")

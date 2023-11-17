@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api.connection &#8212; unicorn-binance-websocket-api 2.1.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unicorn_binance_websocket_api.connection &#8212; unicorn-binance-websocket-api 2.1.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="../../_static/pydoctheme.css?v=fdf8e9ae" />
@@ -153,6 +153,7 @@
 <span class="c1"># Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api</span>
 <span class="c1"># Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech</span>
 <span class="c1"># PyPI: https://pypi.org/project/unicorn-binance-websocket-api</span>
+<span class="c1"># LUCIT Online Shop: https://shop.lucit.services/software</span>
 <span class="c1">#</span>
 <span class="c1"># License: LSOSL - LUCIT Synergetic Open Source License</span>
 <span class="c1"># https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE</span>
@@ -212,8 +213,6 @@
         <span class="n">uri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">create_websocket_uri</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span>
                                                 <span class="bp">self</span><span class="o">.</span><span class="n">markets</span><span class="p">,</span>
                                                 <span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">,</span>
-                                                <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">,</span>
-                                                <span class="bp">self</span><span class="o">.</span><span class="n">api_secret</span><span class="p">,</span>
                                                 <span class="n">symbols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">,</span>
                                                 <span class="n">api</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;api&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">uri</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -259,6 +258,7 @@
                                     <span class="s2">&quot; error msg from Binance: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">uri</span><span class="p">[</span><span class="s1">&#39;msg&#39;</span><span class="p">]))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_is_crashing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">uri</span><span class="p">[</span><span class="s1">&#39;msg&#39;</span><span class="p">]))</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">throw_exception_if_unrepairable</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">socket_is_ready</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">raise</span> <span class="n">StreamRecoveryError</span><span class="p">(</span><span class="s2">&quot;stream_id &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">uri</span><span class="p">))</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
@@ -662,9 +662,9 @@
       </ul>
     </div>  
     <div class="footer">
-    &copy; <a href="/license.html">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
+    &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Nov 09 2023 at 14:57 (CET).
+    Last updated on Nov 17 2023 at 23:51 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

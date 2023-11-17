@@ -441,7 +441,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    channels,
                                    markets,
                                    stream_label=None,
-                                   stream_buffer_name=None,
+                                   stream_buffer_name=False,
                                    api_key=None,
                                    api_secret=None,
                                    symbols=None,
@@ -577,7 +577,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                               stream_id,
                               channels,
                               markets,
-                              stream_buffer_name=None,
+                              stream_buffer_name=False,
                               stream_buffer_maxlen=None,
                               restart=False):
         """
@@ -607,7 +607,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.is_stop_request(stream_id):
             return False
         if restart is False:
-            if stream_buffer_name is not None:
+            if stream_buffer_name is not False:
                 self.stream_buffer_locks[stream_buffer_name] = threading.Lock()
                 try:
                     # Not resetting the stream_buffer during a restart:
@@ -1084,7 +1084,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.ringbuffer_result.append(str(result))
         return True
 
-    def add_to_stream_buffer(self, stream_data, stream_buffer_name=None):
+    def add_to_stream_buffer(self, stream_data, stream_buffer_name=False):
         """
         Kick back data to the
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
@@ -1104,7 +1104,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_buffer_name: bool or str
         :return: bool
         """
-        if stream_buffer_name is None:
+        if stream_buffer_name is False:
             with self.stream_buffer_lock:
                 self.stream_buffer.append(stream_data)
         else:
@@ -1163,7 +1163,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         with self.total_received_bytes_lock:
             self.total_received_bytes += int(size)
 
-    def clear_stream_buffer(self, stream_buffer_name=None):
+    def clear_stream_buffer(self, stream_buffer_name=False):
         """
         Clear the
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
@@ -1173,7 +1173,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_buffer_name: bool or str
         :return: bool
         """
-        if stream_buffer_name is None:
+        if stream_buffer_name is False:
             try:
                 self.stream_buffer.clear()
                 return True
@@ -1332,7 +1332,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                       channels=[],
                       markets=[],
                       stream_label=None,
-                      stream_buffer_name=None,
+                      stream_buffer_name=False,
                       api_key=None,
                       api_secret=None,
                       symbols=None,
@@ -1483,7 +1483,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         ping_timeout = ping_timeout or self.ping_timeout_default
         stream_id = self.get_new_uuid_id()
         markets_new = []
-        if stream_buffer_name is None:
+        if stream_buffer_name is True:
             stream_buffer_name = stream_id
         for market in markets:
             if "!" in market \
@@ -2552,7 +2552,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return round(total_received_bytes / total_receives * stream_buffer_length)
 
-    def get_stream_buffer_length(self, stream_buffer_name=None):
+    def get_stream_buffer_length(self, stream_buffer_name=False):
         """
         Get the current number of items in all stream_buffer or of a specific stream_buffer
 
@@ -2686,7 +2686,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             temp_stream_list[stream_id] = self.get_stream_info(stream_id)
         return temp_stream_list
 
-    def get_stream_buffer_maxlen(self, stream_buffer_name=None):
+    def get_stream_buffer_maxlen(self, stream_buffer_name=False):
         """
         Get the maxlen value of the
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
@@ -2700,7 +2700,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_buffer_name: bool or str
         :return: int or False
         """
-        if stream_buffer_name is None:
+        if stream_buffer_name is False:
             try:
                 return self.stream_buffer.maxlen
             except IndexError:
@@ -3061,7 +3061,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - RuntimeWarning - {error_msg}")
         return True
 
-    def pop_stream_data_from_stream_buffer(self, stream_buffer_name=None, mode="FIFO"):
+    def pop_stream_data_from_stream_buffer(self, stream_buffer_name=False, mode="FIFO"):
         """
         Get oldest or latest entry from
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
@@ -3074,7 +3074,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type mode: str
         :return: stream_data - str, dict or False
         """
-        if stream_buffer_name is None:
+        if stream_buffer_name is False:
             try:
                 with self.stream_buffer_lock:
                     if mode.upper() == "FIFO":
@@ -3539,7 +3539,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                        new_channels,
                        new_markets,
                        new_stream_label=None,
-                       new_stream_buffer_name=None,
+                       new_stream_buffer_name=False,
                        new_api_key=None,
                        new_api_secret=None,
                        new_symbols=None,

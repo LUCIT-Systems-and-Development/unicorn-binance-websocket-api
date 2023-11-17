@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api.sockets &#8212; unicorn-binance-websocket-api 2.1.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unicorn_binance_websocket_api.sockets &#8212; unicorn-binance-websocket-api 2.1.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="../../_static/pydoctheme.css?v=fdf8e9ae" />
@@ -153,6 +153,7 @@
 <span class="c1"># Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api</span>
 <span class="c1"># Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech</span>
 <span class="c1"># PyPI: https://pypi.org/project/unicorn-binance-websocket-api</span>
+<span class="c1"># LUCIT Online Shop: https://shop.lucit.services/software</span>
 <span class="c1">#</span>
 <span class="c1"># License: LSOSL - LUCIT Synergetic Open Source License</span>
 <span class="c1"># https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE</span>
@@ -332,7 +333,7 @@
                                 <span class="n">stream_buffer_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;stream_buffer_name&#39;</span><span class="p">]</span>
                             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                                 <span class="n">stream_buffer_name</span> <span class="o">=</span> <span class="kc">False</span>
-                            <span class="k">if</span> <span class="n">stream_buffer_name</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">stream_buffer_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
                                 <span class="c1"># if create_stream() got a stram_buffer_name -&gt; use it</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">add_to_stream_buffer</span><span class="p">(</span><span class="n">received_stream_data</span><span class="p">,</span>
                                                                   <span class="n">stream_buffer_name</span><span class="o">=</span><span class="n">stream_buffer_name</span><span class="p">)</span>
@@ -349,9 +350,9 @@
                                              <span class="s2">&quot;- Received error message: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">received_stream_data_json</span><span class="p">))</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">add_to_ringbuffer_error</span><span class="p">(</span><span class="n">received_stream_data_json</span><span class="p">)</span>
                             <span class="k">elif</span> <span class="s2">&quot;result&quot;</span> <span class="ow">in</span> <span class="n">received_stream_data_json</span><span class="p">:</span>
-                                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;BinanceWebSocketApiSocket.start_socket(&quot;</span> <span class="o">+</span>
-                                            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;) &quot;</span>
-                                            <span class="s2">&quot;- Received result message: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">received_stream_data_json</span><span class="p">))</span>
+                                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;BinanceWebSocketApiSocket.start_socket(&quot;</span> <span class="o">+</span>
+                                             <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;) &quot;</span>
+                                             <span class="s2">&quot;- Received result message: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">received_stream_data_json</span><span class="p">))</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">add_to_ringbuffer_result</span><span class="p">(</span><span class="n">received_stream_data_json</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;last_received_data_record&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -494,9 +495,9 @@
       </ul>
     </div>  
     <div class="footer">
-    &copy; <a href="/license.html">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
+    &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Nov 09 2023 at 14:57 (CET).
+    Last updated on Nov 17 2023 at 23:51 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

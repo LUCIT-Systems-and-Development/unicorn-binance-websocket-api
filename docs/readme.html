@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 2.1.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 2.1.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=fdf8e9ae" />
@@ -78,17 +78,25 @@
 </li>
 <li><a class="reference internal" href="#send-requests-to-binance-websocket-api">Send Requests to Binance WebSocket API</a><ul>
 <li><a class="reference internal" href="#place-orders-cancel-orders-or-send-other-requests-via-websocket">Place orders, cancel orders or send other requests via WebSocket:</a></li>
-<li><a class="reference internal" href="#get-the-right-logger">Get the right logger:</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#stop-ubwa-after-usage-to-avoid-memory-leaks">Stop <code class="docutils literal notranslate"><span class="pre">ubwa</span></code> after usage to avoid memory leaks</a></li>
 <li><a class="reference internal" href="#description">Description</a><ul>
 <li><a class="reference internal" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api">What are the benefits of the UNICORN Binance WebSocket API?</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#live-demo">Live Demo</a></li>
 <li><a class="reference internal" href="#installation-and-upgrade">Installation and Upgrade</a><ul>
-<li><a class="reference internal" href="#a-binary-pypy-or-source-code-based-wheel-of-the-latest-version-with-pip-from-pypi">A binary, PyPy or source code based wheel of the latest version with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from PyPI</a></li>
-<li><a class="reference internal" href="#a-conda-package-of-the-latest-release-with-conda-from-anaconda-via-conda-forge">A conda package of the latest release with <code class="docutils literal notranslate"><span class="pre">conda</span></code> from Anaconda via CONDA-FORGE.</a></li>
+<li><a class="reference internal" href="#a-cython-binary-pypy-or-source-code-based-cpython-wheel-of-the-latest-version-with-pip-from-pypi">A Cython binary, PyPy or source code based CPython wheel of the latest version with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from PyPI</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#update">Update</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#a-conda-package-of-the-latest-version-with-conda-from-anaconda">A Conda Package of the latest version with <code class="docutils literal notranslate"><span class="pre">conda</span></code> from Anaconda</a><ul>
+<li><a class="reference internal" href="#id1">Installation</a></li>
+<li><a class="reference internal" href="#id2">Update</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#from-source-of-the-latest-release-with-pip-from-github">From source of the latest release with PIP from GitHub</a><ul>
 <li><a class="reference internal" href="#linux-macos">Linux, macOS, …</a></li>
 <li><a class="reference internal" href="#windows">Windows</a></li>
@@ -232,8 +240,8 @@
 <p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api"><img alt="Github" src="https://img.shields.io/badge/source-github-cbc2c8" /></a>
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases"><img alt="GitHub Release" src="https://img.shields.io/github/release/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?label=github" /></a>
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases"><img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/total?color=blue" /></a>
-<a class="reference external" href="https://anaconda.org/conda-forge/unicorn-binance-websocket-api"><img alt="Conda Release" src="https://img.shields.io/conda/vn/conda-forge/unicorn-binance-websocket-api.svg?color=blue" /></a>
-<a class="reference external" href="https://anaconda.org/conda-forge/unicorn-binance-websocket-api"><img alt="Conda Downloads" src="https://img.shields.io/conda/dn/conda-forge/unicorn-binance-websocket-api.svg?color=blue" /></a>
+<a class="reference external" href="https://anaconda.org/lucit/unicorn-binance-websocket-api"><img alt="Anaconda Release" src="https://anaconda.org/lucit/unicorn-binance-websocket-api/badges/version.svg" /></a>
+<a class="reference external" href="https://anaconda.org/lucit/unicorn-binance-websocket-api"><img alt="Anaconda Downloads" src="https://anaconda.org/lucit/unicorn-binance-websocket-api/badges/downloads.svg" /></a>
 <a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/"><img alt="PyPi Release" src="https://img.shields.io/pypi/v/unicorn-binance-websocket-api?color=blue" /></a>
 <a class="reference external" href="https://pepy.tech/project/unicorn-binance-websocket-api"><img alt="PyPi Downloads" src="https://pepy.tech/badge/unicorn-binance-websocket-api" /></a>
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-LSOSL-blue" /></a>
@@ -242,8 +250,8 @@
 <a class="reference external" href="https://codecov.io/gh/LUCIT-Systems-and-Development/unicorn-binance-websocket-api"><img alt="codecov" src="https://codecov.io/gh/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/branch/master/graph/badge.svg?token=5I03AZ3F5S" /></a>
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/codeql-analysis.yml"><img alt="CodeQL" src="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/codeql-analysis.yml/badge.svg" /></a>
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml"><img alt="Unit Tests" src="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/unit-tests.yml/badge.svg" /></a>
-<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml"><img alt="Build and Publish" src="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml/badge.svg" /></a>
-<a class="reference external" href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=15698&amp;amp;branchName=main"><img alt="Azure Pipelines" src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/unicorn-binance-websocket-api-feedstock?branchName=main" /></a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml"><img alt="Build and Publish GH+PyPi" src="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml/badge.svg" /></a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_conda.yml"><img alt="Build and Publish Anaconda" src="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_conda.yml/badge.svg" /></a>
 <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech"><img alt="Read the Docs" src="https://img.shields.io/badge/read-%20docs-yellow" /></a>
 <a class="reference external" href="https://medium.lucit.tech"><img alt="Read How To`s" src="https://img.shields.io/badge/read-%20howto-yellow" /></a>
 <a class="reference external" href="https://t.me/unicorndevs"><img alt="Telegram" src="https://img.shields.io/badge/chat-telegram-41ab8c" /></a>
@@ -358,9 +366,10 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 guide on
 <a class="reference external" href="https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404">how to process requests via the Binance WebSocket API</a>!</p>
 </section>
-<section id="get-the-right-logger">
-<h3>Get the right <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Logging">logger</a>:<a class="headerlink" href="#get-the-right-logger" title="Link to this heading">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;unicorn_binance_websocket_api&quot;</span><span class="p">)</span>
+</section>
+<section id="stop-ubwa-after-usage-to-avoid-memory-leaks">
+<h2>Stop <code class="docutils literal notranslate"><span class="pre">ubwa</span></code> after usage to avoid memory leaks<a class="headerlink" href="#stop-ubwa-after-usage-to-avoid-memory-leaks" title="Link to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ubwa</span><span class="o">.</span><span class="n">stop_manager</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html">Discover even more possibilities</a>
@@ -371,7 +380,6 @@ to stream everything from “binance.com”.</p>
 <li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Best-practice-solutions-for-a-maximum-stable-connection!">Best practice solutions for a maximum stable connection</a></p></li>
 <li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/discussions/254">Do you want consistent data from binance?</a></p></li>
 </ul>
-</section>
 </section>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
@@ -584,14 +592,50 @@ processing.</p>
 <p>The current dependencies are listed
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/requirements.txt">here</a>.</p>
 <p>If you run into errors during the installation take a look <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Installation">here</a>.</p>
-<section id="a-binary-pypy-or-source-code-based-wheel-of-the-latest-version-with-pip-from-pypi">
-<h3>A binary, PyPy or source code based wheel of the latest version with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from <a class="reference external" href="https://pypi.org/project/unicorn-binance-websocket-api/">PyPI</a><a class="headerlink" href="#a-binary-pypy-or-source-code-based-wheel-of-the-latest-version-with-pip-from-pypi" title="Link to this heading">¶</a></h3>
+<section id="a-cython-binary-pypy-or-source-code-based-cpython-wheel-of-the-latest-version-with-pip-from-pypi">
+<h3>A Cython binary, PyPy or source code based CPython wheel of the latest version with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from <a class="reference external" href="https://pypi.org/project/unicorn-binance-rest-api/">PyPI</a><a class="headerlink" href="#a-cython-binary-pypy-or-source-code-based-cpython-wheel-of-the-latest-version-with-pip-from-pypi" title="Link to this heading">¶</a></h3>
+<p>Our <a class="reference external" href="https://cython.org/">Cython</a> and <a class="reference external" href="https://www.pypy.org/">PyPy</a> Wheels are available on <a class="reference external" href="https://pypi.org/">PyPI</a>,
+these wheels offer significant advantages for Python developers:</p>
+<ul class="simple">
+<li><p><em><strong>Performance Boost with Cython Wheels:</strong></em>
+Cython is a programming language that supplements Python with static typing and C-level performance. By compiling
+Python code into C, Cython Wheels can significantly enhance the execution speed of Python code, especially in
+computationally intensive tasks. This means faster runtimes and more efficient processing for users of our package.</p></li>
+<li><p><em><strong>PyPy Wheels for Enhanced Efficiency:</strong></em>
+PyPy is an alternative Python interpreter known for its speed and efficiency. It uses Just-In-Time (JIT) compilation,
+which can dramatically improve the performance of Python code. Our PyPy Wheels are tailored for compatibility with
+PyPy, allowing users to leverage this speed advantage seamlessly.</p></li>
+</ul>
+<p>Both Cython and PyPy Wheels on PyPI make the installation process simpler and more straightforward. They ensure that
+you get the optimized version of our package with minimal setup, allowing you to focus on development rather than
+configuration.</p>
+<section id="installation">
+<h4>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">unicorn-binance-websocket-api</span></code></p>
+</section>
+<section id="update">
+<h4>Update<a class="headerlink" href="#update" title="Link to this heading">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">unicorn-binance-websocket-api</span> <span class="pre">--upgrade</span></code></p>
 </section>
-<section id="a-conda-package-of-the-latest-release-with-conda-from-anaconda-via-conda-forge">
-<h3>A conda package of the latest release with <code class="docutils literal notranslate"><span class="pre">conda</span></code> from <a class="reference external" href="https://anaconda.org/conda-forge/unicorn-binance-websocket-api">Anaconda</a> via <a class="reference external" href="https://conda-forge.org">CONDA-FORGE</a>.<a class="headerlink" href="#a-conda-package-of-the-latest-release-with-conda-from-anaconda-via-conda-forge" title="Link to this heading">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">unicorn-binance-websocket-api</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">update</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">unicorn-binance-websocket-api</span></code></p>
+</section>
+<section id="a-conda-package-of-the-latest-version-with-conda-from-anaconda">
+<h3>A Conda Package of the latest version with <code class="docutils literal notranslate"><span class="pre">conda</span></code> from <a class="reference external" href="https://anaconda.org/lucit">Anaconda</a><a class="headerlink" href="#a-conda-package-of-the-latest-version-with-conda-from-anaconda" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">unicorn-binance-websocket-api</span></code> package is available with <a class="reference external" href="https://docs.conda.io/en/latest/">Conda</a> through the
+<a class="reference external" href="https://anaconda.org/lucit"><code class="docutils literal notranslate"><span class="pre">lucit</span></code> channel</a>.</p>
+<p>For optimal compatibility and performance, it is recommended to source the necessary dependencies from the
+<a class="reference external" href="https://anaconda.org/conda-forge"><code class="docutils literal notranslate"><span class="pre">conda-forge</span></code> channel</a>.</p>
+<section id="id1">
+<h4>Installation<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
+<span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">lucit</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">lucit</span> <span class="n">unicorn</span><span class="o">-</span><span class="n">binance</span><span class="o">-</span><span class="n">websocket</span><span class="o">-</span><span class="n">api</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h4>Update<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">update</span> <span class="pre">-c</span> <span class="pre">lucit</span> <span class="pre">unicorn-binance-websocket-api</span></code></p>
+</section>
 </section>
 <section id="from-source-of-the-latest-release-with-pip-from-github">
 <h3>From source of the latest release with PIP from <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api">GitHub</a><a class="headerlink" href="#from-source-of-the-latest-release-with-pip-from-github" title="Link to this heading">¶</a></h3>
@@ -602,9 +646,9 @@ processing.</p>
 </section>
 <section id="windows">
 <h4>Windows<a class="headerlink" href="#windows" title="Link to this heading">¶</a></h4>
-<p>Use the below command with the version (such as 2.0.0) you determined
+<p>Use the below command with the version (such as 2.1.1) you determined
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest">here</a>:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.0.0.tar.gz</span> <span class="pre">--upgrade</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.1.1.tar.gz</span> <span class="pre">--upgrade</span></code></p>
 </section>
 </section>
 <section id="from-the-latest-source-dev-stage-with-pip-from-github">
@@ -816,17 +860,25 @@ non-binding initial consultation!</p>
 </li>
 <li><a class="reference internal" href="#send-requests-to-binance-websocket-api">Send Requests to Binance WebSocket API</a><ul>
 <li><a class="reference internal" href="#place-orders-cancel-orders-or-send-other-requests-via-websocket">Place orders, cancel orders or send other requests via WebSocket:</a></li>
-<li><a class="reference internal" href="#get-the-right-logger">Get the right logger:</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#stop-ubwa-after-usage-to-avoid-memory-leaks">Stop <code class="docutils literal notranslate"><span class="pre">ubwa</span></code> after usage to avoid memory leaks</a></li>
 <li><a class="reference internal" href="#description">Description</a><ul>
 <li><a class="reference internal" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api">What are the benefits of the UNICORN Binance WebSocket API?</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#live-demo">Live Demo</a></li>
 <li><a class="reference internal" href="#installation-and-upgrade">Installation and Upgrade</a><ul>
-<li><a class="reference internal" href="#a-binary-pypy-or-source-code-based-wheel-of-the-latest-version-with-pip-from-pypi">A binary, PyPy or source code based wheel of the latest version with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from PyPI</a></li>
-<li><a class="reference internal" href="#a-conda-package-of-the-latest-release-with-conda-from-anaconda-via-conda-forge">A conda package of the latest release with <code class="docutils literal notranslate"><span class="pre">conda</span></code> from Anaconda via CONDA-FORGE.</a></li>
+<li><a class="reference internal" href="#a-cython-binary-pypy-or-source-code-based-cpython-wheel-of-the-latest-version-with-pip-from-pypi">A Cython binary, PyPy or source code based CPython wheel of the latest version with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from PyPI</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#update">Update</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#a-conda-package-of-the-latest-version-with-conda-from-anaconda">A Conda Package of the latest version with <code class="docutils literal notranslate"><span class="pre">conda</span></code> from Anaconda</a><ul>
+<li><a class="reference internal" href="#id1">Installation</a></li>
+<li><a class="reference internal" href="#id2">Update</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#from-source-of-the-latest-release-with-pip-from-github">From source of the latest release with PIP from GitHub</a><ul>
 <li><a class="reference internal" href="#linux-macos">Linux, macOS, …</a></li>
 <li><a class="reference internal" href="#windows">Windows</a></li>
@@ -961,9 +1013,9 @@ non-binding initial consultation!</p>
       </ul>
     </div>  
     <div class="footer">
-    &copy; <a href="/license.html">Copyright</a> 2019-2023, LUCIT Systems and Development and Oliver Zehentleitner.
+    &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Nov 09 2023 at 14:57 (CET).
+    Last updated on Nov 17 2023 at 23:51 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

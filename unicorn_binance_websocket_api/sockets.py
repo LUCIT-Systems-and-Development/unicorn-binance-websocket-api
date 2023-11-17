@@ -184,7 +184,7 @@ class BinanceWebSocketApiSocket(object):
                                 stream_buffer_name = self.manager.stream_list[self.stream_id]['stream_buffer_name']
                             except KeyError:
                                 stream_buffer_name = False
-                            if stream_buffer_name:
+                            if stream_buffer_name is not False:
                                 # if create_stream() got a stram_buffer_name -> use it
                                 self.manager.add_to_stream_buffer(received_stream_data,
                                                                   stream_buffer_name=stream_buffer_name)
@@ -201,9 +201,9 @@ class BinanceWebSocketApiSocket(object):
                                              "- Received error message: " + str(received_stream_data_json))
                                 self.manager.add_to_ringbuffer_error(received_stream_data_json)
                             elif "result" in received_stream_data_json:
-                                logger.info("BinanceWebSocketApiSocket.start_socket(" +
-                                            str(self.stream_id) + ") "
-                                            "- Received result message: " + str(received_stream_data_json))
+                                logger.debug("BinanceWebSocketApiSocket.start_socket(" +
+                                             str(self.stream_id) + ") "
+                                             "- Received result message: " + str(received_stream_data_json))
                                 self.manager.add_to_ringbuffer_result(received_stream_data_json)
                             else:
                                 if self.manager.stream_list[self.stream_id]['last_received_data_record'] is None:
