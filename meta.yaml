@@ -37,14 +37,14 @@ requirements:
     - colorama
     - Cython
     - conda-forge::flask
-    - lucit::lucit-licensing-python >=1.8.0
+    - lucit::lucit-licensing-python
     - psutil
     - PySocks
     - python >=3.7
     - requests
     - ujson
     - lucit::unicorn-fy
-    - lucit::unicorn-binance-rest-api >=2.1.1
+    - lucit::unicorn-binance-rest-api
     - websocket-client
     - websockets ==10.4
     - typing_extensions
