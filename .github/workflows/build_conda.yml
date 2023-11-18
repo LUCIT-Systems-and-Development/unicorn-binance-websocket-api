@@ -19,6 +19,8 @@ jobs:
             python-version: "3.7"
           - os: windows-2019
             python-version: "3.12"
+          - os: ubuntu-20.04
+            python-version: "3.12"
     steps:
       - uses: actions/checkout@v4
       - name: Conda environment creation and activation
