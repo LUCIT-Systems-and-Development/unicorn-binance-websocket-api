@@ -97,7 +97,6 @@ jobs:
         run: |
           conda config --add channels lucit
           conda config --add channels conda-forge
-          conda config --env --set channel_priority strict
           conda config --show channels
           conda search lucit::lucit-licensing-python
           conda search lucit::unicorn-binance-rest-api
@@ -105,7 +104,8 @@ jobs:
 
       - name: Build noarch Conda package
         run: |
-          conda build --output-folder ./build-output --python 3.7 --variant-config-files conda_build_config.yaml .
+          conda list
+          conda build -c lucit --output-folder ./build-output --python 3.7 --variant-config-files conda_build_config.yaml .
 
       - name: Upload noarch Conda package
         run: |
