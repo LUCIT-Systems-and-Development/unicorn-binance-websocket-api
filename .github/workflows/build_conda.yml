@@ -95,8 +95,8 @@ jobs:
 
       - name: "conda search: lucit::"
         run: |
-          conda config --add channels lucit
           conda config --add channels conda-forge
+          conda config --add channels lucit
           conda config --show channels
           conda search lucit::lucit-licensing-python
           conda search lucit::unicorn-binance-rest-api
