@@ -28,6 +28,7 @@ jobs:
       - name: Install Conda Tools
         run: |
           python -V
+          conda update --all
           conda install -c conda-forge conda-build
           conda install conda-verify
           conda install -c anaconda anaconda-client
@@ -76,6 +77,8 @@ jobs:
 
       - name: Install Conda Tools
         run: |
+          python -V
+          conda update --all
           conda install -c conda-forge conda-build
           conda install conda-verify
           conda install -c anaconda anaconda-client
