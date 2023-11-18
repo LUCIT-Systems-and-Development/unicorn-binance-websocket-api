@@ -26,9 +26,9 @@ Binance features into diverse applications.
 2. PROJECT INFORMATION
 
 - Project name: UNICORN Binance WebSocket API
-- Project page: https://www.lucit.tech/unicorn-binance-websocket-api.html
-- GitHub repository: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
-- PyPI repository: https://pypi.org/project/unicorn-binance-websocket-api
+- Project page: https://www.lucit.tech/unicorn-binance-rest-api.html
+- GitHub repository: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-rest-api
+- PyPI repository: https://pypi.org/project/unicorn-binance-rest-api
 - Get a license: https://shop.lucit.services/software
 
 
@@ -64,12 +64,6 @@ automatically becomes LUCIT IT-Management GmbH's property and copyright.
 The LSOSL licensed projects of LUCIT IT-Management GmbH can be used and integrated into any application without
 restriction and distributed as desired. The only condition is that the execution of our software requires a valid
 license from LUCIT (https://shop.lucit.services/software) and must be operated with such a license.
-
-Furthermore, this license explicitly permits Conda-Forge, an open-source community-driven platform for package
-management and distribution operated by NumFOCUS, to test the software package following its creation to ensure
-functionality, compatibility, and security standards are met. This permission is granted to support the community's
-efforts in maintaining a robust ecosystem for software distribution and to guarantee the quality and performance of the
-software for end users.
 
 For information on library versions that do not contain a license requirement, please contact: sales@lucit.tech
 

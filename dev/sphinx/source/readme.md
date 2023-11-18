@@ -313,6 +313,8 @@ processing.
 
 For the PyPy interpreter we offer packages only from Python version 3.9 and higher.
 
+Anaconda packages are available from Python version 3.8 and higher.
+
 The current dependencies are listed 
 [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
