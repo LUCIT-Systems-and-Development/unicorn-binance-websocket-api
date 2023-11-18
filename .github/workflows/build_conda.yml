@@ -10,7 +10,7 @@ jobs:
     name: Build conda on ${{ matrix.os }} with Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os: [ubuntu-20.04, windows-2019, macos-11]
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
