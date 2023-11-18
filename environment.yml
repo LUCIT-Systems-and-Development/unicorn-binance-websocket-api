@@ -6,7 +6,7 @@ channels:
   - defaults
 
 dependencies:
-  - python[version='3.7.*,!pypy<3.8']
+  - python>=3.9
   - lucit::lucit-licensing-python
   - lucit::unicorn-fy
   - lucit::unicorn-binance-rest-api
