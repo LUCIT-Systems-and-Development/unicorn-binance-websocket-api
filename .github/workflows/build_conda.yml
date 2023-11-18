@@ -27,6 +27,7 @@ jobs:
 
       - name: Install Conda Tools
         run: |
+          python -V
           conda install -c conda-forge conda-build
           conda install conda-verify
           conda install -c anaconda anaconda-client
@@ -68,8 +69,10 @@ jobs:
       - name: Install Conda
         uses: conda-incubator/setup-miniconda@v2
         with:
+          environment-file: environment.yml
           auto-update-conda: false
           auto-activate-base: false
+          show-channel-urls: true
 
       - name: Install Conda Tools
         run: |
