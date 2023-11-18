@@ -32,7 +32,7 @@ jobs:
         if: matrix.os == 'ubuntu-20.04'
         uses: pypa/cibuildwheel@v2.16.2
         env:
-          CIBW_BEFORE_ALL: "bash tools/github/install_rust.sh"
+          CIBW_BEFORE_ALL: "bash dev/tools/github/install_rust.sh"
 
       - name: Build wheels Mac
         if: matrix.os == 'macos-11'
