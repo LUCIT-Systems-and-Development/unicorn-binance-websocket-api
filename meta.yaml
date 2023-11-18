@@ -13,47 +13,45 @@ build:
   number: 0
 
 channels:
-  - conda-forge
-  - lucit
   - default
 
 requirements:
   build:
     - {{ compiler('c') }}
   host:
-    - cheroot
-    - colorama
-    - Cython
-    - conda-forge::flask
-    - lucit::lucit-licensing-python >=1.8.0
-    - psutil
-    - PySocks
-    - python >=3.7
-    - requests
-    - ujson
-    - lucit::unicorn-fy
-    - lucit::unicorn-binance-rest-api >=2.1.1
-    - websocket-client
-    - websockets ==10.4
-    - typing_extensions
-    - conda-forge::flask-restful
-  run:
-    - cheroot
-    - colorama
-    - Cython
-    - conda-forge::flask
+    - python>=3.7
     - lucit::lucit-licensing-python
-    - psutil
-    - PySocks
-    - python >=3.7
-    - requests
-    - ujson
     - lucit::unicorn-fy
     - lucit::unicorn-binance-rest-api
-    - websocket-client
-    - websockets ==10.4
-    - typing_extensions
-    - conda-forge::flask-restful
+    - conda-forge::cheroot
+    - conda-forge::colorama
+    - conda-forge::Cython
+    - conda-forge::flask
+    - conda-forge::flask_restful
+    - conda-forge::psutil
+    - conda-forge::PySocks
+    - conda-forge::requests
+    - conda-forge::ujson
+    - conda-forge::websocket-client
+    - conda-forge::websockets==10.4
+    - conda-forge::typing_extensions
+  run:
+    - python>=3.7
+    - lucit::lucit-licensing-python
+    - lucit::unicorn-fy
+    - lucit::unicorn-binance-rest-api
+    - conda-forge::cheroot
+    - conda-forge::colorama
+    - conda-forge::Cython
+    - conda-forge::flask
+    - conda-forge::flask_restful
+    - conda-forge::psutil
+    - conda-forge::PySocks
+    - conda-forge::requests
+    - conda-forge::ujson
+    - conda-forge::websocket-client
+    - conda-forge::websockets==10.4
+    - conda-forge::typing_extensions
 
 dependencies:
   - anaconda-client
