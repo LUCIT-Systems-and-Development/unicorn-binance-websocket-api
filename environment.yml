@@ -12,7 +12,7 @@ dependencies:
   - conda-forge::colorama
   - conda-forge::Cython
   - conda-forge::flask
-  - conda-forge::flask_restful
+  - conda-forge::flask-restful
   - conda-forge::psutil
   - conda-forge::PySocks
   - conda-forge::requests
