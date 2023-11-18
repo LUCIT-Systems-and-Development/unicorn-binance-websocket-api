@@ -21,7 +21,7 @@ requirements:
   build:
     - {{ compiler('c') }}
   host:
-    - python>=3.9
+    - python
     - lucit::lucit-licensing-python
     - lucit::unicorn-fy
     - lucit::unicorn-binance-rest-api
@@ -38,7 +38,7 @@ requirements:
     - websockets==10.4
     - typing_extensions
   run:
-    - python>=3.9
+    - python
     - lucit::lucit-licensing-python
     - lucit::unicorn-fy
     - lucit::unicorn-binance-rest-api
