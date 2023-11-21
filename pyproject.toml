@@ -1,43 +1,33 @@
 [tool.poetry]
-name = "unicorn-binance-websocket-api"
-version = "2.1.1"
-description = "An unofficial Python API to use the Binance REST API’s in a easy, fast, flexible, robust and fully-featured way."
+name = "unicorn-binance-local-depth-cache"
+version = "0.7.3"
+description = "A local Binance DepthCache Manager for Python that supports multiple depth caches in one instance in a easy, fast, flexible, robust and fully-featured way."
 authors = ["LUCIT Systems and Development <info@lucit.tech>"]
 license = "LSOSL - LUCIT Synergetic Open Source License"
 readme = "README.md"
-homepage = "https://www.lucit.tech/unicorn-binance-websocket-api.html"
-documentation = "https://unicorn-binance-websocket-api.docs.lucit.tech"
-repository = "https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api"
+homepage = "https://www.lucit.tech/unicorn-binance-local-depth-cache.html"
+documentation = "https://unicorn-binance-local-depth-cache.docs.lucit.tech"
+repository = "https://github.com/LUCIT-Systems-and-Development/unicorn-binance-local-depth-cache"
 
 [tool.poetry.urls]
-'Howto' = 'https://www.lucit.tech/unicorn-binance-websocket-api.html#howto'
-'Documentation' = 'https://unicorn-binance-websocket-api.docs.lucit.tech'
-'Wiki' = 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki'
+'Howto' = 'https://www.lucit.tech/unicorn-binance-local-depth-cache.html#howto'
+'Documentation' = 'https://unicorn-binance-local-depth-cache.docs.lucit.tech'
+'Wiki' = 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-local-depth-cache/wiki'
 'Author' = 'https://www.lucit.tech'
-'Changes' = 'https://unicorn-binance-websocket-api.docs.lucit.tech/changelog.html'
-'License' = 'https://unicorn-binance-websocket-api.docs.lucit.tech/license.html'
-'Issue Tracker' = 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues'
+'Changes' = 'https://unicorn-binance-local-depth-cache.docs.lucit.tech/changelog.html'
+'License' = 'https://unicorn-binance-local-depth-cache.docs.lucit.tech/license.html'
+'Issue Tracker' = 'https://github.com/LUCIT-Systems-and-Development/unicorn-binance-local-depth-cache/issues'
 'Telegram' = 'https://t.me/unicorndevs'
-'Chat' = 'https://app.gitter.im/#/room/#unicorn-binance-websocket-api:gitter.im'
+'Chat' = 'https://app.gitter.im/#/room/#unicorn-binance-suite_unicorn-binance-local-depth-cache:gitter.im'
 'Get Support' = 'https://www.lucit.tech/get-support.html'
 'LUCIT Online Shop' = 'https://shop.lucit.services/software/unicorn-binance-suite'
 
 [tool.poetry.dependencies]
 python = ">=3.7.0"
-cheroot = "*"
-colorama = "*"
-Cython = "*"
-flask = "*"
-flask_restful = "*"
 lucit-licensing-python = "*"
-psutil = "*"
-PySocks = "*"
 requests = "*"
-ujson = "*"
-unicorn-fy = "*"
 unicorn-binance-rest-api = "*"
-websocket-client = "*"
-websockets = "10.4"
+unicorn-binance-websocket-api = "*"
 
 [tool.poetry.dev-dependencies]
 
