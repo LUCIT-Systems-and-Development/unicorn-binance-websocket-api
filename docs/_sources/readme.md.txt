@@ -37,8 +37,7 @@ Part of '[UNICORN Binance Suite](https://www.lucit.tech/unicorn-binance-suite.ht
 
 ## Get a UNICORN Binance Suite License
 
-To run modules of the *UNICORN Binance Suite* you need a  
-[valid license](https://medium.lucit.tech/how-to-obtain-and-use-a-unicorn-binance-suite-license-key-and-run-the-ubs-module-according-to-best-87b0088124a8#4ca4)!
+To run modules of the *UNICORN Binance Suite* you need a [valid license](https://medium.lucit.tech/how-to-obtain-and-use-a-unicorn-binance-suite-license-key-and-run-the-ubs-module-according-to-best-87b0088124a8#4ca4)!
 
 ## Receive Data from Binance WebSockets
 
@@ -51,7 +50,7 @@ ubwa = BinanceWebSocketApiManager(exchange="binance.com")
 ubwa.create_stream(channels=['trade', 'kline_1m'], markets=['btcusdt', 'bnbbtc', 'ethbtc'])
 ```
 
-#### And 4 more lines to print the receives:
+### And 4 more lines to print the receives:
 ```
 while True:
     oldest_data_from_stream_buffer = ubwa.pop_stream_data_from_stream_buffer()
@@ -315,8 +314,7 @@ For the PyPy interpreter we offer packages only from Python version 3.9 and high
 
 Anaconda packages are available from Python version 3.8 and higher.
 
-The current dependencies are listed 
-[here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/requirements.txt).
+The current dependencies are listed [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
 If you run into errors during the installation take a look [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Installation).
 
@@ -367,10 +365,10 @@ Run in bash:
 `pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
 
 #### Windows
-Use the below command with the version (such as 2.1.1) you determined 
+Use the below command with the version (such as 2.1.2) you determined 
 [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest):
 
-`pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.1.1.tar.gz --upgrade`
+`pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.1.2.tar.gz --upgrade`
 ### From the latest source (dev-stage) with PIP from [GitHub](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)
 This is not a release version and can not be considered to be stable!
 
@@ -474,8 +472,7 @@ To receive news (like inspection windows/maintenance) about the Binance API`s su
 - [https://t.me/BinanceExchange](https://t.me/BinanceExchange)
 
 ## How to report Bugs or suggest Improvements?
-[List of planned features](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - 
-click ![thumbs-up](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/thumbup.png) if you need one of them or suggest a new feature!
+[List of planned features](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) - click ![thumbs-up](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/thumbup.png) if you need one of them or suggest a new feature!
 
 Before you report a bug, [try the latest release](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api#installation-and-upgrade). If the issue still exists, provide the error trace, OS 
 and Python version and explain how to reproduce the error. A demo script is appreciated.
@@ -520,5 +517,4 @@ companies from the US analyze binance.com market data - as long as they do not t
 
 [![Get professional and fast support](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-suite/master/images/support/LUCIT-get-professional-and-fast-support.png)](https://www.lucit.tech/get-support.html)
 
-***Do you need a developer, operator or consultant?*** [Contact us](https://www.lucit.tech/contact.html) for a 
-non-binding initial consultation!
+***Do you need a developer, operator or consultant?*** [Contact us](https://www.lucit.tech/contact.html) for a non-binding initial consultation!

@@ -27,7 +27,7 @@ author = 'LUCIT Systems and Development'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '2.1.1'
+release = '2.1.2'
 
 html_last_updated_fmt = "%b %d %Y at %H:%M (CET)"
 

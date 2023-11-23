@@ -365,10 +365,10 @@ Run in bash:
 `pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
 
 #### Windows
-Use the below command with the version (such as 2.1.1) you determined 
+Use the below command with the version (such as 2.1.2) you determined 
 [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest):
 
-`pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.1.1.tar.gz --upgrade`
+`pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.1.2.tar.gz --upgrade`
 ### From the latest source (dev-stage) with PIP from [GitHub](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)
 This is not a release version and can not be considered to be stable!
 

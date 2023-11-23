@@ -9,7 +9,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#installation-and-upgrade)
 
-## 2.1.1.dev (development stage/unreleased/unstable)
+## 2.1.2.dev (development stage/unreleased/unstable)
+
+## 2.1.2
+### Fixed
+- `RuntimeError: dictionary changed size during iteration` in `manager.stop_manager()`.
 
 ## 2.1.1
 ### Changed
