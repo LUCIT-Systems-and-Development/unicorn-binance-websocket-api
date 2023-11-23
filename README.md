@@ -322,12 +322,12 @@ If you run into errors during the installation take a look [here](https://github
 ### A Cython binary, PyPy or source code based CPython wheel of the latest version with `pip` from [PyPI](https://pypi.org/project/unicorn-binance-rest-api/)
 Our [Cython](https://cython.org/) and [PyPy](https://www.pypy.org/) Wheels are available on [PyPI](https://pypi.org/), 
 these wheels offer significant advantages for Python developers:
-- ***Performance Boost with Cython Wheels:*** 
-  Cython is a programming language that supplements Python with static typing and C-level performance. By compiling 
+
+- ***Performance Boost with Cython Wheels:*** Cython is a programming language that supplements Python with static typing and C-level performance. By compiling 
   Python code into C, Cython Wheels can significantly enhance the execution speed of Python code, especially in 
   computationally intensive tasks. This means faster runtimes and more efficient processing for users of our package. 
-- ***PyPy Wheels for Enhanced Efficiency:*** 
-  PyPy is an alternative Python interpreter known for its speed and efficiency. It uses Just-In-Time (JIT) compilation, 
+
+- ***PyPy Wheels for Enhanced Efficiency:*** PyPy is an alternative Python interpreter known for its speed and efficiency. It uses Just-In-Time (JIT) compilation, 
   which can dramatically improve the performance of Python code. Our PyPy Wheels are tailored for compatibility with 
   PyPy, allowing users to leverage this speed advantage seamlessly.
 
