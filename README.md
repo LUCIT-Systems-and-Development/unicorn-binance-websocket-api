@@ -318,7 +318,6 @@ The current dependencies are listed [here](https://github.com/LUCIT-Systems-and-
 
 If you run into errors during the installation take a look [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Installation).
 
-
 ### A Cython binary, PyPy or source code based CPython wheel of the latest version with `pip` from [PyPI](https://pypi.org/project/unicorn-binance-rest-api/)
 Our [Cython](https://cython.org/) and [PyPy](https://www.pypy.org/) Wheels are available on [PyPI](https://pypi.org/), 
 these wheels offer significant advantages for Python developers:
