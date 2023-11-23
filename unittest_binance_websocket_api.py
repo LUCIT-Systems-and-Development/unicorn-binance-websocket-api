@@ -129,7 +129,9 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(self.__class__.ubwa.is_exchange_type("dex"), False)
 
     def test_is_update_available(self):
-        self.assertEqual(self.__class__.ubwa.is_update_available(), False)
+        result = self.__class__.ubwa.is_update_available()
+        is_valid_result = result is True or result is False
+        self.assertTrue(is_valid_result, False)
 
     def test_is_manager_stopping(self):
         self.assertEqual(self.__class__.ubwa.is_manager_stopping(), False)

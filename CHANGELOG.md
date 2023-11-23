@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.1.2
 ### Fixed
 - `RuntimeError: dictionary changed size during iteration` in `manager.stop_manager()`.
+- Stopping `manager._restart_stream()` if manager is stopping.
 
 ## 2.1.1
 ### Changed

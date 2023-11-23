@@ -923,6 +923,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: stream_id or False
         """
+        if self.is_manager_stopping() is False:
+            return False
         try:
             if self.restart_requests[stream_id]['status'] != "new":
                 logger.warning("BinanceWebSocketApiManager._restart_stream() please use `set_restart_request()` "
@@ -3806,12 +3808,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                         "unicorn_binance_websocket_api_manager " + self.version + " ...")
             # send signal to all threads
             self.stop_manager_request = True
-            stream_list = copy.deepcopy(self.stream_list)
             try:
-                for stream_id in stream_list:
-                    self.stop_stream(stream_id)
-            except AttributeError:
-                pass
+                stream_list = copy.deepcopy(self.stream_list)
+                try:
+                    for stream_id in stream_list:
+                        self.stop_stream(stream_id)
+                except AttributeError:
+                    pass
+            except AttributeError as error_msg:
+                logger.debug(f"BinanceWebSocketApiManager.stop_manager() - AttributeError: {error_msg}")
             # stop monitoring API services
             self.stop_monitoring_api()
             # stop restclient
