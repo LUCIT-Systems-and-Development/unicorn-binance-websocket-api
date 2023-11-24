@@ -242,7 +242,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         threading.Thread.__init__(self)
         self.name = __app_name__
         self.version = __version__
-        self.stop_manager_request = None
+        self.stop_manager_request = False
         logger.info(f"New instance of {self.get_user_agent()}-{'compiled' if cython.compiled else 'source'} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         self.debug = debug
@@ -716,7 +716,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.info("BinanceWebSocketApiManager._frequent_checks() new instance created with frequent_checks_id=" +
                     str(frequent_checks_id))
         # threaded loop for min 1 check per second
-        while self.stop_manager_request is None \
+        while self.stop_manager_request is False \
                 and self.frequent_checks_list[frequent_checks_id]['stop_request'] is None:
             with self.frequent_checks_list_lock:
                 self.frequent_checks_list[frequent_checks_id]['last_heartbeat'] = time.time()
@@ -879,7 +879,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.info("BinanceWebSocketApiManager._keepalive_streams() new instance created with "
                     "keepalive_streams_id=" + str(keepalive_streams_id))
         # threaded loop to restart crashed streams:
-        while self.stop_manager_request is None and \
+        while self.stop_manager_request is False and \
                 self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
             time.sleep(1)
             self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat'] = time.time()
@@ -2911,14 +2911,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         with self.total_transmitted_lock:
             self.total_transmitted += 1
 
-
     def is_manager_stopping(self):
         """
         Returns `True` if the manager has a stop request, 'False' if not.
 
         :return: bool
         """
-        if self.stop_manager_request is None:
+        if self.stop_manager_request is False:
             return False
         else:
             return True
@@ -3803,7 +3802,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Stop the BinanceWebSocketApiManager with all streams, monitoring and management threads
         """
-        if self.stop_manager_request is not True:
+        if self.stop_manager_request is False:
             logger.info("BinanceWebSocketApiManager.stop_manager() - Stopping "
                         "unicorn_binance_websocket_api_manager " + self.version + " ...")
             # send signal to all threads
