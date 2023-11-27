@@ -53,7 +53,7 @@ except ImportError:
           "https://www.lucit.tech/unicorn-binance-websocket-api.html#installation-and-upgrade")
     sys.exit(1)
 
-logging.getLogger("unicorn_binance_websocket_api")
+logging.getLogger()
 logging.basicConfig(level=logging.INFO,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
@@ -81,6 +81,9 @@ def print_stream_data_from_stream_buffer(ubwa_manager):
             pass
         else:
             time.sleep(0.01)
+
+
+logging.info(f"Starting UBWA Demo")
 
 # To use this library you need a valid UNICORN Binance Suite License:
 # https://medium.lucit.tech/87b0088124a8
