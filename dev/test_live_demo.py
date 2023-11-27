@@ -31,7 +31,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 import logging
 import math
 import os
@@ -43,23 +42,16 @@ import threading
 try:
     from unicorn_binance_rest_api.manager import BinanceRestApiManager
 except ImportError:
-    print("Please install `unicorn-binance-rest-api`! https://pypi.org/project/unicorn-binance-rest-api/")
+    print("Please install `unicorn-binance-rest-api`! "
+          "https://www.lucit.tech/unicorn-binance-rest-api.html#installation-and-upgrade")
     sys.exit(1)
+
 try:
-    import IPython
+    from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 except ImportError:
-    print("Please install `ipython`!")
+    print("Please install `unicorn-binance-rest-api`! "
+          "https://www.lucit.tech/unicorn-binance-websocket-api.html#installation-and-upgrade")
     sys.exit(1)
-
-binance_api_key = ""
-binance_api_secret = ""
-
-#channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
-#            'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
-#            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
-channels = {'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h',
-            'kline_1d', 'miniTicker', 'ticker', 'bookTicker', 'depth20', 'depth@100ms'}
-arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
 
 logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.INFO,
@@ -67,38 +59,40 @@ logging.basicConfig(level=logging.INFO,
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
 
+binance_api_key = ""
+binance_api_secret = ""
+exchange = "binance.com"
 
-def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
+arr_channels = {'!miniTicker', '!ticker', '!bookTicker'}
+
+channels = {'trade', 'kline_1m', 'depth20'}
+# channels = {'aggTrade', 'trade', 'kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_2h', 'kline_4h',
+#            'kline_6h', 'kline_8h', 'kline_12h', 'kline_1d', 'kline_3d', 'kline_1w', 'kline_1M', 'miniTicker',
+#            'ticker', 'bookTicker', 'depth5', 'depth10', 'depth20', 'depth', 'depth@100ms'}
+
+
+def print_stream_data_from_stream_buffer(ubwa_manager):
     while True:
-        if binance_websocket_api_manager.is_manager_stopping():
+        if ubwa_manager.is_manager_stopping():
             exit(0)
-        oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
+        oldest_stream_data_from_stream_buffer = ubwa_manager.pop_stream_data_from_stream_buffer()
         if oldest_stream_data_from_stream_buffer is not False:
+            # print(oldest_stream_data_from_stream_buffer)
             pass
         else:
             time.sleep(0.01)
 
-
-def print_stream_to_png(manager):
-    while True:
-        manager.print_summary_to_png("/var/www/html/", hight_per_row=13.5)
-        time.sleep(10)
-
-
 # To use this library you need a valid UNICORN Binance Suite License:
 # https://medium.lucit.tech/87b0088124a8
 try:
-    ubra = BinanceRestApiManager(exchange="binance.com", socks5_proxy_server="127.0.0.1:1080")
-    ubwa = BinanceWebSocketApiManager(exchange="binance.com", socks5_proxy_server="127.0.0.1:1080")
+    ubra = BinanceRestApiManager(exchange=exchange)
+    ubwa = BinanceWebSocketApiManager(exchange=exchange)
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
 
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))
 worker_thread.start()
-
-export_thread = threading.Thread(target=print_stream_to_png, args=(ubwa,))
-export_thread.start()
 
 markets = []
 data = ubra.get_all_tickers()
@@ -132,4 +126,7 @@ for channel in channels:
                 loops += 1
             i += 1
 
-IPython.embed()
+while True:
+    if ubwa.is_manager_stopping() is False:
+        ubwa.print_summary()
+        time.sleep(1)
