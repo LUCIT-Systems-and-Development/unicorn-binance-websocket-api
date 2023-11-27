@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: test_userdata.py
+# File: dev/test_userdata.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
@@ -37,7 +37,6 @@ from unicorn_binance_websocket_api.exceptions import Socks5ProxyConnectionError
 import asyncio
 import logging
 import os
-import threading
 import tracemalloc
 tracemalloc.start(25)
 

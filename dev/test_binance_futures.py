@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: test_binance_futures.py
+# File: dev/test_binance_futures.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
