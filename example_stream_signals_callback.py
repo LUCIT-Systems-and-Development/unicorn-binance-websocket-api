@@ -150,5 +150,5 @@ time.sleep(2)
 print("\r\n============================== Stopped multi multi socket subscribe ===================================\r\n")
 
 print("\r\n=============================== Stopping BinanceWebSocketManager ======================================\r\n")
-ubwa.stop_manager_with_all_streams()
+ubwa.stop_manager()
 print("finished!")
