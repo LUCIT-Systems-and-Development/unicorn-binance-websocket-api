@@ -31,7 +31,7 @@
 [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
 [Contributing](#contributing) | [Disclaimer](#disclaimer) | [Commercial Support](#commercial-support)
 
-An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
+A Python API from [LUCIT Systems and Development](https://www.lucit.tech) to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
 com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, dex/chain+testnet) 
 in a easy, fast, flexible, robust and fully-featured way. 
 
