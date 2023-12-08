@@ -41,9 +41,9 @@ setup(
     author="LUCIT Systems and Development",
     author_email='info@lucit.tech',
     url="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api",
-    description="An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet, "
-                "com-isolated_margin+testnet, com-futures+testnet, jersey, us, dex/chain+testnet) in a easy, fast"
-                ", flexible, robust and fully-featured way.",
+    description="A Python API by LUCIT to use the Binance Websocket API`s (com+testnet, "
+                "com-margin+testnet, com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, "
+                "dex/chain+testnet) in a easy, fast, flexible, robust and fully-featured way.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     license='LSOSL - LUCIT Synergetic Open Source License',
