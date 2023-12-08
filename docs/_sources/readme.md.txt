@@ -443,7 +443,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 - [How to Connect to binance.com Websockets using Python via a Socks5 Proxy](https://medium.lucit.tech/how-to-connect-to-binance-com-websockets-using-python-via-a-socks5-proxy-3c5a3e063f12)
 
 ## Project Homepage
-[https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)
+[https://www.lucit.tech/unicorn-binance-websocket-api.html](https://www.lucit.tech/unicorn-binance-websocket-api.html)
 
 ## Wiki
 [https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki)
