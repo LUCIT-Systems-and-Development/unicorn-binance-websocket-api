@@ -1754,7 +1754,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: str
         """
         try:
-            if self.stream_list[stream_id]['listen_key'] is not False:
+            if self.stream_list[stream_id]['listen_key'] is not None:
                 logger.info("BinanceWebSocketApiManager.delete_listen_key_by_stream_id(" + str(stream_id) + ")")
                 response, binance_api_status = self.restclient.delete_listen_key(stream_id)
                 if binance_api_status is not None:
