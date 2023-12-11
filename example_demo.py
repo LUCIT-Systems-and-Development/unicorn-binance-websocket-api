@@ -31,9 +31,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
-from configparser import ConfigParser, ExtendedInterpolation
-from pathlib import Path
+import unicorn_binance_websocket_api
 import logging
 import os
 import time
@@ -47,7 +45,7 @@ logging.basicConfig(level=logging.DEBUG,
 
 # To use this library you need a valid UNICORN Binance Suite License:
 # https://medium.lucit.tech/87b0088124a8
-ubwa = BinanceWebSocketApiManager()
+ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager()
 
 
 def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
@@ -66,7 +64,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
                 binance_websocket_api_manager.add_to_stream_buffer(oldest_stream_data_from_stream_buffer)
 
 
-# start a worker process to process to move the received stream_data from the stream_buffer to a print function
+# start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))
 worker_thread.start()
 

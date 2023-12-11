@@ -1939,7 +1939,7 @@
 <span class="sd">        :type stream_id: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;listen_key&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;listen_key&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;BinanceWebSocketApiManager.delete_listen_key_by_stream_id(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
                 <span class="n">response</span><span class="p">,</span> <span class="n">binance_api_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restclient</span><span class="o">.</span><span class="n">delete_listen_key</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">binance_api_status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -4748,7 +4748,7 @@
     <div class="footer">
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Nov 29 2023 at 15:43 (CET).
+    Last updated on Dec 12 2023 at 00:42 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

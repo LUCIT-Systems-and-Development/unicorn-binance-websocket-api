@@ -50,7 +50,7 @@ To run modules of the *UNICORN Binance Suite* you need a [valid license](https:/
 ### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with a [`stream_buffer`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60) with just 3 lines of code:
 
 ```
-import unicorn_binance_websocket_api
+from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 
 ubwa = BinanceWebSocketApiManager(exchange="binance.com")
 ubwa.create_stream(channels=['trade', 'kline_1m'], markets=['btcusdt', 'bnbbtc', 'ethbtc'])
@@ -66,7 +66,7 @@ while True:
 
 ### Or with a [callback function](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) just do:
 ```
-from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 
 
 def process_new_receives(stream_data):
@@ -107,7 +107,7 @@ ubwa.unsubscribe_from_stream(stream_id=stream_id, channels=channels)
 ## Send Requests to Binance WebSocket API
 ### [Place orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order), [cancel orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.cancel_order) or [send other requests](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.api) via WebSocket:
 ```
-from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 
 
 def process_api_responses(stream_data):
