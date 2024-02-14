@@ -61,7 +61,7 @@ except ImportError:
     from typing_extensions import Literal
 
 __app_name__: str = "unicorn-binance-websocket-api"
-__version__: str = "2.1.2"
+__version__: str = "2.1.2.dev"
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -1759,6 +1759,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 response, binance_api_status = self.restclient.delete_listen_key(stream_id)
                 if binance_api_status is not None:
                     self.binance_api_status = binance_api_status
+        except requests.exceptions.ReadTimeout as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager.delete_listen_key_by_stream_id() - Not able to delete "
+                         f"listen_key - requests.exceptions.ReadTimeout: {error_msg}")
+            return False
         except KeyError:
             return False
 
@@ -3876,7 +3880,14 @@ class BinanceWebSocketApiManager(threading.Thread):
             pass
         if delete_listen_key:
             if self.exchange_type != "dex":
-                self.delete_listen_key_by_stream_id(stream_id)
+                try:
+                    self.delete_listen_key_by_stream_id(stream_id)
+                except requests.exceptions.ReadTimeout as error_msg:
+                    logger.debug(f"BinanceWebSocketApiManager.stop_stream() - Not able to delete listen_key - "
+                                 f"requests.exceptions.ReadTimeout: {error_msg}")
+                except requests.exceptions.ConnectionError as error_msg:
+                    logger.debug(f"BinanceWebSocketApiManager.stop_stream() - Not able to delete listen_key - "
+                                 f"requests.exceptions.ConnectionError: {error_msg}")
         try:
             loop = self.get_event_loop_by_stream_id(stream_id)
             logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - Closing event_loop "

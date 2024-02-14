@@ -21,6 +21,7 @@
 from unicorn_binance_rest_api import BinanceRestApiManager
 from typing import Optional, Union, Tuple
 import logging
+import requests
 import threading
 import time
 
@@ -103,53 +104,57 @@ class BinanceWebSocketApiRestclient(object):
         if stream_id is None:
             return None, None
 
-        with (self.threading_lock):
-            self._init_ubra()
+        try:
+            with (self.threading_lock):
+                self._init_ubra()
 
-            try:
-                kwargs = {'api_key': self.stream_list[stream_id]['api_key'],
-                          'api_secret': self.stream_list[stream_id]['api_secret']}
-            except TypeError:
-                logger.critical(f"delete_listen_key(stream_id='{str(stream_id)}') - No API key available!")
-                return None, None
+                try:
+                    kwargs = {'api_key': self.stream_list[stream_id]['api_key'],
+                              'api_secret': self.stream_list[stream_id]['api_secret']}
+                except TypeError:
+                    logger.critical(f"delete_listen_key(stream_id='{str(stream_id)}') - No API key available!")
+                    return None, None
 
-            if self.exchange == "binance.com-margin" or \
-                    self.exchange == "binance.com-margin-testnet":
-                if self.restful_base_uri is not None:
-                    self.ubra.MARGIN_API_URL = self.restful_base_uri
-                result = self.ubra.margin_stream_close(listenKey=self.stream_list[stream_id]['listen_key'],
-                                                       throw_exception=False,
-                                                       **kwargs)
-            elif self.exchange == "binance.com-isolated_margin" or \
-                    self.exchange == "binance.com-isolated_margin-testnet":
-                if self.restful_base_uri is not None:
-                    self.ubra.MARGIN_API_URL = self.restful_base_uri
-                result = self.ubra.isolated_margin_stream_close(symbol=self.stream_list[stream_id]['symbols'],
-                                                                listenKey=self.stream_list[stream_id]['listen_key'],
-                                                                throw_exception=False,
-                                                                **kwargs)
-            elif self.exchange == "binance.com-futures":
-                if self.restful_base_uri is not None:
-                    self.ubra.FUTURES_URL = self.restful_base_uri
-                result = self.ubra.futures_stream_close(listenKey=self.stream_list[stream_id]['listen_key'],
-                                                        throw_exception=False,
-                                                        **kwargs)
-            elif self.exchange == "binance.com-coin_futures":
-                if self.restful_base_uri is not None:
-                    self.ubra.FUTURES_COIN_URL = self.restful_base_uri
-                result = self.ubra.futures_coin_stream_close(listenKey=self.stream_list[stream_id]['listen_key'],
-                                                             throw_exception=False,
-                                                             **kwargs)
-            else:
-                if self.restful_base_uri is not None:
-                    self.ubra.API_URL = self.restful_base_uri
-                result = self.ubra.stream_close(listenKey=self.stream_list[stream_id]['listen_key'],
-                                                throw_exception=False,
-                                                **kwargs)
+                if self.exchange == "binance.com-margin" or \
+                        self.exchange == "binance.com-margin-testnet":
+                    if self.restful_base_uri is not None:
+                        self.ubra.MARGIN_API_URL = self.restful_base_uri
+                    result = self.ubra.margin_stream_close(listenKey=self.stream_list[stream_id]['listen_key'],
+                                                           throw_exception=False,
+                                                           **kwargs)
+                elif self.exchange == "binance.com-isolated_margin" or \
+                        self.exchange == "binance.com-isolated_margin-testnet":
+                    if self.restful_base_uri is not None:
+                        self.ubra.MARGIN_API_URL = self.restful_base_uri
+                    result = self.ubra.isolated_margin_stream_close(symbol=self.stream_list[stream_id]['symbols'],
+                                                                    listenKey=self.stream_list[stream_id]['listen_key'],
+                                                                    throw_exception=False,
+                                                                    **kwargs)
+                elif self.exchange == "binance.com-futures":
+                    if self.restful_base_uri is not None:
+                        self.ubra.FUTURES_URL = self.restful_base_uri
+                    result = self.ubra.futures_stream_close(listenKey=self.stream_list[stream_id]['listen_key'],
+                                                            throw_exception=False,
+                                                            **kwargs)
+                elif self.exchange == "binance.com-coin_futures":
+                    if self.restful_base_uri is not None:
+                        self.ubra.FUTURES_COIN_URL = self.restful_base_uri
+                    result = self.ubra.futures_coin_stream_close(listenKey=self.stream_list[stream_id]['listen_key'],
+                                                                 throw_exception=False,
+                                                                 **kwargs)
+                else:
+                    if self.restful_base_uri is not None:
+                        self.ubra.API_URL = self.restful_base_uri
+                    result = self.ubra.stream_close(listenKey=self.stream_list[stream_id]['listen_key'],
+                                                    throw_exception=False,
+                                                    **kwargs)
+        except requests.exceptions.ReadTimeout as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager.delete_listen_key_by_stream_id() - Not able to delete "
+                         f"listen_key - requests.exceptions.ReadTimeout: {error_msg}")
 
-            self.stream_list[stream_id]['listen_key'] = None
+        self.stream_list[stream_id]['listen_key'] = None
 
-            return result, self.get_binance_api_status()
+        return result, self.get_binance_api_status()
 
     def get_binance_api_status(self) -> dict:
         """
