@@ -30,7 +30,7 @@ jobs:
 
       - name: Build wheels Linux
         if: matrix.os == 'ubuntu-20.04'
-        uses: pypa/cibuildwheel@v2.16.2
+        uses: pypa/cibuildwheel@v2.16.5
         env:
           CIBW_BEFORE_ALL: "bash dev/tools/github/install_rust.sh"
 
