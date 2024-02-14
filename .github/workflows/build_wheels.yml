@@ -36,14 +36,14 @@ jobs:
 
       - name: Build wheels Mac
         if: matrix.os == 'macos-11'
-        uses: pypa/cibuildwheel@v2.16.2
+        uses: pypa/cibuildwheel@v2.16.5
 
       - name: Build wheels Windows
         if: matrix.os == 'windows-2019'
-        uses: pypa/cibuildwheel@v2.16.2
+        uses: pypa/cibuildwheel@v2.16.5
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.3.1
         with:
           path: ./wheelhouse/*.whl
 
