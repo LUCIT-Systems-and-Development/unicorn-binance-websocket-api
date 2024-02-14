@@ -9,10 +9,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.1.2.dev (development stage/unreleased/unstable)
-### Fixed
-- `manager.delete_listen_key_by_stream_id()` used `False` instead of `None`
+## 2.1.3.dev (development stage/unreleased/unstable)
 
+## 2.1.3
+### Fixed
+- Troubleshooting restart problems
+- `manager.delete_listen_key_by_stream_id()` used `False` instead of `None`
 
 ## 2.1.2
 ### Fixed

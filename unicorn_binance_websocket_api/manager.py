@@ -61,7 +61,7 @@ except ImportError:
     from typing_extensions import Literal
 
 __app_name__: str = "unicorn-binance-websocket-api"
-__version__: str = "2.1.2.dev"
+__version__: str = "2.1.3.dev"
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -923,7 +923,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: stream_id or False
         """
-        if self.is_manager_stopping() is False:
+        if self.is_manager_stopping() is True:
             return False
         try:
             if self.restart_requests[stream_id]['status'] != "new":
