@@ -12,8 +12,8 @@ logging.basicConfig(level=logging.DEBUG,
 
 class BinanceDataProcessor:
     def __init__(self, print_new_data=False, start_multiplex=True, start_userdata_a=True):
-        self.api_key = ""
-        self.api_secret = ""
+        self.api_key = "YOUR_BINANCE_API_KEY"
+        self.api_secret = "YOUR_BINANCE_API_SECRET"
         self.example_database = []
         self.print_new_data = print_new_data
         self.start_multiplex = start_multiplex
@@ -61,7 +61,7 @@ class BinanceDataProcessor:
                 status_text += (f"\tStream 'userData_A' is {stream_info['userData_A']['status']} "
                                 f"(last_stream_signal={stream_info['userData_A']['last_stream_signal']})\r\n")
 
-            print(f"Status:\r\n\tSaved {len(self.example_database)} data records to `self.example_database`\r\n"
+            print(f"Status:\r\n\tStored {len(self.example_database)} data records in `self.example_database`\r\n"
                   f"{status_text}")
 
 
