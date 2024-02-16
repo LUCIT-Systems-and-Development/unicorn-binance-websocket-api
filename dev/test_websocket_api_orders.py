@@ -31,13 +31,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 import asyncio
 import logging
 import os
 
-
-symbol = "BTCUSDT"
+api_key = ""
+api_secret = ""
+symbol = "ETHUSDT"
 
 
 async def binance_stream(ubwa):
@@ -47,11 +48,23 @@ async def binance_stream(ubwa):
     api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
                                     process_stream_data=handle_socket_message)
 
-    ubwa.api.get_open_orders(stream_id=api_stream, symbol=symbol)
-#    ubwa.api.cancel_open_orders(stream_id=api_stream, symbol=symbol)
-    ubwa.api.create_test_order(stream_id=api_stream, price=1.2, order_type="LIMIT",
-                               quantity=12.0, side="SELL", symbol=symbol)
-    
+    # LIMIT ORDER
+    ubwa.api.create_order(stream_id=api_stream, price=2888.48, order_type="LIMIT",
+                          quantity=0.0048, side="SELL", symbol=symbol)
+
+    # LIMIT_MAKER ORDER
+
+    # MARKET ORDER
+    ubwa.api.create_order(stream_id=api_stream, order_type="MARKET", quantity=0.0048, side="SELL", symbol=symbol)
+
+    # STOP_LOSS ORDER
+
+    # STOP_LOSS_LIMIT ORDER
+
+    # TAKE_PROFIT ORDER
+
+    # TAKE_PROFIT_LIMIT ORDER
+
     await asyncio.sleep(5)
     print(f"Stopping!")
     ubwa.stop_manager()
