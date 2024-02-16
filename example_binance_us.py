@@ -55,7 +55,8 @@ logging.basicConfig(level=logging.INFO,
 
 # To use this library you need a valid UNICORN Binance Suite License:
 # https://medium.lucit.tech/87b0088124a8
-# create instance of BinanceWebSocketApiManager for Binance Jersey
+
+# create instance of BinanceWebSocketApiManager for Binance US
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us")
 
 userdata_stream_id = binance_websocket_api_manager.create_stream(["arr"], ["!userData"], api_key="aaa", api_secret="bb")

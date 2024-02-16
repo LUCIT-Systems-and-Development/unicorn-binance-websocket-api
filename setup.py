@@ -51,7 +51,7 @@ setup(
                       'cheroot', 'flask', 'lucit-licensing-python>=1.8.1', 'ujson', 'psutil', 'PySocks', 'unicorn-fy',
                       'unicorn-binance-rest-api>=2.1.4', 'typing_extensions', 'Cython'],
     keywords='binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
-             'binance-websocket, binance-webstream, webstream, websocket, api, binance-jersey, binance-dex, '
+             'binance-websocket, binance-webstream, webstream, websocket, api, binance-dex, '
             'binance-futures, binance-margin, binance-us',
     project_urls={
         'Howto': 'https://www.lucit.tech/unicorn-binance-websocket-api.html#howto',

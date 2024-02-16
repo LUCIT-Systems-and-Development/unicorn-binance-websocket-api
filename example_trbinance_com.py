@@ -55,7 +55,7 @@ logging.basicConfig(level=logging.DEBUG,
 
 # To use this library you need a valid UNICORN Binance Suite License:
 # https://medium.lucit.tech/87b0088124a8
-# create instance of BinanceWebSocketApiManager for Binance Jersey
+# create instance of BinanceWebSocketApiManager for TR Binance
 ubwa = BinanceWebSocketApiManager(exchange="trbinance.com")
 
 stream_id = ubwa.create_stream("trade", ['btctry', 'ethtry', 'bnbtry', 'xrptry', 'usdttry'])
