@@ -10,6 +10,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
 ## 2.1.3.dev (development stage/unreleased/unstable)
+### Added
+- Websocket API: `create_order()` and `create_test_order()` - Support of parameter `quoteOrderQty`, Behavior: If 
+  activated, it replaces the `quantity` parameter.
+### Fixed
+- Websocket API: `create_order()` and `create_test_order()` -  Issue: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/353
+- Websocket API: `create_order()` and `create_test_order()` -  `trailingDelta` is only used if `stopPrice` was not 
+  specified.
 
 ## 2.1.3
 ### Fixed

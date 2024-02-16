@@ -426,6 +426,7 @@ class BinanceWebSocketApiApi(object):
                      price: float = 0.0,
                      process_response=None,
                      quantity: float = 0.0,
+                     quote_order_qty: float = None,
                      recv_window: int = None,
                      request_id: str = None,
                      return_response: bool = False,
@@ -446,7 +447,7 @@ class BinanceWebSocketApiApi(object):
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#place-new-order-trade
+            - https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-api.md#place-new-order-trade
 
         :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
                             `icebergQty`. An order with an `icebergQty` must have `timeInForce` set to `GTC`.
@@ -485,6 +486,8 @@ class BinanceWebSocketApiApi(object):
         :type process_response: function
         :param quantity: Amount e.g. 20.5
         :type quantity: float
+        :param quote_order_qty: Amount e.g. 20.5
+        :type quote_order_qty: float
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
                             The value cannot be greater than 60000.
@@ -610,18 +613,16 @@ class BinanceWebSocketApiApi(object):
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
             if stream_id is False:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApi.create_order() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
         new_client_order_id = new_client_order_id if new_client_order_id is not None else self.manager.get_request_id()
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
                   "newClientOrderId": new_client_order_id,
-                  "price": str(price),
                   "quantity": quantity,
                   "side": side.upper(),
                   "symbol": symbol.upper(),
-                  "timeInForce": time_in_force,
                   "timestamp": self.manager.get_timestamp(),
                   "type": order_type}
 
@@ -629,21 +630,36 @@ class BinanceWebSocketApiApi(object):
             params['icebergQty'] = str(iceberg_qty)
         if new_order_resp_type is not None:
             params['newOrderRespType'] = new_order_resp_type
-        if side.upper() == "LIMIT":
+        if (order_type.upper() == "LIMIT" or
+                order_type.upper() == "LIMIT_MAKER" or
+                order_type.upper() == "STOP_LOSS_LIMIT" or
+                order_type.upper() == "TAKE_PROFIT_LIMIT"):
             params['price'] = str(price)
+        if (order_type.upper() == "LIMIT" or
+                order_type.upper() == "STOP_LOSS_LIMIT" or
+                order_type.upper() == "TAKE_PROFIT_LIMIT"):
             params['timeInForce'] = time_in_force
+        if quote_order_qty is not None:
+            params['quoteOrderQty'] = str(quote_order_qty)
+            if quantity != 0.0:
+                logger.warning(f"BinanceWebSocketApiApi.create_order() - error_msg: By using the parameter "
+                               f"`quoteOrderQty` the use of `quantity` is suppressed!")
+            del params['quantity']
         if recv_window is not None:
             params['recvWindow'] = str(recv_window)
         if self_trade_prevention_mode is not None:
             params['selfTradePreventionMode'] = self_trade_prevention_mode
         if stop_price is not None:
             params['stopPrice'] = str(stop_price)
+            if trailing_delta is not None:
+                logger.warning(f"BinanceWebSocketApiApi.create_order() - error_msg: By using the parameter `stopPrice` "
+                               f"the use of `trailingDelta` is suppressed!")
+        elif trailing_delta is not None:
+            params['trailingDelta'] = str(trailing_delta)
         if strategy_id is not None:
             params['strategyId'] = str(strategy_id)
         if strategy_type is not None:
             params['strategyType'] = str(strategy_type)
-        if trailing_delta is not None:
-            params['trailingDelta'] = str(trailing_delta)
 
         method = "order.test" if test is True else "order.place"
         api_secret = self.manager.stream_list[stream_id]['api_secret']
@@ -681,6 +697,7 @@ class BinanceWebSocketApiApi(object):
                           price: float = 0.0,
                           process_response=None,
                           quantity: float = 0.0,
+                          quote_order_qty: float = None,
                           recv_window: int = None,
                           request_id: str = None,
                           return_response: bool = False,
@@ -741,6 +758,8 @@ class BinanceWebSocketApiApi(object):
         :type process_response: function
         :param quantity: Amount e.g. 20.5
         :type quantity: float
+        :param quote_order_qty: Amount e.g. 20.5
+        :type quote_order_qty: float
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
                             The value cannot be greater than 60000.
@@ -859,8 +878,8 @@ class BinanceWebSocketApiApi(object):
         """
         return self.create_order(iceberg_qty=iceberg_qty, new_client_order_id=new_client_order_id,
                                  new_order_resp_type=new_order_resp_type, price=price, order_type=order_type,
-                                 process_response=process_response, quantity=quantity, recv_window=recv_window,
-                                 request_id=request_id, return_response=return_response,
+                                 process_response=process_response, quantity=quantity, quote_order_qty=quote_order_qty,
+                                 recv_window=recv_window, request_id=request_id, return_response=return_response,
                                  self_trade_prevention_mode=self_trade_prevention_mode, side=side,
                                  stop_price=stop_price, strategy_id=strategy_id, strategy_type=strategy_type,
                                  stream_id=stream_id, stream_label=stream_label, symbol=symbol,
