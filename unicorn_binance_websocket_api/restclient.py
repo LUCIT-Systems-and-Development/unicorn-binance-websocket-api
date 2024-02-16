@@ -130,7 +130,7 @@ class BinanceWebSocketApiRestclient(object):
                                                                     listenKey=self.stream_list[stream_id]['listen_key'],
                                                                     throw_exception=False,
                                                                     **kwargs)
-                elif self.exchange == "binance.com-futures":
+                elif self.exchange == "binance.com-futures" or self.exchange == "binance.com-futures-testnet":
                     if self.restful_base_uri is not None:
                         self.ubra.FUTURES_URL = self.restful_base_uri
                     result = self.ubra.futures_stream_close(listenKey=self.stream_list[stream_id]['listen_key'],
@@ -225,7 +225,7 @@ class BinanceWebSocketApiRestclient(object):
                         logger.critical(f"BinanceWebSocketApiRestclient.get_listen_key() - error: 8 - "
                                         f"error_msg: {error_msg} - Can not acquire listen_key for isolated_margin!")
                         return None, None
-            elif self.exchange == "binance.com-futures":
+            elif self.exchange == "binance.com-futures" or self.exchange == "binance.com-futures-testnet":
                 try:
                     if self.restful_base_uri is not None:
                         self.ubra.FUTURES_URL = self.restful_base_uri
@@ -310,7 +310,7 @@ class BinanceWebSocketApiRestclient(object):
                                                                     listenKey=self.stream_list[stream_id]['listen_key'],
                                                                     throw_exception=False,
                                                                     **kwargs)
-            elif self.exchange == "binance.com-futures":
+            elif self.exchange == "binance.com-futures" or self.exchange == "binance.com-futures-testnet":
                 if self.restful_base_uri is not None:
                     self.ubra.FUTURES_URL = self.restful_base_uri
                 result = self.ubra.futures_stream_keepalive(listenKey=self.stream_list[stream_id]['listen_key'],

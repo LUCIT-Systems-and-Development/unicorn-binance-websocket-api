@@ -14,9 +14,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Websocket API: `create_order()` and `create_test_order()` - Support of parameter `quoteOrderQty`, Behavior: If 
   activated, it replaces the `quantity` parameter.
 ### Fixed
-- Websocket API: `create_order()` and `create_test_order()` -  Issue: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/353
+- Websocket API: `create_order()` and `create_test_order()` -  Issue: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/353 
+  and https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/352
 - Websocket API: `create_order()` and `create_test_order()` -  `trailingDelta` is only used if `stopPrice` was not 
   specified.
+- Binance futures testnet userData stream in `restclient.py` - Issue: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/347
 
 ## 2.1.3
 ### Fixed
