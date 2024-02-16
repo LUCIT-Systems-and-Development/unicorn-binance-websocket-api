@@ -942,7 +942,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['status'] = "restarting"
         self.stream_list[stream_id]['kill_request'] = None
         self.stream_list[stream_id]['payload'] = []
-        loop = asyncio.new_event_loop()
+        if self.is_manager_stopping() is True:
+            return False
+        try:
+            loop = asyncio.new_event_loop()
+        except OSError as error_msg:
+            logger.critical(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)} - OSError  - can not create "
+                            f"stream - error_msg: {str(error_msg)}")
+            return False
         if self.debug is True:
             loop.set_debug(enabled=True)
         self.event_loops[stream_id] = loop

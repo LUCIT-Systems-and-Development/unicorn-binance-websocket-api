@@ -46,6 +46,7 @@ async def binance_stream(ubwa):
 
     api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
                                     process_stream_data=handle_socket_message)
+
     ubwa.api.get_open_orders(stream_id=api_stream, symbol=symbol)
 #    ubwa.api.cancel_open_orders(stream_id=api_stream, symbol=symbol)
     ubwa.api.create_test_order(stream_id=api_stream, price=1.2, order_type="LIMIT",

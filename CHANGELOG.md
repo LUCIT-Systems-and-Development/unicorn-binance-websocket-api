@@ -9,7 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.1.3.dev (development stage/unreleased/unstable)
+## 2.1.4.dev (development stage/unreleased/unstable)
+
+## 2.1.4
 ### Added
 - Websocket API: `create_order()` and `create_test_order()` - Support of parameter `quoteOrderQty`, Behavior: If 
   activated, it replaces the `quantity` parameter.
