@@ -49,7 +49,7 @@ class BinanceWebSocketApiApi(object):
 
     Binance.com SPOT websocket API documentation:
 
-        - https://developers.binance.com/docs/binance-trading-api/websocket_api
+        - https://binance-docs.github.io/apidocs/websocket_api/en/
 
     :param manager: Provide the initiated UNICORN Binance WebSocket API Manager instance.
     :type manager: BinanceWebsocketApiManager
