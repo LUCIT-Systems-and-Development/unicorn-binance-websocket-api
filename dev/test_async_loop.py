@@ -66,7 +66,7 @@ class BinanceDataProcessor:
 
 
 if __name__ == "__main__":
-    bdp = BinanceDataProcessor(print_new_data=False, start_multiplex=True, start_userdata_a=True)
+    bdp = BinanceDataProcessor(print_new_data=True, start_multiplex=False, start_userdata_a=True)
     try:
         asyncio.run(bdp.start())
     except KeyboardInterrupt:
