@@ -133,7 +133,8 @@ class BinanceWebSocketApiSocket(object):
                                         received_stream_data = self.unicorn_fy.binance_com_futures_websocket(received_stream_data_json)
                                     elif self.exchange == "binance.com-futures-testnet":
                                         received_stream_data = self.unicorn_fy.binance_com_futures_websocket(received_stream_data_json)
-                                    elif self.exchange == "binance.com-coin-futures" or self.exchange == "binance.com-coin_futures":
+                                    elif self.exchange == "binance.com-coin-futures" \
+                                            or self.exchange == "binance.com-coin_futures":
                                         received_stream_data = self.unicorn_fy.binance_com_coin_futures_websocket(received_stream_data_json)
                                     elif self.exchange == "binance.je":
                                         received_stream_data = self.unicorn_fy.binance_je_websocket(received_stream_data_json)
@@ -190,6 +191,9 @@ class BinanceWebSocketApiSocket(object):
                             elif self.manager.specific_process_stream_data[self.stream_id] is not None:
                                 # if create_stream() got a callback function -> use it
                                 self.manager.specific_process_stream_data[self.stream_id](received_stream_data)
+                            elif self.manager.specific_process_stream_data_async[self.stream_id] is not None:
+                                # if create_stream() got an asynchronous callback function -> use it
+                                await self.manager.specific_process_stream_data_async[self.stream_id](received_stream_data)
                             else:
                                 # Use the default process_stream_data function provided to/by the manager class
                                 if self.manager.process_stream_data_async is None:

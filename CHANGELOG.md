@@ -11,9 +11,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 2.1.4.dev (development stage/unreleased/unstable)
 ### Added
-- Parameter `process_stream_data_async` to `manager.py`
-- `await self.manager.process_stream_data_async()` to `socket.py`. This means it is possible to provide a asyncio 
-  function.
+- Parameter `process_stream_data_async` in `manager.py` to `BinanceWebSocketApiManager()` as global setting parameter
+  and to `create_stream()` as stream specific parameter. 
+- `await self.manager.process_stream_data_async()` and 
+  `await self.manager.specific_process_stream_data_async[stream_id]()` to `socket.py`. This means it is possible to 
+  provide a global and a stream specific asyncio function.
 ### Changed
 - Parameter `process_stream_data` in `manager.py` from `False` to `None`
 - Parameter `process_stream_signals` in `manager.py` from `False` to `None`
