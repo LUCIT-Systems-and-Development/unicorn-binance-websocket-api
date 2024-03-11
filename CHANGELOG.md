@@ -10,6 +10,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
 ## 2.1.4.dev (development stage/unreleased/unstable)
+### Added
+- Parameter `process_stream_data_async` to `manager.py`
+- `await self.manager.process_stream_data_async()` to `socket.py`. This means it is possible to provide a asyncio 
+  function.
+### Changed
+- Parameter `process_stream_data` in `manager.py` from `False` to `None`
+- Parameter `process_stream_signals` in `manager.py` from `False` to `None`
+### Removed
+- `import sys` in `sockets.py`
 
 ## 2.1.4
 ### Added

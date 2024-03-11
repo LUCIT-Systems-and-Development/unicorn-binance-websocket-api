@@ -24,7 +24,6 @@ from unicorn_fy.unicorn_fy import UnicornFy
 import asyncio
 import ujson as json
 import logging
-import sys
 import uuid
 import websockets
 
@@ -193,8 +192,12 @@ class BinanceWebSocketApiSocket(object):
                                 self.manager.specific_process_stream_data[self.stream_id](received_stream_data)
                             else:
                                 # Use the default process_stream_data function provided to/by the manager class
-                                self.manager.process_stream_data(received_stream_data,
-                                                                 stream_buffer_name=stream_buffer_name)
+                                if self.manager.process_stream_data_async is None:
+                                    self.manager.process_stream_data(received_stream_data,
+                                                                     stream_buffer_name=stream_buffer_name)
+                                else:
+                                    await self.manager.process_stream_data_async(received_stream_data,
+                                                                                 stream_buffer_name=stream_buffer_name)
                             if "error" in received_stream_data_json:
                                 logger.error("BinanceWebSocketApiSocket.start_socket(" +
                                              str(self.stream_id) + ") "

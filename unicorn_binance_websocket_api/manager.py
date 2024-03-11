@@ -106,11 +106,20 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 will be called instead of
                                 `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
                                 like `process_stream_data(stream_data, stream_buffer_name)` where
-                                `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
+                                `stream_data` contains the raw_stream_data. If not provided, the raw stream_data will
                                 get stored in the stream_buffer or provided to a specific callback function of
                                 `create_stream()`! `How to read from stream_buffer!
                                 <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
     :type process_stream_data: function
+    :param process_stream_data_async: Provide an asyncio function/method to process the received webstream data (callback). The function
+                                will be called instead of
+                                `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
+                                like `process_stream_data(stream_data, stream_buffer_name)` where
+                                `stream_data` contains the raw_stream_data. If not provided, the raw stream_data will
+                                get stored in the stream_buffer or provided to a specific callback function of
+                                `create_stream()`! `How to read from stream_buffer!
+                                <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
+    :type process_stream_data_async: function
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
                      binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
                      binance.com-futures-testnet, binance.com-coin_futures, binance.us, trbinance.com,
@@ -208,7 +217,8 @@ class BinanceWebSocketApiManager(threading.Thread):
     """
 
     def __init__(self,
-                 process_stream_data=False,
+                 process_stream_data=None,
+                 process_stream_data_async=None,
                  exchange: str = "binance.com",
                  warn_on_update: Optional[bool] = True,
                  throw_exception_if_unrepairable: Optional[bool] = False,
@@ -218,7 +228,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  enable_stream_signal_buffer: Optional[bool] = False,
                  disable_colorama: Optional[bool] = False,
                  stream_buffer_maxlen: Optional[int] = None,
-                 process_stream_signals=False,
+                 process_stream_signals=None,
                  close_timeout_default: int = 1,
                  ping_interval_default: int = 5,
                  ping_timeout_default: int = 10,
@@ -272,7 +282,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.info(f"Using `websockets_{websockets.__version__}`")
         self.specific_process_stream_data = {}
 
-        if process_stream_data is False:
+        if process_stream_data is None:
             # no special method to process stream data provided, so we use add_to_stream_buffer:
             self.process_stream_data = self.add_to_stream_buffer
             logger.info(f"Using `stream_buffer`")
@@ -281,7 +291,16 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.process_stream_data = process_stream_data
             logger.info(f"Using `process_stream_data`")
 
-        if process_stream_signals is False:
+        if process_stream_data_async is None:
+            # no special method to asynchronous process the stream data is provided, so we use do nothing. Fallback
+            # to `process_stream_data`.
+            pass
+        else:
+            # use the provided method to asynchronous process stream data:
+            self.process_stream_data_async = process_stream_data_async
+            logger.info(f"Using `process_stream_data_async`")
+
+        if process_stream_signals is None:
             # no special method to process stream signals provided, so we use add_to_stream_signal_buffer:
             self.process_stream_signals = self.add_to_stream_signal_buffer
             logger.info(f"Using `stream_signal_buffer`")
