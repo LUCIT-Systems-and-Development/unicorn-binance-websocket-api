@@ -22,7 +22,7 @@ class BinanceDataProcessor:
     async def processing_of_new_data_async(self, data):
         self.example_database.append(data)
         if self.print_new_data is True:
-            print(f"Data record received and added to the database: {data}")
+            print(f"Data record received in async function and added to the database: {data}")
         await asyncio.sleep(1)
 
     def processing_of_stream_signals(self, signal_type=False, stream_id=False, data_record=False):
