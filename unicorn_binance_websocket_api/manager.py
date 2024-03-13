@@ -53,7 +53,7 @@ from datetime import datetime
 from flask import Flask, redirect
 from flask_restful import Api
 from operator import itemgetter
-from typing import Optional, Union
+from typing import Optional, Union, Callable
 try:
     # python <=3.7 support
     from typing import Literal
@@ -292,12 +292,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.info(f"Using `process_stream_data`")
 
         if process_stream_data_async is None:
-            # no special method to asynchronous process the stream data is provided, so we use do nothing. Fallback
-            # to `process_stream_data`.
-            pass
+            self.process_stream_data_async: Optional[Callable] = None
         else:
             # use the provided method to asynchronous process stream data:
-            self.process_stream_data_async = process_stream_data_async
+            self.process_stream_data_async: Optional[Callable] = process_stream_data_async
             logger.info(f"Using `process_stream_data_async`")
 
         if process_stream_signals is None:
@@ -446,14 +444,21 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.start()
 
     def __enter__(self):
-        logger.debug(f"Entering 'with-context' ...")
+        logger.debug(f"Entering with-context of BinanceWebSocketApiManager() ...")
         return self
 
     def __exit__(self, exc_type, exc_value, error_traceback):
-        logger.debug(f"Leaving 'with-context' ...")
+        logger.debug(f"Leaving with-context of BinanceWebSocketApiManager() ...")
         self.stop_manager()
         if exc_type:
             logger.critical(f"An exception occurred: {exc_type} - {exc_value} - {error_traceback}")
+
+    async def shutdown_asyncgens(self, loop):
+        await loop.shutdown_asyncgens()
+
+    async def run_socket(self, stream_id, channels, markets):
+        async with BinanceWebSocketApiSocket(self, stream_id, channels, markets) as socket:
+            await socket.start_socket()
 
     def _add_stream_to_stream_list(self,
                                    stream_id,
@@ -602,7 +607,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                     + str(stream_buffer_name) + ", " + str(stream_buffer_maxlen) + ", " + str(symbols) + ")")
 
     def _create_stream_thread(self,
-                              loop,
                               stream_id,
                               channels,
                               markets,
@@ -612,8 +616,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Co function of self.create_stream to create a thread for the socket and to manage the coroutine
 
-        :param loop: provide an asynio loop
-        :type loop: asyncio loop
         :param stream_id: provide a stream_id - only needed for userData Streams (acquiring a listenKey)
         :type stream_id: str
         :param channels: provide the channels to create the URI
@@ -645,25 +647,34 @@ class BinanceWebSocketApiManager(threading.Thread):
                 except KeyError:
                     # Resetting
                     self.stream_buffers[stream_buffer_name] = deque(maxlen=stream_buffer_maxlen)
-        asyncio.set_event_loop(loop)
-        socket = BinanceWebSocketApiSocket(self, stream_id, channels, markets)
+
+        loop = None
         try:
-            loop.run_until_complete(socket.start_socket())
-        except GeneratorExit as error_msg:
-            logger.debug(f"GeneratorExit of socket.start_socket() received: {error_msg}")
+            loop = asyncio.new_event_loop()
+            if self.debug is True:
+                loop.set_debug(enabled=True)
+            self.event_loops[stream_id] = loop
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(self.run_socket(stream_id, channels, markets))
+        except OSError as error_msg:
+            logger.critical(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)} - OSError  - can not "
+                            f"create stream - error_msg: {str(error_msg)}")
         except RuntimeError as error_msg:
             if "cannot schedule new futures after interpreter shutdown" in str(error_msg):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                                 f" - RuntimeError `error: 11` - error_msg:  {str(error_msg)} - Info: https://github.com/"
                                 f"LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/299")
-                self.stop_manager()
-                sys.exit(1)
             elif "This event loop is already running" in str(error_msg):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                                 f" - RuntimeError - error_msg:  {str(error_msg)}")
             else:
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                                 f" - RuntimeError `error: 12` - error_msg: {str(error_msg)}")
+        except Exception as error_msg:
+            logger.critical(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)} - Unknown Exception - "
+                            f"Please report this issue if your stream does not restart: "
+                            f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose"
+                            f" - error_msg: {str(error_msg)}")
         finally:
             logger.debug(f"Finally closing the loop stream_id={str(stream_id)}")
             try:
@@ -675,19 +686,23 @@ class BinanceWebSocketApiManager(threading.Thread):
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 13` - {error_msg}")
-            try:
-                tasks = asyncio.all_tasks(loop)
-                loop.run_until_complete(loop.shutdown_asyncgens())
-                for task in tasks:
-                    task.cancel()
-                    try:
-                        loop.run_until_complete(task)
-                    except asyncio.CancelledError:
-                        pass
-            except RuntimeError as error_msg:
-                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
-                             f"RuntimeError `error: 14` - {error_msg}")
-            loop.close()
+            if loop is not None:
+                try:
+                    tasks = asyncio.all_tasks(loop)
+                    loop.run_until_complete(self.shutdown_asyncgens(loop))
+                    for task in tasks:
+                        task.cancel()
+                        try:
+                            loop.run_until_complete(task)
+                        except asyncio.CancelledError:
+                            pass
+                except RuntimeError as error_msg:
+                    logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
+                                 f"RuntimeError `error: 14` - {error_msg}")
+                except Exception as error_msg:
+                    logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() finally - {error_msg}")
+                if not loop.is_closed():
+                    loop.close()
             try:
                 self.stream_list[stream_id]['loop_is_closing'] = False
                 self.stream_is_stopping(stream_id)
@@ -973,20 +988,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['payload'] = []
         if self.is_manager_stopping() is True:
             return False
-        try:
-            loop = asyncio.new_event_loop()
-        except OSError as error_msg:
-            logger.critical(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)} - OSError  - can not create "
-                            f"stream - error_msg: {str(error_msg)}")
-            return False
-        if self.debug is True:
-            loop.set_debug(enabled=True)
-        self.event_loops[stream_id] = loop
+
         self.set_socket_is_not_ready(stream_id)
         try:
             thread = threading.Thread(target=self._create_stream_thread,
-                                      args=(loop,
-                                            stream_id,
+                                      args=(stream_id,
                                             self.stream_list[stream_id]['channels'],
                                             self.stream_list[stream_id]['markets'],
                                             self.stream_list[stream_id]['stream_buffer_name'],
@@ -1567,23 +1573,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         api=api,
                                         process_stream_data=process_stream_data,
                                         process_stream_data_async=process_stream_data_async)
-        try:
-            loop = asyncio.new_event_loop()
-        except OSError as error_msg:
-            logger.critical(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
-                            f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
-                            f"{api}) with stream_id={str(stream_id)} - OSError  - can not create stream - "
-                            f"error_msg: {str(error_msg)}")
-            return False
 
-        if self.debug is True:
-            loop.set_debug(enabled=True)
-
-        self.event_loops[stream_id] = loop
         self.set_socket_is_not_ready(stream_id)
         thread = threading.Thread(target=self._create_stream_thread,
-                                  args=(loop,
-                                        stream_id,
+                                  args=(stream_id,
                                         channels,
                                         markets_new,
                                         stream_buffer_name,
@@ -1813,7 +1806,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             return False
 
-    def delete_stream_from_stream_list(self, stream_id):
+    def delete_stream_from_stream_list(self, stream_id, timeout: float = 10.0):
         """
         Delete a stream from the stream_list
 
@@ -1822,9 +1815,14 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: id of a stream
         :type stream_id: str
+        :param timeout: The timeout for how long to wait for the stream to stop. The function aborts if the waiting
+                        time is exceeded and returns False.
+        :type timeout: float
+
         :return: bool
         """
         logger.info("BinanceWebSocketApiManager.delete_stream_from_stream_list(" + str(stream_id) + ")")
+        self.wait_till_stream_has_stopped(stream_id=stream_id, timeout=timeout)
         return self.stream_list.pop(stream_id, False)
 
     @staticmethod
@@ -4171,18 +4169,28 @@ class BinanceWebSocketApiManager(threading.Thread):
                     ", " + str(markets) + ") finished ...")
         return True
 
-    def wait_till_stream_has_started(self, stream_id):
+    def wait_till_stream_has_started(self, stream_id, timeout: float = 10.0) -> bool:
         """
         Returns `True` as soon a specific stream has started and received its first stream data
 
         :param stream_id: id of a stream
         :type stream_id: str
+        :param timeout: The timeout for how long to wait for the stream to stop. The function aborts if the waiting
+                        time is exceeded and returns False.
+        :type timeout: float
 
         :return: bool
         """
-        logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) started!")
+        timestamp = self.get_timestamp()
+        timeout = timestamp + timeout if timeout == 0.0 else timeout
+        logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) with timeout {timeout} "
+                     f"started!")
         try:
             while self.stream_list[stream_id]['last_heartbeat'] is None:
+                if self.get_timestamp() > timeout != 0.0:
+                    logger.debug(
+                        f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) finished with `False`!")
+                    return False
                 time.sleep(0.1)
             logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) finished with `True`!")
             return True
@@ -4190,20 +4198,31 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) finished with `False`!")
             return False
 
-    def wait_till_stream_has_stopped(self, stream_id) -> bool:
+    def wait_till_stream_has_stopped(self, stream_id, timeout: float = 10.0) -> bool:
         """
         Returns `True` as soon a specific stream has stopped itself
 
         :param stream_id: id of a stream
         :type stream_id: str
+        :param timeout: The timeout for how long to wait for the stream to stop. The function aborts if the waiting
+                        time is exceeded and returns False.
+        :type timeout: float
 
         :return: bool
         """
-        logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) started!")
+        timestamp = self.get_timestamp()
+        timeout = timestamp + timeout if timeout == 0.0 else timeout
+        logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) with timeout {timeout} "
+                     f"started!")
         try:
             while self.stream_list[stream_id]['status'] != "stopped":
+                if self.get_timestamp() > timeout != 0.0:
+                    logger.debug(
+                        f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) finished with `False`!")
+                    return False
                 time.sleep(0.1)
         except KeyError:
-            pass
+            logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) finished with `False`!")
+            return False
         logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) finished with `True`!")
         return True

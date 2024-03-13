@@ -42,6 +42,24 @@ class BinanceWebSocketApiSocket(object):
         self.output = self.manager.stream_list[self.stream_id]['output']
         self.unicorn_fy = UnicornFy()
         self.exchange = manager.get_exchange()
+        self.websocket = None
+
+    async def __aenter__(self):
+        logger.debug(f"Entering asynchronous with-context of BinanceWebSocketApiSocket() ...")
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        logger.debug(f"Leaving asynchronous with-context of BinanceWebSocketApiSocket() ...")
+        if self.websocket is not None:
+            try:
+                await self.websocket.close()
+            except AttributeError as error_msg:
+                logger.debug(f"BinanceWebSocketApiSocket.__aexit__({str(self.stream_id)}, "
+                             f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
+                             f"recent_socket_id={str(self.socket_id)} - Sending payload - exit because its "
+                             f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
+                             f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])} - "
+                             f"error_msg: {error_msg}")
 
     async def start_socket(self):
         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, {str(self.channels)}, "
@@ -52,15 +70,15 @@ class BinanceWebSocketApiSocket(object):
                                                      self.socket_id,
                                                      self.channels,
                                                      self.markets,
-                                                     symbols=self.symbols) as websocket:
+                                                     symbols=self.symbols) as self.websocket:
                 self.manager.socket_is_ready[self.stream_id] = True
                 while True:
                     if self.manager.is_stop_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
-                        await websocket.close()
+                        await self.websocket.close()
                         return False
                     elif self.manager.is_stop_as_crash_request(self.stream_id):
-                        await websocket.close()
+                        await self.websocket.close()
                         return False
                     try:
                         if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
@@ -89,7 +107,7 @@ class BinanceWebSocketApiSocket(object):
                             logger.debug(f"BinanceWebSocketApiSocket.start_socket() IndexError: {error_msg}")
                         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
                                     f"{str(self.channels)}, {str(self.markets)} - Sending payload: {str(payload)}")
-                        await websocket.send(json.dumps(payload, ensure_ascii=False))
+                        await self.websocket.send(json.dumps(payload, ensure_ascii=False))
 
                         # To avoid a ban we respect the limits of binance:
                         # https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
@@ -102,7 +120,7 @@ class BinanceWebSocketApiSocket(object):
                             await asyncio.sleep(idle_time)
                     try:
                         try:
-                            received_stream_data_json = await websocket.receive()
+                            received_stream_data_json = await self.websocket.receive()
                         except asyncio.TimeoutError:
                             # Timeout from `asyncio.wait_for()` which we use to keep the loop running even if we don't
                             # receive new records via websocket.
@@ -112,7 +130,7 @@ class BinanceWebSocketApiSocket(object):
                             continue
                         if self.manager.is_stop_request(self.stream_id):
                             self.manager.stream_is_stopping(self.stream_id)
-                            await websocket.close()
+                            await self.websocket.close()
                             return False
                         if received_stream_data_json is not None:
                             if self.output == "UnicornFy":
@@ -223,7 +241,7 @@ class BinanceWebSocketApiSocket(object):
                                         str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed "
                                         "- error_msg: " + str(error_msg))
                         if "WebSocket connection is closed: code = 1008" in str(error_msg):
-                            websocket.close()
+                            await self.websocket.close()
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
                             self.manager.set_restart_request(self.stream_id)
                             return False
@@ -231,10 +249,9 @@ class BinanceWebSocketApiSocket(object):
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
                             self.manager.set_restart_request(self.stream_id)
                             return False
-                        else:
-                            self.manager.stream_is_crashing(self.stream_id, str(error_msg))
-                            self.manager.set_restart_request(self.stream_id)
-                            return False
+                        self.manager.stream_is_crashing(self.stream_id, str(error_msg))
+                        self.manager.set_restart_request(self.stream_id)
+                        return False
                     except AttributeError as error_msg:
                         logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
                                      str(self.channels) + ", " + str(self.markets) + ") - Exception AttributeError - "
