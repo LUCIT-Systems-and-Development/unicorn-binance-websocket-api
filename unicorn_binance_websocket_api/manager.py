@@ -159,6 +159,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    `add_to_stream_signal_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer>`_
                                    like `process_stream_data(signal_type=False, stream_id=False, data_record=False)`.
     :type process_stream_signals: function
+    :param auto_data_cleanup_stopped_streams: The parameter "auto_data_cleanup_stopped_streams=True" can be used to
+                                              inform the UBWA instance that all remaining data of a stopped stream
+                                              should be automatically and completely deleted.
+    :type auto_data_cleanup_stopped_streams: bool
     :param close_timeout_default: The `close_timeout` parameter defines a maximum wait time in seconds for
                                 completing the closing handshake and terminating the TCP connection.
                                 This parameter is passed through to the `websockets.client.connect()
@@ -243,6 +247,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  socks5_proxy_user: Optional[str] = None,
                  socks5_proxy_pass: Optional[str] = None,
                  socks5_proxy_ssl_verification: Optional[bool] = True,
+                 auto_data_cleanup_stopped_streams: bool = False,
                  lucit_api_secret: str = None,
                  lucit_license_ini: str = None,
                  lucit_license_profile: str = None,
@@ -253,6 +258,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.name = __app_name__
         self.version = __version__
         self.stop_manager_request = False
+        self.auto_data_cleanup_stopped_streams = auto_data_cleanup_stopped_streams
         logger.info(f"New instance of {self.get_user_agent()}-{'compiled' if cython.compiled else 'source'} on "
                     f"{str(platform.system())} {str(platform.release())} for exchange {exchange} started ...")
         self.debug = debug
@@ -310,6 +316,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.enable_stream_signal_buffer is True:
             logger.info(f"Enabled `stream_signal_buffer` ...")
 
+        self.exchange = exchange
+        self.stream_list = {}
+        self.stream_list_lock = threading.Lock()
+
         if exchange not in CONNECTION_SETTINGS:
             error_msg = f"Unknown exchange '{str(exchange)}'! List of supported exchanges: " \
                         f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/" \
@@ -318,7 +328,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stop_manager()
             raise UnknownExchange(error_msg)
 
-        self.exchange = exchange
         self.max_subscriptions_per_stream = max_subscriptions_per_stream or CONNECTION_SETTINGS[self.exchange][0]
         self.websocket_base_uri = websocket_base_uri or CONNECTION_SETTINGS[self.exchange][1]
         self.websocket_api_base_uri = websocket_api_base_uri or CONNECTION_SETTINGS[self.exchange][2]
@@ -668,8 +677,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                                 f" - RuntimeError - error_msg:  {str(error_msg)}")
             else:
-                logger.critical(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
-                                f" - RuntimeError `error: 12` - error_msg: {str(error_msg)}")
+                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
+                             f" - RuntimeError `error: 12` - error_msg: {str(error_msg)}")
         except Exception as error_msg:
             logger.critical(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)} - Unknown Exception - "
                             f"Please report this issue if your stream does not restart: "
@@ -747,18 +756,45 @@ class BinanceWebSocketApiManager(threading.Thread):
             params.append(('signature', data['signature']))
         return params
 
+    def _auto_data_cleanup_stopped_streams(self, interval=60):
+        timestamp_last_check = 0
+        while self.is_manager_stopping() is False:
+            logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Starting with an interval "
+                        f"of {interval} seconds!")
+            if self.get_timestamp_unix() > timestamp_last_check + interval:
+                timestamp_last_check = self.get_timestamp_unix()
+                if self.auto_data_cleanup_stopped_streams is True:
+                    stopped_streams = []
+                    for stream_id in self.stream_list:
+                        stopped_streams.append(stream_id)
+                    for stream_id in stopped_streams:
+                        try:
+                            restart_status = self.restart_requests[stream_id].get("status")
+                        except KeyError:
+                            restart_status = None
+                        if self.stream_list[stream_id]['status'] == "stopped" and restart_status != "new":
+                            logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Removing "
+                                        f"all remaining data of stream with stream_id={stream_id} from this instance!")
+                            self.remove_all_data_of_stream_id(stream_id=stream_id)
+                            logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Remaining "
+                                        f"data of stream with stream_id={stream_id} successfully removed from this "
+                                        f"instance!")
+            time.sleep(1)
+
     def _frequent_checks(self):
         """
         This method gets started as a thread and is doing the frequent checks
         """
-        frequent_checks_id = time.time()
+        frequent_checks_id = self.get_timestamp_unix()
         cpu_usage_time = False
+        last_10_min_check: float = 0.0
         with self.frequent_checks_list_lock:
             self.frequent_checks_list[frequent_checks_id] = {'last_heartbeat': 0,
                                                              'stop_request': None,
                                                              'has_stopped': False}
         logger.info("BinanceWebSocketApiManager._frequent_checks() new instance created with frequent_checks_id=" +
                     str(frequent_checks_id))
+
         # threaded loop for min 1 check per second
         while self.stop_manager_request is False \
                 and self.frequent_checks_list[frequent_checks_id]['stop_request'] is None:
@@ -1786,12 +1822,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                         str(stream_id) + " is " + self.websocket_base_uri + str(query))
             return self.websocket_base_uri + str(query)
 
-    def delete_listen_key_by_stream_id(self, stream_id):
+    def delete_listen_key_by_stream_id(self, stream_id) -> bool:
         """
         Delete a binance listen_key from a specific !userData stream
 
         :param stream_id: id of a !userData stream
         :type stream_id: str
+
+        :return: bool
         """
         try:
             if self.stream_list[stream_id]['listen_key'] is not None:
@@ -1806,7 +1844,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             return False
 
-    def delete_stream_from_stream_list(self, stream_id, timeout: float = 10.0):
+    def delete_stream_from_stream_list(self, stream_id, timeout: float = 10.0) -> bool:
         """
         Delete a stream from the stream_list
 
@@ -1822,8 +1860,45 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: bool
         """
         logger.info("BinanceWebSocketApiManager.delete_stream_from_stream_list(" + str(stream_id) + ")")
-        self.wait_till_stream_has_stopped(stream_id=stream_id, timeout=timeout)
-        return self.stream_list.pop(stream_id, False)
+        if self.wait_till_stream_has_stopped(stream_id=stream_id, timeout=timeout) is True:
+            self.stream_list.pop(stream_id, False)
+            return True
+        else:
+            return False
+
+    def remove_all_data_of_stream_id(self, stream_id, timeout: float = 10.0) -> bool:
+        """
+        Delete all remaining data within the UBWA instance of a stopped stream.
+
+        Even if a stream crashes or get stopped, its data remains in the BinanceWebSocketApiManager till you stop the
+        BinanceWebSocketApiManager itself. If you want to tidy up the entire UBWA instance you can use this method.
+
+        UnicornBinanceWebSocketApiManager accepts the parameter `auto_data_cleanup_stopped_streams`. If this is set
+        to `True (auto_data_cleanup_stopped_streams=True), the UBWA instance performs the cleanup with this function
+        `remove_all_data_of_stream_id()` automatically and regularly.
+
+        :param stream_id: id of a stream
+        :type stream_id: str
+        :param timeout: The timeout for how long to wait for the stream to stop. The function aborts if the waiting
+                        time is exceeded and returns False.
+        :type timeout: float
+
+        :return: bool
+        """
+        logger.info("BinanceWebSocketApiManager.remove_all_data_of_stream_id(" + str(stream_id) + ")")
+        if self.wait_till_stream_has_stopped(stream_id=stream_id, timeout=timeout) is True:
+            with self.stream_list_lock:
+                self.stream_list.pop(stream_id, False)
+            del self.event_loops[stream_id]
+            del self.specific_process_stream_data[stream_id]
+            del self.specific_process_stream_data_async[stream_id]
+            del self.socket_is_ready[stream_id]
+            del self.stream_threading_lock[stream_id]
+            del self.stream_threads[stream_id]
+            del self.websocket_list[stream_id]
+            return True
+        else:
+            return False
 
     @staticmethod
     def fill_up_space_left(demand_of_chars, string, filling=" "):
@@ -1956,6 +2031,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         return int(time.time() * 1000)
+
+    @staticmethod
+    def get_timestamp_unix() -> float:
+        """
+        Get a Binance conform Timestamp.
+
+        :return: float
+        """
+        return float(time.time())
 
     def get_used_weight(self):
         """
@@ -3680,6 +3764,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread_frequent_checks.start()
         thread_keepalive_streams = threading.Thread(target=self._keepalive_streams, name="keepalive_streams")
         thread_keepalive_streams.start()
+        if self.auto_data_cleanup_stopped_streams is True:
+            time.sleep(10)
+            thread_auto_data_cleanup_stopped_streams = threading.Thread(target=self._auto_data_cleanup_stopped_streams,
+                                                                        name="auto_data_cleanup_stopped_streams")
+            thread_auto_data_cleanup_stopped_streams.start()
 
     def set_private_dex_config(self, binance_dex_user_address):
         """
@@ -3869,7 +3958,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stop_monitoring_api()
             # stop restclient
             try:
-                if self.restclient is not None:
+                if self.exchange in CONNECTION_SETTINGS and self.restclient is not None:
                     self.restclient.stop()
             except AttributeError as error_msg:
                 logger.debug(f"stop_manager() - AttributeError: {error_msg}")
@@ -4169,7 +4258,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     ", " + str(markets) + ") finished ...")
         return True
 
-    def wait_till_stream_has_started(self, stream_id, timeout: float = 10.0) -> bool:
+    def wait_till_stream_has_started(self, stream_id, timeout: float = 0.0) -> bool:
         """
         Returns `True` as soon a specific stream has started and received its first stream data
 
@@ -4181,13 +4270,13 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: bool
         """
-        timestamp = self.get_timestamp()
-        timeout = timestamp + timeout if timeout == 0.0 else timeout
+        timestamp = self.get_timestamp_unix()
+        timeout = timestamp + timeout if timeout != 0.0 else timeout
         logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) with timeout {timeout} "
                      f"started!")
         try:
             while self.stream_list[stream_id]['last_heartbeat'] is None:
-                if self.get_timestamp() > timeout != 0.0:
+                if self.get_timestamp_unix() > timeout != 0.0:
                     logger.debug(
                         f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) finished with `False`!")
                     return False
@@ -4198,7 +4287,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) finished with `False`!")
             return False
 
-    def wait_till_stream_has_stopped(self, stream_id, timeout: float = 10.0) -> bool:
+    def wait_till_stream_has_stopped(self, stream_id, timeout: float = 0.0) -> bool:
         """
         Returns `True` as soon a specific stream has stopped itself
 
@@ -4210,13 +4299,13 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: bool
         """
-        timestamp = self.get_timestamp()
-        timeout = timestamp + timeout if timeout == 0.0 else timeout
+        timestamp = self.get_timestamp_unix()
+        timeout = timestamp + timeout if timeout != 0.0 else timeout
         logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) with timeout {timeout} "
                      f"started!")
         try:
             while self.stream_list[stream_id]['status'] != "stopped":
-                if self.get_timestamp() > timeout != 0.0:
+                if self.get_timestamp_unix() > timeout != 0.0:
                     logger.debug(
                         f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) finished with `False`!")
                     return False

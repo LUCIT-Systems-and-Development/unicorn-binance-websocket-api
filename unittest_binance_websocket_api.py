@@ -485,7 +485,8 @@ class TestApiLive(unittest.TestCase):
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.us",
                                               debug=True,
                                               enable_stream_signal_buffer=True,
-                                              high_performance=True)
+                                              high_performance=True,
+                                              auto_data_cleanup_stopped_streams=True)
 
     @classmethod
     def tearDownClass(cls):
@@ -723,6 +724,7 @@ class TestApiLive(unittest.TestCase):
                 markets.append(item['symbol'])
         self.__class__.ubwa.create_stream("trade", markets, stream_label="too much!")
         self.__class__.ubwa.stop_manager()
+
 
 if __name__ == '__main__':
     unittest.main()

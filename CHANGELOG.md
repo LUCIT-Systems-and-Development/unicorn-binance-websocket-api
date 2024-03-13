@@ -23,6 +23,11 @@ tests!
 - `shutdown_asyncgens()` to `manager.py`.
 - `timeout` parameter (float) to `delete_stream_from_stream_list()`, `wait_till_stream_has_stopped()` and 
   `wait_till_stream_has_started()` with default value 10.0 seconds.
+- Automatic data cleanup of stopped web streams. [issue#307](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/307)
+  The UBWA Manager can be informed via the parameter `auto_data_cleanup_stopped_streams=True` that all remaining data 
+  within the UBWA of a stopped stream should be automatically and completely deleted (duration 60 sec). 
+  Default value is `False`. Also added the function `remove_all_data_of_stream_id()` and 
+  `_auto_data_cleanup_stopped_streams()` which are doing the cleaning up job.
 ### Changed
 - Parameter `process_stream_data` in `manager.py` from `False` to `None`.
 - Parameter `process_stream_signals` in `manager.py` from `False` to `None`.
