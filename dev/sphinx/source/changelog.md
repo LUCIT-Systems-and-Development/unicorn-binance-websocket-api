@@ -10,6 +10,39 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
 ## 2.1.4.dev (development stage/unreleased/unstable)
+This update is primarily aimed at stabilization. The loop management has been improved and runs absolutely fine in 
+tests!
+
+### Added
+- Parameter `process_stream_data_async` in `manager.py` to `BinanceWebSocketApiManager()` as global setting parameter
+  and to `create_stream()` as stream specific parameter. This means it is possible to provide a global and a stream 
+  specific asyncio function as "process_stream_data" function.
+- Support for `process_stream_data_async` and `specific_process_stream_data_async[stream_id]` to `socket.py`. 
+- Support for `with-context` to `BinanceWebSocketApiSocket()`.
+- `run_socket()` to `manager.py`.
+- `shutdown_asyncgens()` to `manager.py`.
+- `timeout` parameter (float) to `delete_stream_from_stream_list()`, `wait_till_stream_has_stopped()` and 
+  `wait_till_stream_has_started()` with default value 10.0 seconds.
+- Automatic data cleanup of stopped web streams. [issue#307](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/307)
+  The UBWA Manager can be informed via the parameter `auto_data_cleanup_stopped_streams=True` that all remaining data 
+  within the UBWA of a stopped stream should be automatically and completely deleted (duration 60 sec). 
+  Default value is `False`. Also added the function `remove_all_data_of_stream_id()` and 
+  `_auto_data_cleanup_stopped_streams()` which are doing the cleaning up job.
+### Changed
+- Parameter `process_stream_data` in `manager.py` from `False` to `None`.
+- Parameter `process_stream_signals` in `manager.py` from `False` to `None`.
+- Usage of `BinanceWebSocketApiSocket()` in `manager.py` by using the new `with-context` and `ubwa.run_socket()` to 
+  close every websocket connection when leaving.
+- Now using `wait_till_stream_has_stopped()` in `delete_stream_from_stream_list()`. This avoids many errors ;)
+- Rewrite of the `try-except` and the `finally` code part for the loop handling in `_create_stream_thread()`. 
+### Fixed
+- Missing `await` of `websocket.close()` in `socket.py`.
+- Event loops were not closed in rare situations. Adjustments to `_create_stream_thread()`, `create_stream()` 
+  and `_restart_stream()`
+- In `connection.py` `sys.exit()` statements were used within an asyncio loop, this prevented the correct closing of 
+  the asyncio loops in rare cases and was replaced by `return False`.
+### Removed
+- `import sys` in `sockets.py`
 
 ## 2.1.4
 ### Added

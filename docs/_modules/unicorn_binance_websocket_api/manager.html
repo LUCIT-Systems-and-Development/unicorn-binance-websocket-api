@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api.manager &#8212; unicorn-binance-websocket-api 2.1.4 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unicorn_binance_websocket_api.manager &#8212; unicorn-binance-websocket-api 2.2.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="../../_static/pydoctheme.css?v=fdf8e9ae" />
@@ -199,7 +199,7 @@
 <span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">redirect</span>
 <span class="kn">from</span> <span class="nn">flask_restful</span> <span class="kn">import</span> <span class="n">Api</span>
 <span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="c1"># python &lt;=3.7 support</span>
     <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
@@ -207,7 +207,7 @@
     <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
 
 <span class="n">__app_name__</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;unicorn-binance-websocket-api&quot;</span>
-<span class="n">__version__</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;2.1.4&quot;</span>
+<span class="n">__version__</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;2.2.0&quot;</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;unicorn_binance_websocket_api&quot;</span><span class="p">)</span>
 
@@ -254,11 +254,20 @@
 <span class="sd">                                will be called instead of</span>
 <span class="sd">                                `add_to_stream_buffer() &lt;unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer&gt;`_</span>
 <span class="sd">                                like `process_stream_data(stream_data, stream_buffer_name)` where</span>
-<span class="sd">                                `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will</span>
+<span class="sd">                                `stream_data` contains the raw_stream_data. If not provided, the raw stream_data will</span>
 <span class="sd">                                get stored in the stream_buffer or provided to a specific callback function of</span>
 <span class="sd">                                `create_stream()`! `How to read from stream_buffer!</span>
 <span class="sd">                                &lt;https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives&gt;`_</span>
 <span class="sd">    :type process_stream_data: function</span>
+<span class="sd">    :param process_stream_data_async: Provide an asyncio function/method to process the received webstream data (callback). The function</span>
+<span class="sd">                                will be called instead of</span>
+<span class="sd">                                `add_to_stream_buffer() &lt;unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer&gt;`_</span>
+<span class="sd">                                like `process_stream_data(stream_data, stream_buffer_name)` where</span>
+<span class="sd">                                `stream_data` contains the raw_stream_data. If not provided, the raw stream_data will</span>
+<span class="sd">                                get stored in the stream_buffer or provided to a specific callback function of</span>
+<span class="sd">                                `create_stream()`! `How to read from stream_buffer!</span>
+<span class="sd">                                &lt;https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives&gt;`_</span>
+<span class="sd">    :type process_stream_data_async: function</span>
 <span class="sd">    :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,</span>
 <span class="sd">                     binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,</span>
 <span class="sd">                     binance.com-futures-testnet, binance.com-coin_futures, binance.us, trbinance.com,</span>
@@ -298,6 +307,10 @@
 <span class="sd">                                   `add_to_stream_signal_buffer() &lt;unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer&gt;`_</span>
 <span class="sd">                                   like `process_stream_data(signal_type=False, stream_id=False, data_record=False)`.</span>
 <span class="sd">    :type process_stream_signals: function</span>
+<span class="sd">    :param auto_data_cleanup_stopped_streams: The parameter &quot;auto_data_cleanup_stopped_streams=True&quot; can be used to</span>
+<span class="sd">                                              inform the UBWA instance that all remaining data of a stopped stream</span>
+<span class="sd">                                              should be automatically and completely deleted.</span>
+<span class="sd">    :type auto_data_cleanup_stopped_streams: bool</span>
 <span class="sd">    :param close_timeout_default: The `close_timeout` parameter defines a maximum wait time in seconds for</span>
 <span class="sd">                                completing the closing handshake and terminating the TCP connection.</span>
 <span class="sd">                                This parameter is passed through to the `websockets.client.connect()</span>
@@ -356,7 +369,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">process_stream_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">process_stream_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">process_stream_data_async</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">exchange</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;binance.com&quot;</span><span class="p">,</span>
                  <span class="n">warn_on_update</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                  <span class="n">throw_exception_if_unrepairable</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -366,7 +380,7 @@
                  <span class="n">enable_stream_signal_buffer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">disable_colorama</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">stream_buffer_maxlen</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">process_stream_signals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">process_stream_signals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">close_timeout_default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
                  <span class="n">ping_interval_default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
                  <span class="n">ping_timeout_default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
@@ -381,6 +395,7 @@
                  <span class="n">socks5_proxy_user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">socks5_proxy_pass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">socks5_proxy_ssl_verification</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                 <span class="n">auto_data_cleanup_stopped_streams</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">lucit_api_secret</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">lucit_license_ini</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">lucit_license_profile</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -391,6 +406,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">__app_name__</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">__version__</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stop_manager_request</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_data_cleanup_stopped_streams</span> <span class="o">=</span> <span class="n">auto_data_cleanup_stopped_streams</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New instance of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_user_agent</span><span class="p">()</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="s1">&#39;compiled&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">cython</span><span class="o">.</span><span class="n">compiled</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;source&#39;</span><span class="si">}</span><span class="s2"> on &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">())</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">platform</span><span class="o">.</span><span class="n">release</span><span class="p">())</span><span class="si">}</span><span class="s2"> for exchange </span><span class="si">{</span><span class="n">exchange</span><span class="si">}</span><span class="s2"> started ...&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="n">debug</span>
@@ -419,8 +435,8 @@
             <span class="n">colorama</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using `websockets_</span><span class="si">{</span><span class="n">websockets</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">specific_process_stream_data</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">if</span> <span class="n">process_stream_data</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">specific_process_stream_data_async</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">process_stream_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># no special method to process stream data provided, so we use add_to_stream_buffer:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">process_stream_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_to_stream_buffer</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using `stream_buffer`&quot;</span><span class="p">)</span>
@@ -429,7 +445,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">process_stream_data</span> <span class="o">=</span> <span class="n">process_stream_data</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using `process_stream_data`&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">process_stream_signals</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">process_stream_data_async</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_stream_data_async</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># use the provided method to asynchronous process stream data:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_stream_data_async</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">process_stream_data_async</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using `process_stream_data_async`&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">process_stream_signals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># no special method to process stream signals provided, so we use add_to_stream_signal_buffer:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">process_stream_signals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_to_stream_signal_buffer</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using `stream_signal_buffer`&quot;</span><span class="p">)</span>
@@ -441,6 +464,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_stream_signal_buffer</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Enabled `stream_signal_buffer` ...&quot;</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">exchange</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stream_list_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">exchange</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CONNECTION_SETTINGS</span><span class="p">:</span>
             <span class="n">error_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unknown exchange &#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exchange</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;! List of supported exchanges: &quot;</span> \
                         <span class="sa">f</span><span class="s2">&quot;https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/&quot;</span> \
@@ -449,7 +476,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">stop_manager</span><span class="p">()</span>
             <span class="k">raise</span> <span class="n">UnknownExchange</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">exchange</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_subscriptions_per_stream</span> <span class="o">=</span> <span class="n">max_subscriptions_per_stream</span> <span class="ow">or</span> <span class="n">CONNECTION_SETTINGS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">websocket_base_uri</span> <span class="o">=</span> <span class="n">websocket_base_uri</span> <span class="ow">or</span> <span class="n">CONNECTION_SETTINGS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">websocket_api_base_uri</span> <span class="o">=</span> <span class="n">websocket_api_base_uri</span> <span class="ow">or</span> <span class="n">CONNECTION_SETTINGS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
@@ -575,14 +601,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Entering &#39;with-context&#39; ...&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Entering with-context of BinanceWebSocketApiManager() ...&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">error_traceback</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Leaving &#39;with-context&#39; ...&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Leaving with-context of BinanceWebSocketApiManager() ...&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stop_manager</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">exc_type</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An exception occurred: </span><span class="si">{</span><span class="n">exc_type</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">exc_value</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">error_traceback</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BinanceWebSocketApiManager.shutdown_asyncgens">
+<a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.shutdown_asyncgens">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">shutdown_asyncgens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">shutdown_asyncgens</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="BinanceWebSocketApiManager.run_socket">
+<a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.run_socket">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_socket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">markets</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">BinanceWebSocketApiSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">markets</span><span class="p">)</span> <span class="k">as</span> <span class="n">socket</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">socket</span><span class="o">.</span><span class="n">start_socket</span><span class="p">()</span></div>
+
 
     <span class="k">def</span> <span class="nf">_add_stream_to_stream_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                    <span class="n">stream_id</span><span class="p">,</span>
@@ -599,7 +638,8 @@
                                    <span class="n">close_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                    <span class="n">stream_buffer_maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                    <span class="n">api</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                   <span class="n">process_stream_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                                   <span class="n">process_stream_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                   <span class="n">process_stream_data_async</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a list entry for new streams</span>
 
@@ -666,12 +706,21 @@
 <span class="sd">                            get stored in the stream_buffer! `How to read from stream_buffer!</span>
 <span class="sd">                            &lt;https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives&gt;`_</span>
 <span class="sd">        :type process_stream_data: function</span>
+<span class="sd">        :param process_stream_data_async: Provide a asynchronous function/method to process the received webstream data.</span>
+<span class="sd">                            The function will be called instead of</span>
+<span class="sd">                            `add_to_stream_buffer() &lt;unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer&gt;`_</span>
+<span class="sd">                            like `process_stream_data(stream_data, stream_buffer_name)` where</span>
+<span class="sd">                            `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will</span>
+<span class="sd">                            get stored in the stream_buffer! `How to read from stream_buffer!</span>
+<span class="sd">                            &lt;https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives&gt;`_</span>
+<span class="sd">        :type process_stream_data_async: function</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">output</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_default</span>
         <span class="n">close_timeout</span> <span class="o">=</span> <span class="n">close_timeout</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">close_timeout_default</span>
         <span class="n">ping_interval</span> <span class="o">=</span> <span class="n">ping_interval</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ping_interval_default</span>
         <span class="n">ping_timeout</span> <span class="o">=</span> <span class="n">ping_timeout</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ping_timeout_default</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">specific_process_stream_data</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">process_stream_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">specific_process_stream_data_async</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">process_stream_data_async</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stream_threading_lock</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;full_lock&#39;</span><span class="p">:</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">(),</span>
                                                  <span class="s1">&#39;receives_statistic_last_second_lock&#39;</span><span class="p">:</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;exchange&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="p">,</span>
@@ -721,7 +770,6 @@
                     <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_buffer_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_buffer_maxlen</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_create_stream_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                              <span class="n">loop</span><span class="p">,</span>
                               <span class="n">stream_id</span><span class="p">,</span>
                               <span class="n">channels</span><span class="p">,</span>
                               <span class="n">markets</span><span class="p">,</span>
@@ -731,8 +779,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Co function of self.create_stream to create a thread for the socket and to manage the coroutine</span>
 
-<span class="sd">        :param loop: provide an asynio loop</span>
-<span class="sd">        :type loop: asyncio loop</span>
 <span class="sd">        :param stream_id: provide a stream_id - only needed for userData Streams (acquiring a listenKey)</span>
 <span class="sd">        :type stream_id: str</span>
 <span class="sd">        :param channels: provide the channels to create the URI</span>
@@ -764,25 +810,34 @@
                 <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                     <span class="c1"># Resetting</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">stream_buffers</span><span class="p">[</span><span class="n">stream_buffer_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">stream_buffer_maxlen</span><span class="p">)</span>
-        <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
-        <span class="n">socket</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiSocket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">markets</span><span class="p">)</span>
+
+        <span class="n">loop</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">start_socket</span><span class="p">())</span>
-        <span class="k">except</span> <span class="ne">GeneratorExit</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GeneratorExit of socket.start_socket() received: </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">loop</span><span class="o">.</span><span class="n">set_debug</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">event_loops</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">loop</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+            <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_socket</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">markets</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> - OSError  - can not &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;create stream - error_msg: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;cannot schedule new futures after interpreter shutdown&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">):</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread() stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot; - RuntimeError `error: 11` - error_msg:  </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="si">}</span><span class="s2"> - Info: https://github.com/&quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot;LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/299&quot;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">stop_manager</span><span class="p">()</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">elif</span> <span class="s2">&quot;This event loop is already running&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">):</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread() stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot; - RuntimeError - error_msg:  </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread() stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
-                                <span class="sa">f</span><span class="s2">&quot; - RuntimeError `error: 12` - error_msg: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread() stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot; - RuntimeError `error: 12` - error_msg: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> - Unknown Exception - &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;Please report this issue if your stream does not restart: &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot; - error_msg: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finally closing the loop stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
@@ -794,19 +849,23 @@
             <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread() stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> - &quot;</span>
                              <span class="sa">f</span><span class="s2">&quot;KeyError `error: 13` - </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">tasks</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
-                <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">loop</span><span class="o">.</span><span class="n">shutdown_asyncgens</span><span class="p">())</span>
-                <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
-                    <span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
-                    <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
-                        <span class="k">pass</span>
-            <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread() stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> - &quot;</span>
-                             <span class="sa">f</span><span class="s2">&quot;RuntimeError `error: 14` - </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">loop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">tasks</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+                    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shutdown_asyncgens</span><span class="p">(</span><span class="n">loop</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
+                        <span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">CancelledError</span><span class="p">:</span>
+                            <span class="k">pass</span>
+                <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread() stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> - &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;RuntimeError `error: 14` - </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread() finally - </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">loop</span><span class="o">.</span><span class="n">is_closed</span><span class="p">():</span>
+                    <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;loop_is_closing&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">stream_is_stopping</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span>
@@ -857,18 +916,45 @@
         <span class="k">return</span> <span class="n">params</span></div>
 
 
+    <span class="k">def</span> <span class="nf">_auto_data_cleanup_stopped_streams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
+        <span class="n">timestamp_last_check</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_manager_stopping</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Starting with an interval &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;of </span><span class="si">{</span><span class="n">interval</span><span class="si">}</span><span class="s2"> seconds!&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp_unix</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">timestamp_last_check</span> <span class="o">+</span> <span class="n">interval</span><span class="p">:</span>
+                <span class="n">timestamp_last_check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp_unix</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_data_cleanup_stopped_streams</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">stopped_streams</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">stream_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">:</span>
+                        <span class="n">stopped_streams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">stream_id</span> <span class="ow">in</span> <span class="n">stopped_streams</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">restart_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restart_requests</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="n">restart_status</span> <span class="o">=</span> <span class="kc">None</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;stopped&quot;</span> <span class="ow">and</span> <span class="n">restart_status</span> <span class="o">!=</span> <span class="s2">&quot;new&quot;</span><span class="p">:</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Removing &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;all remaining data of stream with stream_id=</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2"> from this instance!&quot;</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">remove_all_data_of_stream_id</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">)</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Remaining &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;data of stream with stream_id=</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2"> successfully removed from this &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;instance!&quot;</span><span class="p">)</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_frequent_checks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method gets started as a thread and is doing the frequent checks</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">frequent_checks_id</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">frequent_checks_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp_unix</span><span class="p">()</span>
         <span class="n">cpu_usage_time</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">last_10_min_check</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequent_checks_list_lock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">frequent_checks_list</span><span class="p">[</span><span class="n">frequent_checks_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;last_heartbeat&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
                                                              <span class="s1">&#39;stop_request&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                                                              <span class="s1">&#39;has_stopped&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;BinanceWebSocketApiManager._frequent_checks() new instance created with frequent_checks_id=&quot;</span> <span class="o">+</span>
                     <span class="nb">str</span><span class="p">(</span><span class="n">frequent_checks_id</span><span class="p">))</span>
+
         <span class="c1"># threaded loop for min 1 check per second</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_manager_request</span> <span class="ow">is</span> <span class="kc">False</span> \
                 <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequent_checks_list</span><span class="p">[</span><span class="n">frequent_checks_id</span><span class="p">][</span><span class="s1">&#39;stop_request&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1098,20 +1184,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;payload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_manager_stopping</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._restart_stream(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> - OSError  - can not create &quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot;stream - error_msg: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">loop</span><span class="o">.</span><span class="n">set_debug</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">event_loops</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">loop</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">set_socket_is_not_ready</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_stream_thread</span><span class="p">,</span>
-                                      <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">loop</span><span class="p">,</span>
-                                            <span class="n">stream_id</span><span class="p">,</span>
+                                      <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span>
                                             <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;channels&#39;</span><span class="p">],</span>
                                             <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;markets&#39;</span><span class="p">],</span>
                                             <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;stream_buffer_name&#39;</span><span class="p">],</span>
@@ -1531,7 +1608,8 @@
                       <span class="n">close_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">stream_buffer_maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">api</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                      <span class="n">process_stream_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                      <span class="n">process_stream_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">process_stream_data_async</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a websocket stream</span>
 
@@ -1639,6 +1717,15 @@
 <span class="sd">                            object instantiation! `How to read from stream_buffer!</span>
 <span class="sd">                            &lt;https://unicorn-binance-websocket-api.docs.lucit.tech/README.html?highlight=pop_stream_data_from_stream_buffer#and-4-more-lines-to-print-the-receives&gt;`_</span>
 <span class="sd">        :type process_stream_data: function</span>
+<span class="sd">        :param process_stream_data_async: Provide an asynchronous function/method to process the received webstream data (callback). The</span>
+<span class="sd">                            function will be called instead of</span>
+<span class="sd">                            `add_to_stream_buffer() &lt;unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer&gt;`_</span>
+<span class="sd">                            like `process_stream_data(stream_data)` where</span>
+<span class="sd">                            `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will</span>
+<span class="sd">                            get stored in the stream_buffer or provided to the global callback function provided during</span>
+<span class="sd">                            object instantiation! `How to read from stream_buffer!</span>
+<span class="sd">                            &lt;https://unicorn-binance-websocket-api.docs.lucit.tech/README.html?highlight=pop_stream_data_from_stream_buffer#and-4-more-lines-to-print-the-receives&gt;`_</span>
+<span class="sd">        :type process_stream_data_async: function</span>
 <span class="sd">        :return: stream_id or &#39;False&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># handle Websocket API streams: https://developers.binance.com/docs/binance-trading-api/websocket_api</span>
@@ -1706,24 +1793,12 @@
                                         <span class="n">close_timeout</span><span class="o">=</span><span class="n">close_timeout</span><span class="p">,</span>
                                         <span class="n">stream_buffer_maxlen</span><span class="o">=</span><span class="n">stream_buffer_maxlen</span><span class="p">,</span>
                                         <span class="n">api</span><span class="o">=</span><span class="n">api</span><span class="p">,</span>
-                                        <span class="n">process_stream_data</span><span class="o">=</span><span class="n">process_stream_data</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.create_stream(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">markets_new</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_label</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_buffer_name</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">stream_buffer_maxlen</span><span class="si">}</span><span class="s2">, &quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">api</span><span class="si">}</span><span class="s2">) with stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> - OSError  - can not create stream - &quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot;error_msg: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">False</span>
+                                        <span class="n">process_stream_data</span><span class="o">=</span><span class="n">process_stream_data</span><span class="p">,</span>
+                                        <span class="n">process_stream_data_async</span><span class="o">=</span><span class="n">process_stream_data_async</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">loop</span><span class="o">.</span><span class="n">set_debug</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">event_loops</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">loop</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_socket_is_not_ready</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span>
         <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_stream_thread</span><span class="p">,</span>
-                                  <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">loop</span><span class="p">,</span>
-                                        <span class="n">stream_id</span><span class="p">,</span>
+                                  <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span>
                                         <span class="n">channels</span><span class="p">,</span>
                                         <span class="n">markets_new</span><span class="p">,</span>
                                         <span class="n">stream_buffer_name</span><span class="p">,</span>
@@ -1939,12 +2014,14 @@
 
 <div class="viewcode-block" id="BinanceWebSocketApiManager.delete_listen_key_by_stream_id">
 <a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.delete_listen_key_by_stream_id">[docs]</a>
-    <span class="k">def</span> <span class="nf">delete_listen_key_by_stream_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">delete_listen_key_by_stream_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Delete a binance listen_key from a specific !userData stream</span>
 
 <span class="sd">        :param stream_id: id of a !userData stream</span>
 <span class="sd">        :type stream_id: str</span>
+
+<span class="sd">        :return: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;listen_key&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1962,7 +2039,7 @@
 
 <div class="viewcode-block" id="BinanceWebSocketApiManager.delete_stream_from_stream_list">
 <a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.delete_stream_from_stream_list">[docs]</a>
-    <span class="k">def</span> <span class="nf">delete_stream_from_stream_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">delete_stream_from_stream_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Delete a stream from the stream_list</span>
 
@@ -1971,10 +2048,55 @@
 
 <span class="sd">        :param stream_id: id of a stream</span>
 <span class="sd">        :type stream_id: str</span>
+<span class="sd">        :param timeout: The timeout for how long to wait for the stream to stop. The function aborts if the waiting</span>
+<span class="sd">                        time is exceeded and returns False.</span>
+<span class="sd">        :type timeout: float</span>
+
 <span class="sd">        :return: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;BinanceWebSocketApiManager.delete_stream_from_stream_list(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_till_stream_has_stopped</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="BinanceWebSocketApiManager.remove_all_data_of_stream_id">
+<a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.remove_all_data_of_stream_id">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_all_data_of_stream_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete all remaining data within the UBWA instance of a stopped stream.</span>
+
+<span class="sd">        Even if a stream crashes or get stopped, its data remains in the BinanceWebSocketApiManager till you stop the</span>
+<span class="sd">        BinanceWebSocketApiManager itself. If you want to tidy up the entire UBWA instance you can use this method.</span>
+
+<span class="sd">        UnicornBinanceWebSocketApiManager accepts the parameter `auto_data_cleanup_stopped_streams`. If this is set</span>
+<span class="sd">        to `True (auto_data_cleanup_stopped_streams=True), the UBWA instance performs the cleanup with this function</span>
+<span class="sd">        `remove_all_data_of_stream_id()` automatically and regularly.</span>
+
+<span class="sd">        :param stream_id: id of a stream</span>
+<span class="sd">        :type stream_id: str</span>
+<span class="sd">        :param timeout: The timeout for how long to wait for the stream to stop. The function aborts if the waiting</span>
+<span class="sd">                        time is exceeded and returns False.</span>
+<span class="sd">        :type timeout: float</span>
+
+<span class="sd">        :return: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;BinanceWebSocketApiManager.remove_all_data_of_stream_id(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_till_stream_has_stopped</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list_lock</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_loops</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">specific_process_stream_data</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">specific_process_stream_data_async</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket_is_ready</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_threading_lock</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_threads</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">]</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="BinanceWebSocketApiManager.fill_up_space_left">
@@ -2131,6 +2253,18 @@
 <span class="sd">        :return: int</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BinanceWebSocketApiManager.get_timestamp_unix">
+<a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_timestamp_unix">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_timestamp_unix</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a Binance conform Timestamp.</span>
+
+<span class="sd">        :return: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="BinanceWebSocketApiManager.get_used_weight">
@@ -4070,7 +4204,12 @@
         <span class="n">thread_frequent_checks</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_frequent_checks</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;frequent_checks&quot;</span><span class="p">)</span>
         <span class="n">thread_frequent_checks</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
         <span class="n">thread_keepalive_streams</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_keepalive_streams</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;keepalive_streams&quot;</span><span class="p">)</span>
-        <span class="n">thread_keepalive_streams</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+        <span class="n">thread_keepalive_streams</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_data_cleanup_stopped_streams</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+            <span class="n">thread_auto_data_cleanup_stopped_streams</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_data_cleanup_stopped_streams</span><span class="p">,</span>
+                                                                        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;auto_data_cleanup_stopped_streams&quot;</span><span class="p">)</span>
+            <span class="n">thread_auto_data_cleanup_stopped_streams</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="BinanceWebSocketApiManager.set_private_dex_config">
@@ -4296,7 +4435,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">stop_monitoring_api</span><span class="p">()</span>
             <span class="c1"># stop restclient</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">restclient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="ow">in</span> <span class="n">CONNECTION_SETTINGS</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">restclient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">restclient</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;stop_manager() - AttributeError: </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -4623,18 +4762,28 @@
 
 <div class="viewcode-block" id="BinanceWebSocketApiManager.wait_till_stream_has_started">
 <a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.wait_till_stream_has_started">[docs]</a>
-    <span class="k">def</span> <span class="nf">wait_till_stream_has_started</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wait_till_stream_has_started</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns `True` as soon a specific stream has started and received its first stream data</span>
 
 <span class="sd">        :param stream_id: id of a stream</span>
 <span class="sd">        :type stream_id: str</span>
+<span class="sd">        :param timeout: The timeout for how long to wait for the stream to stop. The function aborts if the waiting</span>
+<span class="sd">                        time is exceeded and returns False.</span>
+<span class="sd">        :type timeout: float</span>
 
 <span class="sd">        :return: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.wait_till_stream_has_started(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">) started!&quot;</span><span class="p">)</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp_unix</span><span class="p">()</span>
+        <span class="n">timeout</span> <span class="o">=</span> <span class="n">timestamp</span> <span class="o">+</span> <span class="n">timeout</span> <span class="k">if</span> <span class="n">timeout</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="n">timeout</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.wait_till_stream_has_started(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">) with timeout </span><span class="si">{</span><span class="n">timeout</span><span class="si">}</span><span class="s2"> &quot;</span>
+                     <span class="sa">f</span><span class="s2">&quot;started!&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;last_heartbeat&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp_unix</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">timeout</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.wait_till_stream_has_started(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">) finished with `False`!&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">False</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.wait_till_stream_has_started(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">) finished with `True`!&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">True</span>
@@ -4645,21 +4794,32 @@
 
 <div class="viewcode-block" id="BinanceWebSocketApiManager.wait_till_stream_has_stopped">
 <a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.wait_till_stream_has_stopped">[docs]</a>
-    <span class="k">def</span> <span class="nf">wait_till_stream_has_stopped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">wait_till_stream_has_stopped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns `True` as soon a specific stream has stopped itself</span>
 
 <span class="sd">        :param stream_id: id of a stream</span>
 <span class="sd">        :type stream_id: str</span>
+<span class="sd">        :param timeout: The timeout for how long to wait for the stream to stop. The function aborts if the waiting</span>
+<span class="sd">                        time is exceeded and returns False.</span>
+<span class="sd">        :type timeout: float</span>
 
 <span class="sd">        :return: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.wait_till_stream_has_stopped(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">) started!&quot;</span><span class="p">)</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp_unix</span><span class="p">()</span>
+        <span class="n">timeout</span> <span class="o">=</span> <span class="n">timestamp</span> <span class="o">+</span> <span class="n">timeout</span> <span class="k">if</span> <span class="n">timeout</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="n">timeout</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.wait_till_stream_has_stopped(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">) with timeout </span><span class="si">{</span><span class="n">timeout</span><span class="si">}</span><span class="s2"> &quot;</span>
+                     <span class="sa">f</span><span class="s2">&quot;started!&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;stopped&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp_unix</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">timeout</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.wait_till_stream_has_stopped(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">) finished with `False`!&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">False</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="k">pass</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.wait_till_stream_has_stopped(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">) finished with `False`!&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.wait_till_stream_has_stopped(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">) finished with `True`!&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 </div>
@@ -4769,7 +4929,7 @@
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Feb 16 2024 at 17:42 (CET).
+    Last updated on Mar 13 2024 at 22:15 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

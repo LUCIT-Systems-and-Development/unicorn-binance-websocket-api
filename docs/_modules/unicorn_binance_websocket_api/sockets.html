@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api.sockets &#8212; unicorn-binance-websocket-api 2.1.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unicorn_binance_websocket_api.sockets &#8212; unicorn-binance-websocket-api 2.2.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="../../_static/pydoctheme.css?v=fdf8e9ae" />
@@ -112,6 +112,7 @@
                   
               <li><img src="../../_static/lucit.png" alt="LUCIT Logo"
                        style="vertical-align: middle; margin-top: -1px"/></li>
+              <li><a href="https://docs.lucit.tech">Docs Index</a> | </li>
               <li><a href="https://www.lucit.tech/unicorn-binance-websocket-api.html">unicorn-binance-websocket-api</a> &#187;</li>
                   
               
@@ -169,7 +170,6 @@
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">ujson</span> <span class="k">as</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">uuid</span>
 <span class="kn">import</span> <span class="nn">websockets</span>
 
@@ -190,6 +190,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;output&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unicorn_fy</span> <span class="o">=</span> <span class="n">UnicornFy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">get_exchange</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Entering asynchronous with-context of BinanceWebSocketApiSocket() ...&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Leaving asynchronous with-context of BinanceWebSocketApiSocket() ...&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiSocket.__aexit__(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">markets</span><span class="p">)</span><span class="si">}</span><span class="s2"> socket_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">socket_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;recent_socket_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">socket_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> - Sending payload - exit because its &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;not the recent socket id! stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2">, recent_socket_id=&quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;recent_socket_id&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> - &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;error_msg: </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BinanceWebSocketApiSocket.start_socket">
 <a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.sockets.BinanceWebSocketApiSocket.start_socket">[docs]</a>
@@ -202,15 +220,15 @@
                                                      <span class="bp">self</span><span class="o">.</span><span class="n">socket_id</span><span class="p">,</span>
                                                      <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span>
                                                      <span class="bp">self</span><span class="o">.</span><span class="n">markets</span><span class="p">,</span>
-                                                     <span class="n">symbols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span> <span class="k">as</span> <span class="n">websocket</span><span class="p">:</span>
+                                                     <span class="n">symbols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">socket_is_ready</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">is_stop_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_is_stopping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span>
-                        <span class="k">await</span> <span class="n">websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                         <span class="k">return</span> <span class="kc">False</span>
                     <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">is_stop_as_crash_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">):</span>
-                        <span class="k">await</span> <span class="n">websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                         <span class="k">return</span> <span class="kc">False</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;recent_socket_id&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket_id</span><span class="p">:</span>
@@ -239,7 +257,7 @@
                             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiSocket.start_socket() IndexError: </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiSocket.start_socket(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
                                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">markets</span><span class="p">)</span><span class="si">}</span><span class="s2"> - Sending payload: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                        <span class="k">await</span> <span class="n">websocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+                        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
                         <span class="c1"># To avoid a ban we respect the limits of binance:</span>
                         <span class="c1"># https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23</span>
@@ -252,7 +270,7 @@
                             <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">idle_time</span><span class="p">)</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
-                            <span class="n">received_stream_data_json</span> <span class="o">=</span> <span class="k">await</span> <span class="n">websocket</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span>
+                            <span class="n">received_stream_data_json</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span>
                         <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
                             <span class="c1"># Timeout from `asyncio.wait_for()` which we use to keep the loop running even if we don&#39;t</span>
                             <span class="c1"># receive new records via websocket.</span>
@@ -262,7 +280,7 @@
                             <span class="k">continue</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">is_stop_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">):</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_is_stopping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span>
-                            <span class="k">await</span> <span class="n">websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                             <span class="k">return</span> <span class="kc">False</span>
                         <span class="k">if</span> <span class="n">received_stream_data_json</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">==</span> <span class="s2">&quot;UnicornFy&quot;</span><span class="p">:</span>
@@ -283,7 +301,8 @@
                                         <span class="n">received_stream_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unicorn_fy</span><span class="o">.</span><span class="n">binance_com_futures_websocket</span><span class="p">(</span><span class="n">received_stream_data_json</span><span class="p">)</span>
                                     <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">==</span> <span class="s2">&quot;binance.com-futures-testnet&quot;</span><span class="p">:</span>
                                         <span class="n">received_stream_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unicorn_fy</span><span class="o">.</span><span class="n">binance_com_futures_websocket</span><span class="p">(</span><span class="n">received_stream_data_json</span><span class="p">)</span>
-                                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">==</span> <span class="s2">&quot;binance.com-coin-futures&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">==</span> <span class="s2">&quot;binance.com-coin_futures&quot;</span><span class="p">:</span>
+                                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">==</span> <span class="s2">&quot;binance.com-coin-futures&quot;</span> \
+                                            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">==</span> <span class="s2">&quot;binance.com-coin_futures&quot;</span><span class="p">:</span>
                                         <span class="n">received_stream_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unicorn_fy</span><span class="o">.</span><span class="n">binance_com_coin_futures_websocket</span><span class="p">(</span><span class="n">received_stream_data_json</span><span class="p">)</span>
                                     <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="o">==</span> <span class="s2">&quot;binance.je&quot;</span><span class="p">:</span>
                                         <span class="n">received_stream_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unicorn_fy</span><span class="o">.</span><span class="n">binance_je_websocket</span><span class="p">(</span><span class="n">received_stream_data_json</span><span class="p">)</span>
@@ -340,10 +359,17 @@
                             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">specific_process_stream_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                                 <span class="c1"># if create_stream() got a callback function -&gt; use it</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">specific_process_stream_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">](</span><span class="n">received_stream_data</span><span class="p">)</span>
+                            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">specific_process_stream_data_async</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                                <span class="c1"># if create_stream() got an asynchronous callback function -&gt; use it</span>
+                                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">specific_process_stream_data_async</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">](</span><span class="n">received_stream_data</span><span class="p">)</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="c1"># Use the default process_stream_data function provided to/by the manager class</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">process_stream_data</span><span class="p">(</span><span class="n">received_stream_data</span><span class="p">,</span>
-                                                                 <span class="n">stream_buffer_name</span><span class="o">=</span><span class="n">stream_buffer_name</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">process_stream_data_async</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">process_stream_data</span><span class="p">(</span><span class="n">received_stream_data</span><span class="p">,</span>
+                                                                     <span class="n">stream_buffer_name</span><span class="o">=</span><span class="n">stream_buffer_name</span><span class="p">)</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">process_stream_data_async</span><span class="p">(</span><span class="n">received_stream_data</span><span class="p">,</span>
+                                                                                 <span class="n">stream_buffer_name</span><span class="o">=</span><span class="n">stream_buffer_name</span><span class="p">)</span>
                             <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">received_stream_data_json</span><span class="p">:</span>
                                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;BinanceWebSocketApiSocket.start_socket(&quot;</span> <span class="o">+</span>
                                              <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;) &quot;</span>
@@ -365,7 +391,7 @@
                                         <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">markets</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;) - Exception ConnectionClosed &quot;</span>
                                         <span class="s2">&quot;- error_msg: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">))</span>
                         <span class="k">if</span> <span class="s2">&quot;WebSocket connection is closed: code = 1008&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">):</span>
-                            <span class="n">websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_is_crashing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">error_msg</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">set_restart_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span>
                             <span class="k">return</span> <span class="kc">False</span>
@@ -373,10 +399,9 @@
                             <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_is_crashing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">error_msg</span><span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">set_restart_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span>
                             <span class="k">return</span> <span class="kc">False</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_is_crashing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">))</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">set_restart_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span>
-                            <span class="k">return</span> <span class="kc">False</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_is_crashing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">set_restart_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="kc">False</span>
                     <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;BinanceWebSocketApiSocket.start_socket(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span>
                                      <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">markets</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;) - Exception AttributeError - &quot;</span>
@@ -470,6 +495,7 @@
                   
               <li><img src="../../_static/lucit.png" alt="LUCIT Logo"
                        style="vertical-align: middle; margin-top: -1px"/></li>
+              <li><a href="https://docs.lucit.tech">Docs Index</a> | </li>
               <li><a href="https://www.lucit.tech/unicorn-binance-websocket-api.html">unicorn-binance-websocket-api</a> &#187;</li>
                   
               
@@ -495,9 +521,10 @@
       </ul>
     </div>  
     <div class="footer">
+    <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Nov 17 2023 at 23:51 (CET).
+    Last updated on Mar 13 2024 at 22:15 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
