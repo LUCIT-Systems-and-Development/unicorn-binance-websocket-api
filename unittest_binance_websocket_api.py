@@ -619,10 +619,10 @@ class TestApiLive(unittest.TestCase):
             stream_id1 = self.__class__.ubwa.create_stream(channel, markets)
 
         time.sleep(6)
-        print(f"Restarting {stream_id1=:}")
+        print(f"Restarting stream_id1={stream_id1}")
         self.__class__.ubwa.set_restart_request(stream_id1)
         time.sleep(6)
-        print(f"Restarting {stream_id1=:}")
+        print(f"Restarting stream_id1={stream_id1}")
         self.__class__.ubwa.set_restart_request(stream_id1)
 
         restserver = BinanceWebSocketApiRestServer(self.__class__.ubwa)
