@@ -9,7 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.1.4.dev (development stage/unreleased/unstable)
+## 2.2.0.dev (development stage/unreleased/unstable)
+
+## 2.2.0
 This update is primarily aimed at stabilization. The loop management has been improved and runs absolutely fine in 
 tests!
 
