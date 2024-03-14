@@ -68,7 +68,8 @@ setup(
     },
     python_requires='>=3.7.0',
     package_data={'': ['unicorn_binance_websocket_api/*.so',
-                       'unicorn_binance_websocket_api/*.dll']},
+                       'unicorn_binance_websocket_api/*.dll',
+                       'unicorn_binance_websocket_api/*.py']},
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3.7",

@@ -15,6 +15,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 This update is primarily aimed at stabilization. The loop management has been improved and runs absolutely fine in 
 tests!
 
+`unicorn-binance-websocket-api` can now also be installed on all architectures on which there are no precompiled 
+packages from LUCIT. PIP now automatically recognises whether there is a suitable precompiled package and if not, 
+the source is automatically compiled on the target system during the installation process with Cython. Even if you 
+don't have to do anything special, please note that this process takes some time!
+
 ### Added
 - Parameter `process_stream_data_async` in `manager.py` to `BinanceWebSocketApiManager()` as global setting parameter
   and to `create_stream()` as stream specific parameter. This means it is possible to provide a global and a stream 
