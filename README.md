@@ -316,13 +316,13 @@ machine of [HETZNER CLOUD](https://www.hetzner.com) - [get 20 EUR starting credi
 The module requires Python 3.7 or above, as it depends on Pythons latest asyncio features for asynchronous/concurrent 
 processing. 
 
-For the PyPy interpreter we offer packages only from Python version 3.9 and higher.
-
 Anaconda packages are available from Python version 3.8 and higher.
+
+For the PyPy interpreter we offer packages only from Python version 3.9 and higher.
 
 The current dependencies are listed [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/requirements.txt).
 
-If you run into errors during the installation take a look [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Installation).
+If you run into errors during the installation take a look [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/wiki/Installation).
 
 ### A Cython binary, PyPy or source code based CPython wheel of the latest version with `pip` from [PyPI](https://pypi.org/project/unicorn-binance-rest-api/)
 Our [Cython](https://cython.org/) and [PyPy](https://www.pypy.org/) Wheels are available on [PyPI](https://pypi.org/), 
