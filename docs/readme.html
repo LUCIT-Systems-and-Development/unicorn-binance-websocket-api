@@ -624,6 +624,9 @@ PyPy, allowing users to leverage this speed advantage seamlessly.</p></li>
 <p>Both Cython and PyPy Wheels on PyPI make the installation process simpler and more straightforward. They ensure that
 you get the optimized version of our package with minimal setup, allowing you to focus on development rather than
 configuration.</p>
+<p>On Raspberry Pi and other architectures for which there are no pre-compiled versions, the package can still be
+installed with PIP. PIP then compiles the package locally on the target system during installation. Please be patient,
+this may take some time!</p>
 <section id="installation">
 <h4>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">unicorn-binance-websocket-api</span></code></p>
@@ -1029,7 +1032,7 @@ companies from the US analyze binance.com market data - as long as they do not t
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Mar 13 2024 at 22:18 (CET).
+    Last updated on Mar 14 2024 at 15:26 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

@@ -340,6 +340,10 @@ Both Cython and PyPy Wheels on PyPI make the installation process simpler and mo
 you get the optimized version of our package with minimal setup, allowing you to focus on development rather than 
 configuration.
 
+On Raspberry Pi and other architectures for which there are no pre-compiled versions, the package can still be 
+installed with PIP. PIP then compiles the package locally on the target system during installation. Please be patient, 
+this may take some time!
+
 #### Installation
 `pip install unicorn-binance-websocket-api`
 
