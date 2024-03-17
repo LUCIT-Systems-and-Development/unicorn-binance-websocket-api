@@ -1088,16 +1088,22 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.specific_process_asyncio_queue[stream_id] is not None:
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({stream_id} - Adding "
                          f"`specific_process_asyncio_queue[{stream_id}]()` to asyncio loop ...")
-            asyncio.run_coroutine_threadsafe(self.specific_process_asyncio_queue[stream_id](),
-                                             self.get_event_loop_by_stream_id(stream_id=stream_id))
+            if self.get_event_loop_by_stream_id(stream_id=stream_id) is not None:
+                asyncio.run_coroutine_threadsafe(self.specific_process_asyncio_queue[stream_id](),
+                                                 self.get_event_loop_by_stream_id(stream_id=stream_id))
+            else:
+                logger.error(f"BinanceWebSocketApiManager._restart_stream({stream_id} - No valid asyncio loop!")
         elif self.process_asyncio_queue is not None:
             # The global process_asyncio_queue can be overwritten by specific process stream (async) functions
             if self.specific_process_stream_data[stream_id] is None \
                     and self.specific_process_stream_data_async[stream_id] is None:
                 logger.debug(f"BinanceWebSocketApiManager._restart_stream({stream_id} - "
                              f"Adding `process_asyncio_queue()` to asyncio loop ...")
-                asyncio.run_coroutine_threadsafe(self.process_asyncio_queue(),
-                                                 self.get_event_loop_by_stream_id(stream_id=stream_id))
+                if self.get_event_loop_by_stream_id(stream_id=stream_id) is not None:
+                    asyncio.run_coroutine_threadsafe(self.process_asyncio_queue(),
+                                                     self.get_event_loop_by_stream_id(stream_id=stream_id))
+                else:
+                    logger.error(f"BinanceWebSocketApiManager._restart_stream({stream_id} - No valid asyncio loop!")
         return stream_id
 
     def _restart_stream_thread(self, stream_id):
@@ -1702,16 +1708,23 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.specific_process_asyncio_queue[stream_id] is not None:
             logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - Adding "
                          f"`specific_process_asyncio_queue[{stream_id}]()` to asyncio loop ...")
-            asyncio.run_coroutine_threadsafe(self.specific_process_asyncio_queue[stream_id](),
-                                             self.get_event_loop_by_stream_id(stream_id=stream_id))
+            if self.get_event_loop_by_stream_id(stream_id=stream_id) is not None:
+                asyncio.run_coroutine_threadsafe(self.specific_process_asyncio_queue[stream_id](),
+                                                 self.get_event_loop_by_stream_id(stream_id=stream_id))
+            else:
+                logger.error(f"BinanceWebSocketApiManager._restart_stream({stream_id} - No valid asyncio loop!")
         elif self.process_asyncio_queue is not None:
             # The global process_asyncio_queue can be overwritten by specific process stream (async) functions
             if self.specific_process_stream_data[stream_id] is None \
                     and self.specific_process_stream_data_async[stream_id] is None:
                 logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - "
                              f"Adding `process_asyncio_queue()` to asyncio loop ...")
-                asyncio.run_coroutine_threadsafe(self.process_asyncio_queue(),
-                                                 self.get_event_loop_by_stream_id(stream_id=stream_id))
+                if self.get_event_loop_by_stream_id(stream_id=stream_id) is not None:
+                    asyncio.run_coroutine_threadsafe(self.process_asyncio_queue(),
+                                                     self.get_event_loop_by_stream_id(stream_id=stream_id))
+                else:
+                    logger.error(f"BinanceWebSocketApiManager._restart_stream({stream_id} - No valid asyncio loop!")
+
         return stream_id
 
     def create_websocket_uri(self, channels, markets, stream_id=None, symbols=None, api=False):
