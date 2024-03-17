@@ -112,7 +112,7 @@ class TestBinanceComManager(unittest.TestCase):
                   "for binance.com")
         else:
             stream_id = self.ubwa.get_new_uuid_id()
-            self.__class__.ubwa._add_socket_to_socket_list(stream_id, ["!userData"], ["arr"])
+            self.__class__.ubwa._add_stream_to_stream_list(stream_id, ["!userData"], ["arr"])
             self.assertRegex(self.__class__.ubwa.create_websocket_uri(["!userData"], ["arr"],
                                                                       stream_id,
                                                                       self.binance_com_api_key,
@@ -125,7 +125,7 @@ class TestBinanceComManager(unittest.TestCase):
                   "for binance.com")
         else:
             self.stream_id = self.__class__.ubwa.get_new_uuid_id()
-            self.__class__.ubwa._add_socket_to_socket_list(self.stream_id, ["arr"], ["!userData"])
+            self.__class__.ubwa._add_stream_to_stream_list(self.stream_id, ["arr"], ["!userData"])
             self.assertRegex(self.__class__.ubwa.create_websocket_uri(["arr"], ["!userData"],
                                                                       self.stream_id,
                                                                       self.binance_com_api_key,
@@ -272,7 +272,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
                   "for binance.com-testnet")
         else:
             stream_id = self.__class__.ubwa.get_new_uuid_id()
-            self.__class__.ubwa._add_socket_to_socket_list(stream_id, ["!userData"], ["arr"])
+            self.__class__.ubwa._add_stream_to_stream_list(stream_id, ["!userData"], ["arr"])
             self.assertRegex(self.__class__.ubwa.create_websocket_uri(["!userData"], ["arr"],
                                                                       stream_id,
                                                                       self.__class__.binance_com_testnet_api_key,
@@ -286,7 +286,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
                   "for binance.com-testnet")
         else:
             stream_id = self.__class__.ubwa.get_new_uuid_id()
-            self.__class__.ubwa._add_socket_to_socket_list(stream_id, ["arr"], ["!userData"])
+            self.__class__.ubwa._add_stream_to_stream_list(stream_id, ["arr"], ["!userData"])
             self.assertRegex(self.__class__.ubwa.create_websocket_uri(["arr"], ["!userData"],
                                                                       stream_id,
                                                                       self.binance_com_testnet_api_key,
