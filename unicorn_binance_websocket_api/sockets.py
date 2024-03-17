@@ -50,16 +50,20 @@ class BinanceWebSocketApiSocket(object):
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         logger.debug(f"Leaving asynchronous with-context of BinanceWebSocketApiSocket() ...")
+
         if self.websocket is not None:
             try:
-                await self.websocket.close()
+                if not self.websocket.is_closed():
+                    await self.websocket.close()
             except AttributeError as error_msg:
-                logger.debug(f"BinanceWebSocketApiSocket.__aexit__({str(self.stream_id)}, "
-                             f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
-                             f"recent_socket_id={str(self.socket_id)} - Sending payload - exit because its "
-                             f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
-                             f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])} - "
-                             f"error_msg: {error_msg}")
+                if "object has no attribute" not in str(error_msg):
+                    logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")
+        if self.manager.websocket_list[self.stream_id] is not None:
+            try:
+                await self.manager.websocket_list[self.stream_id].close()
+            except AttributeError as error_msg:
+                if "object has no attribute" not in str(error_msg):
+                    logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")
 
     async def start_socket(self):
         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, {str(self.channels)}, "
