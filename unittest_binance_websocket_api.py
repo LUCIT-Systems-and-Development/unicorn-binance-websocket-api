@@ -526,7 +526,7 @@ class TestApiLive(unittest.TestCase):
 
     def test_rest_binance_com_isolated_margin_testnet(self):
         ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet",
-                                         high_performance=True)
+                                          high_performance=True)
         BinanceWebSocketApiRestclient(ubwa)
         ubwa.stop_manager()
 
