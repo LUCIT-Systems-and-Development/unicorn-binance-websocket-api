@@ -697,7 +697,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         loop = None
         try:
             loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)  # Python 3.7+3.8
+            asyncio.set_event_loop(loop)
             if self.debug is True:
                 loop.set_debug(enabled=True)
             self.event_loops[stream_id] = loop
