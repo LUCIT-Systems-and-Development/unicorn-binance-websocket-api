@@ -49,11 +49,11 @@ from .sockets import BinanceWebSocketApiSocket
 from .api import BinanceWebSocketApiApi
 from cheroot import wsgi
 from collections import deque
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import Flask, redirect
 from flask_restful import Api
 from operator import itemgetter
-from typing import Optional, Union, Callable, Mapping, Any
+from typing import Optional, Union, Callable
 try:
     # python <=3.7 support
     from typing import Literal
@@ -3523,9 +3523,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                   f" close_timeout: {close_timeout}\r\n"
                   " start_time:", str(stream_info['start_time']), "\r\n"
                   " uptime:", str(uptime),
-                  "since " + str(
-                      datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d, %H:%M:%S UTC')) +
-                  "\r\n" +
+                  f"since {datetime.fromtimestamp(stream_info['start_time'], timezone.utc).strftime('%Y-%m-%d, %H:%M:%S UTC')}\r\n" +
                   " reconnects:", str(stream_info['reconnects']), logged_reconnects_row, "\r\n" +
                   str(restart_requests_row) +
                   str(binance_api_status_row) +
