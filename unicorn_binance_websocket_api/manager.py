@@ -2880,7 +2880,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return None
 
-    def get_stream_subscriptions(self, stream_id, request_id=False):
+    def get_stream_subscriptions(self, stream_id, request_id=None):
         """
         Get a list of subscriptions of a specific stream from Binance endpoints - the result can be received via
         the `stream_buffer` and is also added to the results ringbuffer - `get_results_from_endpoints()
@@ -2902,7 +2902,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type request_id: int
         :return: request_id (int)
         """
-        if request_id is False:
+        if request_id is None:
             request_id = self.get_request_id()
         if self.is_exchange_type('dex'):
             logger.error("BinanceWebSocketApiManager.get_stream_subscriptions(" + str(stream_id) + ", " +
@@ -2912,7 +2912,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         elif self.is_exchange_type('cex'):
             payload = {"method": "LIST_SUBSCRIPTIONS",
                        "id": request_id}
-            self.stream_list[stream_id]['payload'].append(payload)
+            try:
+                self.stream_list[stream_id]['payload'].append(payload)
+            except KeyError:
+                return False
             logger.info("BinanceWebSocketApiManager.get_stream_subscriptions(" + str(stream_id) + ", " +
                         str(request_id) + ") payload added!")
             return request_id
