@@ -726,7 +726,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                             f" - error_msg: {str(error_msg)}")
         finally:
             logger.debug(f"Finally closing the loop stream_id={str(stream_id)}")
-            self.stream_list[stream_id]['loop_is_closing'] = True
+            try:
+                self.stream_list[stream_id]['loop_is_closing'] = True
+            except KeyError:
+                pass
             try:
                 if self.stream_list[stream_id]['last_stream_signal'] is not None and \
                         self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
