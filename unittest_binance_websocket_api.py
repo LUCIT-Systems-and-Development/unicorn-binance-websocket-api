@@ -748,6 +748,8 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.stop_stream_as_crash(stream_id2)
         time.sleep(6)
         print(f"Waiting for {stream_id3} has started ...")
+        self.__class__.ubwa.print_summary()
+        self.__class__.ubwa.print_stream_info(stream_id3)
         self.__class__.ubwa.wait_till_stream_has_started(stream_id3)
         print(f"Waiting for {stream_id3} has started ... done!")
         self.__class__.ubwa.stop_stream(stream_id2)
