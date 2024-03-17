@@ -3012,32 +3012,35 @@ class BinanceWebSocketApiManager(threading.Thread):
                             'stream_receives_per_day': 0,
                             'stream_receives_per_month': 0,
                             'stream_receives_per_year': 0}
-        if self.stream_list[stream_id]['status'] == "running":
-            stream_statistic['uptime'] = time.time() - self.stream_list[stream_id]['start_time']
-        elif self.stream_list[stream_id]['status'] == "stopped":
-            stream_statistic['uptime'] = self.stream_list[stream_id]['has_stopped'] - self.stream_list[stream_id]['start_time']
-        elif "crashed" in self.stream_list[stream_id]['status']:
-            stream_statistic['uptime'] = self.stream_list[stream_id]['has_stopped'] - self.stream_list[stream_id]['start_time']
-        elif self.stream_list[stream_id]['status'] == "restarting":
-            stream_statistic['uptime'] = time.time() - self.stream_list[stream_id]['start_time']
-        else:
-            stream_statistic['uptime'] = time.time() - self.stream_list[stream_id]['start_time']
         try:
-            stream_receives_per_second = self.stream_list[stream_id]['processed_receives_total'] / stream_statistic['uptime']
-        except ZeroDivisionError:
-            stream_receives_per_second = 0
-        stream_statistic['stream_receives_per_second'] = stream_receives_per_second
-        if stream_statistic['uptime'] > 60:
-            stream_statistic['stream_receives_per_minute'] = stream_receives_per_second * 60
-        if stream_statistic['uptime'] > 60 * 60:
-            stream_statistic['stream_receives_per_hour'] = stream_receives_per_second * 60 * 60
-        if stream_statistic['uptime'] > 60 * 60 * 24:
-            stream_statistic['stream_receives_per_day'] = stream_receives_per_second * 60 * 60 * 24
-        if stream_statistic['uptime'] > 60 * 60 * 24 * 30:
-            stream_statistic['stream_receives_per_month'] = stream_receives_per_second * 60 * 60 * 24 * 30
-        if stream_statistic['uptime'] > 60 * 60 * 24 * 30 * 12:
-            stream_statistic['stream_receives_per_year'] = stream_receives_per_second * 60 * 60 * 24 * 30 * 12
-        return stream_statistic
+            if self.stream_list[stream_id]['status'] == "running":
+                stream_statistic['uptime'] = time.time() - self.stream_list[stream_id]['start_time']
+            elif self.stream_list[stream_id]['status'] == "stopped":
+                stream_statistic['uptime'] = self.stream_list[stream_id]['has_stopped'] - self.stream_list[stream_id]['start_time']
+            elif "crashed" in self.stream_list[stream_id]['status']:
+                stream_statistic['uptime'] = self.stream_list[stream_id]['has_stopped'] - self.stream_list[stream_id]['start_time']
+            elif self.stream_list[stream_id]['status'] == "restarting":
+                stream_statistic['uptime'] = time.time() - self.stream_list[stream_id]['start_time']
+            else:
+                stream_statistic['uptime'] = time.time() - self.stream_list[stream_id]['start_time']
+            try:
+                stream_receives_per_second = self.stream_list[stream_id]['processed_receives_total'] / stream_statistic['uptime']
+            except ZeroDivisionError:
+                stream_receives_per_second = 0
+            stream_statistic['stream_receives_per_second'] = stream_receives_per_second
+            if stream_statistic['uptime'] > 60:
+                stream_statistic['stream_receives_per_minute'] = stream_receives_per_second * 60
+            if stream_statistic['uptime'] > 60 * 60:
+                stream_statistic['stream_receives_per_hour'] = stream_receives_per_second * 60 * 60
+            if stream_statistic['uptime'] > 60 * 60 * 24:
+                stream_statistic['stream_receives_per_day'] = stream_receives_per_second * 60 * 60 * 24
+            if stream_statistic['uptime'] > 60 * 60 * 24 * 30:
+                stream_statistic['stream_receives_per_month'] = stream_receives_per_second * 60 * 60 * 24 * 30
+            if stream_statistic['uptime'] > 60 * 60 * 24 * 30 * 12:
+                stream_statistic['stream_receives_per_year'] = stream_receives_per_second * 60 * 60 * 24 * 30 * 12
+            return stream_statistic
+        except KeyError:
+            return None
 
     def get_the_one_active_websocket_api(self) -> Optional[str]:
         """
