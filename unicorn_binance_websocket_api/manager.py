@@ -803,7 +803,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                             restart_status = self.restart_requests[stream_id].get("status")
                         except KeyError:
                             restart_status = None
-                        if self.stream_list[stream_id]['status'] == "stopped" and restart_status != "new":
+                        if self.stream_list[stream_id]['status'] == "stopped" \
+                                and restart_status != "new" \
+                                and self.stream_list[stream_id]['seconds_since_has_stopped'] > 60:
                             logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Removing "
                                         f"all remaining data of stream with stream_id={stream_id} from this instance!")
                             self.remove_all_data_of_stream_id(stream_id=stream_id)
