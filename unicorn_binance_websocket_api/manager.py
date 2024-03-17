@@ -1070,7 +1070,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                       name=f"_create_stream_thread: stream_id={stream_id}, time={time.time()}")
             thread.start()
         except OSError as error_msg:
-            logger.debug(f"BinanceWebSocketApiManager.create_stream({str(stream_id)}) - OSError - {error_msg}")
+            logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - OSError - {error_msg}")
             return False
         self.stream_threads[stream_id] = thread
         while self.socket_is_ready[stream_id] is False \
@@ -1078,13 +1078,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                 and self.is_manager_stopping() is False:
             # This loop will wait till the thread and the asyncio init is ready. This avoids two possible errors as
             # described here: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/131
-            logger.debug(f"BinanceWebSocketApiManager.create_stream({str(stream_id)}) - Waiting till new socket and "
+            logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till new socket and "
                          f"asyncio is ready")
             time.sleep(1)
         while self.event_loops[stream_id] is None and self.is_manager_stopping() is False:
+            logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till asyncio is "
+                         f"ready")
             time.sleep(0.001)
         if self.specific_process_asyncio_queue[stream_id] is not None:
-            logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - Adding "
+            logger.debug(f"BinanceWebSocketApiManager._restart_stream({stream_id} - Adding "
                          f"`specific_process_asyncio_queue[{stream_id}]()` to asyncio loop ...")
             asyncio.run_coroutine_threadsafe(self.specific_process_asyncio_queue[stream_id](),
                                              self.get_event_loop_by_stream_id(stream_id=stream_id))
@@ -1092,7 +1094,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             # The global process_asyncio_queue can be overwritten by specific process stream (async) functions
             if self.specific_process_stream_data[stream_id] is None \
                     and self.specific_process_stream_data_async[stream_id] is None:
-                logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - "
+                logger.debug(f"BinanceWebSocketApiManager._restart_stream({stream_id} - "
                              f"Adding `process_asyncio_queue()` to asyncio loop ...")
                 asyncio.run_coroutine_threadsafe(self.process_asyncio_queue(),
                                                  self.get_event_loop_by_stream_id(stream_id=stream_id))
@@ -1690,6 +1692,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"{api}) with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
             time.sleep(1)
         while self.event_loops[stream_id] is None and self.is_manager_stopping() is False:
+            logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
+                         f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
+                         f"{api}) with stream_id={str(stream_id)} - Waiting till asyncio is ready")
             time.sleep(0.001)
         if self.specific_process_asyncio_queue[stream_id] is not None:
             logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - Adding "
