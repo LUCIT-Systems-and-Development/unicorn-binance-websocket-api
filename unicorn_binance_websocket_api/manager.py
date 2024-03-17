@@ -2745,7 +2745,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.request_id += 1
             return self.request_id
 
-    def get_result_by_request_id(self, request_id=False, timeout=10):
+    def get_result_by_request_id(self, request_id=None, timeout=10):
         """
         Get the result related to the provided `request_id`
 
@@ -2757,15 +2757,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type timeout: int
         :return: `result` or False
         """
-        if request_id is False:
-            return False
+        if request_id is None:
+            return None
         wait_till_timestamp = time.time() + timeout
         while wait_till_timestamp >= time.time():
             for result in self.ringbuffer_result:
                 result_dict = json.loads(result)
                 if result_dict['id'] == request_id:
                     return result
-        return False
+        return None
 
     def get_results_from_endpoints(self):
         """
@@ -2927,19 +2927,19 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.error("BinanceWebSocketApiManager.get_stream_subscriptions(" + str(stream_id) + ", " +
                          str(request_id) + ") DEX websockets dont support the listing of subscriptions! Request not "
                          "sent!")
-            return False
+            return None
         elif self.is_exchange_type('cex'):
             payload = {"method": "LIST_SUBSCRIPTIONS",
                        "id": request_id}
             try:
                 self.stream_list[stream_id]['payload'].append(payload)
             except KeyError:
-                return False
+                return None
             logger.info("BinanceWebSocketApiManager.get_stream_subscriptions(" + str(stream_id) + ", " +
                         str(request_id) + ") payload added!")
             return request_id
         else:
-            return False
+            return None
 
     def get_stream_list(self):
         """
