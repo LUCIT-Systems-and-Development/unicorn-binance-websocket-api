@@ -75,8 +75,8 @@ class TestBinanceComManager(unittest.TestCase):
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.us",
                                               disable_colorama=True,
                                               debug=True)
-        cls.binance_com_api_key = BINANCE_COM_API_KEY
-        cls.binance_com_api_secret = BINANCE_COM_API_SECRET
+        cls.binance_com_api_key = ""
+        cls.binance_com_api_secret = ""
 
     @classmethod
     def tearDownClass(cls):
