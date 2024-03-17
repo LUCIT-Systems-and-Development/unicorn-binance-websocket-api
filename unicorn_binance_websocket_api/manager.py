@@ -136,10 +136,6 @@ class BinanceWebSocketApiManager(threading.Thread):
     :type exchange: str
     :param warn_on_update: set to `False` to disable the update warning of UBWA and also in UBRA used as submodule.
     :type warn_on_update: bool
-    :param throw_exception_if_unrepairable: set to `True` to activate exceptions if a crashed stream is unrepairable
-                                            (invalid API key, exceeded subscription limit) or an unknown exchange is
-                                            used
-    :type throw_exception_if_unrepairable: bool
     :param restart_timeout: A stream restart must be successful within this time, otherwise a new restart will be
                             initialized. Default is 6 seconds.
     :type restart_timeout: int
@@ -235,7 +231,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                  process_asyncio_queue: Optional[Callable] = None,
                  exchange: Optional[str] = "binance.com",
                  warn_on_update: Optional[bool] = True,
-                 throw_exception_if_unrepairable: Optional[bool] = False,
                  restart_timeout: int = 6,
                  show_secrets_in_logs: Optional[bool] = False,
                  output_default: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = "raw_data",
@@ -371,7 +366,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 websocket_ssl_context.check_hostname = False
             self.websocket_ssl_context = websocket_ssl_context
 
-        self.throw_exception_if_unrepairable = throw_exception_if_unrepairable
         self.asyncio_queue = {}
         self.all_subscriptions_number = 0
         self.binance_api_status = {'weight': None,
@@ -1262,7 +1256,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.last_entry_added_to_stream_buffer = time.time()
         return True
 
-    def add_to_stream_signal_buffer(self, signal_type=False, stream_id=False, data_record=False):
+    def add_to_stream_signal_buffer(self, signal_type=None, stream_id=None, data_record=None, error_msg=None):
         """
         Add signals about a stream to the
         `stream_signal_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
@@ -1291,6 +1285,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     stream_signal['last_received_data_record'] = None
             elif signal_type == "FIRST_RECEIVED_DATA":
                 stream_signal['first_received_data_record'] = data_record
+            elif signal_type == "STREAM_UNREPAIRABLE":
+                stream_signal['error'] = str(error_msg)
             else:
                 logger.error(f"BinanceWebSocketApiManager.add_to_stream_signal_buffer({signal_type}) - "
                              f"Received invalid `signal_type`!")
@@ -4339,8 +4335,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.critical(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) "
                             f"Info: {str(error_msg)}")
             self.stream_is_crashing(stream_id, error_msg)
-            if self.throw_exception_if_unrepairable:
-                raise StreamRecoveryError("stream_id " + str(stream_id) + ": " + str(error_msg))
+            self.manager.process_stream_signals("STREAM_UNREPAIRABLE", self.stream_id, error_msg)
             return False
 
         for item in payload:
