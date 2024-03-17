@@ -53,6 +53,14 @@ def processing_of_new_data(data):
     print(f"`processing_of_new_data()` test - Received: {data}")
 
 
+def is_github_action_env():
+    try:
+        print(f"{os.environ[f'LUCIT_LICENSE_TOKEN']}")
+        return True
+    except KeyError:
+        return False
+
+
 class TestBinanceComManager(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -530,6 +538,40 @@ class TestApiLive(unittest.TestCase):
 #        print("\r\n")
 #        self.__class__.ubwa.print_stream_info(stream_id)
 #        self.__class__.ubwa.stop_manager()
+
+    def test_live_receives_stream_specific_with_stream_buffer(self):
+        print(f"Test receiving with stream specific stream_buffer ...")
+        stream_id = self.__class__.ubwa.create_stream(["arr"], ["!miniTicker"], stream_buffer_name=True)
+        count_receives = 0
+        if not is_github_action_env():
+            while count_receives < 5:
+                received = self.__class__.ubwa.pop_stream_data_from_stream_buffer(stream_id)
+                if received:
+                    print(f"Received: {received}")
+                    count_receives += 1
+            self.assertEqual(count_receives, 5)
+
+    def test_live_receives_asyncio_queue(self):
+        async def process_asyncio_queue():
+            print(f"Start processing data of {stream_id} from asyncio_queue...")
+            self.count_receives = 0
+            if not is_github_action_env():
+                while self.count_receives < 5:
+                    data = await self.__class__.ubwa.get_stream_data_from_asyncio_queue(stream_id)
+                    print(f"Received async: {data}")
+                    self.count_receives += 1
+                    self.__class__.ubwa.asyncio_queue_task_done(stream_id)
+            print(f"Closing asyncio_queue consumer!")
+
+        print(f"Test receiving with stream specific stream_buffer ...")
+        stream_id = self.__class__.ubwa.create_stream(["arr"], ["!miniTicker"],
+                                                      process_asyncio_queue=process_asyncio_queue)
+        if not is_github_action_env():
+            while self.count_receives < 5:
+                time.sleep(1)
+            self.assertEqual(self.count_receives, 5)
+        time.sleep(3)
+        self.__class__.ubwa.stop_stream(stream_id=stream_id)
 
     def test_live_run(self):
         self.__class__.ubwa.get_active_stream_list()
