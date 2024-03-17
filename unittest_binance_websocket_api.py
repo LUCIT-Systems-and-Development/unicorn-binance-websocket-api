@@ -494,7 +494,7 @@ class TestApiLive(unittest.TestCase):
                                               debug=True,
                                               enable_stream_signal_buffer=True,
                                               high_performance=True,
-                                              auto_data_cleanup_stopped_streams=True)
+                                              auto_data_cleanup_stopped_streams=False)
         cls.count_receives = 0
 
     @classmethod
