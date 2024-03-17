@@ -787,7 +787,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             params.append(('signature', data['signature']))
         return params
 
-    def _auto_data_cleanup_stopped_streams(self, interval=30):
+    def _auto_data_cleanup_stopped_streams(self, interval=60):
         logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Starting with an interval "
                     f"of {interval} seconds!")
         timestamp_last_check = 0
@@ -814,7 +814,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
                                             f"Remaining data of stream with stream_id={stream_id} successfully removed "
                                             f"from this instance!")
-            time.sleep(60)
+            time.sleep(interval+5)
 
     def _frequent_checks(self):
         """
