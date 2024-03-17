@@ -36,8 +36,8 @@ import asyncio
 import logging
 import os
 
-api_key = "By1nSedTBFpTx2mxrAwuOrUGousqSPbWt7Fl8LUhNJ5vfkgWXOPFehnI4ERtajV2"
-api_secret = "ZWEQNGLJenuGKJbavxaT08Mgh0X7o9BbwbcEvrjkYI1b6lly5rAV0LPIjf1Na4ja"
+api_key = ""
+api_secret = ""
 
 
 async def binance_stream(ubwa):

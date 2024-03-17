@@ -31,8 +31,8 @@ import threading
 import tracemalloc
 tracemalloc.start(25)
 
-BINANCE_COM_API_KEY = ""
-BINANCE_COM_API_SECRET = ""
+BINANCE_COM_API_KEY = "By1nSedTBFpTx2mxrAwuOrUGousqSPbWt7Fl8LUhNJ5vfkgWXOPFehnI4ERtajV2"
+BINANCE_COM_API_SECRET = "ZWEQNGLJenuGKJbavxaT08Mgh0X7o9BbwbcEvrjkYI1b6lly5rAV0LPIjf1Na4ja"
 
 logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.DEBUG,
@@ -47,6 +47,10 @@ async def processing_of_new_data_async(data):
     print(f"`processing_of_new_data_async()` test - Received: {data}")
     await asyncio.sleep(0.001)
     print("AsyncIO Check done!")
+
+
+def handle_socket_message(data):
+    print(f"Received ws api data:\r\n{data}\r\n")
 
 
 def processing_of_new_data(data):
@@ -539,6 +543,20 @@ class TestApiLive(unittest.TestCase):
 #        self.__class__.ubwa.print_stream_info(stream_id)
 #        self.__class__.ubwa.stop_manager()
 
+    def test_live_api_ws(self):
+        print(f"Test Websocket API ...")
+        if not is_github_action_env():
+            ubwa = BinanceWebSocketApiManager(exchange='binance.com')
+            api_stream = ubwa.create_stream(api=True, api_key=BINANCE_COM_API_KEY, api_secret=BINANCE_COM_API_SECRET,
+                                            stream_label="Bobs Websocket API",
+                                            process_stream_data=handle_socket_message)
+            time.sleep(1)
+            ubwa.api.get_server_time(stream_id=api_stream)
+            ubwa.api.ping(stream_id=api_stream)
+            ubwa.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
+            time.sleep(2)
+            ubwa.stop_manager()
+
     def test_live_receives_stream_specific_with_stream_buffer(self):
         print(f"Test receiving with stream specific stream_buffer ...")
         stream_id = self.__class__.ubwa.create_stream(["arr"], ["!miniTicker"], stream_buffer_name=True)
@@ -758,4 +776,7 @@ class TestApiLive(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    try:
+        unittest.main()
+    except KeyboardInterrupt:
+        pass

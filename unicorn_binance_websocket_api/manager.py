@@ -1185,7 +1185,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         if payload is None or stream_id is None:
             return False
         else:
-            self.stream_list[stream_id]['payload'].append(payload)
+            try:
+                self.stream_list[stream_id]['payload'].append(payload)
+            except KeyError:
+                return False
             return True
 
     def add_to_ringbuffer_error(self, error):
