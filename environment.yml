@@ -20,5 +20,5 @@ dependencies:
   - requests
   - ujson
   - websocket-client
-  - websockets==11.0.3
+  - websockets==12.0
   - typing_extensions
