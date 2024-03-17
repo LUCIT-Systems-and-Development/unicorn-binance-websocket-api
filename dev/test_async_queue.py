@@ -23,21 +23,25 @@ class BinanceDataProcessor:
 
     async def process_asyncio_queue_global(self):
         print(f"Start processing data of {self.stream_id1} ...")
-        last_update_id = 0
+        last_update_id = {}
+        current_update_id = {}
         while True:
             data = await self.ubwa.get_stream_data_from_asyncio_queue(self.stream_id1)
             if data.get('data'):
-                current_update_id = data.get('data').get('lastUpdateId')
-                print(f"{last_update_id} - {current_update_id} - "
-                      f"{('True' if current_update_id > last_update_id else 'False')}")
-                last_update_id = current_update_id
+                market = str(data.get('stream').split('@')[0]).lower()
+                current_update_id[market] = data.get('data').get('lastUpdateId')
+                if last_update_id.get(market) is None:
+                    last_update_id[market] = 0
+                print(f"{market} - {last_update_id.get(market)} - {current_update_id.get(market)} - "
+                      f"{('True' if current_update_id.get(market) > last_update_id.get(market) else 'False')}")
+                last_update_id[market] = current_update_id.get(market)
             self.ubwa.asyncio_queue_task_done(self.stream_id1)
 
     async def process_asyncio_queue_specific(self):
         print(f"Start processing data of {self.stream_id2} ...")
         while True:
             data = await self.ubwa.get_stream_data_from_asyncio_queue(self.stream_id2)
-            #print(data)
+            # print(data)
             self.ubwa.asyncio_queue_task_done(self.stream_id2)
 
     def processing_of_stream_signals(self, signal_type=None, stream_id=None, data_record=None, error_msg=None):
@@ -45,8 +49,12 @@ class BinanceDataProcessor:
               f"{signal_type} - {stream_id} - {data_record} - {error_msg}")
 
     async def start(self):
-        self.stream_id1 = self.ubwa.create_stream(stream_label="stream_1", channels=['depth5'], markets=['btcusdt'])
-        self.stream_id2 = self.ubwa.create_stream(stream_label="stream_2", channels=['trade'], markets=['btcusdt'],
+        self.stream_id1 = self.ubwa.create_stream(stream_label="stream_1",
+                                                  channels=['depth5@100ms'],
+                                                  markets=['ethbtc', 'btcusdt'])
+        self.stream_id2 = self.ubwa.create_stream(stream_label="stream_2",
+                                                  channels=['trade'],
+                                                  markets=['ethbtc', 'btcusdt'],
                                                   process_asyncio_queue=self.process_asyncio_queue_specific)
         self.ubwa.create_stream(markets='arr', channels='!userData',
                                 api_key="api_key", api_secret="api_secret")

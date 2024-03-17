@@ -50,11 +50,9 @@ class BinanceWebSocketApiSocket(object):
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         logger.debug(f"Leaving asynchronous with-context of BinanceWebSocketApiSocket() ...")
-
         if self.websocket is not None:
             try:
-                if not self.websocket.is_closed():
-                    await self.websocket.close()
+                await self.websocket.close()
             except AttributeError as error_msg:
                 if "object has no attribute" not in str(error_msg):
                     logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")
@@ -76,6 +74,7 @@ class BinanceWebSocketApiSocket(object):
                                                      self.markets,
                                                      symbols=self.symbols) as self.websocket:
                 self.manager.socket_is_ready[self.stream_id] = True
+                self.manager.process_stream_signals(signal_type="CONNECT", stream_id=self.stream_id)
                 while True:
                     if self.manager.is_stop_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
@@ -296,3 +295,11 @@ class BinanceWebSocketApiSocket(object):
         except KeyError as error_msg:
             logger.debug(f"BinanceWebSocketApiSocket.start_socket() KeyError: {error_msg}")
             return False
+        finally:
+            self.manager.process_stream_signals(signal_type="DISCONNECT", stream_id=self.stream_id)
+            if self.websocket is not None:
+                try:
+                    await self.websocket.close()
+                except AttributeError as error_msg:
+                    if "object has no attribute" not in str(error_msg):
+                        logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")

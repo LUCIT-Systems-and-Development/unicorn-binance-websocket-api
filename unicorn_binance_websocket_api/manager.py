@@ -478,6 +478,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             return None
         try:
             return await self.asyncio_queue[stream_id].get()
+        except RuntimeError:
+            return None
         except KeyError:
             return None
 
@@ -724,13 +726,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.stream_list[stream_id]['loop_is_closing'] = True
             except KeyError:
                 pass
-            try:
-                if self.stream_list[stream_id]['last_stream_signal'] is not None and \
-                        self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
-                    self.process_stream_signals(signal_type="DISCONNECT", stream_id=stream_id)
-            except KeyError as error_msg:
-                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
-                             f"KeyError `error: 13` - {error_msg}")
+            #try:
+            #    if self.stream_list[stream_id]['last_stream_signal'] is not None and \
+            #            self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
+            #        self.process_stream_signals(signal_type="DISCONNECT", stream_id=stream_id)
+            #except KeyError as error_msg:
+            #    logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
+            #                 f"KeyError `error: 13` - {error_msg}")
             if loop is not None:
                 try:
                     tasks = asyncio.all_tasks(loop)
@@ -1260,12 +1262,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         Add signals about a stream to the
         `stream_signal_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
 
-        :param signal_type: "CONNECT", "DISCONNECT" or "FIRST_RECEIVED_DATA"
+        :param signal_type: "CONNECT", "DISCONNECT", "FIRST_RECEIVED_DATA" or "STREAM_UNREPAIRABLE"
         :type signal_type: str
         :param stream_id: id of a stream
         :type stream_id: str
         :param data_record: The last or first received data record
         :type data_record: str or dict
+        :param error_msg: The message of the error.
+        :type error_msg: str or dict
         :return: bool
         """
         if self.enable_stream_signal_buffer:
@@ -4236,9 +4240,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type error_msg: str
         """
         logger.critical(f"BinanceWebSocketApiManager.stream_is_crashing({stream_id}){self.get_debug_log()}")
-        if self.stream_list[stream_id]['last_stream_signal'] is not None and \
-                self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
-            self.process_stream_signals(signal_type="DISCONNECT", stream_id=stream_id)
+        #if self.stream_list[stream_id]['last_stream_signal'] is not None and \
+        #        self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
+        #    self.process_stream_signals(signal_type="DISCONNECT", stream_id=stream_id)
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "crashed"
         self.set_socket_is_ready(stream_id)  # necessary to release `create_stream()`
