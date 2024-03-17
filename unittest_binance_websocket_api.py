@@ -519,16 +519,16 @@ class TestApiLive(unittest.TestCase):
         BinanceWebSocketApiRestclient(self.__class__.ubwa)
 
     def test_rest_binance_com_isolated_margin(self):
-        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin",
-                                                         high_performance=True)
-        BinanceWebSocketApiRestclient(self.__class__.ubwa)
-        self.__class__.ubwa.stop_manager()
+        ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin",
+                                          high_performance=True)
+        BinanceWebSocketApiRestclient(ubwa)
+        ubwa.stop_manager()
 
     def test_rest_binance_com_isolated_margin_testnet(self):
-        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet",
-                                                         high_performance=True)
-        BinanceWebSocketApiRestclient(self.__class__.ubwa)
-        self.__class__.ubwa.stop_manager()
+        ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet",
+                                         high_performance=True)
+        BinanceWebSocketApiRestclient(ubwa)
+        ubwa.stop_manager()
 
     def test_invalid_exchange(self):
         from unicorn_binance_websocket_api.exceptions import UnknownExchange
