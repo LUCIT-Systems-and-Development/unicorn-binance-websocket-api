@@ -34,6 +34,9 @@ tracemalloc.start(25)
 BINANCE_COM_API_KEY = "By1nSedTBFpTx2mxrAwuOrUGousqSPbWt7Fl8LUhNJ5vfkgWXOPFehnI4ERtajV2"
 BINANCE_COM_API_SECRET = "ZWEQNGLJenuGKJbavxaT08Mgh0X7o9BbwbcEvrjkYI1b6lly5rAV0LPIjf1Na4ja"
 
+BINANCE_COM_TESTNET_API_KEY = ""
+BINANCE_COM_TESTNET_API_SECRET = ""
+
 logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
@@ -232,8 +235,8 @@ class TestBinanceComManagerTest(unittest.TestCase):
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.com-testnet",
                                               high_performance=True,
                                               debug=True)
-        cls.binance_com_testnet_api_key = BINANCE_COM_API_KEY
-        cls.binance_com_testnet_api_secret = BINANCE_COM_API_SECRET
+        cls.binance_com_testnet_api_key = BINANCE_COM_TESTNET_API_KEY
+        cls.binance_com_testnet_api_secret = BINANCE_COM_TESTNET_API_SECRET
 
     @classmethod
     def tearDownClass(cls):
@@ -696,7 +699,10 @@ class TestApiLive(unittest.TestCase):
         time.sleep(6)
         print(f"Stop stream as crash ...")
         self.__class__.ubwa.stop_stream_as_crash(streams.pop())
+        print(f"Stop stream as crash ... done")
+        print(f"create_websocket_uri ...")
         self.__class__.ubwa.create_websocket_uri(False, False, stream_id1)
+        print(f"create_websocket_uri ... done")
         self.__class__.ubwa.unsubscribe_from_stream(stream_id2, markets="erdbnb")
         self.__class__.ubwa.unsubscribe_from_stream(stream_id2, channels="trade")
         self.__class__.ubwa.pop_stream_data_from_stream_buffer()
