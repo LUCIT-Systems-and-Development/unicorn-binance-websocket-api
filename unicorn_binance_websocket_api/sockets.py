@@ -75,6 +75,7 @@ class BinanceWebSocketApiSocket(object):
                                                      symbols=self.symbols) as self.websocket:
                 self.manager.socket_is_ready[self.stream_id] = True
                 self.manager.process_stream_signals(signal_type="CONNECT", stream_id=self.stream_id)
+                self.manager.stream_list[self.stream_id]['last_stream_signal'] = "CONNECT"
                 while True:
                     if self.manager.is_stop_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
@@ -263,6 +264,7 @@ class BinanceWebSocketApiSocket(object):
                                     self.manager.process_stream_signals(signal_type="FIRST_RECEIVED_DATA",
                                                                         stream_id=self.stream_id,
                                                                         data_record=received_stream_data)
+                                    self.manager.stream_list[self.stream_id]['last_stream_signal'] = "FIRST_RECEIVED_DATA"
                                 self.manager.stream_list[self.stream_id]['last_received_data_record'] = received_stream_data
                     except websockets.exceptions.ConnectionClosed as error_msg:
                         logger.critical("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
@@ -296,7 +298,10 @@ class BinanceWebSocketApiSocket(object):
             logger.debug(f"BinanceWebSocketApiSocket.start_socket() KeyError: {error_msg}")
             return False
         finally:
-            self.manager.process_stream_signals(signal_type="DISCONNECT", stream_id=self.stream_id)
+            if self.manager.stream_list[self.stream_id]['last_stream_signal'] == "FIRST_RECEIVED_DATA" \
+                    or self.manager.stream_list[self.stream_id]['last_stream_signal'] == "CONNECT":
+                self.manager.process_stream_signals(signal_type="DISCONNECT", stream_id=self.stream_id)
+                self.manager.stream_list[self.stream_id]['last_stream_signal'] = "DISCONNECT"
             if self.websocket is not None:
                 try:
                     await self.websocket.close()

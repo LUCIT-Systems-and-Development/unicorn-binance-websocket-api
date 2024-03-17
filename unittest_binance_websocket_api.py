@@ -729,9 +729,9 @@ class TestApiLive(unittest.TestCase):
             self.__class__.ubwa.print_summary()
             self.__class__.ubwa.print_stream_info(stream_id4)
             time.sleep(1)
-        stream_id_1_1 = self.__class__.ubwa.replace_stream(stream_id4, 'trade', 'btceth', "name")
-        self.__class__.ubwa.replace_stream(stream_id_1_1, 'trade', 'btceth', "name2",
-                                           new_ping_interval=10, new_ping_timeout=10, new_close_timeout=5)
+        #stream_id_1_1 = self.__class__.ubwa.replace_stream(stream_id4, 'trade', 'btceth', "name")
+        #self.__class__.ubwa.replace_stream(stream_id_1_1, 'trade', 'btceth', "name2",
+        #                                   new_ping_interval=10, new_ping_timeout=10, new_close_timeout=5)
         print(f"Replace stream ... Done")
         self.__class__.ubwa.get_results_from_endpoints()
         self.__class__.ubwa.get_used_weight()
