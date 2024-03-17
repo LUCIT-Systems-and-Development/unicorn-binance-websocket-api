@@ -787,7 +787,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             params.append(('signature', data['signature']))
         return params
 
-    def _auto_data_cleanup_stopped_streams(self, interval=60):
+    def _auto_data_cleanup_stopped_streams(self, interval=60, age=900):
         logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Starting with an interval "
                     f"of {interval} seconds!")
         timestamp_last_check = 0
@@ -806,7 +806,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         if self.stream_list[stream_id]['status'] == "stopped" \
                                 and restart_status != "new" \
                                 and self.stream_list[stream_id]['seconds_since_has_stopped'] is not None:
-                            if self.stream_list[stream_id]['seconds_since_has_stopped'] > 900:
+                            if self.stream_list[stream_id]['seconds_since_has_stopped'] > age:
                                 logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
                                             f"Removing all remaining data of stream with stream_id={stream_id} from "
                                             f"this instance!")
