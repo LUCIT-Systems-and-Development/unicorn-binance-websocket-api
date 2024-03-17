@@ -68,6 +68,7 @@ class BinanceWebSocketApiConnection(object):
                                                 self.stream_id,
                                                 symbols=self.symbols,
                                                 api=self.manager.stream_list[self.stream_id]['api'])
+        print(f"URI: {uri}")
         if uri is False:
             # cant get a valid URI, so this stream has to crash
             error_msg = "Probably no internet connection?"
