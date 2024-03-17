@@ -713,8 +713,8 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.pop_stream_data_from_stream_buffer()
         self.__class__.ubwa.pop_stream_data_from_stream_buffer(stream_buffer_name="invalid")
         print(f"Replace stream ...")
-        stream_id_1_1 = self.__class__.ubwa.replace_stream(streams.pop(), 'trade', 'kncbtc', "name")
-        self.__class__.ubwa.replace_stream(stream_id_1_1, 'trade', 'kncbtc', "name2",
+        stream_id_1_1 = self.__class__.ubwa.replace_stream(streams.pop(), 'trade', 'btceth', "name")
+        self.__class__.ubwa.replace_stream(stream_id_1_1, 'trade', 'btceth', "name2",
                                            new_ping_interval=10, new_ping_timeout=10, new_close_timeout=5)
         print(f"Replace stream ... Done")
         self.__class__.ubwa.get_results_from_endpoints()
