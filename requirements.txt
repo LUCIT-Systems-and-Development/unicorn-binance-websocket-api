@@ -17,4 +17,4 @@ ujson
 unicorn-fy
 unicorn-binance-rest-api>=2.1.2
 websocket-client
-websockets==10.4
+websockets==12.0
