@@ -2392,7 +2392,10 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: int
         """
-        free_slots =  self.max_subscriptions_per_stream - self.stream_list[stream_id]['subscriptions']
+        try:
+            free_slots =  self.max_subscriptions_per_stream - self.stream_list[stream_id]['subscriptions']
+        except KeyError:
+            return None
         return free_slots
 
     def get_listen_key_from_restclient(self, stream_id):
