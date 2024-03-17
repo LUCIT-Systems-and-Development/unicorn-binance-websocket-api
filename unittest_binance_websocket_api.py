@@ -549,16 +549,16 @@ class TestApiLive(unittest.TestCase):
     def test_live_api_ws(self):
         print(f"Test Websocket API ...")
         if not is_github_action_env():
-            ubwa = BinanceWebSocketApiManager(exchange='binance.com')
-            api_stream = ubwa.create_stream(api=True, api_key=BINANCE_COM_API_KEY, api_secret=BINANCE_COM_API_SECRET,
-                                            stream_label="Bobs Websocket API",
-                                            process_stream_data=handle_socket_message)
+            ubwam = BinanceWebSocketApiManager(exchange='binance.com')
+            api_stream = ubwam.create_stream(api=True, api_key=BINANCE_COM_API_KEY, api_secret=BINANCE_COM_API_SECRET,
+                                             stream_label="Bobs Websocket API",
+                                             process_stream_data=handle_socket_message)
             time.sleep(1)
-            ubwa.api.get_server_time(stream_id=api_stream)
-            ubwa.api.ping(stream_id=api_stream)
-            ubwa.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
+            ubwam.api.get_server_time(stream_id=api_stream)
+            ubwam.api.ping(stream_id=api_stream)
+            ubwam.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
             time.sleep(2)
-            ubwa.stop_manager()
+            ubwam.stop_manager()
 
     def test_live_receives_stream_specific_with_stream_buffer(self):
         print(f"Test receiving with stream specific stream_buffer ...")
@@ -699,6 +699,8 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.create_stream("kline_1s", "btceth", process_stream_data=processing_of_new_data)
         self.__class__.ubwa.create_stream("kline_1s", "btceth", process_stream_data_async=processing_of_new_data_async)
         time.sleep(6)
+        self.__class__.ubwa.print_summary()
+        self.__class__.ubwa.print_stream_info(stream_id4)
         print(f"Stop stream as crash ...")
         self.__class__.ubwa.stop_stream_as_crash(streams.pop())
         print(f"Stop stream as crash ... done")
@@ -714,7 +716,7 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.pop_stream_data_from_stream_buffer()
         self.__class__.ubwa.pop_stream_data_from_stream_buffer(stream_buffer_name="invalid")
         print(f"Replace stream ...")
-        for i in range(10):
+        for i in range(1):
             self.__class__.ubwa.print_summary()
             self.__class__.ubwa.print_stream_info(stream_id4)
             time.sleep(1)
