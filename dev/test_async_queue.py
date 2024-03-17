@@ -40,14 +40,16 @@ class BinanceDataProcessor:
             #print(data)
             self.ubwa.asyncio_queue_task_done(self.stream_id2)
 
-    def processing_of_stream_signals(self, signal_type=False, stream_id=False, data_record=False):
+    def processing_of_stream_signals(self, signal_type=None, stream_id=None, data_record=None, error_msg=None):
         print(f"Received STREAM SIGNAL for stream '{self.ubwa.get_stream_label(stream_id=stream_id)}': "
-              f"{signal_type} - {stream_id} - {data_record}")
+              f"{signal_type} - {stream_id} - {data_record} - {error_msg}")
 
     async def start(self):
         self.stream_id1 = self.ubwa.create_stream(stream_label="stream_1", channels=['depth5'], markets=['btcusdt'])
         self.stream_id2 = self.ubwa.create_stream(stream_label="stream_2", channels=['trade'], markets=['btcusdt'],
                                                   process_asyncio_queue=self.process_asyncio_queue_specific)
+        self.ubwa.create_stream(markets='arr', channels='!userData',
+                                api_key="api_key", api_secret="api_secret")
         while self.ubwa.is_manager_stopping() is False:
             await asyncio.sleep(1)
 

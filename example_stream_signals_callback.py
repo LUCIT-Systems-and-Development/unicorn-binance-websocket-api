@@ -43,8 +43,8 @@ logging.basicConfig(level=logging.INFO,
                     style="{")
 
 
-def print_stream_signals(signal_type=False, stream_id=False, data_record=False):
-    print(f"callback: {signal_type} - {stream_id} - {data_record}")
+def print_stream_signals(signal_type=None, stream_id=None, data_record=None, error_msg=None):
+    print(f"callback: {signal_type} - {stream_id} - {data_record} - {error_msg}")
 
 
 # To use this library you need a valid UNICORN Binance Suite License:

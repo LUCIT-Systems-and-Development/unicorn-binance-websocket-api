@@ -727,8 +727,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 if self.stream_list[stream_id]['last_stream_signal'] is not None and \
                         self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
-                    self.process_stream_signals("DISCONNECT", stream_id)
-                    self.stream_list[stream_id]['last_stream_signal'] = "DISCONNECT"
+                    self.process_stream_signals(signal_type="DISCONNECT", stream_id=stream_id)
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 13` - {error_msg}")
@@ -1273,6 +1272,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             stream_signal = {'type': signal_type,
                              'stream_id': stream_id,
                              'timestamp': time.time()}
+            self.stream_list[stream_id]['last_stream_signal'] = signal_type
             if signal_type == "CONNECT":
                 # nothing to add ...
                 pass
@@ -4238,8 +4238,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.critical(f"BinanceWebSocketApiManager.stream_is_crashing({stream_id}){self.get_debug_log()}")
         if self.stream_list[stream_id]['last_stream_signal'] is not None and \
                 self.stream_list[stream_id]['last_stream_signal'] != "DISCONNECT":
-            self.process_stream_signals("DISCONNECT", stream_id)
-            self.stream_list[stream_id]['last_stream_signal'] = "DISCONNECT"
+            self.process_stream_signals(signal_type="DISCONNECT", stream_id=stream_id)
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "crashed"
         self.set_socket_is_ready(stream_id)  # necessary to release `create_stream()`
@@ -4335,7 +4334,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.critical(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) "
                             f"Info: {str(error_msg)}")
             self.stream_is_crashing(stream_id, error_msg)
-            self.manager.process_stream_signals("STREAM_UNREPAIRABLE", self.stream_id, error_msg)
+            self.manager.process_stream_signals(signal_type="STREAM_UNREPAIRABLE",
+                                                stream_id=stream_id,
+                                                error_msg=error_msg)
             return False
 
         for item in payload:

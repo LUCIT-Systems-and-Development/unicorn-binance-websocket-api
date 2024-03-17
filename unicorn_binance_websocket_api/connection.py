@@ -110,8 +110,10 @@ class BinanceWebSocketApiConnection(object):
                                     ", " + str(self.channels) + ", " + str(self.markets) + ") -  Received unknown"
                                     " error msg from Binance: " + str(uri['msg']))
                 self.manager.stream_is_crashing(self.stream_id, str(uri['msg']))
-                self.manager.process_stream_signals("STREAM_UNREPAIRABLE", self.stream_id, uri['msg'])
-                return False
+                self.manager.process_stream_signals(signal_type="STREAM_UNREPAIRABLE",
+                                                    stream_id=self.stream_id,
+                                                    error_msg=uri['msg'])
+                #return False
         except KeyError as error_msg:
             logger.critical("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) +
                             ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 1 - "
@@ -201,7 +203,7 @@ class BinanceWebSocketApiConnection(object):
             except KeyError:
                 pass
             self.manager.set_heartbeat(self.stream_id)
-            self.manager.process_stream_signals("CONNECT", self.stream_id)
+            self.manager.process_stream_signals(signal_type="CONNECT", stream_id=self.stream_id)
             self.manager.stream_list[self.stream_id]['last_stream_signal'] = "CONNECT"
         except websockets.exceptions.NegotiationError as error_msg:
             logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) + ", " +
