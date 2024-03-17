@@ -7,6 +7,111 @@ on:
     branches: [ master ]
 
 jobs:
+  test_python_3_7:
+    runs-on: ubuntu-latest
+    steps:
+    - name: GitHub Checkout
+      uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.7"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install coveralls
+
+    - name: Unit test
+      env:
+          LUCIT_API_SECRET: ${{ secrets.LUCIT_API_SECRET }}
+          LUCIT_LICENSE_TOKEN: ${{ secrets.LUCIT_LICENSE_TOKEN }}
+      run: coverage run --source unicorn_binance_websocket_api unittest_binance_websocket_api.py
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+#        token: ${{ secrets.CODECOV_TOKEN }}
+#        directory: ./coverage/reports/
+#        env_vars: OS,PYTHON
+#        fail_ci_if_error: true
+#        files: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+#        path_to_write_report: ./coverage/codecov_report.txt
+        verbose: true
+
+  test_python_3_8:
+    runs-on: ubuntu-latest
+    steps:
+    - name: GitHub Checkout
+      uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.8"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install coveralls
+
+    - name: Unit test
+      env:
+          LUCIT_API_SECRET: ${{ secrets.LUCIT_API_SECRET }}
+          LUCIT_LICENSE_TOKEN: ${{ secrets.LUCIT_LICENSE_TOKEN }}
+      run: coverage run --source unicorn_binance_websocket_api unittest_binance_websocket_api.py
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+#        token: ${{ secrets.CODECOV_TOKEN }}
+#        directory: ./coverage/reports/
+#        env_vars: OS,PYTHON
+#        fail_ci_if_error: true
+#        files: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+#        path_to_write_report: ./coverage/codecov_report.txt
+        verbose: true
+
+  test_python_3_9:
+    runs-on: ubuntu-latest
+    steps:
+    - name: GitHub Checkout
+      uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install coveralls
+
+    - name: Unit test
+      env:
+          LUCIT_API_SECRET: ${{ secrets.LUCIT_API_SECRET }}
+          LUCIT_LICENSE_TOKEN: ${{ secrets.LUCIT_LICENSE_TOKEN }}
+      run: coverage run --source unicorn_binance_websocket_api unittest_binance_websocket_api.py
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+#        token: ${{ secrets.CODECOV_TOKEN }}
+#        directory: ./coverage/reports/
+#        env_vars: OS,PYTHON
+#        fail_ci_if_error: true
+#        files: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+#        path_to_write_report: ./coverage/codecov_report.txt
+        verbose: true
+
   test_python_3_10:
     runs-on: ubuntu-latest
     steps:
@@ -16,6 +121,41 @@ jobs:
     - uses: actions/setup-python@v4
       with:
         python-version: "3.10"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install coveralls
+
+    - name: Unit test
+      env:
+          LUCIT_API_SECRET: ${{ secrets.LUCIT_API_SECRET }}
+          LUCIT_LICENSE_TOKEN: ${{ secrets.LUCIT_LICENSE_TOKEN }}
+      run: coverage run --source unicorn_binance_websocket_api unittest_binance_websocket_api.py
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+#        token: ${{ secrets.CODECOV_TOKEN }}
+#        directory: ./coverage/reports/
+#        env_vars: OS,PYTHON
+#        fail_ci_if_error: true
+#        files: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+#        path_to_write_report: ./coverage/codecov_report.txt
+        verbose: true
+
+  test_python_3_11:
+    runs-on: ubuntu-latest
+    steps:
+    - name: GitHub Checkout
+      uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
 
     - name: Install dependencies
       run: |
