@@ -193,6 +193,7 @@ class BinanceWebSocketApiConnection(object):
                     logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) +
                                  ", " + str(self.channels) + ", " + str(self.markets) + ") - InvalidStatusCode" +
                                  " error_msg: " + str(error_msg))
+                    return False
             self.manager.stream_list[self.stream_id]['status'] = "running"
             self.manager.stream_list[self.stream_id]['has_stopped'] = False
             try:
