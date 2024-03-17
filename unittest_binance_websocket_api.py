@@ -694,6 +694,7 @@ class TestApiLive(unittest.TestCase):
         time.sleep(1)
         stream_id2 = streams.pop()
         stream_id3 = streams.pop()
+        stream_id4 = streams.pop()
         self.__class__.ubwa.create_stream('depth20', markets, stream_buffer_name=True)
         self.__class__.ubwa.create_stream("kline_1s", "btceth", process_stream_data=processing_of_new_data)
         self.__class__.ubwa.create_stream("kline_1s", "btceth", process_stream_data_async=processing_of_new_data_async)
@@ -713,7 +714,9 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.pop_stream_data_from_stream_buffer()
         self.__class__.ubwa.pop_stream_data_from_stream_buffer(stream_buffer_name="invalid")
         print(f"Replace stream ...")
-        stream_id_1_1 = self.__class__.ubwa.replace_stream(streams.pop(), 'trade', 'btceth', "name")
+        self.__class__.ubwa.print_summary()
+        self.__class__.ubwa.print_stream_info(stream_id4)
+        stream_id_1_1 = self.__class__.ubwa.replace_stream(stream_id4, 'trade', 'btceth', "name")
         self.__class__.ubwa.replace_stream(stream_id_1_1, 'trade', 'btceth', "name2",
                                            new_ping_interval=10, new_ping_timeout=10, new_close_timeout=5)
         print(f"Replace stream ... Done")
