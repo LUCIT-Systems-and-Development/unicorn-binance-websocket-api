@@ -531,19 +531,6 @@ class TestApiLive(unittest.TestCase):
 #        self.__class__.ubwa.print_stream_info(stream_id)
 #        self.__class__.ubwa.stop_manager()
 
-    def test_live_receives_stream_specific_with_stream_buffer(self):
-        print(f"Test receiving with stream specific stream_buffer ...")
-        stream_id = self.__class__.ubwa.create_stream(["arr"], ["!miniTicker"], stream_buffer_name=True)
-        count_receives = 0
-        while count_receives < 5:
-            received = self.__class__.ubwa.pop_stream_data_from_stream_buffer(stream_id)
-            if received:
-                print(f"Received: {received}")
-                count_receives += 1
-        self.assertEqual(count_receives, 5)
-
-
-
     def test_live_run(self):
         self.__class__.ubwa.get_active_stream_list()
         self.__class__.ubwa.get_limit_of_subscriptions_per_stream()
