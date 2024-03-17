@@ -3958,7 +3958,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_label: stream_label to set
         :type stream_label: str
         """
-        self.stream_list[stream_id]['stream_label'] = stream_label
+        try:
+            self.stream_list[stream_id]['stream_label'] = stream_label
+            return True
+        except KeyError:
+            return False
 
     def set_keep_max_received_last_second_entries(self, number_of_max_entries):
         """
