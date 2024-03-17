@@ -714,8 +714,10 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.pop_stream_data_from_stream_buffer()
         self.__class__.ubwa.pop_stream_data_from_stream_buffer(stream_buffer_name="invalid")
         print(f"Replace stream ...")
-        self.__class__.ubwa.print_summary()
-        self.__class__.ubwa.print_stream_info(stream_id4)
+        for i in range(10):
+            self.__class__.ubwa.print_summary()
+            self.__class__.ubwa.print_stream_info(stream_id4)
+            time.sleep(1)
         stream_id_1_1 = self.__class__.ubwa.replace_stream(stream_id4, 'trade', 'btceth', "name")
         self.__class__.ubwa.replace_stream(stream_id_1_1, 'trade', 'btceth', "name2",
                                            new_ping_interval=10, new_ping_timeout=10, new_close_timeout=5)
