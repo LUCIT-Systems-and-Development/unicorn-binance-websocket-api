@@ -805,13 +805,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                             restart_status = None
                         if self.stream_list[stream_id]['status'] == "stopped" \
                                 and restart_status != "new" \
-                                and self.stream_list[stream_id]['seconds_since_has_stopped'] > 60:
-                            logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Removing "
-                                        f"all remaining data of stream with stream_id={stream_id} from this instance!")
-                            self.remove_all_data_of_stream_id(stream_id=stream_id)
-                            logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Remaining "
-                                        f"data of stream with stream_id={stream_id} successfully removed from this "
-                                        f"instance!")
+                                and self.stream_list[stream_id]['seconds_since_has_stopped'] is not None:
+                            if self.stream_list[stream_id]['seconds_since_has_stopped'] > 900:
+                                logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Removing "
+                                            f"all remaining data of stream with stream_id={stream_id} from this instance!")
+                                self.remove_all_data_of_stream_id(stream_id=stream_id)
+                                logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Remaining "
+                                            f"data of stream with stream_id={stream_id} successfully removed from this "
+                                            f"instance!")
             time.sleep(1)
 
     def _frequent_checks(self):
