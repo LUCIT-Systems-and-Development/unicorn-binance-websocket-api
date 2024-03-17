@@ -1968,14 +1968,38 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.wait_till_stream_has_stopped(stream_id=stream_id, timeout=timeout) is True:
             with self.stream_list_lock:
                 self.stream_list.pop(stream_id, False)
-            del self.event_loops[stream_id]
-            del self.specific_process_asyncio_queue[stream_id]
-            del self.specific_process_stream_data[stream_id]
-            del self.specific_process_stream_data_async[stream_id]
-            del self.socket_is_ready[stream_id]
-            del self.stream_threading_lock[stream_id]
-            del self.stream_threads[stream_id]
-            del self.websocket_list[stream_id]
+            try:
+                del self.event_loops[stream_id]
+            except KeyError:
+                pass
+            try:
+                del self.specific_process_asyncio_queue[stream_id]
+            except KeyError:
+                pass
+            try:
+                del self.specific_process_stream_data[stream_id]
+            except KeyError:
+                pass
+            try:
+                del self.specific_process_stream_data_async[stream_id]
+            except KeyError:
+                pass
+            try:
+                del self.socket_is_ready[stream_id]
+            except KeyError:
+                pass
+            try:
+                del self.stream_threading_lock[stream_id]
+            except KeyError:
+                pass
+            try:
+                del self.stream_threads[stream_id]
+            except KeyError:
+                pass
+            try:
+                del self.websocket_list[stream_id]
+            except KeyError:
+                pass
             logger.debug(f"BinanceWebSocketApiManager.remove_all_data_of_stream_id({stream_id}) successfully finished!")
             return True
         else:
