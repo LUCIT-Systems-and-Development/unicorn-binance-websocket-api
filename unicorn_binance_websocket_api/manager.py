@@ -482,7 +482,10 @@ class BinanceWebSocketApiManager(threading.Thread):
     async def get_stream_data_from_asyncio_queue(self, stream_id=None):
         if stream_id is None:
             return None
-        return await self.asyncio_queue[stream_id].get()
+        try:
+            return await self.asyncio_queue[stream_id].get()
+        except KeyError:
+            return None
 
     def asyncio_queue_task_done(self, stream_id=None):
         if stream_id is None:
