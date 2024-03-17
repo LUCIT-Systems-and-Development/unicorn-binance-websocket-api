@@ -492,6 +492,32 @@ class TestBinanceOrgManager(unittest.TestCase):
     def test_z_stop_manager(self):
         self.__class__.ubwa.stop_manager()
 
+    class TestWSApiLive(unittest.TestCase):
+        @classmethod
+        def setUpClass(cls):
+            print(f"\r\nTestWSApiLive:")
+
+        @classmethod
+        def tearDownClass(cls):
+            print(f"\r\nTestWSApiLive threads:")
+            for thread in threading.enumerate():
+                print(thread.name)
+            print(f"TestApiLive stopping:")
+
+    def test_live_api_ws(self):
+        print(f"Test Websocket API ...")
+        if not is_github_action_env():
+            ubwam = BinanceWebSocketApiManager(exchange='binance.com')
+            api_stream = ubwam.create_stream(api=True, api_key=BINANCE_COM_API_KEY, api_secret=BINANCE_COM_API_SECRET,
+                                             stream_label="Bobs Websocket API",
+                                             process_stream_data=handle_socket_message)
+            time.sleep(1)
+            ubwam.api.get_server_time(stream_id=api_stream)
+            ubwam.api.ping(stream_id=api_stream)
+            ubwam.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
+            time.sleep(2)
+            ubwam.stop_manager()
+
 
 class TestApiLive(unittest.TestCase):
     @classmethod
@@ -545,20 +571,6 @@ class TestApiLive(unittest.TestCase):
 #        print("\r\n")
 #        self.__class__.ubwa.print_stream_info(stream_id)
 #        self.__class__.ubwa.stop_manager()
-
-    def test_live_api_ws(self):
-        print(f"Test Websocket API ...")
-        if not is_github_action_env():
-            ubwam = BinanceWebSocketApiManager(exchange='binance.com')
-            api_stream = ubwam.create_stream(api=True, api_key=BINANCE_COM_API_KEY, api_secret=BINANCE_COM_API_SECRET,
-                                             stream_label="Bobs Websocket API",
-                                             process_stream_data=handle_socket_message)
-            time.sleep(1)
-            ubwam.api.get_server_time(stream_id=api_stream)
-            ubwam.api.ping(stream_id=api_stream)
-            ubwam.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
-            time.sleep(2)
-            ubwam.stop_manager()
 
     def test_live_receives_stream_specific_with_stream_buffer(self):
         print(f"Test receiving with stream specific stream_buffer ...")
