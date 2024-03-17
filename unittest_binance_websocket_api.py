@@ -302,7 +302,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
     def test_is_exchange_type_dex(self):
         self.assertEqual(self.__class__.ubwa.is_exchange_type("dex"), False)
 
-    def test_stop_manager(self):
+    def test_z_stop_manager(self):
         time.sleep(6)
         self.__class__.ubwa.stop_manager()
 
@@ -331,7 +331,7 @@ class TestBinanceOrgManagerTestnet(unittest.TestCase):
         time.sleep(6)
         self.__class__.ubwa.unsubscribe_from_stream(stream_id, "tbnb1unxhf8fat985ksajatfa5jea58j2kzg7mfy0e7")
 
-    def test_stop_manager(self):
+    def test_z_stop_manager(self):
         self.__class__.ubwa.stop_manager()
 
 
@@ -489,7 +489,7 @@ class TestBinanceOrgManager(unittest.TestCase):
                                                                 ['RAVEN-F66_BNB'])),
                          result)
 
-    def test_stop_manager(self):
+    def test_z_stop_manager(self):
         self.__class__.ubwa.stop_manager()
 
 
@@ -518,19 +518,19 @@ class TestApiLive(unittest.TestCase):
     def test_rest_binance_com(self):
         BinanceWebSocketApiRestclient(self.__class__.ubwa)
 
-    def test_rest_binance_com_isolated_margin(self):
+    def test_z_rest_binance_com_isolated_margin(self):
         ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin",
                                           high_performance=True)
         BinanceWebSocketApiRestclient(ubwa)
         ubwa.stop_manager()
 
-    def test_rest_binance_com_isolated_margin_testnet(self):
+    def test_z_rest_binance_com_isolated_margin_testnet(self):
         ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet",
                                           high_performance=True)
         BinanceWebSocketApiRestclient(ubwa)
         ubwa.stop_manager()
 
-    def test_invalid_exchange(self):
+    def test_z_invalid_exchange(self):
         from unicorn_binance_websocket_api.exceptions import UnknownExchange
         with self.assertRaises(UnknownExchange):
             ubwa_error = BinanceWebSocketApiManager(exchange="invalid-exchange.com", high_performance=True)
