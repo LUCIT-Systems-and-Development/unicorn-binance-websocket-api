@@ -65,12 +65,12 @@ class BinanceWebSocketApiSocket(object):
         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, {str(self.channels)}, "
                     f"{str(self.markets)}) socket_id={str(self.socket_id)} recent_socket_id={str(self.socket_id)}")
         try:
-            async with (BinanceWebSocketApiConnection(self.manager,
+            async with BinanceWebSocketApiConnection(self.manager,
                                                      self.stream_id,
                                                      self.socket_id,
                                                      self.channels,
                                                      self.markets,
-                                                     symbols=self.symbols) as self.websocket):
+                                                     symbols=self.symbols) as self.websocket:
                 self.manager.socket_is_ready[self.stream_id] = True
                 while True:
                     if self.manager.is_stop_request(self.stream_id):
