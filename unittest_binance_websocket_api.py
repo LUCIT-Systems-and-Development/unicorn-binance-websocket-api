@@ -563,7 +563,7 @@ class TestApiLive(unittest.TestCase):
                     self.__class__.ubwa.asyncio_queue_task_done(stream_id)
             print(f"Closing asyncio_queue consumer!")
 
-        print(f"Test receiving with stream specific stream_buffer ...")
+        print(f"Test receiving with stream specific asyncio_queue ...")
         stream_id = self.__class__.ubwa.create_stream(["arr"], ["!miniTicker"],
                                                       process_asyncio_queue=process_asyncio_queue)
         if not is_github_action_env():
