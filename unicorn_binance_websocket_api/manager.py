@@ -787,7 +787,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             params.append(('signature', data['signature']))
         return params
 
-    def _auto_data_cleanup_stopped_streams(self, interval=60):
+    def _auto_data_cleanup_stopped_streams(self, interval=30):
         logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Starting with an interval "
                     f"of {interval} seconds!")
         timestamp_last_check = 0
@@ -807,13 +807,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 and restart_status != "new" \
                                 and self.stream_list[stream_id]['seconds_since_has_stopped'] is not None:
                             if self.stream_list[stream_id]['seconds_since_has_stopped'] > 900:
-                                logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Removing "
-                                            f"all remaining data of stream with stream_id={stream_id} from this instance!")
+                                logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
+                                            f"Removing all remaining data of stream with stream_id={stream_id} from "
+                                            f"this instance!")
                                 self.remove_all_data_of_stream_id(stream_id=stream_id)
-                                logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Remaining "
-                                            f"data of stream with stream_id={stream_id} successfully removed from this "
-                                            f"instance!")
-            time.sleep(1)
+                                logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
+                                            f"Remaining data of stream with stream_id={stream_id} successfully removed "
+                                            f"from this instance!")
+            time.sleep(60)
 
     def _frequent_checks(self):
         """
