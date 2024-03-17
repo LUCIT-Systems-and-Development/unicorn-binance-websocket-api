@@ -2864,7 +2864,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = self.get_current_receiving_speed(stream_id)
         return temp_stream_list
 
-    def get_stream_label(self, stream_id=False):
+    def get_stream_label(self, stream_id=None):
         """
         Get the stream_label of a specific stream
 
@@ -2873,9 +2873,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: str or False
         """
         if stream_id:
-            return self.stream_list[stream_id]['stream_label']
+            try:
+                return self.stream_list[stream_id]['stream_label']
+            except KeyError:
+                return None
         else:
-            return False
+            return None
 
     def get_stream_subscriptions(self, stream_id, request_id=False):
         """
