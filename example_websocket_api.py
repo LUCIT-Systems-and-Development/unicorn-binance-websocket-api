@@ -36,8 +36,8 @@ import asyncio
 import logging
 import os
 
-api_key = ""
-api_secret = ""
+api_key = "By1nSedTBFpTx2mxrAwuOrUGousqSPbWt7Fl8LUhNJ5vfkgWXOPFehnI4ERtajV2"
+api_secret = "ZWEQNGLJenuGKJbavxaT08Mgh0X7o9BbwbcEvrjkYI1b6lly5rAV0LPIjf1Na4ja"
 
 
 async def binance_stream(ubwa):
@@ -59,6 +59,7 @@ async def binance_stream(ubwa):
     ubwa.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
     ubwa.api.cancel_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
     ubwa.api.get_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
+    ubwa.api.get_open_orders(stream_id=api_stream)
     ubwa.api.cancel_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
     ubwa.api.get_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
 

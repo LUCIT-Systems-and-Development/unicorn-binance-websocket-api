@@ -487,6 +487,7 @@ class TestApiLive(unittest.TestCase):
                                               enable_stream_signal_buffer=True,
                                               high_performance=True,
                                               auto_data_cleanup_stopped_streams=True)
+        cls.count_receives = 0
 
     @classmethod
     def tearDownClass(cls):
@@ -516,11 +517,9 @@ class TestApiLive(unittest.TestCase):
 
     def test_invalid_exchange(self):
         from unicorn_binance_websocket_api.exceptions import UnknownExchange
-        try:
-            ubwa = BinanceWebSocketApiManager(exchange="invalid-exchange.com", high_performance=True)
-            ubwa.stop_manager()
-        except UnknownExchange:
-            pass
+        with self.assertRaises(UnknownExchange):
+            ubwa_error = BinanceWebSocketApiManager(exchange="invalid-exchange.com", high_performance=True)
+            ubwa_error.stop_manager()
 
 # Todo: Needs a proxy ...
 #    def test_isolated_margin(self):
@@ -532,8 +531,8 @@ class TestApiLive(unittest.TestCase):
 #        self.__class__.ubwa.print_stream_info(stream_id)
 #        self.__class__.ubwa.stop_manager()
 
-    def test_live_receives(self):
-        print(f"Test receiving ...")
+    def test_live_receives_stream_specific_with_stream_buffer(self):
+        print(f"Test receiving with stream specific stream_buffer ...")
         stream_id = self.__class__.ubwa.create_stream(["arr"], ["!miniTicker"], stream_buffer_name=True)
         count_receives = 0
         while count_receives < 5:
@@ -542,6 +541,26 @@ class TestApiLive(unittest.TestCase):
                 print(f"Received: {received}")
                 count_receives += 1
         self.assertEqual(count_receives, 5)
+
+    def test_live_receives_asyncio_queue(self):
+        async def process_asyncio_queue():
+            print(f"Start processing data of {stream_id} from asyncio_queue...")
+            self.count_receives = 0
+            while self.count_receives < 5:
+                data = await self.__class__.ubwa.get_stream_data_from_asyncio_queue(stream_id)
+                print(f"Received async: {data}")
+                self.count_receives += 1
+                self.__class__.ubwa.asyncio_queue_task_done(stream_id)
+            print(f"Closing asyncio_queue consumer!")
+
+        print(f"Test receiving with stream specific stream_buffer ...")
+        stream_id = self.__class__.ubwa.create_stream(["arr"], ["!miniTicker"],
+                                                      process_asyncio_queue=process_asyncio_queue)
+        while self.count_receives < 5:
+            time.sleep(1)
+        self.assertEqual(self.count_receives, 5)
+        time.sleep(3)
+        self.__class__.ubwa.stop_stream(stream_id=stream_id)
 
     def test_live_run(self):
         self.__class__.ubwa.get_active_stream_list()
@@ -723,6 +742,7 @@ class TestApiLive(unittest.TestCase):
             for item in data:
                 markets.append(item['symbol'])
         self.__class__.ubwa.create_stream("trade", markets, stream_label="too much!")
+        time.sleep(1)
         self.__class__.ubwa.stop_manager()
 
 

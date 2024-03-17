@@ -65,12 +65,12 @@ class BinanceWebSocketApiSocket(object):
         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, {str(self.channels)}, "
                     f"{str(self.markets)}) socket_id={str(self.socket_id)} recent_socket_id={str(self.socket_id)}")
         try:
-            async with BinanceWebSocketApiConnection(self.manager,
+            async with (BinanceWebSocketApiConnection(self.manager,
                                                      self.stream_id,
                                                      self.socket_id,
                                                      self.channels,
                                                      self.markets,
-                                                     symbols=self.symbols) as self.websocket:
+                                                     symbols=self.symbols) as self.websocket):
                 self.manager.socket_is_ready[self.stream_id] = True
                 while True:
                     if self.manager.is_stop_request(self.stream_id):
@@ -206,20 +206,45 @@ class BinanceWebSocketApiSocket(object):
                                 # if create_stream() got a stram_buffer_name -> use it
                                 self.manager.add_to_stream_buffer(received_stream_data,
                                                                   stream_buffer_name=stream_buffer_name)
+                            elif self.manager.specific_process_asyncio_queue[self.stream_id] is not None:
+                                # if create_stream() got a asyncio consumer task for the asyncio queue -> use it
+                                logger.debug(f"BinanceWebSocketApiSocket.start_socket() - Received data set from "
+                                             f"stream_id={self.stream_id} transferred to `asyncio_queue`!")
+                                await self.manager.asyncio_queue[self.stream_id].put(received_stream_data)
                             elif self.manager.specific_process_stream_data[self.stream_id] is not None:
                                 # if create_stream() got a callback function -> use it
+                                logger.debug(f"BinanceWebSocketApiSocket.start_socket() - Received data set from "
+                                             f"stream_id={self.stream_id} transferred to `process_stream_data`!")
                                 self.manager.specific_process_stream_data[self.stream_id](received_stream_data)
                             elif self.manager.specific_process_stream_data_async[self.stream_id] is not None:
                                 # if create_stream() got an asynchronous callback function -> use it
+                                logger.debug(f"BinanceWebSocketApiSocket.start_socket() - Received data set from "
+                                             f"stream_id={self.stream_id} transferred to "
+                                             f"`process_stream_data_async`!")
                                 await self.manager.specific_process_stream_data_async[self.stream_id](received_stream_data)
                             else:
-                                # Use the default process_stream_data function provided to/by the manager class
-                                if self.manager.process_stream_data_async is None:
-                                    self.manager.process_stream_data(received_stream_data,
-                                                                     stream_buffer_name=stream_buffer_name)
+                                if self.manager.process_asyncio_queue is not None:
+                                    # if global asyncio consumer task for the asyncio queue -> use it
+                                    logger.debug(f"BinanceWebSocketApiSocket.start_socket() - Received data set from "
+                                                 f"stream_id={self.stream_id} transferred to `asyncio_queue`!")
+                                    await self.manager.asyncio_queue[self.stream_id].put(received_stream_data)
+                                elif self.manager.process_stream_data is not None:
+                                    # if global callback function -> use it
+                                    logger.debug(f"BinanceWebSocketApiSocket.start_socket() - Received data set from "
+                                                 f"stream_id={self.stream_id} transferred to `process_stream_data`!")
+                                    self.manager.process_stream_data(received_stream_data)
+                                elif self.manager.process_stream_data_async is not None:
+                                    # if global async callback function -> use it
+                                    logger.debug(f"BinanceWebSocketApiSocket.start_socket() - Received data set from "
+                                                 f"stream_id={self.stream_id} transferred to "
+                                                 f"`process_stream_data_async`!")
+                                    await self.manager.process_stream_data_async(received_stream_data)
                                 else:
-                                    await self.manager.process_stream_data_async(received_stream_data,
-                                                                                 stream_buffer_name=stream_buffer_name)
+                                    # If nothing else is used, write to global stream_buffer
+                                    logger.debug(f"BinanceWebSocketApiSocket.start_socket() - Received data set from "
+                                                 f"stream_id={self.stream_id} transferred to `stream_buffer`!")
+                                    self.manager.add_to_stream_buffer(received_stream_data)
+
                             if "error" in received_stream_data_json:
                                 logger.error("BinanceWebSocketApiSocket.start_socket(" +
                                              str(self.stream_id) + ") "

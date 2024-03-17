@@ -209,7 +209,7 @@ class BinanceWebSocketApiApi(object):
                 stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
-            if stream_id is False:
+            if stream_id is None:
                 logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
@@ -370,7 +370,7 @@ class BinanceWebSocketApiApi(object):
                 stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
-            if stream_id is False:
+            if stream_id is None:
                 logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
@@ -612,7 +612,7 @@ class BinanceWebSocketApiApi(object):
                 stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
-            if stream_id is False:
+            if stream_id is None:
                 logger.critical(f"BinanceWebSocketApiApi.create_order() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
@@ -991,7 +991,7 @@ class BinanceWebSocketApiApi(object):
                 stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
-            if stream_id is False:
+            if stream_id is None:
                 logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
@@ -1183,7 +1183,7 @@ class BinanceWebSocketApiApi(object):
                 stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
-            if stream_id is False:
+            if stream_id is None:
                 logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
@@ -1329,14 +1329,16 @@ class BinanceWebSocketApiApi(object):
                 stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
-            if stream_id is False:
+            if stream_id is None:
                 logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
-                  "symbol": symbol.upper(),
                   "timestamp": self.manager.get_timestamp()}
+
+        if symbol is not None:
+            params['symbol'] = str(symbol.upper())
 
         if recv_window is not None:
             params['recvWindow'] = str(recv_window)
@@ -1478,7 +1480,7 @@ class BinanceWebSocketApiApi(object):
                 stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
-            if stream_id is False:
+            if stream_id is None:
                 logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
@@ -1649,7 +1651,7 @@ class BinanceWebSocketApiApi(object):
                 stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
-            if stream_id is False:
+            if stream_id is None:
                 logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
@@ -1745,7 +1747,7 @@ class BinanceWebSocketApiApi(object):
                 stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
-            if stream_id is False:
+            if stream_id is None:
                 logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
@@ -1831,7 +1833,7 @@ class BinanceWebSocketApiApi(object):
                 stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
-            if stream_id is False:
+            if stream_id is None:
                 logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False

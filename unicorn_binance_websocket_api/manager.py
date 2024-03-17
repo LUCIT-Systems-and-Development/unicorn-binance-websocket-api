@@ -53,7 +53,7 @@ from datetime import datetime
 from flask import Flask, redirect
 from flask_restful import Api
 from operator import itemgetter
-from typing import Optional, Union, Callable
+from typing import Optional, Union, Callable, Mapping, Any
 try:
     # python <=3.7 support
     from typing import Literal
@@ -102,6 +102,15 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         - https://docs.binance.org/api-reference/dex-api/ws-connection.html
 
+    :param process_asyncio_queue: Todo: Die wohl performanteste Möglichkeit die empfangen Daten entgegen zunehmen und zu verarbeiten.
+                                Füge deine asyncio Funktion dem gleichen AsyncIO Loop hinzu in dem die Websocket Daten
+                                empfangen werden und `await` ganz einfach die neuen Daten. Diese Methode garantiert das
+                                Verarbeien der daten in der richtigen Reihenfolge.
+
+                                Beispiel:
+
+
+    :type process_asyncio_queue: Optional[Callable]
     :param process_stream_data: Provide a function/method to process the received webstream data (callback). The function
                                 will be called instead of
                                 `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
@@ -110,7 +119,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 get stored in the stream_buffer or provided to a specific callback function of
                                 `create_stream()`! `How to read from stream_buffer!
                                 <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
-    :type process_stream_data: function
+    :type process_stream_data: Optional[Callable]
     :param process_stream_data_async: Provide an asyncio function/method to process the received webstream data (callback). The function
                                 will be called instead of
                                 `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
@@ -119,7 +128,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 get stored in the stream_buffer or provided to a specific callback function of
                                 `create_stream()`! `How to read from stream_buffer!
                                 <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
-    :type process_stream_data_async: function
+    :type process_stream_data_async: Optional[Callable]
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
                      binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
                      binance.com-futures-testnet, binance.com-coin_futures, binance.us, trbinance.com,
@@ -221,9 +230,10 @@ class BinanceWebSocketApiManager(threading.Thread):
     """
 
     def __init__(self,
-                 process_stream_data=None,
-                 process_stream_data_async=None,
-                 exchange: str = "binance.com",
+                 process_stream_data: Optional[Callable] = None,
+                 process_stream_data_async: Optional[Callable] = None,
+                 process_asyncio_queue: Optional[Callable] = None,
+                 exchange: Optional[str] = "binance.com",
                  warn_on_update: Optional[bool] = True,
                  throw_exception_if_unrepairable: Optional[bool] = False,
                  restart_timeout: int = 6,
@@ -286,24 +296,23 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.info(f"Initiating `colorama_{colorama.__version__}`")
             colorama.init()
         logger.info(f"Using `websockets_{websockets.__version__}`")
+        self.specific_process_asyncio_queue = {}
         self.specific_process_stream_data = {}
         self.specific_process_stream_data_async = {}
-        if process_stream_data is None:
-            # no special method to process stream data provided, so we use add_to_stream_buffer:
-            self.process_stream_data = self.add_to_stream_buffer
-            logger.info(f"Using `stream_buffer`")
-        else:
-            # use the provided method to process stream data:
-            self.process_stream_data = process_stream_data
-            logger.info(f"Using `process_stream_data`")
-
-        if process_stream_data_async is None:
-            self.process_stream_data_async: Optional[Callable] = None
-        else:
-            # use the provided method to asynchronous process stream data:
+        self.process_asyncio_queue: Optional[Callable] = None
+        self.process_stream_data: Optional[Callable] = None
+        self.process_stream_data_async: Optional[Callable] = None
+        if process_asyncio_queue is not None:
+            logger.info(f"Using `asyncio_queue` ...")
+            self.process_asyncio_queue: Optional[Callable] = process_asyncio_queue
+        elif process_stream_data is not None:
+            logger.info(f"Using `process_stream_data` ...")
+            self.process_stream_data: Optional[Callable] = process_stream_data
+        elif process_stream_data_async is not None:
+            logger.info(f"Using `process_stream_data_async` ...")
             self.process_stream_data_async: Optional[Callable] = process_stream_data_async
-            logger.info(f"Using `process_stream_data_async`")
-
+        else:
+            logger.info(f"Using `stream_buffer` ...")
         if process_stream_signals is None:
             # no special method to process stream signals provided, so we use add_to_stream_signal_buffer:
             self.process_stream_signals = self.add_to_stream_signal_buffer
@@ -363,6 +372,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.websocket_ssl_context = websocket_ssl_context
 
         self.throw_exception_if_unrepairable = throw_exception_if_unrepairable
+        self.asyncio_queue = {}
         self.all_subscriptions_number = 0
         self.binance_api_status = {'weight': None,
                                    'timestamp': 0,
@@ -462,12 +472,23 @@ class BinanceWebSocketApiManager(threading.Thread):
         if exc_type:
             logger.critical(f"An exception occurred: {exc_type} - {exc_value} - {error_traceback}")
 
-    async def shutdown_asyncgens(self, loop):
+    async def _shutdown_asyncgens(self, loop):
         await loop.shutdown_asyncgens()
 
-    async def run_socket(self, stream_id, channels, markets):
+    async def _run_socket(self, stream_id, channels, markets):
         async with BinanceWebSocketApiSocket(self, stream_id, channels, markets) as socket:
             await socket.start_socket()
+
+    async def get_stream_data_from_asyncio_queue(self, stream_id=None):
+        if stream_id is None:
+            return None
+        return await self.asyncio_queue[stream_id].get()
+
+    def asyncio_queue_task_done(self, stream_id=None):
+        if stream_id is None:
+            return False
+        self.asyncio_queue[stream_id].task_done()
+        return True
 
     def _add_stream_to_stream_list(self,
                                    stream_id,
@@ -485,7 +506,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    stream_buffer_maxlen=None,
                                    api=False,
                                    process_stream_data=None,
-                                   process_stream_data_async=None):
+                                   process_stream_data_async=None,
+                                   process_asyncio_queue=None):
         """
         Create a list entry for new streams
 
@@ -560,11 +582,21 @@ class BinanceWebSocketApiManager(threading.Thread):
                             get stored in the stream_buffer! `How to read from stream_buffer!
                             <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
         :type process_stream_data_async: function
+        :param process_asyncio_queue: Todo: Die wohl performanteste Möglichkeit die empfangen Daten entgegen zunehmen und zu verarbeiten.
+                                    Füge deine asyncio Funktion dem gleichen AsyncIO Loop hinzu in dem die Websocket Daten
+                                    empfangen werden und `await` ganz einfach die neuen Daten. Diese Methode garantiert das
+                                    Verarbeien der daten in der richtigen Reihenfolge.
+
+                                    Beispiel:
+
+
+        :type process_asyncio_queue: bool
         """
         output = output or self.output_default
         close_timeout = close_timeout or self.close_timeout_default
         ping_interval = ping_interval or self.ping_interval_default
         ping_timeout = ping_timeout or self.ping_timeout_default
+        self.specific_process_asyncio_queue[stream_id] = process_asyncio_queue
         self.specific_process_stream_data[stream_id] = process_stream_data
         self.specific_process_stream_data_async[stream_id] = process_stream_data_async
         self.stream_threading_lock[stream_id] = {'full_lock': threading.Lock(),
@@ -656,15 +688,16 @@ class BinanceWebSocketApiManager(threading.Thread):
                 except KeyError:
                     # Resetting
                     self.stream_buffers[stream_buffer_name] = deque(maxlen=stream_buffer_maxlen)
-
         loop = None
         try:
             loop = asyncio.new_event_loop()
             if self.debug is True:
                 loop.set_debug(enabled=True)
             self.event_loops[stream_id] = loop
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(self.run_socket(stream_id, channels, markets))
+            self.asyncio_queue[stream_id] = asyncio.Queue()
+            logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({stream_id} - "
+                         f"Adding `_run_socket({stream_id})` to asyncio loop ...")
+            loop.run_until_complete(self._run_socket(stream_id, channels, markets))
         except OSError as error_msg:
             logger.critical(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)} - OSError  - can not "
                             f"create stream - error_msg: {str(error_msg)}")
@@ -698,7 +731,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             if loop is not None:
                 try:
                     tasks = asyncio.all_tasks(loop)
-                    loop.run_until_complete(self.shutdown_asyncgens(loop))
+                    loop.run_until_complete(self._shutdown_asyncgens(loop))
                     for task in tasks:
                         task.cancel()
                         try:
@@ -757,10 +790,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         return params
 
     def _auto_data_cleanup_stopped_streams(self, interval=60):
+        logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Starting with an interval "
+                    f"of {interval} seconds!")
         timestamp_last_check = 0
         while self.is_manager_stopping() is False:
-            logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Starting with an interval "
-                        f"of {interval} seconds!")
             if self.get_timestamp_unix() > timestamp_last_check + interval:
                 timestamp_last_check = self.get_timestamp_unix()
                 if self.auto_data_cleanup_stopped_streams is True:
@@ -1024,8 +1057,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['payload'] = []
         if self.is_manager_stopping() is True:
             return False
-
         self.set_socket_is_not_ready(stream_id)
+        self.event_loops[stream_id] = None
         try:
             thread = threading.Thread(target=self._create_stream_thread,
                                       args=(stream_id,
@@ -1048,6 +1081,21 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.create_stream({str(stream_id)}) - Waiting till new socket and "
                          f"asyncio is ready")
             time.sleep(1)
+        while self.event_loops[stream_id] is None and self.is_manager_stopping() is False:
+            time.sleep(0.001)
+        if self.specific_process_asyncio_queue[stream_id] is not None:
+            logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - Adding "
+                         f"`specific_process_asyncio_queue[{stream_id}]()` to asyncio loop ...")
+            asyncio.run_coroutine_threadsafe(self.specific_process_asyncio_queue[stream_id](),
+                                             self.get_event_loop_by_stream_id(stream_id=stream_id))
+        elif self.process_asyncio_queue is not None:
+            # The global process_asyncio_queue can be overwritten by specific process stream (async) functions
+            if self.specific_process_stream_data[stream_id] is None \
+                    and self.specific_process_stream_data_async[stream_id] is None:
+                logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - "
+                             f"Adding `process_asyncio_queue()` to asyncio loop ...")
+                asyncio.run_coroutine_threadsafe(self.process_asyncio_queue(),
+                                                 self.get_event_loop_by_stream_id(stream_id=stream_id))
         return stream_id
 
     def _restart_stream_thread(self, stream_id):
@@ -1423,7 +1471,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                       stream_buffer_maxlen=None,
                       api=False,
                       process_stream_data=None,
-                      process_stream_data_async=None):
+                      process_stream_data_async=None,
+                      process_asyncio_queue=None):
         """
         Create a websocket stream
 
@@ -1473,6 +1522,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type channels: str, tuple, list, set
         :param markets: provide the markets you wish to stream
         :type markets: str, tuple, list, set
+        :param process_asyncio_queue: Todo: Die wohl performanteste Möglichkeit die empfangen Daten entgegen zunehmen und zu verarbeiten.
+                                    Füge deine asyncio Funktion dem gleichen AsyncIO Loop hinzu in dem die Websocket Daten
+                                    empfangen werden und `await` ganz einfach die neuen Daten. Diese Methode garantiert das
+                                    Verarbeien der daten in der richtigen Reihenfolge.
+
+                                    Beispiel:
+
+
+        :type process_asyncio_queue: bool
         :param stream_label: provide a stream_label to identify the stream
         :type stream_label: str
         :param stream_buffer_name: If `False` the data is going to get written to the default stream_buffer,
@@ -1608,9 +1666,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         stream_buffer_maxlen=stream_buffer_maxlen,
                                         api=api,
                                         process_stream_data=process_stream_data,
-                                        process_stream_data_async=process_stream_data_async)
-
+                                        process_stream_data_async=process_stream_data_async,
+                                        process_asyncio_queue=process_asyncio_queue)
         self.set_socket_is_not_ready(stream_id)
+        self.event_loops[stream_id] = None
         thread = threading.Thread(target=self._create_stream_thread,
                                   args=(stream_id,
                                         channels,
@@ -1630,6 +1689,21 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
                          f"{api}) with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
             time.sleep(1)
+        while self.event_loops[stream_id] is None and self.is_manager_stopping() is False:
+            time.sleep(0.001)
+        if self.specific_process_asyncio_queue[stream_id] is not None:
+            logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - Adding "
+                         f"`specific_process_asyncio_queue[{stream_id}]()` to asyncio loop ...")
+            asyncio.run_coroutine_threadsafe(self.specific_process_asyncio_queue[stream_id](),
+                                             self.get_event_loop_by_stream_id(stream_id=stream_id))
+        elif self.process_asyncio_queue is not None:
+            # The global process_asyncio_queue can be overwritten by specific process stream (async) functions
+            if self.specific_process_stream_data[stream_id] is None \
+                    and self.specific_process_stream_data_async[stream_id] is None:
+                logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - "
+                             f"Adding `process_asyncio_queue()` to asyncio loop ...")
+                asyncio.run_coroutine_threadsafe(self.process_asyncio_queue(),
+                                                 self.get_event_loop_by_stream_id(stream_id=stream_id))
         return stream_id
 
     def create_websocket_uri(self, channels, markets, stream_id=None, symbols=None, api=False):
@@ -1874,7 +1948,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         BinanceWebSocketApiManager itself. If you want to tidy up the entire UBWA instance you can use this method.
 
         UnicornBinanceWebSocketApiManager accepts the parameter `auto_data_cleanup_stopped_streams`. If this is set
-        to `True (auto_data_cleanup_stopped_streams=True), the UBWA instance performs the cleanup with this function
+        to `True` (`auto_data_cleanup_stopped_streams=True`), the UBWA instance performs the cleanup with this function
         `remove_all_data_of_stream_id()` automatically and regularly.
 
         :param stream_id: id of a stream
@@ -1885,19 +1959,23 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: bool
         """
-        logger.info("BinanceWebSocketApiManager.remove_all_data_of_stream_id(" + str(stream_id) + ")")
+        logger.debug(f"BinanceWebSocketApiManager.remove_all_data_of_stream_id({stream_id}) started ...")
         if self.wait_till_stream_has_stopped(stream_id=stream_id, timeout=timeout) is True:
             with self.stream_list_lock:
                 self.stream_list.pop(stream_id, False)
             del self.event_loops[stream_id]
+            del self.specific_process_asyncio_queue[stream_id]
             del self.specific_process_stream_data[stream_id]
             del self.specific_process_stream_data_async[stream_id]
             del self.socket_is_ready[stream_id]
             del self.stream_threading_lock[stream_id]
             del self.stream_threads[stream_id]
             del self.websocket_list[stream_id]
+            logger.debug(f"BinanceWebSocketApiManager.remove_all_data_of_stream_id({stream_id}) successfully finished!")
             return True
         else:
+            logger.error(f"BinanceWebSocketApiManager.remove_all_data_of_stream_id({stream_id}) timeout! Stream not "
+                         f"stopped!")
             return False
 
     @staticmethod
@@ -2112,20 +2190,20 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         return self.ringbuffer_error
 
-    def get_event_loop_by_stream_id(self, stream_id: Optional[Union[str, bool]] = False) -> bool:
+    def get_event_loop_by_stream_id(self, stream_id: Optional[Union[str, bool]] = False) -> Optional[asyncio.AbstractEventLoop]:
         """
         Get the asyncio event loop used by a specific stream.
 
-        :return: asyncio event loop or False
+        :return: asyncio.AbstractEventLoop or None
         """
         if stream_id is False:
-            return False
+            return None
         else:
             try:
                 return self.event_loops[stream_id]
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.get_event_loop_by_stream_id() - KeyError - {str(error_msg)}")
-                return False
+                return None
 
     def get_exchange(self):
         """
@@ -2709,13 +2787,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                 number += len(self.stream_buffers[stream_buffer_name])
             return number
 
-    def get_stream_id_by_label(self, stream_label=False):
+    def get_stream_id_by_label(self, stream_label=False) -> Optional[str]:
         """
         Get the stream_id of a specific stream by stream label
 
         :param stream_label: stream_label of the stream you search
         :type stream_label: str
-        :return: stream_id or False
+        :return: stream_id or None
         """
         if stream_label:
             for stream_id in self.stream_list:
@@ -2725,7 +2803,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     return stream_id
         logger.error(f"BinanceWebSocketApiManager.get_stream_id_by_label() - No `stream_id` found via `stream_label` "
                      f"`{stream_label}`")
-        return False
+        return None
 
     def get_stream_info(self, stream_id):
         """
@@ -2903,12 +2981,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             stream_statistic['stream_receives_per_year'] = stream_receives_per_second * 60 * 60 * 24 * 30 * 12
         return stream_statistic
 
-    def get_the_one_active_websocket_api(self):
+    def get_the_one_active_websocket_api(self) -> Optional[str]:
         """
         This function is needed to simplify the access to the websocket API, if only one API stream exists it is clear
         that only this stream can be used for the requests and therefore will be used.
 
-        :return: stream_id or False
+        :return: stream_id or None (str)
         """
         found_entries = 0
         found_stream_id = None
@@ -2925,7 +3003,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             logger.error(f"BinanceWebSocketApiManager.get_the_one_active_websocket_api() - No valid `stream_id` found! "
                          f"- `found_entries` = {found_entries}")
-            return False
+            return None
 
     def get_total_received_bytes(self):
         """
