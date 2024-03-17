@@ -3884,7 +3884,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                            new_ping_timeout,
                                            new_close_timeout,
                                            new_stream_buffer_maxlen)
-        if self.wait_till_stream_has_started(new_stream_id, timeout=10.0):
+        if self.wait_till_stream_has_started(new_stream_id):
             self.stop_stream(stream_id=stream_id, delete_listen_key=False)
         return new_stream_id
 
@@ -4123,6 +4123,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             if self.monitoring_api_server is not None:
                 self.monitoring_api_server.stop()
+                time.sleep(1)
                 return True
         except AttributeError:
             return True
