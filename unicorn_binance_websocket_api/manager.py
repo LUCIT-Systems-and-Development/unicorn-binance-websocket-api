@@ -490,7 +490,10 @@ class BinanceWebSocketApiManager(threading.Thread):
     def asyncio_queue_task_done(self, stream_id=None):
         if stream_id is None:
             return False
-        self.asyncio_queue[stream_id].task_done()
+        try:
+            self.asyncio_queue[stream_id].task_done()
+        except KeyError:
+            return False
         return True
 
     def _add_stream_to_stream_list(self,
