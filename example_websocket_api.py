@@ -36,8 +36,8 @@ import asyncio
 import logging
 import os
 
-api_key = ""
-api_secret = ""
+api_key = "By1nSedTBFpTx2mxrAwuOrUGousqSPbWt7Fl8LUhNJ5vfkgWXOPFehnI4ERtajV2"
+api_secret = "ZWEQNGLJenuGKJbavxaT08Mgh0X7o9BbwbcEvrjkYI1b6lly5rAV0LPIjf1Na4ja"
 
 
 async def binance_stream(ubwa):
@@ -48,6 +48,7 @@ async def binance_stream(ubwa):
                                     stream_label="Bobs Websocket API",
                                     process_stream_data=handle_socket_message)
     print(f"Start:")
+    ubwa.api.get_listen_key(stream_id=api_stream)
     ubwa.api.get_server_time(stream_id=api_stream)
     ubwa.api.get_account_status(stream_id=api_stream)
     orig_client_order_id = ubwa.api.create_order(stream_id=api_stream, price=1.0, order_type="LIMIT",

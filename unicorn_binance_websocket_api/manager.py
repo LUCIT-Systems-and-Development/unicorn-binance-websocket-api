@@ -505,6 +505,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    ping_interval=None,
                                    ping_timeout=None,
                                    close_timeout=None,
+                                   provided_listen_key=None,
                                    stream_buffer_maxlen=None,
                                    api=False,
                                    process_stream_data=None,
@@ -622,6 +623,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'ping_interval': copy.deepcopy(ping_interval),
                                        'ping_timeout': copy.deepcopy(ping_timeout),
                                        'close_timeout': copy.deepcopy(close_timeout),
+                                       'provided_listen_key': copy.deepcopy(provided_listen_key),
                                        'status': 'starting',
                                        'start_time': time.time(),
                                        'processed_receives_total': 0,
@@ -1485,6 +1487,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                       ping_interval=None,
                       ping_timeout=None,
                       close_timeout=None,
+                      listen_key: str = None,
                       stream_buffer_maxlen=None,
                       api=False,
                       process_stream_data=None,
@@ -1617,6 +1620,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type process_stream_data_async: function
         :return: stream_id or 'False'
         """
+        provided_listen_key = listen_key
+
         # handle Websocket API streams: https://developers.binance.com/docs/binance-trading-api/websocket_api
         if api is True:
             if api_key is False or api_secret is False:
@@ -1680,6 +1685,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         ping_interval=ping_interval,
                                         ping_timeout=ping_timeout,
                                         close_timeout=close_timeout,
+                                        provided_listen_key=provided_listen_key,
                                         stream_buffer_maxlen=stream_buffer_maxlen,
                                         api=api,
                                         process_stream_data=process_stream_data,
@@ -1745,9 +1751,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param api: Setting this to `True` activates the creation of a Websocket API stream to send API requests via Websocket.
-                    Needs `api_key` and `api_secret` in combination. This type of stream can not be combined with a UserData
-                    stream or another public endpoint. (Default is `False`)
+        :param api: Setting this to `True` activates the creation of a Websocket API stream to send API requests via
+                    Websocket. Needs `api_key` and `api_secret` in combination. This type of stream can not be combined
+                    with a UserData stream or another public endpoint. (Default is `False`)
         :type api: bool
         :return: str or False
         """
@@ -1760,12 +1766,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.error(f"BinanceWebSocketApiManager.create_websocket_uri({str(channels)}, {str(markets)}"
                          f", {str(symbols)}) - error_msg: Parameter `channels` must be str, tuple, list "
                          f"or a set!")
-            return False
+            return None
         elif isinstance(markets, bool):
             logger.error(f"BinanceWebSocketApiManager.create_websocket_uri({str(channels)}, {str(markets)}"
                          f", {str(symbols)}) - error_msg: Parameter `markets` must be str, tuple, list "
                          f"or a set!")
-            return False
+            return None
         payload = []
         if type(channels) is str:
             channels = [channels]
@@ -1774,7 +1780,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         if len(channels) == 1 and len(markets) == 1:
             if "!userData" in channels or "!userData" in markets:
                 if stream_id is not None:
-                    response = self.get_listen_key_from_restclient(stream_id)
+                    if self.stream_list[stream_id]['provided_listen_key'] is not None:
+                        response = {'listenKey': self.stream_list[stream_id]['provided_listen_key']}
+                        self.stream_list[stream_id]['listen_key'] = str(response['listenKey'])
+                    else:
+                        response = self.get_listen_key_from_restclient(stream_id)
                     try:
                         if response['code'] == -1102 or \
                                 response['code'] == -2008 or \
@@ -1816,21 +1826,21 @@ class BinanceWebSocketApiManager(threading.Thread):
                             logger.critical("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", "
                                             + str(markets) + ", " + ", " + str(symbols) + ") - error_msg: can not "
                                             "create URI!!")
-                            return False
+                            return None
                         except TypeError:
                             logger.critical("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", "
                                             + str(markets) + ", " + ", " + str(symbols) + ") - error_msg: can not "
                                             "create URI!!")
-                            return False
+                            return None
                     else:
                         logger.critical("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
                                         str(markets) + ", " + ", " + str(symbols) + ") - error_msg: can not create "
                                         "URI!!")
-                        return False
+                        return None
                 else:
                     logger.critical("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
                                     str(markets) + ", " + ", " + str(symbols) + ") - error_msg: can not create URI!!")
-                    return False
+                    return None
             elif "!bookTicker" in channels or "!bookTicker" in markets:
                 if stream_id:
                     self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
@@ -1852,7 +1862,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             logger.error("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
                                          str(markets) + ", " + ", " + str(symbols) + ") - Error: once set, the "
                                          "dex_user_address is not allowed to get changed anymore!")
-                            return False
+                            return None
                     except KeyError:
                         pass
                     add_payload = {"method": "subscribe",
@@ -1869,7 +1879,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     logger.error("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
                                  str(markets) + ", " + ", " + str(symbols) + ") - Error: not able to create websocket "
                                  "URI for DEX")
-                    return False
+                    return None
         if self.is_exchange_type("dex"):
             query = "ws"
             if stream_id:
@@ -1897,7 +1907,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                  "Unfortunately Binance only stream it in a single stream socket! ./"
                                  "Use create_stream([\"arr\"], [\"!userData\"]) to "
                                  "initiate an extra connection.")
-                    return False
+                    return None
             for market in markets:
                 if market == "!userData":
                     logger.error("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
@@ -1906,7 +1916,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                  "Unfortunately Binance only stream it in a single stream socket! ./"
                                  "Use create_stream([\"arr\"], [\"!userData\"]) to "
                                  "initiate an extra connection.")
-                    return False
+                    return None
             if "!" in channel:
                 query += channel + final_market
             elif "!" in market:

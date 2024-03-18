@@ -371,7 +371,7 @@ class BinanceWebSocketApiApi(object):
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApi.cancel_order() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -992,7 +992,7 @@ class BinanceWebSocketApiApi(object):
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApi.get_account_status() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -1184,7 +1184,7 @@ class BinanceWebSocketApiApi(object):
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApi.get_exchange_info() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
         if symbol is not None:
@@ -1200,6 +1200,106 @@ class BinanceWebSocketApiApi(object):
 
         method = "exchangeInfo"
         request_id = self.manager.get_new_uuid_id() if request_id is None else request_id
+
+        payload = {"id": request_id,
+                   "method": method,
+                   "params": params}
+
+        if process_response is not None:
+            with self.manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self.manager.process_response[request_id] = entry
+
+        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if return_response is True:
+            with self.manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self.manager.return_response[request_id] = entry
+            self.manager.return_response[request_id]['event_return_response'].wait()
+            with self.manager.return_response_lock:
+                response_value = copy.deepcopy(self.manager.return_response[request_id]['response_value'])
+                del self.manager.return_response[request_id]
+            return response_value
+
+        return True
+
+    def get_listen_key(self, process_response=None, request_id: str = None, return_response: bool = False,
+                       stream_id=None, stream_label: str = None) -> bool:
+        """
+        Get a listenKey to start a UserDataStream.
+
+        Official documentation:
+
+            - https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-api.md#user-data-stream-requests
+
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
+        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
+                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
+        :type recv_window: int
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :return: bool
+
+
+        Message sent:
+
+        . code-block:: json
+
+            {
+              "id": "d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0",
+              "method": "userDataStream.start",
+              "params": {
+                "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A"
+              }
+            }
+
+
+        Response:
+
+        . code-block:: json
+
+            {
+              "id": "d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0",
+              "status": 200,
+              "result": {
+                "listenKey": "xs0mRXdAKlIPDRFrlPcw0qI41Eh3ixNntmymGyhrhgqo7L6FuLaWArTD7RLP"
+              },
+              "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 6000,
+                  "count": 2
+                }
+              ]
+            }
+        """
+        if stream_id is None:
+            if stream_label is not None:
+                stream_id = self.manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self.manager.get_the_one_active_websocket_api()
+            if stream_id is None:
+                logger.critical(f"BinanceWebSocketApiApi.get_listen_key() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
+
+        request_id = self.manager.get_new_uuid_id() if request_id is None else request_id
+        method = "userDataStream.start"
+        params = {"apiKey": self.manager.stream_list[stream_id]['api_key']}
 
         payload = {"id": request_id,
                    "method": method,
@@ -1330,7 +1430,7 @@ class BinanceWebSocketApiApi(object):
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApi.get_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -1481,7 +1581,7 @@ class BinanceWebSocketApiApi(object):
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApi.get_order() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -1652,7 +1752,7 @@ class BinanceWebSocketApiApi(object):
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApi.get_order_book() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -1748,7 +1848,7 @@ class BinanceWebSocketApiApi(object):
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApi.get_server_time() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -1834,7 +1934,7 @@ class BinanceWebSocketApiApi(object):
             else:
                 stream_id = self.manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApi.ping() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
