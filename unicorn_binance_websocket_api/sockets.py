@@ -82,7 +82,13 @@ class BinanceWebSocketApiSocket(object):
                 while True:
                     if self.manager.is_stop_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
-                        await self.websocket.close()
+                        try:
+                            await self.websocket.close()
+                        except AttributeError as error_msg:
+                            logger.debug(
+                                f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(self.stream_id)} "
+                                f" - AttributeError `error: 17` - error_msg: {str(error_msg)}")
+
                         return False
                     elif self.manager.is_stop_as_crash_request(self.stream_id):
                         await self.websocket.close()
