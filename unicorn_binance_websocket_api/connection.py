@@ -114,12 +114,13 @@ class BinanceWebSocketApiConnection(object):
                                                     stream_id=self.stream_id,
                                                     error_msg=uri['msg'])
                 self.manager.stream_list[self.stream_id]['last_stream_signal'] = "STREAM_UNREPAIRABLE"
+                return None
         except KeyError as error_msg:
             logger.critical("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) +
                             ", " + str(self.channels) + ", " + str(self.markets) + ") - error: 1 - "
                             + str(error_msg))
         if self.manager.socks5_proxy_address is None or self.manager.socks5_proxy_port is None:
-            self._conn = connect(uri,
+            self._conn = connect(str(uri),
                                  ping_interval=self.ping_interval,
                                  ping_timeout=self.ping_timeout,
                                  close_timeout=self.close_timeout,

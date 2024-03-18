@@ -710,6 +710,15 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.stream_buffers[stream_buffer_name] = deque(maxlen=stream_buffer_maxlen)
         loop = None
         try:
+            while not self.event_loops[stream_id].is_closed():
+                time.sleep(1)
+        except RuntimeError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
+                         f" - RuntimeError `error: 15` - error_msg: {str(error_msg)}")
+        except AttributeError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
+                         f" - AttributeError `error: 16` - error_msg: {str(error_msg)}")
+        try:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             if self.debug is True:
@@ -733,6 +742,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             else:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                              f" - RuntimeError `error: 12` - error_msg: {str(error_msg)}")
+# Todo:
 #        except Exception as error_msg:
 #            logger.critical(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)} - Unknown Exception - "
 #                            f"Please report this issue if your stream does not restart: "

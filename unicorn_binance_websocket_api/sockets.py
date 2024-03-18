@@ -56,12 +56,15 @@ class BinanceWebSocketApiSocket(object):
             except AttributeError as error_msg:
                 if "object has no attribute" not in str(error_msg):
                     logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")
-        if self.manager.websocket_list[self.stream_id] is not None:
-            try:
-                await self.manager.websocket_list[self.stream_id].close()
-            except AttributeError as error_msg:
-                if "object has no attribute" not in str(error_msg):
-                    logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")
+        try:
+            if self.manager.websocket_list[self.stream_id] is not None:
+                try:
+                    await self.manager.websocket_list[self.stream_id].close()
+                except AttributeError as error_msg:
+                    if "object has no attribute" not in str(error_msg):
+                        logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")
+        except KeyError as error_msg:
+            logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")
 
     async def start_socket(self):
         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, {str(self.channels)}, "

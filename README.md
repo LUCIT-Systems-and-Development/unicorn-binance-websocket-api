@@ -154,16 +154,17 @@ api_stream = ubwa.create_stream(api=True,
                                 api_key=api_key, 
                                 api_secret=api_secret,
                                 process_stream_data=process_api_responses)
+
+response = ubwa.api.get_listen_key(return_response=True))
+print(response['result']['listenKey'])                                       
                                 
 orig_client_order_id = ubwa.api.create_order(order_type="LIMIT", 
                                              price=1.1, 
                                              quantity=15.0, 
                                              side="SELL", 
                                              symbol="BUSDUSDT")
-ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")   
-
-response = ubwa.api.get_listen_key(return_response=True))
-print(response['result']['listenKey'])                                          
+                                             
+ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                      
 ```
 
 [Here](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404) you can find a complete 
@@ -216,6 +217,11 @@ Use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-binance-rest-a
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
 
+- No memory leaks from Python version 3.7 to 3.11!
+
+- The full [UBS stack](https://www.lucit.tech/unicorn-binance-suite.html) is delivered as a compiled C extension for 
+  maximum performance.
+
 - Support for [Binance Websocket API](https://developers.binance.com/docs/binance-trading-api/websocket_api), send 
   requests like [create_order](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.create_order),
   [cancel_open_orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.ws_api.BinanceWebSocketApiWsApi.cancel_open_orders)
@@ -240,7 +246,7 @@ Use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-binance-rest-a
 | [Binance DEX Testnet](https://testnet.binance.org)                 | `binance.org-testnet`                 | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
 
 - Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so 
-you don't need to deal with asyncio in your code!
+you don't need to deal with asyncio in your code! But you can consume with `await`, if you want!
 
 - Supports 
 [subscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream)
@@ -261,8 +267,8 @@ which stores the receives in the RAM till you are able to process the data in th
 or 
 [users](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py)!
 
-- Watch the `stream_signal_buffer` to receive `CONNECT`, `DISCONNECT` and `FIRST_RECEIVED_DATA` signals about the 
-streams! [Learn more!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60)
+- Watch the `stream_signal_buffer` to receive `CONNECT`, `DISCONNECT`, `FIRST_RECEIVED_DATA` and `STREAM_UNREPAIRABLE` 
+  signals about the streams! [Learn more!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60)
 
 - Get the received data unchanged as received, as Python dictionary or converted with 
 [UnicornFy](https://github.com/LUCIT-Systems-and-Development/unicorn-fy) into well-formed Python dictionaries. Use the `output`
@@ -331,7 +337,7 @@ for [ICINGA](https://exchange.icinga.com/LUCIT/check_lucit_collector)/Nagios
   for more information or try 
   [example_socks5_proxy.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_socks5_proxy.py).
 
-- Excessively tested on Linux, Mac and Windows
+- Excessively tested on Linux, Mac and Windows on x86, arm32, arm64, ...
 
 If you like the project, please [![star](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/star.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/stargazers) it on 
 [GitHub](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)!
@@ -348,7 +354,7 @@ machine of [HETZNER CLOUD](https://www.hetzner.com) - [get 20 EUR starting credi
 
 ## Installation and Upgrade
 The module requires Python 3.7 and runs smoothly up to and including Python 3.11. Data leaks still rarely occur in 
-Python 3.12, we are working on this.
+Python 3.12, we are working on this. ***The recommended Python version is 3.11!***
 
 Anaconda packages are available from Python version 3.8 and higher.
 
