@@ -37,7 +37,7 @@ setup(
          'unicorn_binance_websocket_api/sockets.py'],
         annotate=False),
     name='unicorn-binance-websocket-api',
-    version="2.2.0",
+    version="2.3.0",
     author="LUCIT Systems and Development",
     author_email='info@lucit.tech',
     url="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api",
@@ -49,7 +49,7 @@ setup(
     license='LSOSL - LUCIT Synergetic Open Source License',
     install_requires=['colorama', 'requests', 'websocket-client', 'websockets==11.0.3', 'flask_restful',
                       'cheroot', 'flask', 'lucit-licensing-python>=1.8.1', 'ujson', 'psutil', 'PySocks', 'unicorn-fy',
-                      'unicorn-binance-rest-api>=2.2.0', 'typing_extensions', 'Cython'],
+                      'unicorn-binance-rest-api>=2.3.0', 'typing_extensions', 'Cython'],
     keywords='binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
              'binance-websocket, binance-webstream, webstream, websocket, api, binance-dex, '
             'binance-futures, binance-margin, binance-us',

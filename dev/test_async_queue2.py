@@ -12,7 +12,7 @@ async def main():
     stream_id = ubwa.create_stream(channels=['trade'],
                                    markets=['ethbtc', 'btcusdt'],
                                    process_asyncio_queue=process_asyncio_queue)
-    while ubwa.is_manager_stopping() is False:
+    while not ubwa.is_manager_stopping():
         await asyncio.sleep(1)
 
 
