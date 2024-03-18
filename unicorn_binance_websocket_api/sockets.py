@@ -85,9 +85,9 @@ class BinanceWebSocketApiSocket(object):
                         try:
                             await self.websocket.close()
                         except AttributeError as error_msg:
-                            logger.debug(
-                                f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(self.stream_id)} "
-                                f" - AttributeError `error: 17` - error_msg: {str(error_msg)}")
+                            logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() "
+                                         f"stream_id={str(self.stream_id)}  - AttributeError `error: 17` - "
+                                         f"error_msg: {str(error_msg)}")
 
                         return False
                     elif self.manager.is_stop_as_crash_request(self.stream_id):
@@ -120,8 +120,12 @@ class BinanceWebSocketApiSocket(object):
                             logger.debug(f"BinanceWebSocketApiSocket.start_socket() IndexError: {error_msg}")
                         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
                                     f"{str(self.channels)}, {str(self.markets)} - Sending payload: {str(payload)}")
-                        await self.websocket.send(json.dumps(payload, ensure_ascii=False))
-
+                        try:
+                            await self.websocket.send(json.dumps(payload, ensure_ascii=False))
+                        except AttributeError as error_msg:
+                            logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() "
+                                         f"stream_id={str(self.stream_id)}  - AttributeError `error: 18` - "
+                                         f"error_msg: {str(error_msg)}")
                         # To avoid a ban we respect the limits of binance:
                         # https://github.com/binance-exchange/binance-official-api-docs/blob/5fccfd572db2f530e25e302c02be5dec12759cf9/CHANGELOG.md#2020-04-23
                         # Limit: max 5 messages per second inclusive pings/pong
