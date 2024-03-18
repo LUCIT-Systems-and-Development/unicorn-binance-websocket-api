@@ -104,7 +104,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data
                                   is received. This method guarantees the fastest possible asynchronous processing of
                                   the data in the correct receiving sequence.
-
+                                  https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task
     :type process_asyncio_queue: Optional[Callable]
     :param process_stream_data: Provide a function/method to process the received webstream data (callback). The function
                                 will be called instead of
@@ -378,11 +378,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.keepalive_streams_list = {}
         self.last_entry_added_to_stream_buffer = 0
         self.last_monitoring_check = time.time()
-        self.last_update_check_github = {'timestamp': time.time(),
-                                         'status': None}
+        self.last_update_check_github = {'timestamp': time.time(), 'status': None}
         self.last_update_check_github['status']: dict = None
-        self.last_update_check_github_check_command = {'timestamp': time.time(),
-                                                       'status': None}
+        self.last_update_check_github_check_command = {'timestamp': time.time(), 'status': None}
         self.max_send_messages_per_second = 5
         self.max_send_messages_per_second_reserve = 2
         self.most_receives_per_second = 0
@@ -469,6 +467,13 @@ class BinanceWebSocketApiManager(threading.Thread):
             await socket.start_socket()
 
     async def get_stream_data_from_asyncio_queue(self, stream_id=None):
+        """
+        Retrieves the oldest entry from the FIFO stack.
+
+        :param stream_id: provide a stream_id - only needed for userData Streams (acquiring a listenKey)
+        :type stream_id: str
+        :return: stream_data - str, dict or None
+        """
         if stream_id is None:
             return None
         try:
@@ -478,7 +483,25 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             return None
 
-    def asyncio_queue_task_done(self, stream_id=None):
+    def asyncio_queue_task_done(self, stream_id=None) -> bool:
+        """
+        If `get_stream_data_from_asyncio_queue()` was used, `asyncio_queue_task_done()` must be executed at the end of
+        the loop.
+
+        :param stream_id: provide a stream_id - only needed for userData Streams (acquiring a listenKey)
+        :type stream_id: str
+
+        :return: bool
+
+        Example:
+
+        . code-block:: python
+
+            while True:
+                data = await ubwa.get_stream_data_from_asyncio_queue(stream_id)
+                print(data)
+                ubwa.asyncio_queue_task_done(stream_id)
+        """
         if stream_id is None:
             return False
         try:
@@ -581,15 +604,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                             get stored in the stream_buffer! `How to read from stream_buffer!
                             <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
         :type process_stream_data_async: function
-        :param process_asyncio_queue: Todo: Die wohl performanteste Möglichkeit die empfangen Daten entgegen zunehmen und zu verarbeiten.
-                                    Füge deine asyncio Funktion dem gleichen AsyncIO Loop hinzu in dem die Websocket Daten
-                                    empfangen werden und `await` ganz einfach die neuen Daten. Diese Methode garantiert das
-                                    Verarbeien der daten in der richtigen Reihenfolge.
-
-                                    Beispiel:
-
-
-        :type process_asyncio_queue: bool
+        :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data
+                                      is received. This method guarantees the fastest possible asynchronous processing of
+                                      the data in the correct receiving sequence.
+                                      https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task
+        :type process_asyncio_queue: Optional[Callable]
         """
         output = output or self.output_default
         close_timeout = close_timeout or self.close_timeout_default
@@ -1543,15 +1562,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type channels: str, tuple, list, set
         :param markets: provide the markets you wish to stream
         :type markets: str, tuple, list, set
-        :param process_asyncio_queue: Todo: Die wohl performanteste Möglichkeit die empfangen Daten entgegen zunehmen und zu verarbeiten.
-                                    Füge deine asyncio Funktion dem gleichen AsyncIO Loop hinzu in dem die Websocket Daten
-                                    empfangen werden und `await` ganz einfach die neuen Daten. Diese Methode garantiert das
-                                    Verarbeien der daten in der richtigen Reihenfolge.
-
-                                    Beispiel:
-
-
-        :type process_asyncio_queue: bool
         :param stream_label: provide a stream_label to identify the stream
         :type stream_label: str
         :param stream_buffer_name: If `False` the data is going to get written to the default stream_buffer,
@@ -1619,6 +1629,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                             object instantiation! `How to read from stream_buffer!
                             <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html?highlight=pop_stream_data_from_stream_buffer#and-4-more-lines-to-print-the-receives>`_
         :type process_stream_data_async: function
+        :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data
+                                      is received. This method guarantees the fastest possible asynchronous processing of
+                                      the data in the correct receiving sequence.
+                                      https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task
+        :type process_asyncio_queue: Optional[Callable]
+
         :return: stream_id or 'False'
         """
         provided_listen_key = listen_key
@@ -1973,6 +1989,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: bool
         """
         logger.info("BinanceWebSocketApiManager.delete_stream_from_stream_list(" + str(stream_id) + ")")
+        logger.warning("`BinanceWebSocketApiManager.delete_stream_from_stream_list()` is deprecated, use "
+                       "`BinanceWebSocketApiManager.remove_all_data_of_stream_id()` instead!")
         if self.wait_till_stream_has_stopped(stream_id=stream_id, timeout=timeout) is True:
             self.stream_list.pop(stream_id, False)
             return True
@@ -2242,7 +2260,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type timestamp: timestamp
         :return: str
         """
-        date = str(datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d, %H:%M:%S UTC'))
+        date = str(datetime.fromtimestamp(timestamp, timezone.utc).strftime('%Y-%m-%d, %H:%M:%S UTC'))
         return date
 
     def get_errors_from_endpoints(self):
@@ -2334,28 +2352,28 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get infos about the latest available release
 
-        :return: dict or False
+        :return: dict or None
         """
         try:
             respond = requests.get('https://api.github.com/repos/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest')
             latest_release_info = respond.json()
             return latest_release_info
         except Exception:
-            return False
+            return None
 
     @staticmethod
     def get_latest_release_info_check_command():
         """
         Get infos about the latest available `check_lucit_collector` release
         
-        :return: dict or False
+        :return: dict or None
         """
         try:
             respond = requests.get('https://api.github.com/repos/LUCIT-Development/check_lucit_collector.py/'
                                    'releases/latest')
             return respond.json()
         except Exception:
-            return False
+            return None
 
     def get_latest_version(self):
         """
@@ -2732,7 +2750,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             cpu = psutil.cpu_percent(interval=None)
         except OSError as error_msg:
             logger.error(f"BinanceWebSocketApiManager.get_process_usage_cpu() - OSError - error_msg: {str(error_msg)}")
-            return False
+            return None
         return cpu
 
     @staticmethod
@@ -2773,7 +2791,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type request_id: stream_id (uuid)
         :param timeout: seconds to wait to receive the result. If not there it returns 'False'
         :type timeout: int
-        :return: `result` or False
+        :return: `result` or None
         """
         if request_id is None:
             return None
@@ -2907,7 +2925,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_id: id of a stream
         :type stream_id: str
-        :return: str or False
+        :return: str or None
         """
         if stream_id:
             try:
@@ -3783,6 +3801,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type print_summary_export_path: str
         :param hight_per_row: set the hight per row for the image hight calculation
         :type hight_per_row: int
+
         :return: bool
         """
         print_text = self.print_summary(disable_print=True)
@@ -3808,8 +3827,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Remove ansi excape codes from the text string!
 
-        :param text: str
-        :return:
+        :param text: The text :)
+        :type text: str
+
+        :return: str
         """
         text = str(text)
         text = text.replace("\033[1m\033[31m", "")

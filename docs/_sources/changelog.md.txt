@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.3.0.dev (development stage/unreleased/unstable)
 
 ## 2.3.0
-Text
+Runs perfectly on Python 3.7 to 3.11!
 
 ### Added
 - `ubwa.api.get_listen_key()`
@@ -41,7 +41,6 @@ Text
 - Logging info in `connection.py` revised.
 - `ubwa.api.get_open_orders()` can now be used without the `symbol` parameter to query all open orders.
 - Completely revised the error handling.
-
 ### Removed
 - Parameter `throw_exception_if_unrepairable` of `BinanceWebSocketApiManager()`.
 - Exception `StreamRecoveryError`.

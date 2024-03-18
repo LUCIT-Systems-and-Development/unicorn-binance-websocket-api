@@ -18,7 +18,7 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, Socks5ProxyConnectionError
+from unicorn_binance_websocket_api.exceptions import Socks5ProxyConnectionError
 from urllib.parse import urlparse
 import asyncio
 import copy
