@@ -168,9 +168,9 @@ class BinanceWebSocketApiConnection(object):
         try:
             try:
                 self.manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
-            except asyncio.CancelledError as error_msg:
-                logger.error(f"BinanceWebSocketApiConnection.__aenter__({self.stream_id}), {self.channels}), {self.markets}) "
-                             f"- Exception asyncio.CancelledError - error_msg: {error_msg}")
+            except asyncio.CancelledError:
+                logger.debug(f"BinanceWebSocketApiConnection.__aenter__({self.stream_id}), {self.channels}), {self.markets}) "
+                             f"- Exception asyncio.CancelledError")
                 return None
             except websockets.exceptions.InvalidMessage as error_msg:
                 logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) +
@@ -282,9 +282,9 @@ class BinanceWebSocketApiConnection(object):
     async def __aexit__(self, *args, **kwargs):
         try:
             await self._conn.__aexit__(*args, **kwargs)
-        except asyncio.CancelledError as error_msg:
-            logger.error(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}), {self.channels}), {self.markets}) "
-                         f"- Exception asyncio.CancelledError - error_msg: {error_msg}")
+        except asyncio.CancelledError:
+            logger.debug(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}), {self.channels}), {self.markets}) "
+                         f"- Exception asyncio.CancelledError")
         except RuntimeError as error_msg:
             logger.debug(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - RuntimeError - {error_msg}")
             self.manager.stream_is_stopping(self.stream_id)
@@ -307,9 +307,9 @@ class BinanceWebSocketApiConnection(object):
         logger.info(f"BinanceWebSocketApiConnection.close({str(self.stream_id)})")
         try:
             await self.manager.websocket_list[self.stream_id].close()
-        except asyncio.CancelledError as error_msg:
-            logger.error(f"BinanceWebSocketApiConnection.close({self.stream_id}), {self.channels}), {self.markets}) "
-                         f"- Exception asyncio.CancelledError - error_msg: {error_msg}")
+        except asyncio.CancelledError:
+            logger.debug(f"BinanceWebSocketApiConnection.close({self.stream_id}), {self.channels}), {self.markets}) "
+                         f"- Exception asyncio.CancelledError")
         except KeyError:
             logger.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) - Stream not found!")
         except RuntimeError as error_msg:
@@ -351,9 +351,9 @@ class BinanceWebSocketApiConnection(object):
                 self.manager.add_total_received_bytes(size)
                 self.manager.increase_received_bytes_per_second(self.stream_id, size)
             return received_data_json
-        except asyncio.CancelledError as error_msg:
-            logger.error(f"BinanceWebSocketApiConnection.receive({self.stream_id}), {self.channels}), {self.markets}) "
-                         f"- Exception asyncio.CancelledError - error_msg: {error_msg}")
+        except asyncio.CancelledError:
+            logger.debug(f"BinanceWebSocketApiConnection.receive({self.stream_id}), {self.channels}), {self.markets}) "
+                         f"- Exception asyncio.CancelledError")
             return None
         except RuntimeError as error_msg:
             logger.error("BinanceWebSocketApiConnection.receive(" +
@@ -390,9 +390,9 @@ class BinanceWebSocketApiConnection(object):
         try:
             await self.manager.websocket_list[self.stream_id].send(data)
             self.manager.increase_transmitted_counter(self.stream_id)
-        except asyncio.CancelledError as error_msg:
-            logger.error(f"BinanceWebSocketApiConnection.send({self.stream_id}), {self.channels}), {self.markets}) "
-                         f"- Exception asyncio.CancelledError - error_msg: {error_msg}")
+        except asyncio.CancelledError:
+            logger.debug(f"BinanceWebSocketApiConnection.send({self.stream_id}), {self.channels}), {self.markets}) "
+                         f"- Exception asyncio.CancelledError")
             return None
         except websockets.exceptions.ConnectionClosed as error_msg:
             logger.error("BinanceWebSocketApiConnection.send(" + str(self.stream_id) + ", " +

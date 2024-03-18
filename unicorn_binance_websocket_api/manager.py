@@ -506,6 +506,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    ping_timeout=None,
                                    close_timeout=None,
                                    provided_listen_key=None,
+                                   keep_listen_key_alive=True,
                                    stream_buffer_maxlen=None,
                                    api=False,
                                    process_stream_data=None,
@@ -624,6 +625,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'ping_timeout': copy.deepcopy(ping_timeout),
                                        'close_timeout': copy.deepcopy(close_timeout),
                                        'provided_listen_key': copy.deepcopy(provided_listen_key),
+                                       'keep_listen_key_alive': copy.deepcopy(keep_listen_key_alive),
                                        'status': 'starting',
                                        'start_time': time.time(),
                                        'processed_receives_total': 0,
@@ -717,11 +719,11 @@ class BinanceWebSocketApiManager(threading.Thread):
             else:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                              f" - RuntimeError `error: 12` - error_msg: {str(error_msg)}")
-        except Exception as error_msg:
-            logger.critical(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)} - Unknown Exception - "
-                            f"Please report this issue if your stream does not restart: "
-                            f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose"
-                            f" - error_msg: {str(error_msg)}")
+#        except Exception as error_msg:
+#            logger.critical(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)} - Unknown Exception - "
+#                            f"Please report this issue if your stream does not restart: "
+#                            f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose"
+#                            f" - error_msg: {str(error_msg)}")
         finally:
             logger.debug(f"Finally closing the loop stream_id={str(stream_id)}")
             try:
@@ -829,8 +831,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.frequent_checks_list[frequent_checks_id] = {'last_heartbeat': 0,
                                                              'stop_request': None,
                                                              'has_stopped': False}
-        logger.info("BinanceWebSocketApiManager._frequent_checks() new instance created with frequent_checks_id=" +
-                    str(frequent_checks_id))
+        logger.debug(f"BinanceWebSocketApiManager._frequent_checks() new instance created with frequent_checks_id"
+                     f"={frequent_checks_id}")
 
         # threaded loop for min 1 check per second
         while self.stop_manager_request is False \
@@ -951,10 +953,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                     if active_stream_list[stream_id]['api'] is False:
                         if "!userData" in active_stream_list[stream_id]['markets'] or \
                                 "!userData" in active_stream_list[stream_id]['channels']:
-                            if (active_stream_list[stream_id]['start_time'] +
-                                active_stream_list[stream_id]['listen_key_cache_time']) < time.time() and \
-                                    (active_stream_list[stream_id]['last_static_ping_listen_key'] +
-                                     active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
+                            if active_stream_list[stream_id]['keep_listen_key_alive'] is True \
+                                    and (active_stream_list[stream_id]['start_time'] +
+                                         active_stream_list[stream_id]['listen_key_cache_time']) < time.time() \
+                                    and (active_stream_list[stream_id]['last_static_ping_listen_key'] +
+                                         active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
                                 # keep-alive the listenKey
                                 response, binance_api_status = self.restclient.keepalive_listen_key(stream_id)
                                 if binance_api_status is not None:
@@ -962,9 +965,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 # set last_static_ping_listen_key
                                 self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
                                 self.set_heartbeat(stream_id)
-                                logger.info("BinanceWebSocketApiManager._frequent_checks() - sent listen_key keepalive "
-                                            "ping for stream_id=" + str(stream_id))
-        sys.exit(0)
+                                logger.info(f"BinanceWebSocketApiManager._frequent_checks() - sent listen_key "
+                                            f"keepalive ping for stream_id={stream_id}")
+        logger.debug(f"BinanceWebSocketApiManager._frequent_checks() - Leaving thread ...")
 
     @staticmethod
     def _handle_task_result(task: asyncio.Task) -> None:
@@ -1488,6 +1491,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                       ping_timeout=None,
                       close_timeout=None,
                       listen_key: str = None,
+                      keep_listen_key_alive: bool = True,
                       stream_buffer_maxlen=None,
                       api=False,
                       process_stream_data=None,
@@ -1686,6 +1690,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         ping_timeout=ping_timeout,
                                         close_timeout=close_timeout,
                                         provided_listen_key=provided_listen_key,
+                                        keep_listen_key_alive=keep_listen_key_alive,
                                         stream_buffer_maxlen=stream_buffer_maxlen,
                                         api=api,
                                         process_stream_data=process_stream_data,
