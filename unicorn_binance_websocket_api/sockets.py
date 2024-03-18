@@ -114,6 +114,7 @@ class BinanceWebSocketApiSocket(object):
                                          f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
                                          f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
                             return False
+                        payload = []
                         try:
                             payload = self.manager.stream_list[self.stream_id]['payload'].pop(0)
                         except IndexError as error_msg:
