@@ -9,7 +9,42 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.2.0.dev (development stage/unreleased/unstable)
+## 2.3.0.dev (development stage/unreleased/unstable)
+
+## 2.3.0
+Text
+
+### Added
+- `ubwa.api.get_listen_key()`
+- Unit tests for python 3.7 to 3.12, extension of the tests.
+- Support and use of an `asyncio.queue()`. The parameter "process_asyncio_queue" for `BinanceWebSocketApiManager()` and 
+  `create_stream()` can be passed an async function, which is automatically added to the event loop of the websocket as 
+  an async task. Received websocket data can be conveniently awaited with 
+  `await get_stream_data_from_asyncio_queue(stream_id)` as an AsyncIO alternative to 
+  `pop_stream_data_from_stream_buffer()`. This is probably the smartest way to process data from the websocket and 
+  should be preferred to the stream_buffer and the callback function.
+### Changed
+- Updated from websockets 10.4 to 11.0.3.
+- `pop_stream_data_from_stream_buffer()` returns `None` instead of `False`
+- The parameter `throw_exception_if_unrepairable` was removed by the UBWA Manager and replaced by the stream_signal 
+  `STREAM_UNREPAIRABLE`.  
+  Info: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60
+- Many `False` values have been changed to `None` values in accordance with Python conventions.
+- `shutdown_asyncgens()` to `_shutdown_asyncgens()`
+- `run_socket()` to `_run_socket()`
+- `_auto_data_cleanup_stopped_streams()` now performs a check every 60 seconds and deletes the data from streams that 
+  have been stopped for more than 900 seconds.
+- `datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d, %H:%M:%S UTC'))` is obsolete and has been 
+  replaced by `datetime.fromtimestamp(stream_info['start_time'], timezone.utc).strftime('%Y-%m-%d, %H:%M:%S UTC')`.
+### Fixed
+- In Websocket API wrong method names were used in logging.
+- Logging info in `connection.py` revised.
+- `ubwa.api.get_open_orders()` can now be used without the `symbol` parameter to query all open orders.
+- Completely revised the error handling.
+
+### Removed
+- Parameter `throw_exception_if_unrepairable` of `BinanceWebSocketApiManager()`.
+- Exception `StreamRecoveryError`.
 
 ## 2.2.0
 This update is primarily aimed at stabilization. The loop management has been improved and runs absolutely fine in 

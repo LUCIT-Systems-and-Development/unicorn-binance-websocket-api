@@ -79,6 +79,37 @@ ubwa.create_stream(channels=['trade', 'kline_1m'],
                    process_stream_data=process_new_receives)
 ```
 
+### Or await the webstream data in an asyncio task:
+```
+from unicorn_binance_websocket_api import BinanceWebSocketApiManager
+import asyncio
+
+
+async def main():
+    async def process_asyncio_queue():
+        while True:
+            data = await ubwa.get_stream_data_from_asyncio_queue(stream_id)
+            print(data)
+            ubwa.asyncio_queue_task_done(stream_id)
+
+    stream_id = ubwa.create_stream(channels=['trade'],
+                                   markets=['ethbtc', 'btcusdt'],
+                                   process_asyncio_queue=process_asyncio_queue)
+    while ubwa.is_manager_stopping() is False:
+        await asyncio.sleep(1)
+
+
+if __name__ == "__main__":
+    with BinanceWebSocketApiManager(exchange='binance.com') as ubwa:
+        try:
+            asyncio.run(main())
+        except KeyboardInterrupt:
+            print("Gracefully stopping ...")
+        except Exception as error_msg:
+            print(f"\r\nERROR: {error_msg}")
+            print("Gracefully stopping ...")
+```
+
 Basically that's it, but there are more options.
 
 ### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://www.lucit.tech/unicorn-fy.html):
@@ -129,7 +160,10 @@ orig_client_order_id = ubwa.api.create_order(order_type="LIMIT",
                                              quantity=15.0, 
                                              side="SELL", 
                                              symbol="BUSDUSDT")
-ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                             
+ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")   
+
+response = ubwa.api.get_listen_key(return_response=True))
+print(response['result']['listenKey'])                                          
 ```
 
 [Here](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404) you can find a complete 
@@ -313,8 +347,8 @@ machine of [HETZNER CLOUD](https://www.hetzner.com) - [get 20 EUR starting credi
 (Refresh update once a minute!)
 
 ## Installation and Upgrade
-The module requires Python 3.7 or above, as it depends on Pythons latest asyncio features for asynchronous/concurrent 
-processing. 
+The module requires Python 3.7 and runs smoothly up to and including Python 3.11. Data leaks still rarely occur in 
+Python 3.12, we are working on this.
 
 Anaconda packages are available from Python version 3.8 and higher.
 

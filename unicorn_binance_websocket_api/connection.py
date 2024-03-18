@@ -15,7 +15,7 @@
 #
 # Author: LUCIT Systems and Development
 #
-# Copyright (c) 2019-2023, LUCIT Systems and Development (https://www.lucit.tech)
+# Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
 from unicorn_binance_websocket_api.exceptions import StreamRecoveryError, Socks5ProxyConnectionError

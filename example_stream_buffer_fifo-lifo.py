@@ -12,7 +12,7 @@
 #
 # Author: LUCIT Systems and Development
 #
-# Copyright (c) 2019-2023, LUCIT Systems and Development (https://www.lucit.tech)
+# Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -121,7 +121,7 @@ print(f"FIFO START ##################################################")
 i = 0
 while i < 5:
     oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer(stream_buffer_name="buffer1")
-    if oldest_stream_data_from_stream_buffer is False:
+    if oldest_stream_data_from_stream_buffer is None:
         time.sleep(0.01)
     else:
         if oldest_stream_data_from_stream_buffer is not None:
@@ -133,7 +133,7 @@ i = 0
 while i < 5:
     oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer(stream_buffer_name="buffer2",
                                                                                                              mode="LIFO")
-    if oldest_stream_data_from_stream_buffer is False:
+    if oldest_stream_data_from_stream_buffer is None:
         time.sleep(0.01)
     else:
         if oldest_stream_data_from_stream_buffer is not None:

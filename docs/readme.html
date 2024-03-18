@@ -70,6 +70,7 @@
 <li><a class="reference internal" href="#create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code">Create a multiplex websocket connection to Binance with a <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> with just 3 lines of code:</a></li>
 <li><a class="reference internal" href="#and-4-more-lines-to-print-the-receives">And 4 more lines to print the receives:</a></li>
 <li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do:</a></li>
+<li><a class="reference internal" href="#or-await-the-webstream-data-in-an-asyncio-task">Or await the webstream data in an asyncio task:</a></li>
 <li><a class="reference internal" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received raw webstream data into well-formed Python dictionaries with UnicornFy:</a></li>
 <li><a class="reference internal" href="#subscribe-unsubscribe-new-markets-and-channels">Subscribe / unsubscribe new markets and channels:</a></li>
 </ul>
@@ -310,6 +311,38 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
                    <span class="n">process_stream_data</span><span class="o">=</span><span class="n">process_new_receives</span><span class="p">)</span>
 </pre></div>
 </div>
+</section>
+<section id="or-await-the-webstream-data-in-an-asyncio-task">
+<h3>Or await the webstream data in an asyncio task:<a class="headerlink" href="#or-await-the-webstream-data-in-an-asyncio-task" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">process_asyncio_queue</span><span class="p">():</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">get_stream_data_from_asyncio_queue</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">ubwa</span><span class="o">.</span><span class="n">asyncio_queue_task_done</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span>
+
+    <span class="n">stream_id</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;trade&#39;</span><span class="p">],</span>
+                                   <span class="n">markets</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ethbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;btcusdt&#39;</span><span class="p">],</span>
+                                   <span class="n">process_asyncio_queue</span><span class="o">=</span><span class="n">process_asyncio_queue</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">is_manager_stopping</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s1">&#39;binance.com&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ubwa</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gracefully stopping ...&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">ERROR: </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gracefully stopping ...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Basically that’s it, but there are more options.</p>
 </section>
 <section id="convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">
@@ -362,7 +395,10 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
                                              <span class="n">quantity</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span> 
                                              <span class="n">side</span><span class="o">=</span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span> 
                                              <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;BUSDUSDT&quot;</span><span class="p">)</span>
-<span class="n">ubwa</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">cancel_order</span><span class="p">(</span><span class="n">orig_client_order_id</span><span class="o">=</span><span class="n">orig_client_order_id</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;BUSDUSDT&quot;</span><span class="p">)</span>                                             
+<span class="n">ubwa</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">cancel_order</span><span class="p">(</span><span class="n">orig_client_order_id</span><span class="o">=</span><span class="n">orig_client_order_id</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s2">&quot;BUSDUSDT&quot;</span><span class="p">)</span>   
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">get_listen_key</span><span class="p">(</span><span class="n">return_response</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">][</span><span class="s1">&#39;listenKey&#39;</span><span class="p">])</span>                                          
 </pre></div>
 </div>
 <p><a class="reference external" href="https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404">Here</a> you can find a complete
@@ -603,8 +639,8 @@ machine of <a class="reference external" href="https://www.hetzner.com">HETZNER 
 </section>
 <section id="installation-and-upgrade">
 <h2>Installation and Upgrade<a class="headerlink" href="#installation-and-upgrade" title="Link to this heading">¶</a></h2>
-<p>The module requires Python 3.7 or above, as it depends on Pythons latest asyncio features for asynchronous/concurrent
-processing.</p>
+<p>The module requires Python 3.7 and runs smoothly up to and including Python 3.11. Data leaks still rarely occur in
+Python 3.12, we are working on this.</p>
 <p>Anaconda packages are available from Python version 3.8 and higher.</p>
 <p>For the PyPy interpreter we offer packages only from Python version 3.9 and higher.</p>
 <p>The current dependencies are listed <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/requirements.txt">here</a>.</p>
@@ -869,6 +905,7 @@ companies from the US analyze binance.com market data - as long as they do not t
 <li><a class="reference internal" href="#create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code">Create a multiplex websocket connection to Binance with a <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> with just 3 lines of code:</a></li>
 <li><a class="reference internal" href="#and-4-more-lines-to-print-the-receives">And 4 more lines to print the receives:</a></li>
 <li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do:</a></li>
+<li><a class="reference internal" href="#or-await-the-webstream-data-in-an-asyncio-task">Or await the webstream data in an asyncio task:</a></li>
 <li><a class="reference internal" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received raw webstream data into well-formed Python dictionaries with UnicornFy:</a></li>
 <li><a class="reference internal" href="#subscribe-unsubscribe-new-markets-and-channels">Subscribe / unsubscribe new markets and channels:</a></li>
 </ul>
@@ -1032,7 +1069,7 @@ companies from the US analyze binance.com market data - as long as they do not t
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Mar 14 2024 at 16:39 (CET).
+    Last updated on Mar 18 2024 at 16:05 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

@@ -15,7 +15,7 @@
 #
 # Author: LUCIT Systems and Development
 #
-# Copyright (c) 2019-2023, LUCIT Systems and Development (https://www.lucit.tech)
+# Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
 import asyncio
@@ -38,11 +38,10 @@ import traceback
 import uuid
 import ujson as json
 import websockets
-from lucit_licensing_python.manager import LucitLicensingManager
-from lucit_licensing_python.exceptions import NoValidatedLucitLicense
-from unicorn_binance_rest_api.manager import BinanceRestApiManager
+from lucit_licensing_python import LucitLicensingManager, NoValidatedLucitLicense
+from unicorn_binance_rest_api import BinanceRestApiManager
 from .connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, CONNECTION_SETTINGS
-from .exceptions import StreamRecoveryError, UnknownExchange
+from .exceptions import UnknownExchange
 from .restclient import BinanceWebSocketApiRestclient
 from .restserver import BinanceWebSocketApiRestServer
 from .sockets import BinanceWebSocketApiSocket
@@ -102,13 +101,9 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         - https://docs.binance.org/api-reference/dex-api/ws-connection.html
 
-    :param process_asyncio_queue: Todo: Die wohl performanteste Möglichkeit die empfangen Daten entgegen zunehmen und zu verarbeiten.
-                                Füge deine asyncio Funktion dem gleichen AsyncIO Loop hinzu in dem die Websocket Daten
-                                empfangen werden und `await` ganz einfach die neuen Daten. Diese Methode garantiert das
-                                Verarbeien der daten in der richtigen Reihenfolge.
-
-                                Beispiel:
-
+    :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data
+                                  is received. This method guarantees the fastest possible asynchronous processing of
+                                  the data in the correct receiving sequence.
 
     :type process_asyncio_queue: Optional[Callable]
     :param process_stream_data: Provide a function/method to process the received webstream data (callback). The function
@@ -791,7 +786,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             params.append(('signature', data['signature']))
         return params
 
-    def _auto_data_cleanup_stopped_streams(self, interval=60, age=900):
+    def _auto_data_cleanup_stopped_streams(self, interval=None, age=None) -> bool:
+        if interval is None or age is None:
+            return False
         logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Starting with an interval "
                     f"of {interval} seconds!")
         timestamp_last_check = 0
@@ -3351,7 +3348,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - RuntimeWarning - {error_msg}")
         return True
 
-    def pop_stream_data_from_stream_buffer(self, stream_buffer_name=False, mode="FIFO"):
+    def pop_stream_data_from_stream_buffer(self, stream_buffer_name=None, mode="FIFO"):
         """
         Get oldest or latest entry from
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
@@ -3362,9 +3359,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_buffer_name: bool or str
         :param mode: How to read from the `stream_buffer` - "FIFO" (default) or "LIFO".
         :type mode: str
-        :return: stream_data - str, dict or False
+        :return: stream_data - str, dict or None
         """
-        if stream_buffer_name is False:
+        if stream_buffer_name is None:
             try:
                 with self.stream_buffer_lock:
                     if mode.upper() == "FIFO":
@@ -3372,10 +3369,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                     elif mode.upper() == "LIFO":
                         stream_data = self.stream_buffer.pop()
                     else:
-                        return False
+                        return None
                 return stream_data
             except IndexError:
-                return False
+                return None
         else:
             try:
                 with self.stream_buffer_locks[stream_buffer_name]:
@@ -3384,12 +3381,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                     elif mode.upper() == "LIFO":
                         stream_data = self.stream_buffers[stream_buffer_name].pop()
                     else:
-                        return False
+                        return None
                 return stream_data
             except IndexError:
-                return False
+                return None
             except KeyError:
-                return False
+                return None
 
     def pop_stream_signal_from_stream_signal_buffer(self):
         """
@@ -3921,6 +3918,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.auto_data_cleanup_stopped_streams is True:
             time.sleep(10)
             thread_auto_data_cleanup_stopped_streams = threading.Thread(target=self._auto_data_cleanup_stopped_streams,
+                                                                        args=(60, 900, ),  # Interval, Age
                                                                         name="auto_data_cleanup_stopped_streams")
             thread_auto_data_cleanup_stopped_streams.start()
 
