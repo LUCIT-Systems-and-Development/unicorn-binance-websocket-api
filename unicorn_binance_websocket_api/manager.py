@@ -701,7 +701,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type restart: bool
         :return:
         """
-        self.stream_list[stream_id]['stop_to_restart'] = False
+        #self.stream_list[stream_id]['stop_to_restart'] = False
         if self.is_stop_request(stream_id):
             return False
         if restart is False:
