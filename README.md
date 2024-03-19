@@ -98,16 +98,14 @@ async def main():
     while not ubwa.is_manager_stopping():
         await asyncio.sleep(1)
 
-
-if __name__ == "__main__":
-    with BinanceWebSocketApiManager(exchange='binance.com') as ubwa:
-        try:
-            asyncio.run(main())
-        except KeyboardInterrupt:
-            print("Gracefully stopping ...")
-        except Exception as error_msg:
-            print(f"\r\nERROR: {error_msg}")
-            print("Gracefully stopping ...")
+with BinanceWebSocketApiManager(exchange='binance.com') as ubwa:
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Gracefully stopping ...")
+    except Exception as error_msg:
+        print(f"\r\nERROR: {error_msg}")
+        print("Gracefully stopping ...")
 ```
 
 Basically that's it, but there are more options.
@@ -353,8 +351,9 @@ machine of [HETZNER CLOUD](https://www.hetzner.com) - [get 20 EUR starting credi
 (Refresh update once a minute!)
 
 ## Installation and Upgrade
-The module requires Python 3.7 and runs smoothly up to and including Python 3.11. Data leaks still rarely occur in 
-Python 3.12, we are working on this. ***The recommended Python version is 3.11!***
+The module requires Python 3.7 and runs smoothly up to and including Python 3.12.  
+
+***The recommended Python version is 3.11!***
 
 Anaconda packages are available from Python version 3.8 and higher.
 
