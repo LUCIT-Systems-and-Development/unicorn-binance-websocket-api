@@ -68,7 +68,7 @@ logger = logging.getLogger("unicorn_binance_websocket_api")
 class BinanceWebSocketApiManager(threading.Thread):
     """
     An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
-    com-isolated_margin+testnet, com-futures+testnet, us, dex/chain+testnet) in a easy, fast, flexible,
+    com-isolated_margin+testnet, com-futures+testnet, us, dex/chain+testnet) in an easy, fast, flexible,
     robust and fully-featured way.
 
     This library supports two different kind of websocket endpoints:
@@ -600,7 +600,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             get stored in the stream_buffer! `How to read from stream_buffer!
                             <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
         :type process_stream_data: function
-        :param process_stream_data_async: Provide a asynchronous function/method to process the received webstream data.
+        :param process_stream_data_async: Provide an asynchronous function/method to process the received webstream data.
                             The function will be called instead of
                             `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
                             like `process_stream_data(stream_data, stream_buffer_name)` where
@@ -1614,6 +1614,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                               This parameter is passed through to the `websockets.client.connect()
                               <https://websockets.readthedocs.io/en/stable/topics/design.html?highlight=close_timeout#closing-handshake>`_
         :type close_timeout: int or None
+        :param keep_listen_key_alive: `True` (default) or `False`.
+        :type keep_listen_key_alive: str
+        :param listen_key: Provide the Binance listenKey for the userData stream.
+        :type listen_key: str
         :param stream_buffer_maxlen: Set a max len for the `stream_buffer`. Only used in combination with a non-generic
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
                                      `BinanceWebSocketApiManager()`.
