@@ -679,14 +679,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         if loop is None:
             return False
         try:
-            tasks = asyncio.all_tasks(loop)
-            loop.run_until_complete(self._shutdown_asyncgens(loop))
-            for task in tasks:
-                task.cancel()
-                try:
-                    loop.run_until_complete(task)
-                except asyncio.CancelledError:
-                    pass
+            if loop.is_running() and not loop.is_closed():
+                tasks = asyncio.all_tasks(loop)
+                loop.run_until_complete(self._shutdown_asyncgens(loop))
+                for task in tasks:
+                    task.cancel()
+                    try:
+                        loop.run_until_complete(task)
+                    except asyncio.CancelledError:
+                        pass
         except RuntimeError as error_msg:
             logger.debug(f"BinanceWebSocketApiManager._close_loop() - RuntimeError - {error_msg}")
         except Exception as error_msg:
