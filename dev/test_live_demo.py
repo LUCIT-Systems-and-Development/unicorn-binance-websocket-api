@@ -76,7 +76,7 @@ def print_stream_data_from_stream_buffer(ubwa_manager):
         if ubwa_manager.is_manager_stopping():
             exit(0)
         oldest_stream_data_from_stream_buffer = ubwa_manager.pop_stream_data_from_stream_buffer()
-        if oldest_stream_data_from_stream_buffer is not False:
+        if oldest_stream_data_from_stream_buffer is not None:
             # print(oldest_stream_data_from_stream_buffer)
             pass
         else:

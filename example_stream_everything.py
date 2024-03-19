@@ -66,7 +66,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if binance_websocket_api_manager.is_manager_stopping():
             exit(0)
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
-        if oldest_stream_data_from_stream_buffer is not False:
+        if oldest_stream_data_from_stream_buffer is not None:
             pass
         else:
             time.sleep(0.01)

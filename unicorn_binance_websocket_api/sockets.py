@@ -75,6 +75,7 @@ class BinanceWebSocketApiSocket(object):
                                                      symbols=self.symbols) as self.websocket:
                 if self.websocket is None:
                     self.manager.stream_is_stopping(self.stream_id)
+                    await self.close()
                     return False
 
                 self.manager.socket_is_ready[self.stream_id] = True
