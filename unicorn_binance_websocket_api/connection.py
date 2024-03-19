@@ -178,7 +178,6 @@ class BinanceWebSocketApiConnection(object):
                              ", " + str(self.channels) + ", " + str(self.markets) + ") - InvalidMessage error_msg:  " +
                              str(error_msg))
                 self.manager.stream_is_crashing(self.stream_id, str(error_msg))
-                time.sleep(2)
                 self.manager.set_restart_request(self.stream_id)
                 return None
             except websockets.InvalidStatusCode as error_msg:
@@ -194,7 +193,11 @@ class BinanceWebSocketApiConnection(object):
                     logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) +
                                  ", " + str(self.channels) + ", " + str(self.markets) + ") - InvalidStatusCode" +
                                  " error_msg: " + str(error_msg))
-                    return None  # Experimental - Confirmed +
+                    self.manager.stream_is_crashing(self.stream_id, str(error_msg))
+                    time.sleep(2)
+                    self.manager.set_restart_request(self.stream_id)
+                    return None
+                    #return None  # Experimental - Confirmed +
             self.manager.stream_list[self.stream_id]['status'] = "running"
             self.manager.stream_list[self.stream_id]['has_stopped'] = False
             try:
