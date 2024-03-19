@@ -651,6 +651,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'seconds_to_last_heartbeat': None,
                                        'last_heartbeat': None,
                                        'stop_request': False,
+                                       'stop_to_restart': False,
                                        'crash_request': False,
                                        'kill_request': False,
                                        'loop_is_closing': False,
@@ -700,6 +701,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type restart: bool
         :return:
         """
+        self.stream_list[stream_id]['stop_to_restart'] = False
         if self.is_stop_request(stream_id):
             return False
         if restart is False:
@@ -3267,6 +3269,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             if self.stream_list[stream_id]['stop_request'] is True:
                 return True
+            elif self.stream_list[stream_id]['stop_to_restart'] is True:
+                return True
             elif self.is_manager_stopping():
                 return True
             elif self.stream_list[stream_id]['kill_request'] is True and exclude_kill_requests is False:
@@ -3999,6 +4003,20 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             return False
 
+    def set_stop_to_restart_request(self, stream_id=None):
+        """
+        Set a stop to restart request for a specific stream.
+
+        :return: None
+        """
+        if stream_id is None:
+            return False
+        try:
+            self.stream_list[stream_id]['stop_to_restart'] = True
+            return True
+        except KeyError:
+            return False
+
     def set_ringbuffer_error_max_size(self, max_size):
         """
         How many error messages should be kept in the ringbuffer?
@@ -4300,6 +4318,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type error_msg: str
         """
         logger.critical(f"BinanceWebSocketApiManager.stream_is_crashing({stream_id}){self.get_debug_log()}")
+        self.set_stop_to_restart_request(stream_id=stream_id)
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "crashed"
         self.set_socket_is_ready(stream_id)  # necessary to release `create_stream()`

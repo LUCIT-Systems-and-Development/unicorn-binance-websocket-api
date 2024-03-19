@@ -805,6 +805,7 @@
                                        <span class="s1">&#39;seconds_to_last_heartbeat&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                                        <span class="s1">&#39;last_heartbeat&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                                        <span class="s1">&#39;stop_request&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                                       <span class="s1">&#39;stop_to_restart&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
                                        <span class="s1">&#39;crash_request&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
                                        <span class="s1">&#39;kill_request&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
                                        <span class="s1">&#39;loop_is_closing&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
@@ -854,6 +855,7 @@
 <span class="sd">        :type restart: bool</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;stop_to_restart&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_stop_request</span><span class="p">(</span><span class="n">stream_id</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">restart</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -3666,6 +3668,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;stop_request&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;stop_to_restart&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_manager_stopping</span><span class="p">():</span>
                 <span class="k">return</span> <span class="kc">True</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;kill_request&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">exclude_kill_requests</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -4450,6 +4454,23 @@
             <span class="k">return</span> <span class="kc">False</span></div>
 
 
+<div class="viewcode-block" id="BinanceWebSocketApiManager.set_stop_to_restart_request">
+<a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.set_stop_to_restart_request">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_stop_to_restart_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set a stop to restart request for a specific stream.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;stop_to_restart&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
 <div class="viewcode-block" id="BinanceWebSocketApiManager.set_ringbuffer_error_max_size">
 <a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.set_ringbuffer_error_max_size">[docs]</a>
     <span class="k">def</span> <span class="nf">set_ringbuffer_error_max_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_size</span><span class="p">):</span>
@@ -4795,6 +4816,7 @@
 <span class="sd">        :type error_msg: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.stream_is_crashing(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">)</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_log</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_stop_to_restart_request</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;has_stopped&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;crashed&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_socket_is_ready</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span>  <span class="c1"># necessary to release `create_stream()`</span>
@@ -5135,7 +5157,7 @@
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Mar 19 2024 at 19:33 (CET).
+    Last updated on Mar 19 2024 at 19:57 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
