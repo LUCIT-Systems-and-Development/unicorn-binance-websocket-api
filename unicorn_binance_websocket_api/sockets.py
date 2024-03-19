@@ -320,10 +320,13 @@ class BinanceWebSocketApiSocket(object):
             logger.debug(f"BinanceWebSocketApiSocket.start_socket() KeyError: {error_msg}")
             return False
         finally:
-            if self.manager.stream_list[self.stream_id]['last_stream_signal'] == "FIRST_RECEIVED_DATA" \
-                    or self.manager.stream_list[self.stream_id]['last_stream_signal'] == "CONNECT":
-                self.manager.process_stream_signals(signal_type="DISCONNECT", stream_id=self.stream_id)
-                self.manager.stream_list[self.stream_id]['last_stream_signal'] = "DISCONNECT"
+            try:
+                if self.manager.stream_list[self.stream_id]['last_stream_signal'] == "FIRST_RECEIVED_DATA" \
+                        or self.manager.stream_list[self.stream_id]['last_stream_signal'] == "CONNECT":
+                    self.manager.process_stream_signals(signal_type="DISCONNECT", stream_id=self.stream_id)
+                    self.manager.stream_list[self.stream_id]['last_stream_signal'] = "DISCONNECT"
+            except KeyError:
+                pass
             if self.websocket is not None:
                 try:
                     await self.websocket.close()
