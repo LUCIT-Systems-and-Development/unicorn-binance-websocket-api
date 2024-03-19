@@ -297,6 +297,7 @@ class BinanceWebSocketApiConnection(object):
             if self.manager.is_stop_request(self.stream_id) is False and \
                     self.manager.is_stop_as_crash_request is False:
                 self.manager.set_restart_request(self.stream_id)
+        await self.close()
         return None
 
     async def close(self):
