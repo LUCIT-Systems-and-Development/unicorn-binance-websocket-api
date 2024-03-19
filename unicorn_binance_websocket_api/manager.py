@@ -4216,10 +4216,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             del self.restart_requests[stream_id]
         except KeyError:
             pass
-        try:
-            self.stream_list[stream_id]['stop_request'] = True
-        except KeyError:
-            return False
+        self.set_stop_request(stream_id=stream_id)
         if delete_listen_key:
             if self.exchange_type != "dex":
                 try:
@@ -4303,7 +4300,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type error_msg: str
         """
         logger.critical(f"BinanceWebSocketApiManager.stream_is_crashing({stream_id}){self.get_debug_log()}")
-        self.set_stop_request(stream_id=stream_id)
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "crashed"
         self.set_socket_is_ready(stream_id)  # necessary to release `create_stream()`
