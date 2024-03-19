@@ -35,7 +35,7 @@ Runs perfectly on Python 3.7 to 3.12!!!
 - `_auto_data_cleanup_stopped_streams()` now performs a check every 60 seconds and deletes the data from streams that 
   have been stopped for more than 900 seconds.
 - `datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d, %H:%M:%S UTC'))` is obsolete and has been 
-  replaced by `datetime.fromtimestamp(stream_info['start_time'], timezone.utc).strftime('%Y-%m-%d, %H:%M:%S UTC')`.
+  replaced by `datetime.fromtimestamp(timestamp, timezone.utc).strftime('%Y-%m-%d, %H:%M:%S UTC')`.
 ### Fixed
 - In Websocket API wrong method names were used in logging.
 - Logging info in `connection.py` revised.
