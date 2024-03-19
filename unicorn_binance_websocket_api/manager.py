@@ -701,7 +701,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type restart: bool
         :return:
         """
-        #self.stream_list[stream_id]['stop_to_restart'] = False
+        # Todo: self.stream_list[stream_id]['stop_to_restart'] = False
         if self.is_stop_request(stream_id):
             return False
         if restart is False:
@@ -4097,6 +4097,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             pass
         logger.debug(f"BinanceWebSocketApiManager.set_restart_request() - creating new request")
+        self.set_stop_to_restart_request(stream_id=stream_id)
         self.restart_requests[stream_id] = {'status': "new",
                                             'initiated': None}
         return True
