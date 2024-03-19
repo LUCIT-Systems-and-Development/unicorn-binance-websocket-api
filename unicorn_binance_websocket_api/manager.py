@@ -646,9 +646,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'receives_statistic_last_second': {'most_receives_per_second': 0, 'entries': {}},
                                        'seconds_to_last_heartbeat': None,
                                        'last_heartbeat': None,
-                                       'stop_request': None,
-                                       'crash_request': None,
-                                       'kill_request': None,
+                                       'stop_request': False,
+                                       'crash_request': False,
+                                       'kill_request': False,
                                        'loop_is_closing': False,
                                        'seconds_since_has_stopped': None,
                                        'has_stopped': False,
@@ -854,17 +854,16 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         frequent_checks_id = self.get_timestamp_unix()
         cpu_usage_time = False
-        last_10_min_check: float = 0.0
         with self.frequent_checks_list_lock:
             self.frequent_checks_list[frequent_checks_id] = {'last_heartbeat': 0,
-                                                             'stop_request': None,
+                                                             'stop_request': False,
                                                              'has_stopped': False}
         logger.debug(f"BinanceWebSocketApiManager._frequent_checks() new instance created with frequent_checks_id"
                      f"={frequent_checks_id}")
 
         # threaded loop for min 1 check per second
         while self.stop_manager_request is False \
-                and self.frequent_checks_list[frequent_checks_id]['stop_request'] is None:
+                and self.frequent_checks_list[frequent_checks_id]['stop_request'] is False:
             with self.frequent_checks_list_lock:
                 self.frequent_checks_list[frequent_checks_id]['last_heartbeat'] = time.time()
             time.sleep(0.3)
@@ -1022,13 +1021,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         keepalive_streams_id = time.time()
         self.keepalive_streams_list[keepalive_streams_id] = {'last_heartbeat': 0,
-                                                             'stop_request': None,
+                                                             'stop_request': False,
                                                              'has_stopped': False}
         logger.info("BinanceWebSocketApiManager._keepalive_streams() new instance created with "
                     "keepalive_streams_id=" + str(keepalive_streams_id))
         # threaded loop to restart crashed streams:
         while self.stop_manager_request is False and \
-                self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is None:
+                self.keepalive_streams_list[keepalive_streams_id]['stop_request'] is False:
             time.sleep(1)
             self.keepalive_streams_list[keepalive_streams_id]['last_heartbeat'] = time.time()
             # restart streams with a restart_request (status == new)
@@ -3968,11 +3967,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         self.dex_user_address = binance_dex_user_address
 
-    def set_heartbeat(self, stream_id):
+    def set_heartbeat(self, stream_id) -> None:
         """
         Set heartbeat for a specific thread (should only be done by the stream itself)
 
-
+        :return: None
         """
         logger.debug("BinanceWebSocketApiManager.set_heartbeat(" + str(stream_id) + ")")
         try:
@@ -3980,6 +3979,21 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stream_list[stream_id]['status'] = "running"
         except KeyError:
             pass
+        return None
+
+    def set_stop_request(self, stream_id=None):
+        """
+        Set a stop request for a specific stream.
+
+        :return: None
+        """
+        if stream_id is None:
+            return False
+        try:
+            self.stream_list[stream_id]['stop_request'] = True
+            return True
+        except KeyError:
+            return False
 
     def set_ringbuffer_error_max_size(self, max_size):
         """
@@ -4212,6 +4226,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 except requests.exceptions.ConnectionError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager.stop_stream() - Not able to delete listen_key - "
                                  f"requests.exceptions.ConnectionError: {error_msg}")
+        # Todo: Obsolete?
         try:
             loop = self.get_event_loop_by_stream_id(stream_id)
             logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - Closing event_loop "
@@ -4285,6 +4300,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type error_msg: str
         """
         logger.critical(f"BinanceWebSocketApiManager.stream_is_crashing({stream_id}){self.get_debug_log()}")
+        self.set_stop_request(stream_id=stream_id)
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "crashed"
         self.set_socket_is_ready(stream_id)  # necessary to release `create_stream()`

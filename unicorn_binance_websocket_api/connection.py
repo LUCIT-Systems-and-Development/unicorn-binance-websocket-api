@@ -204,22 +204,20 @@ class BinanceWebSocketApiConnection(object):
             except KeyError:
                 pass
             self.manager.set_heartbeat(self.stream_id)
-        except websockets.exceptions.NegotiationError as error_msg:
+        except websockets.NegotiationError as error_msg:
             logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) + ", " +
                          str(self.channels) + ", " + str(self.markets) + ")" + " - NegotiationError - " +
                          "error_msg: " + str(error_msg))
-            #return None  # Experimental
         except ConnectionResetError as error_msg:
             logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) + ", " +
                          str(self.channels) + ", " + str(self.markets) + ")" + " - ConnectionResetError - " +
                          "error_msg: " + str(error_msg))
-            #return None  # Experimental
         except socket.gaierror as error_msg:
-            logger.critical("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) + ", " +
-                            str(self.channels) + ", " + str(self.markets) + ")" + " - No internet connection? "
-                            "- error_msg: " + str(error_msg) + ": " + self.manager.websocket_base_uri)
-            self.manager.stream_is_crashing(self.stream_id, " - No internet connection? "
-                                            "- error_msg: " + str(error_msg) + ": " + self.manager.websocket_base_uri)
+            logger.critical(f"BinanceWebSocketApiConnection.__aenter__({self.stream_id}, {str(self.channels)}, "
+                            f"{str(self.markets)}) - No internet connection? - error_msg: {str(error_msg)} "
+                            f"({self.manager.websocket_base_uri})")
+            self.manager.stream_is_crashing(self.stream_id, f"No internet connection? - error_msg: {str(error_msg)} "
+                                                            f"({self.manager.websocket_base_uri})")
             self.manager.set_restart_request(self.stream_id)
             return None
         except OSError as error_msg:
@@ -272,7 +270,7 @@ class BinanceWebSocketApiConnection(object):
                          str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed"
                          " - error_msg:  " + str(error_msg))
             if "WebSocket connection is closed: code = 1006" in str(error_msg):
-                self.manager.websocket_list[self.stream_id].close()
+                self.manager.websocket_list[self.stream_id].close()  # Todo: obsolete?
                 self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                 return None
             else:
