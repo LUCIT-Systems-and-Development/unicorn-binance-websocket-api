@@ -672,6 +672,31 @@ class BinanceWebSocketApiManager(threading.Thread):
                     str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
                     + str(stream_buffer_name) + ", " + str(stream_buffer_maxlen) + ", " + str(symbols) + ")")
 
+    def _close_loop(self, loop=None) -> bool:
+        """
+        Close and asyncio event loop
+        """
+        if loop is None:
+            return False
+        try:
+            tasks = asyncio.all_tasks(loop)
+            loop.run_until_complete(self._shutdown_asyncgens(loop))
+            for task in tasks:
+                task.cancel()
+                try:
+                    loop.run_until_complete(task)
+                except asyncio.CancelledError:
+                    pass
+        except RuntimeError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager._close_loop() - RuntimeError - {error_msg}")
+        except Exception as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager._close_loop() - {error_msg}")
+        if not loop.is_closed():
+            loop.close()
+        if not loop.is_running():
+            loop.stop()
+        return True
+
     def _create_stream_thread(self,
                               stream_id,
                               channels,
@@ -756,25 +781,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 self.stream_list[stream_id]['loop_is_closing'] = True
             except KeyError:
                 pass
-            if loop is not None:
-                try:
-                    tasks = asyncio.all_tasks(loop)
-                    loop.run_until_complete(self._shutdown_asyncgens(loop))
-                    for task in tasks:
-                        task.cancel()
-                        try:
-                            loop.run_until_complete(task)
-                        except asyncio.CancelledError:
-                            pass
-                except RuntimeError as error_msg:
-                    logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
-                                 f"RuntimeError `error: 14` - {error_msg}")
-                except Exception as error_msg:
-                    logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() finally - {error_msg}")
-                if not loop.is_closed():
-                    loop.close()
-                if not loop.is_running():
-                    loop.stop()
+            self._close_loop(loop=loop)
             try:
                 self.stream_list[stream_id]['loop_is_closing'] = False
                 self.stream_is_stopping(stream_id)
@@ -2038,6 +2045,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             with self.stream_list_lock:
                 self.stream_list.pop(stream_id, False)
             try:
+                self._close_loop(loop=self.event_loops[stream_id])
                 del self.event_loops[stream_id]
             except KeyError:
                 pass
@@ -4179,6 +4187,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.debug(f"BinanceWebSocketApiManager.stop_manager() - AttributeError: {error_msg}")
             # stop monitoring API services
             self.stop_monitoring_api()
+            for stream_id in self.event_loops:
+                self._close_loop(self.get_event_loop_by_stream_id(stream_id))
             # stop restclient
             try:
                 if self.exchange in CONNECTION_SETTINGS and self.restclient is not None:
@@ -4243,28 +4253,29 @@ class BinanceWebSocketApiManager(threading.Thread):
                 except requests.exceptions.ConnectionError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager.stop_stream() - Not able to delete listen_key - "
                                  f"requests.exceptions.ConnectionError: {error_msg}")
-        try:
-            loop = self.get_event_loop_by_stream_id(stream_id)
-            logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - Closing event_loop "
-                         f"of stream_id {stream_id}")
-            if loop is False:
-                return True
-            try:
-                if loop.is_running():
-                    while self.stream_list[stream_id]['loop_is_closing'] is True:
-                        time.sleep(0.001)
-                    loop.stop()
-            except AttributeError as error_msg:
-                logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - AttributeError - {error_msg}")
-            except RuntimeError as error_msg:
-                logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeError - {error_msg}")
-            except RuntimeWarning as error_msg:
-                logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeWarning - {error_msg}")
-        except RuntimeError as error_msg:
-            logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeError - {error_msg}")
-        except RuntimeWarning as error_msg:
-            logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeWarning - {error_msg}")
-        return True
+        self._close_loop(loop=self.get_event_loop_by_stream_id(stream_id))
+        #try:
+        #    loop = self.get_event_loop_by_stream_id(stream_id)
+        #    logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - Closing event_loop "
+        #                 f"of stream_id {stream_id}")
+        #    if loop is False:
+        #        return True
+        #    try:
+        #        if loop.is_running():
+        #            while self.stream_list[stream_id]['loop_is_closing'] is True:
+        #                time.sleep(0.001)
+        #            loop.stop()
+        #    except AttributeError as error_msg:
+        #        logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - AttributeError - {error_msg}")
+        #    except RuntimeError as error_msg:
+        #        logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeError - {error_msg}")
+        #    except RuntimeWarning as error_msg:
+        #        logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeWarning - {error_msg}")
+        #except RuntimeError as error_msg:
+        #    logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeError - {error_msg}")
+        #except RuntimeWarning as error_msg:
+        #    logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeWarning - {error_msg}")
+        #return True
 
     def stop_stream_as_crash(self, stream_id):
         """
