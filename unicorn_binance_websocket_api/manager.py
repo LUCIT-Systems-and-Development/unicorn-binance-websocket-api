@@ -701,6 +701,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return:
         """
         if self.is_stop_request(stream_id, exclude_kill_requests=True) and self.stream_list[stream_id]['status'] != "restarting":
+            # Todo:
             print("Ja!")
             print(self.stream_list[stream_id])
             return False
