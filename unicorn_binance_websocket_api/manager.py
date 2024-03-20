@@ -774,6 +774,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() finally - {error_msg}")
                 if not loop.is_closed():
                     loop.close()
+#                if not loop.is_running():
+#                    loop.stop()
             try:
                 self.stream_list[stream_id]['loop_is_closing'] = False
                 self.stream_is_stopping(stream_id)
