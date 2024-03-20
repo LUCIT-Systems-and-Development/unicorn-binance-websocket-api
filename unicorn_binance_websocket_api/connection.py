@@ -299,6 +299,7 @@ class BinanceWebSocketApiConnection(object):
                 self.manager.set_restart_request(self.stream_id)
         except RuntimeWarning as error_msg:
             print(f"{error_msg}")
+            return None
         await self.close() # Todo?
         return None
 
