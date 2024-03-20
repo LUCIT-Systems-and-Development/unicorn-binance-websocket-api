@@ -3471,7 +3471,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 row_prefix = ""
                 for timestamp in self.stream_list[stream_id]['logged_reconnects']:
                     logged_reconnects_row += row_prefix + \
-                                             datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d, %H:%M:%S UTC')
+                                             self.get_date_of_timestamp(timestamp)
                     row_prefix = ", "
             else:
                 logged_reconnects_row = ""
@@ -3513,9 +3513,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             else:
                 binance_api_status_code = "\033[1m\033[33m" + str(self.binance_api_status['status_code']) + "\033[0m"
             binance_api_status_row = " binance_api_status: used_weight=" + str(self.binance_api_status['weight']) + \
-                                     ", status_code=" + str(binance_api_status_code) + " (last update " + \
-                                     str(datetime.utcfromtimestamp(
-                                         self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
+                                     ", status_code=" + str(binance_api_status_code) + f" (last update " + \
+                                     str(self.get_date_of_timestamp(self.binance_api_status['timestamp'])) + \
                                      ")\r\n"
         current_receiving_speed = str(self.get_human_bytesize(self.get_current_receiving_speed(stream_id), "/s"))
         if self.stream_list[stream_id]['symbols'] is not None:
@@ -3744,9 +3743,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 binance_api_status_row = " binance_api_status: used_weight=" + \
                                          str(self.binance_api_status['weight']) + \
                                          ", status_code=" + str(binance_api_status_code) + " (last update " + \
-                                         str(datetime.utcfromtimestamp(
-                                             self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
-                                         ")\r\n"
+                                         str(self.get_date_of_timestamp(self.binance_api_status['timestamp'])) + ")\r\n"
 
             if title:
                 first_row = str(self.fill_up_space_centered(96, f" {title} ", "=")) + "\r\n"
@@ -3758,7 +3755,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 print_text = (
                     first_row +
-                    " exchange: " + str(self.stream_list[stream_id]['exchange']) + f"{proxy}\r\n" +
+                    " exchange: " + str(self.exchange) + f"{proxy}\r\n" +
                     " uptime: " + str(self.get_human_uptime(int(time.time() - self.start_time))) + " since " +
                     str(self.get_date_of_timestamp(self.start_time)) + "\r\n" +
                     " streams: " + str(streams) + "\r\n" +
