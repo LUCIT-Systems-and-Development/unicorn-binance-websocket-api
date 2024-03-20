@@ -1096,6 +1096,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.set_socket_is_not_ready(stream_id)
         try:
             while not self.event_loops[stream_id].is_closed():
+                print("D")
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
                              f"previous asyncio is closed ...")
                 time.sleep(1)
@@ -1754,7 +1755,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
                          f"{api}) with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
             time.sleep(1)
-        while self.event_loops[stream_id] is None and self.is_manager_stopping() is False:
+        while self.event_loops[stream_id] is None:
             logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
                          f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
                          f"{api}) with stream_id={str(stream_id)} - Waiting till asyncio is ready")
