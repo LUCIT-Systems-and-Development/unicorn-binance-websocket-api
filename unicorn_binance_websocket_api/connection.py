@@ -300,7 +300,7 @@ class BinanceWebSocketApiConnection(object):
         except RuntimeWarning as error_msg:
             print(f"{error_msg}")
             return None
-        await self.close() # Todo?
+        await self.close()
         return None
 
     async def close(self):

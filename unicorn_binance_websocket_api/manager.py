@@ -690,8 +690,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                         pass
         except RuntimeError as error_msg:
             logger.debug(f"BinanceWebSocketApiManager._close_loop() - RuntimeError - {error_msg}")
+            return False
         except Exception as error_msg:
             logger.debug(f"BinanceWebSocketApiManager._close_loop() - {error_msg}")
+            return False
         time.sleep(3)
         if not loop.is_closed() and not loop.is_running() and close is True:
             loop.close()
