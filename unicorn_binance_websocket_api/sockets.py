@@ -288,10 +288,9 @@ class BinanceWebSocketApiSocket(object):
                                                                         data_record=received_stream_data)
                                     self.manager.stream_list[self.stream_id]['last_stream_signal'] = "FIRST_RECEIVED_DATA"
                                 self.manager.stream_list[self.stream_id]['last_received_data_record'] = received_stream_data
-                    except websockets.exceptions.ConnectionClosed as error_msg:
-                        logger.critical("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
-                                        str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed "
-                                        "- error_msg: " + str(error_msg))
+                    except websockets.ConnectionClosed as error_msg:
+                        logger.critical(f"BinanceWebSocketApiSocket.start_socket({self.stream_id}, {self.channels}, "
+                                        f"{self.markets}) - Exception ConnectionClosed - error_msg: {error_msg}")
                         if "WebSocket connection is closed: code = 1008" in str(error_msg):
                             await self.websocket.close()
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
@@ -305,9 +304,8 @@ class BinanceWebSocketApiSocket(object):
                         self.manager.set_restart_request(self.stream_id)
                         return False
                     except AttributeError as error_msg:
-                        logger.error("BinanceWebSocketApiSocket.start_socket(" + str(self.stream_id) + ", " +
-                                     str(self.channels) + ", " + str(self.markets) + ") - Exception AttributeError - "
-                                     "error_msg: " + str(error_msg))
+                        logger.error(f"BinanceWebSocketApiSocket.start_socket({self.stream_id}, {self.channels}, "
+                                     f"{self.markets}) - Exception AttributeError - error_msg: {error_msg}")
                         self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                         self.manager.set_restart_request(self.stream_id)
                         return False
