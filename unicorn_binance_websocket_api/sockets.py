@@ -46,10 +46,10 @@ class BinanceWebSocketApiSocket(object):
 
     async def __aenter__(self):
         logger.debug(f"Entering asynchronous with-context of BinanceWebSocketApiSocket() ...")
-        if self.manager.is_stop_request(self.stream_id):
-            self.manager.stream_is_stopping(self.stream_id)
-            logger.error(f"Leaving BinanceWebSocketApiSocket() of {self.stream_id} in cause of the stop request!")
-            return None
+#        if self.manager.is_stop_request(self.stream_id):
+#            self.manager.stream_is_stopping(self.stream_id)
+#            logger.error(f"Leaving BinanceWebSocketApiSocket() of {self.stream_id} in cause of the stop request!")
+#            return None
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -88,9 +88,6 @@ class BinanceWebSocketApiSocket(object):
                                          f"stream_id={str(self.stream_id)}  - AttributeError `error: 17` - "
                                          f"error_msg: {str(error_msg)}")
 
-                        return False
-                    elif self.manager.is_stop_as_crash_request(self.stream_id):
-                        await self.websocket.close()
                         return False
                     try:
                         if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
