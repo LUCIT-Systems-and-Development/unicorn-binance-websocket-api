@@ -213,7 +213,7 @@ Use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-binance-rest-a
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
 
-- No memory leaks from Python version 3.7 to 3.11!
+- No memory leaks from Python version 3.7 to 3.12!
 
 - The full [UBS stack](https://www.lucit.tech/unicorn-binance-suite.html) is delivered as a compiled C extension for 
   maximum performance.
