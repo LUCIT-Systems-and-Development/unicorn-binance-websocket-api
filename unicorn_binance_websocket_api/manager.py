@@ -3470,8 +3470,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logged_reconnects_row = "\r\n logged_reconnects: "
                 row_prefix = ""
                 for timestamp in self.stream_list[stream_id]['logged_reconnects']:
-                    logged_reconnects_row += row_prefix + \
-                                             datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d, %H:%M:%S UTC')
+                    logged_reconnects_row += (row_prefix +
+                                              datetime.fromtimestamp(timestamp,
+                                                                     timezone.utc).strftime('%Y-%m-%d, %H:%M:%S UTC'))
                     row_prefix = ", "
             else:
                 logged_reconnects_row = ""
