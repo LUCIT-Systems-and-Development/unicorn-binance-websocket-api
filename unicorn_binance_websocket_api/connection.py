@@ -170,10 +170,10 @@ class BinanceWebSocketApiConnection(object):
             try:
                 self.manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
             except asyncio.CancelledError:
-                logger.debug(f"BinanceWebSocketApiConnection.__aenter__({self.stream_id}), {self.channels}), "
-                             f"{self.markets}) - Exception asyncio.CancelledError")
+                logger.debug(f"BinanceWebSocketApiConnection.__aenter__({self.stream_id}), {self.channels}), {self.markets}) "
+                             f"- Exception asyncio.CancelledError")
                 return None
-            except websockets.InvalidMessage as error_msg:
+            except websockets.exceptions.InvalidMessage as error_msg:
                 logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) +
                              ", " + str(self.channels) + ", " + str(self.markets) + ") - InvalidMessage error_msg:  " +
                              str(error_msg))
@@ -181,7 +181,7 @@ class BinanceWebSocketApiConnection(object):
                 time.sleep(2)
                 self.manager.set_restart_request(self.stream_id)
                 return None
-            except websockets.InvalidStatusCode as error_msg:
+            except websockets.exceptions.InvalidStatusCode as error_msg:
                 if "HTTP 429" in str(error_msg):
                     logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) +
                                  ", " + str(self.channels) + ", " + str(self.markets) + ") InvalidStatusCode-HTTP429" +
@@ -227,7 +227,7 @@ class BinanceWebSocketApiConnection(object):
             self.manager.stream_is_crashing(self.stream_id, (str(error_msg)))
             self.manager.set_restart_request(self.stream_id)
             return None
-        except websockets.InvalidStatusCode as error_msg:
+        except websockets.exceptions.InvalidStatusCode as error_msg:
             if "Status code not 101: 414" in str(error_msg):
                 # Since we subscribe via websocket.send() and not with URI anymore, this is obsolete code I guess.
                 self.manager.stream_is_crashing(self.stream_id, str(error_msg) + " --> URI too long?")
@@ -242,6 +242,7 @@ class BinanceWebSocketApiConnection(object):
             elif "Status code not 101: 400" in str(error_msg):
                 logger.critical("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) + ", " +
                                 str(self.channels) + ", " + str(self.markets) + ") - error_msg: " + str(error_msg))
+                #return None  # Experimental
             elif "Status code not 101: 429" in str(error_msg):
                 logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ") - error_msg: " + str(error_msg))
@@ -264,12 +265,12 @@ class BinanceWebSocketApiConnection(object):
                 self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                 self.manager.set_restart_request(self.stream_id)
                 return None
-        except websockets.ConnectionClosed as error_msg:
+        except websockets.exceptions.ConnectionClosed as error_msg:
             logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) + ", " +
                          str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed"
                          " - error_msg:  " + str(error_msg))
             if "WebSocket connection is closed: code = 1006" in str(error_msg):
-                self.manager.websocket_list[self.stream_id].close()
+                self.manager.websocket_list[self.stream_id].close()  # Todo: obsolete?
                 self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                 return None
             else:
@@ -281,8 +282,8 @@ class BinanceWebSocketApiConnection(object):
         try:
             await self._conn.__aexit__(*args, **kwargs)
         except asyncio.CancelledError:
-            logger.debug(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}), {self.channels}), "
-                         f"{self.markets}) - Exception asyncio.CancelledError")
+            logger.debug(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}), {self.channels}), {self.markets}) "
+                         f"- Exception asyncio.CancelledError")
         except RuntimeError as error_msg:
             logger.debug(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - RuntimeError - {error_msg}")
             self.manager.stream_is_stopping(self.stream_id)
@@ -291,7 +292,7 @@ class BinanceWebSocketApiConnection(object):
                 self.manager.set_restart_request(self.stream_id)
         except AttributeError as error_msg:
             logger.error(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - AttributeError - {error_msg}")
-        except websockets.ConnectionClosed as error_msg:
+        except websockets.exceptions.ConnectionClosed as error_msg:
             logger.error(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - ConnectionClosed - {error_msg}")
             self.manager.stream_is_stopping(self.stream_id)
             if self.manager.is_stop_request(self.stream_id) is False and \
@@ -319,7 +320,7 @@ class BinanceWebSocketApiConnection(object):
             self.manager.stream_is_stopping(self.stream_id)
             if self.manager.is_stop_request(self.stream_id) is False:
                 self.manager.set_restart_request(self.stream_id)
-        return True
+        return None
 
     async def receive(self):
         self.manager.set_heartbeat(self.stream_id)
@@ -352,24 +353,28 @@ class BinanceWebSocketApiConnection(object):
         except asyncio.CancelledError:
             logger.debug(f"BinanceWebSocketApiConnection.receive({self.stream_id}), {self.channels}), {self.markets}) "
                          f"- Exception asyncio.CancelledError")
+            return None
         except RuntimeError as error_msg:
             logger.error("BinanceWebSocketApiConnection.receive(" +
                          str(self.stream_id) + ") - RuntimeError - error_msg: " + str(error_msg))
             self.manager.stream_is_stopping(self.stream_id)
             if self.manager.is_stop_request(self.stream_id) is False:
                 self.manager.set_restart_request(self.stream_id)
+            return None
         except ssl.SSLError as error_msg:
             logger.error("BinanceWebSocketApiConnection.receive(" +
                          str(self.stream_id) + ") - ssl.SSLError - error_msg: " + str(error_msg))
             self.manager.stream_is_stopping(self.stream_id)
             if self.manager.is_stop_request(self.stream_id) is False:
                 self.manager.set_restart_request(self.stream_id)
+            return None
         except KeyError as error_msg:
             logger.error("BinanceWebSocketApiConnection.receive(" +
                          str(self.stream_id) + ") - KeyError - error_msg: " + str(error_msg))
             self.manager.stream_is_stopping(self.stream_id)
             if self.manager.is_stop_request(self.stream_id) is False:
                 self.manager.set_restart_request(self.stream_id)
+            return None
         except ValueError as error_msg:
             # ValueError: The future belongs to a different loop than the one specified as the loop argument
             logger.error(f"BinanceWebSocketApiConnection.receive({str(self.stream_id)}) socket_id="
@@ -377,37 +382,41 @@ class BinanceWebSocketApiConnection(object):
             self.manager.stream_is_stopping(self.stream_id)
             if self.manager.is_stop_request(self.stream_id) is False:
                 self.manager.set_restart_request(self.stream_id)
-        return None
+            return None
 
     async def send(self, data):
         self.manager.set_heartbeat(self.stream_id)
         try:
-            response = await self.manager.websocket_list[self.stream_id].send(data)
+            await self.manager.websocket_list[self.stream_id].send(data)
             self.manager.increase_transmitted_counter(self.stream_id)
-            return response
         except asyncio.CancelledError:
             logger.debug(f"BinanceWebSocketApiConnection.send({self.stream_id}), {self.channels}), {self.markets}) "
                          f"- Exception asyncio.CancelledError")
-        except websockets.ConnectionClosed as error_msg:
+            return None
+        except websockets.exceptions.ConnectionClosed as error_msg:
             logger.error("BinanceWebSocketApiConnection.send(" + str(self.stream_id) + ", " +
                          str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed "
                          "- error_msg:  " + str(error_msg))
             self.manager.stream_is_crashing(self.stream_id, str(error_msg))
             self.manager.set_restart_request(self.stream_id)
+            return None
         except RuntimeError as error_msg:
             logger.error("BinanceWebSocketApiConnection.send(" + str(self.stream_id) + ", " +
                          str(self.channels) + ", " + str(self.markets) + ") - Exception RuntimeError "
                          "- error_msg:  " + str(error_msg))
             self.manager.stream_is_crashing(self.stream_id, str(error_msg))
             self.manager.set_restart_request(self.stream_id)
+            return None
         except IndexError as error_msg:
             logger.error("BinanceWebSocketApiConnection.send(" + str(self.stream_id) + ", " +
                          str(self.channels) + ", " + str(self.markets) + ") - Exception IndexError "
                          "- error_msg:  " + str(error_msg))
+            #return None  # Experimental
         except KeyError as error_msg:
             logger.error("BinanceWebSocketApiConnection.send(" + str(self.stream_id) + ", " +
                          str(self.channels) + ", " + str(self.markets) + ") - Exception KeyError "
                          "- error_msg:  " + str(error_msg))
+            #return None  # Experimental
         except ValueError as error_msg:
             # ValueError: The future belongs to a different loop than the one specified as the loop argument
             logger.error(f"BinanceWebSocketApiConnection.send({str(self.stream_id)}) socket_id="
@@ -415,4 +424,4 @@ class BinanceWebSocketApiConnection(object):
             self.manager.stream_is_stopping(self.stream_id)
             if self.manager.is_stop_request(self.stream_id) is False:
                 self.manager.set_restart_request(self.stream_id)
-        return None
+            return None

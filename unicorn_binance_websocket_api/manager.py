@@ -68,7 +68,7 @@ logger = logging.getLogger("unicorn_binance_websocket_api")
 class BinanceWebSocketApiManager(threading.Thread):
     """
     An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
-    com-isolated_margin+testnet, com-futures+testnet, us, dex/chain+testnet) in an easy, fast, flexible,
+    com-isolated_margin+testnet, com-futures+testnet, us, dex/chain+testnet) in a easy, fast, flexible,
     robust and fully-featured way.
 
     This library supports two different kind of websocket endpoints:
@@ -460,15 +460,11 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.critical(f"An exception occurred: {exc_type} - {exc_value} - {error_traceback}")
 
     async def _shutdown_asyncgens(self, loop):
-        logger.debug(f"BinanceWebSocketApiManager._shutdown_asyncgens() started ...")
         await loop.shutdown_asyncgens()
 
-    async def _run_socket(self, stream_id, channels, markets) -> bool:
+    async def _run_socket(self, stream_id, channels, markets):
         async with BinanceWebSocketApiSocket(self, stream_id, channels, markets) as socket:
-            if socket is not None:
-                await socket.start_socket()
-            else:
-                return False
+            await socket.start_socket()
 
     async def get_stream_data_from_asyncio_queue(self, stream_id=None):
         """
@@ -600,7 +596,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             get stored in the stream_buffer! `How to read from stream_buffer!
                             <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
         :type process_stream_data: function
-        :param process_stream_data_async: Provide an asynchronous function/method to process the received webstream data.
+        :param process_stream_data_async: Provide a asynchronous function/method to process the received webstream data.
                             The function will be called instead of
                             `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
                             like `process_stream_data(stream_data, stream_buffer_name)` where
@@ -748,6 +744,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             else:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                              f" - RuntimeError `error: 12` - error_msg: {str(error_msg)}")
+# Todo:
+#        except Exception as error_msg:
+#            logger.critical(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)} - Unknown Exception - "
+#                            f"Please report this issue if your stream does not restart: "
+#                            f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose"
+#                            f" - error_msg: {str(error_msg)}")
         finally:
             logger.debug(f"Finally closing the loop stream_id={str(stream_id)}")
             try:
@@ -771,8 +773,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                     logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() finally - {error_msg}")
                 if not loop.is_closed():
                     loop.close()
-                if not loop.is_running():
-                    loop.stop()
             try:
                 self.stream_list[stream_id]['loop_is_closing'] = False
                 self.stream_is_stopping(stream_id)
@@ -1198,17 +1198,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         except RuntimeError as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
                             "going down! - Info: RuntimeError - " + str(error_msg))
-            self.stop_monitoring_api()
+            self.monitoring_api_server.stop()
             return False
         except ResourceWarning as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
                             "going down! - Info: ResourceWarning - " + str(error_msg))
-            self.stop_monitoring_api()
+            self.monitoring_api_server.stop()
             return False
         except OSError as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
                             "going down! - Info: OSError - " + str(error_msg))
-            self.stop_monitoring_api()
+            self.monitoring_api_server.stop()
             return False
         return True
 
@@ -1614,10 +1614,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                               This parameter is passed through to the `websockets.client.connect()
                               <https://websockets.readthedocs.io/en/stable/topics/design.html?highlight=close_timeout#closing-handshake>`_
         :type close_timeout: int or None
-        :param keep_listen_key_alive: `True` (default) or `False`.
-        :type keep_listen_key_alive: str
-        :param listen_key: Provide the Binance listenKey for the userData stream.
-        :type listen_key: str
         :param stream_buffer_maxlen: Set a max len for the `stream_buffer`. Only used in combination with a non-generic
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
                                      `BinanceWebSocketApiManager()`.
@@ -3470,8 +3466,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logged_reconnects_row = "\r\n logged_reconnects: "
                 row_prefix = ""
                 for timestamp in self.stream_list[stream_id]['logged_reconnects']:
-                    logged_reconnects_row += (row_prefix +
-                                              datetime.fromtimestamp(timestamp, timezone.utc).strftime('%Y-%m-%d, %H:%M:%S UTC'))
+                    logged_reconnects_row += row_prefix + \
+                                             datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d, %H:%M:%S UTC')
                     row_prefix = ", "
             else:
                 logged_reconnects_row = ""
@@ -3512,12 +3508,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                 binance_api_status_code = "\033[1m\033[31m" + str(self.binance_api_status['status_code']) + "\033[0m"
             else:
                 binance_api_status_code = "\033[1m\033[33m" + str(self.binance_api_status['status_code']) + "\033[0m"
-            binance_api_status_row = (f" binance_api_status: used_weight={self.binance_api_status['weight']}, "
-                                      f"status_code={str(binance_api_status_code)} (last update " 
-                                      f"{str(datetime.fromtimestamp(self.binance_api_status['timestamp'], timezone.utc).strftime('%Y-%m-%d, %H:%M:%S UTC'))}"
-                                      f")\r\n")
-
-
+            binance_api_status_row = " binance_api_status: used_weight=" + str(self.binance_api_status['weight']) + \
+                                     ", status_code=" + str(binance_api_status_code) + " (last update " + \
+                                     str(datetime.utcfromtimestamp(
+                                         self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
+                                     ")\r\n"
         current_receiving_speed = str(self.get_human_bytesize(self.get_current_receiving_speed(stream_id), "/s"))
         if self.stream_list[stream_id]['symbols'] is not None:
             symbol_row = " symbols:" + str(stream_info['symbols']) + "\r\n"
@@ -3549,7 +3544,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print(first_row +
-                  " exchange: " + str(self.exchange) + f"{proxy}\r\n" +
+                  " exchange: " + str(self.stream_list[stream_id]['exchange']) + f"{proxy}\r\n" +
                   str(add_string) +
                   " stream_id:", str(stream_id), "\r\n" +
                   str(stream_label_row) +
@@ -3742,10 +3737,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                 else:
                     binance_api_status_code = "\033[1m\033[33m" + str(self.binance_api_status['status_code']) + \
                                               "\033[0m"
-                binance_api_status_row = (f" binance_api_status: used_weight={self.binance_api_status['weight']}, "
-                                          f"status_code={str(binance_api_status_code)} (last update "
-                                          f"{str(datetime.fromtimestamp(self.binance_api_status['timestamp'], timezone.utc).strftime('%Y-%m-%d, %H:%M:%S UTC'))}"
-                                          f")\r\n")
+                binance_api_status_row = " binance_api_status: used_weight=" + \
+                                         str(self.binance_api_status['weight']) + \
+                                         ", status_code=" + str(binance_api_status_code) + " (last update " + \
+                                         str(datetime.utcfromtimestamp(
+                                             self.binance_api_status['timestamp']).strftime('%Y-%m-%d, %H:%M:%S UTC')) + \
+                                         ")\r\n"
 
             if title:
                 first_row = str(self.fill_up_space_centered(96, f" {title} ", "=")) + "\r\n"
@@ -3757,7 +3754,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 print_text = (
                     first_row +
-                    " exchange: " + str(self.exchange) + f"{proxy}\r\n" +
+                    " exchange: " + str(self.stream_list[stream_id]['exchange']) + f"{proxy}\r\n" +
                     " uptime: " + str(self.get_human_uptime(int(time.time() - self.start_time))) + " since " +
                     str(self.get_date_of_timestamp(self.start_time)) + "\r\n" +
                     " streams: " + str(streams) + "\r\n" +
@@ -4229,6 +4226,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 except requests.exceptions.ConnectionError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager.stop_stream() - Not able to delete listen_key - "
                                  f"requests.exceptions.ConnectionError: {error_msg}")
+        # Todo: Obsolete?
         try:
             loop = self.get_event_loop_by_stream_id(stream_id)
             logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - Closing event_loop "
