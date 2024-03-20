@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# File: unicorn_binance_websocket_api/manager_old.py
+# File: unicorn_binance_websocket_api/manager.py
 #
 # Part of ‘UNICORN Binance WebSocket API’
 # Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
@@ -44,7 +44,7 @@ from .connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, CONNECTION_SETTIN
 from .exceptions import UnknownExchange
 from .restclient import BinanceWebSocketApiRestclient
 from .restserver import BinanceWebSocketApiRestServer
-from .sockets_old import BinanceWebSocketApiSocket
+from .sockets import BinanceWebSocketApiSocket
 from .api import BinanceWebSocketApiApi
 from cheroot import wsgi
 from collections import deque
