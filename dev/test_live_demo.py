@@ -47,7 +47,7 @@ except ImportError:
     sys.exit(1)
 
 try:
-    from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+    from unicorn_binance_websocket_api.manager_old import BinanceWebSocketApiManager
 except ImportError:
     print("Please install `unicorn-binance-rest-api`! "
           "https://www.lucit.tech/unicorn-binance-websocket-api.html#installation-and-upgrade")

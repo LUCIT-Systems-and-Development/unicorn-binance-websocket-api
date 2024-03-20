@@ -30,7 +30,7 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.manager_old import BinanceWebSocketApiManager
 import unicorn_binance_rest_api
 import asyncio
 import logging

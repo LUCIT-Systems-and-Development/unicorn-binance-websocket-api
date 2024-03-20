@@ -44,7 +44,7 @@
 from aiokafka import AIOKafkaProducer
 from aiokafka.helpers import create_ssl_context
 from kafka.errors import KafkaConnectionError
-from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.manager_old import BinanceWebSocketApiManager
 import asyncio
 import json
 import logging

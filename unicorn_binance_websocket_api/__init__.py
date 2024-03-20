@@ -1,2 +1,2 @@
 from unicorn_binance_websocket_api.exceptions import *
-from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.manager_old import BinanceWebSocketApiManager

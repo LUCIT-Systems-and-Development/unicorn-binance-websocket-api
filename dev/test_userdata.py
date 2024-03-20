@@ -32,7 +32,7 @@
 # IN THE SOFTWARE.
 import time
 
-from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.manager_old import BinanceWebSocketApiManager
 from unicorn_binance_websocket_api.exceptions import Socks5ProxyConnectionError
 import asyncio
 import logging

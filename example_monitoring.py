@@ -31,7 +31,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.manager_old import BinanceWebSocketApiManager
 from configparser import ConfigParser, ExtendedInterpolation
 from pathlib import Path
 import logging
