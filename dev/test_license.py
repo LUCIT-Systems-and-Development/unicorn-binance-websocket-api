@@ -35,7 +35,7 @@ import logging
 import os
 import sys
 import time
-from unicorn_binance_websocket_api.manager_old import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 from lucit_licensing_python.exceptions import NoValidatedLucitLicense
 
 

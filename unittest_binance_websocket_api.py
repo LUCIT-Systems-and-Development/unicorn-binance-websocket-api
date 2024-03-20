@@ -18,7 +18,7 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-from unicorn_binance_websocket_api.manager_old import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
 from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
 import asyncio

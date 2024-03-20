@@ -33,7 +33,7 @@
 
 # Thanks to mfiro https://github.com/mfiro for sharing this example!
 
-from unicorn_binance_websocket_api.manager_old import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 
 import time
 import threading
