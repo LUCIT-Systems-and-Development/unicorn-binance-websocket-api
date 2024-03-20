@@ -700,8 +700,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type restart: bool
         :return:
         """
-        if self.is_stop_request(stream_id, exclude_kill_requests=True):
+        if self.is_stop_request(stream_id, exclude_kill_requests=True) and self.stream_list[stream_id]['status'] != "restarting":
             print("Ja!")
+            print(self.stream_list[stream_id])
             return False
         if restart is False:
             if stream_buffer_name is not False:
@@ -1049,7 +1050,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                             'initiated': None}
                     # restart streams with requests
                     if self.restart_requests[stream_id]['status'] == "new" or \
-                            self.stream_list[stream_id]['kill_request'] is not None:
+                            self.stream_list[stream_id]['kill_request'] is not False:
                         self.kill_stream(stream_id)
                         if self.restart_requests[stream_id]['initiated'] is None or \
                                 self.restart_requests[stream_id]['initiated']+5 < time.time():
@@ -1089,7 +1090,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.restart_requests[stream_id] = {'status': "restarted"}
         self.restart_requests[stream_id]['last_restart_time'] = time.time()
         self.stream_list[stream_id]['status'] = "restarting"
-        self.stream_list[stream_id]['kill_request'] = None
+        self.stream_list[stream_id]['kill_request'] = False
         self.stream_list[stream_id]['payload'] = []
         if self.is_manager_stopping() is True:
             return False
@@ -3275,10 +3276,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.debug(f"BinanceWebSocketApiManager.is_stop_request({stream_id}){self.get_debug_log()}")
         try:
             if self.stream_list[stream_id]['stop_request'] is True:
+                print("A")
                 return True
             elif self.is_manager_stopping():
+                print("B")
                 return True
             elif self.stream_list[stream_id]['kill_request'] is True and exclude_kill_requests is False:
+                print("C")
                 return True
             else:
                 return False
