@@ -85,9 +85,9 @@ class BinanceWebSocketApiSocket(object):
                     if self.manager.is_stop_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
                         await self.close()
-
                         return False
                     elif self.manager.is_stop_as_crash_request(self.stream_id):
+                        self.manager.stream_is_crashing(self.stream_id)
                         await self.close()
                         return False
                     try:
