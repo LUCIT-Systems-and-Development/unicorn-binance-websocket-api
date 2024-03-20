@@ -700,9 +700,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type restart: bool
         :return:
         """
-#        if self.is_stop_request(stream_id, exclude_kill_requests=True):
-#            print("Ja!")
-#            return False
+        if self.is_stop_request(stream_id, exclude_kill_requests=True):
+            print("Ja!")
+            return False
         if restart is False:
             if stream_buffer_name is not False:
                 self.stream_buffer_locks[stream_buffer_name] = threading.Lock()
@@ -780,6 +780,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 15` - {error_msg}")
+            self.stream_list[stream_id]['kill_request'] = False
             self.set_socket_is_ready(stream_id)
 
     def generate_signature(self, api_secret=None, data=None):
