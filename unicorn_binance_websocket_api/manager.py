@@ -4121,7 +4121,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             pass
         logger.debug(f"BinanceWebSocketApiManager.set_restart_request() - creating new request")
-        self.stop_stream(stream_id=stream_id)
         self.restart_requests[stream_id] = {'status': "new",
                                             'initiated': None}
         return True
