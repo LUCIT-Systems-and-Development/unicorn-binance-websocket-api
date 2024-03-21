@@ -79,7 +79,8 @@ class BinanceWebSocketApiSocket(object):
                 self.manager.process_stream_signals(signal_type="CONNECT", stream_id=self.stream_id)
                 self.manager.stream_list[self.stream_id]['last_stream_signal'] = "CONNECT"
                 while True:
-                    if self.manager.is_stop_request(self.stream_id):
+                    if self.manager.is_stop_request(self.stream_id) \
+                            or self.manager.is_stop_as_crash_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
                         try:
                             await self.websocket.close()
@@ -87,10 +88,6 @@ class BinanceWebSocketApiSocket(object):
                             logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() "
                                          f"stream_id={str(self.stream_id)}  - AttributeError `error: 17` - "
                                          f"error_msg: {str(error_msg)}")
-
-                        return False
-                    elif self.manager.is_stop_as_crash_request(self.stream_id):
-                        await self.websocket.close()
                         return False
                     try:
                         if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:

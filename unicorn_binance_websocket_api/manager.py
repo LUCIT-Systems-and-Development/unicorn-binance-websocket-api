@@ -1123,7 +1123,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till new socket and "
                          f"asyncio is ready")
             time.sleep(1)
-        while self.event_loops[stream_id] is None and self.is_manager_stopping() is False:
+        while self.event_loops[stream_id] is None and self.is_stop_request(stream_id=stream_id) is False:
+            if self.is_stop_request(stream_id=stream_id) is True:
+                return False
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till asyncio is "
                          f"ready")
             time.sleep(0.001)
@@ -1658,7 +1660,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                       https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task
         :type process_asyncio_queue: Optional[Callable]
 
-        :return: stream_id or 'False'
+        :return: stream_id or 'None'
         """
         provided_listen_key = listen_key
 
@@ -1667,7 +1669,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             if api_key is False or api_secret is False:
                 logger.error(f"BinanceWebSocketApiManager.create_stream(api={api}) - `api_key` and `api_secret` are "
                              f"mandatory if `api=True`")
-                return False
+                return None
         else:
             # create an ordinary stream
             if isinstance(channels, bool):
@@ -1675,14 +1677,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                              + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
                              str(stream_buffer_maxlen) + ") - Parameter "
                              f"`channels` must be str, tuple, list or a set!")
-                return False
+                return None
             elif isinstance(markets, bool):
                 if isinstance(channels, bool):
                     logger.error(f"BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets) + ", "
                                  + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
                                  str(stream_buffer_maxlen) + ") - Parameter "
                                  f"`markets` must be str, tuple, list or a set!")
-                return False
+                return None
             if type(channels) is str:
                 channels = [channels]
             if type(markets) is str:
@@ -1753,7 +1755,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
                          f"{api}) with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
             time.sleep(1)
-        while self.event_loops[stream_id] is None:
+        while self.event_loops[stream_id] is None and self.is_stop_request(stream_id=stream_id) is False:
+            if self.is_stop_request(stream_id=stream_id) is True:
+                return None
             logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
                          f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
                          f"{api}) with stream_id={str(stream_id)} - Waiting till asyncio is ready")
@@ -3929,7 +3933,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
                                      `BinanceWebSocketApiManager()`.
         :type new_stream_buffer_maxlen: int or None
-        :return: new_stream_id or 'False'
+        :return: stream_id or 'None'
         """
         # starting a new socket and stop the old stream not before the new stream received its first record
         new_stream_id = self.create_stream(new_channels,
@@ -4086,9 +4090,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.debug(f"BinanceWebSocketApiManager.set_restart_request() - creating new request")
         try:
             self.stream_list[stream_id]['stop_request'] = True
+        except KeyError:
+            logger.debug(f"BinanceWebSocketApiManager.set_restart_request() - Not able to set stop_request=True")
+        try:
             self.restart_requests[stream_id] = {'status': "new",
                                                 'initiated': None}
         except KeyError:
+            logger.error(f"BinanceWebSocketApiManager.set_restart_request() - Not able to set new restart_request")
             return False
         return True
 
