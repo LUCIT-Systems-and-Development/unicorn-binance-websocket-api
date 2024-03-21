@@ -4245,8 +4245,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             if loop is None:
                 return True
             try:
-                if loop.is_running():
-                    loop.stop()
+                pass
+#                if loop.is_running():
+#                    loop.stop()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - AttributeError - {error_msg}")
             except RuntimeError as error_msg:

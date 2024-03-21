@@ -771,7 +771,7 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.print_stream_info(stream_id3)
         self.__class__.ubwa.wait_till_stream_has_started(stream_id3)
         print(f"Waiting for {stream_id3} has started ... done!")
-        print(f"Start Stop stream...")
+        print(f"Start Stop stream {stream_id2}...")
         self.__class__.ubwa.stop_stream(stream_id2)
         print(f" done!")
         self.__class__.ubwa.add_to_ringbuffer_error("test")
