@@ -308,7 +308,6 @@ class BinanceWebSocketApiConnection(object):
         except RuntimeError as error_msg:
             logger.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) - RuntimeError: {str(error_msg)}")
         except ValueError as error_msg:
-            # ValueError: The future belongs to a different loop than the one specified as the loop argument
             logger.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) socket_id="
                          f"{str(self.socket_id)}) - Closing this socket! - ValueError: {str(error_msg)}")
             self.manager.stream_is_stopping(self.stream_id)

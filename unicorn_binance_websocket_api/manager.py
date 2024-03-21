@@ -757,6 +757,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             else:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                              f" - RuntimeError `error: 12` - error_msg: {str(error_msg)}")
+        except Exception as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() - Error within the loop: - "
+                         f"{error_msg}")
         finally:
             logger.debug(f"Finally closing the loop stream_id={str(stream_id)}")
             try:
@@ -1139,7 +1142,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till new socket and "
                          f"asyncio is ready")
             time.sleep(1)
-        while self.event_loops[stream_id] is None and self.is_manager_stopping() is False:
+        while self.event_loops[stream_id] is None and self.is_stop_request(stream_id=stream_id) is False:
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till asyncio is "
                          f"ready")
             time.sleep(0.001)
@@ -1769,7 +1772,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
                          f"{api}) with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
             time.sleep(1)
-        while self.event_loops[stream_id] is None:
+        while self.event_loops[stream_id] is None and self.is_stop_request(stream_id=stream_id) is False:
             logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
                          f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
                          f"{api}) with stream_id={str(stream_id)} - Waiting till asyncio is ready")
