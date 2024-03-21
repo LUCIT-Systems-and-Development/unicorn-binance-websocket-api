@@ -1096,40 +1096,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         try:
             i = 0
             while not self.event_loops[stream_id].is_closed():
-                if i > 10:
-                    print(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
-                          f"previous asyncio is closed ...")
-                    print(f"{time.time()}")
-                    print(f"stream_list:\r\n{self.stream_list[stream_id]}")
-                    loop = self.event_loops[stream_id]
-                    try:
-                        self.stream_list[stream_id]['loop_is_closing'] = True
-                    except KeyError:
-                        pass
-                    if loop is not None:
-                        try:
-                            tasks = asyncio.all_tasks(loop)
-                            loop.run_until_complete(self._shutdown_asyncgens(loop))
-                            for task in tasks:
-                                task.cancel()
-                                try:
-                                    loop.run_until_complete(task)
-                                except asyncio.CancelledError:
-                                    pass
-                            print(f"{loop.is_running()}")
-                            time.sleep(10)
-                            print(f"{loop.is_running()}")
-                        except RuntimeError as error_msg:
-                            logger.debug(
-                                f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
-                                f"RuntimeError `error: 14` - {error_msg}")
-                        except Exception as error_msg:
-                            logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() finally - {error_msg}")
-                        if not loop.is_closed():
-                            loop.close()
-                    self.stream_list[stream_id]['loop_is_closing'] = False
-                    return False
-                print(i)
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
                              f"previous asyncio is closed ...")
                 i += 1
@@ -4281,6 +4247,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 if loop.is_running():
                     while self.stream_list[stream_id]['loop_is_closing'] is True:
+                        print("A")
                         time.sleep(0.001)
                     loop.stop()
             except AttributeError as error_msg:
