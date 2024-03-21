@@ -777,7 +777,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                              f"KeyError `error: 15` - {error_msg}")
             try:
                 self.stream_list[stream_id]['kill_request'] = False
-            except KeyError:
+            except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 20` - {error_msg}")
             self.set_socket_is_ready(stream_id)
