@@ -1099,7 +1099,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if i > 10:
                     print(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
                           f"previous asyncio is closed ...")
-                    print(f"stream_list:\r\n{self.stream_list}")
+                    print(f"stream_list:\r\n{self.stream_list[stream_id]}")
                     return False
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
                              f"previous asyncio is closed ...")
