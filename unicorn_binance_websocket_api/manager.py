@@ -463,6 +463,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.debug(f"BinanceWebSocketApiManager._shutdown_asyncgens() started ...")
         await loop.shutdown_asyncgens()
 
+    async def _close_socket(self, stream_id):
+        logger.debug(f"BinanceWebSocketApiManager._close_socket() started ...")
+        try:
+            await self.websocket_list[stream_id].close()
+        except asyncio.CancelledError:
+            logger.debug(f"BinanceWebSocketApiConnection._close_socket({self.stream_id})"
+                         f"- Exception asyncio.CancelledError")
+
     async def _run_socket(self, stream_id, channels, markets) -> bool:
         async with BinanceWebSocketApiSocket(self, stream_id, channels, markets) as socket:
             if socket is not None:
@@ -768,6 +776,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 pass
             if loop is not None:
                 try:
+                    loop.run_until_complete(self._close_socket(loop))
                     tasks = asyncio.all_tasks(loop)
                     loop.run_until_complete(self._shutdown_asyncgens(loop))
                     for task in tasks:
