@@ -775,11 +775,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 15` - {error_msg}")
-            try:
-                self.stream_list[stream_id]['kill_request'] = False
-            except KeyError:
-                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
-                             f"KeyError `error: 20` - {error_msg}")
+            self.stream_list[stream_id]['kill_request'] = False
             self.set_socket_is_ready(stream_id)
 
     def generate_signature(self, api_secret=None, data=None):
@@ -1093,13 +1089,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.is_manager_stopping() is True:
             return False
         self.set_socket_is_not_ready(stream_id)
-#        try:
-#            while not self.event_loops[stream_id].is_closed():
-#                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
-#                             f"previous asyncio is closed ...")
-#                time.sleep(1)
-#        except AttributeError:
-#            pass
+        try:
+            while not self.event_loops[stream_id].is_closed():
+                print("D")
+                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
+                             f"previous asyncio is closed ...")
+                time.sleep(1)
+        except AttributeError:
+            pass
         self.event_loops[stream_id] = None
         try:
             thread = threading.Thread(target=self._create_stream_thread,
@@ -3273,12 +3270,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logger.debug(f"BinanceWebSocketApiManager.is_stop_request({stream_id}){self.get_debug_log()}")
         try:
-            if (self.stream_list[stream_id]['stop_request'] is True
-                    and self.restart_requests[stream_id]['status'] != "restarted"):
+            if self.stream_list[stream_id]['stop_request'] is True:
+                print("A")
                 return True
             elif self.is_manager_stopping():
+                print("B")
                 return True
             elif self.stream_list[stream_id]['kill_request'] is True and exclude_kill_requests is False:
+                print("C")
                 return True
             else:
                 return False
@@ -4085,8 +4084,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             pass
         logger.debug(f"BinanceWebSocketApiManager.set_restart_request() - creating new request")
-        self.restart_requests[stream_id] = {'status': "new",
-                                            'initiated': None}
+        try:
+            self.stream_list[stream_id]['stop_request'] = True
+            self.restart_requests[stream_id] = {'status': "new",
+                                                'initiated': None}
+        except KeyError:
+            return False
         return True
 
     def split_payload(self, params, method, max_items_per_request=350):
