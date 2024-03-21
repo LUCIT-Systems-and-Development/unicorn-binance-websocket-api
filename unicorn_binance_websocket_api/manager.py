@@ -1114,6 +1114,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         except OSError as error_msg:
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - OSError - {error_msg}")
             return False
+        except KeyError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - KeyError - {error_msg}")
+            return False
         self.stream_threads[stream_id] = thread
         while self.socket_is_ready[stream_id] is False \
                 and self.high_performance is False\
