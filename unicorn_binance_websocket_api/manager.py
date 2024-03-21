@@ -1094,10 +1094,15 @@ class BinanceWebSocketApiManager(threading.Thread):
             return False
         self.set_socket_is_not_ready(stream_id)
         try:
+            i = 0
             while not self.event_loops[stream_id].is_closed():
-                print("D")
+                if i > 10:
+                    print(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
+                          f"previous asyncio is closed ...")
+                    print(f"stream_list:\r\n{self.stream_list}")
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
                              f"previous asyncio is closed ...")
+                i += 1
                 time.sleep(1)
         except AttributeError:
             pass
