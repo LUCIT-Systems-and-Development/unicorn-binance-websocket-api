@@ -469,7 +469,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 await socket.start_socket()
             else:
                 return False
-            await self.websocket_list[stream_id].close()
+            try:
+                await self.websocket_list[stream_id].close()
+            except KeyError:
+                pass
 
     async def get_stream_data_from_asyncio_queue(self, stream_id=None):
         """
