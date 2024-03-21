@@ -1208,17 +1208,17 @@ class BinanceWebSocketApiManager(threading.Thread):
         except RuntimeError as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
                             "going down! - Info: RuntimeError - " + str(error_msg))
-            self.monitoring_api_server.stop()
+            self.stop_monitoring_api()
             return False
         except ResourceWarning as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
                             "going down! - Info: ResourceWarning - " + str(error_msg))
-            self.monitoring_api_server.stop()
+            self.stop_monitoring_api()
             return False
         except OSError as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
                             "going down! - Info: OSError - " + str(error_msg))
-            self.monitoring_api_server.stop()
+            self.stop_monitoring_api()
             return False
         return True
 
