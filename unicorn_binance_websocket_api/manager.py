@@ -775,7 +775,11 @@ class BinanceWebSocketApiManager(threading.Thread):
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 15` - {error_msg}")
-            self.stream_list[stream_id]['kill_request'] = False
+            try:
+                self.stream_list[stream_id]['kill_request'] = False
+            except KeyError as error_msg:
+                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
+                             f"KeyError `error: 19` - {error_msg}")
             self.set_socket_is_ready(stream_id)
 
     def generate_signature(self, api_secret=None, data=None):
