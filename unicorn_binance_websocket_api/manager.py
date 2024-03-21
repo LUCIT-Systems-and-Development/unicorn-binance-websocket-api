@@ -4080,6 +4080,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logger.debug(f"BinanceWebSocketApiManager.set_restart_request({stream_id}){self.get_debug_log()}")
         try:
+            self.stream_list[stream_id]['stop_request'] = True
+        except KeyError:
+            pass
+        try:
             if self.restart_requests[stream_id]['last_restart_time'] + self.restart_timeout > time.time():
                 logger.debug(f"BinanceWebSocketApiManager.set_restart_request() - last_restart_time timeout, "
                              f"initiate new")
