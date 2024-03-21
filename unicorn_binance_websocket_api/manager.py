@@ -469,6 +469,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 await socket.start_socket()
             else:
                 return False
+            await self.websocket_list[stream_id].close()
 
     async def get_stream_data_from_asyncio_queue(self, stream_id=None):
         """
@@ -1115,6 +1116,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             thread.start()
         except OSError as error_msg:
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - OSError - {error_msg}")
+            return False
+        except KeyError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - KeyError - {error_msg}")
             return False
         self.stream_threads[stream_id] = thread
         while self.socket_is_ready[stream_id] is False \
