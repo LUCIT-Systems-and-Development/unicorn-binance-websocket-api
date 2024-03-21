@@ -3377,8 +3377,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"of stream_id {stream_id}")
             try:
                 if loop.is_running():
-                    while self.stream_list[stream_id]['loop_is_closing'] is True:
-                        time.sleep(0.001)
+                    #while self.stream_list[stream_id]['loop_is_closing'] is True:
+                    #    time.sleep(0.001)
                     loop.stop()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - AttributeError - {error_msg}")
@@ -4246,9 +4246,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return True
             try:
                 if loop.is_running():
-                    while self.stream_list[stream_id]['loop_is_closing'] is True:
-                        print("A")
-                        time.sleep(0.001)
+#                    while self.stream_list[stream_id]['loop_is_closing'] is True:
+#                        print("A")
+#                        time.sleep(0.001)
                     loop.stop()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - AttributeError - {error_msg}")
@@ -4286,8 +4286,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"of stream_id {stream_id}")
             try:
                 if loop.is_running():
-                    while self.stream_list[stream_id]['loop_is_closing'] is True:
-                        time.sleep(0.001)
+                    #while self.stream_list[stream_id]['loop_is_closing'] is True:
+                    #    time.sleep(0.001)
                     loop.stop()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.stop_stream_as_crash({stream_id}) - AttributeError - "
