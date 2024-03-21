@@ -466,13 +466,16 @@ class BinanceWebSocketApiManager(threading.Thread):
     async def _run_socket(self, stream_id, channels, markets) -> bool:
         async with BinanceWebSocketApiSocket(self, stream_id, channels, markets) as socket:
             if socket is not None:
-                await socket.start_socket()
-            else:
-                return False
-            try:
-                await self.websocket_list[stream_id].close()
-            except KeyError:
-                pass
+                try:
+                    await socket.start_socket()
+                except GeneratorExit:
+                    pass
+                try:
+                    await self.websocket_list[stream_id].close()
+                except KeyError:
+                    pass
+                return True
+            return False
 
     async def get_stream_data_from_asyncio_queue(self, stream_id=None):
         """
