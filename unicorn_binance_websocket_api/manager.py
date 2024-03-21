@@ -470,6 +470,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     await socket.start_socket()
                 except GeneratorExit:
                     pass
+                except RuntimeError:
+                    pass
                 try:
                     await self.websocket_list[stream_id].close()
                 except KeyError:
