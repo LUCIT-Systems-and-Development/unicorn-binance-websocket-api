@@ -3280,9 +3280,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logger.debug(f"BinanceWebSocketApiManager.is_stop_request({stream_id}){self.get_debug_log()}")
         try:
-            if self.stream_list[stream_id]['stop_request'] is True \
-                    and self.restart_requests[stream_id]['status'] != "new" \
-                    and self.restart_requests[stream_id]['status'] != "restarted":
+            if self.stream_list[stream_id]['stop_request'] is True:
                 return True
             elif self.is_manager_stopping():
                 return True
