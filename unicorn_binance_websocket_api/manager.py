@@ -474,6 +474,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     await self.websocket_list[stream_id].close()
                 except KeyError:
                     pass
+                except asyncio.CancelledError:
+                    pass
                 return True
             return False
 
