@@ -463,31 +463,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.debug(f"BinanceWebSocketApiManager._shutdown_asyncgens() started ...")
         await loop.shutdown_asyncgens()
 
-    async def _close_socket(self, stream_id):
-        logger.debug(f"BinanceWebSocketApiManager._close_socket() started ...")
-        try:
-            await self.websocket_list[stream_id].close()
-        except asyncio.CancelledError:
-            logger.debug(f"BinanceWebSocketApiConnection._close_socket({self.stream_id})"
-                         f"- Exception asyncio.CancelledError")
-
     async def _run_socket(self, stream_id, channels, markets) -> bool:
         async with BinanceWebSocketApiSocket(self, stream_id, channels, markets) as socket:
             if socket is not None:
-                try:
-                    await socket.start_socket()
-                except GeneratorExit:
-                    pass
-                except RuntimeError:
-                    pass
-                try:
-                    await self.websocket_list[stream_id].close()
-                except KeyError:
-                    pass
-                except asyncio.CancelledError:
-                    pass
-                return True
-            return False
+                await socket.start_socket()
+            else:
+                return False
 
     async def get_stream_data_from_asyncio_queue(self, stream_id=None):
         """
@@ -765,9 +746,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             else:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                              f" - RuntimeError `error: 12` - error_msg: {str(error_msg)}")
-        except Exception as error_msg:
-            logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() - Error within the loop: - "
-                         f"{error_msg}")
         finally:
             logger.debug(f"Finally closing the loop stream_id={str(stream_id)}")
             try:
@@ -776,7 +754,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 pass
             if loop is not None:
                 try:
-                    loop.run_until_complete(self._close_socket(loop))
                     tasks = asyncio.all_tasks(loop)
                     loop.run_until_complete(self._shutdown_asyncgens(loop))
                     for task in tasks:
@@ -800,7 +777,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                              f"KeyError `error: 15` - {error_msg}")
             try:
                 self.stream_list[stream_id]['kill_request'] = False
-            except KeyError as error_msg:
+            except KeyError:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 20` - {error_msg}")
             self.set_socket_is_ready(stream_id)
@@ -1116,15 +1093,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.is_manager_stopping() is True:
             return False
         self.set_socket_is_not_ready(stream_id)
-        try:
-            i = 0
-            while not self.event_loops[stream_id].is_closed():
-                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
-                             f"previous asyncio is closed ...")
-                i += 1
-                time.sleep(1)
-        except AttributeError:
-            pass
+#        try:
+#            while not self.event_loops[stream_id].is_closed():
+#                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
+#                             f"previous asyncio is closed ...")
+#                time.sleep(1)
+#        except AttributeError:
+#            pass
         self.event_loops[stream_id] = None
         try:
             thread = threading.Thread(target=self._create_stream_thread,
@@ -1139,9 +1114,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         except OSError as error_msg:
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - OSError - {error_msg}")
             return False
-        except KeyError as error_msg:
-            logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - KeyError - {error_msg}")
-            return False
         self.stream_threads[stream_id] = thread
         while self.socket_is_ready[stream_id] is False \
                 and self.high_performance is False\
@@ -1151,7 +1123,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till new socket and "
                          f"asyncio is ready")
             time.sleep(1)
-        while self.event_loops[stream_id] is None and self.is_stop_request(stream_id=stream_id) is False:
+        while self.event_loops[stream_id] is None and self.is_manager_stopping() is False:
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till asyncio is "
                          f"ready")
             time.sleep(0.001)
@@ -1781,7 +1753,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
                          f"{api}) with stream_id={str(stream_id)} - Waiting till new socket and asyncio is ready")
             time.sleep(1)
-        while self.event_loops[stream_id] is None and self.is_stop_request(stream_id=stream_id) is False:
+        while self.event_loops[stream_id] is None:
             logger.debug(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, "
                          f"{str(stream_label)}, {str(stream_buffer_name)}, {str(symbols)}, {stream_buffer_maxlen}, "
                          f"{api}) with stream_id={str(stream_id)} - Waiting till asyncio is ready")
@@ -4106,10 +4078,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logger.debug(f"BinanceWebSocketApiManager.set_restart_request({stream_id}){self.get_debug_log()}")
         try:
-            self.stream_list[stream_id]['stop_request'] = True
-        except KeyError:
-            pass
-        try:
             if self.restart_requests[stream_id]['last_restart_time'] + self.restart_timeout > time.time():
                 logger.debug(f"BinanceWebSocketApiManager.set_restart_request() - last_restart_time timeout, "
                              f"initiate new")
@@ -4276,6 +4244,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return True
             try:
                 if loop.is_running():
+                    while self.stream_list[stream_id]['loop_is_closing'] is True:
+                        time.sleep(0.001)
                     loop.stop()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - AttributeError - {error_msg}")

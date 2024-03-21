@@ -53,7 +53,6 @@ class BinanceWebSocketApiConnection(object):
         self.channels = copy.deepcopy(channels)
         self.markets = copy.deepcopy(markets)
         self.symbols = copy.deepcopy(symbols)
-        self.connection = None
         self.api = copy.deepcopy(self.manager.stream_list[self.stream_id]['api'])
         self.add_timeout = True if "!userData" in str(str(channels) + str(markets)) or self.api is True else False
         if self.add_timeout:
@@ -169,8 +168,7 @@ class BinanceWebSocketApiConnection(object):
                         f"{self.manager.socks5_proxy_port} SSL: {self.manager.socks5_proxy_ssl_verification}")
         try:
             try:
-                self.connection = await self._conn.__aenter__()
-                self.manager.websocket_list[self.stream_id] = self.connection
+                self.manager.websocket_list[self.stream_id] = await self._conn.__aenter__()
             except asyncio.CancelledError:
                 logger.debug(f"BinanceWebSocketApiConnection.__aenter__({self.stream_id}), {self.channels}), "
                              f"{self.markets}) - Exception asyncio.CancelledError")
@@ -237,7 +235,7 @@ class BinanceWebSocketApiConnection(object):
                                 str(self.channels) + ", " + str(self.markets) + ")" + " - URI Too Long? - error_msg: "
                                 + str(error_msg))
                 try:
-                    self.connection.close()
+                    self.manager.websocket_list[self.stream_id].close()
                 except KeyError:
                     pass
                 return None
@@ -260,7 +258,7 @@ class BinanceWebSocketApiConnection(object):
                 logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ") - error_msg: " + str(error_msg))
                 try:
-                    self.connection.close()
+                    self.manager.websocket_list[self.stream_id].close()
                 except KeyError:
                     pass
                 self.manager.stream_is_crashing(self.stream_id, str(error_msg))
@@ -271,7 +269,7 @@ class BinanceWebSocketApiConnection(object):
                          str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed"
                          " - error_msg:  " + str(error_msg))
             if "WebSocket connection is closed: code = 1006" in str(error_msg):
-                self.connection.close()
+                self.manager.websocket_list[self.stream_id].close()
                 self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                 return None
             else:
@@ -287,11 +285,18 @@ class BinanceWebSocketApiConnection(object):
                          f"{self.markets}) - Exception asyncio.CancelledError")
         except RuntimeError as error_msg:
             logger.debug(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - RuntimeError - {error_msg}")
+            self.manager.stream_is_stopping(self.stream_id)
+            if self.manager.is_stop_request(self.stream_id) is False and \
+                    self.manager.is_stop_as_crash_request is False:
+                self.manager.set_restart_request(self.stream_id)
         except AttributeError as error_msg:
             logger.error(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - AttributeError - {error_msg}")
         except websockets.ConnectionClosed as error_msg:
             logger.error(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - ConnectionClosed - {error_msg}")
-        self.manager.stream_is_stopping(self.stream_id)
+            self.manager.stream_is_stopping(self.stream_id)
+            if self.manager.is_stop_request(self.stream_id) is False and \
+                    self.manager.is_stop_as_crash_request is False:
+                self.manager.set_restart_request(self.stream_id)
         return None
 
     async def close(self):
@@ -299,7 +304,7 @@ class BinanceWebSocketApiConnection(object):
             self.manager.stream_is_stopping(self.stream_id)
         logger.info(f"BinanceWebSocketApiConnection.close({str(self.stream_id)})")
         try:
-            await self.connection.close()
+            await self.manager.websocket_list[self.stream_id].close()
         except asyncio.CancelledError:
             logger.debug(f"BinanceWebSocketApiConnection.close({self.stream_id}), {self.channels}), {self.markets}) "
                          f"- Exception asyncio.CancelledError")
@@ -308,6 +313,7 @@ class BinanceWebSocketApiConnection(object):
         except RuntimeError as error_msg:
             logger.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) - RuntimeError: {str(error_msg)}")
         except ValueError as error_msg:
+            # ValueError: The future belongs to a different loop than the one specified as the loop argument
             logger.error(f"BinanceWebSocketApiConnection.close({str(self.stream_id)}) socket_id="
                          f"{str(self.socket_id)}) - Closing this socket! - ValueError: {str(error_msg)}")
             self.manager.stream_is_stopping(self.stream_id)
@@ -325,10 +331,10 @@ class BinanceWebSocketApiConnection(object):
                     timeout = 0.1
                 else:
                     timeout = 1
-                received_data_json = await asyncio.wait_for(self.connection.recv(),
+                received_data_json = await asyncio.wait_for(self.manager.websocket_list[self.stream_id].recv(),
                                                             timeout=timeout)
             else:
-                received_data_json = await self.connection.recv()
+                received_data_json = await self.manager.websocket_list[self.stream_id].recv()
             if self.manager.is_stop_request(self.stream_id):
                 return None
             try:
@@ -376,7 +382,7 @@ class BinanceWebSocketApiConnection(object):
     async def send(self, data):
         self.manager.set_heartbeat(self.stream_id)
         try:
-            response = await self.connection.send(data)
+            response = await self.manager.websocket_list[self.stream_id].send(data)
             self.manager.increase_transmitted_counter(self.stream_id)
             return response
         except asyncio.CancelledError:
