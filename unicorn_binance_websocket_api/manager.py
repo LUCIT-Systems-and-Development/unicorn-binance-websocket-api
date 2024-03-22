@@ -1093,15 +1093,22 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['payload'] = []
         if self.is_manager_stopping() is True:
             return False
-        self.set_socket_is_not_ready(stream_id)
         try:
             while not self.event_loops[stream_id].is_closed():
-                print("J")
+                if self.is_stop_request(stream_id) is True:
+                    return False
+                print("J: _restart_stream()")
+                try:
+                    print(f"JA: {self.stream_list[stream_id]}\r\n{self.restart_requests[stream_id]}")
+                except KeyError:
+                    print(f"JB: {self.stream_list[stream_id]}\r\n")
+
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
                              f"previous asyncio is closed ...")
                 time.sleep(1)
         except AttributeError:
             pass
+        self.set_socket_is_not_ready(stream_id)
         self.event_loops[stream_id] = None
         try:
             thread = threading.Thread(target=self._create_stream_thread,
@@ -3384,12 +3391,10 @@ class BinanceWebSocketApiManager(threading.Thread):
             loop = self.get_event_loop_by_stream_id(stream_id)
             logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - Closing event_loop "
                          f"of stream_id {stream_id}")
+            # Todo:
             try:
-                if loop.is_running():
-                    while self.stream_list[stream_id]['loop_is_closing'] is True \
-                            and self.is_manager_stopping() is False:
-                        print("E")
-                        time.sleep(0.001)
+                if loop.is_running() and self.stream_list[stream_id]['loop_is_closing'] is False:
+                    print("E: kill_stream()")
                     loop.stop()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - AttributeError - {error_msg}")
@@ -4264,11 +4269,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             if loop is None:
                 return True
             try:
-                if loop.is_running():
-                    while self.stream_list[stream_id]['loop_is_closing'] is True \
-                            and self.is_manager_stopping() is False:
-                        print("F")
-                        time.sleep(0.001)
+                if loop.is_running() and self.stream_list[stream_id]['loop_is_closing'] is False:
+                    print("F: stop_stream()")
                     loop.stop()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - AttributeError - {error_msg}")
