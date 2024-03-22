@@ -1088,6 +1088,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.restart_requests[stream_id]['last_restart_time'] = time.time()
         self.stream_list[stream_id]['status'] = "restarting"
         self.stream_list[stream_id]['kill_request'] = False
+        self.stream_list[stream_id]['stop_request'] = False
         self.stream_list[stream_id]['payload'] = []
         if self.is_manager_stopping() is True:
             return False
@@ -3280,6 +3281,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.debug(f"BinanceWebSocketApiManager.is_stop_request({stream_id}){self.get_debug_log()}")
         try:
             if self.stream_list[stream_id]['stop_request'] is True \
+                    and self.restart_requests[stream_id]['status'] != "new" \
                     and self.restart_requests[stream_id]['status'] != "restarting":
                 return True
             elif self.is_manager_stopping():
