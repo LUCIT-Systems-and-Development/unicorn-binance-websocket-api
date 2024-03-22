@@ -1093,7 +1093,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['payload'] = []
         if self.is_manager_stopping() is True:
             return False
-        self.set_socket_is_not_ready(stream_id)  # Todo:
+#        self.set_socket_is_not_ready(stream_id)  # Todo:
         try:
             while not self.event_loops[stream_id].is_closed():
 #                if self.is_stop_request(stream_id) is True:
@@ -1109,7 +1109,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 time.sleep(1)
         except AttributeError:
             pass
-        #self.set_socket_is_not_ready(stream_id)  # Todo:
+        self.set_socket_is_not_ready(stream_id)  # Todo:
         self.event_loops[stream_id] = None
         try:
             thread = threading.Thread(target=self._create_stream_thread,
