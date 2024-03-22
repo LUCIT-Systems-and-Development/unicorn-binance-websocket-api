@@ -1096,16 +1096,17 @@ class BinanceWebSocketApiManager(threading.Thread):
 #        self.set_socket_is_not_ready(stream_id)  # Todo:
         try:
             while not self.event_loops[stream_id].is_closed():
-                if self.is_stop_request(stream_id) is True:
-                    return False
+                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
+                             f"previous asyncio is closed ...")
+                self.event_loops[stream_id].stop()
+#                if self.is_stop_request(stream_id) is True:
+#                    return False
                 print("J: _restart_stream()")
                 try:
                     print(f"JA: {self.stream_list[stream_id]}\r\n{self.restart_requests[stream_id]}")
                 except KeyError:
                     print(f"JB: {self.stream_list[stream_id]}\r\n")
 
-                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
-                             f"previous asyncio is closed ...")
                 time.sleep(1)
         except AttributeError:
             pass
