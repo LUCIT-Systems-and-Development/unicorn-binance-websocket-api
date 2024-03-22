@@ -1092,7 +1092,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.restart_requests[stream_id] = {'status': "restarted"}
         self.restart_requests[stream_id]['last_restart_time'] = time.time()
         self.stream_list[stream_id]['status'] = "restarting"
-        #self.stream_list[stream_id]['kill_request'] = False
         self.stream_list[stream_id]['stop_request'] = False
         self.stream_list[stream_id]['payload'] = []
         if self.is_stop_request(stream_id=stream_id) is True:
@@ -1110,18 +1109,18 @@ class BinanceWebSocketApiManager(threading.Thread):
                         del self.restart_requests[stream_id]
                     except KeyError:
                         pass
-                    if self.event_loops[stream_id].is_running() \
-                            and self.stream_list[stream_id]['loop_is_closing'] is False:
-                        self.event_loops[stream_id].stop()
+                    self.set_stop_request(stream_id)
+#                    if self.event_loops[stream_id].is_running() \
+#                            and self.stream_list[stream_id]['loop_is_closing'] is False:
+#                        self.event_loops[stream_id].stop()
                     return False
                 if self.is_stop_request(stream_id=stream_id):
                     print("Manager is closing!!")
-                    if self.event_loops[stream_id].is_running() \
-                            and self.stream_list[stream_id]['loop_is_closing'] is False:
-                        self.event_loops[stream_id].stop()
+                    try:
+                        del self.restart_requests[stream_id]
+                    except KeyError:
+                        pass
                     return False
-                time.sleep(1)
-
                 time.sleep(1)
         except AttributeError:
             pass
@@ -3402,10 +3401,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             loop = self.get_event_loop_by_stream_id(stream_id)
             logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - Closing event_loop "
                          f"of stream_id {stream_id}")
-            # Todo:
             try:
                 if loop.is_running() and self.stream_list[stream_id]['loop_is_closing'] is False:
-                    print("E: kill_stream()")
                     loop.stop()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.kill_stream({stream_id}) - AttributeError - {error_msg}")

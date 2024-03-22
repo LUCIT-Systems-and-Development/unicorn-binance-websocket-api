@@ -286,17 +286,17 @@ class BinanceWebSocketApiConnection(object):
         except RuntimeError as error_msg:
             logger.debug(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - RuntimeError - {error_msg}")
             self.manager.stream_is_stopping(self.stream_id)
-            if self.manager.is_stop_request(self.stream_id) is False and \
-                    self.manager.is_stop_as_crash_request is False:
-                self.manager.set_restart_request(self.stream_id)
+#            if self.manager.is_stop_request(self.stream_id) is False and \
+#                    self.manager.is_stop_as_crash_request is False:
+#                self.manager.set_restart_request(self.stream_id)
         except AttributeError as error_msg:
             logger.error(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - AttributeError - {error_msg}")
         except websockets.ConnectionClosed as error_msg:
             logger.error(f"BinanceWebSocketApiConnection.__aexit__({self.stream_id}) - ConnectionClosed - {error_msg}")
             self.manager.stream_is_stopping(self.stream_id)
-            if self.manager.is_stop_request(self.stream_id) is False and \
-                    self.manager.is_stop_as_crash_request is False:
-                self.manager.set_restart_request(self.stream_id)
+#            if self.manager.is_stop_request(self.stream_id) is False and \
+#                    self.manager.is_stop_as_crash_request is False:
+#                self.manager.set_restart_request(self.stream_id)
         return None
 
     async def close(self):
