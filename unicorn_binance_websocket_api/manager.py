@@ -762,7 +762,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         try:
                             loop.run_until_complete(task)
                         except asyncio.CancelledError:
-                            pass
+                            break
                 except RuntimeError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                                  f"RuntimeError `error: 14` - {error_msg}")
