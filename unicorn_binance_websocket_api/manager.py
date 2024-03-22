@@ -1138,8 +1138,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             time.sleep(1)
         while self.event_loops[stream_id] is None and self.is_manager_stopping() is False:
             print("B")
-#            if self.is_stop_request(stream_id=stream_id) is True:
-#                return False
+            if self.is_stop_request(stream_id=stream_id) is True:
+                return False
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till asyncio is "
                          f"ready")
             time.sleep(0.001)
