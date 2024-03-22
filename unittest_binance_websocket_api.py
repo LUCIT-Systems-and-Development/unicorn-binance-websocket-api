@@ -681,11 +681,11 @@ class TestApiLive(unittest.TestCase):
 
         time.sleep(6)
         print(f"Restarting stream_id1={stream_id1}")
-        self.__class__.ubwa.stop_stream(stream_id=stream_id1)
+        self.__class__.ubwa.set_stop_request(stream_id=stream_id1)
         self.__class__.ubwa.set_restart_request(stream_id1)
         time.sleep(6)
         print(f"Restarting stream_id1={stream_id1}")
-        self.__class__.ubwa.stop_stream(stream_id=stream_id1)
+        self.__class__.ubwa.set_stop_request(stream_id=stream_id1)
         self.__class__.ubwa.set_restart_request(stream_id1)
 
         restserver = BinanceWebSocketApiRestServer(self.__class__.ubwa)
