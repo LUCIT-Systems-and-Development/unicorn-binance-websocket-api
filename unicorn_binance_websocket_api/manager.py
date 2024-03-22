@@ -1096,8 +1096,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.set_socket_is_not_ready(stream_id)  # Todo:
         try:
             while not self.event_loops[stream_id].is_closed():
-                if self.is_stop_request(stream_id) is True:
-                    return False
+#                if self.is_stop_request(stream_id) is True:
+#                    return False
                 print("J: _restart_stream()")
                 try:
                     print(f"JA: {self.stream_list[stream_id]}\r\n{self.restart_requests[stream_id]}")
