@@ -761,6 +761,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     try:
                         tasks = asyncio.all_tasks(loop)
                         loop.run_until_complete(self._shutdown_asyncgens(loop))
+                        time.sleep(5)
                         for task in tasks:
                             task.cancel()
                             try:
