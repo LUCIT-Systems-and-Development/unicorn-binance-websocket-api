@@ -3386,7 +3386,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"of stream_id {stream_id}")
             try:
                 if loop.is_running():
-                    while self.stream_list[stream_id]['loop_is_closing'] is True:
+                    while self.stream_list[stream_id]['loop_is_closing'] is True \
+                            and self.is_manager_stopping() is False:
                         print("E")
                         time.sleep(0.001)
                     loop.stop()
@@ -4264,7 +4265,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return True
             try:
                 if loop.is_running():
-                    while self.stream_list[stream_id]['loop_is_closing'] is True:
+                    while self.stream_list[stream_id]['loop_is_closing'] is True \
+                            and self.is_manager_stopping() is False:
                         print("F")
                         time.sleep(0.001)
                     loop.stop()
