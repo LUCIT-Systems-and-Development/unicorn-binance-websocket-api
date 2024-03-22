@@ -1070,8 +1070,13 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: stream_id or False
         """
-        if self.is_manager_stopping() is True or self.stream_list[stream_id]['kill_request'] is True:
+        if self.is_manager_stopping() is True:
             return False
+        try:
+            if self.stream_list[stream_id]['kill_request'] is True:
+                return False
+        except KeyError:
+            pass
         try:
             if self.restart_requests[stream_id]['status'] != "new":
                 logger.warning("BinanceWebSocketApiManager._restart_stream() please use `set_restart_request()` "
@@ -1093,26 +1098,28 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.is_stop_request(stream_id=stream_id) is True:
             return False
         try:
-            i = 0
             while not self.event_loops[stream_id].is_closed():
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)}) - Waiting till "
                              f"previous asyncio is closed ...")
                 try:
-                    print(f"JA:")
+                    if self.restart_requests[stream_id]['status'] == "restarted":
+                        pass
                 except KeyError:
-                    print(f"JB:")
-                if i > 5:
+                    print("No Restart Request!!")
                     try:
-                        if self.restart_requests[stream_id]['status'] == "restarted":
-                            pass
+                        del self.restart_requests[stream_id]
                     except KeyError:
-                        print("No Restart Request!!")
-                        try:
-                            del self.restart_requests[stream_id]
-                        except KeyError:
-                            pass
-                        return False
-                i += 1
+                        pass
+                    if self.event_loops[stream_id].is_running() \
+                            and self.stream_list[stream_id]['loop_is_closing'] is False:
+                        self.event_loops[stream_id].stop()
+                    return False
+                if self.is_stop_request(stream_id=stream_id):
+                    print("Manager is closing!!")
+                    if self.event_loops[stream_id].is_running() \
+                            and self.stream_list[stream_id]['loop_is_closing'] is False:
+                        self.event_loops[stream_id].stop()
+                    return False
                 time.sleep(1)
 
                 time.sleep(1)
@@ -4274,7 +4281,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return True
             try:
                 if loop.is_running() and self.stream_list[stream_id]['loop_is_closing'] is False:
-                    print("F: stop_stream()")
                     loop.stop()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - AttributeError - {error_msg}")
