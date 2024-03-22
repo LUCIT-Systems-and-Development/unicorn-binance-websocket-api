@@ -1116,28 +1116,27 @@ class BinanceWebSocketApiManager(threading.Thread):
                         self.stream_list[stream_id]['loop_is_closing'] = True
                     except KeyError:
                         pass
-                    if loop is not None:
-                        if loop.is_running():
-                            try:
-                                tasks = asyncio.all_tasks(loop)
-                                loop.run_until_complete(self._shutdown_asyncgens(loop))
-                                for task in tasks:
-                                    task.cancel()
-                                    try:
-                                        loop.run_until_complete(task)
-                                    except asyncio.CancelledError:
-                                        pass
-                            except RuntimeError as error_msg:
-                                logger.debug(
-                                    f"BinanceWebSocketApiManager._restart_stream() stream_id={str(stream_id)} - "
-                                    f"RuntimeError `error: 14` - {error_msg}")
-                            except Exception as error_msg:
-                                logger.debug(f"BinanceWebSocketApiManager._restart_stream() finally - {error_msg}")
-                            while loop.is_running() and self.is_stop_request(stream_id) is False:
-                                print("Z")
-                                time.sleep(1)
-                        if not loop.is_closed():
-                            loop.close()
+                    if loop.is_running():
+                        try:
+                            tasks = asyncio.all_tasks(loop)
+                            loop.run_until_complete(self._shutdown_asyncgens(loop))
+                            for task in tasks:
+                                task.cancel()
+                                try:
+                                    loop.run_until_complete(task)
+                                except asyncio.CancelledError:
+                                    pass
+                        except RuntimeError as error_msg:
+                            logger.debug(
+                                f"BinanceWebSocketApiManager._restart_stream() stream_id={str(stream_id)} - "
+                                f"RuntimeError `error: 14` - {error_msg}")
+                        except Exception as error_msg:
+                            logger.debug(f"BinanceWebSocketApiManager._restart_stream() finally - {error_msg}")
+                        loop.stop()
+                    while loop.is_running():
+                        time.sleep(1)
+                    if not loop.is_closed():
+                        loop.close()
                     try:
                         self.stream_list[stream_id]['loop_is_closing'] = False
                         self.stream_is_stopping(stream_id)

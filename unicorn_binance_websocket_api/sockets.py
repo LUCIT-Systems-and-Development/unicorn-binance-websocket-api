@@ -280,7 +280,6 @@ class BinanceWebSocketApiSocket(object):
                         logger.critical(f"BinanceWebSocketApiSocket.start_socket({self.stream_id}, {self.channels}, "
                                         f"{self.markets}) - Exception ConnectionClosed - error_msg: {error_msg}")
                         if "WebSocket connection is closed: code = 1008" in str(error_msg):
-                            await self.websocket.close()
                             self.manager.stream_is_crashing(self.stream_id, error_msg)
                             self.manager.set_restart_request(self.stream_id)
                             return False
