@@ -1107,13 +1107,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                             pass
                     except KeyError:
                         print("No Restart Request!!")
-                        self.stream_list[stream_id]['stop_request'] = False
+                        self.stream_list[stream_id]['stop_request'] = True
                         #self.event_loops[stream_id].stop()
                         return False
-#                    if self.is_stop_request(stream_id) is True:
-#                        print("Manager is stopping!!")
-#                        self.event_loops[stream_id].stop()
-#                        return False
+                    if self.is_stop_request(stream_id) is True:
+                        print("Manager is stopping!!")
+                        self.stream_list[stream_id]['stop_request'] = True
+                        #self.event_loops[stream_id].stop()
+                        return False
                 i += 1
                 time.sleep(1)
 
