@@ -1087,10 +1087,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.restart_requests[stream_id] = {'status': "restarted"}
         self.restart_requests[stream_id]['last_restart_time'] = time.time()
         self.stream_list[stream_id]['status'] = "restarting"
-        self.stream_list[stream_id]['kill_request'] = False
+        #self.stream_list[stream_id]['kill_request'] = False
         self.stream_list[stream_id]['stop_request'] = False
         self.stream_list[stream_id]['payload'] = []
-        if self.is_manager_stopping() is True:
+        if self.is_stop_request(stream_id=stream_id) is True:
             return False
         try:
             i = 0
@@ -1111,17 +1111,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                             del self.restart_requests[stream_id]
                         except KeyError:
                             pass
-                        self.stream_list[stream_id]['stop_request'] = True
-                        #self.event_loops[stream_id].stop()
-                        return False
-                    if self.is_stop_request(stream_id) is True:
-                        print("Manager is stopping!!")
-                        try:
-                            del self.restart_requests[stream_id]
-                        except KeyError:
-                            pass
-                        self.stream_list[stream_id]['stop_request'] = True
-                        #self.event_loops[stream_id].stop()
                         return False
                 i += 1
                 time.sleep(1)
