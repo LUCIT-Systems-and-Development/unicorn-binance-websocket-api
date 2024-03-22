@@ -1127,8 +1127,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"asyncio is ready")
             time.sleep(1)
         while self.event_loops[stream_id] is None and self.is_manager_stopping() is False:
-            if self.is_stop_request(stream_id=stream_id) is True:
-                return False
+            #if self.is_stop_request(stream_id=stream_id) is True:
+            #    return False
             logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till asyncio is "
                          f"ready")
             time.sleep(0.001)
@@ -1665,8 +1665,6 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: stream_id or 'None'
         """
-        provided_listen_key = listen_key
-
         # handle Websocket API streams: https://developers.binance.com/docs/binance-trading-api/websocket_api
         if api is True:
             if api_key is False or api_secret is False:
@@ -1696,6 +1694,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         close_timeout = close_timeout or self.close_timeout_default
         ping_interval = ping_interval or self.ping_interval_default
         ping_timeout = ping_timeout or self.ping_timeout_default
+        provided_listen_key = listen_key
         stream_id = self.get_new_uuid_id()
         markets_new = []
         if stream_buffer_name is True:
