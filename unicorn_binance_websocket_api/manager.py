@@ -409,13 +409,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_buffer_lock = threading.Lock()
         self.stream_buffer_locks = {}
         self.stream_buffers = {}
-        self.stream_list = {}
-        self.stream_list_lock = threading.Lock()
         self.stream_signal_buffer = deque()
         self.stream_signal_buffer_lock = threading.Lock()
         self.socket_is_ready = {}
         self.stream_threads = {}
         self.stream_threading_lock = {}
+        self.loop_manager_lock = {}
         self.total_received_bytes = 0
         self.total_received_bytes_lock = threading.Lock()
         self.total_receives = 0
@@ -465,10 +464,14 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     async def _run_socket(self, stream_id, channels, markets) -> bool:
         async with BinanceWebSocketApiSocket(self, stream_id, channels, markets) as socket:
-            if socket is not None:
-                await socket.start_socket()
-            else:
+            try:
+                if socket is not None:
+                    await socket.start_socket()
+                else:
+                    return False
+            except ImportError:
                 return False
+            return True
 
     async def get_stream_data_from_asyncio_queue(self, stream_id=None):
         """
@@ -623,6 +626,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.specific_process_stream_data_async[stream_id] = process_stream_data_async
         self.stream_threading_lock[stream_id] = {'full_lock': threading.Lock(),
                                                  'receives_statistic_last_second_lock': threading.Lock()}
+        self.loop_manager_lock[stream_id] = threading.Lock()
         self.stream_list[stream_id] = {'exchange': self.exchange,
                                        'stream_id': copy.deepcopy(stream_id),
                                        'recent_socket_id': None,
@@ -747,40 +751,41 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                              f" - RuntimeError `error: 12` - error_msg: {str(error_msg)}")
         finally:
-            logger.debug(f"Finally closing the loop stream_id={str(stream_id)}")
-            try:
-                self.stream_list[stream_id]['loop_is_closing'] = True
-            except KeyError:
-                pass
-            if loop is not None:
+            with self.loop_manager_lock[stream_id]:
+                logger.debug(f"Finally closing the loop stream_id={str(stream_id)}")
                 try:
-                    tasks = asyncio.all_tasks(loop)
-                    loop.run_until_complete(self._shutdown_asyncgens(loop))
-                    for task in tasks:
-                        task.cancel()
-                        try:
-                            loop.run_until_complete(task)
-                        except asyncio.CancelledError:
-                            pass
-                except RuntimeError as error_msg:
+                    self.stream_list[stream_id]['loop_is_closing'] = True
+                except KeyError:
+                    pass
+                if loop is not None:
+                    try:
+                        tasks = asyncio.all_tasks(loop)
+                        loop.run_until_complete(self._shutdown_asyncgens(loop))
+                        for task in tasks:
+                            task.cancel()
+                            try:
+                                loop.run_until_complete(task)
+                            except asyncio.CancelledError:
+                                pass
+                    except RuntimeError as error_msg:
+                        logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
+                                     f"RuntimeError `error: 14` - {error_msg}")
+                    except Exception as error_msg:
+                        logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() finally - {error_msg}")
+                    if not loop.is_closed():
+                        loop.close()
+                try:
+                    self.stream_list[stream_id]['loop_is_closing'] = False
+                    self.stream_is_stopping(stream_id)
+                except KeyError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
-                                 f"RuntimeError `error: 14` - {error_msg}")
-                except Exception as error_msg:
-                    logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() finally - {error_msg}")
-                if not loop.is_closed():
-                    loop.close()
-            try:
-                self.stream_list[stream_id]['loop_is_closing'] = False
-                self.stream_is_stopping(stream_id)
-            except KeyError as error_msg:
-                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
-                             f"KeyError `error: 15` - {error_msg}")
-            try:
-                self.stream_list[stream_id]['kill_request'] = False
-            except KeyError as error_msg:
-                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
-                             f"KeyError `error: 19` - {error_msg}")
-            self.set_socket_is_ready(stream_id)
+                                 f"KeyError `error: 15` - {error_msg}")
+                try:
+                    self.stream_list[stream_id]['kill_request'] = False
+                except KeyError as error_msg:
+                    logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
+                                 f"KeyError `error: 19` - {error_msg}")
+                self.set_socket_is_ready(stream_id)
 
     def generate_signature(self, api_secret=None, data=None):
         """
@@ -1096,71 +1101,72 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_list[stream_id]['payload'] = []
         if self.is_stop_request(stream_id=stream_id) is True:
             return False
-        try:
-            loop = self.get_event_loop_by_stream_id(stream_id)
-            while not loop.is_closed():
-                logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till "
-                             f"previous asyncio is closed ...")
-                try:
-                    if self.restart_requests[stream_id]['status'] == "restarted":
-                        pass
-                except KeyError:
-                    print("No Restart Request!!")
+        with self.loop_manager_lock[stream_id]:
+            try:
+                loop = self.get_event_loop_by_stream_id(stream_id)
+                while not loop.is_closed():
+                    logger.debug(f"BinanceWebSocketApiManager._restart_stream({str(stream_id)}) - Waiting till "
+                                 f"previous asyncio is closed ...")
                     try:
-                        del self.restart_requests[stream_id]
+                        if self.restart_requests[stream_id]['status'] == "restarted":
+                            pass
                     except KeyError:
-                        pass
-                    self.set_stop_request(stream_id)
-                    time.sleep(5)
-                    try:
-                        self.stream_list[stream_id]['loop_is_closing'] = True
-                    except KeyError:
-                        pass
-                    if loop.is_running():
+                        print("No Restart Request!!")
                         try:
-                            tasks = asyncio.all_tasks(loop)
-                            loop.run_until_complete(self._shutdown_asyncgens(loop))
-                            for task in tasks:
-                                task.cancel()
-                                try:
-                                    loop.run_until_complete(task)
-                                except asyncio.CancelledError:
-                                    pass
-                        except RuntimeError as error_msg:
-                            logger.debug(
-                                f"BinanceWebSocketApiManager._restart_stream() stream_id={str(stream_id)} - "
-                                f"RuntimeError `error: 14` - {error_msg}")
-                        except Exception as error_msg:
-                            logger.debug(f"BinanceWebSocketApiManager._restart_stream() finally - {error_msg}")
-                        loop.stop()
-                    while loop.is_running():
-                        time.sleep(1)
-                    if not loop.is_closed():
-                        loop.close()
-                    try:
-                        self.stream_list[stream_id]['loop_is_closing'] = False
-                        self.stream_is_stopping(stream_id)
-                    except KeyError as error_msg:
-                        logger.debug(f"BinanceWebSocketApiManager._restart_stream() stream_id={str(stream_id)} - "
-                                     f"KeyError `error: 15` - {error_msg}")
-                    try:
-                        self.stream_list[stream_id]['kill_request'] = False
-                    except KeyError as error_msg:
-                        logger.debug(f"BinanceWebSocketApiManager._restart_stream() stream_id={str(stream_id)} - "
-                                     f"KeyError `error: 19` - {error_msg}")
-                    self.set_socket_is_ready(stream_id)
-                    return False
-                if self.is_stop_request(stream_id=stream_id):
-                    print("Manager is closing!!")
-                    self.set_stop_request(stream_id)
-                    try:
-                        del self.restart_requests[stream_id]
-                    except KeyError:
-                        pass
-                    return False
-                time.sleep(1)
-        except AttributeError:
-            pass
+                            del self.restart_requests[stream_id]
+                        except KeyError:
+                            pass
+                        self.set_stop_request(stream_id)
+                        time.sleep(5)
+                        try:
+                            self.stream_list[stream_id]['loop_is_closing'] = True
+                        except KeyError:
+                            pass
+                        if loop.is_running():
+                            try:
+                                tasks = asyncio.all_tasks(loop)
+                                loop.run_until_complete(self._shutdown_asyncgens(loop))
+                                for task in tasks:
+                                    task.cancel()
+                                    try:
+                                        loop.run_until_complete(task)
+                                    except asyncio.CancelledError:
+                                        pass
+                            except RuntimeError as error_msg:
+                                logger.debug(
+                                    f"BinanceWebSocketApiManager._restart_stream() stream_id={str(stream_id)} - "
+                                    f"RuntimeError `error: 14` - {error_msg}")
+                            except Exception as error_msg:
+                                logger.debug(f"BinanceWebSocketApiManager._restart_stream() finally - {error_msg}")
+                            loop.stop()
+                        while loop.is_running():
+                            time.sleep(1)
+                        if not loop.is_closed():
+                            loop.close()
+                        try:
+                            self.stream_list[stream_id]['loop_is_closing'] = False
+                            self.stream_is_stopping(stream_id)
+                        except KeyError as error_msg:
+                            logger.debug(f"BinanceWebSocketApiManager._restart_stream() stream_id={str(stream_id)} - "
+                                         f"KeyError `error: 15` - {error_msg}")
+                        try:
+                            self.stream_list[stream_id]['kill_request'] = False
+                        except KeyError as error_msg:
+                            logger.debug(f"BinanceWebSocketApiManager._restart_stream() stream_id={str(stream_id)} - "
+                                         f"KeyError `error: 19` - {error_msg}")
+                        self.set_socket_is_ready(stream_id)
+                        return False
+                    if self.is_stop_request(stream_id=stream_id):
+                        print("Manager is closing!!")
+                        self.set_stop_request(stream_id)
+                        try:
+                            del self.restart_requests[stream_id]
+                        except KeyError:
+                            pass
+                        return False
+                    time.sleep(1)
+            except AttributeError:
+                pass
         self.set_socket_is_not_ready(stream_id)
         self.event_loops[stream_id] = None
         try:
@@ -4307,25 +4313,26 @@ class BinanceWebSocketApiManager(threading.Thread):
                 except requests.exceptions.ConnectionError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager.stop_stream() - Not able to delete listen_key - "
                                  f"requests.exceptions.ConnectionError: {error_msg}")
-        try:
-            loop = self.get_event_loop_by_stream_id(stream_id)
-            logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - Closing event_loop "
-                         f"of stream_id {stream_id}")
-            if loop is None:
-                return True
+        with self.loop_manager_lock[stream_id]:
             try:
-                if loop.is_running() and self.stream_list[stream_id]['loop_is_closing'] is False:
-                    loop.stop()
-            except AttributeError as error_msg:
-                logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - AttributeError - {error_msg}")
+                loop = self.get_event_loop_by_stream_id(stream_id)
+                logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - Closing event_loop "
+                             f"of stream_id {stream_id}")
+                if loop is None:
+                    return True
+                try:
+                    if loop.is_running() and self.stream_list[stream_id]['loop_is_closing'] is False:
+                        loop.stop()
+                except AttributeError as error_msg:
+                    logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - AttributeError - {error_msg}")
+                except RuntimeError as error_msg:
+                    logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeError - {error_msg}")
+                except RuntimeWarning as error_msg:
+                    logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeWarning - {error_msg}")
             except RuntimeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeError - {error_msg}")
             except RuntimeWarning as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeWarning - {error_msg}")
-        except RuntimeError as error_msg:
-            logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeError - {error_msg}")
-        except RuntimeWarning as error_msg:
-            logger.debug(f"BinanceWebSocketApiManager.stop_stream({stream_id}) - RuntimeWarning - {error_msg}")
         return True
 
     def stop_stream_as_crash(self, stream_id):
