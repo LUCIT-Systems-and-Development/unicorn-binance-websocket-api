@@ -1107,6 +1107,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                             pass
                     except KeyError:
                         print("No Restart Request!!")
+                        self.stream_list[stream_id]['stop_request'] = False
                         #self.event_loops[stream_id].stop()
                         return False
 #                    if self.is_stop_request(stream_id) is True:
@@ -1119,7 +1120,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 time.sleep(1)
         except AttributeError:
             pass
-        self.set_socket_is_not_ready(stream_id)  # Todo:
+        self.set_socket_is_not_ready(stream_id)
         self.event_loops[stream_id] = None
         try:
             thread = threading.Thread(target=self._create_stream_thread,
