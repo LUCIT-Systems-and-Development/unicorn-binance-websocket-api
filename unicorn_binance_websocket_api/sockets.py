@@ -82,13 +82,13 @@ class BinanceWebSocketApiSocket(object):
                     if self.manager.is_stop_request(self.stream_id) \
                             or self.manager.is_stop_as_crash_request(self.stream_id):
                         self.manager.stream_is_stopping(self.stream_id)
-                        try:
-                            await self.websocket.close()
-                        except AttributeError as error_msg:
-                            logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() "
-                                         f"stream_id={str(self.stream_id)}  - AttributeError `error: 17` - "
-                                         f"error_msg: {str(error_msg)}")
-                        return False
+#                        try:
+#                            await self.websocket.close()
+#                        except AttributeError as error_msg:
+#                            logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() "
+#                                         f"stream_id={str(self.stream_id)}  - AttributeError `error: 17` - "
+#                                         f"error_msg: {str(error_msg)}")
+#                        return False
                     try:
                         if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
                             logger.error(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
@@ -187,7 +187,6 @@ class BinanceWebSocketApiSocket(object):
                                 received_stream_data = json.loads(received_stream_data_json)
                             else:
                                 received_stream_data = received_stream_data_json
-
                             if self.manager.stream_list[self.stream_id]['api'] is True:
                                 return_response_by_request_id = None
                                 with self.manager.return_response_lock:
@@ -199,7 +198,6 @@ class BinanceWebSocketApiSocket(object):
                                     self.manager.return_response[return_response_by_request_id]['response_value'] = received_stream_data
                                     self.manager.return_response[return_response_by_request_id]['event_return_response'].set()
                                     continue
-
                                 process_by_request_id = None
                                 with self.manager.process_response_lock:
                                     for request_id in self.manager.process_response:
@@ -211,7 +209,6 @@ class BinanceWebSocketApiSocket(object):
                                     with self.manager.process_response_lock:
                                         del self.manager.process_response[process_by_request_id]
                                     continue
-
                             try:
                                 stream_buffer_name = self.manager.stream_list[self.stream_id]['stream_buffer_name']
                             except KeyError:
@@ -279,14 +276,6 @@ class BinanceWebSocketApiSocket(object):
                     except websockets.ConnectionClosed as error_msg:
                         logger.critical(f"BinanceWebSocketApiSocket.start_socket({self.stream_id}, {self.channels}, "
                                         f"{self.markets}) - Exception ConnectionClosed - error_msg: {error_msg}")
-                        if "WebSocket connection is closed: code = 1008" in str(error_msg):
-                            self.manager.stream_is_crashing(self.stream_id, error_msg)
-                            self.manager.set_restart_request(self.stream_id)
-                            return False
-                        elif "WebSocket connection is closed: code = 1006" in str(error_msg):
-                            self.manager.stream_is_crashing(self.stream_id, error_msg)
-                            self.manager.set_restart_request(self.stream_id)
-                            return False
                         self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                         self.manager.set_restart_request(self.stream_id)
                         return False
@@ -297,7 +286,6 @@ class BinanceWebSocketApiSocket(object):
                         self.manager.set_restart_request(self.stream_id)
                         return False
         except asyncio.TimeoutError as error_msg:
-            # Catching https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/221
             self.manager.stream_is_crashing(self.stream_id, error_msg)
             self.manager.set_restart_request(self.stream_id)
             return False

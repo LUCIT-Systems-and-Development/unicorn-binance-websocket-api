@@ -1132,13 +1132,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                                         loop.run_until_complete(task)
                                     except asyncio.CancelledError:
                                         pass
+                                time.sleep(5)
+                                loop.stop()
                             except RuntimeError as error_msg:
                                 logger.debug(
                                     f"BinanceWebSocketApiManager._restart_stream() stream_id={str(stream_id)} - "
                                     f"RuntimeError `error: 14` - {error_msg}")
                             except Exception as error_msg:
                                 logger.debug(f"BinanceWebSocketApiManager._restart_stream() finally - {error_msg}")
-                            loop.stop()
                         while loop.is_running():
                             time.sleep(1)
                         if not loop.is_closed():

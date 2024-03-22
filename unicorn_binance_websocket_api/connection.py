@@ -232,10 +232,6 @@ class BinanceWebSocketApiConnection(object):
                 logger.critical("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) + ", " +
                                 str(self.channels) + ", " + str(self.markets) + ")" + " - URI Too Long? - error_msg: "
                                 + str(error_msg))
-                try:
-                    self.manager.websocket_list[self.stream_id].close()
-                except KeyError:
-                    pass
                 return None
             elif "Status code not 101: 400" in str(error_msg):
                 logger.critical("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) + ", " +
@@ -255,10 +251,6 @@ class BinanceWebSocketApiConnection(object):
             else:
                 logger.error("BinanceWebSocketApiConnection.__aenter__(" + str(self.stream_id) + ", " +
                              str(self.channels) + ", " + str(self.markets) + ") - error_msg: " + str(error_msg))
-                try:
-                    self.manager.websocket_list[self.stream_id].close()
-                except KeyError:
-                    pass
                 self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                 self.manager.set_restart_request(self.stream_id)
                 return None
@@ -267,7 +259,6 @@ class BinanceWebSocketApiConnection(object):
                          str(self.channels) + ", " + str(self.markets) + ") - Exception ConnectionClosed"
                          " - error_msg:  " + str(error_msg))
             if "WebSocket connection is closed: code = 1006" in str(error_msg):
-                self.manager.websocket_list[self.stream_id].close()
                 self.manager.stream_is_crashing(self.stream_id, str(error_msg))
                 return None
             else:
