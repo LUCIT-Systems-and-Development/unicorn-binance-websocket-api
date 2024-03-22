@@ -1070,7 +1070,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: stream_id or False
         """
-        if self.is_manager_stopping() is True:
+        if self.is_manager_stopping() is True or self.stream_list[stream_id]['kill_request'] is True:
             return False
         try:
             if self.restart_requests[stream_id]['status'] != "new":
