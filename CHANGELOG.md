@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.3.0.dev (development stage/unreleased/unstable)
 
 ## 2.3.0
-Runs perfectly on Python 3.7 to 3.12!!!
+Runs perfectly on Python 3.7 to 3.12 and Windows, Linux, Mac!
 
 ### Added
 - `ubwa.api.get_listen_key()`
