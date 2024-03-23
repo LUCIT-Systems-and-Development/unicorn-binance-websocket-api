@@ -28,6 +28,24 @@ class Socks5ProxyConnectionError(Exception):
 
 class UnknownExchange(Exception):
     """
-    Exception if the manager class is started with an unkown exchange.
+    Exception if the manager class is started with an unknown exchange.
     """
     pass
+
+
+class StreamIsStopping(Exception):
+    """
+    Exception if the stream is stopping.
+    """
+    def __init__(self, stream_id=None, reason=None):
+        self.message = f"Stream with stream_id={stream_id} is stopping! Reason: {reason}"
+        super().__init__(self.message)
+
+
+class StreamIsCrashing(Exception):
+    """
+    Exception if the stream is crashing.
+    """
+    def __init__(self, stream_id=None, reason=None):
+        self.message = f"Stream with stream_id={stream_id} is crashing! Trying to restart! Reason: {reason}"
+        super().__init__(self.message)

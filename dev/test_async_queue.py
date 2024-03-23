@@ -56,8 +56,8 @@ class BinanceDataProcessor:
                                                   channels=['trade'],
                                                   markets=['ethbtc', 'btcusdt'],
                                                   process_asyncio_queue=self.process_asyncio_queue_specific)
-        self.ubwa.create_stream(markets='arr', channels='!userData',
-                                api_key="api_key", api_secret="api_secret")
+        #self.ubwa.create_stream(markets='arr', channels='!userData',
+        #                        api_key="api_key", api_secret="api_secret")
         while self.ubwa.is_manager_stopping() is False:
             await asyncio.sleep(1)
 
