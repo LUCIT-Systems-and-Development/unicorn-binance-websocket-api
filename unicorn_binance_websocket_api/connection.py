@@ -89,16 +89,6 @@ class BinanceWebSocketApiConnection(object):
                     logger.critical(f"BinanceWebSocketApiConnection.__aenter__(stream_id={self.stream_id}), channels="
                                     f"{self.channels}), markets={self.markets}) - error: 4 - Binance API: "
                                     f"{str(uri['msg'])}")
-                    try:
-                        del self.manager.restart_requests[self.stream_id]
-                    except KeyError as error_msg:
-                        logger.critical(f"BinanceWebSocketApiConnection.__aenter__(stream_id={self.stream_id}), "
-                                        f"channels={self.channels}), markets={self.markets}) - error: 6 - "
-                                        f"KeyError: {error_msg}")
-                    except TypeError as error_msg:
-                        logger.critical(f"BinanceWebSocketApiConnection.__aenter__(stream_id={self.stream_id}), "
-                                        f"channels={self.channels}), markets={self.markets}) - error: 3 - "
-                                        f"TypeError: {error_msg}")
                 else:
                     logger.critical(f"BinanceWebSocketApiConnection.__aenter__(stream_id={self.stream_id}), channels="
                                     f"{self.channels}), markets={self.markets}) - error: 2 - Binance API: "
@@ -107,7 +97,7 @@ class BinanceWebSocketApiConnection(object):
                                                     stream_id=self.stream_id,
                                                     error_msg=uri['msg'])
                 self.manager.stream_list[self.stream_id]['last_stream_signal'] = "STREAM_UNREPAIRABLE"
-                raise StreamIsCrashing(stream_id=self.stream_id, reason=str(uri['msg']))
+                raise StreamIsCrashing(stream_id=self.stream_id, reason=uri['msg'])
         except KeyError as error_msg:
             logger.critical(f"BinanceWebSocketApiConnection.__aenter__(stream_id={self.stream_id}), "
                             f"channels={self.channels}), markets={self.markets}) - error: 1 - "
@@ -196,7 +186,7 @@ class BinanceWebSocketApiConnection(object):
                 timeout = 1
             received_data_json = await asyncio.wait_for(self.websocket.recv(), timeout=timeout)
         else:
-            received_data_json = await asyncio.wait_for(self.websocket.recv(), timeout=3)
+            received_data_json = await self.websocket.recv()
         self.manager.set_heartbeat(self.stream_id)
         size = sys.getsizeof(str(received_data_json))
         self.manager.add_total_received_bytes(size)

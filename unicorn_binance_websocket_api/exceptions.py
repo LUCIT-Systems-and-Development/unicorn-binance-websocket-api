@@ -47,5 +47,5 @@ class StreamIsCrashing(Exception):
     Exception if the stream is crashing.
     """
     def __init__(self, stream_id=None, reason=None):
-        self.message = f"Stream with stream_id={stream_id} is crashing! Trying to restart! Reason: {reason}"
+        self.message = f"Stream with stream_id={stream_id} is crashing! Reason: {reason}"
         super().__init__(self.message)

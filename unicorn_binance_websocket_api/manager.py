@@ -470,57 +470,73 @@ class BinanceWebSocketApiManager(threading.Thread):
                 except asyncio.CancelledError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - asyncio.CancelledError: {error_msg}")
-                    self.stop_stream(stream_id=stream_id)
+                    self.set_stop_request(stream_id=stream_id)
                     self.stream_is_stopping(stream_id=stream_id)
                     return None
                 except StreamIsStopping as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - StreamIsStopping: {error_msg}")
-                    self.stop_stream(stream_id=stream_id)
                     self.stream_is_stopping(stream_id=stream_id)
                     return None
                 except ConnectionResetError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - ConnectionResetError: {error_msg}")
-                    self.stream_is_crashing(stream_id=stream_id, error_msg=error_msg)
+                    self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
                 except ssl.SSLError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - ssl.SSLError: {error_msg}")
-                    self.stream_is_crashing(stream_id=stream_id, error_msg=error_msg)
+                    self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
                 except OSError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - OSError: {error_msg}")
-                    self.stream_is_crashing(stream_id=stream_id, error_msg=error_msg)
+                    self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
                 except websockets.ConnectionClosed as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - websockets.ConnectionClosed: {error_msg}")
                     if "WebSocket connection is closed: code = 1006" in str(error_msg):
                         self.stream_is_crashing(stream_id=stream_id, error_msg=error_msg)
                     else:
-                        self.stop_stream_as_crash(stream_id=stream_id)
                         self.stream_is_crashing(stream_id=stream_id, error_msg=error_msg)
                         return None
                 except websockets.InvalidStatusCode as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - websockets.InvalidStatusCode: {error_msg}")
-                    self.stream_is_crashing(stream_id=stream_id, error_msg=error_msg)
+                    self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
+                    if "Status code not 101: 400" in str(error_msg):
+                        logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
+                                     f"{channels}), markets={markets}) - websockets.InvalidStatusCode: {error_msg}")
+                        self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
+                    elif "Status code not 101: 429" in str(error_msg):
+                        logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
+                                     f"{channels}), markets={markets}) - websockets.InvalidStatusCode: {error_msg}")
+                        self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
+                        time.sleep(2)
+                    elif "Status code not 101: 500" in str(error_msg):
+                        logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
+                                     f"{channels}), markets={markets}) - websockets.InvalidStatusCode: {error_msg}")
+                        self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
+                        return None
+                    else:
+                        logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
+                                     f"{channels}), markets={markets}) - websockets.InvalidStatusCode: {error_msg}")
+                        self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
                 except websockets.InvalidMessage as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - websockets.InvalidMessage: {error_msg}")
-                    self.stream_is_crashing(stream_id=stream_id, error_msg=error_msg)
+                    self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
                 except websockets.NegotiationError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - websockets.NegotiationError: {error_msg}")
-                    self.stream_is_crashing(stream_id=stream_id, error_msg=error_msg)
+                    self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
                 except StreamIsCrashing as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - StreamIsCrashing: {error_msg}")
-                    self.stream_is_crashing(stream_id=stream_id, error_msg=error_msg)
+                    self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
                 except Socks5ProxyConnectionError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - Socks5ProxyConnectionError: {error_msg}")
-                    self.stream_is_crashing(stream_id=stream_id, error_msg=error_msg)
-            time.sleep(1)
+                    self.stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
+            time.sleep(2)
         return None
 
     async def get_stream_data_from_asyncio_queue(self, stream_id=None):
@@ -705,7 +721,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'last_heartbeat': None,
                                        'stop_request': False,
                                        'crash_request': False,
-                                       'kill_request': False,
                                        'loop_is_closing': False,
                                        'seconds_since_has_stopped': None,
                                        'has_stopped': False,
@@ -824,11 +839,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 15` - {error_msg}")
-            try:
-                self.stream_list[stream_id]['kill_request'] = False
-            except KeyError as error_msg:
-                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
-                             f"KeyError `error: 19` - {error_msg}")
             self.set_socket_is_ready(stream_id)
 
     def generate_signature(self, api_secret=None, data=None):
@@ -1096,9 +1106,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         self.restart_requests[stream_id] = {'status': "new",
                                                             'initiated': None}
                     # restart streams with requests
-                    if self.restart_requests[stream_id]['status'] == "new" or \
-                            self.stream_list[stream_id]['kill_request'] is True:
-                        self.kill_stream(stream_id)
+                    if self.restart_requests[stream_id]['status'] == "new":
                         if self.restart_requests[stream_id]['initiated'] is None or \
                                 self.restart_requests[stream_id]['initiated']+5 < time.time():
                             self.restart_requests[stream_id]['initiated'] = time.time()
@@ -1121,11 +1129,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         if self.is_manager_stopping() is True:
             return False
-        try:
-            if self.stream_list[stream_id]['kill_request'] is True:
-                return False
-        except KeyError:
-            pass
         try:
             if self.restart_requests[stream_id]['status'] != "new":
                 logger.warning("BinanceWebSocketApiManager._restart_stream() please use `set_restart_request()` "
@@ -3342,14 +3345,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             return False
         return self.exchange_type == exchange_type
 
-    def is_stop_request(self, stream_id, exclude_kill_requests=False):
+    def is_stop_request(self, stream_id):
         """
         Has a specific stream a stop_request?
 
         :param stream_id: id of a stream
         :type stream_id: str
-        :param exclude_kill_requests: if `True` this method returns `False` on kill_requests
-        :type exclude_kill_requests: bool
         :return: bool
         """
         logger.debug(f"BinanceWebSocketApiManager.is_stop_request({stream_id}){self.get_debug_log()}")
@@ -3357,8 +3358,6 @@ class BinanceWebSocketApiManager(threading.Thread):
             if self.stream_list[stream_id]['stop_request'] is True:
                 return True
             elif self.is_manager_stopping():
-                return True
-            elif self.stream_list[stream_id]['kill_request'] is True and exclude_kill_requests is False:
                 return True
             else:
                 return False
@@ -3631,7 +3630,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                   str(last_static_ping_listen_key) +
                   " last_heartbeat:", str(stream_info['last_heartbeat']), "\r\n"
                   " seconds_to_last_heartbeat:", str(stream_info['seconds_to_last_heartbeat']), "\r\n"
-                  " kill_request:", str(stream_info['kill_request']), "\r\n"
                   " stop_request:", str(stream_info['stop_request']), "\r\n"                                                                      
                   " has_stopped:", str(stream_info['has_stopped']), "\r\n"
                   " seconds_since_has_stopped:",
@@ -3755,7 +3753,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 + "|" + stream_row_color_prefix + \
                 self.fill_up_space_left(8, str(len(self.stream_list[stream_id]['logged_reconnects']))) + \
                 stream_row_color_suffix + "\r\n "
-            if self.is_stop_request(stream_id, exclude_kill_requests=True) is True and \
+            if self.is_stop_request(stream_id) is True and \
                     self.stream_list[stream_id]['status'] == "running":
                 streams_with_stop_request += 1
         if streams_with_stop_request >= 1:
@@ -4329,7 +4327,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.set_stop_request(stream_id=stream_id)
         self.stream_list[stream_id]['has_stopped'] = time.time()
         self.stream_list[stream_id]['status'] = "crashed"
-        self.set_socket_is_ready(stream_id)  # necessary to release `create_stream()`
+        self.set_socket_is_ready(stream_id)
         if error_msg is not None:
             self.stream_list[stream_id]['status'] += " - " + str(error_msg)
 
@@ -4370,21 +4368,14 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logger.info(f"BinanceWebSocketApiManager.subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                     f", " + str(markets) + f"){self.get_debug_log()} - started ... -")
-        try:
-            if type(channels) is str:
-                channels = [channels]
-            if type(markets) is str:
-                markets = [markets]
-            if type(channels) is set:
-                channels = list(channels)
-            if type(markets) is set:
-                markets = list(markets)
-        except KeyError:
-            logger.error("BinanceWebSocketApiManager.subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
-                         ", " + str(markets) + ") KeyError: setting a restart request for this stream ...")
-            self.stream_is_stopping(stream_id)
-            self.set_restart_request(stream_id)
-            return False
+        if type(channels) is str:
+            channels = [channels]
+        if type(markets) is str:
+            markets = [markets]
+        if type(channels) is set:
+            channels = list(channels)
+        if type(markets) is set:
+            markets = list(markets)
         if type(self.stream_list[stream_id]['channels']) is str:
             self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels']]
         if type(self.stream_list[stream_id]['markets']) is str:

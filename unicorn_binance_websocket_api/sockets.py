@@ -19,6 +19,9 @@
 # All rights reserved.
 
 from __future__ import print_function
+
+import time
+
 from unicorn_binance_websocket_api.connection import BinanceWebSocketApiConnection
 from unicorn_binance_websocket_api.exceptions import StreamIsCrashing, StreamIsStopping
 from unicorn_fy.unicorn_fy import UnicornFy
@@ -46,6 +49,10 @@ class BinanceWebSocketApiSocket(object):
 
     async def __aenter__(self):
         logger.debug(f"Entering asynchronous with-context of BinanceWebSocketApiSocket() ...")
+        try:
+            del self.manager.restart_requests[self.stream_id]
+        except KeyError:
+            pass
         if self.manager.is_stop_request(self.stream_id):
             raise StreamIsStopping(stream_id=self.stream_id, reason="stop request")
         return self
@@ -61,9 +68,9 @@ class BinanceWebSocketApiSocket(object):
     async def start_socket(self):
         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, {str(self.channels)}, "
                     f"{str(self.markets)}) socket_id={str(self.socket_id)} recent_socket_id={str(self.socket_id)}")
-        try:
-            while self.manager.is_stop_request(self.stream_id) is False \
-                    and self.manager.is_stop_as_crash_request(self.stream_id) is False:
+        while self.manager.is_stop_request(self.stream_id) is False \
+                and self.manager.is_stop_as_crash_request(self.stream_id) is False:
+            try:
                 async with BinanceWebSocketApiConnection(self.manager,
                                                          self.stream_id,
                                                          self.socket_id,
@@ -255,16 +262,18 @@ class BinanceWebSocketApiSocket(object):
                                          f"{str(self.channels)}, {str(self.markets)} - Received inner "
                                          f"asyncio.TimeoutError (This is no ERROR, its exactly what we want!)")
                             continue
-        finally:
-            try:
-                if self.manager.stream_list[self.stream_id]['last_stream_signal'] == "FIRST_RECEIVED_DATA" \
-                        or self.manager.stream_list[self.stream_id]['last_stream_signal'] == "CONNECT":
-                    self.manager.process_stream_signals(signal_type="DISCONNECT", stream_id=self.stream_id)
-                    self.manager.stream_list[self.stream_id]['last_stream_signal'] = "DISCONNECT"
-            except KeyError:
-                pass
-            if self.websocket is not None:
+                time.sleep(1)
+            finally:
                 try:
-                    await self.websocket.close()
-                except AttributeError as error_msg:
-                    logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")
+                    if self.manager.stream_list[self.stream_id]['last_stream_signal'] == "FIRST_RECEIVED_DATA" \
+                            or self.manager.stream_list[self.stream_id]['last_stream_signal'] == "CONNECT":
+                        self.manager.process_stream_signals(signal_type="DISCONNECT", stream_id=self.stream_id)
+                        self.manager.stream_list[self.stream_id]['last_stream_signal'] = "DISCONNECT"
+                except KeyError:
+                    pass
+                if self.websocket is not None:
+                    try:
+                        await self.websocket.close()
+                    except AttributeError as error_msg:
+                        logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")
+            time.sleep(1)
