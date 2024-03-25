@@ -33,19 +33,28 @@ class UnknownExchange(Exception):
     pass
 
 
-class StreamIsStopping(Exception):
-    """
-    Exception if the stream is stopping.
-    """
-    def __init__(self, stream_id=None, reason=None):
-        self.message = f"Stream with stream_id={stream_id} is stopping! Reason: {reason}"
-        super().__init__(self.message)
-
-
 class StreamIsCrashing(Exception):
     """
     Exception if the stream is crashing.
     """
     def __init__(self, stream_id=None, reason=None):
         self.message = f"Stream with stream_id={stream_id} is crashing! Reason: {reason}"
+        super().__init__(self.message)
+
+
+class StreamIsRestarting(Exception):
+    """
+    Exception if the stream is restarting.
+    """
+    def __init__(self, stream_id=None, reason=None):
+        self.message = f"Stream with stream_id={stream_id} is restarting! Reason: {reason}"
+        super().__init__(self.message)
+
+
+class StreamIsStopping(Exception):
+    """
+    Exception if the stream is stopping.
+    """
+    def __init__(self, stream_id=None, reason=None):
+        self.message = f"Stream with stream_id={stream_id} is stopping! Reason: {reason}"
         super().__init__(self.message)

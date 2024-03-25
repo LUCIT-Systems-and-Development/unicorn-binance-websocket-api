@@ -20,12 +20,13 @@ class BinanceDataProcessor:
                                                high_performance=True)
         self.stream_id1 = None
         self.stream_id2 = None
+        self.shutdown = False
 
     async def process_asyncio_queue_global(self):
         print(f"Start processing data of {self.stream_id1} ...")
         last_update_id = {}
         current_update_id = {}
-        while True:
+        while self.ubwa.is_stop_request(stream_id=self.stream_id1) is False:
             data = await self.ubwa.get_stream_data_from_asyncio_queue(self.stream_id1)
             if data.get('data'):
                 market = str(data.get('stream').split('@')[0]).lower()
@@ -39,7 +40,7 @@ class BinanceDataProcessor:
 
     async def process_asyncio_queue_specific(self):
         print(f"Start processing data of {self.stream_id2} ...")
-        while True:
+        while self.ubwa.is_stop_request(stream_id=self.stream_id2) is False:
             data = await self.ubwa.get_stream_data_from_asyncio_queue(self.stream_id2)
             # print(data)
             self.ubwa.asyncio_queue_task_done(self.stream_id2)
@@ -59,7 +60,8 @@ class BinanceDataProcessor:
         self.ubwa.create_stream(markets='arr', channels='!userData',
                                 api_key="api_key", api_secret="api_secret")
         while self.ubwa.is_manager_stopping() is False:
-            await asyncio.sleep(1)
+            self.ubwa.print_summary()
+            await asyncio.sleep(5)
 
 
 if __name__ == "__main__":

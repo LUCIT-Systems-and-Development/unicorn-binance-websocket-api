@@ -18,7 +18,7 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-from unicorn_binance_websocket_api.exceptions import Socks5ProxyConnectionError, StreamIsCrashing, StreamIsStopping
+from .exceptions import *
 from urllib.parse import urlparse
 import asyncio
 import copy
@@ -68,8 +68,8 @@ class BinanceWebSocketApiConnection(object):
             # cant get a valid URI, so this stream has to crash
             error_msg = "Probably no internet connection?"
             logger.critical(f"BinanceWebSocketApiConnection.__aenter__(stream_id={self.stream_id}), channels="
-                            f"{self.channels}), markets={self.markets}) - error: 5 - StreamIsCrashing: {error_msg}")
-            raise StreamIsCrashing(stream_id=self.stream_id, reason=error_msg)
+                            f"{self.channels}), markets={self.markets}) - error: 5 - {error_msg}")
+            raise StreamIsRestarting(stream_id=self.stream_id, reason=error_msg)
         else:
             self.manager.stream_list[self.stream_id]['websocket_uri'] = uri
         try:
@@ -153,16 +153,11 @@ class BinanceWebSocketApiConnection(object):
         try:
             self.websocket = await self._conn.__aenter__()
         except asyncio.TimeoutError as error_msg:
-            raise StreamIsCrashing(stream_id=self.stream_id, reason=f"TimeoutError - {str(error_msg)}")
-        self.manager.websocket_list[self.stream_id] = self.websocket
+            raise StreamIsRestarting(stream_id=self.stream_id, reason=f"TimeoutError - {str(error_msg)}")
+        if self.manager.stream_list[self.stream_id]['status'] == "restarting":
+            self.manager.increase_reconnect_counter(self.stream_id)
         self.manager.stream_list[self.stream_id]['status'] = "running"
         self.manager.stream_list[self.stream_id]['has_stopped'] = False
-        try:
-            if self.manager.restart_requests[self.stream_id]['status'] == "restarted":
-                self.manager.increase_reconnect_counter(self.stream_id)
-                del self.manager.restart_requests[self.stream_id]
-        except KeyError:
-            pass
         self.manager.set_heartbeat(self.stream_id)
         return self
 
@@ -191,7 +186,6 @@ class BinanceWebSocketApiConnection(object):
         size = sys.getsizeof(str(received_data_json))
         self.manager.add_total_received_bytes(size)
         self.manager.increase_received_bytes_per_second(self.stream_id, size)
-        self.manager.increase_reconnect_counter(self.stream_id)
         self.manager.increase_processed_receives_statistic(self.stream_id)
         return received_data_json
 
