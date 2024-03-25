@@ -12,7 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.3.0.dev (development stage/unreleased/unstable)
 
 ## 2.3.0
-Runs perfectly on Python 3.7 to 3.12 and Windows, Linux, Mac!
+Runs perfectly on Python 3.7 to 3.12 and Windows, Linux, Mac and all architectures!
+Core rewrite: connection.py and sockets.py and the loop and exception handling in manager.py.
 
 ### Added
 - `ubwa.api.get_listen_key()`
@@ -36,6 +37,7 @@ Runs perfectly on Python 3.7 to 3.12 and Windows, Linux, Mac!
   have been stopped for more than 900 seconds.
 - `datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d, %H:%M:%S UTC'))` is obsolete and has been 
   replaced by `datetime.fromtimestamp(timestamp, timezone.utc).strftime('%Y-%m-%d, %H:%M:%S UTC')`.
+- Replaced `stop_stream_as_crash()` with `_crash_stream()`
 ### Fixed
 - In Websocket API wrong method names were used in logging.
 - Logging info in `connection.py` revised.
@@ -44,6 +46,8 @@ Runs perfectly on Python 3.7 to 3.12 and Windows, Linux, Mac!
 ### Removed
 - Parameter `throw_exception_if_unrepairable` of `BinanceWebSocketApiManager()`.
 - Exception `StreamRecoveryError`.
+- `set_restart_request()`
+- `_restart_stream()`
 
 ## 2.2.0
 This update is primarily aimed at stabilization. The loop management has been improved and runs absolutely fine in 

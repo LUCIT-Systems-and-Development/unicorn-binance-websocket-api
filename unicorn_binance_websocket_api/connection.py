@@ -35,13 +35,11 @@ class BinanceWebSocketApiConnection(object):
     def __init__(self,
                  manager,
                  stream_id,
-                 socket_id,
                  channels,
                  markets,
                  symbols):
         self.manager = manager
         self.stream_id = copy.deepcopy(stream_id)
-        self.socket_id = copy.deepcopy(socket_id)
         self.api_key = copy.deepcopy(self.manager.stream_list[self.stream_id]['api_key'])
         self.api_secret = copy.deepcopy(self.manager.stream_list[self.stream_id]['api_secret'])
         self.ping_interval = copy.deepcopy(self.manager.stream_list[self.stream_id]['ping_interval'])
@@ -56,9 +54,7 @@ class BinanceWebSocketApiConnection(object):
 
     async def __aenter__(self):
         logger.debug(f"Entering with-context of BinanceWebSocketApiConnection() ...")
-        self.manager.set_heartbeat(self.stream_id)
-        if self.manager.is_stop_request(self.stream_id):
-            raise StreamIsStopping(stream_id=self.stream_id, reason="stop request")
+        self.raise_exceptions()
         uri = self.manager.create_websocket_uri(self.channels,
                                                 self.markets,
                                                 self.stream_id,
@@ -93,10 +89,6 @@ class BinanceWebSocketApiConnection(object):
                     logger.critical(f"BinanceWebSocketApiConnection.__aenter__(stream_id={self.stream_id}), channels="
                                     f"{self.channels}), markets={self.markets}) - error: 2 - Binance API: "
                                     f"{str(uri['msg'])}")
-                self.manager.process_stream_signals(signal_type="STREAM_UNREPAIRABLE",
-                                                    stream_id=self.stream_id,
-                                                    error_msg=uri['msg'])
-                self.manager.stream_list[self.stream_id]['last_stream_signal'] = "STREAM_UNREPAIRABLE"
                 raise StreamIsCrashing(stream_id=self.stream_id, reason=uri['msg'])
         except KeyError as error_msg:
             logger.critical(f"BinanceWebSocketApiConnection.__aenter__(stream_id={self.stream_id}), "
@@ -152,13 +144,8 @@ class BinanceWebSocketApiConnection(object):
                         f"{self.manager.socks5_proxy_port} SSL: {self.manager.socks5_proxy_ssl_verification}")
         try:
             self.websocket = await self._conn.__aenter__()
-        except asyncio.TimeoutError as error_msg:
-            raise StreamIsRestarting(stream_id=self.stream_id, reason=f"TimeoutError - {str(error_msg)}")
-        if self.manager.stream_list[self.stream_id]['status'] == "restarting":
-            self.manager.increase_reconnect_counter(self.stream_id)
-        self.manager.stream_list[self.stream_id]['status'] = "running"
-        self.manager.stream_list[self.stream_id]['has_stopped'] = False
-        self.manager.set_heartbeat(self.stream_id)
+        except asyncio.TimeoutError:
+            raise StreamIsRestarting(stream_id=self.stream_id, reason=f"timeout error")
         return self
 
     async def __aexit__(self, *args, **kwargs):
@@ -172,8 +159,7 @@ class BinanceWebSocketApiConnection(object):
         return await self.websocket.close()
 
     async def receive(self):
-        if self.manager.is_stop_request(self.stream_id):
-            return None
+        self.raise_exceptions()
         if self.add_timeout:
             if self.api is True:
                 timeout = 0.1
@@ -190,7 +176,14 @@ class BinanceWebSocketApiConnection(object):
         return received_data_json
 
     async def send(self, data):
+        self.raise_exceptions()
         response = await self.websocket.send(data)
         self.manager.set_heartbeat(self.stream_id)
         self.manager.increase_transmitted_counter(self.stream_id)
         return response
+
+    def raise_exceptions(self):
+        if self.manager.is_stop_request(self.stream_id):
+            raise StreamIsStopping(stream_id=self.stream_id, reason="stop request")
+        if self.manager.is_crash_request(self.stream_id):
+            raise StreamIsCrashing(stream_id=self.stream_id, reason="crash request")

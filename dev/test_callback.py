@@ -72,7 +72,7 @@ def print_stream_data(stream_data, stream_buffer_name=False):
 # https://medium.lucit.tech/87b0088124a8
 try:
     binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret)
-    binance_websocket_api_manager = BinanceWebSocketApiManager(high_performance=True)
+    binance_websocket_api_manager = BinanceWebSocketApiManager()
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)

@@ -212,17 +212,12 @@ class TestBinanceComManager(unittest.TestCase):
         self.__class__.ubwa.unsubscribe_from_stream(stream_id, markets=['bnbbtc'])
         self.__class__.ubwa.unsubscribe_from_stream(stream_id, channels=['trade'])
         time.sleep(6)
-        self.assertTrue(self.__class__.ubwa.set_restart_request(stream_id))
         self.__class__.ubwa.get_monitoring_status_icinga()
         self.__class__.ubwa.print_summary(title="Unittests")
         self.__class__.ubwa.print_stream_info(stream_id, title="Unittests")
 
-    def test_restart_stream(self):
-        self.assertFalse(bool(self.__class__.ubwa._restart_stream(self.__class__.ubwa.get_new_uuid_id())))
-
     def test_start_monitoring_api(self):
         with BinanceWebSocketApiManager(exchange="binance.com-testnet",
-                                        high_performance=True,
                                         debug=True,) as ubwa:
             self.assertTrue(ubwa.start_monitoring_api())
             time.sleep(6)
@@ -234,7 +229,6 @@ class TestBinanceComManagerTest(unittest.TestCase):
     def setUpClass(cls):
         print(f"\r\nTestBinanceComManagerTest:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.com-testnet",
-                                              high_performance=True,
                                               debug=True)
         cls.binance_com_testnet_api_key = BINANCE_COM_TESTNET_API_KEY
         cls.binance_com_testnet_api_secret = BINANCE_COM_TESTNET_API_SECRET
@@ -313,8 +307,7 @@ class TestBinanceOrgManagerTestnet(unittest.TestCase):
     def setUpClass(cls):
         print(f"\r\nTestBinanceOrgManagerTestnet:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.org-testnet",
-                                              debug=True,
-                                              high_performance=True)
+                                              debug=True)
         cls.binance_com_api_key = BINANCE_COM_API_KEY
         cls.binance_com_api_secret = BINANCE_COM_API_SECRET
 
@@ -341,8 +334,7 @@ class TestBinanceOrgManager(unittest.TestCase):
     def setUpClass(cls):
         print(f"\r\nTestBinanceOrgManager:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.org",
-                                              debug=True,
-                                              high_performance=True)
+                                              debug=True)
         cls.binance_com_api_key = BINANCE_COM_API_KEY
         cls.binance_com_api_secret = BINANCE_COM_API_SECRET
 
@@ -527,7 +519,6 @@ class TestApiLive(unittest.TestCase):
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.us",
                                               debug=True,
                                               enable_stream_signal_buffer=True,
-                                              high_performance=True,
                                               auto_data_cleanup_stopped_streams=True)
         cls.count_receives = 0
 
@@ -546,26 +537,24 @@ class TestApiLive(unittest.TestCase):
         BinanceWebSocketApiRestclient(self.__class__.ubwa)
 
     def test_z_rest_binance_com_isolated_margin(self):
-        ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin",
-                                          high_performance=True)
+        ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")
         BinanceWebSocketApiRestclient(ubwa)
         ubwa.stop_manager()
 
     def test_z_rest_binance_com_isolated_margin_testnet(self):
-        ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet",
-                                          high_performance=True)
+        ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin-testnet")
         BinanceWebSocketApiRestclient(ubwa)
         ubwa.stop_manager()
 
     def test_z_invalid_exchange(self):
         from unicorn_binance_websocket_api.exceptions import UnknownExchange
         with self.assertRaises(UnknownExchange):
-            ubwa_error = BinanceWebSocketApiManager(exchange="invalid-exchange.com", high_performance=True)
+            ubwa_error = BinanceWebSocketApiManager(exchange="invalid-exchange.com")
             ubwa_error.stop_manager()
 
 # Todo: Needs a proxy ...
 #    def test_isolated_margin(self):
-#        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin", high_performance=True)
+#        self.__class__.ubwa = BinanceWebSocketApiManager(exchange="binance.com-isolated_margin")
 #        stream_id = self.__class__.ubwa.create_stream('arr', '!userData', symbols="CELRBTC",
 #                                                      api_key="key", api_secret="secret")
 #        time.sleep(10)
@@ -680,13 +669,6 @@ class TestApiLive(unittest.TestCase):
             stream_id1 = self.__class__.ubwa.create_stream(channel, markets)
 
         time.sleep(6)
-        print(f"Restarting stream_id1={stream_id1}")
-        #self.__class__.ubwa.set_stop_request(stream_id=stream_id1)
-        #self.__class__.ubwa.set_restart_request(stream_id1)
-        time.sleep(6)
-        print(f"Restarting stream_id1={stream_id1}")
-        #self.__class__.ubwa.set_stop_request(stream_id=stream_id1)
-        #self.__class__.ubwa.set_restart_request(stream_id1)
 
         restserver = BinanceWebSocketApiRestServer(self.__class__.ubwa)
         restserver.get("icinga")
@@ -714,7 +696,7 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.print_summary()
         self.__class__.ubwa.print_stream_info(stream_id4)
         print(f"Stop stream as crash ...")
-        self.__class__.ubwa.stop_stream_as_crash(streams.pop())
+        self.__class__.ubwa._crash_stream(streams.pop())
         print(f"Stop stream as crash ... done")
         print(f"create_websocket_uri ...")
         self.__class__.ubwa.create_websocket_uri(False, False, stream_id1)
@@ -754,7 +736,6 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.set_stream_label(stream_id2, "blub")
         self.__class__.ubwa._add_stream_to_stream_list(self.__class__.ubwa.get_new_uuid_id(),
                                                        'trade', 'btceth')
-        self.__class__.ubwa._restart_stream(stream_id1)
         self.__class__.ubwa.delete_stream_from_stream_list(stream_id1)
         self.__class__.ubwa.delete_listen_key_by_stream_id(stream_id1)
         self.__class__.ubwa.is_update_availabe_unicorn_fy()
@@ -764,7 +745,7 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.get_result_by_request_id(request_id)
         self.__class__.ubwa.get_result_by_request_id()
         self.__class__.ubwa.set_keep_max_received_last_second_entries(30)
-        self.__class__.ubwa.stop_stream_as_crash(stream_id2)
+        self.__class__.ubwa._crash_stream(stream_id2)
         time.sleep(6)
         print(f"Waiting for {stream_id3} has started ...")
         self.__class__.ubwa.print_summary()

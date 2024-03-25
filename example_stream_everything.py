@@ -79,7 +79,7 @@ except requests.exceptions.ConnectionError:
 
 # To use this library you need a valid UNICORN Binance Suite License:
 # https://medium.lucit.tech/87b0088124a8
-ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(high_performance=True, debug=True)
+ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager(debug=True)
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(ubwa,))

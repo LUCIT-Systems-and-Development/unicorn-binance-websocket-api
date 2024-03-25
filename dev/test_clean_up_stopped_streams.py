@@ -18,7 +18,6 @@ class BinanceDataProcessor:
         self.ubwa = BinanceWebSocketApiManager(exchange='binance.com', output_default='UnicornFy',
                                                enable_stream_signal_buffer=True,
                                                process_stream_signals=self.processing_of_stream_signals,
-                                               high_performance=True,
                                                auto_data_cleanup_stopped_streams=True)
 
     async def processing_of_new_data_async(self, data):

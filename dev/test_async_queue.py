@@ -2,6 +2,8 @@ from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 import asyncio
 import logging
 import os
+import tracemalloc
+tracemalloc.start(25)
 
 logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.DEBUG,
@@ -16,11 +18,9 @@ class BinanceDataProcessor:
                                                process_asyncio_queue=self.process_asyncio_queue_global,
                                                enable_stream_signal_buffer=True,
                                                process_stream_signals=self.processing_of_stream_signals,
-                                               output_default="dict",
-                                               high_performance=True)
+                                               output_default="dict")
         self.stream_id1 = None
         self.stream_id2 = None
-        self.shutdown = False
 
     async def process_asyncio_queue_global(self):
         print(f"Start processing data of {self.stream_id1} ...")
@@ -60,7 +60,7 @@ class BinanceDataProcessor:
         self.ubwa.create_stream(markets='arr', channels='!userData',
                                 api_key="api_key", api_secret="api_secret")
         while self.ubwa.is_manager_stopping() is False:
-            self.ubwa.print_summary()
+            #self.ubwa.print_summary()
             await asyncio.sleep(5)
 
 
@@ -70,8 +70,10 @@ if __name__ == "__main__":
         asyncio.run(bdp.start())
     except KeyboardInterrupt:
         print("Gracefully stopping ...")
+        bdp.shutdown = True
         bdp.ubwa.stop_manager()
     except Exception as error_msg:
         print(f"\r\nERROR: {error_msg}")
         print("Gracefully stopping ...")
+        bdp.shutdown = True
         bdp.ubwa.stop_manager()

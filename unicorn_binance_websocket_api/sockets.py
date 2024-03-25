@@ -19,9 +19,6 @@
 # All rights reserved.
 
 from __future__ import print_function
-
-import time
-
 from .connection import BinanceWebSocketApiConnection
 from .exceptions import *
 from unicorn_fy.unicorn_fy import UnicornFy
@@ -39,8 +36,6 @@ class BinanceWebSocketApiSocket(object):
         self.stream_id = stream_id
         self.channels = channels
         self.markets = markets
-        self.socket_id = uuid.uuid4()
-        self.manager.stream_list[self.stream_id]['recent_socket_id'] = self.socket_id
         self.symbols = self.manager.stream_list[self.stream_id]['symbols']
         self.output = self.manager.stream_list[self.stream_id]['output']
         self.unicorn_fy = UnicornFy()
@@ -49,8 +44,7 @@ class BinanceWebSocketApiSocket(object):
 
     async def __aenter__(self):
         logger.debug(f"Entering asynchronous with-context of BinanceWebSocketApiSocket() ...")
-        if self.manager.is_stop_request(self.stream_id):
-            raise StreamIsStopping(stream_id=self.stream_id, reason="stop request")
+        self.raise_exceptions()
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -63,40 +57,29 @@ class BinanceWebSocketApiSocket(object):
 
     async def start_socket(self):
         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, {str(self.channels)}, "
-                    f"{str(self.markets)}) socket_id={str(self.socket_id)} recent_socket_id={str(self.socket_id)}")
+                    f"{str(self.markets)})")
         try:
             async with BinanceWebSocketApiConnection(self.manager,
                                                      self.stream_id,
-                                                     self.socket_id,
                                                      self.channels,
                                                      self.markets,
                                                      symbols=self.symbols) as self.websocket:
                 if self.websocket is None:
-                    raise StreamIsStopping(stream_id=self.stream_id, reason="websocket is None")
-
+                    raise StreamIsRestarting(stream_id=self.stream_id, reason="websocket is None")
+                if self.manager.stream_list[self.stream_id]['status'] == "restarting":
+                    self.manager.increase_reconnect_counter(self.stream_id)
+                self.manager.stream_list[self.stream_id]['status'] = "running"
+                self.manager.stream_list[self.stream_id]['has_stopped'] = None
                 self.manager.socket_is_ready[self.stream_id] = True
                 self.manager.process_stream_signals(signal_type="CONNECT", stream_id=self.stream_id)
                 self.manager.stream_list[self.stream_id]['last_stream_signal'] = "CONNECT"
-                while self.manager.is_stop_request(self.stream_id) is False:
+                while self.manager.is_stop_request(self.stream_id) is False \
+                        and self.manager.is_crash_request(self.stream_id) is False:
+                    self.manager.set_heartbeat(self.stream_id)
                     try:
-                        if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
-                            logger.error(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
-                                         f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
-                                         f"recent_socket_id={str(self.socket_id)} - exit because its "
-                                         f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
-                                         f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
-                            raise StreamIsStopping(stream_id=self.stream_id, reason="not the recent socket id!")
                         while self.manager.stream_list[self.stream_id]['payload']:
                             logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
-                                        f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
-                                        f"recent_socket_id={str(self.socket_id)} - Sending payload started ...")
-                            if self.manager.stream_list[self.stream_id]['recent_socket_id'] != self.socket_id:
-                                logger.error(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
-                                             f"{str(self.channels)}, {str(self.markets)} socket_id={str(self.socket_id)} "
-                                             f"recent_socket_id={str(self.socket_id)} - Sending payload - exit because its "
-                                             f"not the recent socket id! stream_id={str(self.stream_id)}, recent_socket_id="
-                                             f"{str(self.manager.stream_list[self.stream_id]['recent_socket_id'])}")
-                                raise StreamIsStopping(stream_id=self.stream_id, reason="not the recent socket id!")
+                                        f"{str(self.channels)}, {str(self.markets)} - Sending payload started ...")
                             payload = []
                             try:
                                 payload = self.manager.stream_list[self.stream_id]['payload'].pop(0)
@@ -268,3 +251,9 @@ class BinanceWebSocketApiSocket(object):
                     await self.websocket.close()
                 except AttributeError as error_msg:
                     logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")
+
+    def raise_exceptions(self):
+        if self.manager.is_stop_request(self.stream_id):
+            raise StreamIsStopping(stream_id=self.stream_id, reason="stop request")
+        if self.manager.is_crash_request(self.stream_id):
+            raise StreamIsCrashing(stream_id=self.stream_id, reason="crash request")
