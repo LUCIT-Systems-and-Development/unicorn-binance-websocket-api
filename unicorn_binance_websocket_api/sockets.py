@@ -70,7 +70,7 @@ class BinanceWebSocketApiSocket(object):
                     self.manager.increase_reconnect_counter(self.stream_id)
                 self.manager.stream_list[self.stream_id]['status'] = "running"
                 self.manager.stream_list[self.stream_id]['has_stopped'] = None
-                self.manager.socket_is_ready[self.stream_id] = True
+                self.manager.set_socket_is_ready(stream_id=self.stream_id)
                 self.manager.process_stream_signals(signal_type="CONNECT", stream_id=self.stream_id)
                 self.manager.stream_list[self.stream_id]['last_stream_signal'] = "CONNECT"
                 while self.manager.is_stop_request(self.stream_id) is False \

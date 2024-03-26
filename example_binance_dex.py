@@ -40,7 +40,7 @@ import os
 
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.getLogger("unicorn_binance_websocket_api")
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.INFO,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
@@ -60,14 +60,14 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 
 # create instance of BinanceWebSocketApiManager for Binance Chain DEX
 # use `exchange="binance.org-testnet"` for testnet mode
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org-testnet")
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org")
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
 worker_thread.start()
 
 # $all channels
-binance_websocket_api_manager.create_stream(["allTickers"], ["$all"])
+binance_websocket_api_manager.create_stream("$all", "allTickers")
 binance_websocket_api_manager.create_stream(["allMiniTickers"], ["$all"])
 binance_websocket_api_manager.create_stream(["blockheight"], ["$all"])
 

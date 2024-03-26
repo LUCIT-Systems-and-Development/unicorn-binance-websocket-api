@@ -65,6 +65,7 @@ class BinanceWebSocketApiConnection(object):
             error_msg = "Probably no internet connection?"
             logger.critical(f"BinanceWebSocketApiConnection.__aenter__(stream_id={self.stream_id}), channels="
                             f"{self.channels}), markets={self.markets}) - error: 5 - {error_msg}")
+            self.manager.set_socket_is_ready(stream_id=self.stream_id)
             raise StreamIsRestarting(stream_id=self.stream_id, reason=error_msg)
         else:
             self.manager.stream_list[self.stream_id]['websocket_uri'] = uri
@@ -145,6 +146,8 @@ class BinanceWebSocketApiConnection(object):
         try:
             self.websocket = await self._conn.__aenter__()
         except asyncio.TimeoutError:
+            self.manager.set_socket_is_ready(stream_id=self.stream_id)
+            self.websocket.close()
             raise StreamIsRestarting(stream_id=self.stream_id, reason=f"timeout error")
         return self
 

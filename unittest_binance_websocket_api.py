@@ -196,8 +196,8 @@ class TestBinanceComManager(unittest.TestCase):
                          result)
 
     def test_create_stream_userdata(self):
-        self.assertTrue(bool(self.__class__.ubwa.create_stream('arr', '!userData', stream_label="userDataBad",
-                                                               api_key="key", api_secret="secret")))
+        self.assertIsInstance(self.__class__.ubwa.create_stream('arr', '!userData', stream_label="userDataBad",
+                              api_key="key", api_secret="secret"), str)
 
     def test_create_stream_userdata_with(self):
         with BinanceWebSocketApiManager(exchange="binance.us") as ubwa:
@@ -308,8 +308,6 @@ class TestBinanceOrgManagerTestnet(unittest.TestCase):
         print(f"\r\nTestBinanceOrgManagerTestnet:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.org-testnet",
                                               debug=True)
-        cls.binance_com_api_key = BINANCE_COM_API_KEY
-        cls.binance_com_api_secret = BINANCE_COM_API_SECRET
 
     @classmethod
     def tearDownClass(cls):
@@ -335,8 +333,6 @@ class TestBinanceOrgManager(unittest.TestCase):
         print(f"\r\nTestBinanceOrgManager:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.org",
                                               debug=True)
-        cls.binance_com_api_key = BINANCE_COM_API_KEY
-        cls.binance_com_api_secret = BINANCE_COM_API_SECRET
 
     @classmethod
     def tearDownClass(cls):
