@@ -458,7 +458,6 @@ class BinanceWebSocketApiManager(threading.Thread):
     async def _run_socket(self, stream_id, channels, markets) -> None:
         while self.is_stop_request(stream_id=stream_id) is False \
                 and self.is_crash_request(stream_id=stream_id) is False:
-            socket = None
             try:
                 async with BinanceWebSocketApiSocket(self, stream_id, channels, markets) as socket:
                     if socket is not None:
@@ -469,22 +468,16 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                              f"{channels}), markets={markets}) - asyncio.CancelledError: {error_msg}")
                 self._stream_is_stopping(stream_id=stream_id)
-                if socket.websocket is not None:
-                    await socket.websocket.close()
                 return None
             except StreamIsCrashing as error_msg:
                 logger.critical(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                 f"{channels}), markets={markets}) - StreamIsCrashing: {error_msg}")
                 self._stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
-                if socket.websocket is not None:
-                    await socket.websocket.close()
                 return None
             except StreamIsStopping as error_msg:
                 logger.info(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                             f"{channels}), markets={markets}) - StreamIsStopping: {error_msg}")
                 self._stream_is_stopping(stream_id=stream_id)
-                if socket.websocket is not None:
-                    await socket.websocket.close()
                 return None
             except ConnectionResetError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
@@ -539,8 +532,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.error(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                              f"{channels}), markets={markets}) - Socks5ProxyConnectionError: {error_msg}")
                 self._stream_is_restarting(stream_id=stream_id, error_msg=str(error_msg))
-            if socket.websocket is not None:
-                await socket.websocket.close()
             time.sleep(1)
         if self.is_stop_request(stream_id=stream_id) is True:
             self._stream_is_stopping(stream_id=stream_id)
