@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 2.3.0
 Redesign and rewrite of `connection.py`, `sockets.py` as well as the loop and exception handling in `manager.py`.
-Runs perfectly on Python 3.7 to 3.12 and Windows, Linux, Mac and all architectures!
+Runs perfectly on Python 3.7 to 3.12 on Windows, Linux and Mac!
 
 ### Added
 - `ubwa.api.get_listen_key()`

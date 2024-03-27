@@ -85,16 +85,18 @@ from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 import asyncio
 
 async def main():
-    async def process_asyncio_queue():
-        while True:
+    async def process_asyncio_queue(stream_id=None):
+        print(f"Start processing the data from stream '{ubwa.get_stream_label(stream_id)}':")
+        while ubwa.is_stop_request(stream_id) is False:
             data = await ubwa.get_stream_data_from_asyncio_queue(stream_id)
             print(data)
             ubwa.asyncio_queue_task_done(stream_id)
-    stream_id = ubwa.create_stream(channels=['trade'],
-                                   markets=['ethbtc', 'btcusdt'],
-                                   process_asyncio_queue=process_asyncio_queue)
+    ubwa.create_stream(channels=['trade'],
+                       markets=['ethbtc', 'btcusdt'],
+                       stream_label="TRADES",
+                       process_asyncio_queue=process_asyncio_queue)
     while not ubwa.is_manager_stopping():
-        await asyncio.sleep(1)
+            await asyncio.sleep(1)
 
 with BinanceWebSocketApiManager(exchange='binance.com') as ubwa:
     try:
@@ -263,8 +265,8 @@ which stores the receives in the RAM till you are able to process the data in th
 or 
 [users](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py)!
 
-- Watch the `stream_signal_buffer` to receive `CONNECT`, `DISCONNECT`, `FIRST_RECEIVED_DATA` and `STREAM_UNREPAIRABLE` 
-  signals about the streams! [Learn more!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60)
+- Watch the `stream_signals` to receive `CONNECT`, `FIRST_RECEIVED_DATA`, `DISCONNECT`, `STOP` and 
+  `STREAM_UNREPAIRABLE` signals from your streams! [Learn more!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60)
 
 - Get the received data unchanged as received, as Python dictionary or converted with 
 [UnicornFy](https://github.com/LUCIT-Systems-and-Development/unicorn-fy) into well-formed Python dictionaries. Use the `output`
@@ -288,6 +290,7 @@ to control the output format.
 [`get_stream_subscriptions()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_subscriptions), 
 [`get_version()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_version), 
 [`is_update_available()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.is_update_availabe), 
+[`get_stream_data_from_asyncio_queue()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_data_from_asyncio_queue), 
 [`pop_stream_data_from_stream_buffer()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer), 
 [`print_summary()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.print_summary), 
 [`replace_stream()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.replace_stream), 
@@ -349,9 +352,7 @@ machine of [HETZNER CLOUD](https://www.hetzner.com) - [get 20 EUR starting credi
 (Refresh update once a minute!)
 
 ## Installation and Upgrade
-The module requires Python 3.7 and runs smoothly up to and including Python 3.12.  
-
-***The recommended Python version is 3.11!***
+The module requires Python 3.7 and runs smoothly up to and including Python 3.12.
 
 Anaconda packages are available from Python version 3.8 and higher.
 
@@ -439,42 +440,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 - [Modules](https://unicorn-binance-websocket-api.docs.lucit.tech/modules.html)
 
 ## Examples
-- [example_apache_kafka.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_apache_kafka.py)
-- [example_binance_coin_futures.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_coin_futures.py)
-- [example_binance_dex.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_dex.py)
-- [example_binance_futures.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_futures.py)
-- [example_binance_futures_1s.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_futures_1s.py)
-- [example_binance_us.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_binance_us.py)
-- [example_bookticker.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_bookticker.py)
-- [example_ctrl-c.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_ctrl-c.py)
-- [example_demo.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_demo.py)
-- [example_easy_migration_from_python-binance.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_easy_migration_from_python-binance.py)
-- [example_interactive_mode.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py)
-- [example_kline_1m_with_unicorn_fy.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_kline_1m_with_unicorn_fy.py)
-- [example_logging.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_logging.py)
-- [example_monitoring.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_monitoring.py)
-- [example_multi_stream.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multi_stream.py)
-- [example_multiple_userdata_streams.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py)
-- [example_pandas_ta-lib.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_pandas_ta-lib.py)
-- [example_plotting_last_price.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_plotting_last_price.py)
-- [example_process_streams.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_process_streams.py)
-- [example_socks5_proxy.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_socks5_proxy.py)
-- [example_stream_buffer.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_buffer.py)
-- [example_stream_buffer_extended.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py)
-- [example_stream_buffer_fifo-lifo.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_buffer_fifo-lifo.py)
-- [example_stream_everything.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_everything.py)
-- [example_stream_management.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_management.py)
-- [example_stream_management_extended.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_management_extended.py)
-- [example_stream_signals.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_signals.py)
-- [example_stream_signals_callback.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_signals_callback.py)
-- [example_subscribe.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_subscribe.py)
-- [example_ticker_and_miniticker.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_ticker_and_miniticker.py)
-- [example_trade_stream.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_trade_stream.py)
-- [example_trbinance.com.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_trbinance_com.py)
-- [example_userdata_stream.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_userdata_stream.py)
-- [example_userdata_stream_new_style.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_userdata_stream_new_style.py)
-- [example_version_of_this_package.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py)
-- [example_websocket_api.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_websocket_api.py)
+- [Look here!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/tree/master/examples/)
 
 ## Howto
 - [How to Obtain and Use a Unicorn Binance Suite License Key and Run the UBS Module According to Best Practice](https://medium.lucit.tech/how-to-obtain-and-use-a-unicorn-binance-suite-license-key-and-run-the-ubs-module-according-to-best-87b0088124a8)
