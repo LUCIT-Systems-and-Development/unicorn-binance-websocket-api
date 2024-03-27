@@ -148,8 +148,6 @@ class BinanceWebSocketApiConnection(object):
             self.websocket = await self._conn.__aenter__()
         except asyncio.TimeoutError:
             self.manager.set_socket_is_ready(stream_id=self.stream_id)
-            if self.websocket is not None:
-                self.websocket.close()
             raise StreamIsRestarting(stream_id=self.stream_id, reason=f"timeout error")
         return self
 

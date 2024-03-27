@@ -566,7 +566,7 @@ class TestApiLive(unittest.TestCase):
         self.assertEqual(count_receives, 5)
 
     def test_live_receives_asyncio_queue(self):
-        async def process_asyncio_queue():
+        async def process_asyncio_queue(stream_id=None):
             print(f"Start processing data of {stream_id} from asyncio_queue...")
             self.count_receives = 0
             while self.count_receives < 5:
@@ -577,13 +577,13 @@ class TestApiLive(unittest.TestCase):
             print(f"Closing asyncio_queue consumer!")
 
         print(f"Test receiving with stream specific asyncio_queue ...")
-        stream_id = self.__class__.ubwa.create_stream(["arr"], ["!miniTicker"],
+        stream_id_1 = self.__class__.ubwa.create_stream(["arr"], ["!miniTicker"],
                                                       process_asyncio_queue=process_asyncio_queue)
         while self.count_receives < 5:
             time.sleep(1)
         self.assertEqual(self.count_receives, 5)
         time.sleep(3)
-        self.__class__.ubwa.stop_stream(stream_id=stream_id)
+        self.__class__.ubwa.stop_stream(stream_id=stream_id_1)
 
     def test_live_run(self):
         self.__class__.ubwa.get_active_stream_list()

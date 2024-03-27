@@ -12,8 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.3.0.dev (development stage/unreleased/unstable)
 
 ## 2.3.0
+Redesign and rewrite of `connection.py`, `sockets.py` as well as the loop and exception handling in `manager.py`.
 Runs perfectly on Python 3.7 to 3.12 and Windows, Linux, Mac and all architectures!
-Core rewrite: connection.py and sockets.py and the loop and exception handling in manager.py.
 
 ### Added
 - `ubwa.api.get_listen_key()`
@@ -24,6 +24,7 @@ Core rewrite: connection.py and sockets.py and the loop and exception handling i
   `await get_stream_data_from_asyncio_queue(stream_id)` as an AsyncIO alternative to 
   `pop_stream_data_from_stream_buffer()`. This is probably the smartest way to process data from the websocket and 
   should be preferred to the stream_buffer and the callback function.
+- `is_socket_ready()`
 ### Changed
 - Updated from websockets 10.4 to 11.0.3.
 - `pop_stream_data_from_stream_buffer()` returns `None` instead of `False`
@@ -37,7 +38,10 @@ Core rewrite: connection.py and sockets.py and the loop and exception handling i
   have been stopped for more than 900 seconds.
 - `datetime.utcfromtimestamp(stream_info['start_time']).strftime('%Y-%m-%d, %H:%M:%S UTC'))` is obsolete and has been 
   replaced by `datetime.fromtimestamp(timestamp, timezone.utc).strftime('%Y-%m-%d, %H:%M:%S UTC')`.
-- Replaced `stop_stream_as_crash()` with `_crash_stream()`
+- Renamed `stop_stream_as_crash()` with `_crash_stream()`
+- Renamed `is_stop_as_crash_request()` with `is_crash_request()`
+- Renamed `stream_is_crashing()` with `_stream_is_crashing()`
+- Renamed `stream_is_stopping()` with `_stream_is_stopping()`
 ### Fixed
 - In Websocket API wrong method names were used in logging.
 - Logging info in `connection.py` revised.
@@ -48,6 +52,8 @@ Core rewrite: connection.py and sockets.py and the loop and exception handling i
 - Exception `StreamRecoveryError`.
 - `set_restart_request()`
 - `_restart_stream()`
+- `_keepalive_streams()`
+- `kill_stream()`
 
 ## 2.2.0
 This update is primarily aimed at stabilization. The loop management has been improved and runs absolutely fine in 

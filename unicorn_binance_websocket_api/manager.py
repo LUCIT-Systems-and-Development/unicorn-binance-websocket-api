@@ -587,12 +587,13 @@ class BinanceWebSocketApiManager(threading.Thread):
             return False
         return True
 
-    def _send_stream_signal(self, signal_type=None, stream_id=None, error_msg=None) -> bool:
+    def send_stream_signal(self, signal_type=None, stream_id=None, data_record=None, error_msg=None) -> bool:
         """
         Send a stream signal
         """
         self.process_stream_signals(signal_type=signal_type,
                                     stream_id=stream_id,
+                                    data_record=data_record,
                                     error_msg=error_msg)
         self.stream_list[stream_id]['last_stream_signal'] = signal_type
         return True
@@ -1217,6 +1218,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                              'stream_id': stream_id,
                              'timestamp': time.time()}
             if signal_type == "CONNECT":
+                # nothing to add ...
+                pass
+            elif signal_type == "STOP":
                 # nothing to add ...
                 pass
             elif signal_type == "DISCONNECT":
@@ -4094,7 +4098,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.set_socket_is_ready(stream_id)
         if error_msg is not None:
             self.stream_list[stream_id]['status'] += " - " + str(error_msg)
-        self._send_stream_signal(stream_id=stream_id, signal_type="STREAM_UNREPAIRABLE")
+        self.send_stream_signal(stream_id=stream_id, signal_type="STREAM_UNREPAIRABLE")
         return True
 
     def _stream_is_restarting(self, stream_id, error_msg=None):
@@ -4127,7 +4131,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stream_list[stream_id]['status'] = "stopped"
         except KeyError:
             pass
-        self._send_stream_signal(stream_id=stream_id, signal_type="STOP")
+        self.send_stream_signal(stream_id=stream_id, signal_type="STOP")
         return True
 
     def subscribe_to_stream(self, stream_id, channels=[], markets=[]):

@@ -71,7 +71,7 @@ class BinanceWebSocketApiSocket(object):
                 self.manager.stream_list[self.stream_id]['status'] = "running"
                 self.manager.stream_list[self.stream_id]['has_stopped'] = None
                 self.manager.set_socket_is_ready(stream_id=self.stream_id)
-                self.manager.process_stream_signals(signal_type="CONNECT", stream_id=self.stream_id)
+                self.manager.send_stream_signal(signal_type="CONNECT", stream_id=self.stream_id)
                 self.manager.stream_list[self.stream_id]['last_stream_signal'] = "CONNECT"
                 while self.manager.is_stop_request(self.stream_id) is False \
                         and self.manager.is_crash_request(self.stream_id) is False:
@@ -226,10 +226,9 @@ class BinanceWebSocketApiSocket(object):
                                 self.manager.add_to_ringbuffer_result(received_stream_data_json)
                             else:
                                 if self.manager.stream_list[self.stream_id]['last_received_data_record'] is None:
-                                    self.manager.process_stream_signals(signal_type="FIRST_RECEIVED_DATA",
-                                                                        stream_id=self.stream_id,
-                                                                        data_record=received_stream_data)
-                                    self.manager.stream_list[self.stream_id]['last_stream_signal'] = "FIRST_RECEIVED_DATA"
+                                    self.manager.send_stream_signal(signal_type="FIRST_RECEIVED_DATA",
+                                                                    stream_id=self.stream_id,
+                                                                    data_record=received_stream_data)
                                 self.manager.stream_list[self.stream_id]['last_received_data_record'] = received_stream_data
                     except asyncio.TimeoutError:
                         # Timeout from `asyncio.wait_for()` which we use to keep the loop running even if we don't
@@ -242,8 +241,7 @@ class BinanceWebSocketApiSocket(object):
             try:
                 if self.manager.stream_list[self.stream_id]['last_stream_signal'] == "FIRST_RECEIVED_DATA" \
                         or self.manager.stream_list[self.stream_id]['last_stream_signal'] == "CONNECT":
-                    self.manager.process_stream_signals(signal_type="DISCONNECT", stream_id=self.stream_id)
-                    self.manager.stream_list[self.stream_id]['last_stream_signal'] = "DISCONNECT"
+                    self.manager.send_stream_signal(signal_type="DISCONNECT", stream_id=self.stream_id)
             except KeyError:
                 pass
             if self.websocket is not None:

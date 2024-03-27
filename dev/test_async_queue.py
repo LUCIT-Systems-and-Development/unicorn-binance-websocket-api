@@ -19,7 +19,7 @@ class BinanceDataProcessor:
                                                enable_stream_signal_buffer=True,
                                                process_stream_signals=self.processing_of_stream_signals,
                                                output_default="dict",
-                                               high_performance=True)
+                                               high_performance=False)
         self.stream_id1 = None
         self.stream_id2 = None
 
