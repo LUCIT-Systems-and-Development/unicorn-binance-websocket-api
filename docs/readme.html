@@ -68,7 +68,7 @@
 <li><a class="reference internal" href="#get-a-unicorn-binance-suite-license">Get a UNICORN Binance Suite License</a></li>
 <li><a class="reference internal" href="#receive-data-from-binance-websockets">Receive Data from Binance WebSockets</a><ul>
 <li><a class="reference internal" href="#create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code">Create a multiplex websocket connection to Binance with a <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> with just 3 lines of code:</a></li>
-<li><a class="reference internal" href="#and-4-more-lines-to-print-the-receives">And 4 more lines to print the receives:</a></li>
+<li><a class="reference internal" href="#and-4-more-lines-to-print-out-the-data">And 4 more lines to print out the data:</a></li>
 <li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do:</a></li>
 <li><a class="reference internal" href="#or-await-the-webstream-data-in-an-asyncio-task">Or await the webstream data in an asyncio task:</a></li>
 <li><a class="reference internal" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received raw webstream data into well-formed Python dictionaries with UnicornFy:</a></li>
@@ -287,8 +287,8 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 </pre></div>
 </div>
 </section>
-<section id="and-4-more-lines-to-print-the-receives">
-<h3>And 4 more lines to print the receives:<a class="headerlink" href="#and-4-more-lines-to-print-the-receives" title="Link to this heading">¶</a></h3>
+<section id="and-4-more-lines-to-print-out-the-data">
+<h3>And 4 more lines to print out the data:<a class="headerlink" href="#and-4-more-lines-to-print-out-the-data" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
     <span class="n">oldest_data_from_stream_buffer</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">pop_stream_data_from_stream_buffer</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">oldest_data_from_stream_buffer</span><span class="p">:</span>
@@ -870,7 +870,7 @@ companies from the US analyze binance.com market data - as long as they do not t
 <li><a class="reference internal" href="#get-a-unicorn-binance-suite-license">Get a UNICORN Binance Suite License</a></li>
 <li><a class="reference internal" href="#receive-data-from-binance-websockets">Receive Data from Binance WebSockets</a><ul>
 <li><a class="reference internal" href="#create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code">Create a multiplex websocket connection to Binance with a <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> with just 3 lines of code:</a></li>
-<li><a class="reference internal" href="#and-4-more-lines-to-print-the-receives">And 4 more lines to print the receives:</a></li>
+<li><a class="reference internal" href="#and-4-more-lines-to-print-out-the-data">And 4 more lines to print out the data:</a></li>
 <li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do:</a></li>
 <li><a class="reference internal" href="#or-await-the-webstream-data-in-an-asyncio-task">Or await the webstream data in an asyncio task:</a></li>
 <li><a class="reference internal" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received raw webstream data into well-formed Python dictionaries with UnicornFy:</a></li>
@@ -1036,7 +1036,7 @@ companies from the US analyze binance.com market data - as long as they do not t
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Mar 27 2024 at 23:45 (CET).
+    Last updated on Mar 27 2024 at 23:50 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
