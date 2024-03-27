@@ -467,16 +467,22 @@ class BinanceWebSocketApiManager(threading.Thread):
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                  f"{channels}), markets={markets}) - asyncio.CancelledError: {error_msg}")
                     self._stream_is_stopping(stream_id=stream_id)
+                    if socket.websocket is not None:
+                        await socket.websocket.close()
                     return None
                 except StreamIsCrashing as error_msg:
                     logger.critical(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                     f"{channels}), markets={markets}) - StreamIsCrashing: {error_msg}")
                     self._stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
+                    if socket.websocket is not None:
+                        await socket.websocket.close()
                     return None
                 except StreamIsStopping as error_msg:
                     logger.info(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                 f"{channels}), markets={markets}) - StreamIsStopping: {error_msg}")
                     self._stream_is_stopping(stream_id=stream_id)
+                    if socket.websocket is not None:
+                        await socket.websocket.close()
                     return None
                 except ConnectionResetError as error_msg:
                     logger.debug(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
