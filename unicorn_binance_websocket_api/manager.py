@@ -1438,7 +1438,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                       stream_buffer_maxlen=None,
                       api=False,
                       process_stream_data=None,
-                      process_stream_data_async=None,
+                      process_stream_data_async: Optional[Callable] = None,
                       process_asyncio_queue=None):
         """
         Create a websocket stream
@@ -1651,15 +1651,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread.start()
         self.stream_threads[stream_id] = thread
         while self.is_socket_ready(stream_id=stream_id) is False:
-
-            if self.is_stop_request(stream_id=stream_id) is True or self.is_crash_request(stream_id=stream_id) is True:
-                return None
-            if self.stream_list[stream_id]['status'] == "running" \
-                    or self.stream_list[stream_id]['status'] == "restarting":
-                break
+            if self.is_stop_request(stream_id=stream_id) is True \
+                    or self.is_crash_request(stream_id=stream_id) is True \
+                    or self.stream_list[stream_id]['status'].startswith("crashed") is True:
+                return stream_id
             time.sleep(0.1)
         if self.event_loops[stream_id].is_closed():
-            return None
+            return stream_id
         if self.specific_process_asyncio_queue[stream_id] is not None:
             logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - Adding "
                          f"`specific_process_asyncio_queue[{stream_id}]()` to asyncio loop ...")

@@ -59,7 +59,6 @@ class BinanceDataProcessor:
                                                   process_asyncio_queue=self.process_asyncio_queue_specific)
         self.ubwa.create_stream(markets='arr', channels='!userData',
                                 api_key="api_key", api_secret="api_secret")
-        print("GoodBye!!!")
         while self.ubwa.is_manager_stopping() is False:
             #self.ubwa.print_summary()
             await asyncio.sleep(5)
@@ -73,6 +72,7 @@ if __name__ == "__main__":
         print("Gracefully stopping ...")
         bdp.shutdown = True
         bdp.ubwa.stop_manager()
+        print("Done!")
     except Exception as error_msg:
         print(f"\r\nERROR: {error_msg}")
         print("Gracefully stopping ...")
