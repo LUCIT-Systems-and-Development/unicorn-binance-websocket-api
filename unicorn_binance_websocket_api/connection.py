@@ -173,7 +173,7 @@ class BinanceWebSocketApiConnection(object):
             if self.timeout_disabled is True:
                 received_data_json = await self.websocket.recv()
             else:
-                if self.manager.stream_list[self.stream_id]['processed_receives_total'] > 3:
+                if self.manager.stream_list[self.stream_id]['processed_receives_total'] > 10:
                     self.timeout_disabled = True
                 received_data_json = await asyncio.wait_for(self.websocket.recv(), timeout=1)
         self.manager.set_heartbeat(self.stream_id)

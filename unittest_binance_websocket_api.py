@@ -497,9 +497,21 @@ class TestBinanceOrgManager(unittest.TestCase):
                                              stream_label="Bobs Websocket API",
                                              process_stream_data=handle_socket_message)
             time.sleep(1)
+            ubwam.api.get_listen_key(stream_id=api_stream)
             ubwam.api.get_server_time(stream_id=api_stream)
+            ubwam.api.get_account_status(stream_id=api_stream)
+            orig_client_order_id = ubwam.api.create_order(stream_id=api_stream, price=1.0, order_type="LIMIT",
+                                                         quantity=15.0, side="SELL", symbol="BUSDUSDT")
+            ubwam.api.create_test_order(stream_id=api_stream, price=1.2, order_type="LIMIT",
+                                       quantity=12.0, side="SELL", symbol="BUSDUSDT")
             ubwam.api.ping(stream_id=api_stream)
+            ubwam.api.get_exchange_info(stream_id=api_stream, symbols=['BUSDUSDT'])
             ubwam.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
+            ubwam.api.cancel_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
+            ubwam.api.get_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
+            ubwam.api.get_open_orders(stream_id=api_stream)
+            ubwam.api.cancel_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
+            ubwam.api.get_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
             time.sleep(2)
             ubwam.stop_manager()
 
@@ -578,7 +590,7 @@ class TestApiLive(unittest.TestCase):
 
         print(f"Test receiving with stream specific asyncio_queue ...")
         stream_id_1 = self.__class__.ubwa.create_stream(["arr"], ["!miniTicker"],
-                                                      process_asyncio_queue=process_asyncio_queue)
+                                                        process_asyncio_queue=process_asyncio_queue)
         while self.count_receives < 5:
             time.sleep(1)
         self.assertEqual(self.count_receives, 5)

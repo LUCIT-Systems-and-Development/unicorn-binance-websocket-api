@@ -38,7 +38,7 @@ import traceback
 import uuid
 import ujson as json
 import websockets
-from lucit_licensing_python import LucitLicensingManager, NoValidatedLucitLicense
+from .licensing_manager import LucitLicensingManager, NoValidatedLucitLicense
 from unicorn_binance_rest_api import BinanceRestApiManager
 from .connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, CONNECTION_SETTINGS
 from .exceptions import *
