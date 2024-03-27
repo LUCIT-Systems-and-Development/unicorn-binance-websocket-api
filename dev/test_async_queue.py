@@ -59,6 +59,7 @@ class BinanceDataProcessor:
                                                   process_asyncio_queue=self.process_asyncio_queue_specific)
         self.ubwa.create_stream(markets='arr', channels='!userData',
                                 api_key="api_key", api_secret="api_secret")
+        print("GoodBye!!!")
         while self.ubwa.is_manager_stopping() is False:
             #self.ubwa.print_summary()
             await asyncio.sleep(5)

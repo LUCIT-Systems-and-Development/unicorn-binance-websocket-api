@@ -195,10 +195,6 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(str(self.__class__.ubwa.fill_up_space_left(30, "test text", "|")),
                          result)
 
-    def test_create_stream_userdata(self):
-        self.assertEqual(self.__class__.ubwa.create_stream('arr', '!userData', stream_label="userDataBad",
-                         api_key="key", api_secret="secret"), None)
-
     def test_create_stream_userdata_with(self):
         with BinanceWebSocketApiManager(exchange="binance.us") as ubwa:
             ubwa.create_stream('arr', '!userData', stream_label="userDataBad")

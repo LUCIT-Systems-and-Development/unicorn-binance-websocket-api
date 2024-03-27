@@ -476,8 +476,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.critical(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                                 f"{channels}), markets={markets}) - StreamIsCrashing: {error_msg}")
                 self._stream_is_crashing(stream_id=stream_id, error_msg=str(error_msg))
-                print("KKKKKK")
-                self.set_socket_is_ready(stream_id=stream_id)
                 if socket.websocket is not None:
                     await socket.websocket.close()
                 return None
@@ -1572,7 +1570,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         # handle Websocket API streams: https://developers.binance.com/docs/binance-trading-api/websocket_api
         if api is True:
-            if api_key is False or api_secret is False:
+            if api_key is None or api_secret is None:
                 logger.error(f"BinanceWebSocketApiManager.create_stream(api={api}) - `api_key` and `api_secret` are "
                              f"mandatory if `api=True`")
                 return None
@@ -1653,6 +1651,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         thread.start()
         self.stream_threads[stream_id] = thread
         while self.is_socket_ready(stream_id=stream_id) is False:
+
             if self.is_stop_request(stream_id=stream_id) is True or self.is_crash_request(stream_id=stream_id) is True:
                 return None
             if self.stream_list[stream_id]['status'] == "running" \
@@ -3987,9 +3986,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Stop the BinanceWebSocketApiManager with all streams, monitoring and management threads
         """
+        logger.info("BinanceWebSocketApiManager.stop_manager() - Stopping "
+                    "unicorn_binance_websocket_api_manager " + self.version + " ...")
         if self.stop_manager_request is False:
-            logger.info("BinanceWebSocketApiManager.stop_manager() - Stopping "
-                        "unicorn_binance_websocket_api_manager " + self.version + " ...")
             # send signal to all threads
             self.stop_manager_request = True
             try:
