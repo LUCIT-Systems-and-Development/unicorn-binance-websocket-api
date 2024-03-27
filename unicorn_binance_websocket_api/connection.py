@@ -168,10 +168,11 @@ class BinanceWebSocketApiConnection(object):
             if self.api is True:
                 timeout = 0.1
             else:
-                timeout = 1
+                timeout = 2
             received_data_json = await asyncio.wait_for(self.websocket.recv(), timeout=timeout)
         else:
-            received_data_json = await self.websocket.recv()
+            received_data_json = await asyncio.wait_for(self.websocket.recv(), timeout=2)
+#            received_data_json = await self.websocket.recv()
         self.manager.set_heartbeat(self.stream_id)
         size = sys.getsizeof(str(received_data_json))
         self.manager.add_total_received_bytes(size)
