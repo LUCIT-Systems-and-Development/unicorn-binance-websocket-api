@@ -183,6 +183,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                This parameter is passed through to the `websockets.client.connect()
                                <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_timeout#keepalive-in-websockets>`_
     :type ping_timeout_default: int
+    :param high_performance: Set to True makes `create_stream()` a non-blocking function
+    :type high_performance:  bool
     :param debug: If True the lib adds additional information to logging outputs
     :type debug:  bool
     :param restful_base_uri: Override `restful_base_uri`. Example: `https://127.0.0.1`
@@ -234,6 +236,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                  close_timeout_default: int = 1,
                  ping_interval_default: int = 5,
                  ping_timeout_default: int = 10,
+                 high_performance: Optional[bool] = False,
                  debug: Optional[bool] = False,
                  restful_base_uri: Optional[str] = None,
                  websocket_base_uri: Optional[str] = None,
@@ -370,6 +373,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.receiving_speed_average = 0
         self.receiving_speed_peak = {'value': 0,
                                      'timestamp': time.time()}
+        self.high_performance = high_performance
         self.keep_max_received_last_second_entries = 5
         self.keepalive_streams_list = {}
         self.last_entry_added_to_stream_buffer = 0
@@ -1427,10 +1431,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                       listen_key: str = None,
                       keep_listen_key_alive: bool = True,
                       stream_buffer_maxlen=None,
-                      api=False,
-                      process_stream_data=None,
+                      api: bool = False,
+                      process_stream_data: Optional[Callable] = None,
                       process_stream_data_async: Optional[Callable] = None,
-                      process_asyncio_queue=None):
+                      process_asyncio_queue: Optional[Callable] = None):
         """
         Create a websocket stream
 
@@ -1646,6 +1650,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     or self.is_crash_request(stream_id=stream_id) is True \
                     or self.stream_list[stream_id]['status'].startswith("crashed") is True:
                 return stream_id
+            if self.high_performance is True:
+                break
             time.sleep(0.1)
         if self.event_loops[stream_id].is_closed():
             return stream_id
@@ -1653,7 +1659,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - Adding "
                          f"`specific_process_asyncio_queue[{stream_id}]()` to asyncio loop ...")
             if self.get_event_loop_by_stream_id(stream_id=stream_id) is not None:
-                asyncio.run_coroutine_threadsafe(self.specific_process_asyncio_queue[stream_id](),
+                asyncio.run_coroutine_threadsafe(self.specific_process_asyncio_queue[stream_id](stream_id=stream_id),
                                                  self.get_event_loop_by_stream_id(stream_id=stream_id))
             else:
                 logger.error(f"BinanceWebSocketApiManager.create_stream({stream_id} - No valid asyncio loop!")
@@ -1664,7 +1670,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - "
                              f"Adding `process_asyncio_queue()` to asyncio loop ...")
                 if self.get_event_loop_by_stream_id(stream_id=stream_id) is not None:
-                    asyncio.run_coroutine_threadsafe(self.process_asyncio_queue(),
+                    asyncio.run_coroutine_threadsafe(self.process_asyncio_queue(stream_id=stream_id),
                                                      self.get_event_loop_by_stream_id(stream_id=stream_id))
                 else:
                     logger.error(f"BinanceWebSocketApiManager.create_stream({stream_id} - No valid asyncio loop!")
@@ -2836,7 +2842,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: str
         :return: str or None
         """
-        if stream_id:
+        if stream_id is not None:
             try:
                 return self.stream_list[stream_id]['stream_label']
             except KeyError:

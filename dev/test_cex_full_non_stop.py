@@ -76,7 +76,8 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 try:
     binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret)
     binance_websocket_api_manager = BinanceWebSocketApiManager(ping_interval_default=20,
-                                                               ping_timeout_default=20)
+                                                               ping_timeout_default=20,
+                                                               high_performance=True)
 except requests.exceptions.ConnectionError:
     print("No internet connection?")
     sys.exit(1)
