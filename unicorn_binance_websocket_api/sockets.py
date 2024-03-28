@@ -25,7 +25,6 @@ from unicorn_fy.unicorn_fy import UnicornFy
 import asyncio
 import ujson as json
 import logging
-import uuid
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 

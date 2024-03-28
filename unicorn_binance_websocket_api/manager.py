@@ -2364,7 +2364,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         try:
-            free_slots =  self.max_subscriptions_per_stream - self.stream_list[stream_id]['subscriptions']
+            free_slots = self.max_subscriptions_per_stream - self.stream_list[stream_id]['subscriptions']
         except KeyError:
             return None
         return free_slots
@@ -3396,7 +3396,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             close_timeout = f"{stream_info['close_timeout']} seconds"
         else: 
             close_timeout = stream_info['close_timeout']
-        if title:
+        if title is not None:
             first_row = str(self.fill_up_space_centered(96, f" {title} ", "=")) + "\r\n"
             last_row = str(self.fill_up_space_centered(96, f" Powered by {self.get_user_agent()} ", "=")) + "\r\n"
         else:
@@ -3554,25 +3554,25 @@ class BinanceWebSocketApiManager(threading.Thread):
         if streams_with_stop_request >= 1:
             stream_row_color_prefix = "\033[1m\033[33m"
             stream_row_color_suffix = "\033[0m"
-            streams_with_stop_request_row = stream_row_color_prefix + " streams_with_stop_request: " + \
-                                            str(streams_with_stop_request) + stream_row_color_suffix + "\r\n"
+            streams_with_stop_request_row = (stream_row_color_prefix + " streams_with_stop_request: " +
+                                             str(streams_with_stop_request) + stream_row_color_suffix + "\r\n")
         if crashed_streams >= 1:
             stream_row_color_prefix = "\033[1m\033[31m"
             stream_row_color_suffix = "\033[0m"
-            crashed_streams_row = stream_row_color_prefix + " crashed_streams: " + str(crashed_streams) \
-                                  + stream_row_color_suffix + "\r\n"
+            crashed_streams_row = (stream_row_color_prefix + " crashed_streams: " + str(crashed_streams) +
+                                   stream_row_color_suffix + "\r\n")
         total_received_bytes = str(self.get_total_received_bytes()) + " (" + str(
             self.get_human_bytesize(self.get_total_received_bytes())) + ")"
         try:
             received_bytes_per_second = self.get_total_received_bytes() / (time.time() - self.start_time)
-            received_bytes_per_x_row += str(self.get_human_bytesize(int(received_bytes_per_second), '/s')) + " (per day " + \
-                                        str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 * 60 * 24).__round__(2)) + \
-                                        " gB)"
+            received_bytes_per_x_row += (str(self.get_human_bytesize(int(received_bytes_per_second), '/s')) +
+                                         " (per day " + str(((received_bytes_per_second / 1024 / 1024 / 1024) * 60 *
+                                                             60 * 24).__round__(2)) + " gB)")
             if self.get_stream_buffer_length() > 50:
                 stream_row_color_prefix = "\033[1m\033[34m"
                 stream_row_color_suffix = "\033[0m"
-                stream_buffer_row += stream_row_color_prefix + " stream_buffer_stored_items: " + \
-                                     str(self.get_stream_buffer_length()) + "\r\n"
+                stream_buffer_row += (stream_row_color_prefix + " stream_buffer_stored_items: " +
+                                      str(self.get_stream_buffer_length()) + "\r\n")
                 stream_buffer_row += " stream_buffer_byte_size: " + str(self.get_stream_buffer_byte_size()) + \
                                      " (" + str(self.get_human_bytesize(self.get_stream_buffer_byte_size())) + ")" + \
                                      stream_row_color_suffix + "\r\n"
@@ -3596,7 +3596,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                          ", status_code=" + str(binance_api_status_code) + " (last update " + \
                                          str(self.get_date_of_timestamp(self.binance_api_status['timestamp'])) + ")\r\n"
 
-            if title:
+            if title is not None:
                 first_row = str(self.fill_up_space_centered(96, f" {title} ", "=")) + "\r\n"
                 last_row = str(self.fill_up_space_centered(96, f" Powered by {self.get_user_agent()} ", "=")) + "\r\n"
             else:

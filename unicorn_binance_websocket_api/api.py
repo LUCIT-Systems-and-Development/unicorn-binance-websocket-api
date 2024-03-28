@@ -310,7 +310,7 @@ class BinanceWebSocketApiApi(object):
 
         Message sent:
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "5633b6a2-90a9-4192-83e7-925c90b6a2fd",
@@ -327,7 +327,7 @@ class BinanceWebSocketApiApi(object):
 
         Response:
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "5633b6a2-90a9-4192-83e7-925c90b6a2fd",
@@ -549,7 +549,7 @@ class BinanceWebSocketApiApi(object):
 
         Message sent:
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "56374a46-3061-486b-a311-99ee972eb648",
@@ -570,7 +570,7 @@ class BinanceWebSocketApiApi(object):
 
         Response
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "56374a46-3061-486b-a311-99ee972eb648",
@@ -818,7 +818,7 @@ class BinanceWebSocketApiApi(object):
 
         Message sent:
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "56374a46-3061-486b-a311-99ee972eb648",
@@ -839,7 +839,7 @@ class BinanceWebSocketApiApi(object):
 
         Response
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "56374a46-3061-486b-a311-99ee972eb648",
@@ -916,7 +916,7 @@ class BinanceWebSocketApiApi(object):
 
         Message sent:
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "605a6d20-6588-4cb9-afa0-b0ab087507ba",
@@ -931,7 +931,7 @@ class BinanceWebSocketApiApi(object):
 
         Response:
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "605a6d20-6588-4cb9-afa0-b0ab087507ba",
@@ -1187,6 +1187,7 @@ class BinanceWebSocketApiApi(object):
                 logger.critical(f"BinanceWebSocketApiApi.get_exchange_info() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
+        params = {}
         if symbol is not None:
             params = {"symbol": symbol}
         if symbols is not None:
@@ -1194,7 +1195,6 @@ class BinanceWebSocketApiApi(object):
             params = {"symbols": symbols}
         if permissions is not None:
             params = {"permissions": permissions}
-
         if recv_window is not None:
             params['recvWindow'] = str(recv_window)
 
@@ -1236,10 +1236,6 @@ class BinanceWebSocketApiApi(object):
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
         :type process_response: function
-        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
-                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
-                            The value cannot be greater than 60000.
-        :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
         :param return_response: If `True` the response of the API request is waited for and returned directly.
@@ -1368,7 +1364,7 @@ class BinanceWebSocketApiApi(object):
 
         Message Sent:
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "55f07876-4f6f-4c47-87dc-43e5fff3f2e7",
@@ -1384,7 +1380,7 @@ class BinanceWebSocketApiApi(object):
 
         Response:
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "55f07876-4f6f-4c47-87dc-43e5fff3f2e7",
@@ -1515,7 +1511,7 @@ class BinanceWebSocketApiApi(object):
 
         Message sent:
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "aa62318a-5a97-4f3b-bdc7-640bbe33b291",
@@ -1531,7 +1527,7 @@ class BinanceWebSocketApiApi(object):
 
         Response:
 
-        .. code-block:: json
+        ... code-block:: json
 
             {
                 "id": "aa62318a-5a97-4f3b-bdc7-640bbe33b291",
@@ -1669,7 +1665,7 @@ class BinanceWebSocketApiApi(object):
 
         Message sent:
 
-            .. code-block:: json
+            ... code-block:: json
 
                 {
                     "id": "5494febb-d167-46a2-996d-70533eb4d976",
@@ -1683,7 +1679,7 @@ class BinanceWebSocketApiApi(object):
 
             Response:
 
-            .. code-block:: json
+            ... code-block:: json
 
                 {
                     "id": "5494febb-d167-46a2-996d-70533eb4d976",
@@ -1815,7 +1811,7 @@ class BinanceWebSocketApiApi(object):
 
         Message sent:
 
-            .. code-block:: json
+            ... code-block:: json
 
                 {
                     "id": "187d3cb2-942d-484c-8271-4e2141bbadb1",
@@ -1825,7 +1821,7 @@ class BinanceWebSocketApiApi(object):
 
             Response:
 
-            .. code-block:: json
+            ... code-block:: json
 
                 {
                     "id": "187d3cb2-942d-484c-8271-4e2141bbadb1",
@@ -1903,7 +1899,7 @@ class BinanceWebSocketApiApi(object):
 
         Message sent:
 
-            .. code-block:: json
+            ... code-block:: json
 
                 {
                     "id": "4e72973031d8-bff9-8481-c95b-c42414df",
@@ -1913,7 +1909,7 @@ class BinanceWebSocketApiApi(object):
 
             Response:
 
-            .. code-block:: json
+            ... code-block:: json
 
                 {
                     "id": "4e72973031d8-bff9-8481-c95b-c42414df",
