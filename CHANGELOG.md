@@ -12,7 +12,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.3.0.dev (development stage/unreleased/unstable)
 
 ## 2.3.0
-Redesign and rewrite of `connection.py`, `sockets.py` as well as the loop and exception handling in `manager.py`.
+Redesign and rewrite of `connection.py`, `sockets.py` as well as the loop and exception handling in `manager.py` and 
+support for `await get_stream_data_from_asyncio_queue(stream_id)`. 
+
 Runs perfectly on Python 3.7 to 3.12 on Windows, Linux and Mac!
 
 ### Added
