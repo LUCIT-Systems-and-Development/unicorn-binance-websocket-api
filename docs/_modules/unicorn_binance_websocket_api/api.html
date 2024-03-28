@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api.api &#8212; unicorn-binance-websocket-api 2.2.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unicorn_binance_websocket_api.api &#8212; unicorn-binance-websocket-api 2.3.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="../../_static/pydoctheme.css?v=fdf8e9ae" />
@@ -359,7 +359,7 @@
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_the_one_active_websocket_api</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot;found!&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
@@ -463,7 +463,7 @@
 
 <span class="sd">        Message sent:</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;5633b6a2-90a9-4192-83e7-925c90b6a2fd&quot;,</span>
@@ -480,7 +480,7 @@
 
 <span class="sd">        Response:</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;5633b6a2-90a9-4192-83e7-925c90b6a2fd&quot;,</span>
@@ -523,8 +523,8 @@
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_the_one_active_websocket_api</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or &quot;</span>
+            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.cancel_order() - error_msg: No `stream_id` provided or &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot;found!&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
@@ -705,7 +705,7 @@
 
 <span class="sd">        Message sent:</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;56374a46-3061-486b-a311-99ee972eb648&quot;,</span>
@@ -726,7 +726,7 @@
 
 <span class="sd">        Response</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;56374a46-3061-486b-a311-99ee972eb648&quot;,</span>
@@ -768,7 +768,7 @@
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_the_one_active_websocket_api</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.create_order() - error_msg: No `stream_id` provided or &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot;found!&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
@@ -977,7 +977,7 @@
 
 <span class="sd">        Message sent:</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;56374a46-3061-486b-a311-99ee972eb648&quot;,</span>
@@ -998,7 +998,7 @@
 
 <span class="sd">        Response</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;56374a46-3061-486b-a311-99ee972eb648&quot;,</span>
@@ -1078,7 +1078,7 @@
 
 <span class="sd">        Message sent:</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;,</span>
@@ -1093,7 +1093,7 @@
 
 <span class="sd">        Response:</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;,</span>
@@ -1153,8 +1153,8 @@
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_the_one_active_websocket_api</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or &quot;</span>
+            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.get_account_status() - error_msg: No `stream_id` provided or &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot;found!&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
@@ -1348,10 +1348,11 @@
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_the_one_active_websocket_api</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or &quot;</span>
+            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.get_exchange_info() - error_msg: No `stream_id` provided or &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot;found!&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;symbol&quot;</span><span class="p">:</span> <span class="n">symbol</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">symbols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1359,12 +1360,110 @@
             <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;symbols&quot;</span><span class="p">:</span> <span class="n">symbols</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">permissions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;permissions&quot;</span><span class="p">:</span> <span class="n">permissions</span><span class="p">}</span>
-
         <span class="k">if</span> <span class="n">recv_window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;recvWindow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">recv_window</span><span class="p">)</span>
 
         <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;exchangeInfo&quot;</span>
         <span class="n">request_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_new_uuid_id</span><span class="p">()</span> <span class="k">if</span> <span class="n">request_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">request_id</span>
+
+        <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_id</span><span class="p">,</span>
+                   <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+                   <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">process_response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">process_response_lock</span><span class="p">:</span>
+                <span class="n">entry</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;callback_function&#39;</span><span class="p">:</span> <span class="n">process_response</span><span class="p">}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">process_response</span><span class="p">[</span><span class="n">request_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">return_response</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">return_response_lock</span><span class="p">:</span>
+                <span class="n">entry</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;event_return_response&#39;</span><span class="p">:</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">return_response</span><span class="p">[</span><span class="n">request_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">return_response</span><span class="p">[</span><span class="n">request_id</span><span class="p">][</span><span class="s1">&#39;event_return_response&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">return_response_lock</span><span class="p">:</span>
+                <span class="n">response_value</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">return_response</span><span class="p">[</span><span class="n">request_id</span><span class="p">][</span><span class="s1">&#39;response_value&#39;</span><span class="p">])</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">return_response</span><span class="p">[</span><span class="n">request_id</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">response_value</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="BinanceWebSocketApiApi.get_listen_key">
+<a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.get_listen_key">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_listen_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process_response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                       <span class="n">stream_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a listenKey to start a UserDataStream.</span>
+
+<span class="sd">        Official documentation:</span>
+
+<span class="sd">            - https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-api.md#user-data-stream-requests</span>
+
+<span class="sd">        :param process_response: Provide a function/method to process the received webstream data (callback)</span>
+<span class="sd">                                 of this specific request.</span>
+<span class="sd">        :type process_response: function</span>
+<span class="sd">        :param request_id: Provide a custom id for the request</span>
+<span class="sd">        :type request_id: str</span>
+<span class="sd">        :param return_response: If `True` the response of the API request is waited for and returned directly.</span>
+<span class="sd">                                However, this increases the execution time of the function by the duration until the</span>
+<span class="sd">                                response is received from the Binance API.</span>
+<span class="sd">        :type return_response: bool</span>
+<span class="sd">        :param stream_id: ID of a stream to send the request</span>
+<span class="sd">        :type stream_id: str</span>
+<span class="sd">        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!</span>
+<span class="sd">        :type stream_label: str</span>
+<span class="sd">        :return: bool</span>
+
+
+<span class="sd">        Message sent:</span>
+
+<span class="sd">        . code-block:: json</span>
+
+<span class="sd">            {</span>
+<span class="sd">              &quot;id&quot;: &quot;d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0&quot;,</span>
+<span class="sd">              &quot;method&quot;: &quot;userDataStream.start&quot;,</span>
+<span class="sd">              &quot;params&quot;: {</span>
+<span class="sd">                &quot;apiKey&quot;: &quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span>
+<span class="sd">              }</span>
+<span class="sd">            }</span>
+
+
+<span class="sd">        Response:</span>
+
+<span class="sd">        . code-block:: json</span>
+
+<span class="sd">            {</span>
+<span class="sd">              &quot;id&quot;: &quot;d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0&quot;,</span>
+<span class="sd">              &quot;status&quot;: 200,</span>
+<span class="sd">              &quot;result&quot;: {</span>
+<span class="sd">                &quot;listenKey&quot;: &quot;xs0mRXdAKlIPDRFrlPcw0qI41Eh3ixNntmymGyhrhgqo7L6FuLaWArTD7RLP&quot;</span>
+<span class="sd">              },</span>
+<span class="sd">              &quot;rateLimits&quot;: [</span>
+<span class="sd">                {</span>
+<span class="sd">                  &quot;rateLimitType&quot;: &quot;REQUEST_WEIGHT&quot;,</span>
+<span class="sd">                  &quot;interval&quot;: &quot;MINUTE&quot;,</span>
+<span class="sd">                  &quot;intervalNum&quot;: 1,</span>
+<span class="sd">                  &quot;limit&quot;: 6000,</span>
+<span class="sd">                  &quot;count&quot;: 2</span>
+<span class="sd">                }</span>
+<span class="sd">              ]</span>
+<span class="sd">            }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_the_one_active_websocket_api</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.get_listen_key() - error_msg: No `stream_id` provided or &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;found!&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">request_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_new_uuid_id</span><span class="p">()</span> <span class="k">if</span> <span class="n">request_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">request_id</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;userDataStream.start&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;apiKey&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;api_key&#39;</span><span class="p">]}</span>
 
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_id</span><span class="p">,</span>
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
@@ -1436,7 +1535,7 @@
 
 <span class="sd">        Message Sent:</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;55f07876-4f6f-4c47-87dc-43e5fff3f2e7&quot;,</span>
@@ -1452,7 +1551,7 @@
 
 <span class="sd">        Response:</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;55f07876-4f6f-4c47-87dc-43e5fff3f2e7&quot;,</span>
@@ -1497,14 +1596,16 @@
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_the_one_active_websocket_api</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or &quot;</span>
+            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.get_open_orders() - error_msg: No `stream_id` provided or &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot;found!&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;apiKey&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;api_key&#39;</span><span class="p">],</span>
-                  <span class="s2">&quot;symbol&quot;</span><span class="p">:</span> <span class="n">symbol</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
                   <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">()}</span>
+
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
 
         <span class="k">if</span> <span class="n">recv_window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;recvWindow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">recv_window</span><span class="p">)</span>
@@ -1584,7 +1685,7 @@
 
 <span class="sd">        Message sent:</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;aa62318a-5a97-4f3b-bdc7-640bbe33b291&quot;,</span>
@@ -1600,7 +1701,7 @@
 
 <span class="sd">        Response:</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">        ... code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;aa62318a-5a97-4f3b-bdc7-640bbe33b291&quot;,</span>
@@ -1649,8 +1750,8 @@
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_the_one_active_websocket_api</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or &quot;</span>
+            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.get_order() - error_msg: No `stream_id` provided or &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot;found!&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
@@ -1741,7 +1842,7 @@
 
 <span class="sd">        Message sent:</span>
 
-<span class="sd">            .. code-block:: json</span>
+<span class="sd">            ... code-block:: json</span>
 
 <span class="sd">                {</span>
 <span class="sd">                    &quot;id&quot;: &quot;5494febb-d167-46a2-996d-70533eb4d976&quot;,</span>
@@ -1755,7 +1856,7 @@
 
 <span class="sd">            Response:</span>
 
-<span class="sd">            .. code-block:: json</span>
+<span class="sd">            ... code-block:: json</span>
 
 <span class="sd">                {</span>
 <span class="sd">                    &quot;id&quot;: &quot;5494febb-d167-46a2-996d-70533eb4d976&quot;,</span>
@@ -1823,8 +1924,8 @@
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_the_one_active_websocket_api</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or &quot;</span>
+            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.get_order_book() - error_msg: No `stream_id` provided or &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot;found!&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
@@ -1890,7 +1991,7 @@
 
 <span class="sd">        Message sent:</span>
 
-<span class="sd">            .. code-block:: json</span>
+<span class="sd">            ... code-block:: json</span>
 
 <span class="sd">                {</span>
 <span class="sd">                    &quot;id&quot;: &quot;187d3cb2-942d-484c-8271-4e2141bbadb1&quot;,</span>
@@ -1900,7 +2001,7 @@
 
 <span class="sd">            Response:</span>
 
-<span class="sd">            .. code-block:: json</span>
+<span class="sd">            ... code-block:: json</span>
 
 <span class="sd">                {</span>
 <span class="sd">                    &quot;id&quot;: &quot;187d3cb2-942d-484c-8271-4e2141bbadb1&quot;,</span>
@@ -1922,8 +2023,8 @@
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_the_one_active_websocket_api</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or &quot;</span>
+            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.get_server_time() - error_msg: No `stream_id` provided or &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot;found!&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
@@ -1981,7 +2082,7 @@
 
 <span class="sd">        Message sent:</span>
 
-<span class="sd">            .. code-block:: json</span>
+<span class="sd">            ... code-block:: json</span>
 
 <span class="sd">                {</span>
 <span class="sd">                    &quot;id&quot;: &quot;4e72973031d8-bff9-8481-c95b-c42414df&quot;,</span>
@@ -1991,7 +2092,7 @@
 
 <span class="sd">            Response:</span>
 
-<span class="sd">            .. code-block:: json</span>
+<span class="sd">            ... code-block:: json</span>
 
 <span class="sd">                {</span>
 <span class="sd">                    &quot;id&quot;: &quot;4e72973031d8-bff9-8481-c95b-c42414df&quot;,</span>
@@ -2011,8 +2112,8 @@
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">get_the_one_active_websocket_api</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or &quot;</span>
+            <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApi.ping() - error_msg: No `stream_id` provided or &quot;</span>
                                 <span class="sa">f</span><span class="s2">&quot;found!&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
@@ -2146,7 +2247,7 @@
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Mar 13 2024 at 22:15 (CET).
+    Last updated on Mar 28 2024 at 01:03 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

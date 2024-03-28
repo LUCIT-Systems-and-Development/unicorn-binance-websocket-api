@@ -596,57 +596,71 @@ response is received from the Binance API.</p></li>
 </dd>
 </dl>
 <p>Message sent:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5633b6a2-90a9-4192-83e7-925c90b6a2fd&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;order.cancel&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;origClientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;33d5b721f278ae17a52f004a82a6f68a70c68e7dd6776ed0be77a455ab855282&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715830</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “5633b6a2-90a9-4192-83e7-925c90b6a2fd”,
+“method”: “order.cancel”,
+“params”: {</p>
+<blockquote>
+<div><p>“symbol”: “BTCUSDT”,
+“origClientOrderId”: “4d96324ff9d44481926157”,
+“apiKey”: “vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A”,
+“signature”: “33d5b721f278ae17a52f004a82a6f68a70c68e7dd6776ed0be77a455ab855282”,
+“timestamp”: 1660801715830</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 <p>Response:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5633b6a2-90a9-4192-83e7-925c90b6a2fd&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;origClientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;91fe37ce9e69c90d6358c0&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23416.10000000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;origQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;executedQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00001000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;cummulativeQuoteQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.23416100&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CANCELED&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;stopPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;trailingDelta&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;trailingTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;icebergQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;strategyId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">37463720</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;strategyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;selfTradePreventionMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “5633b6a2-90a9-4192-83e7-925c90b6a2fd”,
+“status”: 200,
+“result”: {</p>
+<blockquote>
+<div><p>“symbol”: “BTCUSDT”,
+“origClientOrderId”: “4d96324ff9d44481926157”,
+“orderId”: 12569099453,
+“orderListId”: -1,
+“clientOrderId”: “91fe37ce9e69c90d6358c0”,
+“price”: “23416.10000000”,
+“origQty”: “0.00847000”,
+“executedQty”: “0.00001000”,
+“cummulativeQuoteQty”: “0.23416100”,
+“status”: “CANCELED”,
+“timeInForce”: “GTC”,
+“type”: “LIMIT”,
+“side”: “SELL”,
+“stopPrice”: “0.00000000”,
+“trailingDelta”: 0,
+“trailingTime”: -1,
+“icebergQty”: “0.00000000”,
+“strategyId”: 37463720,
+“strategyType”: 1000000,
+“selfTradePreventionMode”: “NONE”</p>
+</div></blockquote>
+<p>},
+“rateLimits”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“rateLimitType”: “REQUEST_WEIGHT”,
+“interval”: “MINUTE”,
+“intervalNum”: 1,
+“limit”: 1200,
+“count”: 1</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
@@ -740,60 +754,78 @@ execute a quantity that has notional value as close as possible to requested
 </dd>
 </dl>
 <p>Message sent:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;56374a46-3061-486b-a311-99ee972eb648&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;order.place&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23416.10000000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;15af09e41c36f3cc61378c2fbe2c33719a03dd5eba8d0f9206fbda44de717c88&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715431</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “56374a46-3061-486b-a311-99ee972eb648”,
+“method”: “order.place”,
+“params”: {</p>
+<blockquote>
+<div><p>“symbol”: “BTCUSDT”,
+“side”: “SELL”,
+“type”: “LIMIT”,
+“timeInForce”: “GTC”,
+“price”: “23416.10000000”,
+“quantity”: “0.00847000”,
+“apiKey”: “vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A”,
+“signature”: “15af09e41c36f3cc61378c2fbe2c33719a03dd5eba8d0f9206fbda44de717c88”,
+“timestamp”: 1660801715431</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 <p>Response</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;56374a46-3061-486b-a311-99ee972eb648&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157ec08158a40&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;transactTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715639</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ORDERS&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SECOND&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ORDERS&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DAY&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">160000</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “56374a46-3061-486b-a311-99ee972eb648”,
+“status”: 200,
+“result”: {</p>
+<blockquote>
+<div><p>“symbol”: “BTCUSDT”,
+“orderId”: 12569099453,
+“orderListId”: -1,
+“clientOrderId”: “4d96324ff9d44481926157ec08158a40”,
+“transactTime”: 1660801715639</p>
+</div></blockquote>
+<p>},
+“rateLimits”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“rateLimitType”: “ORDERS”,
+“interval”: “SECOND”,
+“intervalNum”: 10,
+“limit”: 50,
+“count”: 1</p>
+</dd>
+</dl>
+<p>},
+{</p>
+<blockquote>
+<div><p>“rateLimitType”: “ORDERS”,
+“interval”: “DAY”,
+“intervalNum”: 1,
+“limit”: 160000,
+“count”: 1</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“rateLimitType”: “REQUEST_WEIGHT”,
+“interval”: “MINUTE”,
+“intervalNum”: 1,
+“limit”: 1200,
+“count”: 1</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
@@ -887,60 +919,78 @@ execute a quantity that has notional value as close as possible to requested
 </dd>
 </dl>
 <p>Message sent:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;56374a46-3061-486b-a311-99ee972eb648&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;order.test&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23416.10000000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;15af09e41c36f3cc61378c2fbe2c33719a03dd5eba8d0f9206fbda44de717c88&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715431</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “56374a46-3061-486b-a311-99ee972eb648”,
+“method”: “order.test”,
+“params”: {</p>
+<blockquote>
+<div><p>“symbol”: “BTCUSDT”,
+“side”: “SELL”,
+“type”: “LIMIT”,
+“timeInForce”: “GTC”,
+“price”: “23416.10000000”,
+“quantity”: “0.00847000”,
+“apiKey”: “vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A”,
+“signature”: “15af09e41c36f3cc61378c2fbe2c33719a03dd5eba8d0f9206fbda44de717c88”,
+“timestamp”: 1660801715431</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 <p>Response</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;56374a46-3061-486b-a311-99ee972eb648&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157ec08158a40&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;transactTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715639</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ORDERS&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SECOND&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ORDERS&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DAY&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">160000</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “56374a46-3061-486b-a311-99ee972eb648”,
+“status”: 200,
+“result”: {</p>
+<blockquote>
+<div><p>“symbol”: “BTCUSDT”,
+“orderId”: 12569099453,
+“orderListId”: -1,
+“clientOrderId”: “4d96324ff9d44481926157ec08158a40”,
+“transactTime”: 1660801715639</p>
+</div></blockquote>
+<p>},
+“rateLimits”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“rateLimitType”: “ORDERS”,
+“interval”: “SECOND”,
+“intervalNum”: 10,
+“limit”: 50,
+“count”: 1</p>
+</dd>
+</dl>
+<p>},
+{</p>
+<blockquote>
+<div><p>“rateLimitType”: “ORDERS”,
+“interval”: “DAY”,
+“intervalNum”: 1,
+“limit”: 160000,
+“count”: 1</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“rateLimitType”: “REQUEST_WEIGHT”,
+“interval”: “MINUTE”,
+“intervalNum”: 1,
+“limit”: 1200,
+“count”: 1</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
@@ -974,72 +1024,98 @@ response is received from the Binance API.</p></li>
 </dd>
 </dl>
 <p>Message sent:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;account.status&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;83303b4a136ac1371795f465808367242685a9e3a42b22edb4d977d0696eb45c&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801839480</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “605a6d20-6588-4cb9-afa0-b0ab087507ba”,
+“method”: “account.status”,
+“params”: {</p>
+<blockquote>
+<div><p>“apiKey”: “vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A”,
+“signature”: “83303b4a136ac1371795f465808367242685a9e3a42b22edb4d977d0696eb45c”,
+“timestamp”: 1660801839480</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 <p>Response:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;makerCommission&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;takerCommission&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;buyerCommission&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;sellerCommission&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;canTrade&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;canWithdraw&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;canDeposit&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;commissionRates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;maker&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00150000&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;taker&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00150000&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;buyer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;seller&quot;</span><span class="p">:</span><span class="s2">&quot;0.00000000&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;brokered&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;requireSelfTradePrevention&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801833000</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;accountType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SPOT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;balances&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BNB&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;free&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;locked&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTC&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;free&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.3447112&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;locked&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.08600000&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;USDT&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;free&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1021.21000000&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;locked&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;permissions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="s2">&quot;SPOT&quot;</span>
-<span class="w">        </span><span class="p">]</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “605a6d20-6588-4cb9-afa0-b0ab087507ba”,
+“status”: 200,
+“result”: {</p>
+<blockquote>
+<div><p>“makerCommission”: 15,
+“takerCommission”: 15,
+“buyerCommission”: 0,
+“sellerCommission”: 0,
+“canTrade”: true,
+“canWithdraw”: true,
+“canDeposit”: true,
+“commissionRates”: {</p>
+<blockquote>
+<div><p>“maker”: “0.00150000”,
+“taker”: “0.00150000”,
+“buyer”: “0.00000000”,
+“seller”:”0.00000000”</p>
+</div></blockquote>
+<p>},
+“brokered”: false,
+“requireSelfTradePrevention”: false,
+“updateTime”: 1660801833000,
+“accountType”: “SPOT”,
+“balances”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“asset”: “BNB”,
+“free”: “0.00000000”,
+“locked”: “0.00000000”</p>
+</dd>
+</dl>
+<p>},
+{</p>
+<blockquote>
+<div><p>“asset”: “BTC”,
+“free”: “1.3447112”,
+“locked”: “0.08600000”</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“asset”: “USDT”,
+“free”: “1021.21000000”,
+“locked”: “0.00000000”</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>],
+“permissions”: [</p>
+<blockquote>
+<div><p>“SPOT”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+“rateLimits”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“rateLimitType”: “REQUEST_WEIGHT”,
+“interval”: “MINUTE”,
+“intervalNum”: 1,
+“limit”: 1200,
+“count”: 10</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
@@ -1197,9 +1273,6 @@ response is received from the Binance API.</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>process_response</strong> (<em>function</em>) – Provide a function/method to process the received webstream data (callback)
 of this specific request.</p></li>
-<li><p><strong>recv_window</strong> (<em>int</em>) – An additional parameter, <cite>recvWindow</cite>, may be sent to specify the number of milliseconds
-after timestamp the request is valid for. If <cite>recvWindow</cite> is not sent, it defaults to 5000.
-The value cannot be greater than 60000.</p></li>
 <li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
 <li><p><strong>return_response</strong> (<em>bool</em>) – If <cite>True</cite> the response of the API request is waited for and returned directly.
 However, this increases the execution time of the function by the duration until the
@@ -1299,58 +1372,74 @@ response is received from the Binance API.</p></li>
 </dd>
 </dl>
 <p>Message Sent:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;55f07876-4f6f-4c47-87dc-43e5fff3f2e7&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openOrders.status&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;d632b3fdb8a81dd44f82c7c901833309dd714fe508772a89b0a35b0ee0c48b89&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660813156812</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “55f07876-4f6f-4c47-87dc-43e5fff3f2e7”,
+“method”: “openOrders.status”,
+“params”: {</p>
+<blockquote>
+<div><p>“symbol”: “BTCUSDT”,
+“apiKey”: “vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A”,
+“signature”: “d632b3fdb8a81dd44f82c7c901833309dd714fe508772a89b0a35b0ee0c48b89”,
+“timestamp”: 1660813156812</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 <p>Response:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;55f07876-4f6f-4c47-87dc-43e5fff3f2e7&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23416.10000000&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;origQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;executedQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00720000&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;cummulativeQuoteQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;172.43931000&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PARTIALLY_FILLED&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;stopPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;icebergQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715639</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801717945</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;isWorking&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;workingTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715639</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;origQuoteOrderQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;selfTradePreventionMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “55f07876-4f6f-4c47-87dc-43e5fff3f2e7”,
+“status”: 200,
+“result”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“symbol”: “BTCUSDT”,
+“orderId”: 12569099453,
+“orderListId”: -1,
+“clientOrderId”: “4d96324ff9d44481926157”,
+“price”: “23416.10000000”,
+“origQty”: “0.00847000”,
+“executedQty”: “0.00720000”,
+“cummulativeQuoteQty”: “172.43931000”,
+“status”: “PARTIALLY_FILLED”,
+“timeInForce”: “GTC”,
+“type”: “LIMIT”,
+“side”: “SELL”,
+“stopPrice”: “0.00000000”,
+“icebergQty”: “0.00000000”,
+“time”: 1660801715639,
+“updateTime”: 1660801717945,
+“isWorking”: true,
+“workingTime”: 1660801715639,
+“origQuoteOrderQty”: “0.00000000”,
+“selfTradePreventionMode”: “NONE”</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>],
+“rateLimits”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“rateLimitType”: “REQUEST_WEIGHT”,
+“interval”: “MINUTE”,
+“intervalNum”: 1,
+“limit”: 1200,
+“count”: 3</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
@@ -1391,63 +1480,77 @@ response is received from the Binance API.</p></li>
 </dd>
 </dl>
 <p>Message sent:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aa62318a-5a97-4f3b-bdc7-640bbe33b291&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;order.status&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2c3aab5a078ee4ea465ecd95523b77289f61476c2f238ec10c55ea6cb11a6f35&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801720951</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “aa62318a-5a97-4f3b-bdc7-640bbe33b291”,
+“method”: “order.status”,
+“params”: {</p>
+<blockquote>
+<div><p>“symbol”: “BTCUSDT”,
+“orderId”: 12569099453,
+“apiKey”: “vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A”,
+“signature”: “2c3aab5a078ee4ea465ecd95523b77289f61476c2f238ec10c55ea6cb11a6f35”,
+“timestamp”: 1660801720951</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 <p>Response:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aa62318a-5a97-4f3b-bdc7-640bbe33b291&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;orderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12569099453</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;orderListId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;clientOrderId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4d96324ff9d44481926157&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23416.10000000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;origQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;executedQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00847000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;cummulativeQuoteQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;198.33521500&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FILLED&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;timeInForce&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GTC&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LIMIT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELL&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;stopPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;trailingDelta&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;trailingTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;icebergQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715639</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801717945</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;isWorking&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;workingTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1660801715639</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;origQuoteOrderQty&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;strategyId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">37463720</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;strategyType&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;selfTradePreventionMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;preventedMatchId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;preventedQuantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.200000&quot;</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “aa62318a-5a97-4f3b-bdc7-640bbe33b291”,
+“status”: 200,
+“result”: {</p>
+<blockquote>
+<div><p>“symbol”: “BTCUSDT”,
+“orderId”: 12569099453,
+“orderListId”: -1,
+“clientOrderId”: “4d96324ff9d44481926157”,
+“price”: “23416.10000000”,
+“origQty”: “0.00847000”,
+“executedQty”: “0.00847000”,
+“cummulativeQuoteQty”: “198.33521500”,
+“status”: “FILLED”,
+“timeInForce”: “GTC”,
+“type”: “LIMIT”,
+“side”: “SELL”,
+“stopPrice”: “0.00000000”,
+“trailingDelta”: 10,
+“trailingTime”: -1,
+“icebergQty”: “0.00000000”,
+“time”: 1660801715639,
+“updateTime”: 1660801717945,
+“isWorking”: true,
+“workingTime”: 1660801715639,
+“origQuoteOrderQty”: “0.00000000”,
+“strategyId”: 37463720,
+“strategyType”: 1000000,
+“selfTradePreventionMode”: “NONE”,
+“preventedMatchId”: 0,
+“preventedQuantity”: “1.200000”</p>
+</div></blockquote>
+<p>},
+“rateLimits”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“rateLimitType”: “REQUEST_WEIGHT”,
+“interval”: “MINUTE”,
+“intervalNum”: 1,
+“limit”: 1200,
+“count”: 2</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
@@ -1493,79 +1596,117 @@ response is received from the Binance API.</p></li>
 </dl>
 <p>Message sent:</p>
 <blockquote>
-<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5494febb-d167-46a2-996d-70533eb4d976&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;depth&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BNBBTC&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<div><p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “5494febb-d167-46a2-996d-70533eb4d976”,
+“method”: “depth”,
+“params”: {</p>
+<blockquote>
+<div><p>“symbol”: “BNBBTC”,
+“limit”: 5</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 <p>Response:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5494febb-d167-46a2-996d-70533eb4d976&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;lastUpdateId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2731179239</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;bids&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="s2">&quot;0.01379900&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="s2">&quot;3.43200000&quot;</span>
-<span class="w">            </span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="s2">&quot;0.01379800&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="s2">&quot;3.24300000&quot;</span>
-<span class="w">            </span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="s2">&quot;0.01379700&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="s2">&quot;10.45500000&quot;</span>
-<span class="w">            </span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="s2">&quot;0.01379600&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="s2">&quot;3.82100000&quot;</span>
-<span class="w">            </span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="s2">&quot;0.01379500&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="s2">&quot;10.26200000&quot;</span>
-<span class="w">            </span><span class="p">]</span>
-<span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;asks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="s2">&quot;0.01380000&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="s2">&quot;5.91700000&quot;</span>
-<span class="w">            </span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="s2">&quot;0.01380100&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="s2">&quot;6.01400000&quot;</span>
-<span class="w">            </span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="s2">&quot;0.01380200&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="s2">&quot;0.26800000&quot;</span>
-<span class="w">            </span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="s2">&quot;0.01380300&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="s2">&quot;0.33800000&quot;</span>
-<span class="w">            </span><span class="p">],</span>
-<span class="w">            </span><span class="p">[</span>
-<span class="w">                </span><span class="s2">&quot;0.01380400&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="s2">&quot;0.26800000&quot;</span>
-<span class="w">            </span><span class="p">]</span>
-<span class="w">        </span><span class="p">]</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “5494febb-d167-46a2-996d-70533eb4d976”,
+“status”: 200,
+“result”: {</p>
+<blockquote>
+<div><p>“lastUpdateId”: 2731179239,
+“bids”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>[</dt><dd><p>“0.01379900”,
+“3.43200000”</p>
+</dd>
+</dl>
+<p>],
+[</p>
+<blockquote>
+<div><p>“0.01379800”,
+“3.24300000”</p>
+</div></blockquote>
+<p>],
+[</p>
+<blockquote>
+<div><p>“0.01379700”,
+“10.45500000”</p>
+</div></blockquote>
+<p>],
+[</p>
+<blockquote>
+<div><p>“0.01379600”,
+“3.82100000”</p>
+</div></blockquote>
+<p>],
+[</p>
+<blockquote>
+<div><p>“0.01379500”,
+“10.26200000”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>],
+“asks”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>[</dt><dd><p>“0.01380000”,
+“5.91700000”</p>
+</dd>
+</dl>
+<p>],
+[</p>
+<blockquote>
+<div><p>“0.01380100”,
+“6.01400000”</p>
+</div></blockquote>
+<p>],
+[</p>
+<blockquote>
+<div><p>“0.01380200”,
+“0.26800000”</p>
+</div></blockquote>
+<p>],
+[</p>
+<blockquote>
+<div><p>“0.01380300”,
+“0.33800000”</p>
+</div></blockquote>
+<p>],
+[</p>
+<blockquote>
+<div><p>“0.01380400”,
+“0.26800000”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+“rateLimits”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“rateLimitType”: “REQUEST_WEIGHT”,
+“interval”: “MINUTE”,
+“intervalNum”: 1,
+“limit”: 1200,
+“count”: 1</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 </div></blockquote>
 </dd></dl>
 
@@ -1598,29 +1739,39 @@ response is received from the Binance API.</p></li>
 </dl>
 <p>Message sent:</p>
 <blockquote>
-<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;187d3cb2-942d-484c-8271-4e2141bbadb1&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;time&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<div><p>… code-block:: json</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“id”: “187d3cb2-942d-484c-8271-4e2141bbadb1”,
+“method”: “time”</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 <p>Response:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;187d3cb2-942d-484c-8271-4e2141bbadb1&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;serverTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1656400526260</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
-<span class="w">        </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">    </span><span class="p">}]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “187d3cb2-942d-484c-8271-4e2141bbadb1”,
+“status”: 200,
+“result”: {</p>
+<blockquote>
+<div><p>“serverTime”: 1656400526260</p>
+</div></blockquote>
+<p>},
+“rateLimits”: [{</p>
+<blockquote>
+<div><p>“rateLimitType”: “REQUEST_WEIGHT”,
+“interval”: “MINUTE”,
+“intervalNum”: 1,
+“limit”: 1200,
+“count”: 1</p>
+</div></blockquote>
+<p>}]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 </div></blockquote>
 </dd></dl>
 
@@ -1653,27 +1804,35 @@ response is received from the Binance API.</p></li>
 </dl>
 <p>Message sent:</p>
 <blockquote>
-<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4e72973031d8-bff9-8481-c95b-c42414df&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ping&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<div><p>… code-block:: json</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“id”: “4e72973031d8-bff9-8481-c95b-c42414df”,
+“method”: “ping”</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 <p>Response:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4e72973031d8-bff9-8481-c95b-c42414df&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
-<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
-<span class="w">        </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">    </span><span class="p">}]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>… code-block:: json</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“id”: “4e72973031d8-bff9-8481-c95b-c42414df”,
+“status”: 200,
+“result”: {},
+“rateLimits”: [{</p>
+<blockquote>
+<div><p>“rateLimitType”: “REQUEST_WEIGHT”,
+“interval”: “MINUTE”,
+“intervalNum”: 1,
+“limit”: 1200,
+“count”: 1</p>
+</div></blockquote>
+<p>}]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
 </div></blockquote>
 </dd></dl>
 
@@ -4123,7 +4282,7 @@ time is exceeded and returns False.</p></li>
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Mar 27 2024 at 23:34 (CET).
+    Last updated on Mar 28 2024 at 01:03 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
