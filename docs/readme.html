@@ -557,7 +557,7 @@ you don’t need to deal with asyncio in your code! But you can consume with <co
 on all exchanges! (Take a look to the max supported subscriptions per stream in the <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview">endpoint configuration overview</a>!)</p></li>
 <li><p><a class="reference external" href="https://www.lucit.tech/unicorn-binance-websocket-api.html">UNICORN Binance WebSocket API</a> respects Binance’s API guidelines and protects you from avoidable reconnects and bans.</p></li>
 <li><p>Support for multiple private <code class="docutils literal notranslate"><span class="pre">!userData</span></code> streams with different <code class="docutils literal notranslate"><span class="pre">api_key</span></code> and <code class="docutils literal notranslate"><span class="pre">api_secret</span></code>. (<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py">example_multiple_userdata_streams.py</a>)</p></li>
-<li><p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer">Pick up the received data from the <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code></a> -
+<li><p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer">Pick up the received data from the <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code></a> (<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60">FIFO or LIFO</a>) -
 if you can not store your data in cause of a temporary technical issue, you can
 <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer">kick back the data to the <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code></a>
 which stores the receives in the RAM till you are able to process the data in the normal way again.
@@ -1036,7 +1036,7 @@ companies from the US analyze binance.com market data - as long as they do not t
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Mar 28 2024 at 01:03 (CET).
+    Last updated on Mar 28 2024 at 01:32 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
