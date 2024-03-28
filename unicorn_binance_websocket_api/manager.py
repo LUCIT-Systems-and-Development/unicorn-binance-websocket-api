@@ -3991,7 +3991,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             # send signal to all threads
             self.stop_manager_request = True
             try:
-                stream_list = copy.deepcopy(self.stream_list)
+                with self.stream_list_lock:
+                    stream_list = copy.deepcopy(self.stream_list)
                 try:
                     for stream_id in stream_list:
                         self.stop_stream(stream_id)
