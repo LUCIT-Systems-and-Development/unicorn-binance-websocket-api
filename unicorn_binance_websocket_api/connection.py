@@ -162,6 +162,7 @@ class BinanceWebSocketApiConnection(object):
         return await self.websocket.close()
 
     async def receive(self):
+        logger.debug(f"BinanceWebSocketApiConnection.receive({str(self.stream_id)})")
         self.raise_exceptions()
         if self.add_timeout:
             if self.api is True:
@@ -184,6 +185,7 @@ class BinanceWebSocketApiConnection(object):
         return received_data_json
 
     async def send(self, data):
+        logger.debug(f"BinanceWebSocketApiConnection.send({str(self.stream_id)})")
         self.raise_exceptions()
         response = await self.websocket.send(data)
         self.manager.set_heartbeat(self.stream_id)
