@@ -356,7 +356,7 @@ machine of [HETZNER CLOUD](https://www.hetzner.com) - [get 20 EUR starting credi
 ## Installation and Upgrade
 The module requires Python 3.7 and runs smoothly up to and including Python 3.12.
 
-Anaconda packages are available from Python version 3.8 and higher, But only in the latest module version!
+Anaconda packages are available from Python version 3.8 and higher, but only in the latest version!
 
 For the PyPy interpreter we offer packages via PyPi only from Python version 3.9 and higher.
 
