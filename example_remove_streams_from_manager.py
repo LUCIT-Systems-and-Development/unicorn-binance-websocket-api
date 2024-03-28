@@ -47,21 +47,19 @@ def callback_data(stream_data):
     print(f"DATA: {stream_data}")
 
 
-def callback_signals(signal_type=False, stream_id=False, data_record=False):
-    print(f"SIGNAL: {signal_type} - {stream_id} - {data_record}")
+def callback_signals(signal_type=None, stream_id=None, data_record=None, error_msg=None):
+    print(f"SIGNAL: {signal_type} - {stream_id} - {data_record} - {error_msg}")
 
 
 # To use this library you need a valid UNICORN Binance Suite License:
 # https://medium.lucit.tech/87b0088124a8
-ubwa = BinanceWebSocketApiManager(exchange="binance.com", process_stream_signals=callback_signals)
-stream_id = ubwa.create_stream('depth20@1000ms', 'BNBBUSD', output='dict', process_stream_data=callback_data)
-time.sleep(5)
-
-ubwa.stop_stream(stream_id)
-
-time.sleep(5)
-
-print(f"waiting till stream has stopped")
-if ubwa.wait_till_stream_has_stopped(stream_id):
-    deleted = ubwa.delete_stream_from_stream_list(stream_id)
-    print(f"deleted stream_id {stream_id} from stream_list")
+with BinanceWebSocketApiManager(auto_data_cleanup_stopped_streams=True,
+                                exchange="binance.com",
+                                process_stream_signals=callback_signals) as ubwa:
+    stream_id = ubwa.create_stream('depth20@1000ms', 'BNBBUSD', output='dict', process_stream_data=callback_data)
+    time.sleep(5)
+    ubwa.stop_stream(stream_id)
+    print(f"waiting till stream has stopped")
+    if ubwa.wait_till_stream_has_stopped(stream_id):
+        deleted = ubwa.remove_all_data_of_stream_id(stream_id)
+        print(f"deleted data of stream_id {stream_id}")
