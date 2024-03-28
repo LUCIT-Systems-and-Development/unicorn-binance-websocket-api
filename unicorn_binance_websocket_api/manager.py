@@ -892,9 +892,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                         stopped_streams.append(stream_id)
                     for stream_id in stopped_streams:
                         if (self.stream_list[stream_id]['status'] == "stopped"
-                                or self.stream_list[stream_id]['status'].startswith("crashed")) \
-                                and self.stream_list[stream_id]['seconds_since_has_stopped'] is not None:
-                            if self.stream_list[stream_id]['seconds_since_has_stopped'] > age:
+                                or self.stream_list[stream_id]['status'].startswith("crashed")):
+                            if self.get_stream_info(stream_id=stream_id)['seconds_since_has_stopped'] > age:
                                 logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
                                             f"Removing all remaining data of stream with stream_id={stream_id} from "
                                             f"this instance!")
