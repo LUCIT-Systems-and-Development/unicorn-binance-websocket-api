@@ -35,7 +35,7 @@ requirements:
     - requests
     - ujson
     - websocket-client
-    - websockets==10.4
+    - websockets==11.0.3
     - typing_extensions
   run:
     - python
@@ -52,7 +52,7 @@ requirements:
     - requests
     - ujson
     - websocket-client
-    - websockets==10.4
+    - websockets==11.0.3
     - typing_extensions
 
 dependencies:

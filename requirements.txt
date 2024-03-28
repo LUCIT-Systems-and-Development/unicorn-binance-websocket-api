@@ -9,12 +9,12 @@ colorama
 Cython
 flask
 flask_restful
-lucit-licensing-python>=1.8.1
+lucit-licensing-python
 psutil
 PySocks
 requests
 ujson
 unicorn-fy
-unicorn-binance-rest-api>=2.1.2
+unicorn-binance-rest-api
 websocket-client
 websockets==11.0.3
