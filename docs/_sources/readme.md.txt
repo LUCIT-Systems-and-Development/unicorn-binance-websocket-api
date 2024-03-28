@@ -244,7 +244,9 @@ Use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-binance-rest-a
 | [Binance DEX Testnet](https://testnet.binance.org)                 | `binance.org-testnet`                 | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
 
 - Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so 
-you don't need to deal with asyncio in your code! But you can consume with `await`, if you want!
+you don't need to deal with asyncio in your code! But you can consume with 
+[`await`](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task)
+, if you want!
 
 - Supports 
 [subscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream)
