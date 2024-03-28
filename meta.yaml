@@ -69,7 +69,7 @@ test:
 
 about:
   summary: | 
-    A Python API by [LUCIT](https://www.lucit.tech) to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
+    A Python SDK by [LUCIT](https://www.lucit.tech) to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
     com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, dex/chain+testnet) 
     in a easy, fast, flexible, robust and fully-featured way.
   description: |
