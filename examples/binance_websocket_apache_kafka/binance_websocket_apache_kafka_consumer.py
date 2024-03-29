@@ -36,14 +36,14 @@ if __name__ == "__main__":
 
     # Config
     kafka = {"server": "rocket.srvs.cloudkafka.com:9094",
-             "user": "your_user",
-             "pass": "your_password",
-             "topic": "your_prefix-btcusdt_binance_spot_last_trade_price"}
+             "user": "rlthobul",
+             "pass": "igyyb4W1PH0YgUnTG1otzUI9Qiki1ZHc",
+             "topic": "rlthobul-btcusdt_binance_spot_last_trade_price"}
 
     try:
         asyncio.run(consume_from_kafka(kafka_config=kafka))
     except KeyboardInterrupt:
-        print("\r\nGracefully stopping ...")
+        pass
     except KafkaConnectionError as e:
         print(f"KafkaConnectionError: {e}")
     except Exception as e:

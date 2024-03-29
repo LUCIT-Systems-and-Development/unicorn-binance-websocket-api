@@ -5,9 +5,9 @@ data from Binance for selected markets and store this data in a SQLite database.
 REST API connections for real-time data streaming and efficient data management.
 
 ## Prerequisites
-Ensure you have Python 3.7+ installed on your system. Before running the provided script, install the required 
-Python packages:
+Ensure you have Python 3.7+ installed on your system. 
 
+Before running the provided script, install the required Python packages:
 ```bash
 pip install -r requirements.txt
 ```
@@ -31,7 +31,6 @@ data, inserting new data records, and counting the number of records.
 
 ### Running the Script:
 To start the data download and storage process, simply run the script:
-
 ```bash
 python binance_websocket_kline_1m_ohlcv.py
 ```

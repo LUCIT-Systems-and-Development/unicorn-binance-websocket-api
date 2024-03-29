@@ -1,18 +1,18 @@
-# Title
+# Passing Binance Market Data to Apache Kafka in Python with aiokafka
 ## Overview
-
+Read this article:
+https://medium.lucit.tech/passing-binance-market-data-to-apache-kafka-in-python-with-aiokafka-570541574655
 
 ## Prerequisites
-Ensure you have Python 3.7+ installed on your system. Before running the provided script, install the required 
-Python packages:
+Ensure you have Python 3.7+ installed on your system. 
 
+Before running the provided script, install the required Python packages:
 ```bash
 pip install -r requirements.txt
 ```
 
 Since kafka-python has a lot of updates but no new release since 2020 I recommend installing kafka from 
 GitHub [1](https://github.com/dpkp/kafka-python/issues/2412#issuecomment-1806341342):
-
 ```bash
 pip install git+https://github.com/dpkp/kafka-python.git
 ```
@@ -21,15 +21,6 @@ pip install git+https://github.com/dpkp/kafka-python.git
 To run modules of the *UNICORN Binance Suite* you need a [valid license](https://shop.lucit.services)!
 
 ## Usage
-### Initialization:
-
-### Running the Script:
-To start the data download and storage process, simply run the script:
-
-```bash
-python binance_websocket_apache_kafka.py
-```
-
 ### Graceful Shutdown:
 The script is designed to handle a graceful shutdown upon receiving a KeyboardInterrupt (e.g., Ctrl+C) or encountering 
 an unexpected exception.
