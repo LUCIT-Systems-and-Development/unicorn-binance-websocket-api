@@ -36,9 +36,9 @@ if __name__ == "__main__":
 
     # Config
     kafka = {"server": "rocket.srvs.cloudkafka.com:9094",
-             "user": "rlthobul",
-             "pass": "igyyb4W1PH0YgUnTG1otzUI9Qiki1ZHc",
-             "topic": "rlthobul-btcusdt_binance_spot_last_trade_price"}
+             "user": "YOUR_KAFKA_USER",
+             "pass": "YOUR_KAFKA_PASSWORD",
+             "topic": "YOUR_PREFIX-btcusdt_binance_spot_last_trade_price"}
 
     try:
         asyncio.run(consume_from_kafka(kafka_config=kafka))

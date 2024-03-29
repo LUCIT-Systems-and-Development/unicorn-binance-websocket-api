@@ -49,8 +49,8 @@ if __name__ == "__main__":
     exchange = 'binance.com'
     markets = ['ethusdt', 'btcusdt', 'ltcusdt']
     kafka = {"server": "rocket.srvs.cloudkafka.com:9094",
-             "user": "rlthobul",
-             "pass": "igyyb4W1PH0YgUnTG1otzUI9Qiki1ZHc"}
+             "user": "YOUR_KAFKA_USER",
+             "pass": "YOUR_KAFKA_PASSWORD"}
 
     # Logging
     logging.basicConfig(level=logging.INFO,
