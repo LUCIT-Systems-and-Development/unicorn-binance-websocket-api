@@ -41,9 +41,9 @@ class BinanceDataProcessor:
         await self.db.create_connection()
         await self.db.create_table()
         with BinanceRestApiManager(exchange=exchange) as ubra:
-            markets = [item['symbol'] for item in ubra.get_all_tickers()]
+            markets = [item['symbol'] for item in ubra.get_all_tickers() if item['symbol'].endswith("USDT")]
         self.ubwa.create_stream(channels="kline_1m",
-                                markets=markets[:512],
+                                markets=markets[:self.ubwa.get_limit_of_subscriptions_per_stream()],
                                 process_asyncio_queue=self.process_ohlcv_datasets,
                                 stream_label="OHLCV")
         while self.ubwa.is_manager_stopping() is False:
@@ -75,7 +75,7 @@ class AsyncDatabase:
             """)
             await self.conn.commit()
         except Exception as error_msg:
-            print(error_msg)
+            print(f"Not able to create SQLite table: {error_msg}")
 
     async def insert_ohlcv_data(self, data):
         sql = '''
@@ -109,11 +109,11 @@ if __name__ == "__main__":
     try:
         asyncio.run(bdp.main())
     except KeyboardInterrupt:
-        print("Gracefully stopping ...")
+        print("\r\nGracefully stopping ...")
         bdp.ubwa.stop_manager()
         asyncio.run(bdp.db.close())
     except Exception as e:
-        print(f"\r\nERROR: {e}")
+        print(f"\r\nError: {e}")
         print("Gracefully stopping ...")
         bdp.ubwa.stop_manager()
         asyncio.run(bdp.db.close())

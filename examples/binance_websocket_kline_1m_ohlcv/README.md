@@ -20,8 +20,9 @@ The script initializes a WebSocket connection to Binance using unicorn_binance_w
 SQLite database using aiosqlite.
 
 ### Fetching Market Data:
-It fetches available market symbols via Binance's REST API and subscribes to kline (OHLCV) data streams for these 
-markets, limiting to the first 512 markets.
+It fetches available market symbols ending with `USDT` via Binance's REST API and subscribes to kline (OHLCV) data 
+streams for these markets, limiting to the first 1024 (provided by `get_limit_of_subscriptions_per_stream()`) 
+binance.com spot markets.
 
 ### Database Operations:
 The script listens for incoming OHLCV data from the subscribed streams, validates the data, and stores it in a SQLite 
