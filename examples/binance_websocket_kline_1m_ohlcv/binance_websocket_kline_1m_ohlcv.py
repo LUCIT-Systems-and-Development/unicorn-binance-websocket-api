@@ -32,7 +32,7 @@ class BinanceDataProcessor:
         while self.ubwa.is_stop_request(stream_id=stream_id) is False:
             kline = await self.ubwa.get_stream_data_from_asyncio_queue(stream_id)
             if kline.get('event_type') == "kline":
-                if kline['event_time'] >= kline['kline']['kline_close_time']:
+                if kline['kline']['is_closed'] is True or kline['event_time'] >= kline['kline']['kline_close_time']:
                     await self.db.insert_ohlcv_data(kline)
             self.ubwa.asyncio_queue_task_done(stream_id)
 

@@ -21,7 +21,7 @@ SQLite database using aiosqlite.
 
 ### Fetching Market Data:
 It fetches available market symbols via Binance's REST API and subscribes to kline (OHLCV) data streams for these 
-markets, limiting to the first 512 markets due to potential subscription limitations.
+markets, limiting to the first 512 markets.
 
 ### Database Operations:
 The script listens for incoming OHLCV data from the subscribed streams, validates the data, and stores it in a SQLite 
