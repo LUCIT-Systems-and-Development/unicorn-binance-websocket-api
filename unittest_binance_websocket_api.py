@@ -89,28 +89,35 @@ class TestBinanceComManager(unittest.TestCase):
         print(f"TestBinanceComManager stopping:")
 
     def test_create_uri_miniticker_regular_com(self):
+        print(f"test_create_uri_miniticker_regular_com():")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["!miniTicker"], ["arr"]),
                          'wss://stream.binance.us:9443/ws/!miniTicker@arr')
 
     def test_create_uri_miniticker_reverse_com(self):
+        print(f"test_create_uri_miniticker_reverse_com():")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["arr"], ["!miniTicker"]),
                          'wss://stream.binance.us:9443/ws/!miniTicker@arr')
 
     def test_create_uri_ticker_regular_com(self):
+        print(f"test_create_uri_ticker_regular_com():")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["!ticker"], ["arr"]),
                          'wss://stream.binance.us:9443/ws/!ticker@arr')
 
     def test_create_uri_ticker_reverse_com(self):
+        print(f"test_create_uri_ticker_reverse_com():")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["arr"], ["!ticker"]),
                          'wss://stream.binance.us:9443/ws/!ticker@arr')
 
     def test_create_uri_userdata_regular_false_com(self):
+        print(f"test_create_uri_userdata_regular_false_com():")
         self.assertFalse(self.__class__.ubwa.create_websocket_uri(["!userData"], ["arr"]))
 
     def test_create_uri_userdata_reverse_false_com(self):
+        print(f"test_create_uri_userdata_reverse_false_com():")
         self.assertFalse(self.__class__.ubwa.create_websocket_uri(["arr"], ["!userData"]))
 
     def test_create_uri_userdata_regular_com(self):
+        print(f"test_create_uri_userdata_regular_com():")
         if len(self.binance_com_api_key) == 0 or len(self.binance_com_api_secret) == 0:
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_regular_com() "
                   "for binance.com")
@@ -124,6 +131,7 @@ class TestBinanceComManager(unittest.TestCase):
                              r'wss://stream.binance.com:9443/ws/.')
 
     def test_create_uri_userdata_reverse_com(self):
+        print(f"test_create_uri_userdata_reverse_com():")
         if len(self.binance_com_api_key) == 0 or len(self.binance_com_api_secret) == 0:
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_reverse_com() "
                   "for binance.com")
@@ -137,26 +145,32 @@ class TestBinanceComManager(unittest.TestCase):
                              'wss://stream.binance.com:9443/ws/.')
 
     def test_is_exchange_type_cex(self):
+        print(f"test_is_exchange_type_cex():")
         self.assertEqual(self.__class__.ubwa.is_exchange_type("cex"), True)
 
     def test_is_exchange_type_dex(self):
+        print(f"test_is_exchange_type_dex():")
         self.assertEqual(self.__class__.ubwa.is_exchange_type("dex"), False)
 
     def test_is_update_available(self):
+        print(f"test_is_update_available():")
         result = self.__class__.ubwa.is_update_available()
         is_valid_result = result is True or result is False
         self.assertTrue(is_valid_result, False)
 
     def test_is_manager_stopping(self):
+        print(f"test_is_manager_stopping():")
         self.assertEqual(self.__class__.ubwa.is_manager_stopping(), False)
 
     def test_get_human_uptime(self):
+        print(f"test_get_human_uptime():")
         self.assertEqual(self.__class__.ubwa.get_human_uptime(60 * 60 * 60 * 61), "152d:12h:0m:0s")
         self.assertEqual(self.__class__.ubwa.get_human_uptime(60 * 60 * 24), "24h:0m:0s")
         self.assertEqual(self.__class__.ubwa.get_human_uptime(60 * 60), "60m:0s")
         self.assertEqual(self.__class__.ubwa.get_human_uptime(60), "60 seconds")
 
     def test_get_human_bytesize(self):
+        print(f"test_get_human_bytesize():")
         self.assertEqual(self.__class__.ubwa.get_human_bytesize(1024 * 1024 * 1024 * 1024 * 1024), "1024.0 tB")
         self.assertEqual(self.__class__.ubwa.get_human_bytesize(1024 * 1024 * 1024 * 1024), "1024.0 gB")
         self.assertEqual(self.__class__.ubwa.get_human_bytesize(1024 * 1024 * 1024), "1024.0 mB")
@@ -165,42 +179,52 @@ class TestBinanceComManager(unittest.TestCase):
         self.assertEqual(self.__class__.ubwa.get_human_bytesize(1), "1 B")
 
     def test_get_exchange(self):
+        print(f"test_get_exchange():")
         self.assertEqual(self.__class__.ubwa.get_exchange(), "binance.us")
 
     def test_get_listenkey_from_restclient(self):
+        print(f"test_get_listenkey_from_restclient():")
         self.assertEqual(self.__class__.ubwa.get_listen_key_from_restclient("ID"), False)
 
     def test_delete_listen_key_by_stream_id(self):
+        print(f"test_delete_listen_key_by_stream_id():")
         stream_id = self.__class__.ubwa.get_new_uuid_id()
         self.assertEqual(self.__class__.ubwa.delete_listen_key_by_stream_id(stream_id), False)
 
     def test_create_payload_subscribe(self):
+        print(f"test_create_payload_subscribe():")
         result = "[{'method': 'SUBSCRIBE', 'params': ['bnbbtc@kline_1m'], 'id': 1}]"
         stream_id = self.__class__.ubwa.get_new_uuid_id()
         self.assertEqual(str(self.__class__.ubwa.create_payload(stream_id, "subscribe",
                                                                 ['kline_1m'], ['bnbbtc'])), result)
 
     def test_fill_up_space_centered(self):
+        print(f"test_fill_up_space_centered():")
         result = "==========test text=========="
         self.assertEqual(str(self.__class__.ubwa.fill_up_space_centered(30, "test text", "=")),
                          result)
 
     def test_fill_up_space_right(self):
+        print(f"test_fill_up_space_right():")
         result = "|test text||||||||||||||||||||"
         self.assertEqual(str(self.__class__.ubwa.fill_up_space_right(30, "test text", "|")),
                          result)
 
     def test_fill_up_space_left(self):
+        print(f"test_fill_up_space_left():")
         result = "||||||||||||||||||||test text|"
         self.assertEqual(str(self.__class__.ubwa.fill_up_space_left(30, "test text", "|")),
                          result)
 
     def test_create_stream_userdata_with(self):
+        print(f"test_create_stream_userdata_with():")
         with BinanceWebSocketApiManager(exchange="binance.us") as ubwa:
             ubwa.create_stream('arr', '!userData', stream_label="userDataBad")
             time.sleep(10)
+        print(f"Leaving ... ")
 
     def test_create_stream(self):
+        print(f"test_create_stream():")
         self.assertTrue(bool(self.__class__.ubwa.create_stream(markets=['bnbbtc'], channels="trade",
                                                                stream_label="test_stream")))
         stream_id = self.__class__.ubwa.get_stream_id_by_label("test_stream")
@@ -213,6 +237,7 @@ class TestBinanceComManager(unittest.TestCase):
         self.__class__.ubwa.print_stream_info(stream_id, title="Unittests")
 
     def test_start_monitoring_api(self):
+        print(f"test_start_monitoring_api():")
         with BinanceWebSocketApiManager(exchange="binance.com-testnet",
                                         debug=True,) as ubwa:
             self.assertTrue(ubwa.start_monitoring_api())

@@ -96,6 +96,7 @@ class BinanceWebSocketApiConnection(object):
             logger.critical(f"BinanceWebSocketApiConnection.__aenter__(stream_id={self.stream_id}), "
                             f"channels={self.channels}), markets={self.markets}) - error: 1 - "
                             f"KeyError: {error_msg}")
+            print(f"KeyError: {error_msg}")
         if self.manager.socks5_proxy_address is None or self.manager.socks5_proxy_port is None:
             self._conn = connect(str(uri),
                                  ping_interval=self.ping_interval,
@@ -171,7 +172,7 @@ class BinanceWebSocketApiConnection(object):
                 timeout = 1
             received_data_json = await asyncio.wait_for(self.websocket.recv(), timeout=timeout)
         else:
-            if self.timeout_disabled is True:
+            if self.timeout_disabled is True and self.manager.stream_list[self.stream_id]['subscriptions'] != 0:
                 received_data_json = await self.websocket.recv()
             else:
                 if self.manager.stream_list[self.stream_id]['processed_receives_total'] > 10:

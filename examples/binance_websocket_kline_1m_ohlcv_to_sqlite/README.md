@@ -1,4 +1,4 @@
-# Downloading and Storing Binance OHLCV Data Asynchronously
+# Downloading and Storing Binance OHLCV Data Asynchronously To SQLite
 ## Overview
 This guide outlines how to use our Python library to asynchronously download Open, High, Low, Close, Volume (OHLCV) 
 data from Binance for selected markets and store this data in a SQLite database. Our solution leverages WebSocket and 
@@ -32,7 +32,7 @@ data, inserting new data records, and counting the number of records.
 ### Running the Script:
 To start the data download and storage process, simply run the script:
 ```bash
-python binance_websocket_kline_1m_ohlcv.py
+python binance_websocket_kline_1m_ohlcv_to_sqlite.py
 ```
 
 ### Graceful Shutdown:

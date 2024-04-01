@@ -39,7 +39,7 @@ import uuid
 import ujson as json
 import websockets
 from .licensing_manager import LucitLicensingManager, NoValidatedLucitLicense
-from unicorn_binance_rest_api import BinanceRestApiManager
+from unicorn_binance_rest_api import BinanceRestApiManager, BinanceAPIException
 from .connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, CONNECTION_SETTINGS
 from .exceptions import *
 from .restclient import BinanceWebSocketApiRestclient
@@ -381,6 +381,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.last_update_check_github = {'timestamp': time.time(), 'status': None}
         self.last_update_check_github['status']: dict = None
         self.last_update_check_github_check_command = {'timestamp': time.time(), 'status': None}
+        self.listen_key_refresh_interval = 15*60
         self.max_send_messages_per_second = 5
         self.max_send_messages_per_second_reserve = 2
         self.most_receives_per_second = 0
@@ -455,9 +456,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         if exc_type:
             logger.critical(f"An exception occurred: {exc_type} - {exc_value} - {error_traceback}")
 
-    async def _shutdown_asyncgens(self, loop):
-        logger.debug(f"BinanceWebSocketApiManager._shutdown_asyncgens() started ...")
+    async def _shutdown_asyncgens(self, stream_id=None, loop=None) -> bool:
+        if loop is None:
+            return False
+        logger.debug(f"BinanceWebSocketApiManager._shutdown_asyncgens(stream_id={stream_id}) started ...")
         await loop.shutdown_asyncgens()
+        return True
 
     async def _run_socket(self, stream_id, channels, markets) -> None:
         while self.is_stop_request(stream_id=stream_id) is False \
@@ -536,7 +540,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.error(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                              f"{channels}), markets={markets}) - Socks5ProxyConnectionError: {error_msg}")
                 self._stream_is_restarting(stream_id=stream_id, error_msg=str(error_msg))
-            time.sleep(1)
+            await asyncio.sleep(1)
         if self.is_stop_request(stream_id=stream_id) is True:
             self._stream_is_stopping(stream_id=stream_id)
         elif self.is_crash_request(stream_id=stream_id) is True:
@@ -745,7 +749,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'processed_transmitted_total': 0,
                                        'last_static_ping_listen_key': 0,
                                        'listen_key': None,
-                                       'listen_key_cache_time':  10 * 60,
+                                       'listen_key_cache_time': self.listen_key_refresh_interval,
                                        'last_received_data_record': None,
                                        'processed_receives_statistic': {},
                                        'transfer_rate_per_second': {'bytes': {}, 'speed': 0},
@@ -797,6 +801,12 @@ class BinanceWebSocketApiManager(threading.Thread):
                 loop.set_debug(enabled=True)
             self.event_loops[stream_id] = loop
             self.asyncio_queue[stream_id] = asyncio.Queue()
+            if (self.stream_list[stream_id]['api'] is False
+                    and ("!userData" in self.stream_list[stream_id]['markets']
+                         or "!userData" in self.stream_list[stream_id]['channels'])):
+                logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({stream_id} - "
+                             f"Adding `_ping_listen_key({stream_id})` to asyncio loop ...")
+                loop.create_task(self._ping_listen_key(stream_id=stream_id))
             logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({stream_id} - "
                          f"Adding `_run_socket({stream_id})` to asyncio loop ...")
             loop.run_until_complete(self._run_socket(stream_id, channels, markets))
@@ -828,7 +838,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                      f"RuntimeError `error: 14` - {error_msg}")
                     except RuntimeWarning as error_msg:
                         logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
-                                     f"RuntimeError `error: 21` - {error_msg}")
+                                     f"RuntimeWarning `error: 21` - {error_msg}")
                     except Exception as error_msg:
                         logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() finally - {error_msg}")
                 if not loop.is_closed():
@@ -877,12 +887,13 @@ class BinanceWebSocketApiManager(threading.Thread):
             params.append(('signature', data['signature']))
         return params
 
-    def _auto_data_cleanup_stopped_streams(self, interval=None, age=None) -> bool:
+    async def _auto_data_cleanup_stopped_streams(self, interval=None, age=None) -> bool:
         if interval is None or age is None:
             return False
         logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Starting with an interval "
                     f"of {interval} seconds!")
         timestamp_last_check = 0
+        await asyncio.sleep(10)
         while self.is_manager_stopping() is False:
             if self.get_timestamp_unix() > timestamp_last_check + interval:
                 timestamp_last_check = self.get_timestamp_unix()
@@ -901,11 +912,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
                                             f"Remaining data of stream with stream_id={stream_id} successfully removed "
                                             f"from this instance!")
-            time.sleep(interval+5)
+            await asyncio.sleep(interval+5)
 
-    def _frequent_checks(self):
+    async def _frequent_checks(self):
         """
-        This method gets started as a thread and is doing the frequent checks
+        This method gets started in a loop and is doing the frequent checks
         """
         frequent_checks_id = self.get_timestamp_unix()
         cpu_usage_time = False
@@ -921,7 +932,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 and self.frequent_checks_list[frequent_checks_id]['stop_request'] is False:
             with self.frequent_checks_list_lock:
                 self.frequent_checks_list[frequent_checks_id]['last_heartbeat'] = time.time()
-            time.sleep(0.3)
+            await asyncio.sleep(0.5)
             current_timestamp = int(time.time())
             last_timestamp = current_timestamp - 1
             next_to_last_timestamp = current_timestamp - 2
@@ -1025,31 +1036,51 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 f"{self.get_date_of_timestamp(self.receiving_speed_peak['timestamp'])}")
             except TypeError:
                 pass
-            # send keepalive for `!userData` streams every 30 minutes
-            if active_stream_list:
-                for stream_id in active_stream_list:
-                    if isinstance(active_stream_list[stream_id]['markets'], str):
-                        active_stream_list[stream_id]['markets'] = [active_stream_list[stream_id]['markets'], ]
-                    if isinstance(active_stream_list[stream_id]['channels'], str):
-                        active_stream_list[stream_id]['channels'] = [active_stream_list[stream_id]['channels'], ]
-                    if active_stream_list[stream_id]['api'] is False:
-                        if "!userData" in active_stream_list[stream_id]['markets'] or \
-                                "!userData" in active_stream_list[stream_id]['channels']:
-                            if active_stream_list[stream_id]['keep_listen_key_alive'] is True \
-                                    and (active_stream_list[stream_id]['start_time'] +
-                                         active_stream_list[stream_id]['listen_key_cache_time']) < time.time() \
-                                    and (active_stream_list[stream_id]['last_static_ping_listen_key'] +
-                                         active_stream_list[stream_id]['listen_key_cache_time']) < time.time():
-                                # keep-alive the listenKey
-                                response, binance_api_status = self.restclient.keepalive_listen_key(stream_id)
-                                if binance_api_status is not None:
-                                    self.binance_api_status = binance_api_status
-                                # set last_static_ping_listen_key
-                                self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
-                                self.set_heartbeat(stream_id)
-                                logger.info(f"BinanceWebSocketApiManager._frequent_checks() - sent listen_key "
-                                            f"keepalive ping for stream_id={stream_id}")
         logger.debug(f"BinanceWebSocketApiManager._frequent_checks() - Leaving thread ...")
+
+    async def _ping_listen_key(self, stream_id=None):
+        logger.info(f"BinanceWebSocketApiManager._ping_listen_key(stream_id={stream_id}) - asyncio task running!")
+        if isinstance(self.stream_list[stream_id]['markets'], str):
+            self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets'], ]
+        if isinstance(self.stream_list[stream_id]['channels'], str):
+            self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels'], ]
+        while self.stream_list[stream_id]['status'] != "stopped" \
+                and not self.stream_list[stream_id]['status'].startswith("crashed"):
+            await asyncio.sleep(2)
+            if self.stream_list[stream_id]['keep_listen_key_alive'] is True \
+                    and (self.stream_list[stream_id]['start_time'] +
+                         self.stream_list[stream_id]['listen_key_cache_time']) < time.time() \
+                    and (self.stream_list[stream_id]['last_static_ping_listen_key'] +
+                         self.stream_list[stream_id]['listen_key_cache_time']) < time.time():
+                try:
+                    response, binance_api_status = self.restclient.keepalive_listen_key(stream_id)
+                    if binance_api_status is not None:
+                        self.binance_api_status = binance_api_status
+                    self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
+                    self.set_heartbeat(stream_id)
+                    logger.info(f"BinanceWebSocketApiManager._ping_listen_key(stream_id={stream_id}) - pinged "
+                                f"listen_key!")
+                    sleep_till = time.time() + self.listen_key_refresh_interval
+                    while sleep_till > time.time() \
+                            and self.stream_list[stream_id]['status'] != "stopped" \
+                            and not self.stream_list[stream_id]['status'].startswith("crashed"):
+                        await asyncio.sleep(2)
+                except BinanceAPIException as error_msg:
+                    logger.critical(f"BinanceWebSocketApiManager._ping_listen_key(stream_id={stream_id}) - "
+                                    f"BinanceAPIException - Not able to ping the listen_key - error: {error_msg}")
+                    if "IP banned" in str(error_msg):
+                        match = re.search(r"until (\d+)", str(error_msg))
+                        if match:
+                            banned_timeframe = (int(match.group(1))/1000) - time.time()
+                            logger.critical(f"BinanceWebSocketApiManager._ping_listen_key(stream_id="
+                                            f"{stream_id}) - Wait for {banned_timeframe} seconds until the "
+                                            f"IP ban has expired.")
+                            while banned_timeframe > 0 \
+                                    and self.stream_list[stream_id]['status'] != "stopped" \
+                                    and not self.stream_list[stream_id]['status'].startswith("crashed"):
+                                await asyncio.sleep(2)
+                                banned_timeframe = (int(match.group(1)) / 1000) - time.time()
+        logger.info(f"BinanceWebSocketApiManager._ping_listen_key(stream_id={stream_id}) - asyncio task stopped!")
 
     @staticmethod
     def _handle_task_result(task: asyncio.Task) -> None:
@@ -1656,8 +1687,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             if self.high_performance is True:
                 break
             time.sleep(0.1)
-        if self.event_loops[stream_id].is_closed():
-            return stream_id
+        if self.event_loops[stream_id] is not None:
+            if self.event_loops[stream_id].is_closed():
+                return stream_id
         if self.specific_process_asyncio_queue[stream_id] is not None:
             logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - Adding "
                          f"`specific_process_asyncio_queue[{stream_id}]()` to asyncio loop ...")
@@ -3792,16 +3824,43 @@ class BinanceWebSocketApiManager(threading.Thread):
 
     def run(self):
         """
-        This method overloads `threading.run()` and starts management threads
+        This method overloads `threading.run()` and starts management functions
         """
-        thread_frequent_checks = threading.Thread(target=self._frequent_checks, name="frequent_checks")
-        thread_frequent_checks.start()
-        if self.auto_data_cleanup_stopped_streams is True:
-            time.sleep(10)
-            thread_auto_data_cleanup_stopped_streams = threading.Thread(target=self._auto_data_cleanup_stopped_streams,
-                                                                        args=(60, 900, ),  # Interval, Age
-                                                                        name="auto_data_cleanup_stopped_streams")
-            thread_auto_data_cleanup_stopped_streams.start()
+        time.sleep(1)
+        loop = None
+        try:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            if self.debug is True:
+                loop.set_debug(enabled=True)
+            if self.auto_data_cleanup_stopped_streams is True:
+                loop.create_task(self._auto_data_cleanup_stopped_streams(60, 900))  # Interval, Age
+            loop.run_until_complete(self._frequent_checks())
+        except OSError as error_msg:
+            logger.critical(f"BinanceWebSocketApiManager.run() - OSError - error_msg: {str(error_msg)}")
+        except RuntimeError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager.run() - RuntimeError - error_msg: {str(error_msg)}")
+        finally:
+            logger.debug(f"BinanceWebSocketApiManager.run() - Finally closing the loop!")
+            if loop is not None:
+                if loop.is_running():
+                    try:
+                        tasks = asyncio.all_tasks(loop)
+                        loop.run_until_complete(self._shutdown_asyncgens(loop))
+                        for task in tasks:
+                            task.cancel()
+                            try:
+                                loop.run_until_complete(task)
+                            except asyncio.CancelledError:
+                                pass
+                    except RuntimeError as error_msg:
+                        logger.debug(f"BinanceWebSocketApiManager.run() - RuntimeError - error_msg: {error_msg}")
+                    except RuntimeWarning as error_msg:
+                        logger.debug(f"BinanceWebSocketApiManager.run() - RuntimeWarning - error_msg: {error_msg}")
+                    except Exception as error_msg:
+                        logger.debug(f"BinanceWebSocketApiManager.run() finally - error_msg: {error_msg}")
+                if not loop.is_closed():
+                    loop.close()
 
     def set_private_dex_config(self, binance_dex_user_address):
         """

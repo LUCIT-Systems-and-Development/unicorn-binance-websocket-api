@@ -60,7 +60,7 @@ class BinanceDataProcessor:
 
         while self.ubwa.is_manager_stopping() is False:
             self.ubwa.print_summary()
-            await asyncio.sleep(10)
+            await asyncio.sleep(1)
 
 
 if __name__ == "__main__":
