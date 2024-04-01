@@ -20,6 +20,7 @@ Optimization of the performance and revision of the life support of the ListenKe
 - Keeping the ListenKey alive has been revised and now runs as an asyncIO task in the event loop of the stream. In the 
   event of an exception due to an IP ban, the time window until the ban is lifted is extracted from the Binance response 
   and now waits until then to continue. [issue#330](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/330)
+- Added exception handling for `TypeError` to `subscribe_to_stream()` and `unsubscribe_from_stream()`.
 
 ## 2.3.0
 Redesign and rewrite of `connection.py`, `sockets.py` as well as the loop and exception handling in `manager.py` and 

@@ -4265,8 +4265,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.info("BinanceWebSocketApiManager.subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                         ", " + str(markets) + ") finished ...")
         except TypeError as error_msg:
-            logger.critical(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - TypeError - "
-                            f"{str(error_msg)}")
+            logger.error(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - TypeError - "
+                         f"{str(error_msg)}")
             return False
         return True
 
@@ -4324,8 +4324,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.info("BinanceWebSocketApiManager.unsubscribe_from_stream(" + str(stream_id) + ", " + str(channels) +
                         ", " + str(markets) + ") finished ...")
         except TypeError as error_msg:
-            logger.critical(f"BinanceWebSocketApiManager.unsubscribe_from_stream({str(stream_id)}) - TypeError - "
-                            f"{str(error_msg)}")
+            logger.error(f"BinanceWebSocketApiManager.unsubscribe_from_stream({str(stream_id)}) - TypeError - "
+                         f"{str(error_msg)}")
             return False
         return True
 
