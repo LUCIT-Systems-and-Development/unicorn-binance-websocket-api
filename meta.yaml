@@ -1,5 +1,5 @@
 {% set name = "unicorn-binance-websocket-api" %}
-{% set version = "2.3.0" %}
+{% set version = "2.4.0" %}
 
 package:
   name: {{ name|lower }}
@@ -106,7 +106,7 @@ about:
     [Notifications](#receive-notifications) | [Bugs](#how-to-report-bugs-or-suggest-improvements) | 
     [Contributing](#contributing) | [Disclaimer](#disclaimer) | [Commercial Support](#commercial-support)
     
-    A Python API by [LUCIT](https://www.lucit.tech) to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
+    A Python SDK by [LUCIT](https://www.lucit.tech) to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
     com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, dex/chain+testnet) 
     in a easy, fast, flexible, robust and fully-featured way. 
     
@@ -155,6 +155,7 @@ about:
     ```
     
     ### Or await the webstream data in an asyncio task:
+    This is the recommended method for processing data from web streams.
     ```
     from unicorn_binance_websocket_api import BinanceWebSocketApiManager
     import asyncio
@@ -319,7 +320,9 @@ about:
     | [Binance DEX Testnet](https://testnet.binance.org)                 | `binance.org-testnet`                 | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
     
     - Streams are processing asynchronous/concurrent (Python asyncio) and each stream is started in a separate thread, so 
-    you don't need to deal with asyncio in your code! But you can consume with `await`, if you want!
+    you don't need to deal with asyncio in your code! But you can consume with 
+    [`await`](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task)
+    , if you want!
     
     - Supports 
     [subscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream)/[unsubscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream)
@@ -329,7 +332,7 @@ about:
     
     - Support for multiple private `!userData` streams with different `api_key` and `api_secret`. ([example_multiple_userdata_streams.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py))
     
-    - [Pick up the received data from the `stream_buffer`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer) - 
+    - [Pick up the received data from the `stream_buffer`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer) ([FIFO or LIFO](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60)) - 
     if you can not store your data in cause of a temporary technical issue, you can 
     [kick back the data to the `stream_buffer`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.add_to_stream_buffer) 
     which stores the receives in the RAM till you are able to process the data in the normal way again. 
@@ -429,9 +432,9 @@ about:
     ## Installation and Upgrade
     The module requires Python 3.7 and runs smoothly up to and including Python 3.12.
     
-    Anaconda packages are available from Python version 3.8 and higher.
+    Anaconda packages are available from Python version 3.8 and higher, but only in the latest version!
     
-    For the PyPy interpreter we offer packages only from Python version 3.9 and higher.
+    For the PyPy interpreter we offer packages via PyPi only from Python version 3.9 and higher.
     
     The current dependencies are listed [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/requirements.txt).
     
@@ -488,10 +491,10 @@ about:
     `pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
     
     #### Windows
-    Use the below command with the version (such as 2.3.0) you determined 
+    Use the below command with the version (such as 2.4.0) you determined 
     [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest):
     
-    `pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.3.0.tar.gz --upgrade`
+    `pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.4.0.tar.gz --upgrade`
     ### From the latest source (dev-stage) with PIP from [GitHub](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)
     This is not a release version and can not be considered to be stable!
     

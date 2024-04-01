@@ -39,7 +39,7 @@ setup(
          'unicorn_binance_websocket_api/licensing_manager.py'],
         annotate=False),
     name='unicorn-binance-websocket-api',
-    version="2.3.0",
+    version="2.4.0",
     author="LUCIT Systems and Development",
     author_email='info@lucit.tech',
     url="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api",
