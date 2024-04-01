@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 import asyncio
 import logging
@@ -22,9 +25,13 @@ class BinanceDataProcessor:
                                                process_stream_signals=self.receive_stream_signal,
                                                output_default="UnicornFy")
 
-    def receive_stream_signal(self, signal_type=None, stream_id=None, data_record=None, error_msg=None):
-        print(f"Received stream_signal for stream '{self.ubwa.get_stream_label(stream_id=stream_id)}': "
-              f"{signal_type} - {stream_id} - {data_record} - {error_msg}")
+    async def main(self):
+        self.ubwa.create_stream('arr', '!userData', api_key=api_key, api_secret=api_secret,
+                                process_asyncio_queue=self.process_userdata, stream_label="UD_Alice")
+        await asyncio.sleep(5)
+        while self.ubwa.is_manager_stopping() is False:
+            self.ubwa.print_summary()
+            await asyncio.sleep(600)
 
     async def process_userdata(self, stream_id=None):
         print(f"Processing data of {self.ubwa.get_stream_label(stream_id=stream_id)} ...")
@@ -33,13 +40,9 @@ class BinanceDataProcessor:
             print(f"data: {data}")
             self.ubwa.asyncio_queue_task_done(stream_id)
 
-    async def main(self):
-        self.ubwa.create_stream('arr', '!userData', api_key=api_key, api_secret=api_secret,
-                                process_asyncio_queue=self.process_userdata, stream_label="UD_Alice")
-        await asyncio.sleep(5)
-        while self.ubwa.is_manager_stopping() is False:
-            self.ubwa.print_summary()
-            await asyncio.sleep(600)
+    def receive_stream_signal(self, signal_type=None, stream_id=None, data_record=None, error_msg=None):
+        print(f"Received stream_signal for stream '{self.ubwa.get_stream_label(stream_id=stream_id)}': "
+              f"{signal_type} - {stream_id} - {data_record} - {error_msg}")
 
 
 if __name__ == "__main__":

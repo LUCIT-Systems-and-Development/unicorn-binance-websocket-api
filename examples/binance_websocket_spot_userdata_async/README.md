@@ -1,5 +1,7 @@
-# Binance userData Asynchronously WebSocket
+# Binance Spot userData WebSocket Asynchronously
 ## Overview
+In this example, a userData stream for the binance.com spot account is set up in an AsyncIO loop and the data is 
+received asynchronously.
 
 ## Prerequisites
 Ensure you have Python 3.7+ installed on your system. 
@@ -12,13 +14,9 @@ pip install -r requirements.txt
 To run modules of the *UNICORN Binance Suite* you need a [valid license](https://shop.lucit.services)!
 
 ## Usage
-### Initialization:
-
-
 ### Running the Script:
-To start the data download and storage process, simply run the script:
 ```bash
-python binance_websocket_kline_1m_ohlcv_to_sqlite.py
+python binance_websocket_spot_userdata_async.py
 ```
 
 ### Graceful Shutdown:

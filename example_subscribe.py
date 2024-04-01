@@ -99,7 +99,7 @@ channels_2 = ['trade', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_
 binance_websocket_api_manager.unsubscribe_from_stream(stream_id, channels=channels_2)
 request_id = binance_websocket_api_manager.get_stream_subscriptions(stream_id)
 
-while binance_websocket_api_manager.get_result_by_request_id(request_id) is False:
+while binance_websocket_api_manager.get_result_by_request_id(request_id) is None:
     print("Wait to receive the result!")
     time.sleep(0.5)
 
@@ -108,6 +108,6 @@ print(str(binance_websocket_api_manager.get_result_by_request_id(request_id)))
 time.sleep(10)
 while True:
     #binance_websocket_api_manager.print_summary()
-    binance_websocket_api_manager.print_stream_info(stream_id)
+    #binance_websocket_api_manager.print_stream_info(stream_id)
     #binance_websocket_api_manager.get_stream_subscriptions(stream_id)
     time.sleep(1)

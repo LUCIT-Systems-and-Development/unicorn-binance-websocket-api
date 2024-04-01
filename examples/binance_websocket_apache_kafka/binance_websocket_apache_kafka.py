@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 from aiokafka import AIOKafkaProducer
 from aiokafka.helpers import create_ssl_context
 from kafka.errors import KafkaConnectionError
