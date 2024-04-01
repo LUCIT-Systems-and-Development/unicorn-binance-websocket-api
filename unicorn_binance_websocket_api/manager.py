@@ -4259,10 +4259,15 @@ class BinanceWebSocketApiManager(threading.Thread):
             self._crash_stream(stream_id)
             return False
 
-        for item in payload:
-            self.stream_list[stream_id]['payload'].append(item)
-        logger.info("BinanceWebSocketApiManager.subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
-                    ", " + str(markets) + ") finished ...")
+        try:
+            for item in payload:
+                self.stream_list[stream_id]['payload'].append(item)
+            logger.info("BinanceWebSocketApiManager.subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
+                        ", " + str(markets) + ") finished ...")
+        except TypeError as error_msg:
+            logger.critical(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - TypeError - "
+                            f"{str(error_msg)}")
+            return False
         return True
 
     def unsubscribe_from_stream(self, stream_id, channels=None, markets=None):
@@ -4312,11 +4317,16 @@ class BinanceWebSocketApiManager(threading.Thread):
                     pass
         payload = self.create_payload(stream_id, "unsubscribe",
                                       channels=channels, markets=markets)
-        for item in payload:
-            self.stream_list[stream_id]['payload'].append(item)
-        self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
-        logger.info("BinanceWebSocketApiManager.unsubscribe_from_stream(" + str(stream_id) + ", " + str(channels) +
-                    ", " + str(markets) + ") finished ...")
+        try:
+            for item in payload:
+                self.stream_list[stream_id]['payload'].append(item)
+            self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+            logger.info("BinanceWebSocketApiManager.unsubscribe_from_stream(" + str(stream_id) + ", " + str(channels) +
+                        ", " + str(markets) + ") finished ...")
+        except TypeError as error_msg:
+            logger.critical(f"BinanceWebSocketApiManager.unsubscribe_from_stream({str(stream_id)}) - TypeError - "
+                            f"{str(error_msg)}")
+            return False
         return True
 
     def wait_till_stream_has_started(self, stream_id, timeout: float = 0.0) -> bool:
