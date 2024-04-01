@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 Optimization of the performance and revision of the life support of the ListenKey.
 
 ### Changed
-- The management methods are no longer started individually in threads but together in an event loop in run(). By 
+- The management methods are no longer started individually in threads but together in an event loop in 'run()'. By 
   switching from threads to AsyncIO tasks, some `time.sleep()` could be replaced by `asyncio.sleep()`
 ### Fixed
 - In `_run_sockets()` `time.sleep()` was mistakenly used instead of `asyncio.sleep()`.

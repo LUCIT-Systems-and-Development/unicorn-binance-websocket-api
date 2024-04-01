@@ -10,6 +10,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
 ## 2.3.0.dev (development stage/unreleased/unstable)
+Optimization of the performance and revision of the life support of the ListenKey.
+
+### Changed
+- The management methods are no longer started individually in threads but together in an event loop in 'run()'. By 
+  switching from threads to AsyncIO tasks, some `time.sleep()` could be replaced by `asyncio.sleep()`
+### Fixed
+- In `_run_sockets()` `time.sleep()` was mistakenly used instead of `asyncio.sleep()`.
+- Keeping the ListenKey alive has been revised and now runs as an asyncIO task in the event loop of the stream. In the 
+  event of an exception due to an IP ban, the time window until the ban is lifted is extracted from the Binance response 
+  and now waits until then to continue. [issue#330](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/330)
 
 ## 2.3.0
 Redesign and rewrite of `connection.py`, `sockets.py` as well as the loop and exception handling in `manager.py` and 
