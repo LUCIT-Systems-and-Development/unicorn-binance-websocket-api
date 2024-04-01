@@ -60,7 +60,7 @@ except ImportError:
     from typing_extensions import Literal
 
 __app_name__: str = "unicorn-binance-websocket-api"
-__version__: str = "2.4.0.dev"
+__version__: str = "2.4.0"
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
