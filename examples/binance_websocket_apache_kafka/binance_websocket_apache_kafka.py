@@ -70,9 +70,9 @@ if __name__ == "__main__":
         try:
             loop.run_until_complete(btkp.main())
         except KeyboardInterrupt:
-            pass
+            print(f"\r\n")
         except KafkaConnectionError as e:
-            print(f"KafkaConnectionError: {e}")
+            print(f"\r\nKafkaConnectionError: {e}")
         except Exception as e:
             print(f"\r\nError: {e}")
         print("Gracefully stopping ...")

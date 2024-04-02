@@ -19,7 +19,6 @@ logging.basicConfig(level=logging.INFO,
 
 class BinanceDataProcessor:
     def __init__(self):
-        self.db = None
         self.ubwa = BinanceWebSocketApiManager(exchange=exchange,
                                                enable_stream_signal_buffer=True,
                                                process_stream_signals=self.receive_stream_signal,
@@ -50,8 +49,8 @@ if __name__ == "__main__":
     try:
         asyncio.run(bdp.main())
     except KeyboardInterrupt:
-        print("\r\nGracefully stopping ...")
+        print("\r\n")
     except Exception as e:
         print(f"\r\nError: {e}")
-        print("Gracefully stopping ...")
+    print("Gracefully stopping ...")
     bdp.ubwa.stop_manager()

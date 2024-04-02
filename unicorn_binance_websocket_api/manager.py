@@ -3682,7 +3682,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except ZeroDivisionError:
             pass
 
-    def print_summary_to_png(self, print_summary_export_path, hight_per_row=12.5):
+    def print_summary_to_png(self, print_summary_export_path, hight_per_row=12.5, add_string=None, title=None):
         """
         Create a PNG image file with the console output of `print_summary()`
 
@@ -3694,11 +3694,14 @@ class BinanceWebSocketApiManager(threading.Thread):
                                           <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F>`_
         :type print_summary_export_path: str
         :param hight_per_row: set the hight per row for the image hight calculation
-        :type hight_per_row: int
-
+        :type hight_per_row: float
+        :param add_string: text to add to the output
+        :type add_string: str
+        :param title: set a title (first row) for print_summary output
+        :type title: str
         :return: bool
         """
-        print_text = self.print_summary(disable_print=True)
+        print_text = self.print_summary(disable_print=True, add_string=add_string, title=title)
         # Todo:
         # 1. Handle paths right
         # 2. Use PythonMagick instead of Linux ImageMagick

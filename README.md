@@ -107,7 +107,7 @@ with BinanceWebSocketApiManager(exchange='binance.com') as ubwa:
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("Gracefully stopping ...")
+        print("\r\nGracefully stopping ...")
     except Exception as error_msg:
         print(f"\r\nERROR: {error_msg}")
         print("Gracefully stopping ...")
