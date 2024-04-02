@@ -57,6 +57,7 @@ ubwa.create_stream(channels=['trade', 'kline_1m'], markets=['btcusdt', 'bnbbtc',
 ```
 
 ### And 4 more lines to print out the data:
+
 ```
 while True:
     oldest_data_from_stream_buffer = ubwa.pop_stream_data_from_stream_buffer()
@@ -65,6 +66,7 @@ while True:
 ```
 
 ### Or with a [callback function](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) just do:
+
 ```
 from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 
@@ -80,6 +82,7 @@ ubwa.create_stream(channels=['trade', 'kline_1m'],
 ```
 
 ### Or await the webstream data in an asyncio task:
+
 This is the recommended method for processing data from web streams.
 
 ```
@@ -113,6 +116,7 @@ with BinanceWebSocketApiManager(exchange='binance.com') as ubwa:
 Basically that's it, but there are more options.
 
 ### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://www.lucit.tech/unicorn-fy.html):
+
 ```
 unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_data_from_stream_buffer)
 ```
@@ -124,6 +128,7 @@ ubwa.create_stream(['trade'], ['btcusdt'], output="UnicornFy")
 ```
 
 ### [Subscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream) / [unsubscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream) new markets and channels:
+
 ```
 markets = ['engbtc', 'zileth']
 channels = ['kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
@@ -137,6 +142,7 @@ ubwa.unsubscribe_from_stream(stream_id=stream_id, channels=channels)
 
 ## Send Requests to Binance WebSocket API
 ### [Place orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order), [cancel orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.cancel_order) or [send other requests](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.api) via WebSocket:
+
 ```
 from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 
