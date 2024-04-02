@@ -796,7 +796,7 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.print_stream_info(stream_id2)
         self.__class__.ubwa.print_summary()
         if platform.system() != 'Windows':
-            self.__class__.ubwa.print_summary_to_png(".", 12.5)
+            self.__class__.ubwa.print_summary_to_png(".", 12.5, add_string="test: blah", title="UBWA Demo")
         self.__class__.ubwa.get_latest_release_info()
         self.__class__.ubwa.get_latest_release_info_check_command()
         self.__class__.ubwa.set_private_dex_config("bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6")
