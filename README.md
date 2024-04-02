@@ -118,7 +118,7 @@ Basically that's it, but there are more options.
 ### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://www.lucit.tech/unicorn-fy.html):
 
 ```
-unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_data_from_stream_buffer)
+unicorn_fied_stream_data = UnicornFy.binance_com_websocket(data)
 ```
 
 or
