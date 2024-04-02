@@ -18,6 +18,8 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
+set -xeuo pipefail
+
 rm ./build -r
 rm ./dist -r
 rm ./unicorn_binance_websocket_api.egg-info -r

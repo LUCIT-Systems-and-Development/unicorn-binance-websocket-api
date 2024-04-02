@@ -18,6 +18,8 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
+set -xeuo pipefail
+
 rm dev/sphinx/source/changelog.md
 rm dev/sphinx/source/code_of_conduct.md
 rm dev/sphinx/source/contributing.md

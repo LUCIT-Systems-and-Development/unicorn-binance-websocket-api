@@ -18,6 +18,8 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
+set -xeuo pipefail
+
 security-check() {
     echo -n "Did you change the version in \`CHANGELOG.md\` and used \`dev/set_version.py\`? [yes|NO] "
     local SURE

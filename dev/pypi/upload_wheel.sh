@@ -21,4 +21,6 @@
 # create this file:
 # ~/.pypirc
 
+set -xeuo pipefail
+
 python3 -m twine upload dist/*
