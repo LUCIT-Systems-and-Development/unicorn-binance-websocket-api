@@ -70,7 +70,7 @@ if __name__ == "__main__":
                         style="{")
     try:
         # To use this library you need a valid UNICORN Binance Suite License:
-        # https://medium.lucit.tech/87b0088124a8
+        # https://shop.lucit.services
         ubwa = BinanceWebSocketApiManager(exchange='binance.com',
                                           show_secrets_in_logs=True,
                                           socks5_proxy_server=socks5_proxy,

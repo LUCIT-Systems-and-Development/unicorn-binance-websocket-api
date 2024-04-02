@@ -43,7 +43,7 @@ logging.basicConfig(level=logging.DEBUG,
                     style="{")
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/87b0088124a8
+# https://shop.lucit.services
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com-futures")
 
 binance_websocket_api_manager.create_stream('arr', '!miniTicker')

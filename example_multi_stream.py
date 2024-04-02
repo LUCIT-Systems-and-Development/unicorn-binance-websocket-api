@@ -46,7 +46,7 @@ logging.basicConfig(level=logging.DEBUG,
                     style="{")
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/87b0088124a8
+# https://shop.lucit.services
 # create instance of BinanceWebSocketApiManager and provide the function for stream processing
 binance_websocket_api_manager = BinanceWebSocketApiManager(BinanceWebSocketApiProcessStreams.process_stream_data)
 

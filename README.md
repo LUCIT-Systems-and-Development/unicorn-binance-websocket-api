@@ -147,30 +147,32 @@ ubwa.unsubscribe_from_stream(stream_id=stream_id, channels=channels)
 from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 
 
-def process_api_responses(stream_data):
-    print(str(stream_data))
-
+async def process_api_responses(stream_id=None):
+    while ubwa.is_stop_request(stream_id=stream_id) is False:
+        data = await ubwa.get_stream_data_from_asyncio_queue(stream_id=stream_id)
+        print(data)
+        ubwa.asyncio_queue_task_done(stream_id=stream_id)
 
 api_key = "YOUR_BINANCE_API_KEY"
 api_secret = "YOUR_BINANCE_API_SECRET"
 
-
 ubwa = BinanceWebSocketApiManager(exchange="binance.com")
-api_stream = ubwa.create_stream(api=True, 
-                                api_key=api_key, 
+api_stream = ubwa.create_stream(api=True,
+                                api_key=api_key,
                                 api_secret=api_secret,
-                                process_stream_data=process_api_responses)
+                                output="UnicornFy",
+                                process_asyncio_queue=process_api_responses)
 
-response = ubwa.api.get_listen_key(return_response=True))
-print(response['result']['listenKey'])                                       
-                                
-orig_client_order_id = ubwa.api.create_order(order_type="LIMIT", 
-                                             price=1.1, 
-                                             quantity=15.0, 
-                                             side="SELL", 
-                                             symbol="BUSDUSDT")
-                                             
-ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                      
+response = ubwa.api.get_server_time(return_response=True)
+print(f"Binance serverTime: {response['result']['serverTime']}")
+
+orig_client_order_id = ubwa.api.create_order(order_type="LIMIT",
+                                             price = 1.1,
+                                             quantity = 15.0,
+                                             side = "SELL",
+                                             symbol = "BUSDUSDT")
+
+ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                   
 ```
 
 [Here](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404) you can find a complete 

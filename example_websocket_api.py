@@ -41,12 +41,14 @@ api_secret = ""
 
 
 async def binance_stream(ubwa):
-    def handle_socket_message(data):
-        print(f"received data:\r\n{data}\r\n")
+    async def handle_socket_message(stream_id=None):
+        while ubwa.is_stop_request(stream_id=stream_id) is False:
+            data = await ubwa.get_stream_data_from_asyncio_queue(stream_id=stream_id)
+            print(f"received data:\r\n{data}\r\n")
 
     api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
                                     stream_label="Bobs Websocket API",
-                                    process_stream_data=handle_socket_message)
+                                    process_asyncio_queue=handle_socket_message)
     print(f"Start:")
     ubwa.api.get_listen_key(stream_id=api_stream)
     ubwa.api.get_server_time(stream_id=api_stream)
@@ -78,7 +80,7 @@ if __name__ == "__main__":
                         style="{")
 
     # To use this library you need a valid UNICORN Binance Suite License:
-    # https://medium.lucit.tech/87b0088124a8
+    # https://shop.lucit.services
     ubwa = BinanceWebSocketApiManager(exchange='binance.com')
     try:
         asyncio.run(binance_stream(ubwa))

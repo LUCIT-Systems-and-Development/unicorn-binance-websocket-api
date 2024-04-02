@@ -39,7 +39,7 @@
 # must not be installed: https://pypi.org/project/kafka (https://github.com/dpkp/kafka-python/issues/1566)
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/87b0088124a8
+# https://shop.lucit.services
 
 from aiokafka import AIOKafkaProducer
 from aiokafka.helpers import create_ssl_context
@@ -104,7 +104,7 @@ if __name__ == "__main__":
              "pass": "JUTrtwrJFYdMsYbEZGoL0Zt5m1WElPzS"}
 
     # To use this library you need a valid UNICORN Binance Suite License:
-    # https://medium.lucit.tech/87b0088124a8
+    # https://shop.lucit.services
 
     ubwa = BinanceWebSocketApiManager(exchange=exchange)
 

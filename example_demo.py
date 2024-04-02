@@ -44,7 +44,7 @@ logging.basicConfig(level=logging.DEBUG,
                     style="{")
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/87b0088124a8
+# https://shop.lucit.services
 ubwa = unicorn_binance_websocket_api.BinanceWebSocketApiManager()
 
 

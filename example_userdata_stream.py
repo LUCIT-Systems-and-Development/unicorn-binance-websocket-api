@@ -70,7 +70,7 @@ binance_com_iso_api_key = binance_com_api_key
 binance_com_iso_api_secret = binance_com_api_secret
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/87b0088124a8
+# https://shop.lucit.services
 
 # create instances of BinanceWebSocketApiManager
 binance_com_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.com",

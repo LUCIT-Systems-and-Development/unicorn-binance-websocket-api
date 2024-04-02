@@ -48,7 +48,7 @@ def print_stream_signals(signal_type=None, stream_id=None, data_record=None, err
 
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/87b0088124a8
+# https://shop.lucit.services
 ubwa = BinanceWebSocketApiManager(enable_stream_signal_buffer=True,
                                   process_stream_signals=print_stream_signals)
 

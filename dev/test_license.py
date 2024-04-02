@@ -46,7 +46,7 @@ logging.basicConfig(level=logging.DEBUG,
 
 try:
     # To use this library you need a valid UNICORN Binance Suite License:
-    # https://medium.lucit.tech/87b0088124a8
+    # https://shop.lucit.services
     ubwa = BinanceWebSocketApiManager(lucit_license_profile="LUCIT")
 except NoValidatedLucitLicense as error_msg:
     print(f"ERROR LEVEL 1: {error_msg}")

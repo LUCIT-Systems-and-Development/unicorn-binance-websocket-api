@@ -52,7 +52,7 @@ def callback_signals(signal_type=None, stream_id=None, data_record=None, error_m
 
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/87b0088124a8
+# https://shop.lucit.services
 with BinanceWebSocketApiManager(auto_data_cleanup_stopped_streams=True,
                                 exchange="binance.com",
                                 process_stream_signals=callback_signals) as ubwa:

@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     try:
         # To use this library you need a valid UNICORN Binance Suite License:
-        # https://medium.lucit.tech/87b0088124a8
+        # https://shop.lucit.services
         ubwa = BinanceWebSocketApiManager(exchange='binance.com',
                                           socks5_proxy_server=socks5_proxy,
                                           socks5_proxy_ssl_verification=socks5_ssl_verification)

@@ -54,7 +54,7 @@ logging.basicConfig(level=logging.INFO,
                     style="{")
 
 # To use this library you need a valid UNICORN Binance Suite License:
-# https://medium.lucit.tech/87b0088124a8
+# https://shop.lucit.services
 
 # create instance of BinanceWebSocketApiManager for Binance US
 binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.us")

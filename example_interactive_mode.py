@@ -85,7 +85,7 @@ try:
     binance_api_key = ""
     binance_api_secret = ""
     # To use this library you need a valid UNICORN Binance Suite License:
-    # https://medium.lucit.tech/87b0088124a8
+    # https://shop.lucit.services
     binance_rest_client = unicorn_binance_rest_api.BinanceRestApiManager(binance_api_key, binance_api_secret)
     binance_websocket_api_manager = BinanceWebSocketApiManager()
 except requests.exceptions.ConnectionError:
