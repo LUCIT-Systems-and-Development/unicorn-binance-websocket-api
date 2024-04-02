@@ -37,8 +37,7 @@ class BinanceDataProcessor:
 
         while self.ubwa.is_manager_stopping() is False:
             await asyncio.sleep(10)
-            #self.ubwa.print_summary_to_png("/var/www/html/", hight_per_row=13.5, title="UBWA Demo")
-            self.ubwa.print_summary_to_png("/var/www/html/", hight_per_row=13.5)
+            self.ubwa.print_summary()
 
     async def process_data(self, stream_id=None):
         while self.ubwa.is_stop_request(stream_id=stream_id) is False:
