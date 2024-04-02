@@ -23,8 +23,14 @@ class BinanceDataProcessor:
         self.ubwa = BinanceWebSocketApiManager(exchange=exchange)
 
     async def main(self):
-        self.ubwa.create_stream(["!userData"], ["arr"], "userData", api_key=api_key, api_secret=api_secret)
-        self.ubwa.create_stream(['!miniTicker', '!ticker', '!bookTicker'], "arr", "arr channels")
+        self.ubwa.create_stream(["!userData"], ["arr"],
+                                stream_label="userData",
+                                api_key=api_key,
+                                api_secret=api_secret,
+                                process_asyncio_queue=self.process_data)
+        self.ubwa.create_stream(['!miniTicker', '!ticker', '!bookTicker'],  "arr",
+                                stream_label="arr channels",
+                                process_asyncio_queue=self.process_data)
 
         with BinanceRestApiManager(exchange=exchange) as ubra:
             markets = [item['symbol'] for item in ubra.get_all_tickers() if item['symbol'].endswith("USDT")]
@@ -50,7 +56,7 @@ if __name__ == "__main__":
     try:
         asyncio.run(bdp.main())
     except KeyboardInterrupt:
-        print("\r\n")
+        pass
     except Exception as e:
         print(f"\r\nError: {e}")
     print("Gracefully stopping ...")
