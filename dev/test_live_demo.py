@@ -56,7 +56,7 @@ if __name__ == "__main__":
     try:
         asyncio.run(bdp.main())
     except KeyboardInterrupt:
-        pass
+        print("\r\n")
     except Exception as e:
         print(f"\r\nError: {e}")
     print("Gracefully stopping ...")
