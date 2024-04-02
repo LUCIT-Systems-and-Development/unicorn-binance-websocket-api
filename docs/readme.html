@@ -374,15 +374,14 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 <h3><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order">Place orders</a>, <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.cancel_order">cancel orders</a> or <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.api">send other requests</a> via WebSocket:<a class="headerlink" href="#place-orders-cancel-orders-or-send-other-requests-via-websocket" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
 
+<span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;YOUR_BINANCE_API_KEY&quot;</span>
+<span class="n">api_secret</span> <span class="o">=</span> <span class="s2">&quot;YOUR_BINANCE_API_SECRET&quot;</span>
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">process_api_responses</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">while</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">is_stop_request</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">get_stream_data_from_asyncio_queue</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="n">ubwa</span><span class="o">.</span><span class="n">asyncio_queue_task_done</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">)</span>
-
-<span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;YOUR_BINANCE_API_KEY&quot;</span>
-<span class="n">api_secret</span> <span class="o">=</span> <span class="s2">&quot;YOUR_BINANCE_API_SECRET&quot;</span>
 
 <span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
 <span class="n">api_stream</span> <span class="o">=</span> <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1041,7 +1040,7 @@ companies from the US analyze binance.com market data - as long as they do not t
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Apr 02 2024 at 10:11 (CET).
+    Last updated on Apr 02 2024 at 10:14 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

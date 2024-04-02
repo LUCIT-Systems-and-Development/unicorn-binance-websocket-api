@@ -146,15 +146,14 @@ ubwa.unsubscribe_from_stream(stream_id=stream_id, channels=channels)
 ```
 from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 
+api_key = "YOUR_BINANCE_API_KEY"
+api_secret = "YOUR_BINANCE_API_SECRET"
 
 async def process_api_responses(stream_id=None):
     while ubwa.is_stop_request(stream_id=stream_id) is False:
         data = await ubwa.get_stream_data_from_asyncio_queue(stream_id=stream_id)
         print(data)
         ubwa.asyncio_queue_task_done(stream_id=stream_id)
-
-api_key = "YOUR_BINANCE_API_KEY"
-api_secret = "YOUR_BINANCE_API_SECRET"
 
 ubwa = BinanceWebSocketApiManager(exchange="binance.com")
 api_stream = ubwa.create_stream(api=True,
