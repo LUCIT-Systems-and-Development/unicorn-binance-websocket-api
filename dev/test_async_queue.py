@@ -30,6 +30,7 @@ class BinanceDataProcessor:
         current_update_id = {}
         while self.ubwa.is_stop_request(stream_id=stream_id) is False:
             data = await self.ubwa.get_stream_data_from_asyncio_queue(stream_id)
+            b = data['lalaal']
             if data.get('data'):
                 market = str(data.get('stream').split('@')[0]).lower()
                 current_update_id[market] = data.get('data').get('lastUpdateId')
@@ -44,6 +45,7 @@ class BinanceDataProcessor:
         print(f"Start processing data of {stream_id} ...")
         while self.ubwa.is_stop_request(stream_id=stream_id) is False:
             data = await self.ubwa.get_stream_data_from_asyncio_queue(stream_id)
+            b = data['2222']
             # print(data)
             self.ubwa.asyncio_queue_task_done(stream_id)
 
@@ -62,7 +64,7 @@ class BinanceDataProcessor:
         self.ubwa.create_stream(markets='arr', channels='!userData',
                                 api_key="api_key", api_secret="api_secret")
         while self.ubwa.is_manager_stopping() is False:
-            self.ubwa.print_summary()
+            #self.ubwa.print_summary()
             await asyncio.sleep(5)
 
 

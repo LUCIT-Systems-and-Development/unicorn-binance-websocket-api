@@ -456,6 +456,38 @@ class BinanceWebSocketApiManager(threading.Thread):
         if exc_type:
             logger.critical(f"An exception occurred: {exc_type} - {exc_value} - {error_traceback}")
 
+    async def _run_process_asyncio_queue(self, scope=None, stream_id=None) -> bool:
+        """ Execute a provided coroutine within the loop and process the exception results asynchronously."""
+        if stream_id is None:
+            return False
+        stream_label = self.get_stream_label(stream_id=stream_id)
+        if stream_label is None:
+            stream_label = ""
+        else:
+            stream_label = f" ({stream_label})"
+        try:
+            if scope == "global":
+                await self.process_asyncio_queue(stream_id=stream_id)
+            elif scope == "specific":
+                await self.specific_process_asyncio_queue[stream_id](stream_id=stream_id)
+            else:
+                return False
+            logger.debug(f"`process_asyncio_queue` of stream_id {stream_id}{stream_label} completed successfully.")
+            return True
+        except Exception as error_msg:
+            error_msg_wrapper = (f"Exception within to UBWA`s provided `process_asyncio_queue`-coroutine of stream "
+                                 f"'{stream_id}'{stream_label}: "
+                                 f"\033[1m\033[31m{type(error_msg).__name__} - {error_msg}\033[0m\r\n"
+                                 f"{traceback.format_exc()}")
+            print(f"\r\n{error_msg_wrapper}")
+            error_msg_wrapper = (f"Exception within to UBWA`s provided `process_asyncio_queue`-coroutine of stream "
+                                 f"'{stream_id}'{stream_label}: "
+                                 f"{type(error_msg).__name__} - {error_msg}\r\n"
+                                 f"{traceback.format_exc()}")
+            logger.critical(error_msg_wrapper)
+            self._crash_stream(stream_id=stream_id, error_msg=error_msg_wrapper)
+            return False
+
     async def _shutdown_asyncgens(self, stream_id=None, loop=None) -> bool:
         if loop is None:
             return False
@@ -595,6 +627,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Send a stream signal
         """
+        if str(error_msg).startswith("Stream with stream_id="):
+            match = re.search(r'Reason:\s*(.*)', error_msg)
+            if match:
+                error_msg = match.group(1)
         self.process_stream_signals(signal_type=signal_type,
                                     stream_id=stream_id,
                                     data_record=data_record,
@@ -740,6 +776,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'last_heartbeat': None,
                                        'stop_request': False,
                                        'crash_request': False,
+                                       'crash_request_reason': None,
                                        'loop_is_closing': False,
                                        'seconds_since_has_stopped': None,
                                        'has_stopped': None,
@@ -753,7 +790,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                        'last_received_data_record': None,
                                        'processed_receives_statistic': {},
                                        'transfer_rate_per_second': {'bytes': {}, 'speed': 0},
-                                       'websocket_uri': None}
+                                       'websocket_uri': None,
+                                       '3rd-party-future': None}
         logger.info("BinanceWebSocketApiManager._add_stream_to_stream_list(" +
                     str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
                     + str(stream_buffer_name) + ", " + str(stream_buffer_maxlen) + ", " + str(symbols) + ")")
@@ -816,6 +854,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         except RuntimeError as error_msg:
             logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                          f" - RuntimeError `error: 12` - error_msg: {str(error_msg)}")
+        except Exception as error_msg:
+            logger.critical(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)} - Unknown Exception - "
+                            f"Please report this issue if your stream does not restart: "
+                            f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose"
+                            f" - error_msg: {str(error_msg)}")
         finally:
             logger.debug(f"Finally closing the loop stream_id={str(stream_id)}")
             try:
@@ -1694,7 +1737,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - Adding "
                          f"`specific_process_asyncio_queue[{stream_id}]()` to asyncio loop ...")
             if self.get_event_loop_by_stream_id(stream_id=stream_id) is not None:
-                asyncio.run_coroutine_threadsafe(self.specific_process_asyncio_queue[stream_id](stream_id=stream_id),
+                asyncio.run_coroutine_threadsafe(self._run_process_asyncio_queue(scope="specific",
+                                                                                 stream_id=stream_id),
                                                  self.get_event_loop_by_stream_id(stream_id=stream_id))
             else:
                 logger.error(f"BinanceWebSocketApiManager.create_stream({stream_id} - No valid asyncio loop!")
@@ -1705,7 +1749,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.debug(f"BinanceWebSocketApiManager.create_stream({stream_id} - "
                              f"Adding `process_asyncio_queue()` to asyncio loop ...")
                 if self.get_event_loop_by_stream_id(stream_id=stream_id) is not None:
-                    asyncio.run_coroutine_threadsafe(self.process_asyncio_queue(stream_id=stream_id),
+                    asyncio.run_coroutine_threadsafe(self._run_process_asyncio_queue(scope="global",
+                                                                                     stream_id=stream_id),
                                                      self.get_event_loop_by_stream_id(stream_id=stream_id))
                 else:
                     logger.error(f"BinanceWebSocketApiManager.create_stream({stream_id} - No valid asyncio loop!")
@@ -2305,7 +2350,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: dict or None
         """
         try:
-            respond = requests.get('https://api.github.com/repos/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest')
+            respond = requests.get(f'https://api.github.com/repos/LUCIT-Systems-and-Development/'
+                                   f'unicorn-binance-websocket-api/releases/latest')
             latest_release_info = respond.json()
             return latest_release_info
         except Exception:
@@ -4128,18 +4174,21 @@ class BinanceWebSocketApiManager(threading.Thread):
                                  f"requests.exceptions.ConnectionError: {error_msg}")
         return True
 
-    def _crash_stream(self, stream_id):
+    def _crash_stream(self, stream_id, error_msg=None):
         """
         Loop inside: Stop a specific stream with 'crashed' status
 
         :param stream_id: id of a stream
         :type stream_id: str
+        :param error_msg: Reason
+        :type error_msg: str
         :return: bool
         """
         # stop a specific stream by stream_id
         logger.critical(f"BinanceWebSocketApiManager._crash_stream({stream_id}){self.get_debug_log()}")
         try:
             self.stream_list[stream_id]['crash_request'] = True
+            self.stream_list[stream_id]['crash_request_reason'] = error_msg
         except KeyError:
             return False
         return True
@@ -4160,7 +4209,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.set_socket_is_ready(stream_id)
         if error_msg is not None:
             self.stream_list[stream_id]['status'] += " - " + str(error_msg)
-        self.send_stream_signal(stream_id=stream_id, signal_type="STREAM_UNREPAIRABLE")
+        else:
+            if self.stream_list[stream_id]['crash_request_reason'] is not None:
+                error_msg = self.stream_list[stream_id]['crash_request_reason']
+        self.send_stream_signal(stream_id=stream_id, signal_type="STREAM_UNREPAIRABLE", error_msg=error_msg)
         return True
 
     def _stream_is_restarting(self, stream_id, error_msg=None):
@@ -4259,7 +4311,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                         "been exceeded!"
             logger.critical(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) "
                             f"Info: {str(error_msg)}")
-            self._crash_stream(stream_id)
+            self._crash_stream(stream_id, error_msg=error_msg)
             return False
 
         try:
