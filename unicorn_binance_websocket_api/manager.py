@@ -104,7 +104,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data
                                   is received. This method guarantees the fastest possible asynchronous processing of
                                   the data in the correct receiving sequence.
-                                  https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task
+                                  https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-coroutine
     :type process_asyncio_queue: Optional[Callable]
     :param process_stream_data: Provide a function/method to process the received webstream data (callback). The function
                                 will be called instead of
@@ -735,7 +735,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data
                                       is received. This method guarantees the fastest possible asynchronous processing of
                                       the data in the correct receiving sequence.
-                                      https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task
+                                      https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-coroutine
         :type process_asyncio_queue: Optional[Callable]
         """
         output = output or self.output_default
@@ -1635,7 +1635,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data
                                       is received. This method guarantees the fastest possible asynchronous processing of
                                       the data in the correct receiving sequence.
-                                      https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task
+                                      https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-coroutine
         :type process_asyncio_queue: Optional[Callable]
 
         :return: stream_id or 'None'

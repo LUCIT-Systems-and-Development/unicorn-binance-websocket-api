@@ -81,7 +81,7 @@ ubwa.create_stream(channels=['trade', 'kline_1m'],
                    process_stream_data=process_new_receives)
 ```
 
-### Or await the webstream data in an asyncio task:
+### Or await the webstream data in an asyncio coroutine:
 
 This is the recommended method for processing data from web streams.
 
@@ -109,8 +109,7 @@ with BinanceWebSocketApiManager(exchange='binance.com') as ubwa:
     except KeyboardInterrupt:
         print("\r\nGracefully stopping ...")
     except Exception as error_msg:
-        print(f"\r\nERROR: {error_msg}")
-        print("Gracefully stopping ...")
+        print(f"\r\nERROR: {error_msg}\r\nGracefully stopping ...")
 ```
 
 Basically that's it, but there are more options.
@@ -118,7 +117,7 @@ Basically that's it, but there are more options.
 ### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://www.lucit.tech/unicorn-fy.html):
 
 ```
-unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_data_from_stream_buffer)
+unicorn_fied_stream_data = UnicornFy.binance_com_websocket(data)
 ```
 
 or

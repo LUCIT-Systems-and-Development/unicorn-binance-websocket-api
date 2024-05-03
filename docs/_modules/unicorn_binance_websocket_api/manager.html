@@ -252,7 +252,7 @@
 <span class="sd">    :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data</span>
 <span class="sd">                                  is received. This method guarantees the fastest possible asynchronous processing of</span>
 <span class="sd">                                  the data in the correct receiving sequence.</span>
-<span class="sd">                                  https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task</span>
+<span class="sd">                                  https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-coroutine</span>
 <span class="sd">    :type process_asyncio_queue: Optional[Callable]</span>
 <span class="sd">    :param process_stream_data: Provide a function/method to process the received webstream data (callback). The function</span>
 <span class="sd">                                will be called instead of</span>
@@ -604,6 +604,38 @@
         <span class="k">if</span> <span class="n">exc_type</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An exception occurred: </span><span class="si">{</span><span class="n">exc_type</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">exc_value</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">error_traceback</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_run_process_asyncio_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stream_id</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Execute a provided coroutine within the loop and process the exception results asynchronously.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">stream_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_stream_label</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">stream_label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">stream_label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="n">stream_label</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">scope</span> <span class="o">==</span> <span class="s2">&quot;global&quot;</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_asyncio_queue</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">scope</span> <span class="o">==</span> <span class="s2">&quot;specific&quot;</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">specific_process_asyncio_queue</span><span class="p">[</span><span class="n">stream_id</span><span class="p">](</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`process_asyncio_queue` of stream_id </span><span class="si">{</span><span class="n">stream_id</span><span class="si">}{</span><span class="n">stream_label</span><span class="si">}</span><span class="s2"> completed successfully.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
+            <span class="n">error_msg_wrapper</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception within to UBWA`s provided `process_asyncio_queue`-coroutine of stream &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">&#39;</span><span class="si">{</span><span class="n">stream_label</span><span class="si">}</span><span class="s2">: &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="se">\033</span><span class="s2">[31m</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="se">\033</span><span class="s2">[0m</span><span class="se">\r\n</span><span class="s2">&quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="si">{</span><span class="n">error_msg_wrapper</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">error_msg_wrapper</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exception within to UBWA`s provided `process_asyncio_queue`-coroutine of stream &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">&#39;</span><span class="si">{</span><span class="n">stream_label</span><span class="si">}</span><span class="s2">: &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="se">\r\n</span><span class="s2">&quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">error_msg_wrapper</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_crash_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">error_msg</span><span class="o">=</span><span class="n">error_msg_wrapper</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_shutdown_asyncgens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">loop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -751,6 +783,10 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send a stream signal</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Stream with stream_id=&quot;</span><span class="p">):</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Reason:\s*(.*)&#39;</span><span class="p">,</span> <span class="n">error_msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="n">error_msg</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process_stream_signals</span><span class="p">(</span><span class="n">signal_type</span><span class="o">=</span><span class="n">signal_type</span><span class="p">,</span>
                                     <span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span>
                                     <span class="n">data_record</span><span class="o">=</span><span class="n">data_record</span><span class="p">,</span>
@@ -856,7 +892,7 @@
 <span class="sd">        :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data</span>
 <span class="sd">                                      is received. This method guarantees the fastest possible asynchronous processing of</span>
 <span class="sd">                                      the data in the correct receiving sequence.</span>
-<span class="sd">                                      https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task</span>
+<span class="sd">                                      https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-coroutine</span>
 <span class="sd">        :type process_asyncio_queue: Optional[Callable]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">output</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_default</span>
@@ -897,6 +933,7 @@
                                        <span class="s1">&#39;last_heartbeat&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                                        <span class="s1">&#39;stop_request&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
                                        <span class="s1">&#39;crash_request&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                                       <span class="s1">&#39;crash_request_reason&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                                        <span class="s1">&#39;loop_is_closing&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
                                        <span class="s1">&#39;seconds_since_has_stopped&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                                        <span class="s1">&#39;has_stopped&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
@@ -910,7 +947,8 @@
                                        <span class="s1">&#39;last_received_data_record&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                                        <span class="s1">&#39;processed_receives_statistic&#39;</span><span class="p">:</span> <span class="p">{},</span>
                                        <span class="s1">&#39;transfer_rate_per_second&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;bytes&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;speed&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
-                                       <span class="s1">&#39;websocket_uri&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+                                       <span class="s1">&#39;websocket_uri&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                                       <span class="s1">&#39;3rd-party-future&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;BinanceWebSocketApiManager._add_stream_to_stream_list(&quot;</span> <span class="o">+</span>
                     <span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">markets</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_label</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span>
                     <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_buffer_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_buffer_maxlen</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
@@ -973,6 +1011,11 @@
         <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread() stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
                          <span class="sa">f</span><span class="s2">&quot; - RuntimeError `error: 12` - error_msg: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._create_stream_thread(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2"> - Unknown Exception - &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;Please report this issue if your stream does not restart: &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot; - error_msg: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finally closing the loop stream_id=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
@@ -1781,7 +1824,7 @@
 <span class="sd">        :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data</span>
 <span class="sd">                                      is received. This method guarantees the fastest possible asynchronous processing of</span>
 <span class="sd">                                      the data in the correct receiving sequence.</span>
-<span class="sd">                                      https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-task</span>
+<span class="sd">                                      https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-coroutine</span>
 <span class="sd">        :type process_asyncio_queue: Optional[Callable]</span>
 
 <span class="sd">        :return: stream_id or &#39;None&#39;</span>
@@ -1883,7 +1926,8 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.create_stream(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2"> - Adding &quot;</span>
                          <span class="sa">f</span><span class="s2">&quot;`specific_process_asyncio_queue[</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">]()` to asyncio loop ...&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_event_loop_by_stream_id</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">specific_process_asyncio_queue</span><span class="p">[</span><span class="n">stream_id</span><span class="p">](</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">),</span>
+                <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_process_asyncio_queue</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;specific&quot;</span><span class="p">,</span>
+                                                                                 <span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">),</span>
                                                  <span class="bp">self</span><span class="o">.</span><span class="n">get_event_loop_by_stream_id</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.create_stream(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2"> - No valid asyncio loop!&quot;</span><span class="p">)</span>
@@ -1894,7 +1938,8 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.create_stream(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2"> - &quot;</span>
                              <span class="sa">f</span><span class="s2">&quot;Adding `process_asyncio_queue()` to asyncio loop ...&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_event_loop_by_stream_id</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">process_asyncio_queue</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">),</span>
+                    <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_process_asyncio_queue</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;global&quot;</span><span class="p">,</span>
+                                                                                     <span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">),</span>
                                                      <span class="bp">self</span><span class="o">.</span><span class="n">get_event_loop_by_stream_id</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.create_stream(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2"> - No valid asyncio loop!&quot;</span><span class="p">)</span>
@@ -2563,7 +2608,8 @@
 <span class="sd">        :return: dict or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">respond</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://api.github.com/repos/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest&#39;</span><span class="p">)</span>
+            <span class="n">respond</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;https://api.github.com/repos/LUCIT-Systems-and-Development/&#39;</span>
+                                   <span class="sa">f</span><span class="s1">&#39;unicorn-binance-websocket-api/releases/latest&#39;</span><span class="p">)</span>
             <span class="n">latest_release_info</span> <span class="o">=</span> <span class="n">respond</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">latest_release_info</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -4618,18 +4664,21 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_crash_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_crash_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">,</span> <span class="n">error_msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Loop inside: Stop a specific stream with &#39;crashed&#39; status</span>
 
 <span class="sd">        :param stream_id: id of a stream</span>
 <span class="sd">        :type stream_id: str</span>
+<span class="sd">        :param error_msg: Reason</span>
+<span class="sd">        :type error_msg: str</span>
 <span class="sd">        :return: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># stop a specific stream by stream_id</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager._crash_stream(</span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2">)</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_log</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;crash_request&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;crash_request_reason&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">error_msg</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="kc">True</span>
@@ -4650,7 +4699,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_socket_is_ready</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">error_msg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; - &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">send_stream_signal</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">signal_type</span><span class="o">=</span><span class="s2">&quot;STREAM_UNREPAIRABLE&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;crash_request_reason&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">error_msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;crash_request_reason&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_stream_signal</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">signal_type</span><span class="o">=</span><span class="s2">&quot;STREAM_UNREPAIRABLE&quot;</span><span class="p">,</span> <span class="n">error_msg</span><span class="o">=</span><span class="n">error_msg</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_stream_is_restarting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">,</span> <span class="n">error_msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -4751,7 +4803,7 @@
                         <span class="s2">&quot;been exceeded!&quot;</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.subscribe_to_stream(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2">) &quot;</span>
                             <span class="sa">f</span><span class="s2">&quot;Info: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_crash_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_crash_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">error_msg</span><span class="o">=</span><span class="n">error_msg</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -4998,7 +5050,7 @@
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Apr 02 2024 at 10:11 (CET).
+    Last updated on May 03 2024 at 21:15 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
