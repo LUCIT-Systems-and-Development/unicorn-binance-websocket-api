@@ -80,6 +80,7 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#stop-ubwa-after-usage-to-avoid-memory-leaks">Stop <code class="docutils literal notranslate"><span class="pre">ubwa</span></code> after usage to avoid memory leaks</a></li>
+<li><a class="reference internal" href="#stream-signals-know-the-state-of-your-streams">STREAM SIGNALS - know the state of your streams</a></li>
 <li><a class="reference internal" href="#description">Description</a><ul>
 <li><a class="reference internal" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api">What are the benefits of the UNICORN Binance WebSocket API?</a></li>
 </ul>
@@ -408,7 +409,37 @@ guide on
 </section>
 <section id="stop-ubwa-after-usage-to-avoid-memory-leaks">
 <h2>Stop <code class="docutils literal notranslate"><span class="pre">ubwa</span></code> after usage to avoid memory leaks<a class="headerlink" href="#stop-ubwa-after-usage-to-avoid-memory-leaks" title="Link to this heading">¶</a></h2>
+<p>When you instantiate UBWA with <code class="docutils literal notranslate"><span class="pre">with</span></code>, <code class="docutils literal notranslate"><span class="pre">ubwa.stop_manager()</span></code> is automatically executed upon exiting the <code class="docutils literal notranslate"><span class="pre">with</span></code>-block.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">()</span> <span class="k">as</span> <span class="n">ubwa</span><span class="p">:</span>
+    <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="s2">&quot;trade&quot;</span><span class="p">,</span> <span class="n">markets</span><span class="o">=</span><span class="s2">&quot;btcusdt&quot;</span><span class="p">,</span> <span class="n">stream_label</span><span class="o">=</span><span class="s2">&quot;TRADES&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Without <code class="docutils literal notranslate"><span class="pre">with</span></code>, you must explicitly execute <code class="docutils literal notranslate"><span class="pre">ubwa.stop_manager()</span></code> yourself.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ubwa</span><span class="o">.</span><span class="n">stop_manager</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="stream-signals-know-the-state-of-your-streams">
+<h2>STREAM SIGNALS - know the state of your streams<a class="headerlink" href="#stream-signals-know-the-state-of-your-streams" title="Link to this heading">¶</a></h2>
+<p>Usually you want to know when a stream is working and when it is not. This can be useful to know that your own system is
+currently “blind” and you may want to close open positions to be on the safe side, know that indicators will now provide
+incorrect values or that you have to reload the missing data via REST as an alternative.</p>
+<p>For this purpose, the UNICORN Binance WebSocket API provides so-called
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60">STREAM SIGNALS</a>
+, which are used to tell your code in real time when a stream is connected, when it received its first data record, when
+it was disconnected and stopped, and when the stream cannot be restored.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">process_stream_signals</span><span class="p">(</span><span class="n">signal_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stream_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_record</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">error_msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received stream_signal for stream &#39;</span><span class="si">{</span><span class="n">ubwa</span><span class="o">.</span><span class="n">get_stream_label</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;: &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">signal_type</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">stream_id</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">data_record</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">process_stream_signals</span><span class="o">=</span><span class="n">process_stream_signals</span><span class="p">)</span> <span class="k">as</span> <span class="n">ubwa</span><span class="p">:</span>
+    <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="s2">&quot;trade&quot;</span><span class="p">,</span> <span class="n">markets</span><span class="o">=</span><span class="s2">&quot;btcusdt&quot;</span><span class="p">,</span> <span class="n">stream_label</span><span class="o">=</span><span class="s2">&quot;TRADES&quot;</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Waiting 5 seconds and then stop the stream ...&quot;</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html">Discover even more possibilities</a>
@@ -885,6 +916,7 @@ companies from the US analyze binance.com market data - as long as they do not t
 </ul>
 </li>
 <li><a class="reference internal" href="#stop-ubwa-after-usage-to-avoid-memory-leaks">Stop <code class="docutils literal notranslate"><span class="pre">ubwa</span></code> after usage to avoid memory leaks</a></li>
+<li><a class="reference internal" href="#stream-signals-know-the-state-of-your-streams">STREAM SIGNALS - know the state of your streams</a></li>
 <li><a class="reference internal" href="#description">Description</a><ul>
 <li><a class="reference internal" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api">What are the benefits of the UNICORN Binance WebSocket API?</a></li>
 </ul>
@@ -1039,7 +1071,7 @@ companies from the US analyze binance.com market data - as long as they do not t
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on May 03 2024 at 22:19 (CET).
+    Last updated on May 04 2024 at 11:22 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
