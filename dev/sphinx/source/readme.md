@@ -114,7 +114,7 @@ with BinanceWebSocketApiManager(exchange='binance.com') as ubwa:
 
 Basically that's it, but there are more options.
 
-### Convert received stream data into well-formed Python dictionaries with [UnicornFy](https://www.lucit.tech/unicorn-fy.html):
+## Convert received stream data into well-formed Python dictionaries with [UnicornFy](https://www.lucit.tech/unicorn-fy.html):
 
 ```
 unicorn_fied_stream_data = UnicornFy.binance_com_websocket(data)
