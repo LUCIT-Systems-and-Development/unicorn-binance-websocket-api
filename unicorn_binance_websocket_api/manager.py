@@ -855,10 +855,21 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} "
                          f" - RuntimeError `error: 12` - error_msg: {str(error_msg)}")
         except Exception as error_msg:
-            logger.critical(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)} - Unknown Exception - "
-                            f"Please report this issue if your stream does not restart: "
-                            f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose"
-                            f" - error_msg: {str(error_msg)}")
+            stream_label = self.get_stream_label(stream_id=stream_id)
+            if stream_label is None:
+                stream_label = ""
+            else:
+                stream_label = f" ({stream_label})"
+            error_msg_wrapper = (f"Exception within a coroutine of stream '{stream_id}'{stream_label}: "
+                                 f"\033[1m\033[31m{type(error_msg).__name__} - {error_msg}\033[0m\r\n"
+                                 f"{traceback.format_exc()}")
+            print(f"\r\n{error_msg_wrapper}")
+            error_msg_wrapper = (f"Exception within to UBWA`s provided `process_asyncio_queue`-coroutine of stream "
+                                 f"'{stream_id}'{stream_label}: "
+                                 f"{type(error_msg).__name__} - {error_msg}\r\n"
+                                 f"{traceback.format_exc()}")
+            logger.critical(error_msg_wrapper)
+            self._crash_stream(stream_id=stream_id, error_msg=error_msg_wrapper)
         finally:
             logger.debug(f"Finally closing the loop stream_id={str(stream_id)}")
             try:

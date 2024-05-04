@@ -177,6 +177,16 @@ ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSD
 guide on 
 [how to process requests via the Binance WebSocket API](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404)!
 
+## STREAM SIGNALS - know the state of your streams
+Usually you want to know when a stream is working and when it is not. This can be useful to know that your own system is 
+currently "blind" and you may want to close open positions to be on the safe side, know that indicators will now provide 
+incorrect values or that you have to reload the missing data via REST as an alternative. 
+
+For this purpose, the UNICORN Binance WebSocket API provides so-called 
+[STREAM SIGNALS](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60)
+, which are used to tell your code in real time when a stream is connected, when it received its first data record, when 
+it was disconnected and stopped, and when the stream cannot be restored.
+
 ## Stop `ubwa` after usage to avoid memory leaks
 
 ```
