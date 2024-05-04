@@ -1,11 +1,11 @@
-# Binance WebSocket Stream Signals
+# Binance WebSocket `stream_signals`
 ## Overview
 Usually you want to know when a stream is working and when it is not. This can be useful to know that your own system is 
 currently "blind" and you may want to close open positions to be on the safe side, know that indicators will now provide 
 incorrect values or that you have to reload the missing data via REST as an alternative. 
 
 For this purpose, the UNICORN Binance WebSocket API provides so-called 
-[STREAM SIGNALS](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60)
+[`stream_signals`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60)
 , which are used to tell your code in real time when a stream is connected, when it received its first data record, when 
 it was disconnected and stopped, and when the stream cannot be restored.
 

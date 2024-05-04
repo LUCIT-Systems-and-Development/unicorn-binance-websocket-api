@@ -71,16 +71,16 @@
 <li><a class="reference internal" href="#and-4-more-lines-to-print-out-the-data">And 4 more lines to print out the data:</a></li>
 <li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do:</a></li>
 <li><a class="reference internal" href="#or-await-the-webstream-data-in-an-asyncio-coroutine">Or await the webstream data in an asyncio coroutine:</a></li>
-<li><a class="reference internal" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received raw webstream data into well-formed Python dictionaries with UnicornFy:</a></li>
-<li><a class="reference internal" href="#subscribe-unsubscribe-new-markets-and-channels">Subscribe / unsubscribe new markets and channels:</a></li>
+<li><a class="reference internal" href="#convert-received-stream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received stream data into well-formed Python dictionaries with UnicornFy:</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#subscribe-unsubscribe-new-markets-and-channels">Subscribe / unsubscribe new markets and channels:</a></li>
 <li><a class="reference internal" href="#send-requests-to-binance-websocket-api">Send Requests to Binance WebSocket API</a><ul>
 <li><a class="reference internal" href="#place-orders-cancel-orders-or-send-other-requests-via-websocket">Place orders, cancel orders or send other requests via WebSocket:</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#stop-ubwa-after-usage-to-avoid-memory-leaks">Stop <code class="docutils literal notranslate"><span class="pre">ubwa</span></code> after usage to avoid memory leaks</a></li>
-<li><a class="reference internal" href="#stream-signals-know-the-state-of-your-streams">STREAM SIGNALS - know the state of your streams</a></li>
+<li><a class="reference internal" href="#stream-signals-know-the-state-of-your-streams"><code class="docutils literal notranslate"><span class="pre">stream_signals</span></code> - know the state of your streams</a></li>
 <li><a class="reference internal" href="#description">Description</a><ul>
 <li><a class="reference internal" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api">What are the benefits of the UNICORN Binance WebSocket API?</a></li>
 </ul>
@@ -344,8 +344,8 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 </div>
 <p>Basically that’s it, but there are more options.</p>
 </section>
-<section id="convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">
-<h3>Convert received raw webstream data into well-formed Python dictionaries with <a class="reference external" href="https://www.lucit.tech/unicorn-fy.html">UnicornFy</a>:<a class="headerlink" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy" title="Link to this heading">¶</a></h3>
+<section id="convert-received-stream-data-into-well-formed-python-dictionaries-with-unicornfy">
+<h3>Convert received stream data into well-formed Python dictionaries with <a class="reference external" href="https://www.lucit.tech/unicorn-fy.html">UnicornFy</a>:<a class="headerlink" href="#convert-received-stream-data-into-well-formed-python-dictionaries-with-unicornfy" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unicorn_fied_stream_data</span> <span class="o">=</span> <span class="n">UnicornFy</span><span class="o">.</span><span class="n">binance_com_websocket</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -354,8 +354,9 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 </pre></div>
 </div>
 </section>
+</section>
 <section id="subscribe-unsubscribe-new-markets-and-channels">
-<h3><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream">Subscribe</a> / <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a> new markets and channels:<a class="headerlink" href="#subscribe-unsubscribe-new-markets-and-channels" title="Link to this heading">¶</a></h3>
+<h2><a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream">Subscribe</a> / <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream">unsubscribe</a> new markets and channels:<a class="headerlink" href="#subscribe-unsubscribe-new-markets-and-channels" title="Link to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">markets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;engbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;zileth&#39;</span><span class="p">]</span>
 <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;kline_5m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_15m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_30m&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1h&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_12h&#39;</span><span class="p">,</span> <span class="s1">&#39;depth5&#39;</span><span class="p">]</span>
 
@@ -366,7 +367,6 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 <span class="n">ubwa</span><span class="o">.</span><span class="n">unsubscribe_from_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
 </section>
 <section id="send-requests-to-binance-websocket-api">
 <h2>Send Requests to Binance WebSocket API<a class="headerlink" href="#send-requests-to-binance-websocket-api" title="Link to this heading">¶</a></h2>
@@ -420,12 +420,12 @@ guide on
 </div>
 </section>
 <section id="stream-signals-know-the-state-of-your-streams">
-<h2>STREAM SIGNALS - know the state of your streams<a class="headerlink" href="#stream-signals-know-the-state-of-your-streams" title="Link to this heading">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">stream_signals</span></code> - know the state of your streams<a class="headerlink" href="#stream-signals-know-the-state-of-your-streams" title="Link to this heading">¶</a></h2>
 <p>Usually you want to know when a stream is working and when it is not. This can be useful to know that your own system is
 currently “blind” and you may want to close open positions to be on the safe side, know that indicators will now provide
 incorrect values or that you have to reload the missing data via REST as an alternative.</p>
 <p>For this purpose, the UNICORN Binance WebSocket API provides so-called
-<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60">STREAM SIGNALS</a>
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60"><code class="docutils literal notranslate"><span class="pre">stream_signals</span></code></a>
 , which are used to tell your code in real time when a stream is connected, when it received its first data record, when
 it was disconnected and stopped, and when the stream cannot be restored.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
@@ -907,16 +907,16 @@ companies from the US analyze binance.com market data - as long as they do not t
 <li><a class="reference internal" href="#and-4-more-lines-to-print-out-the-data">And 4 more lines to print out the data:</a></li>
 <li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do:</a></li>
 <li><a class="reference internal" href="#or-await-the-webstream-data-in-an-asyncio-coroutine">Or await the webstream data in an asyncio coroutine:</a></li>
-<li><a class="reference internal" href="#convert-received-raw-webstream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received raw webstream data into well-formed Python dictionaries with UnicornFy:</a></li>
-<li><a class="reference internal" href="#subscribe-unsubscribe-new-markets-and-channels">Subscribe / unsubscribe new markets and channels:</a></li>
+<li><a class="reference internal" href="#convert-received-stream-data-into-well-formed-python-dictionaries-with-unicornfy">Convert received stream data into well-formed Python dictionaries with UnicornFy:</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#subscribe-unsubscribe-new-markets-and-channels">Subscribe / unsubscribe new markets and channels:</a></li>
 <li><a class="reference internal" href="#send-requests-to-binance-websocket-api">Send Requests to Binance WebSocket API</a><ul>
 <li><a class="reference internal" href="#place-orders-cancel-orders-or-send-other-requests-via-websocket">Place orders, cancel orders or send other requests via WebSocket:</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#stop-ubwa-after-usage-to-avoid-memory-leaks">Stop <code class="docutils literal notranslate"><span class="pre">ubwa</span></code> after usage to avoid memory leaks</a></li>
-<li><a class="reference internal" href="#stream-signals-know-the-state-of-your-streams">STREAM SIGNALS - know the state of your streams</a></li>
+<li><a class="reference internal" href="#stream-signals-know-the-state-of-your-streams"><code class="docutils literal notranslate"><span class="pre">stream_signals</span></code> - know the state of your streams</a></li>
 <li><a class="reference internal" href="#description">Description</a><ul>
 <li><a class="reference internal" href="#what-are-the-benefits-of-the-unicorn-binance-websocket-api">What are the benefits of the UNICORN Binance WebSocket API?</a></li>
 </ul>
@@ -1071,7 +1071,7 @@ companies from the US analyze binance.com market data - as long as they do not t
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on May 04 2024 at 11:22 (CET).
+    Last updated on May 04 2024 at 11:34 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
