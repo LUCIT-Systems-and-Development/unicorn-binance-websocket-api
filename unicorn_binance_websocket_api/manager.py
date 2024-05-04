@@ -864,8 +864,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                  f"\033[1m\033[31m{type(error_msg).__name__} - {error_msg}\033[0m\r\n"
                                  f"{traceback.format_exc()}")
             print(f"\r\n{error_msg_wrapper}")
-            error_msg_wrapper = (f"Exception within to UBWA`s provided `process_asyncio_queue`-coroutine of stream "
-                                 f"'{stream_id}'{stream_label}: "
+            error_msg_wrapper = (f"Exception within a coroutine of stream '{stream_id}'{stream_label}: "
                                  f"{type(error_msg).__name__} - {error_msg}\r\n"
                                  f"{traceback.format_exc()}")
             logger.critical(error_msg_wrapper)

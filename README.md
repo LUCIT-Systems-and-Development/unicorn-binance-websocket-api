@@ -177,6 +177,18 @@ ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSD
 guide on 
 [how to process requests via the Binance WebSocket API](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404)!
 
+## Stop `ubwa` after usage to avoid memory leaks
+When you instantiate UBWA with `with`, `ubwa.stop_manager()` is automatically executed upon exiting the `with`-block.
+```
+with BinanceWebSocketApiManager() as ubwa:
+    ubwa.create_stream(channels="trade", markets="btcusdt", stream_label="TRADES")
+```
+
+Without `with`, you must explicitly execute `ubwa.stop_manager()` yourself.
+```
+ubwa.stop_manager()
+```
+
 ## STREAM SIGNALS - know the state of your streams
 Usually you want to know when a stream is working and when it is not. This can be useful to know that your own system is 
 currently "blind" and you may want to close open positions to be on the safe side, know that indicators will now provide 
@@ -187,10 +199,19 @@ For this purpose, the UNICORN Binance WebSocket API provides so-called
 , which are used to tell your code in real time when a stream is connected, when it received its first data record, when 
 it was disconnected and stopped, and when the stream cannot be restored.
 
-## Stop `ubwa` after usage to avoid memory leaks
-
 ```
-ubwa.stop_manager()
+from unicorn_binance_websocket_api import BinanceWebSocketApiManager
+import time
+
+def process_stream_signals(signal_type=None, stream_id=None, data_record=None, error_msg=None):
+    print(f"Received stream_signal for stream '{ubwa.get_stream_label(stream_id=stream_id)}': "
+          f"{signal_type} - {stream_id} - {data_record} - {error_msg}")
+
+with BinanceWebSocketApiManager(process_stream_signals=process_stream_signals) as ubwa:
+    ubwa.create_stream(channels="trade", markets="btcusdt", stream_label="TRADES")
+    time.sleep(2)
+    print(f"Waiting 5 seconds and then stop the stream ...")
+    time.sleep(5)
 ```
 
 [Discover even more possibilities](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html)
