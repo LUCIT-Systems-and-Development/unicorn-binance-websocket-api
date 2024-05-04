@@ -217,9 +217,10 @@ with BinanceWebSocketApiManager(process_stream_signals=process_stream_signals) a
     time.sleep(5)
 ```
 
-[Discover even more possibilities](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html)
-or [use this script](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_everything.py) 
-to stream everything from "binance.com".
+## More?
+
+[Discover even more possibilities](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html), [use this script](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_everything.py) 
+to stream everything from "binance.com" or try our [examples](#examples)!
 
 This should be known by everyone using this lib: 
 
