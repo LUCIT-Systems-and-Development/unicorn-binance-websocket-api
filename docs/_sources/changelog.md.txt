@@ -9,7 +9,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.5.0.dev (development stage/unreleased/unstable)
+## 2.6.0.dev (development stage/unreleased/unstable)
+
+## 2.6.0
+### Added
+- Better Logging to investigate [issue#374](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/374)
+- `send_with_stream()` - Send a payload with a specific stream.
+### Changed
+- Replaced all calls of `add_payload_to_stream()` in `manager.py`, `api.py` with `send_with_stream()`
+- Calling `set_socket_is_not_ready()` in `sockets.__aexit__()`
 
 ## 2.5.0
 Functionally, nothing changes with this update. However, there are now sensible error messages if errors occur in the 
