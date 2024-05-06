@@ -517,7 +517,7 @@ class TestBinanceOrgManager(unittest.TestCase):
                 print(thread.name)
             print(f"TestApiLive stopping:")
 
-    def test_licmgr(self):
+    def test_lucitlicmgr(self):
         print(f"License Manager ...")
         ubwam = BinanceWebSocketApiManager(exchange='binance.com')
         ubwam.llm.get_info()
@@ -530,8 +530,10 @@ class TestBinanceOrgManager(unittest.TestCase):
         ubwam.llm.test()
         ubwam.llm.process_licensing_error()
         ubwam.llm.stop()
-        LucitLicensingManager(api_secret="wrong", license_token="credentials")
-
+        llm = LucitLicensingManager(api_secret="wrong", license_token="credentials")
+        time.sleep(3)
+        ubwam.stop_manager()
+        llm.stop()
 
     def test_live_api_ws(self):
         print(f"Test Websocket API ...")
