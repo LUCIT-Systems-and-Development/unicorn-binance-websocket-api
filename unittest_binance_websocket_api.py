@@ -19,8 +19,11 @@
 # All rights reserved.
 
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
+from unicorn_binance_websocket_api.exceptions import *
 from unicorn_binance_websocket_api.restserver import BinanceWebSocketApiRestServer
 from unicorn_binance_websocket_api.restclient import BinanceWebSocketApiRestclient
+from unicorn_binance_websocket_api.licensing_manager import LucitLicensingManager
+from unicorn_binance_rest_api import BinanceRestApiManager
 import asyncio
 import logging
 import unittest
@@ -527,7 +530,6 @@ class TestBinanceOrgManager(unittest.TestCase):
         ubwam.llm.test()
         ubwam.llm.process_licensing_error()
         ubwam.llm.stop()
-        from unicorn_binance_websocket_api.licensing_manager import LucitLicensingManager
         LucitLicensingManager(api_secret="wrong", license_token="credentials")
 
 
@@ -638,6 +640,12 @@ class TestApiLive(unittest.TestCase):
         self.assertEqual(self.count_receives, 5)
         time.sleep(3)
         self.__class__.ubwa.stop_stream(stream_id=stream_id_1)
+
+    def test_exceptions(self):
+        try:
+            raise StreamIsStopping(stream_id="blah", reason="test")
+        except StreamIsStopping as e:
+            print(str(e))
 
     def test_live_run(self):
         self.__class__.ubwa.get_active_stream_list()
@@ -822,8 +830,6 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.get_current_receiving_speed_global()
         self.__class__.ubwa.remove_ansi_escape_codes("test text")
         self.__class__.ubwa.pop_stream_signal_from_stream_signal_buffer()
-
-        from unicorn_binance_rest_api import BinanceRestApiManager
 
         with BinanceRestApiManager(exchange="binance.us") as ubra:
             markets = []
