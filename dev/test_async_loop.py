@@ -27,11 +27,11 @@ class BinanceDataProcessor:
         if self.print_new_data is True:
             print(f"Data record received and added to the database: {data}")
 
-    def processing_of_stream_signals(self, signal_type=False, stream_id=False, data_record=False):
+    def processing_of_stream_signals(self, signal_type=None, stream_id=None, data_record=None, error_msg=None):
         # More info about `stream_signals`:
         # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60
         print(f"Received STREAM SIGNAL for stream '{self.ubwa.get_stream_label(stream_id=stream_id)}': "
-              f"{signal_type} - {stream_id} - {data_record}")
+              f"{signal_type} - {stream_id} - {data_record} - {error_msg}")
 
     async def start(self):
         if self.start_multiplex is True:

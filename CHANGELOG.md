@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - `send_with_stream()` - Send a payload with a specific stream.
 ### Changed
 - Replaced all calls of `add_payload_to_stream()` in `manager.py`, `api.py` with `send_with_stream()`
+- Calling `set_socket_is_not_ready()` in `sockets.__aexit__()`
 
 ## 2.5.0
 Functionally, nothing changes with this update. However, there are now sensible error messages if errors occur in the 

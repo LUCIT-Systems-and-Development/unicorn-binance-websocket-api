@@ -49,6 +49,7 @@ class BinanceWebSocketApiSocket(object):
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         logger.debug(f"Leaving asynchronous with-context of BinanceWebSocketApiSocket() ...")
+        self.manager.set_socket_is_not_ready(stream_id=self.stream_id)
         if self.websocket is not None:
             try:
                 await self.websocket.close()

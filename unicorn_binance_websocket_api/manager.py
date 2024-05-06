@@ -573,7 +573,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.error(f"BinanceWebSocketApiManager._run_socket(stream_id={stream_id}), channels="
                              f"{channels}), markets={markets}) - Socks5ProxyConnectionError: {error_msg}")
                 self._stream_is_restarting(stream_id=stream_id, error_msg=str(error_msg))
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.1)
         if self.is_stop_request(stream_id=stream_id) is True:
             self._stream_is_stopping(stream_id=stream_id)
         elif self.is_crash_request(stream_id=stream_id) is True:
@@ -4045,27 +4045,31 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return False
 
-    def set_socket_is_not_ready(self, stream_id: str) -> None:
+    def set_socket_is_not_ready(self, stream_id: str) -> bool:
         """
         Set `socket_is_ready` for a specific stream to False.
 
         :param stream_id: id of the stream
         :type stream_id: str
+        :return: bool
         """
         logger.debug(f"BinanceWebSocketApiManager.set_socket_is_not_ready({stream_id}){self.get_debug_log()}")
         self.socket_is_ready[stream_id] = False
+        return True
 
-    def set_socket_is_ready(self, stream_id: str) -> None:
+    def set_socket_is_ready(self, stream_id: str) -> bool:
         """
         Set `socket_is_ready` for a specific stream to True.
 
         :param stream_id: id of the stream
         :type stream_id: str
+        :return: bool
         """
         logger.debug(f"BinanceWebSocketApiManager.set_socket_is_ready({stream_id}){self.get_debug_log()}")
         self.socket_is_ready[stream_id] = True
+        return True
 
-    def set_stream_label(self, stream_id, stream_label=None):
+    def set_stream_label(self, stream_id, stream_label=None) -> bool:
         """
         Set a stream_label by stream_id
 
@@ -4073,6 +4077,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: str
         :param stream_label: stream_label to set
         :type stream_label: str
+        :return: bool
         """
         try:
             self.stream_list[stream_id]['stream_label'] = stream_label
