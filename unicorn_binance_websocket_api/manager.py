@@ -60,7 +60,7 @@ except ImportError:
     from typing_extensions import Literal
 
 __app_name__: str = "unicorn-binance-websocket-api"
-__version__: str = "2.6.0"
+__version__: str = "2.6.0.dev"
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -678,6 +678,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return True
             except KeyError as error_msg:
                 logger.error(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - KeyError: {error_msg}")
+                return False
+            except AttributeError as error_msg:
+                logger.error(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - AttributeError: {error_msg}")
                 return False
         else:
             logger.error(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - No valid asyncio loop!")

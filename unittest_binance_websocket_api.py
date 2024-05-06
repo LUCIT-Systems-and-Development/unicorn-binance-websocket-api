@@ -514,6 +514,23 @@ class TestBinanceOrgManager(unittest.TestCase):
                 print(thread.name)
             print(f"TestApiLive stopping:")
 
+    def test_licmgr(self):
+        print(f"License Manager ...")
+        ubwam = BinanceWebSocketApiManager(exchange='binance.com')
+        ubwam.llm.get_info()
+        ubwam.llm.get_module_version()
+        ubwam.llm.get_quotas()
+        ubwam.llm.get_timestamp()
+        ubwam.llm.get_version()
+        ubwam.llm.is_verified()
+        ubwam.llm.sync_time()
+        ubwam.llm.test()
+        ubwam.llm.process_licensing_error()
+        ubwam.llm.stop()
+        from unicorn_binance_websocket_api.licensing_manager import LucitLicensingManager
+        LucitLicensingManager(api_secret="wrong", license_token="credentials")
+
+
     def test_live_api_ws(self):
         print(f"Test Websocket API ...")
         if not is_github_action_env():
@@ -521,7 +538,7 @@ class TestBinanceOrgManager(unittest.TestCase):
             api_stream = ubwam.create_stream(api=True, api_key=BINANCE_COM_API_KEY, api_secret=BINANCE_COM_API_SECRET,
                                              stream_label="Bobs Websocket API",
                                              process_stream_data=handle_socket_message)
-            time.sleep(1)
+            time.sleep(5)
             ubwam.api.get_listen_key(stream_id=api_stream)
             ubwam.api.get_server_time(stream_id=api_stream)
             ubwam.api.get_account_status(stream_id=api_stream)
@@ -537,7 +554,7 @@ class TestBinanceOrgManager(unittest.TestCase):
             ubwam.api.get_open_orders(stream_id=api_stream)
             ubwam.api.cancel_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
             ubwam.api.get_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
-            time.sleep(2)
+            time.sleep(5)
             ubwam.stop_manager()
 
 
