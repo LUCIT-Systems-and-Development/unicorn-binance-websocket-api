@@ -44,6 +44,7 @@ class BinanceWebSocketApiSocket(object):
     async def __aenter__(self):
         logger.debug(f"Entering asynchronous with-context of BinanceWebSocketApiSocket() ...")
         self.raise_exceptions()
+        self.manager.sockets[self.stream_id] = self
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -53,6 +54,7 @@ class BinanceWebSocketApiSocket(object):
                 await self.websocket.close()
             except AttributeError as error_msg:
                 logger.debug(f"BinanceWebSocketApiSocket.__aexit__() - error_msg: {error_msg}")
+        del self.manager.sockets[self.stream_id]
 
     async def start_socket(self):
         logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, {str(self.channels)}, "

@@ -412,6 +412,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.stream_signal_buffer = deque()
         self.stream_signal_buffer_lock = threading.Lock()
         self.socket_is_ready = {}
+        self.sockets = {}
         self.stream_threads = {}
         self.stream_threading_lock = {}
         self.total_received_bytes = 0
@@ -637,6 +638,50 @@ class BinanceWebSocketApiManager(threading.Thread):
                                     error_msg=error_msg)
         self.stream_list[stream_id]['last_stream_signal'] = signal_type
         return True
+
+    def send_with_stream(self, stream_id: str = None, payload: Union[dict, str] = None, timeout: float = 5.0) -> bool:
+        """
+        Send a payload with a specific stream.
+
+        :param stream_id: id of the stream to be used for sending.
+        :type stream_id: str
+        :param payload: The payload to add.
+        :type payload: dict or str(JSON)
+        :param timeout: Timeout to wait for a ready stream.
+        :type timeout: float or int
+
+        :return: bool
+        """
+        if type(payload) is dict:
+            payload = json.dumps(payload,
+                                 ensure_ascii=False)
+        if type(timeout) is int:
+            timeout = float(timeout)
+
+        if self.get_event_loop_by_stream_id(stream_id=stream_id) is not None:
+            start_time = time.time()
+            timeout_time = start_time + timeout
+            while self.is_socket_ready(stream_id=stream_id) is False:
+                if self.is_stop_request(stream_id=stream_id) is True \
+                        or self.is_crash_request(stream_id=stream_id) is True \
+                        or self.stream_list[stream_id]['status'].startswith("crashed") is True:
+                    logger.error(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - Socket is stopping!")
+                    return False
+                if time.time() > timeout_time:
+                    logger.error(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - Timeout exceeded!")
+                    return False
+                time.sleep(0.05)
+            try:
+                asyncio.run_coroutine_threadsafe(self.sockets[stream_id].websocket.send(payload),
+                                                 self.get_event_loop_by_stream_id(stream_id=stream_id))
+                logger.debug(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - Sent payload: {payload}")
+                return True
+            except KeyError as error_msg:
+                logger.error(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - KeyError: {error_msg}")
+                return False
+        else:
+            logger.error(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - No valid asyncio loop!")
+            return False
 
     def _add_stream_to_stream_list(self,
                                    stream_id,
@@ -4268,7 +4313,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.send_stream_signal(stream_id=stream_id, signal_type="STOP")
         return True
 
-    def subscribe_to_stream(self, stream_id, channels=None, markets=None):
+    def subscribe_to_stream(self, stream_id: str = None, channels=None, markets=None) -> bool:
         """
         Subscribe channels and/or markets to an existing stream
 
@@ -4288,19 +4333,23 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logger.info(f"BinanceWebSocketApiManager.subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                     f", " + str(markets) + f"){self.get_debug_log()} - started ... -")
-
-        if channels is not None:
+        if stream_id is None:
+            logger.critical(f"BinanceWebSocketApiManager.subscribe_to_stream() - Info: `stream_id` is missing!")
+            return False
+        if channels is None:
+            channels = []
+        else:
             if type(channels) is str:
                 channels = [channels]
             if type(channels) is set:
                 channels = list(channels)
-
-        if markets is not None:
+        if markets is None:
+            markets = []
+        else:
             if type(markets) is str:
                 markets = [markets]
             if type(markets) is set:
                 markets = list(markets)
-
         if type(self.stream_list[stream_id]['channels']) is str:
             self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels']]
         if type(self.stream_list[stream_id]['channels']) is set:
@@ -4309,9 +4358,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets']]
         if type(self.stream_list[stream_id]['markets']) is set:
             self.stream_list[stream_id]['markets'] = list(self.stream_list[stream_id]['markets'])
-
         self.stream_list[stream_id]['channels'] = list(set(self.stream_list[stream_id]['channels'] + channels))
-
         markets_new = []
         for market in markets:
             if "!" in market \
@@ -4326,12 +4373,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 elif self.is_exchange_type('cex'):
                     markets_new.append(str(market).lower())
         self.stream_list[stream_id]['markets'] = list(set(self.stream_list[stream_id]['markets'] + markets_new))
-
         payload = self.create_payload(stream_id, "subscribe",
                                       channels=self.stream_list[stream_id]['channels'],
                                       markets=self.stream_list[stream_id]['markets'])
         self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
-
         # control subscription limit:
         # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview
         if self.stream_list[stream_id]['subscriptions'] > self.max_subscriptions_per_stream:
@@ -4340,14 +4385,13 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.error(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - Info: {str(error_msg)}")
             self._crash_stream(stream_id, error_msg=error_msg)
             return False
-
         if payload is None:
             logger.error(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - Info: Payload is None!")
             return False
-
         try:
             for item in payload:
-                self.stream_list[stream_id]['payload'].append(item)
+                if self.send_with_stream(stream_id=stream_id, payload=item) is False:
+                    self.add_payload_to_stream(stream_id=stream_id, payload=item)
             logger.info(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}, {str(channels)}, "
                         f"{str(markets)}) finished ...")
             return True
@@ -4356,8 +4400,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                          f"{str(error_msg)}")
             return False
 
-
-    def unsubscribe_from_stream(self, stream_id, channels=None, markets=None):
+    def unsubscribe_from_stream(self, stream_id: str = None, channels=None, markets=None) -> bool:
         """
         Unsubscribe channels and/or markets to an existing stream
 
@@ -4377,6 +4420,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logger.info(f"BinanceWebSocketApiManager.unsubscribe_from_stream(" + str(stream_id) + ", " + str(channels) +
                     f", " + str(markets) + f"){self.get_debug_log()} - started ... -")
+        if stream_id is None:
+            logger.critical(f"BinanceWebSocketApiManager.unsubscribe_from_stream() - Info: `stream_id` is missing!")
+            return False
         if markets is None:
             markets = []
         if channels is None:
@@ -4402,14 +4448,17 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.stream_list[stream_id]['markets'].remove(market)
                 except ValueError:
                     pass
-        payload = self.create_payload(stream_id, "unsubscribe",
-                                      channels=channels, markets=markets)
+        payload = self.create_payload(stream_id, "unsubscribe", channels=channels, markets=markets)
+        if payload is None:
+            logger.error(f"BinanceWebSocketApiManager.unsubscribe_from_stream({str(stream_id)}) - Info: Payload is None!")
+            return False
         try:
             for item in payload:
-                self.stream_list[stream_id]['payload'].append(item)
+                if self.send_with_stream(stream_id=stream_id, payload=item) is False:
+                    self.add_payload_to_stream(stream_id=stream_id, payload=item)
             self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
-            logger.info("BinanceWebSocketApiManager.unsubscribe_from_stream(" + str(stream_id) + ", " + str(channels) +
-                        ", " + str(markets) + ") finished ...")
+            logger.info(f"BinanceWebSocketApiManager.unsubscribe_from_stream({str(stream_id)}, {str(channels)}, "
+                        f"{str(markets)}) finished ...")
         except TypeError as error_msg:
             logger.error(f"BinanceWebSocketApiManager.unsubscribe_from_stream({str(stream_id)}) - TypeError - "
                          f"{str(error_msg)}")

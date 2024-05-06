@@ -230,12 +230,13 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if self.manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
         if process_response is not None:
             with self.manager.process_response_lock:
                 entry = {'callback_function': process_response}
                 self.manager.process_response[request_id] = entry
-
-        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         if return_response is True:
             with self.manager.return_response_lock:
@@ -399,12 +400,13 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if self.manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
         if process_response is not None:
             with self.manager.process_response_lock:
                 entry = {'callback_function': process_response}
                 self.manager.process_response[request_id] = entry
-
-        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         if return_response is True:
             with self.manager.return_response_lock:
@@ -670,12 +672,13 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if self.manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
         if process_response is not None:
             with self.manager.process_response_lock:
                 entry = {'callback_function': process_response}
                 self.manager.process_response[request_id] = entry
-
-        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         if return_response is True:
             with self.manager.return_response_lock:
@@ -1011,12 +1014,13 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if self.manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
         if process_response is not None:
             with self.manager.process_response_lock:
                 entry = {'callback_function': process_response}
                 self.manager.process_response[request_id] = entry
-
-        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         if return_response is True:
             with self.manager.return_response_lock:
@@ -1205,12 +1209,13 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if self.manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
         if process_response is not None:
             with self.manager.process_response_lock:
                 entry = {'callback_function': process_response}
                 self.manager.process_response[request_id] = entry
-
-        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         if return_response is True:
             with self.manager.return_response_lock:
@@ -1301,12 +1306,13 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if self.manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
         if process_response is not None:
             with self.manager.process_response_lock:
                 entry = {'callback_function': process_response}
                 self.manager.process_response[request_id] = entry
-
-        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         if return_response is True:
             with self.manager.return_response_lock:
@@ -1448,12 +1454,13 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if self.manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
         if process_response is not None:
             with self.manager.process_response_lock:
                 entry = {'callback_function': process_response}
                 self.manager.process_response[request_id] = entry
-
-        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         if return_response is True:
             with self.manager.return_response_lock:
@@ -1601,12 +1608,13 @@ class BinanceWebSocketApiApi(object):
                    "method": method,
                    "params": params}
 
+        if self.manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
         if process_response is not None:
             with self.manager.process_response_lock:
                 entry = {'callback_function': process_response}
                 self.manager.process_response[request_id] = entry
-
-        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         if return_response is True:
             with self.manager.return_response_lock:
@@ -1765,12 +1773,13 @@ class BinanceWebSocketApiApi(object):
                    "method": "depth",
                    "params": params}
 
+        if self.manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
         if process_response is not None:
             with self.manager.process_response_lock:
                 entry = {'callback_function': process_response}
                 self.manager.process_response[request_id] = entry
-
-        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         if return_response is True:
             with self.manager.return_response_lock:
@@ -1853,12 +1862,13 @@ class BinanceWebSocketApiApi(object):
         payload = {"id": request_id,
                    "method": "time"}
 
+        if self.manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
         if process_response is not None:
             with self.manager.process_response_lock:
                 entry = {'callback_function': process_response}
                 self.manager.process_response[request_id] = entry
-
-        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         if return_response is True:
             with self.manager.return_response_lock:
@@ -1939,12 +1949,13 @@ class BinanceWebSocketApiApi(object):
         payload = {"id": request_id,
                    "method": "ping"}
 
+        if self.manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
         if process_response is not None:
             with self.manager.process_response_lock:
                 entry = {'callback_function': process_response}
                 self.manager.process_response[request_id] = entry
-
-        self.manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
         if return_response is True:
             with self.manager.return_response_lock:

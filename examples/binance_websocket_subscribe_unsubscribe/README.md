@@ -1,7 +1,6 @@
 # Binance Spot userData WebSocket Asynchronously
 ## Overview
-In this example, a userData stream for the binance.com spot account is set up in an AsyncIO loop and the data is 
-received asynchronously.
+How do subscriptions work?
 
 ## Prerequisites
 Ensure you have Python 3.7+ installed on your system. 
