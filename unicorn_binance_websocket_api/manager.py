@@ -60,7 +60,7 @@ except ImportError:
     from typing_extensions import Literal
 
 __app_name__: str = "unicorn-binance-websocket-api"
-__version__: str = "2.5.0"
+__version__: str = "2.6.0"
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -4133,7 +4133,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.error(f"BinanceWebSocketApiManager.split_payload() CEX result is None!")
                 return None
         elif self.is_exchange_type('dex'):
-            # Todo: ???
             logger.error(f"BinanceWebSocketApiManager.split_payload() DEX result is None! (Dev: Todo!)")
             # Todo:
             #  return None
