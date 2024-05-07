@@ -365,61 +365,84 @@ class TestBinanceOrgManager(unittest.TestCase):
         print(f"TestBinanceOrgManager stopping:")
 
     def test_create_uri_alltickers_regular_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_alltickers_regular_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["$all"], ["allTickers"]),
                          'wss://dex.binance.org/api/ws/$all@allTickers')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_alltickers_reverse_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_alltickers_reverse_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["allTickers"], ["$all"]),
                          'wss://dex.binance.org/api/ws/$all@allTickers')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_allminitickers_regular_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_allminitickers_regular_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["$all"], ["allMiniTickers"]),
                          'wss://dex.binance.org/api/ws/$all@allMiniTickers')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_allminitickers_reverse_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_allminitickers_reverse_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["allMiniTickers"], ["$all"]),
                          'wss://dex.binance.org/api/ws/$all@allMiniTickers')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_blockheight_regular_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_blockheight_regular_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["$all"], ["blockheight"]),
                          'wss://dex.binance.org/api/ws/$all@blockheight')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_blockheight_reverse_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_blockheight_reverse_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["blockheight"], ["$all"]),
                          'wss://dex.binance.org/api/ws/$all@blockheight')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_single_trades_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_single_trades_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["trades"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@trades')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_single_marketdepth_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_single_marketdepth_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["marketDepth"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@marketDepth')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_single_kline_1h_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_single_kline_1h_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["kline_1h"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@kline_1h')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_single_ticker_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_single_ticker_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["ticker"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@ticker')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_single_miniTicker_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_single_miniTicker_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["miniTicker"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@miniTicker')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_multi_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_multi_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(['trades', 'kline_1h'],
                                                                   ['RAVEN-F66_BNB', 'ANKR-E97_BNB']),
@@ -432,29 +455,39 @@ class TestBinanceOrgManager(unittest.TestCase):
         self.assertEqual(str(payload),
                          "[{'method': 'subscribe', 'topic': 'trades', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}, "
                          "{'method': 'subscribe', 'topic': 'kline_1h', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}]")
+        time.sleep(5)
+        self.__class__.ubwa.stop_stream(stream_id=stream_id)
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_user_address_orders_single_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_user_address_orders_single_org_subscribe:")
         self.assertEqual(
             self.__class__.ubwa.create_websocket_uri('orders',
                                                      'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'),
             'wss://dex.binance.org/api/ws/bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_user_address_accounts_single_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_user_address_accounts_single_org_subscribe:")
         self.assertEqual(
             self.__class__.ubwa.create_websocket_uri('accounts',
                                                      'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'),
             'wss://dex.binance.org/api/ws/bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_user_address_transfers_single_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_user_address_transfers_single_org_subscribe:")
         self.assertEqual(
             self.__class__.ubwa.create_websocket_uri('transfers',
                                                      'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'),
             'wss://dex.binance.org/api/ws/bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_uri_user_address_multi_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_uri_user_address_multi_org_subscribe:")
         stream_id = self.__class__.ubwa.create_stream(['orders', 'transfers', 'accounts'],
                                                       'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
@@ -468,15 +501,23 @@ class TestBinanceOrgManager(unittest.TestCase):
                          "'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}, "
                          "{'method': 'subscribe', 'topic': 'accounts', "
                          "'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}]")
+        time.sleep(5)
+        self.__class__.ubwa.stop_stream(stream_id=stream_id)
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_misc_single_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_misc_single_org_subscribe:")
         stream_id = self.__class__.ubwa.create_stream(["trades"], ["RAVEN-F66_BNB"])
         payload = self.__class__.ubwa.create_payload(stream_id, 'subscribe', ['trades'], 'RAVEN-F66_BNB')
         self.assertEqual(str(payload),
                          "[{'method': 'subscribe', 'topic': 'trades', 'symbols': ['RAVEN-F66_BNB']}]")
+        time.sleep(5)
+        self.__class__.ubwa.stop_stream(stream_id=stream_id)
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_misc_multi_org_subscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_misc_multi_org_subscribe:")
         stream_id = self.__class__.ubwa.create_stream(["trades", 'kline_1m'], ["RUNE-B1A_BNB", "FTM-A64_BNB", "FIL-E2C_BNB"])
         payload = self.__class__.ubwa.create_payload(stream_id, 'subscribe',
@@ -485,8 +526,12 @@ class TestBinanceOrgManager(unittest.TestCase):
         self.assertEqual(str(payload),
                          "[{'method': 'subscribe', 'topic': 'trades', 'symbols': ['RUNE-B1A_BNB', 'FTM-A64_BNB', 'FIL-E2C_BNB']}, "
                          "{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RUNE-B1A_BNB', 'FTM-A64_BNB', 'FIL-E2C_BNB']}]")
+        time.sleep(5)
+        self.__class__.ubwa.stop_stream(stream_id=stream_id)
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_misc_multi_org_unsubscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_misc_multi_org_unsubscribe:")
         stream_id = self.__class__.ubwa.create_stream(["trades", 'kline_1m'], ["FTM-A64_BNB"])
         payload = self.__class__.ubwa.create_payload(stream_id, 'unsubscribe',
@@ -496,24 +541,36 @@ class TestBinanceOrgManager(unittest.TestCase):
                          "[{'method': 'unsubscribe', 'symbols': ['FTM-A64_BNB']}, "
                          "{'method': 'unsubscribe', 'topic': 'trades'}, "
                          "{'method': 'unsubscribe', 'topic': 'kline_1m'}]")
+        time.sleep(5)
+        self.__class__.ubwa.stop_stream(stream_id=stream_id)
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_misc_single_org_unsubscribe(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_misc_single_org_unsubscribe:")
         stream_id = self.__class__.ubwa.create_stream(["trades"], ["FTM-A64_BNB"])
         payload = self.__class__.ubwa.create_payload(stream_id, 'unsubscribe', ["trades"], ["FTM-A64_BNB"])
         self.assertEqual(str(payload),
                          "[{'method': 'unsubscribe', 'symbols': ['FTM-A64_BNB']}, "
                          "{'method': 'unsubscribe', 'topic': 'trades'}]")
+        time.sleep(5)
+        self.__class__.ubwa.stop_stream(stream_id=stream_id)
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_is_exchange_type_cex(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_is_exchange_type_cex:")
         self.assertEqual(self.__class__.ubwa.is_exchange_type("cex"), False)
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_is_exchange_type_dex(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_is_exchange_type_dex:")
         self.assertEqual(self.__class__.ubwa.is_exchange_type("dex"), True)
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_create_payload(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_create_payload:")
         result = "[{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RAVEN-F66_BNB']}]"
         stream_id = self.__class__.ubwa.get_new_uuid_id()
@@ -522,10 +579,13 @@ class TestBinanceOrgManager(unittest.TestCase):
                                                                 ['kline_1m'],
                                                                 ['FTM-A64_BNB'])),
                          result)
+        print(f"Runtime: {(time.time()-start_time)}")
 
     def test_z_stop_manager(self):
+        start_time = time.time()
         print(f"\r\nTestBinanceOrgManager->test_z_stop_manager:")
         self.__class__.ubwa.stop_manager()
+        print(f"Runtime: {(time.time()-start_time)}")
 
     class TestWSApiLive(unittest.TestCase):
         @classmethod
