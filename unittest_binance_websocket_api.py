@@ -533,8 +533,8 @@ class TestBinanceOrgManager(unittest.TestCase):
         with self.assertRaises(NoValidatedLucitLicense):
             llm = LucitLicensingManager(api_secret="wrong", license_token="credentials",
                                         parent_shutdown_function=ubwam.stop_manager)
-        time.sleep(3)
-        llm.stop()
+            time.sleep(3)
+            llm.stop()
 
     def test_live_api_ws(self):
         print(f"Test Websocket API ...")
