@@ -60,7 +60,7 @@ except ImportError:
     from typing_extensions import Literal
 
 __app_name__: str = "unicorn-binance-websocket-api"
-__version__: str = "2.6.0.dev"
+__version__: str = "2.5.0"
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -430,7 +430,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         if warn_on_update and self.is_update_available():
             update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
                          f"please consider updating! (Changelog: " \
-                         f"https://unicorn-binance-websocket-api.docs.lucit.tech/CHANGELOG.html)"
+                         f"https://unicorn-binance-websocket-api.docs.lucit.tech/changelog.html)"
             print(update_msg)
             logger.warning(update_msg)
         self.restclient = BinanceWebSocketApiRestclient(debug=self.debug,
