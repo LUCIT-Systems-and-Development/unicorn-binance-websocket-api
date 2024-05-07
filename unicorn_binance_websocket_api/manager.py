@@ -4134,8 +4134,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 return None
         elif self.is_exchange_type('dex'):
             # Todo: ???
-            logger.error(f"BinanceWebSocketApiManager.split_payload() DEX result is None!")
-            return None
+            logger.error(f"BinanceWebSocketApiManager.split_payload() DEX result is None! (Dev: Todo!)")
+            # Todo:
+            #  return None
         else:
             logger.error(f"BinanceWebSocketApiManager.split_payload() result is None!")
             return None
