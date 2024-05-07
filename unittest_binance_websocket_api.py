@@ -478,31 +478,31 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     def test_create_misc_multi_org_subscribe(self):
         print(f"\r\nTestBinanceOrgManager->test_create_misc_multi_org_subscribe:")
-        stream_id = self.__class__.ubwa.create_stream(["trades", 'kline_1m'], ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
+        stream_id = self.__class__.ubwa.create_stream(["trades", 'kline_1m'], ["RUNE-B1A_BNB", "FTM-A64_BNB", "FIL-E2C_BNB"])
         payload = self.__class__.ubwa.create_payload(stream_id, 'subscribe',
                                                      ["trades", 'kline_1m'],
-                                                     ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
+                                                     ["RUNE-B1A_BNB", "FTM-A64_BNB", "FIL-E2C_BNB"])
         self.assertEqual(str(payload),
-                         "[{'method': 'subscribe', 'topic': 'trades', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}, "
-                         "{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}]")
+                         "[{'method': 'subscribe', 'topic': 'trades', 'symbols': ['RUNE-B1A_BNB', 'FTM-A64_BNB', 'FIL-E2C_BNB']}, "
+                         "{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RUNE-B1A_BNB', 'FTM-A64_BNB', 'FIL-E2C_BNB']}]")
 
     def test_create_misc_multi_org_unsubscribe(self):
         print(f"\r\nTestBinanceOrgManager->test_create_misc_multi_org_unsubscribe:")
-        stream_id = self.__class__.ubwa.create_stream(["trades", 'kline_1m'], ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
+        stream_id = self.__class__.ubwa.create_stream(["trades", 'kline_1m'], ["FTM-A64_BNB"])
         payload = self.__class__.ubwa.create_payload(stream_id, 'unsubscribe',
                                                      ["trades", 'kline_1m'],
-                                                     ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
+                                                     ["FTM-A64_BNB"])
         self.assertEqual(str(payload),
-                         "[{'method': 'unsubscribe', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}, "
+                         "[{'method': 'unsubscribe', 'symbols': ['FTM-A64_BNB']}, "
                          "{'method': 'unsubscribe', 'topic': 'trades'}, "
                          "{'method': 'unsubscribe', 'topic': 'kline_1m'}]")
 
     def test_create_misc_single_org_unsubscribe(self):
         print(f"\r\nTestBinanceOrgManager->test_create_misc_single_org_unsubscribe:")
-        stream_id = self.__class__.ubwa.create_stream(["trades"], ["RAVEN-F66_BNB"])
-        payload = self.__class__.ubwa.create_payload(stream_id, 'unsubscribe', ["trades"], ["RAVEN-F66_BNB"])
+        stream_id = self.__class__.ubwa.create_stream(["trades"], ["FTM-A64_BNB"])
+        payload = self.__class__.ubwa.create_payload(stream_id, 'unsubscribe', ["trades"], ["FTM-A64_BNB"])
         self.assertEqual(str(payload),
-                         "[{'method': 'unsubscribe', 'symbols': ['RAVEN-F66_BNB']}, "
+                         "[{'method': 'unsubscribe', 'symbols': ['FTM-A64_BNB']}, "
                          "{'method': 'unsubscribe', 'topic': 'trades'}]")
 
     def test_is_exchange_type_cex(self):
@@ -520,7 +520,7 @@ class TestBinanceOrgManager(unittest.TestCase):
         self.assertEqual(str(self.__class__.ubwa.create_payload(stream_id,
                                                                 "subscribe",
                                                                 ['kline_1m'],
-                                                                ['RAVEN-F66_BNB'])),
+                                                                ['FTM-A64_BNB'])),
                          result)
 
     def test_z_stop_manager(self):
