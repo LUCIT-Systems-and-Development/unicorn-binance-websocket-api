@@ -38,8 +38,8 @@ tracemalloc.start(25)
 BINANCE_COM_API_KEY = ""
 BINANCE_COM_API_SECRET = ""
 
-BINANCE_COM_TESTNET_API_KEY = ""
-BINANCE_COM_TESTNET_API_SECRET = ""
+BINANCE_COM_TESTNET_API_KEY = os.getenv('BINANCE_TESTNET_API_KEY')
+BINANCE_COM_TESTNET_API_SECRET = os.getenv('BINANCE_TESTNET_API_SECRET')
 
 logging.getLogger("unicorn_binance_websocket_api")
 logging.basicConfig(level=logging.DEBUG,
@@ -538,29 +538,30 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     def test_live_api_ws(self):
         print(f"Test Websocket API ...")
-        if not is_github_action_env():
-            ubwam = BinanceWebSocketApiManager(exchange='binance.com')
-            api_stream = ubwam.create_stream(api=True, api_key=BINANCE_COM_API_KEY, api_secret=BINANCE_COM_API_SECRET,
-                                             stream_label="Bobs Websocket API",
-                                             process_stream_data=handle_socket_message)
-            time.sleep(5)
-            ubwam.api.get_listen_key(stream_id=api_stream)
-            ubwam.api.get_server_time(stream_id=api_stream)
-            ubwam.api.get_account_status(stream_id=api_stream)
-            orig_client_order_id = ubwam.api.create_order(stream_id=api_stream, price=1.0, order_type="LIMIT",
-                                                         quantity=15.0, side="SELL", symbol="BUSDUSDT")
-            ubwam.api.create_test_order(stream_id=api_stream, price=1.2, order_type="LIMIT",
-                                       quantity=12.0, side="SELL", symbol="BUSDUSDT")
-            ubwam.api.ping(stream_id=api_stream)
-            ubwam.api.get_exchange_info(stream_id=api_stream, symbols=['BUSDUSDT'])
-            ubwam.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
-            ubwam.api.cancel_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
-            ubwam.api.get_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
-            ubwam.api.get_open_orders(stream_id=api_stream)
-            ubwam.api.cancel_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
-            ubwam.api.get_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
-            time.sleep(5)
-            ubwam.stop_manager()
+        ubwam = BinanceWebSocketApiManager(exchange='binance.com-testnet')
+        api_stream = ubwam.create_stream(api=True,
+                                         api_key=BINANCE_COM_TESTNET_API_KEY,
+                                         api_secret=BINANCE_COM_TESTNET_API_SECRET,
+                                         stream_label="Bobs Websocket API",
+                                         process_stream_data=handle_socket_message)
+        time.sleep(5)
+        ubwam.api.get_listen_key(stream_id=api_stream)
+        ubwam.api.get_server_time(stream_id=api_stream)
+        ubwam.api.get_account_status(stream_id=api_stream)
+        orig_client_order_id = ubwam.api.create_order(stream_id=api_stream, price=1.0, order_type="LIMIT",
+                                                      quantity=15.0, side="SELL", symbol="BUSDUSDT")
+        ubwam.api.create_test_order(stream_id=api_stream, price=1.2, order_type="LIMIT",
+                                    quantity=12.0, side="SELL", symbol="BUSDUSDT")
+        ubwam.api.ping(stream_id=api_stream)
+        ubwam.api.get_exchange_info(stream_id=api_stream, symbols=['BUSDUSDT'])
+        ubwam.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
+        ubwam.api.cancel_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
+        ubwam.api.get_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
+        ubwam.api.get_open_orders(stream_id=api_stream)
+        ubwam.api.cancel_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
+        ubwam.api.get_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
+        time.sleep(5)
+        ubwam.stop_manager()
 
 
 class TestApiLive(unittest.TestCase):
