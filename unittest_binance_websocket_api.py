@@ -530,9 +530,9 @@ class TestBinanceOrgManager(unittest.TestCase):
         ubwam.llm.test()
         ubwam.llm.process_licensing_error()
         ubwam.llm.stop()
-        llm = LucitLicensingManager(api_secret="wrong", license_token="credentials")
+        llm = LucitLicensingManager(api_secret="wrong", license_token="credentials",
+                                    parent_shutdown_function=ubwam.stop_manager)
         time.sleep(3)
-        ubwam.stop_manager()
         llm.stop()
 
     def test_live_api_ws(self):
@@ -597,7 +597,6 @@ class TestApiLive(unittest.TestCase):
         ubwa.stop_manager()
 
     def test_z_invalid_exchange(self):
-        from unicorn_binance_websocket_api.exceptions import UnknownExchange
         with self.assertRaises(UnknownExchange):
             ubwa_error = BinanceWebSocketApiManager(exchange="invalid-exchange.com")
             ubwa_error.stop_manager()
@@ -644,10 +643,8 @@ class TestApiLive(unittest.TestCase):
         self.__class__.ubwa.stop_stream(stream_id=stream_id_1)
 
     def test_exceptions(self):
-        try:
+        with self.assertRaises(StreamIsStopping):
             raise StreamIsStopping(stream_id="blah", reason="test")
-        except StreamIsStopping as e:
-            print(str(e))
 
     def test_live_run(self):
         self.__class__.ubwa.get_active_stream_list()
