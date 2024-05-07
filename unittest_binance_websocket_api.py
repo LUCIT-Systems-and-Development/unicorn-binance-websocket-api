@@ -288,8 +288,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
         self.assertFalse(self.__class__.ubwa.create_websocket_uri(["arr"], ["!userData"]))
 
     def test_create_uri_userdata_regular_com(self):
-        if (len(self.__class__.binance_com_testnet_api_key) == 0 or
-                len(self.__class__.binance_com_testnet_api_secret) == 0):
+        if BINANCE_COM_TESTNET_API_KEY is not None and BINANCE_COM_TESTNET_API_SECRET is not None:
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_regular_com() "
                   "for binance.com-testnet")
         else:
@@ -302,8 +301,7 @@ class TestBinanceComManagerTest(unittest.TestCase):
                              r'wss://testnet.binance.vision/ws/.')
 
     def test_create_uri_userdata_reverse_com(self):
-        if (len(self.__class__.binance_com_testnet_api_key) == 0 or
-                len(self.__class__.binance_com_testnet_api_secret) == 0):
+        if BINANCE_COM_TESTNET_API_KEY is not None and BINANCE_COM_TESTNET_API_SECRET is not None:
             print("\r\nempty API key and/or secret: can not successfully test test_create_uri_userdata_reverse_com() "
                   "for binance.com-testnet")
         else:
@@ -367,50 +365,62 @@ class TestBinanceOrgManager(unittest.TestCase):
         print(f"TestBinanceOrgManager stopping:")
 
     def test_create_uri_alltickers_regular_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_alltickers_regular_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["$all"], ["allTickers"]),
                          'wss://dex.binance.org/api/ws/$all@allTickers')
 
     def test_create_uri_alltickers_reverse_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_alltickers_reverse_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["allTickers"], ["$all"]),
                          'wss://dex.binance.org/api/ws/$all@allTickers')
 
     def test_create_uri_allminitickers_regular_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_allminitickers_regular_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["$all"], ["allMiniTickers"]),
                          'wss://dex.binance.org/api/ws/$all@allMiniTickers')
 
     def test_create_uri_allminitickers_reverse_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_allminitickers_reverse_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["allMiniTickers"], ["$all"]),
                          'wss://dex.binance.org/api/ws/$all@allMiniTickers')
 
     def test_create_uri_blockheight_regular_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_blockheight_regular_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["$all"], ["blockheight"]),
                          'wss://dex.binance.org/api/ws/$all@blockheight')
 
     def test_create_uri_blockheight_reverse_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_blockheight_reverse_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["blockheight"], ["$all"]),
                          'wss://dex.binance.org/api/ws/$all@blockheight')
 
     def test_create_uri_single_trades_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_single_trades_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["trades"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@trades')
 
     def test_create_uri_single_marketdepth_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_single_marketdepth_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["marketDepth"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@marketDepth')
 
     def test_create_uri_single_kline_1h_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_single_kline_1h_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["kline_1h"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@kline_1h')
 
     def test_create_uri_single_ticker_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_single_ticker_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["ticker"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@ticker')
 
     def test_create_uri_single_miniTicker_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_single_miniTicker_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(["miniTicker"], ["RAVEN-F66_BNB"]),
                          'wss://dex.binance.org/api/ws/RAVEN-F66_BNB@miniTicker')
 
     def test_create_uri_multi_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_multi_org_subscribe:")
         self.assertEqual(self.__class__.ubwa.create_websocket_uri(['trades', 'kline_1h'],
                                                                   ['RAVEN-F66_BNB', 'ANKR-E97_BNB']),
                          'wss://dex.binance.org/api/ws')
@@ -424,24 +434,28 @@ class TestBinanceOrgManager(unittest.TestCase):
                          "{'method': 'subscribe', 'topic': 'kline_1h', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}]")
 
     def test_create_uri_user_address_orders_single_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_user_address_orders_single_org_subscribe:")
         self.assertEqual(
             self.__class__.ubwa.create_websocket_uri('orders',
                                                      'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'),
             'wss://dex.binance.org/api/ws/bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
 
     def test_create_uri_user_address_accounts_single_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_user_address_accounts_single_org_subscribe:")
         self.assertEqual(
             self.__class__.ubwa.create_websocket_uri('accounts',
                                                      'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'),
             'wss://dex.binance.org/api/ws/bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
 
     def test_create_uri_user_address_transfers_single_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_user_address_transfers_single_org_subscribe:")
         self.assertEqual(
             self.__class__.ubwa.create_websocket_uri('transfers',
                                                      'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'),
             'wss://dex.binance.org/api/ws/bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
 
     def test_create_uri_user_address_multi_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_uri_user_address_multi_org_subscribe:")
         stream_id = self.__class__.ubwa.create_stream(['orders', 'transfers', 'accounts'],
                                                       'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6')
         payload = self.__class__.ubwa.create_payload(stream_id, 'subscribe',
@@ -456,12 +470,14 @@ class TestBinanceOrgManager(unittest.TestCase):
                          "'address': 'bnb1v566f3avl2ud5z0jepazsrguzkj367snlx4jm6'}]")
 
     def test_create_misc_single_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_misc_single_org_subscribe:")
         stream_id = self.__class__.ubwa.create_stream(["trades"], ["RAVEN-F66_BNB"])
         payload = self.__class__.ubwa.create_payload(stream_id, 'subscribe', ['trades'], 'RAVEN-F66_BNB')
         self.assertEqual(str(payload),
                          "[{'method': 'subscribe', 'topic': 'trades', 'symbols': ['RAVEN-F66_BNB']}]")
 
     def test_create_misc_multi_org_subscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_misc_multi_org_subscribe:")
         stream_id = self.__class__.ubwa.create_stream(["trades", 'kline_1m'], ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
         payload = self.__class__.ubwa.create_payload(stream_id, 'subscribe',
                                                      ["trades", 'kline_1m'],
@@ -471,6 +487,7 @@ class TestBinanceOrgManager(unittest.TestCase):
                          "{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RAVEN-F66_BNB', 'ANKR-E97_BNB']}]")
 
     def test_create_misc_multi_org_unsubscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_misc_multi_org_unsubscribe:")
         stream_id = self.__class__.ubwa.create_stream(["trades", 'kline_1m'], ["RAVEN-F66_BNB", "ANKR-E97_BNB"])
         payload = self.__class__.ubwa.create_payload(stream_id, 'unsubscribe',
                                                      ["trades", 'kline_1m'],
@@ -481,6 +498,7 @@ class TestBinanceOrgManager(unittest.TestCase):
                          "{'method': 'unsubscribe', 'topic': 'kline_1m'}]")
 
     def test_create_misc_single_org_unsubscribe(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_misc_single_org_unsubscribe:")
         stream_id = self.__class__.ubwa.create_stream(["trades"], ["RAVEN-F66_BNB"])
         payload = self.__class__.ubwa.create_payload(stream_id, 'unsubscribe', ["trades"], ["RAVEN-F66_BNB"])
         self.assertEqual(str(payload),
@@ -488,12 +506,15 @@ class TestBinanceOrgManager(unittest.TestCase):
                          "{'method': 'unsubscribe', 'topic': 'trades'}]")
 
     def test_is_exchange_type_cex(self):
+        print(f"\r\nTestBinanceOrgManager->test_is_exchange_type_cex:")
         self.assertEqual(self.__class__.ubwa.is_exchange_type("cex"), False)
 
     def test_is_exchange_type_dex(self):
+        print(f"\r\nTestBinanceOrgManager->test_is_exchange_type_dex:")
         self.assertEqual(self.__class__.ubwa.is_exchange_type("dex"), True)
 
     def test_create_payload(self):
+        print(f"\r\nTestBinanceOrgManager->test_create_payload:")
         result = "[{'method': 'subscribe', 'topic': 'kline_1m', 'symbols': ['RAVEN-F66_BNB']}]"
         stream_id = self.__class__.ubwa.get_new_uuid_id()
         self.assertEqual(str(self.__class__.ubwa.create_payload(stream_id,
@@ -503,6 +524,7 @@ class TestBinanceOrgManager(unittest.TestCase):
                          result)
 
     def test_z_stop_manager(self):
+        print(f"\r\nTestBinanceOrgManager->test_z_stop_manager:")
         self.__class__.ubwa.stop_manager()
 
     class TestWSApiLive(unittest.TestCase):
