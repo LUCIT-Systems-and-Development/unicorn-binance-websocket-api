@@ -414,7 +414,6 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.socket_is_ready = {}
         self.sockets = {}
         self.stream_threads = {}
-        self.stream_threading_lock = {}
         self.total_received_bytes = 0
         self.total_received_bytes_lock = threading.Lock()
         self.total_receives = 0
@@ -636,7 +635,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                     stream_id=stream_id,
                                     data_record=data_record,
                                     error_msg=error_msg)
-        self.stream_list[stream_id]['last_stream_signal'] = signal_type
+        with self.stream_list_lock:
+            self.stream_list[stream_id]['last_stream_signal'] = signal_type
         return True
 
     def send_with_stream(self, stream_id: str = None, payload: Union[dict, str] = None, timeout: float = 5.0) -> bool:
@@ -793,53 +793,52 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.specific_process_asyncio_queue[stream_id] = process_asyncio_queue
         self.specific_process_stream_data[stream_id] = process_stream_data
         self.specific_process_stream_data_async[stream_id] = process_stream_data_async
-        self.stream_threading_lock[stream_id] = {'full_lock': threading.Lock(),
-                                                 'receives_statistic_last_second_lock': threading.Lock()}
-        self.stream_list[stream_id] = {'exchange': self.exchange,
-                                       'stream_id': copy.deepcopy(stream_id),
-                                       'recent_socket_id': None,
-                                       'channels': copy.deepcopy(channels),
-                                       'markets': copy.deepcopy(markets),
-                                       'stream_label': copy.deepcopy(stream_label),
-                                       'stream_buffer_name': copy.deepcopy(stream_buffer_name),
-                                       'stream_buffer_maxlen': copy.deepcopy(stream_buffer_maxlen),
-                                       'symbols': copy.deepcopy(symbols),
-                                       'output': copy.deepcopy(output),
-                                       'subscriptions': 0,
-                                       'payload': [],
-                                       'api': copy.deepcopy(api),
-                                       'api_key': copy.deepcopy(api_key),
-                                       'api_secret': copy.deepcopy(api_secret),
-                                       'dex_user_address': copy.deepcopy(self.dex_user_address),
-                                       'ping_interval': copy.deepcopy(ping_interval),
-                                       'ping_timeout': copy.deepcopy(ping_timeout),
-                                       'close_timeout': copy.deepcopy(close_timeout),
-                                       'provided_listen_key': copy.deepcopy(provided_listen_key),
-                                       'keep_listen_key_alive': copy.deepcopy(keep_listen_key_alive),
-                                       'status': 'starting',
-                                       'start_time': time.time(),
-                                       'processed_receives_total': 0,
-                                       'receives_statistic_last_second': {'most_receives_per_second': 0, 'entries': {}},
-                                       'seconds_to_last_heartbeat': None,
-                                       'last_heartbeat': None,
-                                       'stop_request': False,
-                                       'crash_request': False,
-                                       'crash_request_reason': None,
-                                       'loop_is_closing': False,
-                                       'seconds_since_has_stopped': None,
-                                       'has_stopped': None,
-                                       'reconnects': 0,
-                                       'last_stream_signal': None,
-                                       'logged_reconnects': [],
-                                       'processed_transmitted_total': 0,
-                                       'last_static_ping_listen_key': 0,
-                                       'listen_key': None,
-                                       'listen_key_cache_time': self.listen_key_refresh_interval,
-                                       'last_received_data_record': None,
-                                       'processed_receives_statistic': {},
-                                       'transfer_rate_per_second': {'bytes': {}, 'speed': 0},
-                                       'websocket_uri': None,
-                                       '3rd-party-future': None}
+        with self.stream_list_lock:
+            self.stream_list[stream_id] = {'exchange': self.exchange,
+                                           'stream_id': copy.deepcopy(stream_id),
+                                           'recent_socket_id': None,
+                                           'channels': copy.deepcopy(channels),
+                                           'markets': copy.deepcopy(markets),
+                                           'stream_label': copy.deepcopy(stream_label),
+                                           'stream_buffer_name': copy.deepcopy(stream_buffer_name),
+                                           'stream_buffer_maxlen': copy.deepcopy(stream_buffer_maxlen),
+                                           'symbols': copy.deepcopy(symbols),
+                                           'output': copy.deepcopy(output),
+                                           'subscriptions': 0,
+                                           'payload': [],
+                                           'api': copy.deepcopy(api),
+                                           'api_key': copy.deepcopy(api_key),
+                                           'api_secret': copy.deepcopy(api_secret),
+                                           'dex_user_address': copy.deepcopy(self.dex_user_address),
+                                           'ping_interval': copy.deepcopy(ping_interval),
+                                           'ping_timeout': copy.deepcopy(ping_timeout),
+                                           'close_timeout': copy.deepcopy(close_timeout),
+                                           'provided_listen_key': copy.deepcopy(provided_listen_key),
+                                           'keep_listen_key_alive': copy.deepcopy(keep_listen_key_alive),
+                                           'status': 'starting',
+                                           'start_time': time.time(),
+                                           'processed_receives_total': 0,
+                                           'receives_statistic_last_second': {'most_receives_per_second': 0, 'entries': {}},
+                                           'seconds_to_last_heartbeat': None,
+                                           'last_heartbeat': None,
+                                           'stop_request': False,
+                                           'crash_request': False,
+                                           'crash_request_reason': None,
+                                           'loop_is_closing': False,
+                                           'seconds_since_has_stopped': None,
+                                           'has_stopped': None,
+                                           'reconnects': 0,
+                                           'last_stream_signal': None,
+                                           'logged_reconnects': [],
+                                           'processed_transmitted_total': 0,
+                                           'last_static_ping_listen_key': 0,
+                                           'listen_key': None,
+                                           'listen_key_cache_time': self.listen_key_refresh_interval,
+                                           'last_received_data_record': None,
+                                           'processed_receives_statistic': {},
+                                           'transfer_rate_per_second': {'bytes': {}, 'speed': 0},
+                                           'websocket_uri': None,
+                                           '3rd-party-future': None}
         logger.info("BinanceWebSocketApiManager._add_stream_to_stream_list(" +
                     str(stream_id) + ", " + str(channels) + ", " + str(markets) + ", " + str(stream_label) + ", "
                     + str(stream_buffer_name) + ", " + str(stream_buffer_maxlen) + ", " + str(symbols) + ")")
@@ -920,7 +919,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         finally:
             logger.debug(f"Finally closing the loop stream_id={str(stream_id)}")
             try:
-                self.stream_list[stream_id]['loop_is_closing'] = True
+                with self.stream_list_lock:
+                    self.stream_list[stream_id]['loop_is_closing'] = True
             except KeyError:
                 pass
             if loop is not None:
@@ -946,7 +946,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     self.wait_till_stream_has_stopped(stream_id=stream_id, timeout=10)
                     loop.close()
             try:
-                self.stream_list[stream_id]['loop_is_closing'] = False
+                with self.stream_list_lock:
+                    self.stream_list[stream_id]['loop_is_closing'] = False
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() stream_id={str(stream_id)} - "
                              f"KeyError `error: 15` - {error_msg}")
@@ -1000,8 +1001,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 timestamp_last_check = self.get_timestamp_unix()
                 if self.auto_data_cleanup_stopped_streams is True:
                     stopped_streams = []
-                    for stream_id in self.stream_list:
-                        stopped_streams.append(stream_id)
+                    with self.stream_list_lock:
+                        for stream_id in self.stream_list:
+                            stopped_streams.append(stream_id)
                     for stream_id in stopped_streams:
                         if (self.stream_list[stream_id]['status'] == "stopped"
                                 or self.stream_list[stream_id]['status'].startswith("crashed")):
@@ -1059,8 +1061,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                     try:
                         if self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp] > \
                                 self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second']:
-                            self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second'] = \
-                                self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp]
+                            with self.stream_list_lock:
+                                self.stream_list[stream_id]['receives_statistic_last_second']['most_receives_per_second'] = \
+                                    self.stream_list[stream_id]['receives_statistic_last_second']['entries'][last_timestamp]
                     except KeyError:
                         pass
                     try:
@@ -1076,7 +1079,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                     delete_index = []
                     if len(self.stream_list[stream_id]['receives_statistic_last_second']['entries']) > \
                             self.keep_max_received_last_second_entries:
-                        with self.stream_threading_lock[stream_id]['receives_statistic_last_second_lock']:
+                        with self.stream_list_lock:
                             temp_entries = copy.deepcopy(self.stream_list[stream_id]['receives_statistic_last_second']['entries'])
                         for timestamp_key in temp_entries:
                             try:
@@ -1089,7 +1092,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                              str(self.keep_max_received_last_second_entries) + " error_msg=" +
                                              str(error_msg))
                     for timestamp_key in delete_index:
-                        with self.stream_threading_lock[stream_id]['receives_statistic_last_second_lock']:
+                        with self.stream_list_lock:
                             self.stream_list[stream_id]['receives_statistic_last_second']['entries'].pop(timestamp_key,
                                                                                                          None)
                     # transfer_rate_per_second
@@ -1114,7 +1117,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                             logger.info("BinanceWebSocketApiManager._frequent_checks() - "
                                         "Catched RuntimeError: " + str(error_msg))
                     for timestamp_key in delete_index:
-                        self.stream_list[stream_id]['transfer_rate_per_second']['bytes'].pop(timestamp_key, None)
+                        with self.stream_list_lock:
+                            self.stream_list[stream_id]['transfer_rate_per_second']['bytes'].pop(timestamp_key, None)
             # set most_receives_per_second
             try:
                 if int(self.most_receives_per_second) < int(total_most_stream_receives_last_timestamp):
@@ -1142,9 +1146,11 @@ class BinanceWebSocketApiManager(threading.Thread):
     async def _ping_listen_key(self, stream_id=None):
         logger.info(f"BinanceWebSocketApiManager._ping_listen_key(stream_id={stream_id}) - asyncio task running!")
         if isinstance(self.stream_list[stream_id]['markets'], str):
-            self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets'], ]
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets'], ]
         if isinstance(self.stream_list[stream_id]['channels'], str):
-            self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels'], ]
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels'], ]
         while self.stream_list[stream_id]['status'] != "stopped" \
                 and not self.stream_list[stream_id]['status'].startswith("crashed"):
             await asyncio.sleep(2)
@@ -1157,7 +1163,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     response, binance_api_status = self.restclient.keepalive_listen_key(stream_id)
                     if binance_api_status is not None:
                         self.binance_api_status = binance_api_status
-                    self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
+                    with self.stream_list_lock:
+                        self.stream_list[stream_id]['last_static_ping_listen_key'] = time.time()
                     self.set_heartbeat(stream_id)
                     logger.info(f"BinanceWebSocketApiManager._ping_listen_key(stream_id={stream_id}) - pinged "
                                 f"listen_key!")
@@ -1269,7 +1276,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             return False
         else:
             try:
-                self.stream_list[stream_id]['payload'].append(payload)
+                with self.stream_list_lock:
+                    self.stream_list[stream_id]['payload'].append(payload)
             except KeyError:
                 return False
             return True
@@ -1481,7 +1489,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                     for market in markets:
                         if re.match(r'[a-zA-Z0-9]{41,43}', market) is not None:
                             if self.stream_list[stream_id]['dex_user_address'] is None:
-                                self.stream_list[stream_id]['dex_user_address'] = market
+                                with self.stream_list_lock:
+                                    self.stream_list[stream_id]['dex_user_address'] = market
                                 markets.remove(market)
                     if len(markets) > 0:
                         add_payload["symbols"] = markets
@@ -1526,24 +1535,26 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if markets:
                     params = []
                     try:
-                        for channel in self.stream_list[stream_id]['channels']:
-                            if "!" in channel:
-                                params.append(channel + final_market)
-                            else:
-                                for market in markets:
-                                    params.append(market.lower() + "@" + channel)
+                        with self.stream_list_lock:
+                            for channel in self.stream_list[stream_id]['channels']:
+                                if "!" in channel:
+                                    params.append(channel + final_market)
+                                else:
+                                    for market in markets:
+                                        params.append(market.lower() + "@" + channel)
                         if len(params) > 0:
                             payload = self.split_payload(params, "UNSUBSCRIBE")
                     except KeyError:
                         pass
                 if channels:
                     params = []
-                    for market in self.stream_list[stream_id]['markets']:
-                        if "!" in market:
-                            params.append(market + final_channel)
-                        else:
-                            for channel in channels:
-                                params.append(market.lower() + "@" + channel)
+                    with self.stream_list_lock:
+                        for market in self.stream_list[stream_id]['markets']:
+                            if "!" in market:
+                                params.append(market + final_channel)
+                            else:
+                                for channel in channels:
+                                    params.append(market.lower() + "@" + channel)
                     if len(params) > 0:
                         payload = self.split_payload(params, "UNSUBSCRIBE")
             else:
@@ -1863,7 +1874,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if stream_id is not None:
                     if self.stream_list[stream_id]['provided_listen_key'] is not None:
                         response = {'listenKey': self.stream_list[stream_id]['provided_listen_key']}
-                        self.stream_list[stream_id]['listen_key'] = str(response['listenKey'])
+                        with self.stream_list_lock:
+                            self.stream_list[stream_id]['listen_key'] = str(response['listenKey'])
                     else:
                         response = self.get_listen_key_from_restclient(stream_id)
                     try:
@@ -1901,7 +1913,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 logger.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) +
                                             ", " + str(markets) + ", " + str(symbols) + ") - result: " +
                                             uri_hidden)
-                            self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                            with self.stream_list_lock:
+                                self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                             return uri
                         except KeyError:
                             logger.critical("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", "
@@ -1924,21 +1937,25 @@ class BinanceWebSocketApiManager(threading.Thread):
                     return None
             elif "!bookTicker" in channels or "!bookTicker" in markets:
                 if stream_id:
-                    self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                    with self.stream_list_lock:
+                        self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                 return self.websocket_base_uri + "ws/!bookTicker"
             elif "arr" in channels or "$all" in markets:
                 if stream_id:
-                    self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                    with self.stream_list_lock:
+                        self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                 return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
             elif "arr" in markets or "$all" in channels:
                 if stream_id:
-                    self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                    with self.stream_list_lock:
+                        self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                 return self.websocket_base_uri + "ws/" + channels[0] + "@" + markets[0]
             elif self.is_exchange_type("dex"):
                 if re.match(r'[a-zA-Z0-9]{41,43}', markets[0]) is not None:
                     try:
                         if self.stream_list[stream_id]['dex_user_address'] is None:
-                            self.stream_list[stream_id]['dex_user_address'] = markets[0]
+                            with self.stream_list_lock:
+                                self.stream_list[stream_id]['dex_user_address'] = markets[0]
                         if self.stream_list[stream_id]['dex_user_address'] != markets[0]:
                             logger.error("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
                                          str(markets) + ", " + ", " + str(symbols) + ") - Error: once set, the "
@@ -1951,8 +1968,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    "address": markets[0]}
                     payload.append(add_payload)
                     if stream_id:
-                        self.stream_list[stream_id]['payload'] = payload
-                        self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                        with self.stream_list_lock:
+                            self.stream_list[stream_id]['payload'] = payload
+                            self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
                     return self.websocket_base_uri + "ws/" + markets[0]
                 elif markets[0] != "" and channels[0] != "":
                     return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
@@ -1965,8 +1983,9 @@ class BinanceWebSocketApiManager(threading.Thread):
             query = "ws"
             if stream_id:
                 payload = self.create_payload(stream_id, "subscribe", channels=channels, markets=markets)
-                self.stream_list[stream_id]['payload'] = payload
-                self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                with self.stream_list_lock:
+                    self.stream_list[stream_id]['payload'] = payload
+                    self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
             return self.websocket_base_uri + str(query)
         else:
             query = "stream?streams="
@@ -2055,7 +2074,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.warning("`BinanceWebSocketApiManager.delete_stream_from_stream_list()` is deprecated, use "
                        "`BinanceWebSocketApiManager.remove_all_data_of_stream_id()` instead!")
         if self.wait_till_stream_has_stopped(stream_id=stream_id, timeout=timeout) is True:
-            self.stream_list.pop(stream_id, False)
+            with self.stream_list_lock:
+                self.stream_list.pop(stream_id, False)
             return True
         else:
             return False
@@ -2101,10 +2121,6 @@ class BinanceWebSocketApiManager(threading.Thread):
                 pass
             try:
                 del self.socket_is_ready[stream_id]
-            except KeyError:
-                pass
-            try:
-                del self.stream_threading_lock[stream_id]
             except KeyError:
                 pass
             try:
@@ -2191,9 +2207,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         # get the stream_list without stopped and crashed streams
         stream_list_with_active_streams = {}
-        for stream_id in self.stream_list:
-            if self.stream_list[stream_id]['status'] == "running":
-                stream_list_with_active_streams[stream_id] = self.stream_list[stream_id]
+        with self.stream_list_lock:
+            for stream_id in self.stream_list:
+                if self.stream_list[stream_id]['status'] == "running":
+                    stream_list_with_active_streams[stream_id] = self.stream_list[stream_id]
         try:
             if len(stream_list_with_active_streams) > 0:
                 return stream_list_with_active_streams
@@ -2210,12 +2227,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         all_receives_last_second = 0
         last_second_timestamp = int(time.time()) - 1
-        for stream_id in self.stream_list:
-            try:
-                all_receives_last_second += self.stream_list[stream_id]['receives_statistic_last_second']['entries'][
-                    last_second_timestamp]
-            except KeyError:
-                pass
+        with self.stream_list_lock:
+            for stream_id in self.stream_list:
+                try:
+                    all_receives_last_second += self.stream_list[stream_id]['receives_statistic_last_second']['entries'][
+                        last_second_timestamp]
+                except KeyError:
+                    pass
         return all_receives_last_second
 
     def get_binance_api_status(self):
@@ -2277,8 +2295,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         last_timestamp = current_timestamp - 1
         try:
             if self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][last_timestamp] > 0:
-                self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = \
-                    self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][last_timestamp]
+                with self.stream_list_lock:
+                    self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = \
+                        self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][last_timestamp]
         except TypeError:
             return 0
         except KeyError:
@@ -2297,7 +2316,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         current_receiving_speed = 0
         try:
-            temp_stream_list = copy.deepcopy(self.stream_list)
+            with self.stream_list_lock:
+                temp_stream_list = copy.deepcopy(self.stream_list)
         except RuntimeError as error_msg:
             logger.debug(f"BinanceWebSocketApiManager.get_current_receiving_speed_global() - RuntimeError: "
                          f"{str(error_msg)}")
@@ -2540,7 +2560,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         if response:
             # save and return the valid listen_key
             try:
-                self.stream_list[stream_id]['listen_key'] = str(response['listenKey'])
+                with self.stream_list_lock:
+                    self.stream_list[stream_id]['listen_key'] = str(response['listenKey'])
                 return response
             except KeyError:
                 # no valid listen_key, but a response from endpoint
@@ -2565,7 +2586,8 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: int
         """
-        return len(self.stream_list)
+        with self.stream_list_lock:
+            return len(self.stream_list)
 
     def get_number_of_subscriptions(self, stream_id):
         """
@@ -2574,28 +2596,29 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: int
         """
         count_subscriptions = 0
-        for channel in self.stream_list[stream_id]['channels']:
-            if "!" in channel \
-                    or channel == "orders" \
-                    or channel == "accounts" \
-                    or channel == "transfers" \
-                    or channel == "allTickers" \
-                    or channel == "allMiniTickers" \
-                    or channel == "blockheight":
-                count_subscriptions += 1
-                continue
-            else:
-                for market in self.stream_list[stream_id]['markets']:
-                    if "!" in market \
-                            or market == "orders" \
-                            or market == "accounts" \
-                            or market == "transfers" \
-                            or market == "allTickers" \
-                            or market == "allMiniTickers" \
-                            or market == "blockheight":
-                        count_subscriptions += 1
-                    else:
-                        count_subscriptions += 1
+        with self.stream_list_lock:
+            for channel in self.stream_list[stream_id]['channels']:
+                if "!" in channel \
+                        or channel == "orders" \
+                        or channel == "accounts" \
+                        or channel == "transfers" \
+                        or channel == "allTickers" \
+                        or channel == "allMiniTickers" \
+                        or channel == "blockheight":
+                    count_subscriptions += 1
+                    continue
+                else:
+                    for market in self.stream_list[stream_id]['markets']:
+                        if "!" in market \
+                                or market == "orders" \
+                                or market == "accounts" \
+                                or market == "transfers" \
+                                or market == "allTickers" \
+                                or market == "allMiniTickers" \
+                                or market == "blockheight":
+                            count_subscriptions += 1
+                        else:
+                            count_subscriptions += 1
         return count_subscriptions
 
     def get_keep_max_received_last_second_entries(self):
@@ -2694,22 +2717,23 @@ class BinanceWebSocketApiManager(threading.Thread):
                                                                     check_command_version=check_command_version)
         else:
             is_update_available_check_command = True
-        for stream_id in self.stream_list:
-            stream_restarts_last_hour = 0
-            for reconnect in self.stream_list[stream_id]['logged_reconnects']:
-                if reconnect > timestamp_last_hour:
-                    stream_restarts_last_hour += 1
-            if stream_restarts_last_hour > result['highest_restart_per_stream_last_hour']:
-                result['highest_restart_per_stream_last_hour'] = stream_restarts_last_hour
-        for stream_id in self.stream_list:
-            if self.stream_list[stream_id]['status'] == "running":
-                result['active_streams'] += 1
-            elif self.stream_list[stream_id]['status'] == "stopped":
-                result['stopped_streams'] += 1
-            elif self.stream_list[stream_id]['status'] == "restarting":
-                result['restarting_streams'] += 1
-            elif "crashed" in self.stream_list[stream_id]['status']:
-                result['crashed_streams'] += 1
+        with self.stream_list_lock:
+            for stream_id in self.stream_list:
+                stream_restarts_last_hour = 0
+                for reconnect in self.stream_list[stream_id]['logged_reconnects']:
+                    if reconnect > timestamp_last_hour:
+                        stream_restarts_last_hour += 1
+                if stream_restarts_last_hour > result['highest_restart_per_stream_last_hour']:
+                    result['highest_restart_per_stream_last_hour'] = stream_restarts_last_hour
+            for stream_id in self.stream_list:
+                if self.stream_list[stream_id]['status'] == "running":
+                    result['active_streams'] += 1
+                elif self.stream_list[stream_id]['status'] == "stopped":
+                    result['stopped_streams'] += 1
+                elif self.stream_list[stream_id]['status'] == "restarting":
+                    result['restarting_streams'] += 1
+                elif "crashed" in self.stream_list[stream_id]['status']:
+                    result['crashed_streams'] += 1
         if self.is_update_available() and is_update_available_unicorn_fy and is_update_available_check_command:
             result['update_msg'] = " Update available: UNICORN Binance WebSocket API, UnicornFy and " \
                                    "check_lucit_collector.py!"
@@ -2940,11 +2964,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: stream_id or None
         """
         if stream_label:
-            for stream_id in self.stream_list:
-                if self.stream_list[stream_id]['stream_label'] == stream_label:
-                    logger.debug(f"BinanceWebSocketApiManager.get_stream_id_by_label() - Found `stream_id` via `stream_label` "
-                                 f"`{stream_label}`")
-                    return stream_id
+            with self.stream_list_lock:
+                for stream_id in self.stream_list:
+                    if self.stream_list[stream_id]['stream_label'] == stream_label:
+                        logger.debug(f"BinanceWebSocketApiManager.get_stream_id_by_label() - Found `stream_id` via `stream_label` "
+                                     f"`{stream_label}`")
+                        return stream_id
         logger.error(f"BinanceWebSocketApiManager.get_stream_id_by_label() - No `stream_id` found via `stream_label` "
                      f"`{stream_label}`")
         return None
@@ -2959,7 +2984,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         current_timestamp = time.time()
         try:
-            temp_stream_list = copy.deepcopy(self.stream_list[stream_id])
+            with self.stream_list_lock:
+                temp_stream_list = copy.deepcopy(self.stream_list[stream_id])
         except RuntimeError:
             logger.error("BinanceWebSocketApiManager.get_stream_info(" + str(stream_id) + ") Info: RuntimeError")
             return self.get_stream_info(stream_id)
@@ -2973,10 +2999,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             temp_stream_list['seconds_since_has_stopped'] = \
                 int(current_timestamp) - int(self.stream_list[stream_id]['has_stopped'])
         try:
-            self.stream_list[stream_id]['processed_receives_statistic'] = self.get_stream_statistic(stream_id)
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['processed_receives_statistic'] = self.get_stream_statistic(stream_id)
         except ZeroDivisionError:
             pass
-        self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = self.get_current_receiving_speed(stream_id)
+        with self.stream_list_lock:
+            self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = self.get_current_receiving_speed(stream_id)
         return temp_stream_list
 
     def get_stream_label(self, stream_id=None):
@@ -3028,7 +3056,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             payload = {"method": "LIST_SUBSCRIPTIONS",
                        "id": request_id}
             try:
-                self.stream_list[stream_id]['payload'].append(payload)
+                with self.stream_list_lock:
+                    self.stream_list[stream_id]['payload'].append(payload)
             except KeyError:
                 return None
             logger.info("BinanceWebSocketApiManager.get_stream_subscriptions(" + str(stream_id) + ", " +
@@ -3045,8 +3074,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         # get the stream list
         temp_stream_list = {}
-        for stream_id in self.stream_list:
-            temp_stream_list[stream_id] = self.get_stream_info(stream_id)
+        with self.stream_list_lock:
+            for stream_id in self.stream_list:
+                temp_stream_list[stream_id] = self.get_stream_info(stream_id)
         return temp_stream_list
 
     def get_stream_buffer_maxlen(self, stream_buffer_name=False):
@@ -3143,10 +3173,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         found_entries = 0
         found_stream_id = None
-        for stream_id in self.stream_list:
-            if self.stream_list[stream_id]['api'] is True:
-                found_entries += 1
-                found_stream_id = stream_id
+        with self.stream_list_lock:
+            for stream_id in self.stream_list:
+                if self.stream_list[stream_id]['api'] is True:
+                    found_entries += 1
+                    found_stream_id = stream_id
 
         if found_entries == 1:
             # Its clear, there is only one valid connection to use, so we can take it!
@@ -3226,9 +3257,11 @@ class BinanceWebSocketApiManager(threading.Thread):
             if self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][current_timestamp]:
                 pass
         except KeyError:
-            self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][current_timestamp] = 0
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][current_timestamp] = 0
         try:
-            self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][current_timestamp] += size
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['transfer_rate_per_second']['bytes'][current_timestamp] += size
         except KeyError:
             pass
 
@@ -3241,14 +3274,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         current_timestamp = int(time.time())
         try:
-            self.stream_list[stream_id]['processed_receives_total'] += 1
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['processed_receives_total'] += 1
         except KeyError:
             return False
         try:
-            with self.stream_threading_lock[stream_id]['receives_statistic_last_second_lock']:
+            with self.stream_list_lock:
                 self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] += 1
         except KeyError:
-            with self.stream_threading_lock[stream_id]['receives_statistic_last_second_lock']:
+            with self.stream_list_lock:
                 self.stream_list[stream_id]['receives_statistic_last_second']['entries'][current_timestamp] = 1
         with self.total_receives_lock:
             self.total_receives += 1
@@ -3260,8 +3294,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: id of a stream
         :type stream_id: str
         """
-        self.stream_list[stream_id]['logged_reconnects'].append(time.time())
-        self.stream_list[stream_id]['reconnects'] += 1
+        with self.stream_list_lock:
+            self.stream_list[stream_id]['logged_reconnects'].append(time.time())
+            self.stream_list[stream_id]['reconnects'] += 1
         with self.reconnects_lock:
             self.reconnects += 1
 
@@ -3271,7 +3306,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: id of a stream
         :type stream_id: str
         """
-        self.stream_list[stream_id]['processed_transmitted_total'] += 1
+        with self.stream_list_lock:
+            self.stream_list[stream_id]['processed_transmitted_total'] += 1
         with self.total_transmitted_lock:
             self.total_transmitted += 1
 
@@ -3475,10 +3511,11 @@ class BinanceWebSocketApiManager(threading.Thread):
             if len(self.stream_list[stream_id]['logged_reconnects']) > 0:
                 logged_reconnects_row = "\r\n logged_reconnects: "
                 row_prefix = ""
-                for timestamp in self.stream_list[stream_id]['logged_reconnects']:
-                    logged_reconnects_row += row_prefix + \
-                                             self.get_date_of_timestamp(timestamp)
-                    row_prefix = ", "
+                with self.stream_list_lock:
+                    for timestamp in self.stream_list[stream_id]['logged_reconnects']:
+                        logged_reconnects_row += row_prefix + \
+                                                 self.get_date_of_timestamp(timestamp)
+                        row_prefix = ", "
             else:
                 logged_reconnects_row = ""
         except KeyError:
@@ -3486,10 +3523,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         if "running" in stream_info['status']:
             stream_row_color_prefix = "\033[1m\033[32m"
             stream_row_color_suffix = "\033[0m\r\n"
-            for reconnect_timestamp in self.stream_list[stream_id]['logged_reconnects']:
-                if (time.time() - reconnect_timestamp) < 2:
-                    stream_row_color_prefix = "\033[1m\033[33m"
-                    stream_row_color_suffix = "\033[0m\r\n"
+            with self.stream_list_lock:
+                for reconnect_timestamp in self.stream_list[stream_id]['logged_reconnects']:
+                    if (time.time() - reconnect_timestamp) < 2:
+                        stream_row_color_prefix = "\033[1m\033[33m"
+                        stream_row_color_suffix = "\033[0m\r\n"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
         elif "crashed" in stream_info['status']:
             stream_row_color_prefix = "\033[1m\033[31m"
@@ -3604,7 +3642,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param title: set a title (first row) for print_summary output
         :type title: str
         """
-        streams = len(self.stream_list)
+        with self.stream_list_lock:
+            streams = len(self.stream_list)
         active_streams = 0
         crashed_streams = 0
         restarting_streams = 0
@@ -3636,7 +3675,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             add_string = f" {add_string}\r\n"
         try:
-            temp_stream_list = copy.deepcopy(self.stream_list)
+            with self.stream_list_lock:
+                temp_stream_list = copy.deepcopy(self.stream_list)
         except RuntimeError:
             return ""
         except TypeError:
@@ -3650,16 +3690,17 @@ class BinanceWebSocketApiManager(threading.Thread):
                 active_streams += 1
                 all_receives_per_second += stream_statistic['stream_receives_per_second']
                 try:
-                    for reconnect_timestamp in self.stream_list[stream_id]['logged_reconnects']:
-                        if (time.time() - reconnect_timestamp) < 1:
-                            stream_row_color_prefix = "\033[1m\033[31m"
-                            stream_row_color_suffix = "\033[0m"
-                        elif (time.time() - reconnect_timestamp) < 2:
-                            stream_row_color_prefix = "\033[1m\033[33m"
-                            stream_row_color_suffix = "\033[0m"
-                        elif (time.time() - reconnect_timestamp) < 4:
-                            stream_row_color_prefix = "\033[1m\033[32m"
-                            stream_row_color_suffix = "\033[0m"
+                    with self.stream_list_lock:
+                        for reconnect_timestamp in self.stream_list[stream_id]['logged_reconnects']:
+                            if (time.time() - reconnect_timestamp) < 1:
+                                stream_row_color_prefix = "\033[1m\033[31m"
+                                stream_row_color_suffix = "\033[0m"
+                            elif (time.time() - reconnect_timestamp) < 2:
+                                stream_row_color_prefix = "\033[1m\033[33m"
+                                stream_row_color_suffix = "\033[0m"
+                            elif (time.time() - reconnect_timestamp) < 4:
+                                stream_row_color_prefix = "\033[1m\033[32m"
+                                stream_row_color_suffix = "\033[0m"
                 except KeyError:
                     pass
             elif self.stream_list[stream_id]['status'] == "stopped":
@@ -3996,7 +4037,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logger.debug("BinanceWebSocketApiManager.set_heartbeat(" + str(stream_id) + ")")
         try:
-            self.stream_list[stream_id]['last_heartbeat'] = time.time()
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['last_heartbeat'] = time.time()
         except KeyError:
             pass
         return None
@@ -4010,7 +4052,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         if stream_id is None:
             return False
         try:
-            self.stream_list[stream_id]['stop_request'] = True
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['stop_request'] = True
             return True
         except KeyError:
             return False
@@ -4083,7 +4126,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: bool
         """
         try:
-            self.stream_list[stream_id]['stream_label'] = stream_label
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['stream_label'] = stream_label
             return True
         except KeyError:
             return False
@@ -4232,7 +4276,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         # stop a specific stream by stream_id
         logger.info(f"BinanceWebSocketApiManager.stop_stream({stream_id}){self.get_debug_log()}")
         try:
-            self.stream_list[stream_id]['stop_request'] = True
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['stop_request'] = True
         except KeyError:
             return False
         if delete_listen_key:
@@ -4260,8 +4305,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         # stop a specific stream by stream_id
         logger.critical(f"BinanceWebSocketApiManager._crash_stream({stream_id}){self.get_debug_log()}")
         try:
-            self.stream_list[stream_id]['crash_request'] = True
-            self.stream_list[stream_id]['crash_request_reason'] = error_msg
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['crash_request'] = True
+                self.stream_list[stream_id]['crash_request_reason'] = error_msg
         except KeyError:
             return False
         return True
@@ -4277,11 +4323,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logger.critical(f"BinanceWebSocketApiManager._stream_is_crashing({stream_id}){self.get_debug_log()}")
         self.set_stop_request(stream_id=stream_id)
-        self.stream_list[stream_id]['has_stopped'] = time.time()
-        self.stream_list[stream_id]['status'] = "crashed"
+        with self.stream_list_lock:
+            self.stream_list[stream_id]['has_stopped'] = time.time()
+            self.stream_list[stream_id]['status'] = "crashed"
         self.set_socket_is_ready(stream_id)
         if error_msg is not None:
-            self.stream_list[stream_id]['status'] += " - " + str(error_msg)
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['status'] += " - " + str(error_msg)
         else:
             if self.stream_list[stream_id]['crash_request_reason'] is not None:
                 error_msg = self.stream_list[stream_id]['crash_request_reason']
@@ -4299,7 +4347,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         logger.info(f"BinanceWebSocketApiManager._stream_is_restarting({stream_id}) - error_msg: {error_msg} - "
                     f"{self.get_debug_log()}")
         try:
-            self.stream_list[stream_id]['status'] = "restarting"
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['status'] = "restarting"
             return True
         except KeyError:
             return False
@@ -4314,8 +4363,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         logger.info(f"BinanceWebSocketApiManager._stream_is_stopping({stream_id}){self.get_debug_log()}")
         try:
-            self.stream_list[stream_id]['has_stopped'] = time.time()
-            self.stream_list[stream_id]['status'] = "stopped"
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['has_stopped'] = time.time()
+                self.stream_list[stream_id]['status'] = "stopped"
         except KeyError:
             pass
         self.send_stream_signal(stream_id=stream_id, signal_type="STOP")
@@ -4359,14 +4409,19 @@ class BinanceWebSocketApiManager(threading.Thread):
             if type(markets) is set:
                 markets = list(markets)
         if type(self.stream_list[stream_id]['channels']) is str:
-            self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels']]
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels']]
         if type(self.stream_list[stream_id]['channels']) is set:
-            self.stream_list[stream_id]['channels'] = list(self.stream_list[stream_id]['channels'])
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['channels'] = list(self.stream_list[stream_id]['channels'])
         if type(self.stream_list[stream_id]['markets']) is str:
-            self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets']]
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets']]
         if type(self.stream_list[stream_id]['markets']) is set:
-            self.stream_list[stream_id]['markets'] = list(self.stream_list[stream_id]['markets'])
-        self.stream_list[stream_id]['channels'] = list(set(self.stream_list[stream_id]['channels'] + channels))
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['markets'] = list(self.stream_list[stream_id]['markets'])
+        with self.stream_list_lock:
+            self.stream_list[stream_id]['channels'] = list(set(self.stream_list[stream_id]['channels'] + channels))
         markets_new = []
         for market in markets:
             if "!" in market \
@@ -4380,11 +4435,13 @@ class BinanceWebSocketApiManager(threading.Thread):
                     markets_new.append(str(market).upper())
                 elif self.is_exchange_type('cex'):
                     markets_new.append(str(market).lower())
-        self.stream_list[stream_id]['markets'] = list(set(self.stream_list[stream_id]['markets'] + markets_new))
+        with self.stream_list_lock:
+            self.stream_list[stream_id]['markets'] = list(set(self.stream_list[stream_id]['markets'] + markets_new))
         payload = self.create_payload(stream_id, "subscribe",
                                       channels=self.stream_list[stream_id]['channels'],
                                       markets=self.stream_list[stream_id]['markets'])
-        self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+        with self.stream_list_lock:
+            self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
         # control subscription limit:
         # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview
         if self.stream_list[stream_id]['subscriptions'] > self.max_subscriptions_per_stream:
@@ -4440,12 +4497,15 @@ class BinanceWebSocketApiManager(threading.Thread):
         if type(markets) is str:
             markets = [markets]
         if type(self.stream_list[stream_id]['channels']) is str:
-            self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels']]
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['channels'] = [self.stream_list[stream_id]['channels']]
         if type(self.stream_list[stream_id]['markets']) is str:
-            self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets']]
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['markets'] = [self.stream_list[stream_id]['markets']]
         for channel in channels:
             try:
-                self.stream_list[stream_id]['channels'].remove(channel)
+                with self.stream_list_lock:
+                    self.stream_list[stream_id]['channels'].remove(channel)
             except ValueError:
                 pass
         for i in range(len(markets)):
@@ -4453,7 +4513,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         for market in markets:
             if re.match(r'[a-zA-Z0-9]{41,43}', market) is None:
                 try:
-                    self.stream_list[stream_id]['markets'].remove(market)
+                    with self.stream_list_lock:
+                        self.stream_list[stream_id]['markets'].remove(market)
                 except ValueError:
                     pass
         payload = self.create_payload(stream_id, "unsubscribe", channels=channels, markets=markets)
@@ -4464,7 +4525,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             for item in payload:
                 if self.send_with_stream(stream_id=stream_id, payload=item) is False:
                     self.add_payload_to_stream(stream_id=stream_id, payload=item)
-            self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+            with self.stream_list_lock:
+                self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
             logger.info(f"BinanceWebSocketApiManager.unsubscribe_from_stream({str(stream_id)}, {str(channels)}, "
                         f"{str(markets)}) finished ...")
         except TypeError as error_msg:

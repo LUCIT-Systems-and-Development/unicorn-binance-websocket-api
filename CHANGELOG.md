@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Changed
 - Replaced all calls of `add_payload_to_stream()` in `manager.py`, `api.py` with `send_with_stream()`
 - Calling `set_socket_is_not_ready()` in `sockets.__aexit__()`
+- Consistent use of `stream_list_lock` and replacement of `stream_threading_lock` by `stream_list_lock` in `manager.py`.
 
 ## 2.5.0
 Functionally, nothing changes with this update. However, there are now sensible error messages if errors occur in the 
