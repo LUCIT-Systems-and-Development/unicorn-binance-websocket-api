@@ -20,6 +20,7 @@ channels:
 requirements:
   build:
     - {{ compiler('c') }}
+    - mypy
   host:
     - python
     - lucit::lucit-licensing-python

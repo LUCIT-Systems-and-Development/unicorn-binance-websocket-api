@@ -41,6 +41,7 @@ jobs:
       - name: Install Python Tools
         run: |
           pip install setuptools wheel --upgrade       
+          pip install mypy
 
       - name: Install macOS SDK (only on macOS)
         if: runner.os == 'macOS'

@@ -42,7 +42,7 @@ websockets = "11.0.3"
 [tool.poetry.dev-dependencies]
 
 [build-system]
-requires = ["setuptools", "wheel", "Cython", "pip"]
+requires = ["setuptools", "wheel", "Cython", "pip", "mypy"]
 build-backend = "setuptools.build_meta"
 
 [tool.poetry.package_data]
