@@ -46,4 +46,4 @@ requires = ["setuptools", "wheel", "Cython", "pip"]
 build-backend = "setuptools.build_meta"
 
 [tool.poetry.package_data]
-unicorn_binance_websocket_api = ["*.so", "*.dll", "*.py"]
+"unicorn_binance_websocket_api" = ["*.so", "*.dll", "*.py", "*.pyi"]

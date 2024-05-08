@@ -428,8 +428,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.warn_on_update = warn_on_update
         if warn_on_update and self.is_update_available():
             update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
-                         f"please consider updating! (Changelog: " \
-                         f"https://unicorn-binance-websocket-api.docs.lucit.tech/changelog.html)"
+                         f"please consider updating! Changelog: " \
+                         f"https://unicorn-binance-websocket-api.docs.lucit.tech/changelog.html"
             print(update_msg)
             logger.warning(update_msg)
         self.restclient = BinanceWebSocketApiRestclient(debug=self.debug,

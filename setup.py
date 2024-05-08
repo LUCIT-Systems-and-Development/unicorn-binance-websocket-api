@@ -18,25 +18,51 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-from setuptools import setup
 from Cython.Build import cythonize
+from setuptools import setup
+import os
+import shutil
+import subprocess
+
+source_dir = "unicorn_binance_websocket_api"
+stubs_dir = "stubs"
+
+
+def generate_stubs():
+    print("Generating stub files ...")
+    target_dir = os.path.join(stubs_dir)
+    os.makedirs(target_dir, exist_ok=True)
+    for filename in os.listdir(source_dir):
+        if filename.endswith('.py'):
+            source_path = os.path.join(source_dir, filename)
+            stub_output_dir = os.path.join(stubs_dir, source_dir)
+            os.makedirs(stub_output_dir, exist_ok=True)
+            subprocess.run(['stubgen', '-o', stub_output_dir, source_path], check=True)
+            for stub_file in os.listdir(stub_output_dir):
+                if stub_file.endswith('.pyi'):
+                    source_stub_path = os.path.join(stub_output_dir, stub_file)
+                    shutil.move(source_stub_path, source_dir)
+    print("Stub files generated and moved successfully.")
+
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+generate_stubs()
+
 setup(
     ext_modules=cythonize(
-        ['unicorn_binance_websocket_api/__init__.py',
-         'unicorn_binance_websocket_api/api.py',
-         'unicorn_binance_websocket_api/connection.py',
-         'unicorn_binance_websocket_api/connection_settings.py',
-         'unicorn_binance_websocket_api/exceptions.py',
-         'unicorn_binance_websocket_api/manager.py',
-         'unicorn_binance_websocket_api/restclient.py',
-         'unicorn_binance_websocket_api/restserver.py',
-         'unicorn_binance_websocket_api/sockets.py',
-         'unicorn_binance_websocket_api/licensing_exceptions.py',
-         'unicorn_binance_websocket_api/licensing_manager.py'],
+        [f'{source_dir}/__init__.py',
+         f'{source_dir}/api.py',
+         f'{source_dir}/connection.py',
+         f'{source_dir}/connection_settings.py',
+         f'{source_dir}/exceptions.py',
+         f'{source_dir}/manager.py',
+         f'{source_dir}/restclient.py',
+         f'{source_dir}/restserver.py',
+         f'{source_dir}/sockets.py',
+         f'{source_dir}/licensing_exceptions.py',
+         f'{source_dir}/licensing_manager.py'],
         annotate=False),
     name='unicorn-binance-websocket-api',
     version="2.6.0",
@@ -54,7 +80,7 @@ setup(
                       'unicorn-binance-rest-api', 'typing_extensions', 'Cython'],
     keywords='binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
              'binance-websocket, binance-webstream, webstream, websocket, api, binance-dex, '
-            'binance-futures, binance-margin, binance-us',
+             'binance-futures, binance-margin, binance-us',
     project_urls={
         'Howto': 'https://www.lucit.tech/unicorn-binance-websocket-api.html#howto',
         'Documentation': 'https://unicorn-binance-websocket-api.docs.lucit.tech',
@@ -69,9 +95,7 @@ setup(
         'LUCIT Online Shop': 'https://shop.lucit.services/software',
     },
     python_requires='>=3.7.0',
-    package_data={'': ['unicorn_binance_websocket_api/*.so',
-                       'unicorn_binance_websocket_api/*.dll',
-                       'unicorn_binance_websocket_api/*.py']},
+    package_data={'': ['*.so', '*.dll', '*.py', '*.pyi']},
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3.7",

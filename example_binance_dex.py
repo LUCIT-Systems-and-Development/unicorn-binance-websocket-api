@@ -40,7 +40,7 @@ import os
 
 # https://docs.python.org/3/library/logging.html#logging-levels
 logging.getLogger("unicorn_binance_websocket_api")
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     filename=os.path.basename(__file__) + '.log',
                     format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                     style="{")
@@ -51,7 +51,9 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
         if binance_websocket_api_manager.is_manager_stopping():
             exit(0)
         oldest_stream_data_from_stream_buffer = binance_websocket_api_manager.pop_stream_data_from_stream_buffer()
-        if oldest_stream_data_from_stream_buffer is None:
+        if oldest_stream_data_from_stream_buffer is not None:
+            print(oldest_stream_data_from_stream_buffer)
+        else:
             time.sleep(0.01)
 
 
@@ -60,7 +62,7 @@ def print_stream_data_from_stream_buffer(binance_websocket_api_manager):
 
 # create instance of BinanceWebSocketApiManager for Binance Chain DEX
 # use `exchange="binance.org-testnet"` for testnet mode
-binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org")
+binance_websocket_api_manager = BinanceWebSocketApiManager(exchange="binance.org-testnet", high_performance=False)
 
 # start a worker process to move the received stream_data from the stream_buffer to a print function
 worker_thread = threading.Thread(target=print_stream_data_from_stream_buffer, args=(binance_websocket_api_manager,))
@@ -82,13 +84,6 @@ binance_websocket_api_manager.create_stream('accounts', binance_dex_user_address
 binance_websocket_api_manager.create_stream('transfers', binance_dex_user_address)
 user_address_multi_stream_id = binance_websocket_api_manager.create_stream(['orders', 'transfers'],
                                                                            binance_dex_user_address)
-
-# subscribe is going to be rewritten, dont use for now!
-#if binance_websocket_api_manager.wait_till_stream_has_started(user_address_multi_stream_id):
-#    binance_websocket_api_manager.subscribe_to_stream(user_address_multi_stream_id,
-#                                                      'accounts',
-#                                                      binance_dex_user_address)
-
 # single streams
 if binance_websocket_api_manager.get_exchange() == "binance.org":
     markets = 'RAVEN-F66_BNB'
@@ -105,7 +100,7 @@ if binance_websocket_api_manager.get_exchange() == "binance.org":
     channels = ['trades', 'kline_1m', 'kline_5m', 'kline_15m', 'marketDepth', 'ticker', 'miniTicker', 'marketDiff']
     markets = ['RAVEN-F66_BNB', 'ANKR-E97_BNB', 'AWC-986_BNB', 'COVA-218_BNB', 'BCPT-95A_BNB', 'WISH-2D5_BNB',
                'MITH-C76_BNB', 'BNB_BTCB-1DE', 'BNB_USDSB-1AC', 'BTCB-1DE_USDSB-1AC', 'NEXO-A84_BNB']
-    #multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
+    multiplex_stream_id = binance_websocket_api_manager.create_stream(channels, markets)
 
 while True:
     binance_websocket_api_manager.print_summary()
