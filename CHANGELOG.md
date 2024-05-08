@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Better Logging to investigate [issue#374](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/374)
 - `send_with_stream()` - Send a payload with a specific stream.
+- Since UBWA is delivered as a compiled C extension, IDEs such as Pycharm and Visual Code cannot use information about 
+  available methods, parameters and their types for autocomplete and other intellisense functions. As a solution, from 
+  now on stub files (PYI) will be created in the build process and attached to the packages. The IDEs can automatically 
+  obtain the required information from these.
 ### Changed
 - Replaced all calls of `add_payload_to_stream()` in `manager.py`, `api.py` with `send_with_stream()`
 - Calling `set_socket_is_not_ready()` in `sockets.__aexit__()`

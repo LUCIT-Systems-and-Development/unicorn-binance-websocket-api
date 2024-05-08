@@ -27,28 +27,22 @@ import subprocess
 source_dir = "unicorn_binance_websocket_api"
 stubs_dir = "stubs"
 
-
-def generate_stubs():
-    print("Generating stub files ...")
-    target_dir = os.path.join(stubs_dir)
-    os.makedirs(target_dir, exist_ok=True)
-    for filename in os.listdir(source_dir):
-        if filename.endswith('.py'):
-            source_path = os.path.join(source_dir, filename)
-            stub_output_dir = os.path.join(stubs_dir, source_dir)
-            os.makedirs(stub_output_dir, exist_ok=True)
-            subprocess.run(['stubgen', '-o', stub_output_dir, source_path], check=True)
-            for stub_file in os.listdir(stub_output_dir):
-                if stub_file.endswith('.pyi'):
-                    source_stub_path = os.path.join(stub_output_dir, stub_file)
-                    shutil.move(source_stub_path, source_dir)
-    print("Stub files generated and moved successfully.")
-
+print("Generating stub files ...")
+os.makedirs(stubs_dir, exist_ok=True)
+for filename in os.listdir(source_dir):
+    if filename.endswith('.py'):
+        source_path = os.path.join(source_dir, filename)
+        subprocess.run(['stubgen', '-o', stubs_dir, source_path], check=True)
+for stub_file in os.listdir(os.path.join(stubs_dir, source_dir)):
+    if stub_file.endswith('.pyi'):
+        source_stub_path = os.path.join(stubs_dir, source_dir, stub_file)
+        shutil.move(source_stub_path, source_dir)
+shutil.rmtree(os.path.join(stubs_dir))
+print("Stub files generated and moved successfully.")
 
 with open("README.md", "r") as fh:
+    print("Using README.md content as `long_description` ...")
     long_description = fh.read()
-
-generate_stubs()
 
 setup(
     ext_modules=cythonize(
