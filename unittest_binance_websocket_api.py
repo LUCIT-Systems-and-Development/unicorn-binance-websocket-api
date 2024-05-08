@@ -329,6 +329,7 @@ class TestBinanceOrgManagerTestnet(unittest.TestCase):
     def setUpClass(cls):
         print(f"\r\nTestBinanceOrgManagerTestnet:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.org-testnet",
+                                              high_performance=True,
                                               debug=True)
 
     @classmethod
@@ -354,6 +355,7 @@ class TestBinanceOrgManager(unittest.TestCase):
     def setUpClass(cls):
         print(f"\r\nTestBinanceOrgManager:")
         cls.ubwa = BinanceWebSocketApiManager(exchange="binance.org",
+                                              high_performance=True,
                                               debug=True)
 
     @classmethod

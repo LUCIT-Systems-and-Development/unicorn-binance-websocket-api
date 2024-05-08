@@ -1962,10 +1962,11 @@ class BinanceWebSocketApiManager(threading.Thread):
                                 logger.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) +
                                             ", " + str(markets) + ", " + str(symbols) + ") - result: " +
                                             uri_hidden)
+                            subscriptions = self.get_number_of_subscriptions(stream_id)
                             with self.stream_list_lock:
                                 logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() response - `stream_list_lock` "
                                              f"was entered!")
-                                self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                                self.stream_list[stream_id]['subscriptions'] = subscriptions
                                 logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() - Leaving "
                                              f"`stream_list_lock`")
                             return uri
@@ -1990,15 +1991,33 @@ class BinanceWebSocketApiManager(threading.Thread):
                     return None
             elif "!bookTicker" in channels or "!bookTicker" in markets:
                 if stream_id:
-                    self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                    subscriptions = self.get_number_of_subscriptions(stream_id)
+                    with self.stream_list_lock:
+                        logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() response - `stream_list_lock` "
+                                     f"was entered!")
+                        self.stream_list[stream_id]['subscriptions'] = subscriptions
+                        logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() - Leaving "
+                                     f"`stream_list_lock`")
                 return self.websocket_base_uri + "ws/!bookTicker"
             elif "arr" in channels or "$all" in markets:
                 if stream_id:
-                    self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                    subscriptions = self.get_number_of_subscriptions(stream_id)
+                    with self.stream_list_lock:
+                        logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() response - `stream_list_lock` "
+                                     f"was entered!")
+                        self.stream_list[stream_id]['subscriptions'] = subscriptions
+                        logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() - Leaving "
+                                     f"`stream_list_lock`")
                 return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
             elif "arr" in markets or "$all" in channels:
                 if stream_id:
-                    self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                    subscriptions = self.get_number_of_subscriptions(stream_id)
+                    with self.stream_list_lock:
+                        logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() response - `stream_list_lock` "
+                                     f"was entered!")
+                        self.stream_list[stream_id]['subscriptions'] = subscriptions
+                        logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() - Leaving "
+                                     f"`stream_list_lock`")
                 return self.websocket_base_uri + "ws/" + channels[0] + "@" + markets[0]
             elif self.is_exchange_type("dex"):
                 if re.match(r'[a-zA-Z0-9]{41,43}', markets[0]) is not None:
@@ -2017,8 +2036,16 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    "address": markets[0]}
                     payload.append(add_payload)
                     if stream_id:
-                        self.stream_list[stream_id]['payload'] = payload
-                        self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                        with self.stream_list_lock:
+                            self.stream_list[stream_id]['payload'] = payload
+                        subscriptions = self.get_number_of_subscriptions(stream_id)
+                        with self.stream_list_lock:
+                            logger.debug(
+                                f"BinanceWebSocketApiManager.create_websocket_uri() response - `stream_list_lock` "
+                                f"was entered!")
+                            self.stream_list[stream_id]['subscriptions'] = subscriptions
+                            logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() - Leaving "
+                                         f"`stream_list_lock`")
                     return self.websocket_base_uri + "ws/" + markets[0]
                 elif markets[0] != "" and channels[0] != "":
                     return self.websocket_base_uri + "ws/" + markets[0] + "@" + channels[0]
@@ -2031,8 +2058,16 @@ class BinanceWebSocketApiManager(threading.Thread):
             query = "ws"
             if stream_id:
                 payload = self.create_payload(stream_id, "subscribe", channels=channels, markets=markets)
-                self.stream_list[stream_id]['payload'] = payload
-                self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                with self.stream_list_lock:
+                    self.stream_list[stream_id]['payload'] = payload
+                subscriptions = self.get_number_of_subscriptions(stream_id)
+                with self.stream_list_lock:
+                    logger.debug(
+                        f"BinanceWebSocketApiManager.create_websocket_uri() response - `stream_list_lock` "
+                        f"was entered!")
+                    self.stream_list[stream_id]['subscriptions'] = subscriptions
+                    logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() - Leaving "
+                                 f"`stream_list_lock`")
             return self.websocket_base_uri + str(query)
         else:
             query = "stream?streams="
@@ -3089,9 +3124,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 logger.debug(f"BinanceWebSocketApiManager.get_stream_info() - Leaving `stream_list_lock`!")
         except ZeroDivisionError:
             pass
+        current_receiving_speed = self.get_current_receiving_speed(stream_id)
         with self.stream_list_lock:
             logger.debug(f"BinanceWebSocketApiManager.get_stream_info() - `stream_list_lock` was entered!")
-            self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = self.get_current_receiving_speed(stream_id)
+            self.stream_list[stream_id]['transfer_rate_per_second']['speed'] = current_receiving_speed
             logger.debug(f"BinanceWebSocketApiManager.get_stream_info() - Leaving `stream_list_lock`!")
         return temp_stream_list
 
@@ -3163,13 +3199,9 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: set
         """
-        # get the stream list
         temp_stream_list = {}
-        with self.stream_list_lock:
-            logger.debug(f"BinanceWebSocketApiManager.get_stream_list() - `stream_list_lock` was entered!")
-            for stream_id in self.stream_list:
-                temp_stream_list[stream_id] = copy.deepcopy(self.get_stream_info(stream_id))
-            logger.debug(f"BinanceWebSocketApiManager.get_stream_list() - Leaving `stream_list_lock`!")
+        for stream_id in self.stream_list:
+            temp_stream_list[stream_id] = self.get_stream_info(stream_id)
         return temp_stream_list
 
     def get_stream_buffer_maxlen(self, stream_buffer_name=False):
@@ -4598,9 +4630,10 @@ class BinanceWebSocketApiManager(threading.Thread):
         payload = self.create_payload(stream_id, "subscribe",
                                       channels=self.stream_list[stream_id]['channels'],
                                       markets=self.stream_list[stream_id]['markets'])
+        subscriptions = self.get_number_of_subscriptions(stream_id)
         with self.stream_list_lock:
             logger.debug(f"BinanceWebSocketApiManager.subscribe_to_stream() - `stream_list_lock` was entered!")
-            self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+            self.stream_list[stream_id]['subscriptions'] = subscriptions
             logger.debug(f"BinanceWebSocketApiManager.subscribe_to_stream() - Leaving `stream_list_lock`!")
         # control subscription limit:
         # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview
@@ -4696,10 +4729,11 @@ class BinanceWebSocketApiManager(threading.Thread):
             for item in payload:
                 if self.send_with_stream(stream_id=stream_id, payload=item) is False:
                     self.add_payload_to_stream(stream_id=stream_id, payload=item)
+            subscriptions = self.get_number_of_subscriptions(stream_id)
             with self.stream_list_lock:
                 logger.debug(f"BinanceWebSocketApiManager.unsubscribe_from_stream() - `stream_list_lock` was "
                              f"entered!")
-                self.stream_list[stream_id]['subscriptions'] = self.get_number_of_subscriptions(stream_id)
+                self.stream_list[stream_id]['subscriptions'] = subscriptions
                 logger.debug(f"BinanceWebSocketApiManager.unsubscribe_from_stream() - Leaving `stream_list_lock`!")
             logger.info(f"BinanceWebSocketApiManager.unsubscribe_from_stream({str(stream_id)}, {str(channels)}, "
                         f"{str(markets)}) finished ...")

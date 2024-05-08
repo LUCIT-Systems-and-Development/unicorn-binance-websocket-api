@@ -1,6 +1,6 @@
-# Binance Spot userData WebSocket Asynchronously
+# Binance WebSocket Best Practice
 ## Overview
-How do subscriptions work?
+A best practice example for websockets to Binance Chain (binance.org) in Python.
 
 ## Prerequisites
 Ensure you have Python 3.7+ installed on your system. 
@@ -15,7 +15,7 @@ To run modules of the *UNICORN Binance Suite* you need a [valid license](https:/
 ## Usage
 ### Running the Script:
 ```bash
-python binance_websocket_dex.py
+python binance_chain_websocket_best_practice.py
 ```
 
 ### Graceful Shutdown:
