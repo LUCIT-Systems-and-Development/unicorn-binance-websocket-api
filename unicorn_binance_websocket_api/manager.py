@@ -70,7 +70,7 @@ class BinanceWebSocketApiManager(threading.Thread):
     An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
     com-isolated_margin+testnet, com-futures+testnet, us, dex/chain+testnet) in an easy, fast, flexible,
     robust and fully-featured way.
-
+K
     This library supports two different kind of websocket endpoints:
 
         - CEX (Centralized exchange): binance.com, binance.vision, binance.je, binance.us, trbinance.com
