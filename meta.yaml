@@ -74,7 +74,6 @@ about:
     in a easy, fast, flexible, robust and fully-featured way.
   description: |
     [![Get a UNICORN Binance Suite License](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-suite/master/images/logo/LUCIT-UBS-License-Offer.png)](https://shop.lucit.services)
-    
     [![GitHub Release](https://img.shields.io/github/release/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?label=github)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)
     [![GitHub Downloads](https://img.shields.io/github/downloads/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/total?color=blue)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)
     ![Anaconda Release](https://img.shields.io/conda/v/lucit/unicorn-binance-websocket-api?color=blue)
@@ -122,7 +121,7 @@ about:
     
     ## Receive Data from Binance WebSockets
     
-    ### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with a [`stream_buffer`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60) with just 3 lines of code:
+    ### [Create a multiplex websocket connection](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) to Binance with a [`stream_buffer`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60) with just 3 lines of code
     
     ```
     from unicorn_binance_websocket_api import BinanceWebSocketApiManager
@@ -131,7 +130,8 @@ about:
     ubwa.create_stream(channels=['trade', 'kline_1m'], markets=['btcusdt', 'bnbbtc', 'ethbtc'])
     ```
     
-    ### And 4 more lines to print out the data:
+    ### And 4 more lines to print out the data
+    
     ```
     while True:
         oldest_data_from_stream_buffer = ubwa.pop_stream_data_from_stream_buffer()
@@ -139,7 +139,8 @@ about:
             print(oldest_data_from_stream_buffer)
     ```
     
-    ### Or with a [callback function](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) just do:
+    ### Or with a [callback function](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) just do
+    
     ```
     from unicorn_binance_websocket_api import BinanceWebSocketApiManager
     
@@ -154,8 +155,10 @@ about:
                        process_stream_data=process_new_receives)
     ```
     
-    ### Or await the webstream data in an asyncio task:
+    ### Or await the webstream data in an asyncio coroutine
+    
     This is the recommended method for processing data from web streams.
+    
     ```
     from unicorn_binance_websocket_api import BinanceWebSocketApiManager
     import asyncio
@@ -178,17 +181,17 @@ about:
         try:
             asyncio.run(main())
         except KeyboardInterrupt:
-            print("Gracefully stopping ...")
+            print("\r\nGracefully stopping ...")
         except Exception as error_msg:
-            print(f"\r\nERROR: {error_msg}")
-            print("Gracefully stopping ...")
+            print(f"\r\nERROR: {error_msg}\r\nGracefully stopping ...")
     ```
     
     Basically that's it, but there are more options.
     
-    ### Convert received raw webstream data into well-formed Python dictionaries with [UnicornFy](https://www.lucit.tech/unicorn-fy.html):
+    ## Convert received stream data into well-formed Python dictionaries with [UnicornFy](https://www.lucit.tech/unicorn-fy.html)
+    
     ```
-    unicorn_fied_stream_data = UnicornFy.binance_com_websocket(oldest_data_from_stream_buffer)
+    unicorn_fied_stream_data = UnicornFy.binance_com_websocket(data)
     ```
     
     or
@@ -197,7 +200,8 @@ about:
     ubwa.create_stream(['trade'], ['btcusdt'], output="UnicornFy")
     ```
     
-    ### [Subscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream) / [unsubscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream) new markets and channels:
+    ## [Subscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream) / [unsubscribe](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream) new markets and channels
+    
     ```
     markets = ['engbtc', 'zileth']
     channels = ['kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'depth5']
@@ -210,35 +214,37 @@ about:
     ```
     
     ## Send Requests to Binance WebSocket API
-    ### [Place orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order), [cancel orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.cancel_order) or [send other requests](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.api) via WebSocket:
+    ### [Place orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.create_order), [cancel orders](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.BinanceWebSocketApiApi.cancel_order) or [send other requests](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.api) via WebSocket
+    
     ```
     from unicorn_binance_websocket_api import BinanceWebSocketApiManager
-    
-    
-    def process_api_responses(stream_data):
-        print(str(stream_data))
-    
     
     api_key = "YOUR_BINANCE_API_KEY"
     api_secret = "YOUR_BINANCE_API_SECRET"
     
+    async def process_api_responses(stream_id=None):
+        while ubwa.is_stop_request(stream_id=stream_id) is False:
+            data = await ubwa.get_stream_data_from_asyncio_queue(stream_id=stream_id)
+            print(data)
+            ubwa.asyncio_queue_task_done(stream_id=stream_id)
     
     ubwa = BinanceWebSocketApiManager(exchange="binance.com")
-    api_stream = ubwa.create_stream(api=True, 
-                                    api_key=api_key, 
+    api_stream = ubwa.create_stream(api=True,
+                                    api_key=api_key,
                                     api_secret=api_secret,
-                                    process_stream_data=process_api_responses)
+                                    output="UnicornFy",
+                                    process_asyncio_queue=process_api_responses)
     
-    response = ubwa.api.get_listen_key(return_response=True))
-    print(response['result']['listenKey'])                                       
-                                    
-    orig_client_order_id = ubwa.api.create_order(order_type="LIMIT", 
-                                                 price=1.1, 
-                                                 quantity=15.0, 
-                                                 side="SELL", 
-                                                 symbol="BUSDUSDT")
-                                                 
-    ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                      
+    response = ubwa.api.get_server_time(return_response=True)
+    print(f"Binance serverTime: {response['result']['serverTime']}")
+    
+    orig_client_order_id = ubwa.api.create_order(order_type="LIMIT",
+                                                 price = 1.1,
+                                                 quantity = 15.0,
+                                                 side = "SELL",
+                                                 symbol = "BUSDUSDT")
+    
+    ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                   
     ```
     
     [Here](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404) you can find a complete 
@@ -247,13 +253,48 @@ about:
     
     ## Stop `ubwa` after usage to avoid memory leaks
     
+    When you instantiate UBWA with `with`, `ubwa.stop_manager()` is automatically executed upon exiting the `with`-block.
+    
+    ```
+    with BinanceWebSocketApiManager() as ubwa:
+        ubwa.create_stream(channels="trade", markets="btcusdt", stream_label="TRADES")
+    ```
+    
+    Without `with`, you must explicitly execute `ubwa.stop_manager()` yourself.
+    
     ```
     ubwa.stop_manager()
     ```
     
-    [Discover even more possibilities](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html)
-    or [use this script](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_everything.py) 
-    to stream everything from "binance.com".
+    ## `stream_signals` - know the state of your streams
+    Usually you want to know when a stream is working and when it is not. This can be useful to know that your own system is 
+    currently "blind" and you may want to close open positions to be on the safe side, know that indicators will now provide 
+    incorrect values or that you have to reload the missing data via REST as an alternative. 
+    
+    For this purpose, the UNICORN Binance WebSocket API provides so-called 
+    [`stream_signals`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60)
+    , which are used to tell your code in real time when a stream is connected, when it received its first data record, when 
+    it was disconnected and stopped, and when the stream cannot be restored.
+    
+    ```
+    from unicorn_binance_websocket_api import BinanceWebSocketApiManager
+    import time
+    
+    def process_stream_signals(signal_type=None, stream_id=None, data_record=None, error_msg=None):
+        print(f"Received stream_signal for stream '{ubwa.get_stream_label(stream_id=stream_id)}': "
+              f"{signal_type} - {stream_id} - {data_record} - {error_msg}")
+    
+    with BinanceWebSocketApiManager(process_stream_signals=process_stream_signals) as ubwa:
+        ubwa.create_stream(channels="trade", markets="btcusdt", stream_label="TRADES")
+        time.sleep(2)
+        print(f"Waiting 5 seconds and then stop the stream ...")
+        time.sleep(5)
+    ```
+    
+    ## More?
+    
+    [Discover even more possibilities](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html), [use this script](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_everything.py) 
+    to stream everything from "binance.com" or try our [examples](#examples)!
     
     This should be known by everyone using this lib: 
     
