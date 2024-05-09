@@ -21,7 +21,6 @@
 from Cython.Build import cythonize
 from setuptools import setup, find_packages, Extension
 import os
-import platform
 import shutil
 import subprocess
 
@@ -34,23 +33,22 @@ extensions = [
 ]
 
 # Setup
-if platform.python_implementation() != 'PyPy':
-    print("Generating stub files ...")
-    os.makedirs(stubs_dir, exist_ok=True)
-    for filename in os.listdir(source_dir):
-        if filename.endswith('.py'):
-            source_path = os.path.join(source_dir, filename)
-            subprocess.run(['stubgen', '-o', stubs_dir, source_path], check=True)
-    for stub_file in os.listdir(os.path.join(stubs_dir, source_dir)):
-        if stub_file.endswith('.pyi'):
-            source_stub_path = os.path.join(stubs_dir, source_dir, stub_file)
-            if os.path.exists(os.path.join(source_dir, stub_file)):
-                print(f"Skipped moving {source_stub_path} because {os.path.join(source_dir, stub_file)} already exists!")
-            else:
-                shutil.move(source_stub_path, source_dir)
-                print(f"Moved {source_stub_path} to {source_dir}!")
-    shutil.rmtree(os.path.join(stubs_dir))
-    print("Stub files generated and moved successfully.")
+print("Generating stub files ...")
+os.makedirs(stubs_dir, exist_ok=True)
+for filename in os.listdir(source_dir):
+    if filename.endswith('.py'):
+        source_path = os.path.join(source_dir, filename)
+        subprocess.run(['stubgen', '-o', stubs_dir, source_path], check=True)
+for stub_file in os.listdir(os.path.join(stubs_dir, source_dir)):
+    if stub_file.endswith('.pyi'):
+        source_stub_path = os.path.join(stubs_dir, source_dir, stub_file)
+        if os.path.exists(os.path.join(source_dir, stub_file)):
+            print(f"Skipped moving {source_stub_path} because {os.path.join(source_dir, stub_file)} already exists!")
+        else:
+            shutil.move(source_stub_path, source_dir)
+            print(f"Moved {source_stub_path} to {source_dir}!")
+shutil.rmtree(os.path.join(stubs_dir))
+print("Stub files generated and moved successfully.")
 
 with open("README.md", "r") as fh:
     print("Using README.md content as `long_description` ...")

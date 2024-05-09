@@ -21,12 +21,8 @@ jobs:
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
 
-      - name: Install typed-ast (mypy dep) on windows for pypy wheels
-        if: matrix.os == 'windows-2019'
-        run: python -m pip install typed-ast
-
       - name: Set up Environment
-        run: echo "CIBW_SKIP=pp36-* pp37-*" >> $GITHUB_ENV
+        run: echo "CIBW_SKIP=pp36-* pp37-* pp38-*" >> $GITHUB_ENV
 
       - name: Check ENV
         if: matrix.os == 'ubuntu-20.04'

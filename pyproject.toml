@@ -42,7 +42,7 @@ websockets = "11.0.3"
 [tool.poetry.dev-dependencies]
 
 [build-system]
-requires = ["setuptools", "wheel", "Cython", "pip"]  # mypy is installed my the github action to exclude pypy
+requires = ["setuptools", "wheel", "Cython", "pip", "mypy"]
 build-backend = "setuptools.build_meta"
 
 [tool.poetry.package_data]
