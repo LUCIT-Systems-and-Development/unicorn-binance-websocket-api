@@ -10,7 +10,7 @@ jobs:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
-      CIBW_PYPY_VERSION: "7.3.10*"
+      CIBW_SKIP: "pp36-* pp37-* pp38-*"
     strategy:
       matrix:
         os: [ubuntu-20.04, windows-2019, macos-11]
