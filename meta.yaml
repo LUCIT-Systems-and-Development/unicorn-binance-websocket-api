@@ -23,6 +23,7 @@ requirements:
     - mypy
   host:
     - python
+    - mypy
     - lucit::lucit-licensing-python
     - lucit::unicorn-fy
     - lucit::unicorn-binance-rest-api
