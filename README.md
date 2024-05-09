@@ -516,7 +516,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 - [Gitter](https://gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api)
 - [https://t.me/unicorndevs](https://t.me/unicorndevs)
 - [https://dev.binance.vision](https://dev.binance.vision)
-- [https://community.binance.org](https://community.binance.org)
+- [https://forum.bnbchain.org/](https://forum.bnbchain.org/)
 
 ## Receive Notifications
 To receive notifications on available updates you can 
@@ -537,7 +537,6 @@ To receive news (like inspection windows/maintenance) about the Binance API`s su
 - [https://t.me/binance_api_english](https://t.me/binance_api_english)
 - [https://t.me/Binance_USA](https://t.me/Binance_USA)
 - [https://t.me/TRBinanceTR](https://t.me/TRBinanceTR)
-- [https://t.me/BinanceDEXchange](https://t.me/BinanceDEXchange)
 - [https://t.me/BinanceExchange](https://t.me/BinanceExchange)
 
 ## How to report Bugs or suggest Improvements?
