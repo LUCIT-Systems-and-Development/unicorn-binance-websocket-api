@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-# set -xeuo pipefail
 
 rm *.log
 rm dev/*.log
