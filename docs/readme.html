@@ -88,6 +88,7 @@
 </li>
 <li><a class="reference internal" href="#live-demo">Live Demo</a></li>
 <li><a class="reference internal" href="#installation-and-upgrade">Installation and Upgrade</a><ul>
+<li><a class="reference internal" href="#packages-are-created-automatically-with-github-actions">Packages are created automatically with GitHub Actions</a></li>
 <li><a class="reference internal" href="#a-cython-binary-pypy-or-source-code-based-cpython-wheel-of-the-latest-version-with-pip-from-pypi">A Cython binary, PyPy or source code based CPython wheel of the latest version with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from PyPI</a><ul>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#update">Update</a></li>
@@ -684,6 +685,18 @@ machine of <a class="reference external" href="https://www.hetzner.com">HETZNER 
 <p>For the PyPy interpreter we offer packages via PyPi only from Python version 3.9 and higher.</p>
 <p>The current dependencies are listed <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/requirements.txt">here</a>.</p>
 <p>If you run into errors during the installation take a look <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/wiki/Installation">here</a>.</p>
+<section id="packages-are-created-automatically-with-github-actions">
+<h3>Packages are created automatically with GitHub Actions<a class="headerlink" href="#packages-are-created-automatically-with-github-actions" title="Link to this heading">¶</a></h3>
+<p>When a new release is to be created, we start two GitHubActions:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_conda.yml">Build and Publish Anaconda</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml">Build and Publish GH+PyPi</a></p></li>
+</ul>
+<p>Both start virtual Windows/Linux/Mac servers provided by GitHub in the cloud with preconfigured environments and
+create the respective compilations and stub files, pack them into wheels and conda packages and then publish them on
+GitHub, PYPI and Anaconda. This is a transparent method that makes it possible to trace the source code behind a
+compilation.</p>
+</section>
 <section id="a-cython-binary-pypy-or-source-code-based-cpython-wheel-of-the-latest-version-with-pip-from-pypi">
 <h3>A Cython binary, PyPy or source code based CPython wheel of the latest version with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from <a class="reference external" href="https://pypi.org/project/unicorn-binance-rest-api/">PyPI</a><a class="headerlink" href="#a-cython-binary-pypy-or-source-code-based-cpython-wheel-of-the-latest-version-with-pip-from-pypi" title="Link to this heading">¶</a></h3>
 <p>Our <a class="reference external" href="https://cython.org/">Cython</a> and <a class="reference external" href="https://www.pypy.org/">PyPy</a> Wheels are available on <a class="reference external" href="https://pypi.org/">PyPI</a>,
@@ -927,6 +940,7 @@ companies from the US analyze binance.com market data - as long as they do not t
 </li>
 <li><a class="reference internal" href="#live-demo">Live Demo</a></li>
 <li><a class="reference internal" href="#installation-and-upgrade">Installation and Upgrade</a><ul>
+<li><a class="reference internal" href="#packages-are-created-automatically-with-github-actions">Packages are created automatically with GitHub Actions</a></li>
 <li><a class="reference internal" href="#a-cython-binary-pypy-or-source-code-based-cpython-wheel-of-the-latest-version-with-pip-from-pypi">A Cython binary, PyPy or source code based CPython wheel of the latest version with <code class="docutils literal notranslate"><span class="pre">pip</span></code> from PyPI</a><ul>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#update">Update</a></li>
@@ -1075,7 +1089,7 @@ companies from the US analyze binance.com market data - as long as they do not t
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on May 08 2024 at 18:46 (CET).
+    Last updated on May 09 2024 at 07:39 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

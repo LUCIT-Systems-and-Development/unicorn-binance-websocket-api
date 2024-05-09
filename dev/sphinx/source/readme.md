@@ -407,6 +407,16 @@ The current dependencies are listed [here](https://github.com/LUCIT-Systems-and-
 
 If you run into errors during the installation take a look [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-suite/wiki/Installation).
 
+### Packages are created automatically with GitHub Actions
+When a new release is to be created, we start two GitHubActions: 
+- [Build and Publish Anaconda](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_conda.yml)
+- [Build and Publish GH+PyPi](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/actions/workflows/build_wheels.yml) 
+
+Both start virtual Windows/Linux/Mac servers provided by GitHub in the cloud with preconfigured environments and 
+create the respective compilations and stub files, pack them into wheels and conda packages and then publish them on 
+GitHub, PYPI and Anaconda. This is a transparent method that makes it possible to trace the source code behind a 
+compilation.
+
 ### A Cython binary, PyPy or source code based CPython wheel of the latest version with `pip` from [PyPI](https://pypi.org/project/unicorn-binance-rest-api/)
 Our [Cython](https://cython.org/) and [PyPy](https://www.pypy.org/) Wheels are available on [PyPI](https://pypi.org/), 
 these wheels offer significant advantages for Python developers:
