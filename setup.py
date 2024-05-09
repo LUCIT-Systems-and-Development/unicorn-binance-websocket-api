@@ -85,7 +85,7 @@ setup(
         'Get Support': 'https://www.lucit.tech/get-support.html',
         'LUCIT Online Shop': 'https://shop.lucit.services/software',
     },
-    packages=find_packages(exclude=["dev", "docs", "examples", "images", "ipynb"]),
+    packages=find_packages(include=[source_dir]),
     ext_modules=cythonize(extensions, compiler_directives={'language_level': "3"}),
     python_requires='>=3.7.0',
     package_data={'': ['*.so', '*.dll', '*.py', '*.pyd', '*.pyi']},
