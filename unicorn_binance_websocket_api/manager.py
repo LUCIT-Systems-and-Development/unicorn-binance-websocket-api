@@ -4561,9 +4561,9 @@ K
 
         :param stream_id: id of a stream
         :type stream_id: str
-        :param channels: provide the channels you wish to stream
+        :param channels: provide the channels you wish to subscribe
         :type channels: str, tuple, list, set
-        :param markets: provide the markets you wish to stream
+        :param markets: provide the markets you wish to subscribe
         :type markets: str, tuple, list, set
         :return: bool
         """
@@ -4670,9 +4670,9 @@ K
 
         :param stream_id: id of a stream
         :type stream_id: str
-        :param channels: provide the channels you wish to stream
+        :param channels: provide the channels you wish to unsubscribe
         :type channels: str, tuple, list, set
-        :param markets: provide the markets you wish to stream
+        :param markets: provide the markets you wish to unsubscribe
         :type markets: str, tuple, list, set
         :return: bool
         """
