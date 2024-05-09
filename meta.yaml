@@ -8,11 +8,6 @@ package:
 source:
   path: .
 
-outputs:
-  - name: {{ name|lower }}
-    files:
-      - "*.pyi"
-
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
