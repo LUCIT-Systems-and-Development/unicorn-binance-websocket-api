@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
 ## 2.6.0.dev (development stage/unreleased/unstable)
+### Fixed
+- Type of parameter `stream_label` in `manager.get_stream_id_by_label()`
 
 ## 2.6.0
 ### Added

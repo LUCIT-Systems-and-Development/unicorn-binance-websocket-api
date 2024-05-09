@@ -3069,7 +3069,7 @@ K
                 number += len(self.stream_buffers[stream_buffer_name])
             return number
 
-    def get_stream_id_by_label(self, stream_label=False) -> Optional[str]:
+    def get_stream_id_by_label(self, stream_label: str = None) -> Optional[str]:
         """
         Get the stream_id of a specific stream by stream label
 
@@ -3077,14 +3077,14 @@ K
         :type stream_label: str
         :return: stream_id or None
         """
-        if stream_label:
+        if stream_label is not None:
             with self.stream_list_lock:
                 logger.debug(f"BinanceWebSocketApiManager.get_stream_id_by_label() - `stream_list_lock` "
                              f"was entered!")
                 for stream_id in self.stream_list:
                     if self.stream_list[stream_id]['stream_label'] == stream_label:
-                        logger.debug(f"BinanceWebSocketApiManager.get_stream_id_by_label() - Found `stream_id` via `stream_label` "
-                                     f"`{stream_label}`")
+                        logger.debug(f"BinanceWebSocketApiManager.get_stream_id_by_label() - Found `stream_id` via "
+                                     f"`stream_label` `{stream_label}`")
                         return stream_id
                 logger.debug(f"BinanceWebSocketApiManager.get_stream_id_by_label() - Leaving `stream_list_lock`!")
         logger.error(f"BinanceWebSocketApiManager.get_stream_id_by_label() - No `stream_id` found via `stream_label` "
