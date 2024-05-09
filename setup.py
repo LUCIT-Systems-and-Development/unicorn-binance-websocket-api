@@ -19,14 +19,20 @@
 # All rights reserved.
 
 from Cython.Build import cythonize
-from setuptools import setup
+from setuptools import setup, find_packages, Extension
 import os
 import shutil
 import subprocess
 
+name = "unicorn-binance-websocket-api"
 source_dir = "unicorn_binance_websocket_api"
-stubs_dir = "stubs"
 
+stubs_dir = "stubs"
+extensions = [
+    Extension("*", [f"{source_dir}/*.py"]),
+]
+
+# Setup
 print("Generating stub files ...")
 os.makedirs(stubs_dir, exist_ok=True)
 for filename in os.listdir(source_dir):
@@ -36,8 +42,11 @@ for filename in os.listdir(source_dir):
 for stub_file in os.listdir(os.path.join(stubs_dir, source_dir)):
     if stub_file.endswith('.pyi'):
         source_stub_path = os.path.join(stubs_dir, source_dir, stub_file)
-        if not os.path.exists(source_stub_path):
+        if os.path.exists(os.path.join(source_dir, stub_file)):
+            print(f"Skipped moving {source_stub_path} because {os.path.join(source_dir, stub_file)} already exists!")
+        else:
             shutil.move(source_stub_path, source_dir)
+            print(f"Moved {source_stub_path} to {source_dir}!")
 shutil.rmtree(os.path.join(stubs_dir))
 print("Stub files generated and moved successfully.")
 
@@ -46,20 +55,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    ext_modules=cythonize(
-        [f'{source_dir}/__init__.py',
-         f'{source_dir}/api.py',
-         f'{source_dir}/connection.py',
-         f'{source_dir}/connection_settings.py',
-         f'{source_dir}/exceptions.py',
-         f'{source_dir}/manager.py',
-         f'{source_dir}/restclient.py',
-         f'{source_dir}/restserver.py',
-         f'{source_dir}/sockets.py',
-         f'{source_dir}/licensing_exceptions.py',
-         f'{source_dir}/licensing_manager.py'],
-        annotate=False),
-    name='unicorn-binance-websocket-api',
+    name=name,
     version="2.6.0",
     author="LUCIT Systems and Development",
     author_email='info@lucit.tech',
@@ -89,8 +85,11 @@ setup(
         'Get Support': 'https://www.lucit.tech/get-support.html',
         'LUCIT Online Shop': 'https://shop.lucit.services/software',
     },
+    packages=find_packages(exclude=["dev", "docs", "examples", "images", "ipynb"]),
+    ext_modules=cythonize(extensions, compiler_directives={'language_level': "3"}),
     python_requires='>=3.7.0',
-    package_data={'': ['*.so', '*.dll', '*.py', '*.pyi']},
+    package_data={'': ['*.so', '*.dll', '*.py', '*.pyd', '*.pyi']},
+    include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3.7",
