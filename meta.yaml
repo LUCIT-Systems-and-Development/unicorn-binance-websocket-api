@@ -8,9 +8,16 @@ package:
 source:
   path: .
 
+outputs:
+  - name: {{ name|lower }}
+    files:
+      - "*.pyi"
+      - {{ name|lower }}/*.pyi
 build:
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script_env:
+    - PYTHONNOUSERSITE=1
 
 channels:
   - lucit
