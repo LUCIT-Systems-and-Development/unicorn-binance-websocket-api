@@ -36,7 +36,8 @@ for filename in os.listdir(source_dir):
 for stub_file in os.listdir(os.path.join(stubs_dir, source_dir)):
     if stub_file.endswith('.pyi'):
         source_stub_path = os.path.join(stubs_dir, source_dir, stub_file)
-        shutil.move(source_stub_path, source_dir)
+        if not os.path.exists(source_stub_path):
+            shutil.move(source_stub_path, source_dir)
 shutil.rmtree(os.path.join(stubs_dir))
 print("Stub files generated and moved successfully.")
 
