@@ -1,4 +1,4 @@
-# UNCIORN Binance WebSocket API - Examples
+# UNICORN Binance WebSocket API - Examples
 Here you will find best practice examples for the use of the UNICORN Binance WebSocket API.
 
 For each example you will find a `README.md` and a `requirements.txt` to install any dependencies. The respective `*.py` 
