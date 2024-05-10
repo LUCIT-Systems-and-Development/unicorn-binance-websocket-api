@@ -1,0 +1,3 @@
+python-dotenv
+unicorn-binance-rest-api
+unicorn-binance-websocket-api

@@ -3696,15 +3696,15 @@ K
             stream_row_color_prefix = "\033[1m\033[33m"
             stream_row_color_suffix = "\033[0m\r\n"
             status_row = stream_row_color_prefix + " status: " + str(stream_info['status']) + stream_row_color_suffix
-        if self.stream_list[stream_id]['markets'] == "!userData":
+        if "!userData" in self.stream_list[stream_id]['markets'] or "!userData" in self.stream_list[stream_id]['channels']:
             last_static_ping_listen_key = " last_static_ping_listen_key: " + \
                                           str(self.stream_list[stream_id]['last_static_ping_listen_key']) + "\r\n"
             if self.binance_api_status['status_code'] == 200:
-                binance_api_status_code = str(self.binance_api_status['status_code'])
-            elif self.binance_api_status['status_code'] == 418:
-                binance_api_status_code = "\033[1m\033[31m" + str(self.binance_api_status['status_code']) + "\033[0m"
+                binance_api_status_code = "\033[1m\033[32m" + str(self.binance_api_status['status_code']) + \
+                                          "\033[0m"
             else:
-                binance_api_status_code = "\033[1m\033[33m" + str(self.binance_api_status['status_code']) + "\033[0m"
+                binance_api_status_code = "\033[1m\033[31m" + str(self.binance_api_status['status_code']) + \
+                                          "\033[0m"
             binance_api_status_row = " binance_api_status: used_weight=" + str(self.binance_api_status['weight']) + \
                                      ", status_code=" + str(binance_api_status_code) + f" (last update " + \
                                      str(self.get_date_of_timestamp(self.binance_api_status['timestamp'])) + \
@@ -3924,12 +3924,10 @@ K
                 stopped_streams_row = " \033[1m\033[33mstopped_streams: " + str(stopped_streams) + "\033[0m\r\n"
             if self.binance_api_status['weight'] is not None:
                 if self.binance_api_status['status_code'] == 200:
-                    binance_api_status_code = str(self.binance_api_status['status_code'])
-                elif self.binance_api_status['status_code'] == 418:
-                    binance_api_status_code = "\033[1m\033[31m" + str(self.binance_api_status['status_code']) + \
+                    binance_api_status_code = "\033[1m\033[32m" + str(self.binance_api_status['status_code']) + \
                                               "\033[0m"
                 else:
-                    binance_api_status_code = "\033[1m\033[33m" + str(self.binance_api_status['status_code']) + \
+                    binance_api_status_code = "\033[1m\033[31m" + str(self.binance_api_status['status_code']) + \
                                               "\033[0m"
                 binance_api_status_row = " binance_api_status: used_weight=" + \
                                          str(self.binance_api_status['weight']) + \

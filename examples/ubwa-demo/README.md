@@ -1,16 +1,6 @@
-# Binance WebSocket `stream_signals`
+# UBWA Demo
 ## Overview
-Usually you want to know when a stream is working and when it is not. This can be useful to know that your own system is 
-currently "blind" and you may want to close open positions to be on the safe side, know that indicators will now provide 
-incorrect values or that you have to reload the missing data via REST as an alternative. 
-
-For this purpose, the UNICORN Binance WebSocket API provides so-called 
-[`stream_signals`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60)
-, which are used to tell your code in real time when a stream is connected, when it received its first data record, when 
-it was disconnected and stopped, and when the stream cannot be restored.
-
-In this example, a stream is started and stopped. To keep the example lean and clear, we will not process any data, but 
-only activate and process the stream signals.
+This is the original script from https://ubwa-demo.lucit.tech
 
 ## Prerequisites
 Ensure you have Python 3.7+ installed on your system. 
@@ -19,6 +9,13 @@ Before running the provided script, install the required Python packages:
 ```bash
 pip install -r requirements.txt
 ```
+
+Create an `.env` file with the environment variables using `.env-example` as a template:
+```bash
+BINANCE_API_KEY=12A34BCD5678EFG90HIJKLM12NOP3456QR789STUV0WXYZ
+BINANCE_API_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
+```
+
 ## Get a UNICORN Binance Suite License
 To run modules of the *UNICORN Binance Suite* you need a [valid license](https://shop.lucit.services)!
 
