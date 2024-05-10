@@ -3123,7 +3123,7 @@ create_stream() or the string name of a shared stream_buffer.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_id_by_label">
-<span class="sig-name descname"><span class="pre">get_stream_id_by_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/unicorn_binance_websocket_api/manager.html#BinanceWebSocketApiManager.get_stream_id_by_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_id_by_label" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_stream_id_by_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/unicorn_binance_websocket_api/manager.html#BinanceWebSocketApiManager.get_stream_id_by_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_id_by_label" title="Link to this definition">¶</a></dt>
 <dd><p>Get the stream_id of a specific stream by stream label</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3917,8 +3917,8 @@ and all subscribed channels are going to get added to the new market!</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream</p></li>
-<li><p><strong>channels</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the channels you wish to stream</p></li>
-<li><p><strong>markets</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the markets you wish to stream</p></li>
+<li><p><strong>channels</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the channels you wish to subscribe</p></li>
+<li><p><strong>markets</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the markets you wish to subscribe</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -3939,8 +3939,8 @@ subscribed channels from the specific markets are going to be removed!</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stream_id</strong> (<em>str</em>) – id of a stream</p></li>
-<li><p><strong>channels</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the channels you wish to stream</p></li>
-<li><p><strong>markets</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the markets you wish to stream</p></li>
+<li><p><strong>channels</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the channels you wish to unsubscribe</p></li>
+<li><p><strong>markets</strong> (<em>str</em><em>, </em><em>tuple</em><em>, </em><em>list</em><em>, </em><em>set</em>) – provide the markets you wish to unsubscribe</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -4471,7 +4471,7 @@ time is exceeded and returns False.</p></li>
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on May 09 2024 at 07:39 (CET).
+    Last updated on May 10 2024 at 18:54 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

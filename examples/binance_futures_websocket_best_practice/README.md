@@ -1,6 +1,6 @@
-# Binance Chain WebSocket Best Practice
+# Binance Futures WebSocket Best Practice
 ## Overview
-A best practice example for websockets to Binance Chain (binance.org) in Python.
+A best practice example for websockets to Binance Futures in Python.
 
 ## Prerequisites
 Ensure you have Python 3.7+ installed on your system. 
@@ -15,7 +15,7 @@ To run modules of the *UNICORN Binance Suite* you need a [valid license](https:/
 ## Usage
 ### Running the Script:
 ```bash
-python binance_chain_websocket_best_practice.py
+python binance_futures_websocket_best_practice.py
 ```
 
 ### Graceful Shutdown:

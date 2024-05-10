@@ -70,6 +70,7 @@
 <li><a class="reference internal" href="#create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code">Create a multiplex websocket connection to Binance with a <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> with just 3 lines of code</a></li>
 <li><a class="reference internal" href="#and-4-more-lines-to-print-out-the-data">And 4 more lines to print out the data</a></li>
 <li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do</a></li>
+<li><a class="reference internal" href="#or-with-a-async-callback-function-just-do">Or with a async callback function just do</a></li>
 <li><a class="reference internal" href="#or-await-the-webstream-data-in-an-asyncio-coroutine">Or await the webstream data in an asyncio coroutine</a></li>
 </ul>
 </li>
@@ -303,10 +304,8 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 <h3>Or with a <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">callback function</a> just do<a class="headerlink" href="#or-with-a-callback-function-just-do" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
 
-
 <span class="k">def</span> <span class="nf">process_new_receives</span><span class="p">(</span><span class="n">stream_data</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">stream_data</span><span class="p">))</span>
-
 
 <span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s2">&quot;binance.com&quot;</span><span class="p">)</span>
 <span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span> 
@@ -315,9 +314,26 @@ in a easy, fast, flexible, robust and fully-featured way.</p>
 </pre></div>
 </div>
 </section>
+<section id="or-with-a-async-callback-function-just-do">
+<h3>Or with a <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">async callback function</a> just do<a class="headerlink" href="#or-with-a-async-callback-function-just-do" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">process_new_receives</span><span class="p">(</span><span class="n">stream_data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">stream_data</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ubwa</span> <span class="o">=</span> <span class="n">BinanceWebSocketApiManager</span><span class="p">()</span>
+<span class="n">ubwa</span><span class="o">.</span><span class="n">create_stream</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;trade&#39;</span><span class="p">,</span> <span class="s1">&#39;kline_1m&#39;</span><span class="p">],</span>
+                   <span class="n">markets</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;btcusdt&#39;</span><span class="p">,</span> <span class="s1">&#39;bnbbtc&#39;</span><span class="p">,</span> <span class="s1">&#39;ethbtc&#39;</span><span class="p">],</span>
+                   <span class="n">process_stream_data_async</span><span class="o">=</span><span class="n">process_new_receives</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="or-await-the-webstream-data-in-an-asyncio-coroutine">
 <h3>Or await the webstream data in an asyncio coroutine<a class="headerlink" href="#or-await-the-webstream-data-in-an-asyncio-coroutine" title="Link to this heading">¶</a></h3>
-<p>This is the recommended method for processing data from web streams.</p>
+<p>All the methods of data collection presented have their own advantages and disadvantages. However, this is the
+generally recommended method for processing data from streams.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 
@@ -818,7 +834,7 @@ and use:</p>
 <li><p><a class="reference external" href="https://gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api">Gitter</a></p></li>
 <li><p><a class="reference external" href="https://t.me/unicorndevs">https://t.me/unicorndevs</a></p></li>
 <li><p><a class="reference external" href="https://dev.binance.vision">https://dev.binance.vision</a></p></li>
-<li><p><a class="reference external" href="https://community.binance.org">https://community.binance.org</a></p></li>
+<li><p><a class="reference external" href="https://forum.bnbchain.org/">https://forum.bnbchain.org/</a></p></li>
 </ul>
 </section>
 <section id="receive-notifications">
@@ -839,7 +855,6 @@ or you use the
 <li><p><a class="reference external" href="https://t.me/binance_api_english">https://t.me/binance_api_english</a></p></li>
 <li><p><a class="reference external" href="https://t.me/Binance_USA">https://t.me/Binance_USA</a></p></li>
 <li><p><a class="reference external" href="https://t.me/TRBinanceTR">https://t.me/TRBinanceTR</a></p></li>
-<li><p><a class="reference external" href="https://t.me/BinanceDEXchange">https://t.me/BinanceDEXchange</a></p></li>
 <li><p><a class="reference external" href="https://t.me/BinanceExchange">https://t.me/BinanceExchange</a></p></li>
 </ul>
 </section>
@@ -922,6 +937,7 @@ companies from the US analyze binance.com market data - as long as they do not t
 <li><a class="reference internal" href="#create-a-multiplex-websocket-connection-to-binance-with-a-stream-buffer-with-just-3-lines-of-code">Create a multiplex websocket connection to Binance with a <code class="docutils literal notranslate"><span class="pre">stream_buffer</span></code> with just 3 lines of code</a></li>
 <li><a class="reference internal" href="#and-4-more-lines-to-print-out-the-data">And 4 more lines to print out the data</a></li>
 <li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do</a></li>
+<li><a class="reference internal" href="#or-with-a-async-callback-function-just-do">Or with a async callback function just do</a></li>
 <li><a class="reference internal" href="#or-await-the-webstream-data-in-an-asyncio-coroutine">Or await the webstream data in an asyncio coroutine</a></li>
 </ul>
 </li>
@@ -1089,7 +1105,7 @@ companies from the US analyze binance.com market data - as long as they do not t
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on May 09 2024 at 10:56 (CET).
+    Last updated on May 10 2024 at 18:54 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

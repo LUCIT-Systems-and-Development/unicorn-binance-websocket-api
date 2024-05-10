@@ -70,10 +70,8 @@ while True:
 ```
 from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 
-
 def process_new_receives(stream_data):
     print(str(stream_data))
-
 
 ubwa = BinanceWebSocketApiManager(exchange="binance.com")
 ubwa.create_stream(channels=['trade', 'kline_1m'], 
@@ -81,9 +79,26 @@ ubwa.create_stream(channels=['trade', 'kline_1m'],
                    process_stream_data=process_new_receives)
 ```
 
+### Or with a [async callback function](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) just do
+
+```
+from unicorn_binance_websocket_api import BinanceWebSocketApiManager
+import asyncio
+
+async def process_new_receives(stream_data):
+    print(stream_data)
+    await asyncio.sleep(1)
+
+ubwa = BinanceWebSocketApiManager()
+ubwa.create_stream(channels=['trade', 'kline_1m'],
+                   markets=['btcusdt', 'bnbbtc', 'ethbtc'],
+                   process_stream_data_async=process_new_receives)
+```
+
 ### Or await the webstream data in an asyncio coroutine
 
-This is the recommended method for processing data from web streams.
+All the methods of data collection presented have their own advantages and disadvantages. However, this is the 
+generally recommended method for processing data from streams.
 
 ```
 from unicorn_binance_websocket_api import BinanceWebSocketApiManager
@@ -516,7 +531,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 - [Gitter](https://gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api)
 - [https://t.me/unicorndevs](https://t.me/unicorndevs)
 - [https://dev.binance.vision](https://dev.binance.vision)
-- [https://community.binance.org](https://community.binance.org)
+- [https://forum.bnbchain.org/](https://forum.bnbchain.org/)
 
 ## Receive Notifications
 To receive notifications on available updates you can 
@@ -537,7 +552,6 @@ To receive news (like inspection windows/maintenance) about the Binance API`s su
 - [https://t.me/binance_api_english](https://t.me/binance_api_english)
 - [https://t.me/Binance_USA](https://t.me/Binance_USA)
 - [https://t.me/TRBinanceTR](https://t.me/TRBinanceTR)
-- [https://t.me/BinanceDEXchange](https://t.me/BinanceDEXchange)
 - [https://t.me/BinanceExchange](https://t.me/BinanceExchange)
 
 ## How to report Bugs or suggest Improvements?

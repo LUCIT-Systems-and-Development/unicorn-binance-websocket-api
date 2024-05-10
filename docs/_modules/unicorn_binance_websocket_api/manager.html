@@ -206,7 +206,7 @@
     <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
 
 <span class="n">__app_name__</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;unicorn-binance-websocket-api&quot;</span>
-<span class="n">__version__</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;2.6.0&quot;</span>
+<span class="n">__version__</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;2.6.0.dev&quot;</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;unicorn_binance_websocket_api&quot;</span><span class="p">)</span>
 
@@ -3411,7 +3411,7 @@
 
 <div class="viewcode-block" id="BinanceWebSocketApiManager.get_stream_id_by_label">
 <a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_id_by_label">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_stream_id_by_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_label</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_stream_id_by_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the stream_id of a specific stream by stream label</span>
 
@@ -3419,14 +3419,14 @@
 <span class="sd">        :type stream_label: str</span>
 <span class="sd">        :return: stream_id or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">stream_label</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list_lock</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.get_stream_id_by_label() - `stream_list_lock` &quot;</span>
                              <span class="sa">f</span><span class="s2">&quot;was entered!&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">stream_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;stream_label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">stream_label</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.get_stream_id_by_label() - Found `stream_id` via `stream_label` &quot;</span>
-                                     <span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">stream_label</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.get_stream_id_by_label() - Found `stream_id` via &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;`stream_label` `</span><span class="si">{</span><span class="n">stream_label</span><span class="si">}</span><span class="s2">`&quot;</span><span class="p">)</span>
                         <span class="k">return</span> <span class="n">stream_id</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.get_stream_id_by_label() - Leaving `stream_list_lock`!&quot;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.get_stream_id_by_label() - No `stream_id` found via `stream_label` &quot;</span>
@@ -4125,15 +4125,15 @@
             <span class="n">stream_row_color_prefix</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="se">\033</span><span class="s2">[33m&quot;</span>
             <span class="n">stream_row_color_suffix</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m</span><span class="se">\r\n</span><span class="s2">&quot;</span>
             <span class="n">status_row</span> <span class="o">=</span> <span class="n">stream_row_color_prefix</span> <span class="o">+</span> <span class="s2">&quot; status: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_info</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="n">stream_row_color_suffix</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;markets&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;!userData&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;!userData&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;markets&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;!userData&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;channels&#39;</span><span class="p">]:</span>
             <span class="n">last_static_ping_listen_key</span> <span class="o">=</span> <span class="s2">&quot; last_static_ping_listen_key: &quot;</span> <span class="o">+</span> \
                                           <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream_list</span><span class="p">[</span><span class="n">stream_id</span><span class="p">][</span><span class="s1">&#39;last_static_ping_listen_key&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-                <span class="n">binance_api_status_code</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">])</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">418</span><span class="p">:</span>
-                <span class="n">binance_api_status_code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="se">\033</span><span class="s2">[31m&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+                <span class="n">binance_api_status_code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="se">\033</span><span class="s2">[32m&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">])</span> <span class="o">+</span> \
+                                          <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">binance_api_status_code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="se">\033</span><span class="s2">[33m&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+                <span class="n">binance_api_status_code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="se">\033</span><span class="s2">[31m&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">])</span> <span class="o">+</span> \
+                                          <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
             <span class="n">binance_api_status_row</span> <span class="o">=</span> <span class="s2">&quot; binance_api_status: used_weight=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">])</span> <span class="o">+</span> \
                                      <span class="s2">&quot;, status_code=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">binance_api_status_code</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; (last update &quot;</span> <span class="o">+</span> \
                                      <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_date_of_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]))</span> <span class="o">+</span> \
@@ -4356,12 +4356,10 @@
                 <span class="n">stopped_streams_row</span> <span class="o">=</span> <span class="s2">&quot; </span><span class="se">\033</span><span class="s2">[1m</span><span class="se">\033</span><span class="s2">[33mstopped_streams: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stopped_streams</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m</span><span class="se">\r\n</span><span class="s2">&quot;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-                    <span class="n">binance_api_status_code</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">])</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">418</span><span class="p">:</span>
-                    <span class="n">binance_api_status_code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="se">\033</span><span class="s2">[31m&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">])</span> <span class="o">+</span> \
+                    <span class="n">binance_api_status_code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="se">\033</span><span class="s2">[32m&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">])</span> <span class="o">+</span> \
                                               <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">binance_api_status_code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="se">\033</span><span class="s2">[33m&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">])</span> <span class="o">+</span> \
+                    <span class="n">binance_api_status_code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m</span><span class="se">\033</span><span class="s2">[31m&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;status_code&#39;</span><span class="p">])</span> <span class="o">+</span> \
                                               <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
                 <span class="n">binance_api_status_row</span> <span class="o">=</span> <span class="s2">&quot; binance_api_status: used_weight=&quot;</span> <span class="o">+</span> \
                                          <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binance_api_status</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">])</span> <span class="o">+</span> \
@@ -5056,9 +5054,9 @@
 
 <span class="sd">        :param stream_id: id of a stream</span>
 <span class="sd">        :type stream_id: str</span>
-<span class="sd">        :param channels: provide the channels you wish to stream</span>
+<span class="sd">        :param channels: provide the channels you wish to subscribe</span>
 <span class="sd">        :type channels: str, tuple, list, set</span>
-<span class="sd">        :param markets: provide the markets you wish to stream</span>
+<span class="sd">        :param markets: provide the markets you wish to subscribe</span>
 <span class="sd">        :type markets: str, tuple, list, set</span>
 <span class="sd">        :return: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -5168,9 +5166,9 @@
 
 <span class="sd">        :param stream_id: id of a stream</span>
 <span class="sd">        :type stream_id: str</span>
-<span class="sd">        :param channels: provide the channels you wish to stream</span>
+<span class="sd">        :param channels: provide the channels you wish to unsubscribe</span>
 <span class="sd">        :type channels: str, tuple, list, set</span>
-<span class="sd">        :param markets: provide the markets you wish to stream</span>
+<span class="sd">        :param markets: provide the markets you wish to unsubscribe</span>
 <span class="sd">        :type markets: str, tuple, list, set</span>
 <span class="sd">        :return: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -5412,7 +5410,7 @@
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on May 09 2024 at 07:39 (CET).
+    Last updated on May 10 2024 at 18:54 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

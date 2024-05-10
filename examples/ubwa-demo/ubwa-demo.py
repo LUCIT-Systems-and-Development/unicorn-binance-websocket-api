@@ -54,12 +54,12 @@ class BinanceDataProcessor:
 
     async def process_data(self, stream_id=None):
         while self.ubwa.is_stop_request(stream_id=stream_id) is False:
-            data = await self.ubwa.get_stream_data_from_asyncio_queue(stream_id)
+            await self.ubwa.get_stream_data_from_asyncio_queue(stream_id)
             self.ubwa.asyncio_queue_task_done(stream_id)
 
 
 if __name__ == "__main__":
-    with BinanceWebSocketApiManager() as ubwa:
+    with BinanceWebSocketApiManager(auto_data_cleanup_stopped_streams=True) as ubwa:
         bdp = BinanceDataProcessor(ubwa_manager=ubwa)
         try:
             asyncio.run(bdp.main())
