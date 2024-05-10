@@ -95,7 +95,7 @@ ubwa.create_stream(channels=['trade', 'kline_1m'],
                    process_stream_data_async=process_new_receives)
 ```
 
-### Or await the webstream data in an asyncio coroutine
+### Or await the stream data in an asyncio coroutine
 
 All the methods of data collection presented have their own advantages and disadvantages. However, this is the 
 generally recommended method for processing data from streams.
