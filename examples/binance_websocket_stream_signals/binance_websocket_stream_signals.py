@@ -27,9 +27,8 @@ class BinanceDataProcessor:
         await asyncio.sleep(3)
         print(f"\r\nExample of a healthy stream:")
         stream_id = self.ubwa.create_stream(channels="trade", markets="btcusdt", stream_label="HEALTHY")
-        await asyncio.sleep(2)
-        print(f"Waiting 5 seconds and then stop the stream ...")
-        await asyncio.sleep(5)
+        print(f"Waiting 10 seconds and then stop the stream ...")
+        await asyncio.sleep(10)
         self.ubwa.stop_stream(stream_id=stream_id)
         await asyncio.sleep(5)
 
