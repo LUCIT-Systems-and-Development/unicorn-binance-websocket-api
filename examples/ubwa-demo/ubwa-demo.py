@@ -38,7 +38,7 @@ class BinanceDataProcessor:
         channels: list = ['trade', 'kline_1m', 'depth20']
         for channel in channels:
             self.ubwa.create_stream(channels=channel,
-                                    markets=markets[:self.ubwa.get_limit_of_subscriptions_per_stream()],
+                                    markets=markets[:100],
                                     process_asyncio_queue=self.process_data,
                                     stream_label=channel)
 
@@ -59,7 +59,7 @@ class BinanceDataProcessor:
 
 
 if __name__ == "__main__":
-    with BinanceWebSocketApiManager(auto_data_cleanup_stopped_streams=True) as ubwa:
+    with BinanceWebSocketApiManager() as ubwa:
         bdp = BinanceDataProcessor(ubwa_manager=ubwa)
         try:
             asyncio.run(bdp.main())
