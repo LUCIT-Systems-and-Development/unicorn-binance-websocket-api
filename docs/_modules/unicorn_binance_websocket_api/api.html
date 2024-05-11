@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api.api &#8212; unicorn-binance-websocket-api 2.6.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unicorn_binance_websocket_api.api &#8212; unicorn-binance-websocket-api 2.7.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="../../_static/pydoctheme.css?v=fdf8e9ae" />
@@ -239,7 +239,6 @@
 <span class="sd">        :type stream_label: str</span>
 <span class="sd">        :return: bool</span>
 
-
 <span class="sd">        Message Sent:</span>
 
 <span class="sd">        .. code-block:: json</span>
@@ -254,7 +253,6 @@
 <span class="sd">                    &quot;timestamp&quot;: 1660805557200</span>
 <span class="sd">                }</span>
 <span class="sd">            }</span>
-
 
 <span class="sd">        Response:</span>
 
@@ -461,10 +459,9 @@
 <span class="sd">        :type symbol: str</span>
 <span class="sd">        :return: bool</span>
 
-
 <span class="sd">        Message sent:</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;5633b6a2-90a9-4192-83e7-925c90b6a2fd&quot;,</span>
@@ -478,10 +475,9 @@
 <span class="sd">                }</span>
 <span class="sd">            }</span>
 
-
 <span class="sd">        Response:</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;5633b6a2-90a9-4192-83e7-925c90b6a2fd&quot;,</span>
@@ -701,13 +697,11 @@
 <span class="sd">        :param trailing_delta: For more details on SPOT implementation on trailing stops, please refer to</span>
 <span class="sd">                               `Trailing Stop FAQ &lt;https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md&gt;`_</span>
 <span class="sd">        :type trailing_delta: int</span>
-
 <span class="sd">        :return: `False` or `orig_client_order_id`</span>
-
 
 <span class="sd">        Message sent:</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;56374a46-3061-486b-a311-99ee972eb648&quot;,</span>
@@ -725,10 +719,9 @@
 <span class="sd">                }</span>
 <span class="sd">            }</span>
 
-
 <span class="sd">        Response</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;56374a46-3061-486b-a311-99ee972eb648&quot;,</span>
@@ -977,10 +970,9 @@
 
 <span class="sd">        :return: `False` or `orig_client_order_id`</span>
 
-
 <span class="sd">        Message sent:</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;56374a46-3061-486b-a311-99ee972eb648&quot;,</span>
@@ -998,10 +990,9 @@
 <span class="sd">                }</span>
 <span class="sd">            }</span>
 
-
 <span class="sd">        Response</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;56374a46-3061-486b-a311-99ee972eb648&quot;,</span>
@@ -1037,6 +1028,7 @@
 <span class="sd">                    }</span>
 <span class="sd">                ]</span>
 <span class="sd">            }</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_order</span><span class="p">(</span><span class="n">iceberg_qty</span><span class="o">=</span><span class="n">iceberg_qty</span><span class="p">,</span> <span class="n">new_client_order_id</span><span class="o">=</span><span class="n">new_client_order_id</span><span class="p">,</span>
                                  <span class="n">new_order_resp_type</span><span class="o">=</span><span class="n">new_order_resp_type</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="n">price</span><span class="p">,</span> <span class="n">order_type</span><span class="o">=</span><span class="n">order_type</span><span class="p">,</span>
@@ -1078,10 +1070,9 @@
 <span class="sd">        :type stream_label: str</span>
 <span class="sd">        :return: bool</span>
 
-
 <span class="sd">        Message sent:</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;,</span>
@@ -1093,10 +1084,9 @@
 <span class="sd">                }</span>
 <span class="sd">            }</span>
 
-
 <span class="sd">        Response:</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;,</span>
@@ -1241,7 +1231,6 @@
 <span class="sd">        :type symbols: list</span>
 <span class="sd">        :return: bool</span>
 
-
 <span class="sd">        Message sent:</span>
 
 <span class="sd">        .. code-block:: json</span>
@@ -1255,7 +1244,6 @@
 <span class="sd">                    ]</span>
 <span class="sd">                }</span>
 <span class="sd">            }</span>
-
 
 <span class="sd">        Response:</span>
 
@@ -1421,10 +1409,9 @@
 <span class="sd">        :type stream_label: str</span>
 <span class="sd">        :return: bool</span>
 
-
 <span class="sd">        Message sent:</span>
 
-<span class="sd">        . code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">              &quot;id&quot;: &quot;d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0&quot;,</span>
@@ -1434,10 +1421,9 @@
 <span class="sd">              }</span>
 <span class="sd">            }</span>
 
-
 <span class="sd">        Response:</span>
 
-<span class="sd">        . code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">              &quot;id&quot;: &quot;d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0&quot;,</span>
@@ -1538,10 +1524,9 @@
 <span class="sd">        :type symbol: str</span>
 <span class="sd">        :return: bool</span>
 
-
 <span class="sd">        Message Sent:</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;55f07876-4f6f-4c47-87dc-43e5fff3f2e7&quot;,</span>
@@ -1554,10 +1539,9 @@
 <span class="sd">                }</span>
 <span class="sd">            }</span>
 
-
 <span class="sd">        Response:</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;55f07876-4f6f-4c47-87dc-43e5fff3f2e7&quot;,</span>
@@ -1689,10 +1673,9 @@
 <span class="sd">        :type symbol: str</span>
 <span class="sd">        :return: bool</span>
 
-
 <span class="sd">        Message sent:</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;aa62318a-5a97-4f3b-bdc7-640bbe33b291&quot;,</span>
@@ -1708,7 +1691,7 @@
 
 <span class="sd">        Response:</span>
 
-<span class="sd">        ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
 <span class="sd">            {</span>
 <span class="sd">                &quot;id&quot;: &quot;aa62318a-5a97-4f3b-bdc7-640bbe33b291&quot;,</span>
@@ -1847,85 +1830,84 @@
 <span class="sd">        :type symbol: str</span>
 <span class="sd">        :return: bool</span>
 
-
 <span class="sd">        Message sent:</span>
 
-<span class="sd">            ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
-<span class="sd">                {</span>
-<span class="sd">                    &quot;id&quot;: &quot;5494febb-d167-46a2-996d-70533eb4d976&quot;,</span>
-<span class="sd">                    &quot;method&quot;: &quot;depth&quot;,</span>
-<span class="sd">                    &quot;params&quot;: {</span>
-<span class="sd">                        &quot;symbol&quot;: &quot;BNBBTC&quot;,</span>
-<span class="sd">                        &quot;limit&quot;: 5</span>
-<span class="sd">                    }</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;id&quot;: &quot;5494febb-d167-46a2-996d-70533eb4d976&quot;,</span>
+<span class="sd">                &quot;method&quot;: &quot;depth&quot;,</span>
+<span class="sd">                &quot;params&quot;: {</span>
+<span class="sd">                    &quot;symbol&quot;: &quot;BNBBTC&quot;,</span>
+<span class="sd">                    &quot;limit&quot;: 5</span>
 <span class="sd">                }</span>
+<span class="sd">            }</span>
 
 
-<span class="sd">            Response:</span>
+<span class="sd">        Response:</span>
 
-<span class="sd">            ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
-<span class="sd">                {</span>
-<span class="sd">                    &quot;id&quot;: &quot;5494febb-d167-46a2-996d-70533eb4d976&quot;,</span>
-<span class="sd">                    &quot;status&quot;: 200,</span>
-<span class="sd">                    &quot;result&quot;: {</span>
-<span class="sd">                        &quot;lastUpdateId&quot;: 2731179239,</span>
-<span class="sd">                        &quot;bids&quot;: [</span>
-<span class="sd">                            [</span>
-<span class="sd">                                &quot;0.01379900&quot;,</span>
-<span class="sd">                                &quot;3.43200000&quot;</span>
-<span class="sd">                            ],</span>
-<span class="sd">                            [</span>
-<span class="sd">                                &quot;0.01379800&quot;,</span>
-<span class="sd">                                &quot;3.24300000&quot;</span>
-<span class="sd">                            ],</span>
-<span class="sd">                            [</span>
-<span class="sd">                                &quot;0.01379700&quot;,</span>
-<span class="sd">                                &quot;10.45500000&quot;</span>
-<span class="sd">                            ],</span>
-<span class="sd">                            [</span>
-<span class="sd">                                &quot;0.01379600&quot;,</span>
-<span class="sd">                                &quot;3.82100000&quot;</span>
-<span class="sd">                            ],</span>
-<span class="sd">                            [</span>
-<span class="sd">                                &quot;0.01379500&quot;,</span>
-<span class="sd">                                &quot;10.26200000&quot;</span>
-<span class="sd">                            ]</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;id&quot;: &quot;5494febb-d167-46a2-996d-70533eb4d976&quot;,</span>
+<span class="sd">                &quot;status&quot;: 200,</span>
+<span class="sd">                &quot;result&quot;: {</span>
+<span class="sd">                    &quot;lastUpdateId&quot;: 2731179239,</span>
+<span class="sd">                    &quot;bids&quot;: [</span>
+<span class="sd">                        [</span>
+<span class="sd">                            &quot;0.01379900&quot;,</span>
+<span class="sd">                            &quot;3.43200000&quot;</span>
 <span class="sd">                        ],</span>
-<span class="sd">                        &quot;asks&quot;: [</span>
-<span class="sd">                            [</span>
-<span class="sd">                                &quot;0.01380000&quot;,</span>
-<span class="sd">                                &quot;5.91700000&quot;</span>
-<span class="sd">                            ],</span>
-<span class="sd">                            [</span>
-<span class="sd">                                &quot;0.01380100&quot;,</span>
-<span class="sd">                                &quot;6.01400000&quot;</span>
-<span class="sd">                            ],</span>
-<span class="sd">                            [</span>
-<span class="sd">                                &quot;0.01380200&quot;,</span>
-<span class="sd">                                &quot;0.26800000&quot;</span>
-<span class="sd">                            ],</span>
-<span class="sd">                            [</span>
-<span class="sd">                                &quot;0.01380300&quot;,</span>
-<span class="sd">                                &quot;0.33800000&quot;</span>
-<span class="sd">                            ],</span>
-<span class="sd">                            [</span>
-<span class="sd">                                &quot;0.01380400&quot;,</span>
-<span class="sd">                                &quot;0.26800000&quot;</span>
-<span class="sd">                            ]</span>
+<span class="sd">                        [</span>
+<span class="sd">                            &quot;0.01379800&quot;,</span>
+<span class="sd">                            &quot;3.24300000&quot;</span>
+<span class="sd">                        ],</span>
+<span class="sd">                        [</span>
+<span class="sd">                            &quot;0.01379700&quot;,</span>
+<span class="sd">                            &quot;10.45500000&quot;</span>
+<span class="sd">                        ],</span>
+<span class="sd">                        [</span>
+<span class="sd">                            &quot;0.01379600&quot;,</span>
+<span class="sd">                            &quot;3.82100000&quot;</span>
+<span class="sd">                        ],</span>
+<span class="sd">                        [</span>
+<span class="sd">                            &quot;0.01379500&quot;,</span>
+<span class="sd">                            &quot;10.26200000&quot;</span>
 <span class="sd">                        ]</span>
-<span class="sd">                    },</span>
-<span class="sd">                    &quot;rateLimits&quot;: [</span>
-<span class="sd">                        {</span>
-<span class="sd">                            &quot;rateLimitType&quot;: &quot;REQUEST_WEIGHT&quot;,</span>
-<span class="sd">                            &quot;interval&quot;: &quot;MINUTE&quot;,</span>
-<span class="sd">                            &quot;intervalNum&quot;: 1,</span>
-<span class="sd">                            &quot;limit&quot;: 1200,</span>
-<span class="sd">                            &quot;count&quot;: 1</span>
-<span class="sd">                        }</span>
+<span class="sd">                    ],</span>
+<span class="sd">                    &quot;asks&quot;: [</span>
+<span class="sd">                        [</span>
+<span class="sd">                            &quot;0.01380000&quot;,</span>
+<span class="sd">                            &quot;5.91700000&quot;</span>
+<span class="sd">                        ],</span>
+<span class="sd">                        [</span>
+<span class="sd">                            &quot;0.01380100&quot;,</span>
+<span class="sd">                            &quot;6.01400000&quot;</span>
+<span class="sd">                        ],</span>
+<span class="sd">                        [</span>
+<span class="sd">                            &quot;0.01380200&quot;,</span>
+<span class="sd">                            &quot;0.26800000&quot;</span>
+<span class="sd">                        ],</span>
+<span class="sd">                        [</span>
+<span class="sd">                            &quot;0.01380300&quot;,</span>
+<span class="sd">                            &quot;0.33800000&quot;</span>
+<span class="sd">                        ],</span>
+<span class="sd">                        [</span>
+<span class="sd">                            &quot;0.01380400&quot;,</span>
+<span class="sd">                            &quot;0.26800000&quot;</span>
+<span class="sd">                        ]</span>
 <span class="sd">                    ]</span>
-<span class="sd">                }</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;rateLimits&quot;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &quot;rateLimitType&quot;: &quot;REQUEST_WEIGHT&quot;,</span>
+<span class="sd">                        &quot;interval&quot;: &quot;MINUTE&quot;,</span>
+<span class="sd">                        &quot;intervalNum&quot;: 1,</span>
+<span class="sd">                        &quot;limit&quot;: 1200,</span>
+<span class="sd">                        &quot;count&quot;: 1</span>
+<span class="sd">                    }</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1997,35 +1979,34 @@
 <span class="sd">        :type stream_label: str</span>
 <span class="sd">        :return: bool</span>
 
-
 <span class="sd">        Message sent:</span>
 
-<span class="sd">            ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
-<span class="sd">                {</span>
-<span class="sd">                    &quot;id&quot;: &quot;187d3cb2-942d-484c-8271-4e2141bbadb1&quot;,</span>
-<span class="sd">                    &quot;method&quot;: &quot;time&quot;</span>
-<span class="sd">                }</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;id&quot;: &quot;187d3cb2-942d-484c-8271-4e2141bbadb1&quot;,</span>
+<span class="sd">                &quot;method&quot;: &quot;time&quot;</span>
+<span class="sd">            }</span>
 
 
-<span class="sd">            Response:</span>
+<span class="sd">        Response:</span>
 
-<span class="sd">            ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
-<span class="sd">                {</span>
-<span class="sd">                    &quot;id&quot;: &quot;187d3cb2-942d-484c-8271-4e2141bbadb1&quot;,</span>
-<span class="sd">                    &quot;status&quot;: 200,</span>
-<span class="sd">                    &quot;result&quot;: {</span>
-<span class="sd">                        &quot;serverTime&quot;: 1656400526260</span>
-<span class="sd">                    },</span>
-<span class="sd">                    &quot;rateLimits&quot;: [{</span>
-<span class="sd">                        &quot;rateLimitType&quot;: &quot;REQUEST_WEIGHT&quot;,</span>
-<span class="sd">                        &quot;interval&quot;: &quot;MINUTE&quot;,</span>
-<span class="sd">                        &quot;intervalNum&quot;: 1,</span>
-<span class="sd">                        &quot;limit&quot;: 1200,</span>
-<span class="sd">                        &quot;count&quot;: 1</span>
-<span class="sd">                    }]</span>
-<span class="sd">                }</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;id&quot;: &quot;187d3cb2-942d-484c-8271-4e2141bbadb1&quot;,</span>
+<span class="sd">                &quot;status&quot;: 200,</span>
+<span class="sd">                &quot;result&quot;: {</span>
+<span class="sd">                    &quot;serverTime&quot;: 1656400526260</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;rateLimits&quot;: [{</span>
+<span class="sd">                    &quot;rateLimitType&quot;: &quot;REQUEST_WEIGHT&quot;,</span>
+<span class="sd">                    &quot;interval&quot;: &quot;MINUTE&quot;,</span>
+<span class="sd">                    &quot;intervalNum&quot;: 1,</span>
+<span class="sd">                    &quot;limit&quot;: 1200,</span>
+<span class="sd">                    &quot;count&quot;: 1</span>
+<span class="sd">                }]</span>
+<span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2089,33 +2070,31 @@
 <span class="sd">        :type stream_label: str</span>
 <span class="sd">        :return: bool</span>
 
-
 <span class="sd">        Message sent:</span>
 
-<span class="sd">            ... code-block:: json</span>
+<span class="sd">        .. code-block:: json</span>
 
-<span class="sd">                {</span>
-<span class="sd">                    &quot;id&quot;: &quot;4e72973031d8-bff9-8481-c95b-c42414df&quot;,</span>
-<span class="sd">                    &quot;method&quot;: &quot;ping&quot;</span>
-<span class="sd">                }</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;id&quot;: &quot;4e72973031d8-bff9-8481-c95b-c42414df&quot;,</span>
+<span class="sd">                &quot;method&quot;: &quot;ping&quot;</span>
+<span class="sd">            }</span>
 
+<span class="sd">        Response:</span>
 
-<span class="sd">            Response:</span>
+<span class="sd">        .. code-block:: json</span>
 
-<span class="sd">            ... code-block:: json</span>
-
-<span class="sd">                {</span>
-<span class="sd">                    &quot;id&quot;: &quot;4e72973031d8-bff9-8481-c95b-c42414df&quot;,</span>
-<span class="sd">                    &quot;status&quot;: 200,</span>
-<span class="sd">                    &quot;result&quot;: {},</span>
-<span class="sd">                    &quot;rateLimits&quot;: [{</span>
-<span class="sd">                        &quot;rateLimitType&quot;: &quot;REQUEST_WEIGHT&quot;,</span>
-<span class="sd">                        &quot;interval&quot;: &quot;MINUTE&quot;,</span>
-<span class="sd">                        &quot;intervalNum&quot;: 1,</span>
-<span class="sd">                        &quot;limit&quot;: 1200,</span>
-<span class="sd">                        &quot;count&quot;: 1</span>
-<span class="sd">                    }]</span>
-<span class="sd">                }</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;id&quot;: &quot;4e72973031d8-bff9-8481-c95b-c42414df&quot;,</span>
+<span class="sd">                &quot;status&quot;: 200,</span>
+<span class="sd">                &quot;result&quot;: {},</span>
+<span class="sd">                &quot;rateLimits&quot;: [{</span>
+<span class="sd">                    &quot;rateLimitType&quot;: &quot;REQUEST_WEIGHT&quot;,</span>
+<span class="sd">                    &quot;interval&quot;: &quot;MINUTE&quot;,</span>
+<span class="sd">                    &quot;intervalNum&quot;: 1,</span>
+<span class="sd">                    &quot;limit&quot;: 1200,</span>
+<span class="sd">                    &quot;count&quot;: 1</span>
+<span class="sd">                }]</span>
+<span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2258,7 +2237,7 @@
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on May 08 2024 at 14:54 (CET).
+    Last updated on May 11 2024 at 22:32 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

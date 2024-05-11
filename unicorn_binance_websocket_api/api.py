@@ -89,7 +89,6 @@ class BinanceWebSocketApiApi(object):
         :type stream_label: str
         :return: bool
 
-
         Message Sent:
 
         .. code-block:: json
@@ -104,7 +103,6 @@ class BinanceWebSocketApiApi(object):
                     "timestamp": 1660805557200
                 }
             }
-
 
         Response:
 
@@ -308,10 +306,9 @@ class BinanceWebSocketApiApi(object):
         :type symbol: str
         :return: bool
 
-
         Message sent:
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "5633b6a2-90a9-4192-83e7-925c90b6a2fd",
@@ -325,10 +322,9 @@ class BinanceWebSocketApiApi(object):
                 }
             }
 
-
         Response:
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "5633b6a2-90a9-4192-83e7-925c90b6a2fd",
@@ -545,13 +541,11 @@ class BinanceWebSocketApiApi(object):
         :param trailing_delta: For more details on SPOT implementation on trailing stops, please refer to
                                `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`_
         :type trailing_delta: int
-
         :return: `False` or `orig_client_order_id`
-
 
         Message sent:
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "56374a46-3061-486b-a311-99ee972eb648",
@@ -569,10 +563,9 @@ class BinanceWebSocketApiApi(object):
                 }
             }
 
-
         Response
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "56374a46-3061-486b-a311-99ee972eb648",
@@ -818,10 +811,9 @@ class BinanceWebSocketApiApi(object):
 
         :return: `False` or `orig_client_order_id`
 
-
         Message sent:
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "56374a46-3061-486b-a311-99ee972eb648",
@@ -839,10 +831,9 @@ class BinanceWebSocketApiApi(object):
                 }
             }
 
-
         Response
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "56374a46-3061-486b-a311-99ee972eb648",
@@ -878,6 +869,7 @@ class BinanceWebSocketApiApi(object):
                     }
                 ]
             }
+
         """
         return self.create_order(iceberg_qty=iceberg_qty, new_client_order_id=new_client_order_id,
                                  new_order_resp_type=new_order_resp_type, price=price, order_type=order_type,
@@ -916,10 +908,9 @@ class BinanceWebSocketApiApi(object):
         :type stream_label: str
         :return: bool
 
-
         Message sent:
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "605a6d20-6588-4cb9-afa0-b0ab087507ba",
@@ -931,10 +922,9 @@ class BinanceWebSocketApiApi(object):
                 }
             }
 
-
         Response:
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "605a6d20-6588-4cb9-afa0-b0ab087507ba",
@@ -1076,7 +1066,6 @@ class BinanceWebSocketApiApi(object):
         :type symbols: list
         :return: bool
 
-
         Message sent:
 
         .. code-block:: json
@@ -1090,7 +1079,6 @@ class BinanceWebSocketApiApi(object):
                     ]
                 }
             }
-
 
         Response:
 
@@ -1253,10 +1241,9 @@ class BinanceWebSocketApiApi(object):
         :type stream_label: str
         :return: bool
 
-
         Message sent:
 
-        . code-block:: json
+        .. code-block:: json
 
             {
               "id": "d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0",
@@ -1266,10 +1253,9 @@ class BinanceWebSocketApiApi(object):
               }
             }
 
-
         Response:
 
-        . code-block:: json
+        .. code-block:: json
 
             {
               "id": "d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0",
@@ -1367,10 +1353,9 @@ class BinanceWebSocketApiApi(object):
         :type symbol: str
         :return: bool
 
-
         Message Sent:
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "55f07876-4f6f-4c47-87dc-43e5fff3f2e7",
@@ -1383,10 +1368,9 @@ class BinanceWebSocketApiApi(object):
                 }
             }
 
-
         Response:
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "55f07876-4f6f-4c47-87dc-43e5fff3f2e7",
@@ -1515,10 +1499,9 @@ class BinanceWebSocketApiApi(object):
         :type symbol: str
         :return: bool
 
-
         Message sent:
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "aa62318a-5a97-4f3b-bdc7-640bbe33b291",
@@ -1534,7 +1517,7 @@ class BinanceWebSocketApiApi(object):
 
         Response:
 
-        ... code-block:: json
+        .. code-block:: json
 
             {
                 "id": "aa62318a-5a97-4f3b-bdc7-640bbe33b291",
@@ -1670,85 +1653,84 @@ class BinanceWebSocketApiApi(object):
         :type symbol: str
         :return: bool
 
-
         Message sent:
 
-            ... code-block:: json
+        .. code-block:: json
 
-                {
-                    "id": "5494febb-d167-46a2-996d-70533eb4d976",
-                    "method": "depth",
-                    "params": {
-                        "symbol": "BNBBTC",
-                        "limit": 5
-                    }
+            {
+                "id": "5494febb-d167-46a2-996d-70533eb4d976",
+                "method": "depth",
+                "params": {
+                    "symbol": "BNBBTC",
+                    "limit": 5
                 }
+            }
 
 
-            Response:
+        Response:
 
-            ... code-block:: json
+        .. code-block:: json
 
-                {
-                    "id": "5494febb-d167-46a2-996d-70533eb4d976",
-                    "status": 200,
-                    "result": {
-                        "lastUpdateId": 2731179239,
-                        "bids": [
-                            [
-                                "0.01379900",
-                                "3.43200000"
-                            ],
-                            [
-                                "0.01379800",
-                                "3.24300000"
-                            ],
-                            [
-                                "0.01379700",
-                                "10.45500000"
-                            ],
-                            [
-                                "0.01379600",
-                                "3.82100000"
-                            ],
-                            [
-                                "0.01379500",
-                                "10.26200000"
-                            ]
+            {
+                "id": "5494febb-d167-46a2-996d-70533eb4d976",
+                "status": 200,
+                "result": {
+                    "lastUpdateId": 2731179239,
+                    "bids": [
+                        [
+                            "0.01379900",
+                            "3.43200000"
                         ],
-                        "asks": [
-                            [
-                                "0.01380000",
-                                "5.91700000"
-                            ],
-                            [
-                                "0.01380100",
-                                "6.01400000"
-                            ],
-                            [
-                                "0.01380200",
-                                "0.26800000"
-                            ],
-                            [
-                                "0.01380300",
-                                "0.33800000"
-                            ],
-                            [
-                                "0.01380400",
-                                "0.26800000"
-                            ]
+                        [
+                            "0.01379800",
+                            "3.24300000"
+                        ],
+                        [
+                            "0.01379700",
+                            "10.45500000"
+                        ],
+                        [
+                            "0.01379600",
+                            "3.82100000"
+                        ],
+                        [
+                            "0.01379500",
+                            "10.26200000"
                         ]
-                    },
-                    "rateLimits": [
-                        {
-                            "rateLimitType": "REQUEST_WEIGHT",
-                            "interval": "MINUTE",
-                            "intervalNum": 1,
-                            "limit": 1200,
-                            "count": 1
-                        }
+                    ],
+                    "asks": [
+                        [
+                            "0.01380000",
+                            "5.91700000"
+                        ],
+                        [
+                            "0.01380100",
+                            "6.01400000"
+                        ],
+                        [
+                            "0.01380200",
+                            "0.26800000"
+                        ],
+                        [
+                            "0.01380300",
+                            "0.33800000"
+                        ],
+                        [
+                            "0.01380400",
+                            "0.26800000"
+                        ]
                     ]
-                }
+                },
+                "rateLimits": [
+                    {
+                        "rateLimitType": "REQUEST_WEIGHT",
+                        "interval": "MINUTE",
+                        "intervalNum": 1,
+                        "limit": 1200,
+                        "count": 1
+                    }
+                ]
+            }
         """
         if stream_id is None:
             if stream_label is not None:
@@ -1817,35 +1799,34 @@ class BinanceWebSocketApiApi(object):
         :type stream_label: str
         :return: bool
 
-
         Message sent:
 
-            ... code-block:: json
+        .. code-block:: json
 
-                {
-                    "id": "187d3cb2-942d-484c-8271-4e2141bbadb1",
-                    "method": "time"
-                }
+            {
+                "id": "187d3cb2-942d-484c-8271-4e2141bbadb1",
+                "method": "time"
+            }
 
 
-            Response:
+        Response:
 
-            ... code-block:: json
+        .. code-block:: json
 
-                {
-                    "id": "187d3cb2-942d-484c-8271-4e2141bbadb1",
-                    "status": 200,
-                    "result": {
-                        "serverTime": 1656400526260
-                    },
-                    "rateLimits": [{
-                        "rateLimitType": "REQUEST_WEIGHT",
-                        "interval": "MINUTE",
-                        "intervalNum": 1,
-                        "limit": 1200,
-                        "count": 1
-                    }]
-                }
+            {
+                "id": "187d3cb2-942d-484c-8271-4e2141bbadb1",
+                "status": 200,
+                "result": {
+                    "serverTime": 1656400526260
+                },
+                "rateLimits": [{
+                    "rateLimitType": "REQUEST_WEIGHT",
+                    "interval": "MINUTE",
+                    "intervalNum": 1,
+                    "limit": 1200,
+                    "count": 1
+                }]
+            }
         """
         if stream_id is None:
             if stream_label is not None:
@@ -1906,33 +1887,31 @@ class BinanceWebSocketApiApi(object):
         :type stream_label: str
         :return: bool
 
-
         Message sent:
 
-            ... code-block:: json
+        .. code-block:: json
 
-                {
-                    "id": "4e72973031d8-bff9-8481-c95b-c42414df",
-                    "method": "ping"
-                }
+            {
+                "id": "4e72973031d8-bff9-8481-c95b-c42414df",
+                "method": "ping"
+            }
 
+        Response:
 
-            Response:
+        .. code-block:: json
 
-            ... code-block:: json
-
-                {
-                    "id": "4e72973031d8-bff9-8481-c95b-c42414df",
-                    "status": 200,
-                    "result": {},
-                    "rateLimits": [{
-                        "rateLimitType": "REQUEST_WEIGHT",
-                        "interval": "MINUTE",
-                        "intervalNum": 1,
-                        "limit": 1200,
-                        "count": 1
-                    }]
-                }
+            {
+                "id": "4e72973031d8-bff9-8481-c95b-c42414df",
+                "status": 200,
+                "result": {},
+                "rateLimits": [{
+                    "rateLimitType": "REQUEST_WEIGHT",
+                    "interval": "MINUTE",
+                    "intervalNum": 1,
+                    "limit": 1200,
+                    "count": 1
+                }]
+            }
         """
         if stream_id is None:
             if stream_label is not None:

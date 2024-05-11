@@ -169,15 +169,15 @@ class BinanceWebSocketApiRestclient(object):
         binance_api_status['timestamp'] = time.time()
         return binance_api_status
 
-    def get_listen_key(self, stream_id=None) -> Tuple[Union[str, None], Union[dict, None]]:
+    def get_listen_key(self, stream_id=None) -> Tuple[Union[dict, None], Union[dict, None]]:
         """
         Request a valid listen_key from binance
 
         :param stream_id: provide a stream_id
         :type stream_id: str
 
-        :return: listen_key, binance_api_status
-        :rtype: Tuple[Union[str, None], Union[dict, None]]
+        :return: response, binance_api_status
+        :rtype: Tuple[Union[dict, None], Union[dict, None]]
         """
         logger.info(f"BinanceWebSocketApiRestclient.get_listen_key() symbol='{self.stream_list[stream_id]['symbols']}' "
                     f"stream_id='{str(stream_id)}')")

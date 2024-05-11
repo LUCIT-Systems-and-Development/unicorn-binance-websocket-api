@@ -39,13 +39,14 @@ import uuid
 import ujson as json
 import websockets
 from .licensing_manager import LucitLicensingManager, NoValidatedLucitLicense
-from unicorn_binance_rest_api import BinanceRestApiManager, BinanceAPIException
 from .connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, CONNECTION_SETTINGS
 from .exceptions import *
 from .restclient import BinanceWebSocketApiRestclient
 from .restserver import BinanceWebSocketApiRestServer
 from .sockets import BinanceWebSocketApiSocket
 from .api import BinanceWebSocketApiApi
+from unicorn_binance_rest_api import BinanceRestApiManager, BinanceAPIException
+from unicorn_fy.unicorn_fy import UnicornFy
 from cheroot import wsgi
 from collections import deque
 from datetime import datetime, timezone
@@ -60,7 +61,7 @@ except ImportError:
     from typing_extensions import Literal
 
 __app_name__: str = "unicorn-binance-websocket-api"
-__version__: str = "2.6.1"
+__version__: str = "2.7.0"
 
 logger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -70,12 +71,12 @@ class BinanceWebSocketApiManager(threading.Thread):
     An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
     com-isolated_margin+testnet, com-futures+testnet, us, dex/chain+testnet) in an easy, fast, flexible,
     robust and fully-featured way.
-K
+
     This library supports two different kind of websocket endpoints:
 
-        - CEX (Centralized exchange): binance.com, binance.vision, binance.je, binance.us, trbinance.com
+        - CEX (Centralized exchange): "binance.com", "binance.vision", "binance.je", "binance.us", "trbinance.com"
 
-        - DEX (Decentralized exchange): binance.org
+        - DEX (Decentralized exchange): "binance.org"
 
     Binance.com websocket API documentation:
 
@@ -106,23 +107,23 @@ K
                                   the data in the correct receiving sequence.
                                   https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-coroutine
     :type process_asyncio_queue: Optional[Callable]
-    :param process_stream_data: Provide a function/method to process the received webstream data (callback). The function
-                                will be called instead of
-                                `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
+    :param process_stream_data: Provide a function/method to process the received webstream data (callback).
+                                The function will be called instead of
+                                `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`__
                                 like `process_stream_data(stream_data, stream_buffer_name)` where
                                 `stream_data` contains the raw_stream_data. If not provided, the raw stream_data will
                                 get stored in the stream_buffer or provided to a specific callback function of
                                 `create_stream()`! `How to read from stream_buffer!
-                                <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
+                                <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`__
     :type process_stream_data: Optional[Callable]
-    :param process_stream_data_async: Provide an asyncio function/method to process the received webstream data (callback). The function
-                                will be called instead of
-                                `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
+    :param process_stream_data_async: Provide an asyncio function/method to process the received webstream data
+                                (callback). The function will be called instead of
+                                `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`__
                                 like `process_stream_data(stream_data, stream_buffer_name)` where
                                 `stream_data` contains the raw_stream_data. If not provided, the raw stream_data will
                                 get stored in the stream_buffer or provided to a specific callback function of
                                 `create_stream()`! `How to read from stream_buffer!
-                                <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
+                                <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`__
     :type process_stream_data_async: Optional[Callable]
     :param exchange: Select binance.com, binance.com-testnet, binance.com-margin, binance.com-margin-testnet,
                      binance.com-isolated_margin, binance.com-isolated_margin-testnet, binance.com-futures,
@@ -138,25 +139,25 @@ K
                                  (default=False)
     :type show_secrets_in_logs: bool
     :param output_default: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to
-                           convert with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ -  otherwise
-                           with the default setting "raw_data" the output remains unchanged and gets delivered as
-                           received from the endpoints. Change this for a specific stream with the `output` parameter
-                           of `create_stream()` and `replace_stream()`
+                           convert with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`__
+                           - otherwise with the default setting "raw_data" the output remains unchanged and gets
+                           delivered as received from the endpoints. Change this for a specific stream with the `output`
+                           parameter of `create_stream()` and `replace_stream()`
     :type output_default: str
     :param enable_stream_signal_buffer: set to True to enable the
-                                        `stream_signal_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
+                                        `stream_signal_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`__
                                         and receive information about
                                         disconnects and reconnects to manage a restore of the lost data during the
                                         interruption or to recognize your bot got blind.
     :type enable_stream_signal_buffer: bool
-    :param disable_colorama: set to True to disable the use of `colorama <https://pypi.org/project/colorama/>`_
+    :param disable_colorama: set to True to disable the use of `colorama <https://pypi.org/project/colorama/>`__
     :type disable_colorama: bool
     :param stream_buffer_maxlen: Set a max len for the generic `stream_buffer`. This parameter can also be used within
                                  `create_stream()` for a specific `stream_buffer`.
     :type stream_buffer_maxlen: int or None
-    :param process_stream_signals: Provide a function/method to process the received stream signals. The function is running inside an asyncio loop and will be
-                                   called instead of
-                                   `add_to_stream_signal_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer>`_
+    :param process_stream_signals: Provide a function/method to process the received stream signals. The function is
+                                   running inside an asyncio loop and will be called instead of
+                                   `add_to_stream_signal_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_signal_buffer>`__
                                    like `process_stream_data(signal_type=False, stream_id=False, data_record=False)`.
     :type process_stream_signals: function
     :param auto_data_cleanup_stopped_streams: The parameter "auto_data_cleanup_stopped_streams=True" can be used to
@@ -166,7 +167,7 @@ K
     :param close_timeout_default: The `close_timeout` parameter defines a maximum wait time in seconds for
                                 completing the closing handshake and terminating the TCP connection.
                                 This parameter is passed through to the `websockets.client.connect()
-                                <https://websockets.readthedocs.io/en/stable/topics/design.html?highlight=close_timeout#closing-handshake>`_
+                                <https://websockets.readthedocs.io/en/stable/topics/design.html?highlight=close_timeout#closing-handshake>`__
     :type close_timeout_default: int
     :param ping_interval_default: Once the connection is open, a `Ping frame` is sent every
                                 `ping_interval` seconds. This serves as a keepalive. It helps keeping
@@ -174,14 +175,14 @@ K
                                 timeouts on inactive connections. Set `ping_interval` to `None` to
                                 disable this behavior.
                                 This parameter is passed through to the `websockets.client.connect()
-                                <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websock ets>`_
+                                <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websock ets>`__
     :type ping_interval_default: int
     :param ping_timeout_default: If the corresponding `Pong frame` isn't received within
                                `ping_timeout` seconds, the connection is considered unusable and is closed with
                                code 1011. This ensures that the remote endpoint remains responsive. Set
                                `ping_timeout` to `None` to disable this behavior.
                                This parameter is passed through to the `websockets.client.connect()
-                               <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_timeout#keepalive-in-websockets>`_
+                               <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_timeout#keepalive-in-websockets>`__
     :type ping_timeout_default: int
     :param high_performance: Set to True makes `create_stream()` a non-blocking function
     :type high_performance:  bool
@@ -224,13 +225,13 @@ K
                  process_stream_data: Optional[Callable] = None,
                  process_stream_data_async: Optional[Callable] = None,
                  process_asyncio_queue: Optional[Callable] = None,
-                 exchange: Optional[str] = "binance.com",
-                 warn_on_update: Optional[bool] = True,
+                 exchange: str = "binance.com",
+                 warn_on_update: bool = True,
                  restart_timeout: int = 6,
-                 show_secrets_in_logs: Optional[bool] = False,
+                 show_secrets_in_logs: bool = False,
                  output_default: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = "raw_data",
-                 enable_stream_signal_buffer: Optional[bool] = False,
-                 disable_colorama: Optional[bool] = False,
+                 enable_stream_signal_buffer: bool = False,
+                 disable_colorama: bool = False,
                  stream_buffer_maxlen: Optional[int] = None,
                  process_stream_signals=None,
                  close_timeout_default: int = 1,
@@ -242,7 +243,7 @@ K
                  websocket_base_uri: Optional[str] = None,
                  websocket_api_base_uri: Optional[str] = None,
                  max_subscriptions_per_stream: Optional[int] = None,
-                 exchange_type: Optional[Literal['cex', 'dex']] = None,
+                 exchange_type: Literal['cex', 'dex', None] = None,
                  socks5_proxy_server: Optional[str] = None,
                  socks5_proxy_user: Optional[str] = None,
                  socks5_proxy_pass: Optional[str] = None,
@@ -320,19 +321,19 @@ K
         self.stream_list_lock = threading.Lock()
 
         if exchange not in CONNECTION_SETTINGS:
-            error_msg = f"Unknown exchange '{str(exchange)}'! List of supported exchanges: " \
+            error_msg = f"Unknown exchange '{str(exchange)}'! List of supported exchanges:\r\n" \
                         f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/" \
                         f"Binance-websocket-endpoint-configuration-overview"
             logger.critical(error_msg)
             self.stop_manager()
-            raise UnknownExchange(error_msg)
+            raise UnknownExchange(error_msg=error_msg)
 
         self.max_subscriptions_per_stream = max_subscriptions_per_stream or CONNECTION_SETTINGS[self.exchange][0]
         self.websocket_base_uri = websocket_base_uri or CONNECTION_SETTINGS[self.exchange][1]
         self.websocket_api_base_uri = websocket_api_base_uri or CONNECTION_SETTINGS[self.exchange][2]
         self.restful_base_uri = restful_base_uri
         self.exchange_type = exchange_type
-        if not self.exchange_type:
+        if self.exchange_type is None:
             if self.exchange in DEX_EXCHANGES:
                 self.exchange_type = "dex"
             elif self.exchange in CEX_EXCHANGES:
@@ -378,9 +379,8 @@ K
         self.keepalive_streams_list = {}
         self.last_entry_added_to_stream_buffer = 0
         self.last_monitoring_check = time.time()
-        self.last_update_check_github = {'timestamp': time.time(), 'status': None}
-        self.last_update_check_github['status']: dict = None
-        self.last_update_check_github_check_command = {'timestamp': time.time(), 'status': None}
+        self.last_update_check_github = {'timestamp': time.time(), 'status': {'tag_name': ""}}
+        self.last_update_check_github_check_command = {'timestamp': time.time(), 'status': {'tag_name': ""}}
         self.listen_key_refresh_interval = 15*60
         self.max_send_messages_per_second = 5
         self.max_send_messages_per_second_reserve = 2
@@ -388,7 +388,7 @@ K
         self.monitoring_api_server = None
         self.monitoring_total_received_bytes = 0
         self.monitoring_total_receives = 0
-        self.output_default = output_default
+        self.output_default: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = output_default
         self.process_response = {}
         self.process_response_lock = threading.Lock()
         self.reconnects = 0
@@ -488,7 +488,8 @@ K
             self._crash_stream(stream_id=stream_id, error_msg=error_msg_wrapper)
             return False
 
-    async def _shutdown_asyncgens(self, stream_id=None, loop=None) -> bool:
+    @staticmethod
+    async def _shutdown_asyncgens(stream_id=None, loop=None) -> bool:
         if loop is None:
             return False
         logger.debug(f"BinanceWebSocketApiManager._shutdown_asyncgens(stream_id={stream_id}) started ...")
@@ -689,15 +690,15 @@ K
             return False
 
     def _add_stream_to_stream_list(self,
-                                   stream_id,
-                                   channels,
-                                   markets,
+                                   stream_id=None,
+                                   channels=None,
+                                   markets=None,
                                    stream_label=None,
                                    stream_buffer_name=False,
                                    api_key=None,
                                    api_secret=None,
                                    symbols=None,
-                                   output=False,
+                                   output: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = "raw_data",
                                    ping_interval=None,
                                    ping_timeout=None,
                                    close_timeout=None,
@@ -705,9 +706,9 @@ K
                                    keep_listen_key_alive=True,
                                    stream_buffer_maxlen=None,
                                    api=False,
-                                   process_stream_data=None,
-                                   process_stream_data_async=None,
-                                   process_asyncio_queue=None):
+                                   process_stream_data: Optional[Callable] = None,
+                                   process_stream_data_async: Optional[Callable] = None,
+                                   process_asyncio_queue: Optional[Callable] = None):
         """
         Create a list entry for new streams
 
@@ -730,13 +731,13 @@ K
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
-        :param output: the default setting `raw_data` can be globaly overwritten with the parameter
-                       `output_default <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
+        :param output: the default setting `raw_data` can be globally overwritten with the parameter
+                       `output_default <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`__
                        of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
                        set `output` to "dict" to convert the received raw data to a python dict,  set to "UnicornFy" to
-                       convert with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ -  otherwise with
-                       the default setting "raw_data" the output remains unchanged and gets delivered as received from
-                       the endpoints
+                       convert with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`__ -
+                       otherwise with the default setting "raw_data" the output remains unchanged and gets delivered as
+                       received from the endpoints
         :type output: str
         :param ping_interval: Once the connection is open, a `Ping frame` is sent every
                               `ping_interval` seconds. This serves as a keepalive. It helps keeping
@@ -744,47 +745,47 @@ K
                               timeouts on inactive connections. Set `ping_interval` to `None` to
                               disable this behavior. (default: 20)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
+                              <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`__
         :type ping_interval: int or None
         :param ping_timeout: If the corresponding `Pong frame` isn't received within
                              `ping_timeout` seconds, the connection is considered unusable and is closed with
                              code 1011. This ensures that the remote endpoint remains responsive. Set
                              `ping_timeout` to `None` to disable this behavior. (default: 20)
                              This parameter is passed through to the `websockets.client.connect()
-                             <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
+                             <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`__
         :type ping_timeout: int or None
         :param close_timeout: The `close_timeout` parameter defines a maximum wait time in seconds for
                               completing the closing handshake and terminating the TCP connection. (default: 10)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/topics/design.html?highlight=close_timeout#closing-handshake>`_
+                              <https://websockets.readthedocs.io/en/stable/topics/design.html?highlight=close_timeout#closing-handshake>`__
         :type close_timeout: int or None
         :param stream_buffer_maxlen: Set a max len for the `stream_buffer`. Only used in combination with a non-generic
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
                                      `BinanceWebSocketApiManager()`.
         :type stream_buffer_maxlen: int or None
-        :param api: Setting this to `True` activates the creation of a Websocket API stream to send API requests via Websocket.
-                    Needs `api_key` and `api_secret` in combination. This type of stream can not be combined with a UserData
-                    stream or another public endpoint. (Default is `False`)
+        :param api: Setting this to `True` activates the creation of a Websocket API stream to send API requests via
+                    Websocket. Needs `api_key` and `api_secret` in combination. This type of stream can not be combined
+                    with a UserData stream or another public endpoint. (Default is `False`)
         :type api: bool
         :param process_stream_data: Provide a function/method to process the received webstream data. The function
                             will be called instead of
-                            `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
+                            `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`__
                             like `process_stream_data(stream_data, stream_buffer_name)` where
                             `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
                             get stored in the stream_buffer! `How to read from stream_buffer!
-                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
+                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`__
         :type process_stream_data: function
         :param process_stream_data_async: Provide an asynchronous function/method to process the received webstream data.
                             The function will be called instead of
-                            `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
+                            `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`__
                             like `process_stream_data(stream_data, stream_buffer_name)` where
                             `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
                             get stored in the stream_buffer! `How to read from stream_buffer!
-                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`_
+                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html#and-4-more-lines-to-print-the-receives>`__
         :type process_stream_data_async: function
-        :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data
-                                      is received. This method guarantees the fastest possible asynchronous processing of
-                                      the data in the correct receiving sequence.
+        :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket
+                                      data is received. This method guarantees the fastest possible asynchronous
+                                      processing of the data in the correct receiving sequence.
                                       https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#or-await-the-webstream-data-in-an-asyncio-coroutine
         :type process_asyncio_queue: Optional[Callable]
         """
@@ -821,7 +822,8 @@ K
                                            'status': 'starting',
                                            'start_time': time.time(),
                                            'processed_receives_total': 0,
-                                           'receives_statistic_last_second': {'most_receives_per_second': 0, 'entries': {}},
+                                           'receives_statistic_last_second': {'most_receives_per_second': 0,
+                                                                              'entries': {}},
                                            'seconds_to_last_heartbeat': None,
                                            'last_heartbeat': None,
                                            'stop_request': False,
@@ -898,7 +900,7 @@ K
                 loop.create_task(self._ping_listen_key(stream_id=stream_id))
             logger.debug(f"BinanceWebSocketApiManager._create_stream_thread({stream_id} - "
                          f"Adding `_run_socket({stream_id})` to asyncio loop ...")
-            loop.run_until_complete(self._run_socket(stream_id, channels, markets))
+            loop.run_until_complete(self._run_socket(stream_id=stream_id, channels=channels, markets=markets))
         except OSError as error_msg:
             logger.critical(f"BinanceWebSocketApiManager._create_stream_thread({str(stream_id)} - OSError  - can not "
                             f"create stream - error_msg: {str(error_msg)}")
@@ -954,7 +956,8 @@ K
                     loop.close()
             try:
                 with self.stream_list_lock:
-                    logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() - `stream_list_lock` was entered!")
+                    logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() - `stream_list_lock` was "
+                                 f"entered!")
                     self.stream_list[stream_id]['loop_is_closing'] = False
                     logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() - Leaving `stream_list_lock`!")
             except KeyError as error_msg:
@@ -1140,7 +1143,7 @@ K
                                         str(error_msg))
                         except RuntimeError as error_msg:
                             logger.info("BinanceWebSocketApiManager._frequent_checks() - "
-                                        "Catched RuntimeError: " + str(error_msg))
+                                        "Caught RuntimeError: " + str(error_msg))
                     for timestamp_key in delete_index:
                         with self.stream_list_lock:
                             logger.debug(f"BinanceWebSocketApiManager._frequent_checks() - `stream_list_lock` was "
@@ -1282,17 +1285,17 @@ K
                 self.monitoring_api_server.start()
         except RuntimeError as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
-                            "going down! - Info: RuntimeError - " + str(error_msg))
+                            "going down! - error_msg: RuntimeError - " + str(error_msg))
             self.stop_monitoring_api()
             return False
         except ResourceWarning as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
-                            "going down! - Info: ResourceWarning - " + str(error_msg))
+                            "going down! - error_msg: ResourceWarning - " + str(error_msg))
             self.stop_monitoring_api()
             return False
         except OSError as error_msg:
             logger.critical("BinanceWebSocketApiManager._start_monitoring_api_thread() - Monitoring API service is "
-                            "going down! - Info: OSError - " + str(error_msg))
+                            "going down! - error_msg: OSError - " + str(error_msg))
             self.stop_monitoring_api()
             return False
         return True
@@ -1348,7 +1351,7 @@ K
     def add_to_stream_buffer(self, stream_data, stream_buffer_name=False):
         """
         Kick back data to the
-        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`__
 
 
         If it is not possible to process received stream data (for example, the database is restarting, so it's not
@@ -1377,7 +1380,7 @@ K
     def add_to_stream_signal_buffer(self, signal_type=None, stream_id=None, data_record=None, error_msg=None):
         """
         Add signals about a stream to the
-        `stream_signal_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
+        `stream_signal_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`__
 
         :param signal_type: "CONNECT", "DISCONNECT", "FIRST_RECEIVED_DATA" or "STREAM_UNREPAIRABLE"
         :type signal_type: str
@@ -1434,7 +1437,7 @@ K
     def clear_stream_buffer(self, stream_buffer_name=False):
         """
         Clear the
-        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`__
 
         :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
                                    create_stream() or the string name of a shared stream_buffer.
@@ -1650,7 +1653,7 @@ K
                 Finally:  bnbbtc@trade, ethbtc@trade, bnbbtc@kline_1, ethbtc@kline_1
 
         `There is a subscriptions limit per stream!
-        <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview>`_
+        <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-websocket-endpoint-configuration-overview>`__
 
         Create `!userData` streams as single streams, because it's using a different endpoint and can not get combined
         with other streams in a multiplexed stream!
@@ -1699,10 +1702,10 @@ K
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str
         :param output: the default setting `raw_data` can be globaly overwritten with the parameter
-                       `output_default <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`_
+                       `output_default <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`__
                        of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
                        set `output` to "dict" to convert the received raw data to a python dict,  set to "UnicornFy" to
-                       convert with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ -  otherwise with
+                       convert with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`__ -  otherwise with
                        the default setting "raw_data" the output remains unchanged and gets delivered as received from
                        the endpoints
         :type output: str
@@ -1712,19 +1715,19 @@ K
                               timeouts on inactive connections. Set `ping_interval` to `None` to
                               disable this behavior. (default: 20)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
+                              <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`__
         :type ping_interval: int or None
         :param ping_timeout: If the corresponding `Pong frame` isn't received within
                              `ping_timeout` seconds, the connection is considered unusable and is closed with
                              code 1011. This ensures that the remote endpoint remains responsive. Set
                              `ping_timeout` to `None` to disable this behavior. (default: 20)
                              This parameter is passed through to the `websockets.client.connect()
-                             <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`_
+                             <https://websockets.readthedocs.io/en/stable/topics/timeouts.html?highlight=ping_interval#keepalive-in-websockets>`__
         :type ping_timeout: int or None
         :param close_timeout: The `close_timeout` parameter defines a maximum wait time in seconds for
                               completing the closing handshake and terminating the TCP connection. (default: 10)
                               This parameter is passed through to the `websockets.client.connect()
-                              <https://websockets.readthedocs.io/en/stable/topics/design.html?highlight=close_timeout#closing-handshake>`_
+                              <https://websockets.readthedocs.io/en/stable/topics/design.html?highlight=close_timeout#closing-handshake>`__
         :type close_timeout: int or None
         :param keep_listen_key_alive: `True` (default) or `False`.
         :type keep_listen_key_alive: str
@@ -1740,21 +1743,21 @@ K
         :type api: bool
         :param process_stream_data: Provide a function/method to process the received webstream data (callback). The
                             function will be called instead of
-                            `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
+                            `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`__
                             like `process_stream_data(stream_data)` where
-                            `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
+                            `stream_data` contains the raw_stream_data. If not provided, the raw stream_data will
                             get stored in the stream_buffer or provided to the global callback function provided during
                             object instantiation! `How to read from stream_buffer!
-                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html?highlight=pop_stream_data_from_stream_buffer#and-4-more-lines-to-print-the-receives>`_
+                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html?highlight=pop_stream_data_from_stream_buffer#and-4-more-lines-to-print-the-receives>`__
         :type process_stream_data: function
         :param process_stream_data_async: Provide an asynchronous function/method to process the received webstream data (callback). The
                             function will be called instead of
-                            `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`_
+                            `add_to_stream_buffer() <unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.add_to_stream_buffer>`__
                             like `process_stream_data(stream_data)` where
-                            `stream_data` cointains the raw_stream_data. If not provided, the raw stream_data will
+                            `stream_data` contains the raw_stream_data. If not provided, the raw stream_data will
                             get stored in the stream_buffer or provided to the global callback function provided during
                             object instantiation! `How to read from stream_buffer!
-                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html?highlight=pop_stream_data_from_stream_buffer#and-4-more-lines-to-print-the-receives>`_
+                            <https://unicorn-binance-websocket-api.docs.lucit.tech/README.html?highlight=pop_stream_data_from_stream_buffer#and-4-more-lines-to-print-the-receives>`__
         :type process_stream_data_async: function
         :param process_asyncio_queue: Insert your Asyncio function into the same AsyncIO loop in which the websocket data
                                       is received. This method guarantees the fastest possible asynchronous processing of
@@ -1764,35 +1767,22 @@ K
 
         :return: stream_id or 'None'
         """
-        if channels is None:
-            channels = []
-        if markets is None:
-            markets = []
         # handle Websocket API streams: https://developers.binance.com/docs/binance-trading-api/websocket_api
         if api is True:
             if api_key is None or api_secret is None:
                 logger.error(f"BinanceWebSocketApiManager.create_stream(api={api}) - `api_key` and `api_secret` are "
                              f"mandatory if `api=True`")
                 return None
-        else:
-            # create an ordinary stream
-            if isinstance(channels, bool):
-                logger.error(f"BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets) + ", "
-                             + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
-                             str(stream_buffer_maxlen) + ") - Parameter "
-                             f"`channels` must be str, tuple, list or a set!")
-                return None
-            elif isinstance(markets, bool):
-                if isinstance(channels, bool):
-                    logger.error(f"BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets) + ", "
-                                 + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " +
-                                 str(stream_buffer_maxlen) + ") - Parameter "
-                                 f"`markets` must be str, tuple, list or a set!")
-                return None
-            if type(channels) is str:
-                channels = [channels]
-            if type(markets) is str:
-                markets = [markets]
+
+        # create an ordinary stream
+        if channels is None:
+            channels = []
+        if markets is None:
+            markets = []
+        if type(channels) is str:
+            channels = [channels]
+        if type(markets) is str:
+            markets = [markets]
         output = output or self.output_default
         close_timeout = close_timeout or self.close_timeout_default
         ping_interval = ping_interval or self.ping_interval_default
@@ -1810,21 +1800,21 @@ K
                     or market == "$all":
                 markets_new.append(market)
             else:
-                if self.is_exchange_type('dex'):
+                if self.is_exchange_type('cex'):
+                    markets_new.append(str(market).lower())
+                elif self.is_exchange_type('dex'):
                     if re.match(r'[a-zA-Z0-9]{41,43}', market) is None:
                         markets_new.append(str(market).upper())
                     else:
                         markets_new.append(str(market))
-                elif self.is_exchange_type('cex'):
-                    markets_new.append(str(market).lower())
-        logger.info("BinanceWebSocketApiManager.create_stream(" + str(channels) + ", " + str(markets_new) + ", "
-                    + str(stream_label) + ", " + str(stream_buffer_name) + ", " + str(symbols) + ", " + str(symbols) +
-                    ", " + str(api) + ") with stream_id=" + str(stream_id))
-        self._add_stream_to_stream_list(stream_id,
-                                        channels,
-                                        markets_new,
-                                        stream_label,
-                                        stream_buffer_name,
+        logger.info(f"BinanceWebSocketApiManager.create_stream({str(channels)}, {str(markets_new)}, {str(stream_label)}"
+                    f", {str(stream_buffer_name)}, {str(symbols)}, {str(api)}) with stream_id"
+                    f"={stream_id}")
+        self._add_stream_to_stream_list(stream_id=stream_id,
+                                        channels=channels,
+                                        markets=markets_new,
+                                        stream_label=stream_label,
+                                        stream_buffer_name=stream_buffer_name,
                                         symbols=symbols,
                                         api_key=api_key,
                                         api_secret=api_secret,
@@ -2110,7 +2100,7 @@ K
             else:
                 query += market.lower() + "@" + channel
             try:
-                if self.subscribe_to_stream(stream_id, markets=markets, channels=channels) is False:
+                if self.subscribe_to_stream(stream_id=stream_id, markets=markets, channels=channels) is False:
                     return None
             except KeyError:
                 pass
@@ -2491,7 +2481,7 @@ K
         :type suffix: str
         :return:
         """
-        if amount_bytes > 1024 * 1024 * 1024 *1024:
+        if amount_bytes > 1024 * 1024 * 1024 * 1024:
             amount_bytes = str(round(amount_bytes / (1024 * 1024 * 1024 * 1024), 3)) + " tB" + suffix
         elif amount_bytes > 1024 * 1024 * 1024:
             amount_bytes = str(round(amount_bytes / (1024 * 1024 * 1024), 2)) + " gB" + suffix
@@ -2545,7 +2535,8 @@ K
                                    f'unicorn-binance-websocket-api/releases/latest')
             latest_release_info = respond.json()
             return latest_release_info
-        except Exception:
+        except Exception as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager.get_latest_release_info() - Exception: {error_msg}")
             return None
 
     @staticmethod
@@ -2559,7 +2550,8 @@ K
             respond = requests.get('https://api.github.com/repos/LUCIT-Development/check_lucit_collector.py/'
                                    'releases/latest')
             return respond.json()
-        except Exception:
+        except Exception as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager.get_latest_release_info_check_command() - Exception: {error_msg}")
             return None
 
     def get_latest_version(self):
@@ -2569,13 +2561,14 @@ K
         :return: str or False
         """
         # Do a fresh request if status is None or last timestamp is older 1 hour
-        if self.last_update_check_github['status'] is None or \
-                (self.last_update_check_github['timestamp']+(60*60) < time.time()):
+        if self.last_update_check_github['status']['tag_name'] == "" or \
+                (self.last_update_check_github['timestamp'] + (60 * 60) < time.time()):
             self.last_update_check_github['status'] = self.get_latest_release_info()
         if self.last_update_check_github['status']:
             try:
                 return self.last_update_check_github['status']['tag_name']
-            except KeyError:
+            except KeyError as error_msg:
+                logger.debug(f"BinanceWebSocketApiManager.get_latest_version() - KeyError: {error_msg}")
                 return "unknown"
         else:
             return "unknown"
@@ -2587,13 +2580,14 @@ K
         :return: str or False
         """
         # Do a fresh request if status is None or last timestamp is older 1 hour
-        if self.last_update_check_github_check_command['status'] is None or \
+        if self.last_update_check_github_check_command['status']['tag_name'] == "" or \
                 (self.last_update_check_github_check_command['timestamp'] + (60 * 60) < time.time()):
             self.last_update_check_github_check_command['status'] = self.get_latest_release_info_check_command()
         if self.last_update_check_github_check_command['status']:
             try:
-                return self.last_update_check_github_check_command['status']["tag_name"]
-            except KeyError:
+                return self.last_update_check_github_check_command['status']['tag_name']
+            except KeyError as error_msg:
+                logger.debug(f"BinanceWebSocketApiManager.get_latest_version_check_command() - KeyError: {error_msg}")
                 return "unknown"
         else:
             return "unknown"
@@ -2619,9 +2613,11 @@ K
                 for stream_id in active_stream_list:
                     subscriptions += active_stream_list[stream_id]['subscriptions']
                 self.all_subscriptions_number = subscriptions
-        except TypeError:
+        except TypeError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager.get_number_of_all_subscriptions() - TypeError: {error_msg}")
             return self.all_subscriptions_number
-        except RuntimeError:
+        except RuntimeError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager.get_number_of_all_subscriptions() - RuntimeError: {error_msg}")
             return self.all_subscriptions_number
         return subscriptions
 
@@ -2633,7 +2629,8 @@ K
         """
         try:
             free_slots = self.max_subscriptions_per_stream - self.stream_list[stream_id]['subscriptions']
-        except KeyError:
+        except KeyError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager.get_number_of_free_subscription_slots() - KeyError: {error_msg}")
             return None
         return free_slots
 
@@ -2652,8 +2649,8 @@ K
                 if self.stream_list[stream_id]['listen_key'] is not None:
                     response = {'listenKey': self.stream_list[stream_id]['listen_key']}
                     return response
-        except KeyError:
-            logger.debug(f"BinanceWebSocketApiManager.get_listen_key_from_restclient() - KeyError")
+        except KeyError as error_msg:
+            logger.debug(f"BinanceWebSocketApiManager.get_listen_key_from_restclient() - KeyError: {error_msg}")
             return False
         # no cached listen_key or listen_key is older than 30 min
         # acquire a new listen_key:
@@ -2760,7 +2757,7 @@ K
         - reconnects
         - uptime
 
-        :param check_command_version: is the version of the calling `check_command <https://github.com/LUCIT-Systems-and-Development/check_lucit_collector.py>`_
+        :param check_command_version: is the version of the calling `check_command <https://github.com/LUCIT-Systems-and-Development/check_lucit_collector.py>`__
         :type check_command_version: str
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
@@ -2796,38 +2793,28 @@ K
         timestamp, update_msg, average_receives_per_second, average_speed_per_second, total_received_mb,
         stream_buffer_items, stream_buffer_mb, reconnects, uptime
 
-        :param check_command_version: is the version of the calling `check_command <https://github.com/LUCIT-Systems-and-Development/check_lucit_collector.py>`_
+        :param check_command_version: is the version of the calling `check_command <https://github.com/LUCIT-Systems-and-Development/check_lucit_collector.py>`__
         :type check_command_version: False or str
         :param warn_on_update: set to `False` to disable the update warning
         :type warn_on_update: bool
         :return: dict
         """
-        result = {}
-        result['active_streams'] = 0
-        result['crashed_streams'] = 0
-        result['restarting_streams'] = 0
-        result['highest_restart_per_stream_last_hour'] = 0
-        result['return_code'] = 0
-        result['status_text'] = "OK"
-        result['status_msg'] = ""
-        result['stopped_streams'] = 0
-        result['timestamp'] = time.time()
-        result['update_msg'] = ""
+        result = {'active_streams': 0,
+                  'crashed_streams': 0,
+                  'restarting_streams': 0,
+                  'highest_restart_per_stream_last_hour': 0,
+                  'return_code': 0,
+                  'status_text': "OK",
+                  'status_msg': "",
+                  'stopped_streams': 0,
+                  'timestamp': time.time(),
+                  'update_msg': ""}
         time_period = result['timestamp'] - self.last_monitoring_check
         timestamp_last_hour = time.time() - (60*60)
-        try:
-            from unicorn_fy.unicorn_fy import UnicornFy
-            unicorn_fy = UnicornFy()
-            is_update_available_unicorn_fy = unicorn_fy.is_update_available()
-        except ModuleNotFoundError:
-            logger.critical("BinanceWebSocketApiManager.get_monitoring_status_plain() - UnicornFy not installed!")
-            is_update_available_unicorn_fy = False
-        except AttributeError:
-            logger.error("BinanceWebSocketApiManager.get_monitoring_status_plain() - UnicornFy outdated!")
-            is_update_available_unicorn_fy = True
+        is_update_available_unicorn_fy = UnicornFy().is_update_available()
         if check_command_version:
-            is_update_available_check_command = self.is_update_availabe_check_command(
-                                                                    check_command_version=check_command_version)
+            is_update_available_check_command = self.is_update_available_check_command(
+                                                                            check_command_version=check_command_version)
         else:
             is_update_available_check_command = True
         with self.stream_list_lock:
@@ -2877,7 +2864,7 @@ K
                 result['status_text'] = "WARNING"
                 result['return_code'] = 1
         elif is_update_available_unicorn_fy:
-            result['update_msg'] = " Update UnicornFy " + str(unicorn_fy.get_latest_version()) + " available!"
+            result['update_msg'] = " Update UnicornFy " + str(UnicornFy().get_latest_version()) + " available!"
             if warn_on_update is True:
                 result['status_text'] = "WARNING"
                 result['return_code'] = 1
@@ -2988,7 +2975,7 @@ K
         Get the result related to the provided `request_id`
 
         :param request_id: if you run `get_stream_subscriptions()
-                           <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_subscriptions>`_
+                           <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_subscriptions>`__
                            it returns a unique `request_id` - provide it to this method to receive the result.
         :type request_id: stream_id (uuid)
         :param timeout: seconds to wait to receive the result. If not there it returns 'False'
@@ -3089,11 +3076,15 @@ K
                     if self.stream_list[stream_id]['stream_label'] == stream_label:
                         logger.debug(f"BinanceWebSocketApiManager.get_stream_id_by_label() - Found `stream_id` via "
                                      f"`stream_label` `{stream_label}`")
+                        logger.debug(f"BinanceWebSocketApiManager.get_stream_id_by_label() - Leaving "
+                                     f"`stream_list_lock`!")
                         return stream_id
                 logger.debug(f"BinanceWebSocketApiManager.get_stream_id_by_label() - Leaving `stream_list_lock`!")
-        logger.error(f"BinanceWebSocketApiManager.get_stream_id_by_label() - No `stream_id` found via `stream_label` "
-                     f"`{stream_label}`")
-        return None
+            logger.error(f"BinanceWebSocketApiManager.get_stream_id_by_label() - No `stream_id` found via "
+                         f"`stream_label` {stream_label}`")
+            return None
+        else:
+            return None
 
     def get_stream_info(self, stream_id):
         """
@@ -3141,6 +3132,7 @@ K
 
         :param stream_id: id of a stream
         :type stream_id: str
+
         :return: str or None
         """
         if stream_id is not None:
@@ -3155,9 +3147,9 @@ K
         """
         Get a list of subscriptions of a specific stream from Binance endpoints - the result can be received via
         the `stream_buffer` and is also added to the results ringbuffer - `get_results_from_endpoints()
-        <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_results_from_endpoints>`_
+        <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_results_from_endpoints>`__
         to get all results or use `get_result_by_request_id(request_id)
-        <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_result_by_request_id>`_
+        <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_result_by_request_id>`__
         to get a specific one!
 
         This function is supported by CEX endpoints only!
@@ -3168,7 +3160,7 @@ K
         :type stream_id: str
         :param request_id: id to use for the request - use `get_request_id()` to create a unique id. If not provided or
                            `False`, then this method is using `get_request_id()
-                           <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_request_id>`_
+                           <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_request_id>`__
                            automatically.
         :type request_id: int
         :return: request_id (int)
@@ -3211,7 +3203,7 @@ K
     def get_stream_buffer_maxlen(self, stream_buffer_name=False):
         """
         Get the maxlen value of the
-        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`__
 
         If maxlen is not specified or is None, `stream_buffer` may grow to an arbitrary length. Otherwise, the
         `stream_buffer` is bounded to the specified maximum length. Once a bounded length `stream_buffer` is full, when
@@ -3357,7 +3349,7 @@ K
     @staticmethod
     def get_version_unicorn_fy():
         """
-        Get the package/module version of `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_
+        Get the package/module version of `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`__
 
         :return: str
         """
@@ -3477,7 +3469,7 @@ K
         else:
             return True
 
-    def is_exchange_type(self, exchange_type=False):
+    def is_exchange_type(self, exchange_type: str = None):
         """
         Check the exchange type!
 
@@ -3485,9 +3477,12 @@ K
         :type exchange_type: str
         :return: bool
         """
-        if exchange_type is False or not self.exchange_type:
+        if exchange_type is None or self.exchange_type != exchange_type:
+            logger.debug(f"BinanceWebSocketApiManager.is_exchange_type({self.exchange_type}!={exchange_type} = False)")
             return False
-        return self.exchange_type == exchange_type
+        else:
+            logger.debug(f"BinanceWebSocketApiManager.is_exchange_type({self.exchange_type}!={exchange_type} = True)")
+            return True
 
     def is_crash_request(self, stream_id) -> bool:
         """
@@ -3550,19 +3545,15 @@ K
             return True
 
     @staticmethod
-    def is_update_availabe_unicorn_fy():
+    def is_update_available_unicorn_fy():
         """
-        Is a new release of `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ available?
+        Is a new release of `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`__ available?
 
         :return: bool
         """
-        from unicorn_fy.unicorn_fy import UnicornFy
+        return UnicornFy().is_update_available()
 
-        unicorn_fy = UnicornFy()
-
-        return unicorn_fy.is_update_available()
-
-    def is_update_availabe_check_command(self, check_command_version=False):
+    def is_update_available_check_command(self, check_command_version=None):
         """
         Is a new release of `check_lucit_collector.py` available?
 
@@ -3582,7 +3573,7 @@ K
     def pop_stream_data_from_stream_buffer(self, stream_buffer_name=None, mode="FIFO"):
         """
         Get oldest or latest entry from
-        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`_
+        `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`__
         and remove from FIFO/LIFO stack.
 
         :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
@@ -3622,7 +3613,7 @@ K
     def pop_stream_signal_from_stream_signal_buffer(self):
         """
         Get the oldest entry from
-        `stream_signal_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`_
+        `stream_signal_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signal_buffer%60>`__
         and remove from stack/pipe (FIFO stack)
 
         :return: stream_signal - dict or False
@@ -4002,7 +3993,7 @@ K
 
         :param print_summary_export_path: If you want to export the output of print_summary() to an image,
                                           please provide a path like "/var/www/html/". `View the Wiki!
-                                          <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F>`_
+                                          <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F>`__
         :type print_summary_export_path: str
         :param hight_per_row: set the hight per row for the image hight calculation
         :type hight_per_row: float
@@ -4033,7 +4024,7 @@ K
     @staticmethod
     def remove_ansi_escape_codes(text):
         """
-        Remove ansi excape codes from the text string!
+        Remove ansi escape codes from the text string!
 
         :param text: The text :)
         :type text: str
@@ -4057,7 +4048,7 @@ K
                        new_api_key=None,
                        new_api_secret=None,
                        new_symbols=None,
-                       new_output="raw_data",
+                       new_output: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = "raw_data",
                        new_ping_interval=20,
                        new_ping_timeout=20,
                        new_close_timeout=10,
@@ -4090,7 +4081,7 @@ K
         :type new_symbols: str
         :return: new stream_id
         :param new_output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
-                           with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`_ - otherwise the output
+                           with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`__ - otherwise the output
                            remains unchanged and gets delivered as received from the endpoints
         :type new_output: str
         :param new_ping_interval: Once the connection is open, a `Ping frame` is sent every
@@ -4099,19 +4090,19 @@ K
                                   timeouts on inactive connections. Set `ping_interval` to `None` to
                                   disable this behavior. (default: 20)
                                   This parameter is passed through to the `websockets.client.connect()
-                                  <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
+                                  <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`__
         :type new_ping_interval: int or None
         :param new_ping_timeout: If the corresponding `Pong frame` isn't received within
                                  `ping_timeout` seconds, the connection is considered unusable and is closed with
                                  code 1011. This ensures that the remote endpoint remains responsive. Set
                                  `ping_timeout` to `None` to disable this behavior. (default: 20)
                                  This parameter is passed through to the `websockets.client.connect()
-                                 <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
+                                 <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`__
         :type new_ping_timeout: int or None
         :param new_close_timeout: The `close_timeout` parameter defines a maximum wait time in seconds for
                                   completing the closing handshake and terminating the TCP connection. (default: 10)
                                   This parameter is passed through to the `websockets.client.connect()
-                                  <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`_
+                                  <https://websockets.readthedocs.io/en/stable/api.html?highlight=ping_interval#websockets.client.connect>`__
         :type new_close_timeout: int or None
         :param new_stream_buffer_maxlen: Set a max len for the `stream_buffer`. Only used in combination with a non-generic
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
@@ -4355,7 +4346,7 @@ K
         Start the monitoring API server
 
         Take a look into the
-        `Wiki <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service>`_
+        `Wiki <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/UNICORN-Monitoring-API-Service>`__
         to see how this works!
 
         :param host: listening ip address, use 0.0.0.0 or a specific address (default: 127.0.0.1)
@@ -4559,7 +4550,7 @@ K
         and all subscribed channels are going to get added to the new market!
 
         `How are the parameter `channels` and `markets` used with
-        `subscriptions <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>`_
+        `subscriptions <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>`__
 
         :param stream_id: id of a stream
         :type stream_id: str
@@ -4572,7 +4563,7 @@ K
         logger.info(f"BinanceWebSocketApiManager.subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
                     f", " + str(markets) + f"){self.get_debug_log()} - started ... -")
         if stream_id is None:
-            logger.critical(f"BinanceWebSocketApiManager.subscribe_to_stream() - Info: `stream_id` is missing!")
+            logger.critical(f"BinanceWebSocketApiManager.subscribe_to_stream() - error_msg: `stream_id` is missing!")
             return False
         if channels is None:
             channels = []
@@ -4642,11 +4633,12 @@ K
         if self.stream_list[stream_id]['subscriptions'] > self.max_subscriptions_per_stream:
             error_msg = (f"The limit of {str(self.max_subscriptions_per_stream)} subscriptions per stream has been "
                          f"exceeded!")
-            logger.error(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - Info: {str(error_msg)}")
-            self._crash_stream(stream_id, error_msg=error_msg)
-            return False
+            logger.error(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - error_msg: {str(error_msg)}")
+            # self._crash_stream(stream_id, error_msg=error_msg)
+            #return False
+            raise MaximumSubscriptionsExceeded(max_subscriptions=str(self.max_subscriptions_per_stream))
         if payload is None:
-            logger.error(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - Info: Payload is None!")
+            logger.error(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - error_msg: Payload is None!")
             return False
         try:
             for item in payload:
@@ -4668,7 +4660,7 @@ K
         subscribed channels from the specific markets are going to be removed!
 
         `How are the parameter `channels` and `markets` used with
-        `subscriptions <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>`_
+        `subscriptions <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>`__
 
         :param stream_id: id of a stream
         :type stream_id: str
@@ -4681,7 +4673,7 @@ K
         logger.info(f"BinanceWebSocketApiManager.unsubscribe_from_stream(" + str(stream_id) + ", " + str(channels) +
                     f", " + str(markets) + f"){self.get_debug_log()} - started ... -")
         if stream_id is None:
-            logger.critical(f"BinanceWebSocketApiManager.unsubscribe_from_stream() - Info: `stream_id` is missing!")
+            logger.critical(f"BinanceWebSocketApiManager.unsubscribe_from_stream() - error_msg: `stream_id` is missing!")
             return False
         if markets is None:
             markets = []
@@ -4725,7 +4717,8 @@ K
                     pass
         payload = self.create_payload(stream_id, "unsubscribe", channels=channels, markets=markets)
         if payload is None:
-            logger.error(f"BinanceWebSocketApiManager.unsubscribe_from_stream({str(stream_id)}) - Info: Payload is None!")
+            logger.error(f"BinanceWebSocketApiManager.unsubscribe_from_stream({str(stream_id)}) - error_msg: Payload "
+                         f"is None!")
             return False
         try:
             for item in payload:
@@ -4774,7 +4767,7 @@ K
             logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_started({stream_id}) finished with `False`!")
             return False
 
-    def wait_till_stream_has_stopped(self, stream_id, timeout: float = 0.0) -> bool:
+    def wait_till_stream_has_stopped(self, stream_id: str = None, timeout: float = 0.0) -> bool:
         """
         Returns `True` as soon a specific stream has stopped itself
 
@@ -4783,9 +4776,12 @@ K
         :param timeout: The timeout for how long to wait for the stream to stop. The function aborts if the waiting
                         time is exceeded and returns False.
         :type timeout: float
-
         :return: bool
         """
+        if stream_id is None:
+            logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped() - `stream_id` is mandatory!")
+            return False
+
         timestamp = self.get_timestamp_unix()
         timeout = timestamp + timeout if timeout != 0.0 else timeout
         logger.debug(f"BinanceWebSocketApiManager.wait_till_stream_has_stopped({stream_id}) with timeout {timeout} "

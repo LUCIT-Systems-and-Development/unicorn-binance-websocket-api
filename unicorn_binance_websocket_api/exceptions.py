@@ -18,17 +18,18 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-# define Python user-defined exceptions
+class MaximumSubscriptionsExceeded(Exception):
+    """
+    Exception if the maximum number of subscriptions has been exceeded!
+    """
+    def __init__(self, max_subscriptions=None):
+        self.message = f"The maximum number of {max_subscriptions} subscriptions per stream has been exceeded!"
+        super().__init__(self.message)
+
+
 class Socks5ProxyConnectionError(Exception):
     """
     Exception if the manager class is not able to establish a connection to the socks5 proxy.
-    """
-    pass
-
-
-class UnknownExchange(Exception):
-    """
-    Exception if the manager class is started with an unknown exchange.
     """
     pass
 
@@ -58,3 +59,12 @@ class StreamIsStopping(Exception):
     def __init__(self, stream_id=None, reason=None):
         self.message = f"Stream with stream_id={stream_id} is stopping! Reason: {reason}"
         super().__init__(self.message)
+
+
+class UnknownExchange(Exception):
+    """
+    Exception if the manager class is started with an unknown exchange.
+    """
+
+    def __init__(self, error_msg=None):
+        super().__init__(error_msg)

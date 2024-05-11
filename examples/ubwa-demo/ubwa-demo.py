@@ -21,6 +21,7 @@ class BinanceDataProcessor:
     def __init__(self, ubwa_manager: BinanceWebSocketApiManager = None):
         self.ubwa: BinanceWebSocketApiManager = ubwa_manager
         self.title: str = "UBWA Demo"
+        self.markets_limit = 20
 
     async def main(self):
         self.ubwa.create_stream(["!userData"], ["arr"],
@@ -38,7 +39,7 @@ class BinanceDataProcessor:
         channels: list = ['trade', 'kline_1m', 'depth20']
         for channel in channels:
             self.ubwa.create_stream(channels=channel,
-                                    markets=markets[:20],
+                                    markets=markets[:self.markets_limit],
                                     process_asyncio_queue=self.process_data,
                                     stream_label=channel)
 
