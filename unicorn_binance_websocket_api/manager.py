@@ -53,7 +53,7 @@ from datetime import datetime, timezone
 from flask import Flask, redirect
 from flask_restful import Api
 from operator import itemgetter
-from typing import Optional, Union, Callable
+from typing import Optional, Union, Callable, List, Set
 try:
     # python <=3.7 support
     from typing import Literal
@@ -237,24 +237,23 @@ class BinanceWebSocketApiManager(threading.Thread):
                  close_timeout_default: int = 1,
                  ping_interval_default: int = 5,
                  ping_timeout_default: int = 10,
-                 high_performance: Optional[bool] = False,
-                 debug: Optional[bool] = False,
-                 restful_base_uri: Optional[str] = None,
-                 websocket_base_uri: Optional[str] = None,
-                 websocket_api_base_uri: Optional[str] = None,
+                 high_performance: bool = False,
+                 debug: bool = False,
+                 restful_base_uri: str = None,
+                 websocket_base_uri: str = None,
+                 websocket_api_base_uri: str = None,
                  max_subscriptions_per_stream: Optional[int] = None,
                  exchange_type: Literal['cex', 'dex', None] = None,
-                 socks5_proxy_server: Optional[str] = None,
-                 socks5_proxy_user: Optional[str] = None,
-                 socks5_proxy_pass: Optional[str] = None,
-                 socks5_proxy_ssl_verification: Optional[bool] = True,
+                 socks5_proxy_server: str = None,
+                 socks5_proxy_user: str = None,
+                 socks5_proxy_pass: str = None,
+                 socks5_proxy_ssl_verification: bool = True,
                  auto_data_cleanup_stopped_streams: bool = False,
                  lucit_api_secret: str = None,
                  lucit_license_ini: str = None,
                  lucit_license_profile: str = None,
                  lucit_license_token: str = None,
-                 ubra_manager: Optional[BinanceRestApiManager] = None,
-                 ):
+                 ubra_manager: BinanceRestApiManager = None):
         threading.Thread.__init__(self)
         self.name = __app_name__
         self.version = __version__
@@ -347,8 +346,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.socks5_proxy_server = socks5_proxy_server
         if socks5_proxy_server is None:
             self.socks5_proxy_address = None
-            self.socks5_proxy_user: Optional[str] = None
-            self.socks5_proxy_pass: Optional[str] = None
+            self.socks5_proxy_user: str = None
+            self.socks5_proxy_pass: str = None
             self.socks5_proxy_port = None
         else:
             # Prepare Socks Proxy usage
@@ -379,8 +378,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.keepalive_streams_list = {}
         self.last_entry_added_to_stream_buffer = 0
         self.last_monitoring_check = time.time()
-        self.last_update_check_github = {'timestamp': time.time(), 'status': {'tag_name': ""}}
-        self.last_update_check_github_check_command = {'timestamp': time.time(), 'status': {'tag_name': ""}}
+        self.last_update_check_github = {'timestamp': time.time(), 'status': {'tag_name': None}}
+        self.last_update_check_github_check_command = {'timestamp': time.time(), 'status': {'tag_name': None}}
         self.listen_key_refresh_interval = 15*60
         self.max_send_messages_per_second = 5
         self.max_send_messages_per_second_reserve = 2
@@ -715,9 +714,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: provide a stream_id - only needed for userData Streams (acquiring a listenKey)
         :type stream_id: str
         :param channels: provide the channels to create the URI
-        :type channels: str, tuple, list, set
+        :type channels: str, list, set
         :param markets: provide the markets to create the URI
-        :type markets: str, tuple, list, set
+        :type markets: str, list, set
         :param stream_label: provide a stream_label for the stream
         :type stream_label: str
         :param stream_buffer_name: If `False` the data is going to get written to the default stream_buffer,
@@ -861,9 +860,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: provide a stream_id - only needed for userData Streams (acquiring a listenKey)
         :type stream_id: str
         :param channels: provide the channels to create the URI
-        :type channels: str, tuple, list, set
+        :type channels: str, list, set
         :param markets: provide the markets to create the URI
-        :type markets: str, tuple, list, set
+        :type markets: str, list, set
         :param stream_buffer_name: If `False` the data is going to get written to the default stream_buffer,
                            set to `True` to read the data via `pop_stream_data_from_stream_buffer(stream_id)` or
                            provide a string to create and use a shared stream_buffer and read it via
@@ -1469,9 +1468,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param method: `SUBSCRIBE` or `UNSUBSCRIBE`
         :type method: str
         :param channels: provide the channels to create the URI
-        :type channels: str, tuple, list, set
+        :type channels: str, list, set
         :param markets: provide the markets to create the URI
-        :type markets: str, tuple, list, set
+        :type markets: str, list, set
         :return: payload (list) or False
         """
         logger.info("BinanceWebSocketApiManager.create_payload(" + str(stream_id) + ", " + str(channels) + ", " +
@@ -1621,20 +1620,20 @@ class BinanceWebSocketApiManager(threading.Thread):
         return payload
 
     def create_stream(self,
-                      channels=None,
-                      markets=None,
+                      channels: Union[str, List[str], Set[str], None] = None,
+                      markets: Union[str, List[str], Set[str], None] = None,
                       stream_label: str = None,
-                      stream_buffer_name=False,
+                      stream_buffer_name: Union[bool, str] = False,
                       api_key: str = None,
                       api_secret: str = None,
-                      symbols=None,
+                      symbols: Union[str, List[str], Set[str], None] = None,
                       output: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = "raw_data",
-                      ping_interval=None,
-                      ping_timeout=None,
-                      close_timeout=None,
+                      ping_interval: int = None,
+                      ping_timeout: int = None,
+                      close_timeout: int = None,
                       listen_key: str = None,
                       keep_listen_key_alive: bool = True,
-                      stream_buffer_maxlen=None,
+                      stream_buffer_maxlen: int = None,
                       api: bool = False,
                       process_stream_data: Optional[Callable] = None,
                       process_stream_data_async: Optional[Callable] = None,
@@ -1685,9 +1684,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 ``binance_websocket_api_manager.create_stream(["arr"], ["!miniTicker"])``
 
         :param channels: provide the channels you wish to stream
-        :type channels: str, tuple, list, set
+        :type channels: str, list, set
         :param markets: provide the markets you wish to stream
-        :type markets: str, tuple, list, set
+        :type markets: str, list, set
         :param stream_label: provide a stream_label to identify the stream
         :type stream_label: str
         :param stream_buffer_name: If `False` the data is going to get written to the default stream_buffer,
@@ -1700,7 +1699,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param api_secret: provide a valid Binance API secret
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
-        :type symbols: str
+        :type symbols: str, list, set
         :param output: the default setting `raw_data` can be globaly overwritten with the parameter
                        `output_default <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`__
                        of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
@@ -1879,9 +1878,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         Create a websocket URI
 
         :param channels: provide the channels to create the URI
-        :type channels: str, tuple, list, set
+        :type channels: str, list, set
         :param markets: provide the markets to create the URI
-        :type markets: str, tuple, list, set
+        :type markets: str, list, set
         :param stream_id: provide a stream_id - only needed for userData Streams (acquiring a listenKey)
         :type stream_id: str
         :param symbols: provide the symbols for isolated_margin user_data streams
@@ -2561,7 +2560,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: str or False
         """
         # Do a fresh request if status is None or last timestamp is older 1 hour
-        if self.last_update_check_github['status']['tag_name'] == "" or \
+        if self.last_update_check_github['status'].get('tag_name') is None or \
                 (self.last_update_check_github['timestamp'] + (60 * 60) < time.time()):
             self.last_update_check_github['status'] = self.get_latest_release_info()
         if self.last_update_check_github['status']:
@@ -2580,7 +2579,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: str or False
         """
         # Do a fresh request if status is None or last timestamp is older 1 hour
-        if self.last_update_check_github_check_command['status']['tag_name'] == "" or \
+        if self.last_update_check_github_check_command['status'].get('tag_name') is None or \
                 (self.last_update_check_github_check_command['timestamp'] + (60 * 60) < time.time()):
             self.last_update_check_github_check_command['status'] = self.get_latest_release_info_check_command()
         if self.last_update_check_github_check_command['status']:
@@ -3060,7 +3059,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 number += len(self.stream_buffers[stream_buffer_name])
             return number
 
-    def get_stream_id_by_label(self, stream_label: str = None) -> Optional[str]:
+    def get_stream_id_by_label(self, stream_label: str = None) -> str:
         """
         Get the stream_id of a specific stream by stream label
 
@@ -3285,7 +3284,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             return None
 
-    def get_the_one_active_websocket_api(self) -> Optional[str]:
+    def get_the_one_active_websocket_api(self) -> str:
         """
         This function is needed to simplify the access to the websocket API, if only one API stream exists it is clear
         that only this stream can be used for the requests and therefore will be used.
@@ -4555,9 +4554,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: id of a stream
         :type stream_id: str
         :param channels: provide the channels you wish to subscribe
-        :type channels: str, tuple, list, set
+        :type channels: str, list, set
         :param markets: provide the markets you wish to subscribe
-        :type markets: str, tuple, list, set
+        :type markets: str, list, set
         :return: bool
         """
         logger.info(f"BinanceWebSocketApiManager.subscribe_to_stream(" + str(stream_id) + ", " + str(channels) +
@@ -4665,9 +4664,9 @@ class BinanceWebSocketApiManager(threading.Thread):
         :param stream_id: id of a stream
         :type stream_id: str
         :param channels: provide the channels you wish to unsubscribe
-        :type channels: str, tuple, list, set
+        :type channels: str, list, set
         :param markets: provide the markets you wish to unsubscribe
-        :type markets: str, tuple, list, set
+        :type markets: str, list, set
         :return: bool
         """
         logger.info(f"BinanceWebSocketApiManager.unsubscribe_from_stream(" + str(stream_id) + ", " + str(channels) +
