@@ -9,13 +9,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.6.0.dev (development stage/unreleased/unstable)
+## 2.6.1.dev (development stage/unreleased/unstable)
+
+## 2.6.1
 ### Added
 - `print_summary()` and `print_stream_info()` now display `binance_api_status_code` in color! Green at 200 otherwise red.
 ### Changed
 - Typing of `create_stream()` parameters
 ### Fixed
-- Type of parameter `stream_label` in `manager.get_stream_id_by_label()`
+- Type of parameter `stream_label` in `get_stream_id_by_label()`
 
 ## 2.6.0
 ### Added
