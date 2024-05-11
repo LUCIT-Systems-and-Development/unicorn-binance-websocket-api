@@ -1618,14 +1618,14 @@ K
         return payload
 
     def create_stream(self,
-                      channels=[],
-                      markets=[],
-                      stream_label=None,
+                      channels=None,
+                      markets=None,
+                      stream_label: str = None,
                       stream_buffer_name=False,
-                      api_key=None,
-                      api_secret=None,
+                      api_key: str = None,
+                      api_secret: str = None,
                       symbols=None,
-                      output=False,
+                      output: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = "raw_data",
                       ping_interval=None,
                       ping_timeout=None,
                       close_timeout=None,
@@ -1764,6 +1764,10 @@ K
 
         :return: stream_id or 'None'
         """
+        if channels is None:
+            channels = []
+        if markets is None:
+            markets = []
         # handle Websocket API streams: https://developers.binance.com/docs/binance-trading-api/websocket_api
         if api is True:
             if api_key is None or api_secret is None:
