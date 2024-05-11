@@ -331,7 +331,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.websocket_base_uri = websocket_base_uri or CONNECTION_SETTINGS[self.exchange][1]
         self.websocket_api_base_uri = websocket_api_base_uri or CONNECTION_SETTINGS[self.exchange][2]
         self.restful_base_uri = restful_base_uri
-        self.exchange_type = exchange_type
+        self.exchange_type: Literal['cex', 'dex', None] = exchange_type
         if self.exchange_type is None:
             if self.exchange in DEX_EXCHANGES:
                 self.exchange_type = "dex"
@@ -346,8 +346,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.socks5_proxy_server = socks5_proxy_server
         if socks5_proxy_server is None:
             self.socks5_proxy_address = None
-            self.socks5_proxy_user: str = None
-            self.socks5_proxy_pass: str = None
+            self.socks5_proxy_user: Optional[str] = None
+            self.socks5_proxy_pass: Optional[str] = None
             self.socks5_proxy_port = None
         else:
             # Prepare Socks Proxy usage
@@ -3059,7 +3059,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 number += len(self.stream_buffers[stream_buffer_name])
             return number
 
-    def get_stream_id_by_label(self, stream_label: str = None) -> str:
+    def get_stream_id_by_label(self, stream_label: str = None) -> Optional[str]:
         """
         Get the stream_id of a specific stream by stream label
 
@@ -3284,7 +3284,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             return None
 
-    def get_the_one_active_websocket_api(self) -> str:
+    def get_the_one_active_websocket_api(self) -> Optional[str]:
         """
         This function is needed to simplify the access to the websocket API, if only one API stream exists it is clear
         that only this stream can be used for the requests and therefore will be used.
