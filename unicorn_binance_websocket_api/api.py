@@ -539,7 +539,7 @@ class BinanceWebSocketApiApi(object):
                               `quoteOrderQty`.
         :type time_in_force: str
         :param trailing_delta: For more details on SPOT implementation on trailing stops, please refer to
-                               `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`_
+                               `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
         :type trailing_delta: int
         :return: `False` or `orig_client_order_id`
 
@@ -806,7 +806,7 @@ class BinanceWebSocketApiApi(object):
                               `quoteOrderQty`.
         :type time_in_force: str
         :param trailing_delta: For more details on SPOT implementation on trailing stops, please refer to
-                               `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`_
+                               `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
         :type trailing_delta: int
 
         :return: `False` or `orig_client_order_id`
@@ -1041,7 +1041,7 @@ class BinanceWebSocketApiApi(object):
 
         :param permissions: Filter symbols by permissions. `permissions` accepts either a list of permissions, or a
                             single permission name: "SPOT".
-                            `Available Permissions <https://developers.binance.com/docs/binance-trading-api/websocket_api#permissions>`_
+                            `Available Permissions <https://developers.binance.com/docs/binance-trading-api/websocket_api#permissions>`__
         :type permissions: list
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
@@ -1326,7 +1326,7 @@ class BinanceWebSocketApiApi(object):
             - https://developers.binance.com/docs/binance-trading-api/websocket_api#current-open-orders-user_data
 
         If you need to continuously monitor order status updates, please consider using
-        'WebSocket Streams <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>`_
+        `WebSocket Streams <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>`__
 
           - `userData`
 

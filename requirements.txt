@@ -13,6 +13,7 @@ lucit-licensing-python
 psutil
 PySocks
 requests
+simplejson
 ujson
 unicorn-fy
 unicorn-binance-rest-api

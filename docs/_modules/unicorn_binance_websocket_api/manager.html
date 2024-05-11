@@ -199,7 +199,7 @@
 <span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">redirect</span>
 <span class="kn">from</span> <span class="nn">flask_restful</span> <span class="kn">import</span> <span class="n">Api</span>
 <span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="c1"># python &lt;=3.7 support</span>
     <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
@@ -385,24 +385,23 @@
                  <span class="n">close_timeout_default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
                  <span class="n">ping_interval_default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
                  <span class="n">ping_timeout_default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
-                 <span class="n">high_performance</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                 <span class="n">debug</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                 <span class="n">restful_base_uri</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">websocket_base_uri</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">websocket_api_base_uri</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">high_performance</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">restful_base_uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">websocket_base_uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">websocket_api_base_uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">max_subscriptions_per_stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">exchange_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;cex&#39;</span><span class="p">,</span> <span class="s1">&#39;dex&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">socks5_proxy_server</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">socks5_proxy_user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">socks5_proxy_pass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">socks5_proxy_ssl_verification</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                 <span class="n">socks5_proxy_server</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">socks5_proxy_user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">socks5_proxy_pass</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">socks5_proxy_ssl_verification</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                  <span class="n">auto_data_cleanup_stopped_streams</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">lucit_api_secret</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">lucit_license_ini</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">lucit_license_profile</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">lucit_license_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">ubra_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BinanceRestApiManager</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="p">):</span>
+                 <span class="n">ubra_manager</span><span class="p">:</span> <span class="n">BinanceRestApiManager</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">__app_name__</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">__version__</span>
@@ -480,7 +479,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">websocket_base_uri</span> <span class="o">=</span> <span class="n">websocket_base_uri</span> <span class="ow">or</span> <span class="n">CONNECTION_SETTINGS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">websocket_api_base_uri</span> <span class="o">=</span> <span class="n">websocket_api_base_uri</span> <span class="ow">or</span> <span class="n">CONNECTION_SETTINGS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">exchange</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">restful_base_uri</span> <span class="o">=</span> <span class="n">restful_base_uri</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">exchange_type</span> <span class="o">=</span> <span class="n">exchange_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exchange_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;cex&#39;</span><span class="p">,</span> <span class="s1">&#39;dex&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">exchange_type</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchange_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exchange</span> <span class="ow">in</span> <span class="n">DEX_EXCHANGES</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">exchange_type</span> <span class="o">=</span> <span class="s2">&quot;dex&quot;</span>
@@ -527,8 +526,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">keepalive_streams_list</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_entry_added_to_stream_buffer</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_monitoring_check</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;tag_name&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github_check_command</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;tag_name&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;tag_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github_check_command</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;tag_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">listen_key_refresh_interval</span> <span class="o">=</span> <span class="mi">15</span><span class="o">*</span><span class="mi">60</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_send_messages_per_second</span> <span class="o">=</span> <span class="mi">5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_send_messages_per_second_reserve</span> <span class="o">=</span> <span class="mi">2</span>
@@ -875,9 +874,9 @@
 <span class="sd">        :param stream_id: provide a stream_id - only needed for userData Streams (acquiring a listenKey)</span>
 <span class="sd">        :type stream_id: str</span>
 <span class="sd">        :param channels: provide the channels to create the URI</span>
-<span class="sd">        :type channels: str, tuple, list, set</span>
+<span class="sd">        :type channels: str, list, set</span>
 <span class="sd">        :param markets: provide the markets to create the URI</span>
-<span class="sd">        :type markets: str, tuple, list, set</span>
+<span class="sd">        :type markets: str, list, set</span>
 <span class="sd">        :param stream_label: provide a stream_label for the stream</span>
 <span class="sd">        :type stream_label: str</span>
 <span class="sd">        :param stream_buffer_name: If `False` the data is going to get written to the default stream_buffer,</span>
@@ -1021,9 +1020,9 @@
 <span class="sd">        :param stream_id: provide a stream_id - only needed for userData Streams (acquiring a listenKey)</span>
 <span class="sd">        :type stream_id: str</span>
 <span class="sd">        :param channels: provide the channels to create the URI</span>
-<span class="sd">        :type channels: str, tuple, list, set</span>
+<span class="sd">        :type channels: str, list, set</span>
 <span class="sd">        :param markets: provide the markets to create the URI</span>
-<span class="sd">        :type markets: str, tuple, list, set</span>
+<span class="sd">        :type markets: str, list, set</span>
 <span class="sd">        :param stream_buffer_name: If `False` the data is going to get written to the default stream_buffer,</span>
 <span class="sd">                           set to `True` to read the data via `pop_stream_data_from_stream_buffer(stream_id)` or</span>
 <span class="sd">                           provide a string to create and use a shared stream_buffer and read it via</span>
@@ -1658,9 +1657,9 @@
 <span class="sd">        :param method: `SUBSCRIBE` or `UNSUBSCRIBE`</span>
 <span class="sd">        :type method: str</span>
 <span class="sd">        :param channels: provide the channels to create the URI</span>
-<span class="sd">        :type channels: str, tuple, list, set</span>
+<span class="sd">        :type channels: str, list, set</span>
 <span class="sd">        :param markets: provide the markets to create the URI</span>
-<span class="sd">        :type markets: str, tuple, list, set</span>
+<span class="sd">        :type markets: str, list, set</span>
 <span class="sd">        :return: payload (list) or False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;BinanceWebSocketApiManager.create_payload(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span>
@@ -1813,20 +1812,20 @@
 <div class="viewcode-block" id="BinanceWebSocketApiManager.create_stream">
 <a class="viewcode-back" href="../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">[docs]</a>
     <span class="k">def</span> <span class="nf">create_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                      <span class="n">channels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">markets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">channels</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                      <span class="n">markets</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">stream_buffer_name</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">stream_buffer_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                       <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">api_secret</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">symbols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">symbols</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">,</span> <span class="s1">&#39;raw_data&#39;</span><span class="p">,</span> <span class="s1">&#39;UnicornFy&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span>
-                      <span class="n">ping_interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">ping_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">close_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">ping_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                      <span class="n">ping_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                      <span class="n">close_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">listen_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">keep_listen_key_alive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                      <span class="n">stream_buffer_maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">stream_buffer_maxlen</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">api</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                       <span class="n">process_stream_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">process_stream_data_async</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1877,9 +1876,9 @@
 <span class="sd">                ``binance_websocket_api_manager.create_stream([&quot;arr&quot;], [&quot;!miniTicker&quot;])``</span>
 
 <span class="sd">        :param channels: provide the channels you wish to stream</span>
-<span class="sd">        :type channels: str, tuple, list, set</span>
+<span class="sd">        :type channels: str, list, set</span>
 <span class="sd">        :param markets: provide the markets you wish to stream</span>
-<span class="sd">        :type markets: str, tuple, list, set</span>
+<span class="sd">        :type markets: str, list, set</span>
 <span class="sd">        :param stream_label: provide a stream_label to identify the stream</span>
 <span class="sd">        :type stream_label: str</span>
 <span class="sd">        :param stream_buffer_name: If `False` the data is going to get written to the default stream_buffer,</span>
@@ -1892,7 +1891,7 @@
 <span class="sd">        :param api_secret: provide a valid Binance API secret</span>
 <span class="sd">        :type api_secret: str</span>
 <span class="sd">        :param symbols: provide the symbols for isolated_margin user_data streams</span>
-<span class="sd">        :type symbols: str</span>
+<span class="sd">        :type symbols: str, list, set</span>
 <span class="sd">        :param output: the default setting `raw_data` can be globaly overwritten with the parameter</span>
 <span class="sd">                       `output_default &lt;https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager&gt;`__</span>
 <span class="sd">                       of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,</span>
@@ -2074,9 +2073,9 @@
 <span class="sd">        Create a websocket URI</span>
 
 <span class="sd">        :param channels: provide the channels to create the URI</span>
-<span class="sd">        :type channels: str, tuple, list, set</span>
+<span class="sd">        :type channels: str, list, set</span>
 <span class="sd">        :param markets: provide the markets to create the URI</span>
-<span class="sd">        :type markets: str, tuple, list, set</span>
+<span class="sd">        :type markets: str, list, set</span>
 <span class="sd">        :param stream_id: provide a stream_id - only needed for userData Streams (acquiring a listenKey)</span>
 <span class="sd">        :type stream_id: str</span>
 <span class="sd">        :param symbols: provide the symbols for isolated_margin user_data streams</span>
@@ -2828,7 +2827,7 @@
 <span class="sd">        :return: str or False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Do a fresh request if status is None or last timestamp is older 1 hour</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="s1">&#39;tag_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> \
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tag_name&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> \
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_latest_release_info</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]:</span>
@@ -2850,7 +2849,7 @@
 <span class="sd">        :return: str or False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Do a fresh request if status is None or last timestamp is older 1 hour</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github_check_command</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">][</span><span class="s1">&#39;tag_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> \
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github_check_command</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tag_name&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> \
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github_check_command</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github_check_command</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_latest_release_info_check_command</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_update_check_github_check_command</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]:</span>
@@ -5050,9 +5049,9 @@
 <span class="sd">        :param stream_id: id of a stream</span>
 <span class="sd">        :type stream_id: str</span>
 <span class="sd">        :param channels: provide the channels you wish to subscribe</span>
-<span class="sd">        :type channels: str, tuple, list, set</span>
+<span class="sd">        :type channels: str, list, set</span>
 <span class="sd">        :param markets: provide the markets you wish to subscribe</span>
-<span class="sd">        :type markets: str, tuple, list, set</span>
+<span class="sd">        :type markets: str, list, set</span>
 <span class="sd">        :return: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.subscribe_to_stream(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span> <span class="o">+</span>
@@ -5163,9 +5162,9 @@
 <span class="sd">        :param stream_id: id of a stream</span>
 <span class="sd">        :type stream_id: str</span>
 <span class="sd">        :param channels: provide the channels you wish to unsubscribe</span>
-<span class="sd">        :type channels: str, tuple, list, set</span>
+<span class="sd">        :type channels: str, list, set</span>
 <span class="sd">        :param markets: provide the markets you wish to unsubscribe</span>
-<span class="sd">        :type markets: str, tuple, list, set</span>
+<span class="sd">        :type markets: str, list, set</span>
 <span class="sd">        :return: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiManager.unsubscribe_from_stream(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span> <span class="o">+</span>
@@ -5410,7 +5409,7 @@
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on May 11 2024 at 22:39 (CET).
+    Last updated on May 11 2024 at 23:32 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
