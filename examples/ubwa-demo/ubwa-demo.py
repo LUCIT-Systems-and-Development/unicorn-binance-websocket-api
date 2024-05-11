@@ -38,7 +38,7 @@ class BinanceDataProcessor:
         channels: list = ['trade', 'kline_1m', 'depth20']
         for channel in channels:
             self.ubwa.create_stream(channels=channel,
-                                    markets=markets[:50],
+                                    markets=markets[:20],
                                     process_asyncio_queue=self.process_data,
                                     stream_label=channel)
 
