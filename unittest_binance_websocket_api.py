@@ -728,9 +728,21 @@ class TestApiLive(unittest.TestCase):
         time.sleep(3)
         self.__class__.ubwa.stop_stream(stream_id=stream_id_1)
 
-    def test_exceptions(self):
+    def test_exception_streamisstopping(self):
         with self.assertRaises(StreamIsStopping):
             raise StreamIsStopping(stream_id="blah", reason="test")
+
+    def test_exception_streamiscrashing(self):
+        with self.assertRaises(StreamIsCrashing):
+            raise StreamIsCrashing(stream_id="blah", reason="test")
+
+    def test_exception_streamisrestarting(self):
+        with self.assertRaises(StreamIsRestarting):
+            raise StreamIsRestarting(stream_id="blah", reason="test")
+
+    def test_exception_maximumsubscriptionsexceeded(self):
+        with self.assertRaises(MaximumSubscriptionsExceeded):
+            raise MaximumSubscriptionsExceeded(max_subscriptions=1024)
 
     def test_live_run(self):
         self.__class__.ubwa.get_active_stream_list()
@@ -800,8 +812,6 @@ class TestApiLive(unittest.TestCase):
 
         channels = ['kline_1m', 'kline_5m', 'kline_15m', 'kline_30m', 'kline_1h', 'kline_12h', 'kline_1w', 'trade',
                     'miniTicker', 'depth20']
-
-        self.__class__.ubwa.create_stream(False, False, stream_label="error")
 
         stream_id1 = ""
         for channel in channels:
