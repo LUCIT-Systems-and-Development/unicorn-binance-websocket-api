@@ -10,21 +10,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
 ## 2.7.0.dev (development stage/unreleased/unstable)
+### Changed
+- Improved text of `MaximumSubscriptionsExceeded` exception.
+- Updated description text in all files.
+### Fixed
+- Import in `licensing_manager.py`.
+- Type of global `logger` and `connect` variable.
 
 ## 2.7.0
 ### Added
-- Exception `MaximumSubscriptionsExceeded` thrown by `subscribe_to_stream()`
+- Exception `MaximumSubscriptionsExceeded` thrown by `subscribe_to_stream()`.
 - `print_summary()` and `print_stream_info()` now display `binance_api_status_code` in color! Green at 200 otherwise red.
 ### Changed
 - `subscribe_to_stream()` now throws the exception `MaximumSubscriptionsExceeded` instand of returning `False` if  
   the number of allowed subscriptions per stream is exceeded.
 ### Fixed
-- Typing of `create_stream()` parameters
-- Type of parameter `stream_label` in `get_stream_id_by_label()`
-- Type of first return variable in `restclient.get_listen_key()`
-- Typo in `is_update_availabe_unicorn_fy()` to `is_update_available_unicorn_fy()` 
-- Typo in `is_update_availabe_check_command()` to `is_update_available_check_command()`
-- A couple of small text typos
+- Typing of `create_stream()` parameters.
+- Type of parameter `stream_label` in `get_stream_id_by_label()`.
+- Type of first return variable in `restclient.get_listen_key()`.
+- Typo in `is_update_availabe_unicorn_fy()` to `is_update_available_unicorn_fy()`.
+- Typo in `is_update_availabe_check_command()` to `is_update_available_check_command()`.
+- A couple of small text typos.
 
 ## 2.6.0
 ### Added
