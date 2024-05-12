@@ -742,7 +742,7 @@ class TestApiLive(unittest.TestCase):
 
     def test_exception_maximumsubscriptionsexceeded(self):
         with self.assertRaises(MaximumSubscriptionsExceeded):
-            raise MaximumSubscriptionsExceeded(max_subscriptions=1024)
+            raise MaximumSubscriptionsExceeded(exchange="binance.com", max_subscriptions_per_stream=1024)
 
     def test_live_run(self):
         self.__class__.ubwa.get_active_stream_list()
