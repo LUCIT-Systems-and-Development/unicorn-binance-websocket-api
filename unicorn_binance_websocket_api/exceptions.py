@@ -20,10 +20,13 @@
 
 class MaximumSubscriptionsExceeded(Exception):
     """
-    Exception if the maximum number of subscriptions has been exceeded!
+    Exception if the maximum number of subscriptions per stream has been exceeded!
     """
-    def __init__(self, max_subscriptions=None):
-        self.message = f"The maximum number of {max_subscriptions} subscriptions per stream has been exceeded!"
+    def __init__(self, exchange: str = None, max_subscriptions_per_stream: int = None):
+        self.message = (f"The maximum number of {max_subscriptions_per_stream} subscriptions per stream for exchange "
+                        f"'{exchange}' has been exceeded! For detailed information please have a look at our wiki: "
+                        f"https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/Binance-"
+                        f"websocket-endpoint-configuration-overview")
         super().__init__(self.message)
 
 

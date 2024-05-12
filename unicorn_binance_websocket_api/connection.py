@@ -27,8 +27,8 @@ import socks  # PySocks https://pypi.org/project/PySocks/
 import sys
 import websockets
 
-connect = websockets.connect
-logger = logging.getLogger("unicorn_binance_websocket_api")
+connect:  websockets.connect = websockets.connect
+logger: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 
 
 class BinanceWebSocketApiConnection(object):

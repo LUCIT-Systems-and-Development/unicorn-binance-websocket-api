@@ -29,7 +29,7 @@ import logging
 import threading
 
 
-logger = logging.getLogger("unicorn_binance_websocket_api")
+logger: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 
 
 class BinanceWebSocketApiApi(object):

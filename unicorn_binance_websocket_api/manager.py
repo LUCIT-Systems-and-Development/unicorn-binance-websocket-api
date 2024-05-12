@@ -63,14 +63,14 @@ except ImportError:
 __app_name__: str = "unicorn-binance-websocket-api"
 __version__: str = "2.7.0.dev"
 
-logger = logging.getLogger("unicorn_binance_websocket_api")
+logger: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 
 
 class BinanceWebSocketApiManager(threading.Thread):
     """
-    An unofficial Python API to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
-    com-isolated_margin+testnet, com-futures+testnet, us, dex/chain+testnet) in an easy, fast, flexible,
-    robust and fully-featured way.
+    A Python SDK by LUCIT to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
+    com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, dex/chain+testnet) in a simple, fast,
+    flexible, robust and fully-featured way.
 
     This library supports two different kind of websocket endpoints:
 
@@ -4632,12 +4632,13 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.stream_list[stream_id]['subscriptions'] > self.max_subscriptions_per_stream:
             error_msg = (f"The limit of {str(self.max_subscriptions_per_stream)} subscriptions per stream has been "
                          f"exceeded!")
-            logger.error(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - error_msg: {str(error_msg)}")
-            # self._crash_stream(stream_id, error_msg=error_msg)
-            #return False
-            raise MaximumSubscriptionsExceeded(max_subscriptions=str(self.max_subscriptions_per_stream))
+            logger.error(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - error_msg: "
+                         f"{str(error_msg)}")
+            raise MaximumSubscriptionsExceeded(exchange=self.get_exchange(),
+                                               max_subscriptions_per_stream=self.max_subscriptions_per_stream)
         if payload is None:
-            logger.error(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - error_msg: Payload is None!")
+            logger.error(f"BinanceWebSocketApiManager.subscribe_to_stream({str(stream_id)}) - error_msg: Payload is "
+                         f"None!")
             return False
         try:
             for item in payload:

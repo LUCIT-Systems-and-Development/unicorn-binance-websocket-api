@@ -25,7 +25,7 @@ import requests
 import threading
 import time
 
-logger = logging.getLogger("unicorn_binance_websocket_api")
+logger: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 
 
 class BinanceWebSocketApiRestclient(object):

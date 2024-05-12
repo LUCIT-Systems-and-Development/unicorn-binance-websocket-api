@@ -75,7 +75,7 @@ about:
   summary: | 
     A Python SDK by [LUCIT](https://www.lucit.tech) to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
     com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, dex/chain+testnet) 
-    in a easy, fast, flexible, robust and fully-featured way.
+    in a simple, fast, flexible, robust and fully-featured way.
   description: |
     [![Get a UNICORN Binance Suite License](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-suite/master/images/logo/LUCIT-UBS-License-Offer.png)](https://shop.lucit.services)
     [![GitHub Release](https://img.shields.io/github/release/LUCIT-Systems-and-Development/unicorn-binance-websocket-api.svg?label=github)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases)

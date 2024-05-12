@@ -33,7 +33,7 @@
 
 A Python SDK by [LUCIT](https://www.lucit.tech) to use the Binance Websocket API`s (com+testnet, com-margin+testnet, 
 com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, dex/chain+testnet) 
-in a easy, fast, flexible, robust and fully-featured way. 
+in a simple, fast, flexible, robust and fully-featured way. 
 
 Part of '[UNICORN Binance Suite](https://www.lucit.tech/unicorn-binance-suite.html)'.
 
@@ -123,8 +123,8 @@ with BinanceWebSocketApiManager(exchange='binance.com') as ubwa:
         asyncio.run(main())
     except KeyboardInterrupt:
         print("\r\nGracefully stopping ...")
-    except Exception as error_msg:
-        print(f"\r\nERROR: {error_msg}\r\nGracefully stopping ...")
+    except Exception as e:
+        print(f"\r\nERROR: {e}\r\nGracefully stopping ...")
 ```
 
 Basically that's it, but there are more options.
