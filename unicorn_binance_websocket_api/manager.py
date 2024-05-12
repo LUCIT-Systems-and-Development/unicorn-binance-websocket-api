@@ -62,8 +62,8 @@ except ImportError:
 
 __app_name__: str = "unicorn-binance-websocket-api"
 __version__: str = "2.7.0.dev"
-
-logger: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
+__logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
+logger = __logger__
 
 
 class BinanceWebSocketApiManager(threading.Thread):

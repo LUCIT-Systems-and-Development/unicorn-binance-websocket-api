@@ -26,7 +26,8 @@ import asyncio
 import ujson as json
 import logging
 
-logger: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
+__logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
+logger = __logger__
 
 
 class BinanceWebSocketApiSocket(object):
