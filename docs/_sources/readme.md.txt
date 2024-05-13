@@ -20,7 +20,6 @@
 [![Telegram](https://img.shields.io/badge/community-telegram-41ab8c)](https://t.me/unicorndevs)
 [![Gitter](https://img.shields.io/badge/community-gitter-41ab8c)](https://gitter.im/unicorn-binance-suite/unicorn-binance-websocket-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Get Free Professional Support](https://img.shields.io/badge/chat-lucit%20support-004166)](https://www.lucit.tech/get-support.html)
-[![ChatGPT UNICORN Binance Suite Assistant](https://img.shields.io/badge/chatgpt-%20ubs%20assistant-DA70D6)](https://chat.openai.com/g/g-VjCOjRhCJ-unicorn-binance-suite-assistant)
 
 [![LUCIT-UBWA-Banner](https://raw.githubusercontent.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/master/images/logo/LUCIT-UBWA-Banner-Readme.png)](https://www.lucit.tech/unicorn-binance-websocket-api.html)
 
@@ -37,9 +36,7 @@ in a simple, fast, flexible, robust and fully-featured way.
 
 Part of '[UNICORN Binance Suite](https://www.lucit.tech/unicorn-binance-suite.html)'.
 
-Get help with the integration of the `UNICORN Binance Suite` modules from the 
-[`UNICORN Binance Suite Assistant` GPT](https://chat.openai.com/g/g-VjCOjRhCJ-unicorn-binance-suite-assistant) or 
-[a real human LUCIT employee](https://www.lucit.tech/get-support.html).
+[Get help](https://www.lucit.tech/get-support.html) with the integration of the `UNICORN Binance Suite` modules!
 
 ## Get a UNICORN Binance Suite License
 
@@ -234,7 +231,8 @@ with BinanceWebSocketApiManager(process_stream_signals=process_stream_signals) a
 
 ## More?
 
-[Discover even more possibilities](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html), [use this script](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_everything.py) 
+[Discover even more possibilities](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html), 
+[use this script](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/examples/_archive/example_stream_everything.py) 
 to stream everything from "binance.com" or try our [examples](#examples)!
 
 This should be known by everyone using this lib: 
@@ -312,7 +310,8 @@ on all exchanges! (Take a look to the max supported subscriptions per stream in 
 
 - [UNICORN Binance WebSocket API](https://www.lucit.tech/unicorn-binance-websocket-api.html) respects Binance's API guidelines and protects you from avoidable reconnects and bans.
 
-- Support for multiple private `!userData` streams with different `api_key` and `api_secret`. ([example_multiple_userdata_streams.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py))
+- Support for multiple private `!userData` streams with different `api_key` and `api_secret`. 
+  ([example_multiple_userdata_streams.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/examples/_archive/example_multiple_userdata_streams.py))
 
 - [Pick up the received data from the `stream_buffer`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=get_stream_info#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer) ([FIFO or LIFO](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60)) - 
 if you can not store your data in cause of a temporary technical issue, you can 
@@ -321,9 +320,9 @@ which stores the receives in the RAM till you are able to process the data in th
 [Learn more!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60)
 
 - Use separate `stream_buffers` for 
-[specific streams](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_stream_buffer_extended.py) 
+[specific streams](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/examples/_archive/example_stream_buffer_extended.py) 
 or 
-[users](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_multiple_userdata_streams.py)!
+[users](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/examples/_archive/example_multiple_userdata_streams.py)!
 
 - Watch the `stream_signals` to receive `CONNECT`, `FIRST_RECEIVED_DATA`, `DISCONNECT`, `STOP` and 
   `STREAM_UNREPAIRABLE` signals from your streams! [Learn more!](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60)
@@ -371,8 +370,8 @@ and specific streams with
 - Nice to use with [iPython](https://ipython.org/): 
 "IPython (Interactive Python) is a command shell for interactive computing that offers introspection, 
 rich media, shell syntax, tab completion, and history." 
-([example_interactive_mode.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py)) 
-[![iPython](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ipython.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_interactive_mode.py) 
+([example_interactive_mode.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/examples/_archive/example_interactive_mode.py)) 
+[![iPython](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ipython.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/examples/_archive/example_interactive_mode.py) 
 
 - Also, nice to use with the [Jupyter Notebook](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/tree/master/ipynb) :)
 
@@ -394,7 +393,7 @@ for [ICINGA](https://exchange.icinga.com/LUCIT/check_lucit_collector)/Nagios
   Read the [docs](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager)
   or this [how to](https://medium.com/@oliverzehentleitner/how-to-connect-to-binance-com-websockets-using-python-via-a-socks5-proxy-3c5a3e063f12) 
   for more information or try 
-  [example_socks5_proxy.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_socks5_proxy.py).
+  [example_socks5_proxy.py](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/examples/_archive/example_socks5_proxy.py).
 
 - Excessively tested on Linux, Mac and Windows on x86, arm32, arm64, ...
 
@@ -537,7 +536,7 @@ or the [current master branch](https://github.com/LUCIT-Systems-and-Development/
 To receive notifications on available updates you can 
 [![watch](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/watch.png)](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/watchers) 
 the repository on [GitHub](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api), write your 
-[own script](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/example_version_of_this_package.py) 
+[own script](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/blob/master/examples/_archive/example_version_of_this_package.py) 
 with using 
 [`is_update_available()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.is_update_availabe) 
 or you use the 
