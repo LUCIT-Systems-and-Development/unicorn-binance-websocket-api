@@ -26,7 +26,7 @@ class BinanceDataProcessor:
     async def main(self):
         self.ubwa.create_stream(channels=["!userData"],
                                 markets=["arr"],
-                                stream_label="userData",
+                                stream_label="!userData",
                                 api_key=os.getenv('BINANCE_API_KEY'),
                                 api_secret=os.getenv('BINANCE_API_SECRET'),
                                 process_asyncio_queue=self.process_data)
