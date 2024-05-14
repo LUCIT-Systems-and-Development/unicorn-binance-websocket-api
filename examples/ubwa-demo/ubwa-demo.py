@@ -24,14 +24,16 @@ class BinanceDataProcessor:
         self.markets_limit = 20
 
     async def main(self):
-        self.ubwa.create_stream(["!userData"], ["arr"],
+        self.ubwa.create_stream(channels=["!userData"],
+                                markets=["arr"],
                                 stream_label="userData",
                                 api_key=os.getenv('BINANCE_API_KEY'),
                                 api_secret=os.getenv('BINANCE_API_SECRET'),
                                 process_asyncio_queue=self.process_data)
 
-        self.ubwa.create_stream(['!miniTicker', '!ticker', '!bookTicker'],  "arr",
-                                stream_label="arr channels",
+        self.ubwa.create_stream(channels='!miniTicker',
+                                markets="arr",
+                                stream_label="!miniTicker",
                                 process_asyncio_queue=self.process_data)
 
         with BinanceRestApiManager() as ubra:
