@@ -19,9 +19,10 @@ load_dotenv()
 
 class BinanceDataProcessor:
     def __init__(self, ubwa_manager: BinanceWebSocketApiManager = None):
-        self.ubwa: BinanceWebSocketApiManager = ubwa_manager
-        self.title: str = "UBWA Demo"
+        self.footer: str = "By LUCIT - www.lucit.tech"
         self.markets_limit = 20
+        self.title: str = "UBWA Demo"
+        self.ubwa: BinanceWebSocketApiManager = ubwa_manager
 
     async def main(self):
         self.ubwa.create_stream(channels=["!userData"],
@@ -38,7 +39,7 @@ class BinanceDataProcessor:
 
         with BinanceRestApiManager() as ubra:
             markets: list = [item['symbol'] for item in ubra.get_all_tickers() if item['symbol'].endswith("USDT")]
-        channels: list = ['aggTrade', 'kline_1m', 'depth20']
+        channels: list = ['aggTrade', 'kline_1m', 'depth5']
         for channel in channels:
             self.ubwa.create_stream(channels=channel,
                                     markets=markets[:self.markets_limit],
@@ -47,11 +48,12 @@ class BinanceDataProcessor:
 
         while self.ubwa.is_manager_stopping() is False:
             if os.getenv('EXPORT_TO_PNG') is None:
-                self.ubwa.print_summary(title=self.title)
+                self.ubwa.print_summary(footer=self.footer, title=self.title)
                 await asyncio.sleep(1)
             else:
-                self.ubwa.print_summary_to_png(hight_per_row=13.5,
+                self.ubwa.print_summary_to_png(height_per_row=13.5,
                                                print_summary_export_path="/var/www/html/",
+                                               footer=self.footer,
                                                title=self.title)
                 await asyncio.sleep(10)
 
@@ -69,5 +71,5 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             print("\r\nGracefully stopping ...")
         except Exception as e:
-            print(f"\r\nError: {e}")
+            print(f"\r\nERROR: {e}")
             print("Gracefully stopping ...")

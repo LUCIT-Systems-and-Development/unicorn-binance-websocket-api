@@ -9,7 +9,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.7.0.dev (development stage/unreleased/unstable)
+## 2.7.1.dev (development stage/unreleased/unstable)
+
+## 2.7.1
+### Added
+- Parameter `footer` to `print_summary()`, `print_summary_to_png()` and `print_stream_info()`
 ### Changed
 - Improved text of `MaximumSubscriptionsExceeded` exception.
 - Updated description text in all files.

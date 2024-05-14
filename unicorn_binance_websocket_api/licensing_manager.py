@@ -39,7 +39,9 @@ try:
 except ModuleNotFoundError:
     from unicorn_binance_websocket_api.licensing_exceptions import NoValidatedLucitLicense
 
+
 __logger__: logging.getLogger = logging.getLogger("lucit_licensing_python")
+
 logger = __logger__
 
 

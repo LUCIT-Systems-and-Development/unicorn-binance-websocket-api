@@ -60,9 +60,11 @@ try:
 except ImportError:
     from typing_extensions import Literal
 
+
 __app_name__: str = "unicorn-binance-websocket-api"
-__version__: str = "2.7.0.dev"
+__version__: str = "2.7.1"
 __logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
+
 logger = __logger__
 
 
@@ -3624,7 +3626,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except IndexError:
             return False
 
-    def print_stream_info(self, stream_id, add_string=None, title=None):
+    def print_stream_info(self, stream_id: str = None, add_string: str = None, footer: str = None, title: str = None):
         """
         Print all infos about a specific stream, helps debugging :)
 
@@ -3632,6 +3634,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type stream_id: str
         :param add_string: text to add to the output
         :type add_string: str
+        :param footer: set a footer (last row) for print_summary output
+        :type footer: str
         :param title: set to `True` to use curses instead of print()
         :type title: str
         """
@@ -3731,6 +3735,8 @@ class BinanceWebSocketApiManager(threading.Thread):
             first_row = str(self.fill_up_space_centered(96, f"{self.get_user_agent()} ", "=")) + "\r\n"
             last_row = "========================================================================================" \
                        "=======\r\n"
+        if footer is not None:
+            last_row = str(self.fill_up_space_centered(96, f" {footer} ", "=")) + "\r\n"
         try:
             uptime = self.get_human_uptime(stream_info['processed_receives_statistic']['uptime'])
             print(first_row +
@@ -3780,7 +3786,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         except KeyError:
             self.print_stream_info(stream_id)
 
-    def print_summary(self, add_string=None, disable_print=False, title=None):
+    def print_summary(self, add_string: str = None, disable_print: bool = False, footer: str = None, title: str = None):
         """
         Print an overview of all streams
         
@@ -3788,6 +3794,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type add_string: str
         :param disable_print: set to `True` to use curses instead of print()
         :type disable_print: bool
+        :param footer: set a footer (last row) for print_summary output
+        :type footer: str
         :param title: set a title (first row) for print_summary output
         :type title: str
         """
@@ -3935,6 +3943,9 @@ class BinanceWebSocketApiManager(threading.Thread):
                 first_row = str(self.fill_up_space_centered(96, f" {self.get_user_agent()} ", "=")) + "\r\n"
                 last_row = "========================================================================================" \
                            "=======\r\n"
+            if footer is not None:
+                last_row = str(self.fill_up_space_centered(96, f" {footer} ", "=")) + "\r\n"
+
             try:
                 print_text = (
                     first_row +
@@ -3983,7 +3994,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         except ZeroDivisionError:
             pass
 
-    def print_summary_to_png(self, print_summary_export_path, hight_per_row=12.5, add_string=None, title=None):
+    def print_summary_to_png(self,
+                             print_summary_export_path,
+                             height_per_row=12.5,
+                             add_string: str = None,
+                             footer: str = None,
+                             title: str = None):
         """
         Create a PNG image file with the console output of `print_summary()`
 
@@ -3994,26 +4010,28 @@ class BinanceWebSocketApiManager(threading.Thread):
                                           please provide a path like "/var/www/html/". `View the Wiki!
                                           <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/How-to-export-print_summary()-stdout-to-PNG%3F>`__
         :type print_summary_export_path: str
-        :param hight_per_row: set the hight per row for the image hight calculation
-        :type hight_per_row: float
+        :param height_per_row: set the height per row for the image height calculation
+        :type height_per_row: float
         :param add_string: text to add to the output
         :type add_string: str
+        :param footer: set a footer (last row) for print_summary output
+        :type footer: str
         :param title: set a title (first row) for print_summary output
         :type title: str
         :return: bool
         """
-        print_text = self.print_summary(disable_print=True, add_string=add_string, title=title)
+        print_text = self.print_summary(disable_print=True, add_string=add_string, footer=footer, title=title)
         # Todo:
         # 1. Handle paths right
         # 2. Use PythonMagick instead of Linux ImageMagick
         with open(print_summary_export_path + "print_summary.txt", 'w') as text_file:
             print(self.remove_ansi_escape_codes(print_text), file=text_file)
             try:
-                image_hight = print_text.count("\n") * hight_per_row + 15
+                image_height = print_text.count("\n") * height_per_row + 15
             except AttributeError:
                 return False
-        os.system('convert -size 720x' + str(image_hight) + ' xc:black -font "FreeMono" -pointsize 12 -fill white -annotate '
-                  '+30+30 "@' + print_summary_export_path + 'print_summary.txt' + '" ' +
+        os.system('convert -size 720x' + str(image_height) + ' xc:black -font "FreeMono" -pointsize 12 -fill white '
+                  '-annotate +30+30 "@' + print_summary_export_path + 'print_summary.txt' + '" ' +
                   print_summary_export_path + 'print_summary_plain.png')
         os.system('convert ' + print_summary_export_path + 'print_summary_plain.png -font "FreeMono" '
                   '-pointsize 12 -fill red -undercolor \'#00000080\' -gravity North -annotate +0+5 '
