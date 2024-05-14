@@ -3699,7 +3699,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             else:
                 binance_api_status_code = "\033[1m\033[31m" + str(self.binance_api_status['status_code']) + \
                                           "\033[0m"
-            binance_api_status_row = " binance_api_status: used_weight=" + str(self.binance_api_status['weight']) + \
+            binance_api_status_row = " binance_api_status: weight=" + str(self.binance_api_status['weight']) + \
                                      ", status_code=" + str(binance_api_status_code) + f" (last update " + \
                                      str(self.get_date_of_timestamp(self.binance_api_status['timestamp'])) + \
                                      ")\r\n"
@@ -3923,7 +3923,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                 else:
                     binance_api_status_code = "\033[1m\033[31m" + str(self.binance_api_status['status_code']) + \
                                               "\033[0m"
-                binance_api_status_row = " binance_api_status: used_weight=" + \
+                binance_api_status_row = " binance_api_status: weight=" + \
                                          str(self.binance_api_status['weight']) + \
                                          ", status_code=" + str(binance_api_status_code) + " (last update " + \
                                          str(self.get_date_of_timestamp(self.binance_api_status['timestamp'])) + ")\r\n"
