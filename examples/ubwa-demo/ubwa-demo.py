@@ -38,7 +38,7 @@ class BinanceDataProcessor:
 
         with BinanceRestApiManager() as ubra:
             markets: list = [item['symbol'] for item in ubra.get_all_tickers() if item['symbol'].endswith("USDT")]
-        channels: list = ['trade', 'kline_1m', 'depth20']
+        channels: list = ['aggTrade', 'kline_1m', 'depth20']
         for channel in channels:
             self.ubwa.create_stream(channels=channel,
                                     markets=markets[:self.markets_limit],
