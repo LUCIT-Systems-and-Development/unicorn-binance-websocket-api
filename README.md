@@ -367,8 +367,8 @@ and many more! Explore them [here](https://unicorn-binance-websocket-api.docs.lu
 and specific streams with 
 [`get_stream_info()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_info).
 
-- Available via `pip` and `conda` as precompiled C-Extension including stub files for improved Intellisense features and 
-  source code easier debugging.
+- Available as a package via `pip` and `conda` as precompiled C extension with stub files for improved Intellisense 
+  functions and source code for easier debugging of the source code. [To the installation.](#installation-and-upgrade)
 
 - Nice to use with [iPython](https://ipython.org/): 
 "IPython (Interactive Python) is a command shell for interactive computing that offers introspection, 
