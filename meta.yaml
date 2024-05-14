@@ -26,9 +26,9 @@ requirements:
   host:
     - python
     - mypy
-    - lucit::lucit-licensing-python
-    - lucit::unicorn-fy
-    - lucit::unicorn-binance-rest-api
+    - lucit::lucit-licensing-python >=1.8.2
+    - lucit::unicorn-fy >=0.14.2
+    - lucit::unicorn-binance-rest-api >=2.5.1
     - cheroot
     - colorama
     - Cython
@@ -36,16 +36,16 @@ requirements:
     - flask-restful
     - psutil
     - PySocks
-    - requests
+    - requests >=2.31.0
     - ujson
     - websocket-client
     - websockets==11.0.3
     - typing_extensions
   run:
     - python
-    - lucit::lucit-licensing-python
-    - lucit::unicorn-fy
-    - lucit::unicorn-binance-rest-api
+    - lucit::lucit-licensing-python >=1.8.2
+    - lucit::unicorn-fy >=0.14.2
+    - lucit::unicorn-binance-rest-api >=2.5.1
     - cheroot
     - colorama
     - Cython
@@ -53,7 +53,7 @@ requirements:
     - flask-restful
     - psutil
     - PySocks
-    - requests
+    - requests >=2.31.0
     - ujson
     - websocket-client
     - websockets==11.0.3
