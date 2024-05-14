@@ -2553,7 +2553,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             logger.debug(f"BinanceWebSocketApiManager.get_latest_release_info_check_command() - Exception: {error_msg}")
             return None
 
-    def get_latest_version(self):
+    def get_latest_version(self) -> Optional[str]:
         """
         Get the version of the latest available release (cache time 1 hour)
 
