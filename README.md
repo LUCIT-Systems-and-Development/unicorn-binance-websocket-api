@@ -76,7 +76,7 @@ ubwa.create_stream(channels=['trade', 'kline_1m'],
                    process_stream_data=process_new_receives)
 ```
 
-### Or with a [async callback function](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) just do
+### Or with an [async callback function](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream) just do
 
 ```
 from unicorn_binance_websocket_api import BinanceWebSocketApiManager
@@ -210,8 +210,8 @@ currently "blind" and you may want to close open positions to be on the safe sid
 incorrect values or that you have to reload the missing data via REST as an alternative. 
 
 For this purpose, the UNICORN Binance WebSocket API provides so-called 
-[`stream_signals`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60)
-, which are used to tell your code in real time when a stream is connected, when it received its first data record, when 
+[`stream_signals`](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60), 
+which are used to tell your code in real time when a stream is connected, when it received its first data record, when 
 it was disconnected and stopped, and when the stream cannot be restored.
 
 ```
@@ -263,7 +263,7 @@ also all private userData streams which needs to be used with a valid
 from the Binance Exchange [www.binance.com](https://www.binance.com/), 
 [testnet.binance.vision](https://testnet.binance.vision/) or 
 [www.binance.us](https://www.binance.us) - for the DEX you need a user address from 
-[www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create) 
+[www.binance.org](https://www.binance.org/en/create) or [testnet.binance.org](https://testnet.binance.org/en/create), 
 and you can [get funds](https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account) for the testnet.
 
 Use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-binance-rest-api.html) in combination. 
@@ -366,6 +366,9 @@ and many more! Explore them [here](https://unicorn-binance-websocket-api.docs.lu
 [`get_monitoring_status_plain()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=plain#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_monitoring_status_plain)
 and specific streams with 
 [`get_stream_info()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_info).
+
+- Available via `pip` and `conda` as precompiled C-Extension including stub files for improved Intellisense features and 
+  source code easier debugging.
 
 - Nice to use with [iPython](https://ipython.org/): 
 "IPython (Interactive Python) is a command shell for interactive computing that offers introspection, 
