@@ -2561,6 +2561,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :return: str or False
         """
+        logger.debug(f"BinanceWebSocketApiManager.get_latest_version() - Started ...")
         # Do a fresh request if status is None or last timestamp is older 1 hour
         if self.last_update_check_github['status'].get('tag_name') is None or \
                 (self.last_update_check_github['timestamp'] + (60 * 60) < time.time()):
