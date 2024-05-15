@@ -3478,12 +3478,12 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type exchange_type: str
         :return: bool
         """
-        if exchange_type is None or self.exchange_type != exchange_type:
-            logger.debug(f"BinanceWebSocketApiManager.is_exchange_type({self.exchange_type}!={exchange_type} = False)")
-            return False
-        else:
-            logger.debug(f"BinanceWebSocketApiManager.is_exchange_type({self.exchange_type}!={exchange_type} = True)")
+        if exchange_type is not None or self.exchange_type == exchange_type:
+            logger.debug(f"BinanceWebSocketApiManager.is_exchange_type({self.exchange_type}=={exchange_type} = True)")
             return True
+        else:
+            logger.debug(f"BinanceWebSocketApiManager.is_exchange_type({self.exchange_type}=={exchange_type} = False)")
+            return False
 
     def is_crash_request(self, stream_id) -> bool:
         """

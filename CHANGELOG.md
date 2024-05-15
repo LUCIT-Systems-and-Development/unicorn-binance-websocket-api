@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
 ## 2.7.2.dev (development stage/unreleased/unstable)
+### Changed
+- Made the logic of `is_exchange_type()` better readable.
 
 ## 2.7.2
 ### Fixed
