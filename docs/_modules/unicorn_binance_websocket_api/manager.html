@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api.manager &#8212; unicorn-binance-websocket-api 2.7.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unicorn_binance_websocket_api.manager &#8212; unicorn-binance-websocket-api 2.7.2 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="../../_static/pydoctheme.css?v=fdf8e9ae" />
@@ -208,7 +208,7 @@
 
 
 <span class="n">__app_name__</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;unicorn-binance-websocket-api&quot;</span>
-<span class="n">__version__</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;2.7.1.dev&quot;</span>
+<span class="n">__version__</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;2.7.2&quot;</span>
 <span class="n">__logger__</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;unicorn_binance_websocket_api&quot;</span><span class="p">)</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">__logger__</span>
@@ -859,7 +859,7 @@
                                    <span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                    <span class="n">api_secret</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                    <span class="n">symbols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                   <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">,</span> <span class="s1">&#39;raw_data&#39;</span><span class="p">,</span> <span class="s1">&#39;UnicornFy&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span>
+                                   <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">,</span> <span class="s1">&#39;raw_data&#39;</span><span class="p">,</span> <span class="s1">&#39;UnicornFy&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                                    <span class="n">ping_interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                    <span class="n">ping_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                    <span class="n">close_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1821,7 +1821,7 @@
                       <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">api_secret</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">symbols</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">,</span> <span class="s1">&#39;raw_data&#39;</span><span class="p">,</span> <span class="s1">&#39;UnicornFy&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span>
+                      <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">,</span> <span class="s1">&#39;raw_data&#39;</span><span class="p">,</span> <span class="s1">&#39;UnicornFy&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">ping_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">ping_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">close_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1894,7 +1894,7 @@
 <span class="sd">        :type api_secret: str</span>
 <span class="sd">        :param symbols: provide the symbols for isolated_margin user_data streams</span>
 <span class="sd">        :type symbols: str, list, set</span>
-<span class="sd">        :param output: the default setting `raw_data` can be globaly overwritten with the parameter</span>
+<span class="sd">        :param output: the default setting `raw_data` can be globally overwritten with the parameter</span>
 <span class="sd">                       `output_default &lt;https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager&gt;`__</span>
 <span class="sd">                       of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,</span>
 <span class="sd">                       set `output` to &quot;dict&quot; to convert the received raw data to a python dict,  set to &quot;UnicornFy&quot; to</span>
@@ -4506,7 +4506,7 @@
                        <span class="n">new_api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">new_api_secret</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">new_symbols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">new_output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">,</span> <span class="s1">&#39;raw_data&#39;</span><span class="p">,</span> <span class="s1">&#39;UnicornFy&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span>
+                       <span class="n">new_output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;dict&#39;</span><span class="p">,</span> <span class="s1">&#39;raw_data&#39;</span><span class="p">,</span> <span class="s1">&#39;UnicornFy&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                        <span class="n">new_ping_interval</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
                        <span class="n">new_ping_timeout</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
                        <span class="n">new_close_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
@@ -4539,8 +4539,8 @@
 <span class="sd">        :type new_symbols: str</span>
 <span class="sd">        :return: new stream_id</span>
 <span class="sd">        :param new_output: set to &quot;dict&quot; to convert the received raw data to a python dict, set to &quot;UnicornFy&quot; to convert</span>
-<span class="sd">                           with `UnicornFy &lt;https://github.com/LUCIT-Systems-and-Development/unicorn-fy&gt;`__ - otherwise the output</span>
-<span class="sd">                           remains unchanged and gets delivered as received from the endpoints</span>
+<span class="sd">                           with `UnicornFy &lt;https://github.com/LUCIT-Systems-and-Development/unicorn-fy&gt;`__ - otherwise</span>
+<span class="sd">                           the output remains unchanged and gets delivered as received from the endpoints</span>
 <span class="sd">        :type new_output: str</span>
 <span class="sd">        :param new_ping_interval: Once the connection is open, a `Ping frame` is sent every</span>
 <span class="sd">                                  `ping_interval` seconds. This serves as a keepalive. It helps keeping</span>
@@ -5428,7 +5428,7 @@
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on May 14 2024 at 21:34 (CET).
+    Last updated on May 15 2024 at 09:17 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.

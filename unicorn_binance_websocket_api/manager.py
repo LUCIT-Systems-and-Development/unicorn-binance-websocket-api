@@ -62,7 +62,7 @@ except ImportError:
 
 
 __app_name__: str = "unicorn-binance-websocket-api"
-__version__: str = "2.7.1.dev"
+__version__: str = "2.7.2"
 __logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 
 logger = __logger__
@@ -699,7 +699,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    api_key=None,
                                    api_secret=None,
                                    symbols=None,
-                                   output: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = "raw_data",
+                                   output: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = None,
                                    ping_interval=None,
                                    ping_timeout=None,
                                    close_timeout=None,
@@ -1629,7 +1629,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                       api_key: str = None,
                       api_secret: str = None,
                       symbols: Union[str, List[str], Set[str], None] = None,
-                      output: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = "raw_data",
+                      output: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = None,
                       ping_interval: int = None,
                       ping_timeout: int = None,
                       close_timeout: int = None,
@@ -1702,7 +1702,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type api_secret: str
         :param symbols: provide the symbols for isolated_margin user_data streams
         :type symbols: str, list, set
-        :param output: the default setting `raw_data` can be globaly overwritten with the parameter
+        :param output: the default setting `raw_data` can be globally overwritten with the parameter
                        `output_default <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=output_default#module-unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager>`__
                        of BinanceWebSocketApiManager`. To overrule the `output_default` value for this specific stream,
                        set `output` to "dict" to convert the received raw data to a python dict,  set to "UnicornFy" to
@@ -4065,7 +4065,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                        new_api_key=None,
                        new_api_secret=None,
                        new_symbols=None,
-                       new_output: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = "raw_data",
+                       new_output: Optional[Literal['dict', 'raw_data', 'UnicornFy']] = None,
                        new_ping_interval=20,
                        new_ping_timeout=20,
                        new_close_timeout=10,
@@ -4098,8 +4098,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type new_symbols: str
         :return: new stream_id
         :param new_output: set to "dict" to convert the received raw data to a python dict, set to "UnicornFy" to convert
-                           with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`__ - otherwise the output
-                           remains unchanged and gets delivered as received from the endpoints
+                           with `UnicornFy <https://github.com/LUCIT-Systems-and-Development/unicorn-fy>`__ - otherwise
+                           the output remains unchanged and gets delivered as received from the endpoints
         :type new_output: str
         :param new_ping_interval: Once the connection is open, a `Ping frame` is sent every
                                   `ping_interval` seconds. This serves as a keepalive. It helps keeping

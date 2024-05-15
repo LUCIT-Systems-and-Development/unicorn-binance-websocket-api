@@ -9,7 +9,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.7.1.dev (development stage/unreleased/unstable)
+## 2.7.2.dev (development stage/unreleased/unstable)
+
+## 2.7.2
+### Fixed
+- Stream Data is always returned in `raw_data` format. [issue#380](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/380)
 
 ## 2.7.1
 ### Added

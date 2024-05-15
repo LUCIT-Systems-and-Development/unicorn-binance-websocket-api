@@ -113,8 +113,10 @@ body:
       description: |
         Are you using the `stream_buffer` or the `process_stream_data`-callback function?
       options:
-        - stream_buffer
+        - process_asyncio_queue
         - process_stream_data
+        - process_stream_data_async
+        - stream_buffer
     validations:
       required: true
 

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 2.7.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNICORN Binance WebSocket API &#8212; unicorn-binance-websocket-api 2.7.2 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=fdf8e9ae" />
@@ -72,7 +72,7 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do</a></li>
-<li><a class="reference internal" href="#or-with-a-async-callback-function-just-do">Or with a async callback function just do</a></li>
+<li><a class="reference internal" href="#or-with-an-async-callback-function-just-do">Or with an async callback function just do</a></li>
 <li><a class="reference internal" href="#or-await-the-stream-data-in-an-asyncio-coroutine">Or await the stream data in an asyncio coroutine</a></li>
 </ul>
 </li>
@@ -313,8 +313,8 @@ in a simple, fast, flexible, robust and fully-featured way.</p>
 </pre></div>
 </div>
 </section>
-<section id="or-with-a-async-callback-function-just-do">
-<h3>Or with a <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">async callback function</a> just do<a class="headerlink" href="#or-with-a-async-callback-function-just-do" title="Link to this heading">¶</a></h3>
+<section id="or-with-an-async-callback-function-just-do">
+<h3>Or with an <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=process_stream_data#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream">async callback function</a> just do<a class="headerlink" href="#or-with-an-async-callback-function-just-do" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 
@@ -442,8 +442,8 @@ guide on
 currently “blind” and you may want to close open positions to be on the safe side, know that indicators will now provide
 incorrect values or that you have to reload the missing data via REST as an alternative.</p>
 <p>For this purpose, the UNICORN Binance WebSocket API provides so-called
-<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60"><code class="docutils literal notranslate"><span class="pre">stream_signals</span></code></a>
-, which are used to tell your code in real time when a stream is connected, when it received its first data record, when
+<a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60"><code class="docutils literal notranslate"><span class="pre">stream_signals</span></code></a>,
+which are used to tell your code in real time when a stream is connected, when it received its first data record, when
 it was disconnected and stopped, and when the stream cannot be restored.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unicorn_binance_websocket_api</span> <span class="kn">import</span> <span class="n">BinanceWebSocketApiManager</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -495,7 +495,7 @@ also all private userData streams which needs to be used with a valid
 from the Binance Exchange <a class="reference external" href="https://www.binance.com/">www.binance.com</a>,
 <a class="reference external" href="https://testnet.binance.vision/">testnet.binance.vision</a> or
 <a class="reference external" href="https://www.binance.us">www.binance.us</a> - for the DEX you need a user address from
-<a class="reference external" href="https://www.binance.org/en/create">www.binance.org</a> or <a class="reference external" href="https://testnet.binance.org/en/create">testnet.binance.org</a>
+<a class="reference external" href="https://www.binance.org/en/create">www.binance.org</a> or <a class="reference external" href="https://testnet.binance.org/en/create">testnet.binance.org</a>,
 and you can <a class="reference external" href="https://www.binance.vision/tutorials/binance-dex-funding-your-testnet-account">get funds</a> for the testnet.</p>
 <p>Use the <a class="reference external" href="https://www.lucit.tech/unicorn-binance-rest-api.html">UNICORN Binance REST API</a> in combination.</p>
 <section id="what-are-the-benefits-of-the-unicorn-binance-websocket-api">
@@ -660,6 +660,8 @@ and many more! Explore them <a class="reference external" href="https://unicorn-
 <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html?highlight=plain#unicorn_binance_websocket_api.unicorn_binance_websocket_api_manager.BinanceWebSocketApiManager.get_monitoring_status_plain"><code class="docutils literal notranslate"><span class="pre">get_monitoring_status_plain()</span></code></a>
 and specific streams with
 <a class="reference external" href="https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_info"><code class="docutils literal notranslate"><span class="pre">get_stream_info()</span></code></a>.</p></li>
+<li><p>Available as a package via <code class="docutils literal notranslate"><span class="pre">pip</span></code> and <code class="docutils literal notranslate"><span class="pre">conda</span></code> as precompiled C extension with stub files for improved Intellisense
+functions and source code for easier debugging of the source code. <a class="reference internal" href="#installation-and-upgrade">To the installation.</a></p></li>
 <li><p>Nice to use with <a class="reference external" href="https://ipython.org/">iPython</a>:
 “IPython (Interactive Python) is a command shell for interactive computing that offers introspection,
 rich media, shell syntax, tab completion, and history.”
@@ -770,9 +772,9 @@ and <code class="docutils literal notranslate"><span class="pre">win-64</span></
 </section>
 <section id="windows">
 <h4>Windows<a class="headerlink" href="#windows" title="Link to this heading">¶</a></h4>
-<p>Use the below command with the version (such as 2.7.1) you determined
+<p>Use the below command with the version (such as 2.7.2) you determined
 <a class="reference external" href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest">here</a>:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.7.1.tar.gz</span> <span class="pre">--upgrade</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.7.2.tar.gz</span> <span class="pre">--upgrade</span></code></p>
 </section>
 </section>
 <section id="from-the-latest-source-dev-stage-with-pip-from-github">
@@ -940,7 +942,7 @@ companies from the US analyze binance.com market data - as long as they do not t
 </ul>
 </li>
 <li><a class="reference internal" href="#or-with-a-callback-function-just-do">Or with a callback function just do</a></li>
-<li><a class="reference internal" href="#or-with-a-async-callback-function-just-do">Or with a async callback function just do</a></li>
+<li><a class="reference internal" href="#or-with-an-async-callback-function-just-do">Or with an async callback function just do</a></li>
 <li><a class="reference internal" href="#or-await-the-stream-data-in-an-asyncio-coroutine">Or await the stream data in an asyncio coroutine</a></li>
 </ul>
 </li>
@@ -1108,7 +1110,7 @@ companies from the US analyze binance.com market data - as long as they do not t
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on May 14 2024 at 21:34 (CET).
+    Last updated on May 15 2024 at 09:17 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
