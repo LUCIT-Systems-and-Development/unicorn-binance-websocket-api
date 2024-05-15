@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.7.2.dev (development stage/unreleased/unstable)
 ### Changed
 - Made the logic of `is_exchange_type()` better readable.
+### Fixed
+- `get_latest_version()` KeyError
 
 ## 2.7.2
 ### Fixed

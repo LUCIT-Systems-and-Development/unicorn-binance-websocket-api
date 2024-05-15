@@ -2565,7 +2565,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.last_update_check_github['status'].get('tag_name') is None or \
                 (self.last_update_check_github['timestamp'] + (60 * 60) < time.time()):
             self.last_update_check_github['status'] = self.get_latest_release_info()
-        if self.last_update_check_github['status']:
+        if self.last_update_check_github['status'].get('tag_name') is not None:
             try:
                 return self.last_update_check_github['status']['tag_name']
             except KeyError as error_msg:
