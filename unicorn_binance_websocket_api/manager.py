@@ -3479,7 +3479,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :type exchange_type: str
         :return: bool
         """
-        if exchange_type is not None or self.exchange_type == exchange_type:
+        if exchange_type is not None and self.exchange_type == exchange_type:
             logger.debug(f"BinanceWebSocketApiManager.is_exchange_type({self.exchange_type}=={exchange_type} = True)")
             return True
         else:
