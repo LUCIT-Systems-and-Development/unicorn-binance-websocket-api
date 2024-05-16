@@ -1,56 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#
-# File: example_version_of_this_package.py
-#
-# Part of ‘UNICORN Binance WebSocket API’
-# Project website: https://www.lucit.tech/unicorn-binance-websocket-api.html
-# Github: https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api
-# Documentation: https://unicorn-binance-websocket-api.docs.lucit.tech
-# PyPI: https://pypi.org/project/unicorn-binance-websocket-api
-# LUCIT Online Shop: https://shop.lucit.services/software
-#
-# Author: LUCIT Systems and Development
-#
-# Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
-# All rights reserved.
-#
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish, dis-
-# tribute, sublicense, and/or sell copies of the Software, and to permit
-# persons to whom the Software is furnished to do so, subject to the fol-
-# lowing conditions:
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABIL-
-# ITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
-# SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-# IN THE SOFTWARE.
+# ¯\_(ツ)_/¯
 
-import unicorn_binance_websocket_api
+from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 
-# To use this library you need a valid UNICORN Binance Suite License:
-# https://shop.lucit.services
-# create instance of BinanceWebSocketApiManager
-binance_websocket_api_manager = unicorn_binance_websocket_api.BinanceWebSocketApiManager()
-
-# get version of the used UNICORN Binance WebSocket API
-if binance_websocket_api_manager.is_update_available():
-    print("Please upgrade to " + binance_websocket_api_manager.get_latest_version() + ", you are on",
-          binance_websocket_api_manager.get_version())
-
-    latest_release_info = binance_websocket_api_manager.get_latest_release_info()
-    if latest_release_info:
-        print("Please download the latest release or run `pip install unicorn-binance-websocket-api --upgrade`: ")
-        print("\ttar: " + latest_release_info["tarball_url"])
-        print("\tzip: " + latest_release_info["zipball_url"])
-        print("release info:")
-        print(latest_release_info["body"])
-else:
-    print(binance_websocket_api_manager.get_version(), "is the latest version!")
-
-binance_websocket_api_manager.stop_manager_with_all_streams()
+with BinanceWebSocketApiManager(warn_on_update=False) as ubwa:
+    if ubwa.is_update_available():
+        print(f"Please upgrade to {ubwa.get_latest_version()} you are on {ubwa.get_version()}")
+        latest_release_info = ubwa.get_latest_release_info()
+        if latest_release_info:
+            print(f"Please download the latest release or run `pip install unicorn-binance-websocket-api --upgrade`"
+                  f":\r\n\ttar: {latest_release_info['tarball_url']}\r\n\tzip: {latest_release_info['zipball_url']}\r\n"
+                  f"release info:\r\n{latest_release_info['body']}")
+    else:
+        print(ubwa.get_version(), "is the latest version!")

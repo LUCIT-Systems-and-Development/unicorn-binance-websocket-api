@@ -9,7 +9,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.7.2.dev (development stage/unreleased/unstable)
+## 2.8.0.dev (development stage/unreleased/unstable)
+
+## 2.8.0
+### Added
+- `clear_asyncio_queue()` 
+### Changed
+- Made the logic of `is_exchange_type()` better readable.
+- Type of parameter `stream_buffer_name` in all methods.
+### Fixed
+- `get_latest_version()` KeyError.
+### Removed
+- Obsolete import `from __future__ import print_function` in `sockets.py`.
 
 ## 2.7.2
 ### Fixed

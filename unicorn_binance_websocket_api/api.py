@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# ¯\_(ツ)_/¯
 #
 # File: unicorn_binance_websocket_api/api.py
 #
@@ -24,6 +25,7 @@ try:
     from typing import Literal
 except ImportError:
     from typing_extensions import Literal
+
 import copy
 import logging
 import threading

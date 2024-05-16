@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# ¯\_(ツ)_/¯
 #
 # File: unicorn_binance_websocket_api/manager.py
 #
@@ -18,26 +19,6 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-import asyncio
-import colorama
-import copy
-import cython
-import logging
-import hmac
-import hashlib
-import os
-import platform
-import psutil
-import re
-import requests
-import ssl
-import sys
-import threading
-import time
-import traceback
-import uuid
-import ujson as json
-import websockets
 from .licensing_manager import LucitLicensingManager, NoValidatedLucitLicense
 from .connection_settings import CEX_EXCHANGES, DEX_EXCHANGES, CONNECTION_SETTINGS
 from .exceptions import *
@@ -60,9 +41,30 @@ try:
 except ImportError:
     from typing_extensions import Literal
 
+import asyncio
+import colorama
+import copy
+import cython
+import logging
+import hmac
+import hashlib
+import os
+import platform
+import psutil
+import re
+import requests
+import ssl
+import sys
+import threading
+import time
+import traceback
+import uuid
+import ujson as json
+import websockets
+
 
 __app_name__: str = "unicorn-binance-websocket-api"
-__version__: str = "2.7.2.dev"
+__version__: str = "2.8.0"
 __logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 
 logger = __logger__
@@ -71,7 +73,7 @@ logger = __logger__
 class BinanceWebSocketApiManager(threading.Thread):
     """
     A Python SDK by LUCIT to use the Binance Websocket API`s (com+testnet, com-margin+testnet,
-    com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, tr, dex/chain+testnet) in a simple, fast,
+    com-isolated_margin+testnet, com-futures+testnet, com-coin_futures, us, "tr", dex/chain+testnet) in a simple, fast,
     flexible, robust and fully-featured way.
 
     This library supports two different kind of websocket endpoints:
@@ -695,7 +697,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    channels=None,
                                    markets=None,
                                    stream_label=None,
-                                   stream_buffer_name=False,
+                                   stream_buffer_name: Union[Literal[False], str] = False,
                                    api_key=None,
                                    api_secret=None,
                                    symbols=None,
@@ -725,7 +727,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    set to `True` to read the data via `pop_stream_data_from_stream_buffer(stream_id)` or
                                    provide a string to create and use a shared stream_buffer and read it via
                                    `pop_stream_data_from_stream_buffer('string')`.
-        :type stream_buffer_name: bool or str
+        :type stream_buffer_name: False or str
         :param api_key: provide a valid Binance API key
         :type api_key: str
         :param api_secret: provide a valid Binance API secret
@@ -854,7 +856,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                               stream_id,
                               channels,
                               markets,
-                              stream_buffer_name=False,
+                              stream_buffer_name: Union[Literal[False], str] = False,
                               stream_buffer_maxlen=None):
         """
         Co function of self.create_stream to create a thread for the socket and to manage the coroutine
@@ -869,7 +871,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                            set to `True` to read the data via `pop_stream_data_from_stream_buffer(stream_id)` or
                            provide a string to create and use a shared stream_buffer and read it via
                            `pop_stream_data_from_stream_buffer('string')`.
-        :type stream_buffer_name: bool or str
+        :type stream_buffer_name: False or str
         :param stream_buffer_maxlen: Set a max len for the `stream_buffer`. Only used in combination with a non-generic
                                      `stream_buffer`. The generic `stream_buffer` uses always the value of
                                      `BinanceWebSocketApiManager()`.
@@ -1349,7 +1351,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.ringbuffer_result.append(str(result))
         return True
 
-    def add_to_stream_buffer(self, stream_data, stream_buffer_name=False):
+    def add_to_stream_buffer(self, stream_data, stream_buffer_name: Union[Literal[False], str] = False):
         """
         Kick back data to the
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`__
@@ -1366,7 +1368,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    set to `True` to read the data via `pop_stream_data_from_stream_buffer(stream_id)` or
                                    provide a string to create and use a shared stream_buffer and read it via
                                    `pop_stream_data_from_stream_buffer('string')`.
-        :type stream_buffer_name: bool or str
+        :type stream_buffer_name: False or str
         :return: bool
         """
         if stream_buffer_name is False:
@@ -1648,7 +1650,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                       channels: Union[str, List[str], Set[str], None] = None,
                       markets: Union[str, List[str], Set[str], None] = None,
                       stream_label: str = None,
-                      stream_buffer_name: Union[bool, str] = False,
+                      stream_buffer_name: Union[Literal[False], str] = False,
                       api_key: str = None,
                       api_secret: str = None,
                       symbols: Union[str, List[str], Set[str], None] = None,
@@ -1982,8 +1984,8 @@ class BinanceWebSocketApiManager(threading.Thread):
                                             uri_hidden)
                             subscriptions = self.get_number_of_subscriptions(stream_id)
                             with self.stream_list_lock:
-                                logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() response - `stream_list_lock` "
-                                             f"was entered!")
+                                logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() response - "
+                                             f"`stream_list_lock` was entered!")
                                 self.stream_list[stream_id]['subscriptions'] = subscriptions
                                 logger.debug(f"BinanceWebSocketApiManager.create_websocket_uri() - Leaving "
                                              f"`stream_list_lock`")
@@ -2582,7 +2584,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         """
         Get the version of the latest available release (cache time 1 hour)
 
-        :return: str or False
+        :return: str or None
         """
         logger.debug(f"BinanceWebSocketApiManager.get_latest_version() - Started ...")
         # Do a fresh request if status is None or last timestamp is older 1 hour
@@ -2593,29 +2595,29 @@ class BinanceWebSocketApiManager(threading.Thread):
             try:
                 return self.last_update_check_github['status']['tag_name']
             except KeyError as error_msg:
-                logger.debug(f"BinanceWebSocketApiManager.get_latest_version() - KeyError: {error_msg}")
-                return "unknown"
+                logger.debug(f"BinanceLocalDepthCacheManager.get_latest_version() - KeyError: {error_msg}")
+                return None
         else:
-            return "unknown"
+            return None
 
-    def get_latest_version_check_command(self):
+    def get_latest_version_check_command(self) -> Optional[str]:
         """
         Get the version of the latest available `check_lucit_collector.py` release (cache time 1 hour)
         
-        :return: str or False
+        :return: str or None
         """
         # Do a fresh request if status is None or last timestamp is older 1 hour
         if self.last_update_check_github_check_command['status'].get('tag_name') is None or \
                 (self.last_update_check_github_check_command['timestamp'] + (60 * 60) < time.time()):
             self.last_update_check_github_check_command['status'] = self.get_latest_release_info_check_command()
-        if self.last_update_check_github_check_command['status']:
+        if self.last_update_check_github_check_command['status'].get('tag_name') is not None:
             try:
                 return self.last_update_check_github_check_command['status']['tag_name']
             except KeyError as error_msg:
                 logger.debug(f"BinanceWebSocketApiManager.get_latest_version_check_command() - KeyError: {error_msg}")
-                return "unknown"
+                return None
         else:
-            return "unknown"
+            return None
 
     def get_limit_of_subscriptions_per_stream(self):
         """
@@ -3063,7 +3065,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         else:
             return round(total_received_bytes / total_receives * stream_buffer_length)
 
-    def get_stream_buffer_length(self, stream_buffer_name=False):
+    def get_stream_buffer_length(self, stream_buffer_name: Union[Literal[False], str] = False):
         """
         Get the current number of items in all stream_buffer or of a specific stream_buffer
 
@@ -3225,7 +3227,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             temp_stream_list[stream_id] = self.get_stream_info(stream_id)
         return temp_stream_list
 
-    def get_stream_buffer_maxlen(self, stream_buffer_name=False):
+    def get_stream_buffer_maxlen(self, stream_buffer_name: Union[Literal[False], str] = False):
         """
         Get the maxlen value of the
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`__
@@ -3236,7 +3238,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
                                    create_stream() or the string name of a shared stream_buffer.
-        :type stream_buffer_name: bool or str
+        :type stream_buffer_name: False or str
         :return: int or False
         """
         if stream_buffer_name is False:
@@ -3564,7 +3566,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             installed_version = installed_version[:-4]
         if self.get_latest_version() == installed_version:
             return False
-        elif self.get_latest_version() == "unknown":
+        elif self.get_latest_version() is None:
             return False
         else:
             return True
@@ -3590,12 +3592,12 @@ class BinanceWebSocketApiManager(threading.Thread):
             installed_version = installed_version[:-4]
         if latest_version == installed_version:
             return False
-        elif latest_version == "unknown":
+        elif latest_version is None:
             return False
         else:
             return True
 
-    def pop_stream_data_from_stream_buffer(self, stream_buffer_name=None, mode="FIFO"):
+    def pop_stream_data_from_stream_buffer(self, stream_buffer_name: Union[Literal[False], str] = None, mode="FIFO"):
         """
         Get oldest or latest entry from
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`__
@@ -3603,7 +3605,7 @@ class BinanceWebSocketApiManager(threading.Thread):
 
         :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
                                    create_stream() or the string name of a shared stream_buffer.
-        :type stream_buffer_name: bool or str
+        :type stream_buffer_name: False or str
         :param mode: How to read from the `stream_buffer` - "FIFO" (default) or "LIFO".
         :type mode: str
         :return: stream_data - str, dict or None
@@ -4085,7 +4087,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                        new_channels,
                        new_markets,
                        new_stream_label=None,
-                       new_stream_buffer_name=False,
+                       new_stream_buffer_name: Union[Literal[False], str] = False,
                        new_api_key=None,
                        new_api_secret=None,
                        new_symbols=None,
@@ -4113,7 +4115,7 @@ class BinanceWebSocketApiManager(threading.Thread):
                                    set to `True` to read the data via `pop_stream_data_from_stream_buffer(stream_id)` or
                                    provide a string to create and use a shared stream_buffer and read it via
                                    `pop_stream_data_from_stream_buffer('string')`.
-        :type new_stream_buffer_name: bool or str
+        :type new_stream_buffer_name: False or str
         :param new_api_key: provide a valid Binance API key
         :type new_api_key: str
         :param new_api_secret: provide a valid Binance API secret

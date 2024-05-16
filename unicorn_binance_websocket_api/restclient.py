@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# ¯\_(ツ)_/¯
 #
 # File: unicorn_binance_websocket_api/restclient.py
 #
@@ -20,6 +21,7 @@
 
 from unicorn_binance_rest_api import BinanceRestApiManager
 from typing import Optional, Union, Tuple
+
 import logging
 import requests
 import threading

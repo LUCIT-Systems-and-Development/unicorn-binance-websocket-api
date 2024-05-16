@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# ¯\_(ツ)_/¯
 #
 # File: lucit_licensing_python/licensing_exceptions.py
 #

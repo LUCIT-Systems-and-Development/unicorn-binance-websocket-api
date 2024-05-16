@@ -18,9 +18,9 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-import sys
 from enum import Enum
 
+import sys
 if sys.version_info >= (3, 9):
     from typing import Type
     MAX_SUBSCRIPTIONS_PER_STREAM: Type[int] = int

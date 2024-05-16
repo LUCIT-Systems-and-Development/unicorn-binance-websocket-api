@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# ¯\_(ツ)_/¯
 #
 # File: unicorn_binance_websocket_api/sockets.py
 #
@@ -18,10 +19,10 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-from __future__ import print_function
 from .connection import BinanceWebSocketApiConnection
 from .exceptions import *
 from unicorn_fy.unicorn_fy import UnicornFy
+
 import asyncio
 import ujson as json
 import logging

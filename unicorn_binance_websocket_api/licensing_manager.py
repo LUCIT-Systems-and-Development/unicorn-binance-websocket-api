@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# ¯\_(ツ)_/¯
 #
 # File: lucit_licensing_python/licensing_manager.py
 #
@@ -17,16 +18,6 @@
 # Copyright (c) 2023-2023, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-import cython
-import hashlib
-import hmac
-import logging
-import os
-import platform
-import requests
-import threading
-import time
-import uuid
 from configparser import ConfigParser, ExtendedInterpolation
 from copy import deepcopy
 from operator import itemgetter
@@ -38,6 +29,17 @@ try:
     from .licensing_exceptions import NoValidatedLucitLicense
 except ModuleNotFoundError:
     from unicorn_binance_websocket_api.licensing_exceptions import NoValidatedLucitLicense
+
+import cython
+import hashlib
+import hmac
+import logging
+import os
+import platform
+import requests
+import threading
+import time
+import uuid
 
 
 __logger__: logging.getLogger = logging.getLogger("lucit_licensing_python")

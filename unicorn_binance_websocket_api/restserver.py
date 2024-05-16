@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# ¯\_(ツ)_/¯
 #
 # File: unicorn_binance_websocket_api/restserver.py
 #
@@ -19,6 +20,7 @@
 # All rights reserved.
 
 from flask_restful import Resource
+
 import logging
 
 
