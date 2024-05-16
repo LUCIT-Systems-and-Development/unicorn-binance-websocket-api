@@ -1435,14 +1435,37 @@ class BinanceWebSocketApiManager(threading.Thread):
         with self.total_received_bytes_lock:
             self.total_received_bytes += int(size)
 
-    def clear_stream_buffer(self, stream_buffer_name=False):
+    def clear_asyncio_queue(self, stream_id: str = None) -> bool:
+        """
+        Clear the asyncio queue of a specific stream.
+
+        :param stream_id: provide a stream_id
+        :type stream_id: str
+
+        :return: bool
+        """
+        if stream_id is None:
+            logger.error(f"BinanceWebSocketApiManager.clear_asyncio_queue() - Missing parameter `stream_id`!")
+            return False
+        logger.debug(f"BinanceWebSocketApiManager.clear_asyncio_queue(stream_id={stream_id}) - Resetting asyncio_queue "
+                     f"...")
+        try:
+            while True:
+                self.asyncio_queue[stream_id].get_nowait()
+        except asyncio.QueueEmpty:
+            logger.debug(
+                f"BinanceWebSocketApiManager.clear_asyncio_queue(stream_id={stream_id}) - Finished resetting of "
+                f"asyncio_queue!")
+        return True
+
+    def clear_stream_buffer(self, stream_buffer_name: Union[Literal[False], str] = False):
         """
         Clear the
         `stream_buffer <https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_buffer%60>`__
 
         :param stream_buffer_name: `False` to read from generic stream_buffer, the stream_id if you used True in
                                    create_stream() or the string name of a shared stream_buffer.
-        :type stream_buffer_name: bool or str
+        :type stream_buffer_name: False or str
         :return: bool
         """
         if stream_buffer_name is False:
