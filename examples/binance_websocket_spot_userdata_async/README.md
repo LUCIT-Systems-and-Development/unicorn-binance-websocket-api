@@ -16,7 +16,7 @@ To run modules of the *UNICORN Binance Suite* you need a [valid license](https:/
 ## Usage
 ### Running the Script:
 ```bash
-python binance_websocket_dex.py
+python binance_websocket_spot_userdata_async.py
 ```
 
 ### Graceful Shutdown:
