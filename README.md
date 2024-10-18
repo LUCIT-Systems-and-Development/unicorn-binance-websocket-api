@@ -113,7 +113,7 @@ async def main():
                        stream_label="TRADES",
                        process_asyncio_queue=process_asyncio_queue)
     while not ubwa.is_manager_stopping():
-            await asyncio.sleep(1)
+        await asyncio.sleep(1)
 
 with BinanceWebSocketApiManager(exchange='binance.com') as ubwa:
     try:
