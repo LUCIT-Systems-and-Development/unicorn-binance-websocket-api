@@ -70,6 +70,7 @@ body:
         - Python3.10
         - Python3.11
         - Python3.12
+        - Python3.13
     validations:
       required: true
 

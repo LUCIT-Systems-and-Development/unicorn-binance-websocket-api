@@ -36,6 +36,7 @@ from flask_restful import Api
 from operator import itemgetter
 from typing import Optional, Union, Callable, List, Set
 try:
+    # Todo: Remove!
     # python <=3.7 support
     from typing import Literal
 except ImportError:

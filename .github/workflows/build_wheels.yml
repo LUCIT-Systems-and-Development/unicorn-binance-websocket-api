@@ -13,7 +13,7 @@ jobs:
       CIBW_SKIP: "pp36-* pp37-* pp38-*"
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macos-11]
+        os: [ubuntu-20.04, windows-2019, macos-12]
     steps:
       - name: GitHub Checkout
         uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
           CIBW_BEFORE_ALL: "bash dev/tools/github/install_rust.sh"
 
       - name: Build wheels Mac
-        if: matrix.os == 'macos-11'
+        if: matrix.os == 'macos-12'
         uses: pypa/cibuildwheel@v2.16.5
 
       - name: Build wheels Windows

@@ -21,6 +21,7 @@
 
 from typing import Optional, Union
 try:
+    # Todo remove!
     # python <=3.7 support
     from typing import Literal
 except ImportError:

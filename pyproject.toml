@@ -23,7 +23,7 @@ repository = "https://github.com/LUCIT-Systems-and-Development/unicorn-binance-w
 'LUCIT Online Shop' = 'https://shop.lucit.services/software/unicorn-binance-suite'
 
 [tool.poetry.dependencies]
-python = ">=3.7.0"
+python = ">=3.8.0"
 cheroot = "*"
 colorama = "*"
 Cython = "*"
