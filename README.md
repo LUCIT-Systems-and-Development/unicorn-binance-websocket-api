@@ -224,9 +224,8 @@ def process_stream_signals(signal_type=None, stream_id=None, data_record=None, e
 
 with BinanceWebSocketApiManager(process_stream_signals=process_stream_signals) as ubwa:
     ubwa.create_stream(channels="trade", markets="btcusdt", stream_label="TRADES")
-    time.sleep(2)
-    print(f"Waiting 5 seconds and then stop the stream ...")
-    time.sleep(5)
+    print(f"Waiting a few seconds and then stopping the stream ...")
+    time.sleep(7)
 ```
 
 ## More?

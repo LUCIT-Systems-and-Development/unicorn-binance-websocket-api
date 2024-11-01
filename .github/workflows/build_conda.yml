@@ -12,11 +12,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-20.04, windows-2019, macos-12]
+        os: [ubuntu-20.04, windows-2022, macos-12]
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
-        exclude:
-          - os: windows-2019
-            python-version: "3.12"
     steps:
       - uses: actions/checkout@v4
       - name: Conda environment creation and activation
@@ -55,7 +52,7 @@ jobs:
           echo "CONDA_BUILD_SYSROOT: /opt/MacOSX10.10.sdk # [osx]" > conda_build_config.yaml
 
       - name: Build and upload the conda packages
-        uses: uibcdf/action-build-and-upload-conda-packages@v1.2.0
+        uses: uibcdf/action-build-and-upload-conda-packages@v1.3.0
         with:
           meta_yaml_dir: .
           overwrite: False
