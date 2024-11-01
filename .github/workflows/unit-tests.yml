@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-   test_python_3_8:
+  test_python_3_8:
     runs-on: ubuntu-latest
     steps:
     - name: GitHub Checkout
