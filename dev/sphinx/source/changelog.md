@@ -9,7 +9,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.8.0.dev (development stage/unreleased/unstable)
+## 2.8.1.dev (development stage/unreleased/unstable)
+
+## 2.8.1
+### Changed
+- Log levels in `send_with_stream()` to be less verbose.
+### Fixed
+- `AttributeError: 'NoneType' object has no attribute 'get'` in `get_latest_version()`.
 
 ## 2.8.0
 ### Added

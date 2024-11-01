@@ -113,7 +113,7 @@ async def main():
                        stream_label="TRADES",
                        process_asyncio_queue=process_asyncio_queue)
     while not ubwa.is_manager_stopping():
-            await asyncio.sleep(1)
+        await asyncio.sleep(1)
 
 with BinanceWebSocketApiManager(exchange='binance.com') as ubwa:
     try:
@@ -334,6 +334,8 @@ parameter of
 to control the output format.
 
 - Helpful management features like 
+[`clear_asyncio_queue()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.clear_asyncio_queue), 
+[`clear_stream_buffer()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.clear_stream_buffer), 
 [`get_binance_api_status()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_binance_api_status), 
 [`get_current_receiving_speed()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_current_receiving_speed), 
 [`get_errors_from_endpoints()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_errors_from_endpoints), 
@@ -357,7 +359,6 @@ to control the output format.
 [`set_ringbuffer_error_max_size()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.set_ringbuffer_error_max_size), 
 [`subscribe_to_stream()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.subscribe_to_stream), 
 [`stop_stream()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_stream),
-[`stop_manager_with_all_streams()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.stop_manager_with_all_streams), 
 [`unsubscribe_from_stream()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.unsubscribe_from_stream), 
 [`wait_till_stream_has_started()`](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.wait_till_stream_has_started) 
 and many more! Explore them [here](https://unicorn-binance-websocket-api.docs.lucit.tech/modules.html).
@@ -404,8 +405,8 @@ If you like the project, please [![star](https://raw.githubusercontent.com/lucit
 [GitHub](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)!
 
 ## Live Demo
-This live demo script is streaming from [binance.com](https://www.binance.com) and runs on a *cx31* virtual 
-machine of [HETZNER CLOUD](https://www.hetzner.com) - [get 20 EUR starting credit!](https://hetzner.cloud/?ref=rKgYRMq0l8fd)
+This live demo script is streaming from [binance.com](https://www.binance.com) and runs on a *CCX13* virtual 
+machine of [HETZNER CLOUD](https://hetzner.cloud/?ref=rKgYRMq0l8fd)
 
 [Open live monitor!](https://www.lucit.tech/unicorn-binance-websocket-api-live-demo.html)
 
@@ -486,24 +487,14 @@ Run in bash:
 `pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/$(curl -s https://api.github.com/repos/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")').tar.gz --upgrade`
 
 #### Windows
-Use the below command with the version (such as 2.8.0) you determined 
+Use the below command with the version (such as 2.8.1) you determined 
 [here](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest):
 
-`pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.8.0.tar.gz --upgrade`
+`pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/2.8.1.tar.gz --upgrade`
 ### From the latest source (dev-stage) with PIP from [GitHub](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api)
 This is not a release version and can not be considered to be stable!
 
 `pip install https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/tarball/master --upgrade`
-
-### [Conda environment](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html), [Virtualenv](https://virtualenv.pypa.io/en/latest/) or plain [Python](https://www.python.org)
-Download the [latest release](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/releases/latest) 
-or the [current master branch](https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/archive/master.zip)
- and use:
-
-- ./environment.yml
-- ./pyproject.toml
-- ./requirements.txt
-- ./setup.py
 
 ## Change Log
 [https://unicorn-binance-websocket-api.docs.lucit.tech/changelog.html](https://unicorn-binance-websocket-api.docs.lucit.tech/changelog.html)

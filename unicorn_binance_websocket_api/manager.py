@@ -64,7 +64,7 @@ import websockets
 
 
 __app_name__: str = "unicorn-binance-websocket-api"
-__version__: str = "2.8.0.dev"
+__version__: str = "2.8.1.dev"
 __logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 
 logger = __logger__
@@ -671,10 +671,10 @@ class BinanceWebSocketApiManager(threading.Thread):
                 if self.is_stop_request(stream_id=stream_id) is True \
                         or self.is_crash_request(stream_id=stream_id) is True \
                         or self.stream_list[stream_id]['status'].startswith("crashed") is True:
-                    logger.error(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - Socket is stopping!")
+                    logger.debug(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - Socket is stopping!")
                     return False
                 if time.time() > timeout_time:
-                    logger.error(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - Timeout exceeded!")
+                    logger.debug(f"BinanceWebSocketApiManager.send_with_stream({stream_id} - Timeout exceeded!")
                     return False
                 time.sleep(0.05)
             try:
@@ -2591,7 +2591,8 @@ class BinanceWebSocketApiManager(threading.Thread):
         if self.last_update_check_github['status'].get('tag_name') is None or \
                 (self.last_update_check_github['timestamp'] + (60 * 60) < time.time()):
             self.last_update_check_github['status'] = self.get_latest_release_info()
-        if self.last_update_check_github['status'].get('tag_name') is not None:
+        if (self.last_update_check_github['status'] is not None and
+                self.last_update_check_github['status'].get('tag_name') is not None):
             try:
                 return self.last_update_check_github['status']['tag_name']
             except KeyError as error_msg:
