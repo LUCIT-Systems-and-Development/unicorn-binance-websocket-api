@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.8.1
 ### Changed
 - Log levels in `send_with_stream()` to be less verbose.
+- Dropping support for Python 3.7
 ### Fixed
 - `AttributeError: 'NoneType' object has no attribute 'get'` in `get_latest_version()`.
 

@@ -271,7 +271,7 @@ Use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-binance-rest-a
 ### What are the benefits of the UNICORN Binance WebSocket API?
 - Fully managed websockets and 100% auto-reconnect! Also handles maintenance windows!
 
-- No memory leaks from Python version 3.7 to 3.12!
+- No memory leaks from Python version 3.8 to 3.12!
 
 - The full [UBS stack](https://www.lucit.tech/unicorn-binance-suite.html) is delivered as a compiled C extension for 
   maximum performance.
@@ -415,7 +415,7 @@ machine of [HETZNER CLOUD](https://hetzner.cloud/?ref=rKgYRMq0l8fd)
 (Refresh update once a minute!)
 
 ## Installation and Upgrade
-The module requires Python 3.7 and runs smoothly up to and including Python 3.12.
+The module requires Python 3.8 and runs smoothly up to and including Python 3.12.
 
 Anaconda packages are available from Python version 3.8 and higher, but only in the latest version!
 
