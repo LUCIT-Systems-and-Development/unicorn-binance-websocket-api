@@ -1920,6 +1920,11 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: str or False
         """
         if api is not False:
+            if self.websocket_api_base_uri is None:
+                error_msg = (f"BinanceWebSocketApiManager() - The WebSocket API feature is not supported for exchange "
+                             f"'{self.exchange}' - Missing a valid `websocket_api_base_uri`")
+                logger.critical(error_msg)
+                raise ValueError(error_msg)
             logger.info("BinanceWebSocketApiManager.create_websocket_uri(" + str(channels) + ", " +
                         str(markets) + ", " + ", " + str(symbols) + ", " + str(api) + ") - Created websocket URI for "
                         "stream_id=" + str(stream_id) + " is " + self.websocket_api_base_uri)

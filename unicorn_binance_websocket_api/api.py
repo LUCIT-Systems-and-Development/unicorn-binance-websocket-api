@@ -444,7 +444,7 @@ class BinanceWebSocketApiApi(object):
                      symbol: str = None,
                      time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
                      test: bool = False,
-                     trailing_delta: int = None) -> Union[int, bool]:
+                     trailing_delta: int = None) -> Union[str, bool]:
         """
         Create a new order.
 
@@ -546,7 +546,8 @@ class BinanceWebSocketApiApi(object):
         :param trailing_delta: For more details on SPOT implementation on trailing stops, please refer to
                                `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
         :type trailing_delta: int
-        :return: `False` or `orig_client_order_id`
+
+        :return: `False` (bool) or `orig_client_order_id` (str)
 
         Message sent:
 
@@ -617,7 +618,7 @@ class BinanceWebSocketApiApi(object):
                                 f"found!")
                 return False
 
-        new_client_order_id = new_client_order_id if new_client_order_id is not None else self.manager.get_request_id()
+        new_client_order_id = new_client_order_id if new_client_order_id is not None else str(self.manager.get_request_id())
         params = {"apiKey": self.manager.stream_list[stream_id]['api_key'],
                   "newClientOrderId": new_client_order_id,
                   "quantity": quantity,
@@ -712,7 +713,7 @@ class BinanceWebSocketApiApi(object):
                           stream_label: str = None,
                           symbol: str = None,
                           time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
-                          trailing_delta: int = None) -> Union[int, bool]:
+                          trailing_delta: int = None) -> Union[str, bool]:
         """
         Test order placement.
 
@@ -814,7 +815,7 @@ class BinanceWebSocketApiApi(object):
                                `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
         :type trailing_delta: int
 
-        :return: `False` or `orig_client_order_id`
+        :return: `False` (bool) or `orig_client_order_id` (str)
 
         Message sent:
 

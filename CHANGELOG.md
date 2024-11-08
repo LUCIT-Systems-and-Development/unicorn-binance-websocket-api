@@ -9,7 +9,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.8.1.dev (development stage/unreleased/unstable)
+## 2.9.0.dev (development stage/unreleased/unstable)
+
+## 2.9.0
+### Added
+- Support for 'binance.com-futures' WebSocket API.
+- Error handling if someone tries to use the WebSocket API Feature with an unsupported exchange. 
+### Fixed 
+- Type Error of returned value of `api.create_order()` and `api.create_test_order()`.
 
 ## 2.8.1
 ### Changed
