@@ -9,7 +9,7 @@ import os
 
 api_key = ""
 api_secret = ""
-
+market = "BTCUSDT"
 
 async def binance_stream(ubwa):
     async def handle_socket_message(stream_id=None):
@@ -25,17 +25,17 @@ async def binance_stream(ubwa):
     ubwa.api.get_server_time(stream_id=api_stream)
     ubwa.api.get_account_status(stream_id=api_stream)
     orig_client_order_id = ubwa.api.create_order(stream_id=api_stream, price=1.0, order_type="LIMIT",
-                                                 quantity=15.0, side="SELL", symbol="BUSDUSDT")
+                                                 quantity=15.0, side="SELL", symbol=market)
     ubwa.api.create_test_order(stream_id=api_stream, price=1.2, order_type="LIMIT",
-                               quantity=12.0, side="SELL", symbol="BUSDUSDT")
+                               quantity=12.0, side="SELL", symbol=market)
     ubwa.api.ping(stream_id=api_stream)
-    ubwa.api.get_exchange_info(stream_id=api_stream, symbols=['BUSDUSDT'])
-    ubwa.api.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
-    ubwa.api.cancel_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
-    ubwa.api.get_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
+    ubwa.api.get_exchange_info(stream_id=api_stream, symbols=market)
+    ubwa.api.get_order_book(stream_id=api_stream, symbol=market, limit=2)
+    ubwa.api.cancel_order(stream_id=api_stream, symbol=market, orig_client_order_id=orig_client_order_id)
+    ubwa.api.get_open_orders(stream_id=api_stream, symbol=market)
     ubwa.api.get_open_orders(stream_id=api_stream)
-    ubwa.api.cancel_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
-    ubwa.api.get_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
+    ubwa.api.cancel_open_orders(stream_id=api_stream, symbol=market)
+    ubwa.api.get_order(stream_id=api_stream, symbol=market, orig_client_order_id=orig_client_order_id)
 
     print(f"Finished! Waiting for responses:")
     await asyncio.sleep(5)
