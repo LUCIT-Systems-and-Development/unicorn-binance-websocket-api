@@ -25,7 +25,7 @@ from .exceptions import *
 from .restclient import BinanceWebSocketApiRestclient
 from .restserver import BinanceWebSocketApiRestServer
 from .sockets import BinanceWebSocketApiSocket
-from .api import BinanceWebSocketApiApi
+from unicorn_binance_websocket_api.api.api import WsApi
 from unicorn_binance_rest_api import BinanceRestApiManager, BinanceAPIException
 from unicorn_fy.unicorn_fy import UnicornFy
 from cheroot import wsgi
@@ -428,7 +428,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         self.ping_interval_default = ping_interval_default
         self.ping_timeout_default = ping_timeout_default
         self.replacement_text = "***SECRET_REMOVED***"
-        self.api = BinanceWebSocketApiApi(manager=self)
+        self.api: WsApi = WsApi(manager=self)
         self.warn_on_update = warn_on_update
         if warn_on_update and self.is_update_available():
             update_msg = f"Release {self.name}_" + self.get_latest_version() + " is available, " \
@@ -1008,34 +1008,37 @@ class BinanceWebSocketApiManager(threading.Thread):
     async def _auto_data_cleanup_stopped_streams(self, interval=None, age=None) -> bool:
         if interval is None or age is None:
             return False
-        logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Starting with an interval "
-                    f"of {interval} seconds!")
-        timestamp_last_check = 0
-        await asyncio.sleep(10)
-        while self.is_manager_stopping() is False:
-            if self.get_timestamp_unix() > timestamp_last_check + interval:
-                timestamp_last_check = self.get_timestamp_unix()
-                if self.auto_data_cleanup_stopped_streams is True:
-                    stopped_streams = []
-                    with self.stream_list_lock:
-                        logger.debug(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
-                                     f"`stream_list_lock` was entered!")
-                        for stream_id in self.stream_list:
-                            stopped_streams.append(stream_id)
-                        logger.debug(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Leaving"
-                                     f"`stream_list_lock`!")
-                    for stream_id in stopped_streams:
-                        if (self.stream_list[stream_id]['status'] == "stopped"
-                                or self.stream_list[stream_id]['status'].startswith("crashed")):
-                            if self.get_stream_info(stream_id=stream_id)['seconds_since_has_stopped'] > age:
-                                logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
-                                            f"Removing all remaining data of stream with stream_id={stream_id} from "
-                                            f"this instance!")
-                                self.remove_all_data_of_stream_id(stream_id=stream_id)
-                                logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
-                                            f"Remaining data of stream with stream_id={stream_id} successfully removed "
-                                            f"from this instance!")
-            await asyncio.sleep(interval+5)
+        if self.auto_data_cleanup_stopped_streams is True:
+            logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Starting with an interval "
+                        f"of {interval} seconds!")
+            timestamp_last_check = 0
+            await asyncio.sleep(10)
+            while self.is_manager_stopping() is False:
+                if self.get_timestamp_unix() > timestamp_last_check + interval:
+                    timestamp_last_check = self.get_timestamp_unix()
+                    if self.auto_data_cleanup_stopped_streams is True:
+                        stopped_streams = []
+                        with self.stream_list_lock:
+                            logger.debug(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
+                                         f"`stream_list_lock` was entered!")
+                            for stream_id in self.stream_list:
+                                stopped_streams.append(stream_id)
+                            logger.debug(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - Leaving"
+                                         f"`stream_list_lock`!")
+                        for stream_id in stopped_streams:
+                            if (self.stream_list[stream_id]['status'] == "stopped"
+                                    or self.stream_list[stream_id]['status'].startswith("crashed")):
+                                if self.get_stream_info(stream_id=stream_id)['seconds_since_has_stopped'] > age:
+                                    logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
+                                                f"Removing all remaining data of stream with stream_id={stream_id} from "
+                                                f"this instance!")
+                                    self.remove_all_data_of_stream_id(stream_id=stream_id)
+                                    logger.info(f"BinanceWebSocketApiManager._auto_data_cleanup_stopped_streams() - "
+                                                f"Remaining data of stream with stream_id={stream_id} successfully removed "
+                                                f"from this instance!")
+                await asyncio.sleep(interval+5)
+        else:
+            return False
 
     async def _frequent_checks(self):
         """
@@ -4188,8 +4191,7 @@ class BinanceWebSocketApiManager(threading.Thread):
             asyncio.set_event_loop(loop)
             if self.debug is True:
                 loop.set_debug(enabled=True)
-            if self.auto_data_cleanup_stopped_streams is True:
-                loop.create_task(self._auto_data_cleanup_stopped_streams(60, 900))  # Interval, Age
+            loop.create_task(self._auto_data_cleanup_stopped_streams(60, 900))  # Interval, Age
             loop.run_until_complete(self._frequent_checks())
         except OSError as error_msg:
             logger.critical(f"BinanceWebSocketApiManager.run() - OSError - error_msg: {str(error_msg)}")

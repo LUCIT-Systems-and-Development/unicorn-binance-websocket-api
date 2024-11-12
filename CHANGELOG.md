@@ -10,6 +10,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
 ## 2.9.0.dev (development stage/unreleased/unstable)
+### Added
+- New `Websocket API Spot` functions:
+  - `manager.api.spot.get_aggregate_trades()`
+  - `manager.api.spot.get_historical_trades()`
+  - `manager.api.spot.get_klines()`
+  - `manager.api.spot.get_ui_klines()`  
+  - `manager.api.spot.get_recent_trades()`
+- Support for `Websocket API Futures`:
+  - `manager.api.futures.get_aggregate_trades()`
+### Changed
+- Websocket API functions are no longer available under `manager.api` but under `manager.api.spot`. In addition, there 
+  is now also `manager.api.futures`.
 
 ## 2.9.0
 ### Added
