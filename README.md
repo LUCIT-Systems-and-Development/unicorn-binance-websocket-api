@@ -186,8 +186,8 @@ ubwa.api.spot.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BU
 ```
 
 All available methods:
-- [Futures]()
-- [Spot]()
+- [Futures](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.api.futures)
+- [Spot](https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#module-unicorn_binance_websocket_api.api.spot)
 
 
 [Here](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404) you can find a complete 
