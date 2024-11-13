@@ -1,16 +1,23 @@
-# Binance WebSocket API
+# Binance WebSocket API Futures
 ## Overview
-A best practice example for websockets to Binance in Python.
+Examples for the Binance Websocket API Futures.
 
 ## Prerequisites
-Ensure you have Python 3.7+ installed on your system. 
+Ensure you have Python 3.8+ installed on your system. 
 
 Before running the provided script, install the required Python packages:
 ```bash
 pip install -r requirements.txt
 ```
+
+Create an `.env` file with the environment variables using `.env-example` as a template:
+```bash
+BINANCE_API_KEY=12A34BCD5678EFG90HIJKLM12NOP3456QR789STUV0WXYZ
+BINANCE_API_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
+```
+
 ## Get a UNICORN Binance Suite License
-To run modules of the *UNICORN Binance Suite* you need a [valid license](https://shop.lucit.services)!
+To run modules of the *UNICORN Trading Suite* you need a [valid license](https://shop.lucit.services)!
 
 ## Usage
 ### Running the Script:

@@ -16,13 +16,14 @@ async def binance_api(ubwa):
             data = await ubwa.get_stream_data_from_asyncio_queue(stream_id=stream_id)
             print(f"received data:\r\n{data}\r\n")
 
-    print(f"Starting Stream:")
+    print(f"Starting the stream:")
     api_stream = ubwa.create_stream(api=True,
                                     api_key=os.getenv('BINANCE_API_KEY'),
                                     api_secret=os.getenv('BINANCE_API_SECRET'),
                                     stream_label="Bobs Future Websocket API",
                                     process_asyncio_queue=handle_socket_message)
-    print(f"Start:")
+
+    print(f"Executing API requests on Binance Futures:")
     ubwa.api.futures.get_account_status(stream_id=api_stream)
     ubwa.api.futures.get_listen_key(stream_id=api_stream)
     ubwa.api.futures.get_server_time(stream_id=api_stream)
@@ -37,7 +38,6 @@ async def binance_api(ubwa):
     await asyncio.sleep(5)
 
     print(f"Stopping!")
-    ubwa.stop_manager()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG,

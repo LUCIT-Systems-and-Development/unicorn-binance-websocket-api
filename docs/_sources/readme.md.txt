@@ -173,17 +173,22 @@ api_stream = ubwa.create_stream(api=True,
                                 output="UnicornFy",
                                 process_asyncio_queue=process_api_responses)
 
-response = ubwa.api.get_server_time(return_response=True)
+response = ubwa.api.spot.get_server_time(return_response=True)
 print(f"Binance serverTime: {response['result']['serverTime']}")
 
-orig_client_order_id = ubwa.api.create_order(order_type="LIMIT",
-                                             price = 1.1,
-                                             quantity = 15.0,
-                                             side = "SELL",
-                                             symbol = "BUSDUSDT")
+orig_client_order_id = ubwa.api.spot.create_order(order_type="LIMIT",
+                                                  price = 1.1,
+                                                  quantity = 15.0,
+                                                  side = "SELL",
+                                                  symbol = "BUSDUSDT")
 
-ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                   
+ubwa.api.spot.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                   
 ```
+
+All available methods:
+- [Futures]()
+- [Spot]()
+
 
 [Here](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404) you can find a complete 
 guide on 
@@ -224,9 +229,8 @@ def process_stream_signals(signal_type=None, stream_id=None, data_record=None, e
 
 with BinanceWebSocketApiManager(process_stream_signals=process_stream_signals) as ubwa:
     ubwa.create_stream(channels="trade", markets="btcusdt", stream_label="TRADES")
-    time.sleep(2)
-    print(f"Waiting 5 seconds and then stop the stream ...")
-    time.sleep(5)
+    print(f"Waiting a few seconds and then stopping the stream ...")
+    time.sleep(7)
 ```
 
 ## More?
@@ -291,8 +295,8 @@ Use the [UNICORN Binance REST API](https://www.lucit.tech/unicorn-binance-rest-a
 | [Binance Margin Testnet](https://testnet.binance.vision/)          | `binance.com-margin-testnet`          | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
 | [Binance Isolated Margin](https://www.binance.com)                 | `binance.com-isolated_margin`         | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
 | [Binance Isolated Margin Testnet](https://testnet.binance.vision/) | `binance.com-isolated_margin-testnet` | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
-| [Binance USD-M Futures](https://www.binance.com)                   | `binance.com-futures`                 | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
-| [Binance USD-M Futures Testnet](https://testnet.binancefuture.com) | `binance.com-futures-testnet`         | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
+| [Binance USD-M Futures](https://www.binance.com)                   | `binance.com-futures`                 | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) |
+| [Binance USD-M Futures Testnet](https://testnet.binancefuture.com) | `binance.com-futures-testnet`         | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) |
 | [Binance Coin-M Futures](https://www.binance.com)                  | `binance.com-coin_futures`            | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
 | [Binance US](https://www.binance.us)                               | `binance.us`                          | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |
 | [Binance TR](https://www.trbinance.com)                            | `trbinance.com`                       | ![yes](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/ok-icon.png) | ![no](https://raw.githubusercontent.com/lucit-systems-and-development/unicorn-binance-websocket-api/master/images/misc/x-icon.png)   |

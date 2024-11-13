@@ -21,7 +21,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   - `manager.api.spot.get_recent_trades()`
   - `manager.api.spot.get_unfilled_order_count()`
 - Support for `Websocket API Futures`:
-  - `manager.api.futures.get_aggregate_trades()`
+  - `manager.api.futures.cancel_order()`
+  - `manager.api.futures.create_order()`
+  - `manager.api.futures.get_order()` 
+  - `manager.api.futures.get_order_book()`
+  - `manager.api.futures.modify_order()`
+  
 ### Changed
 - ujson has been replaced by orjson
 - Websocket API functions are no longer available under `manager.api` but under `manager.api.spot`. In addition, there 

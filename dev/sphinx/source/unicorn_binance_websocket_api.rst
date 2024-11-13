@@ -4,12 +4,26 @@ unicorn\_binance\_websocket\_api package
 Submodules
 ----------
 
-
-
 unicorn\_binance\_websocket\_api.api module
 ------------------------------------------------------------------------------------
 
 .. automodule:: unicorn_binance_websocket_api.api
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+unicorn\_binance\_websocket\_api.api.futures module
+------------------------------------------------------------------------------------
+
+.. automodule:: unicorn_binance_websocket_api.api.futures
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+unicorn\_binance\_websocket\_api.api.spot module
+------------------------------------------------------------------------------------
+
+.. automodule:: unicorn_binance_websocket_api.api.spot
     :members:
     :undoc-members:
     :show-inheritance:

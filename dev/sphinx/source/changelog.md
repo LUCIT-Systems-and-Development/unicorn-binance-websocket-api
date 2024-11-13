@@ -9,7 +9,36 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.8.1.dev (development stage/unreleased/unstable)
+## 2.9.0.dev (development stage/unreleased/unstable)
+### Added
+- New `Websocket API Spot` functions:
+  - `manager.api.spot.cancel_and_replace_order()`
+  - `manager.api.spot.get_aggregate_trades()`
+  - `manager.api.spot.get_current_average_price()`
+  - `manager.api.spot.get_historical_trades()`
+  - `manager.api.spot.get_klines()`
+  - `manager.api.spot.get_ui_klines()`  
+  - `manager.api.spot.get_recent_trades()`
+  - `manager.api.spot.get_unfilled_order_count()`
+- Support for `Websocket API Futures`:
+  - `manager.api.futures.cancel_order()`
+  - `manager.api.futures.create_order()`
+  - `manager.api.futures.get_order()` 
+  - `manager.api.futures.get_order_book()`
+  - `manager.api.futures.modify_order()`
+  
+### Changed
+- ujson has been replaced by orjson
+- Websocket API functions are no longer available under `manager.api` but under `manager.api.spot`. In addition, there 
+  is now also `manager.api.futures`.
+- No more use of deepcopy in ws api (faster!)
+
+## 2.9.0
+### Added
+- Support for 'binance.com-futures' WebSocket API.
+- Error handling if someone tries to use the WebSocket API Feature with an unsupported exchange. 
+### Fixed 
+- Type Error of returned value of `api.create_order()` and `api.create_test_order()`.
 
 ## 2.8.1
 ### Changed

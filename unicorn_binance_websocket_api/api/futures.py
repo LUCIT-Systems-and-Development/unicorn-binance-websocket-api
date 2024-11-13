@@ -19,18 +19,9 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-from typing import Optional, Union
-try:
-    # Todo remove!
-    # python <=3.7 support
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
-
-import copy
+from typing import Optional, Union, Literal
 import logging
 import threading
-
 
 __logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -48,13 +39,24 @@ class BinanceWebSocketApiApiFutures(object):
     one valid websocket api stream, this will fail! It must be clear! The stream is also valid during a
     stream restart, the payload is submitted as soon the stream is online again.
 
+    Todo:
+        - https://binance-docs.github.io/apidocs/futures/en/#account-information-v2-user_data-2
+        - https://binance-docs.github.io/apidocs/futures/en/#account-information-user_data
+        - https://binance-docs.github.io/apidocs/futures/en/#futures-account-balance-v2-user_data-2
+        - https://binance-docs.github.io/apidocs/futures/en/#futures-account-balance-user_data
+        - https://binance-docs.github.io/apidocs/futures/en/#position-information-v2-user_data-2
+        - https://binance-docs.github.io/apidocs/futures/en/#position-information-user_data
+        - https://binance-docs.github.io/apidocs/futures/en/#symbol-price-ticker-2
+        - https://binance-docs.github.io/apidocs/futures/en/#symbol-order-book-ticker-2
+
+
     Read these instructions to get started:
 
         - https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404
 
-    Binance.com SPOT websocket API documentation:
+    Binance.com Futures websocket API documentation:
 
-        - https://binance-docs.github.io/apidocs/websocket_api/en/
+        - https://binance-docs.github.io/apidocs/futures/en/#websocket-api
 
     :param manager: Provide the initiated UNICORN Binance WebSocket API Manager instance.
     :type manager: BinanceWebsocketApiManager
@@ -63,227 +65,21 @@ class BinanceWebSocketApiApiFutures(object):
     def __init__(self, manager=None):
         self._manager = manager
 
-    def cancel_open_orders(self, process_response=None, return_response: bool = False, symbol: str = None,
-                           recv_window: int = None, request_id: str = None, stream_id: str = None,
-                           stream_label: str = None) -> bool:
-        """
-        Cancel all open orders on a symbol, including OCO orders.
-
-        Official documentation:
-
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#cancel-open-orders-trade
-
-        :param process_response: Provide a function/method to process the received webstream data (callback)
-                                 of this specific request.
-        :type process_response: function
-        :param symbol: The symbol you want to trade
-        :type symbol: int
-        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
-                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
-                            The value cannot be greater than 60000.
-        :type recv_window: int
-        :param request_id: Provide a custom id for the request
-        :type request_id: str
-        :param return_response: If `True` the response of the API request is waited for and returned directly.
-                                However, this increases the execution time of the function by the duration until the
-                                response is received from the Binance API.
-        :type return_response: bool
-        :param stream_id: ID of a stream to send the request
-        :type stream_id: str
-        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
-        :type stream_label: str
-        :return: bool
-
-        Message Sent:
-
-        .. code-block:: json
-
-            {
-                "id": "778f938f-9041-4b88-9914-efbf64eeacc8",
-                "method": "openOrders.cancelAll"
-                "params": {
-                    "symbol": "BTCUSDT",
-                    "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
-                    "signature": "773f01b6e3c2c9e0c1d217bc043ce383c1ddd6f0e25f8d6070f2b66a6ceaf3a5",
-                    "timestamp": 1660805557200
-                }
-            }
-
-        Response:
-
-        .. code-block:: json
-
-            {
-                "id": "778f938f-9041-4b88-9914-efbf64eeacc8",
-                "status": 200,
-                "result": [
-                    {
-                        "symbol": "BTCUSDT",
-                        "origClientOrderId": "4d96324ff9d44481926157",
-                        "orderId": 12569099453,
-                        "orderListId": -1,
-                        "clientOrderId": "91fe37ce9e69c90d6358c0",
-                        "price": "23416.10000000",
-                        "origQty": "0.00847000",
-                        "executedQty": "0.00001000",
-                        "cummulativeQuoteQty": "0.23416100",
-                        "status": "CANCELED",
-                        "timeInForce": "GTC",
-                        "type": "LIMIT",
-                        "side": "SELL",
-                        "stopPrice": "0.00000000",
-                        "trailingDelta": 0,
-                        "trailingTime": -1,
-                        "icebergQty": "0.00000000",
-                        "strategyId": 37463720,
-                        "strategyType": 1000000,
-                        "selfTradePreventionMode": "NONE"
-                    },
-                    {
-                        "orderListId": 19431,
-                        "contingencyType": "OCO",
-                        "listStatusType": "ALL_DONE",
-                        "listOrderStatus": "ALL_DONE",
-                        "listClientOrderId": "iuVNVJYYrByz6C4yGOPPK0",
-                        "transactionTime": 1660803702431,
-                        "symbol": "BTCUSDT",
-                        "orders": [
-                            {
-                            "symbol": "BTCUSDT",
-                            "orderId": 12569099453,
-                            "clientOrderId": "bX5wROblo6YeDwa9iTLeyY"
-                            },
-                            {
-                            "symbol": "BTCUSDT",
-                            "orderId": 12569099454,
-                            "clientOrderId": "Tnu2IP0J5Y4mxw3IATBfmW"
-                            }
-                        ],
-                        "orderReports": [
-                            {
-                                "symbol": "BTCUSDT",
-                                "origClientOrderId": "bX5wROblo6YeDwa9iTLeyY",
-                                "orderId": 12569099453,
-                                "orderListId": 19431,
-                                "clientOrderId": "OFFXQtxVFZ6Nbcg4PgE2DA",
-                                "price": "23450.50000000",
-                                "origQty": "0.00850000",
-                                "executedQty": "0.00000000",
-                                "cummulativeQuoteQty": "0.00000000",
-                                "status": "CANCELED",
-                                "timeInForce": "GTC",
-                                "type": "STOP_LOSS_LIMIT",
-                                "side": "BUY",
-                                "stopPrice": "23430.00000000",
-                                "selfTradePreventionMode": "NONE"
-                            },
-                            {
-                                "symbol": "BTCUSDT",
-                                "origClientOrderId": "Tnu2IP0J5Y4mxw3IATBfmW",
-                                "orderId": 12569099454,
-                                "orderListId": 19431,
-                                "clientOrderId": "OFFXQtxVFZ6Nbcg4PgE2DA",
-                                "price": "23400.00000000",
-                                "origQty": "0.00850000",
-                                "executedQty": "0.00000000",
-                                "cummulativeQuoteQty": "0.00000000",
-                                "status": "CANCELED",
-                                "timeInForce": "GTC",
-                                "type": "LIMIT_MAKER",
-                                "side": "BUY",
-                                "selfTradePreventionMode": "NONE"
-                            }
-                        ]
-                    }
-                ],
-                "rateLimits": [
-                    {
-                        "rateLimitType": "REQUEST_WEIGHT",
-                        "interval": "MINUTE",
-                        "intervalNum": 1,
-                        "limit": 1200,
-                        "count": 1
-                    }
-                ]
-            }
-        """
-        if stream_id is None:
-            if stream_label is not None:
-                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
-            else:
-                stream_id = self._manager.get_the_one_active_websocket_api()
-            if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
-                                f"found!")
-                return False
-
-        params = {"apiKey": self._manager.stream_list[stream_id]['api_key'],
-                  "symbol": symbol.upper(),
-                  "timestamp": self._manager.get_timestamp()}
-
-        if recv_window is not None:
-            params['recvWindow'] = str(recv_window)
-
-        method = "openOrders.cancelAll"
-        api_secret = self._manager.stream_list[stream_id]['api_secret']
-        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
-        params['signature'] = self._manager.generate_signature(api_secret=api_secret, data=params)
-
-        payload = {"id": request_id,
-                   "method": method,
-                   "params": params}
-
-        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
-            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
-
-        if process_response is not None:
-            with self._manager.process_response_lock:
-                entry = {'callback_function': process_response}
-                self._manager.process_response[request_id] = entry
-
-        if return_response is True:
-            with self._manager.return_response_lock:
-                entry = {'event_return_response': threading.Event()}
-                self._manager.return_response[request_id] = entry
-            self._manager.return_response[request_id]['event_return_response'].wait()
-            with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
-                del self._manager.return_response[request_id]
-            return response_value
-
-        return True
-
-    def cancel_order(self, cancel_restrictions: Optional[Literal['ONLY_NEW', 'ONLY_PARTIALLY_FILLED']] = None,
-                     new_client_order_id: str = None, order_id: int = None, orig_client_order_id: str = None,
+    def cancel_order(self, order_id: int = None, orig_client_order_id: str = None,
                      process_response=None, recv_window: int = None, request_id: str = None,
-                     return_response: bool = False, stream_id=None, symbol: str = None,
-                     stream_label: str = None) -> bool:
+                     return_response: bool = False, stream_id: str = None, symbol: str = None,
+                     stream_label: str = None) -> Union[str, dict, bool]:
         """
         Cancel an active order.
 
-        If you cancel an order that is a part of an OCO pair, the entire OCO is canceled.
+        Either order_id or orig_client_order_id must be sent.
+
+        Weight: 1
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#cancel-order-trade
+            - https://binance-docs.github.io/apidocs/futures/en/#cancel-order-trade-2
 
-        :param cancel_restrictions: Supported values:
-
-                                      - ONLY_NEW: Cancel will succeed if the order status is `NEW`.
-
-                                      - ONLY_PARTIALLY_FILLED: Cancel will succeed if order status is
-                                        `PARTIALLY_FILLED`.
-
-                                    If the cancelRestrictions value is not any of the supported values, the error will
-                                    be: `{"code": -1145,"msg": "Invalid cancelRestrictions"}`
-
-                                    If the order did not pass the conditions for cancelRestrictions, the error will be:
-                                    `{"code": -2011,"msg": "Order was not canceled due to cancel restrictions."}`
-        :type cancel_restrictions: str
-        :param new_client_order_id: New ID for the canceled order. Automatically generated if not sent.
-                                    `newClientOrderId` will replace `clientOrderId` of the canceled order, freeing it
-                                    up for new orders.
-        :type new_client_order_id: str
         :param order_id: Cancel by `order_id`. If both `orderId` and `origClientOrderId` parameters are specified, only
                          `orderId` is used and `origClientOrderId` is ignored.
         :type order_id: str
@@ -309,7 +105,8 @@ class BinanceWebSocketApiApiFutures(object):
         :type stream_label: str
         :param symbol: The symbol of the order you want to cancel
         :type symbol: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -319,52 +116,58 @@ class BinanceWebSocketApiApiFutures(object):
                 "id": "5633b6a2-90a9-4192-83e7-925c90b6a2fd",
                 "method": "order.cancel",
                 "params": {
+                    "apiKey": "HsOehcfih8ZRxnhjp2XjGXhsOBd6msAhKz9joQaWwZ7arcJTlD2hGOGQj1lGdTjR",
+                    "orderId": 283194212,
                     "symbol": "BTCUSDT",
-                    "origClientOrderId": "4d96324ff9d44481926157",
-                    "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
-                    "signature": "33d5b721f278ae17a52f004a82a6f68a70c68e7dd6776ed0be77a455ab855282",
-                    "timestamp": 1660801715830
+                    "timestamp": 1703439070722,
+                    "signature": "b09c49815b4e3f1f6098cd9fbe26a933a9af79803deaaaae03c29f719c08a8a8"
                 }
             }
+
 
         Response:
 
         .. code-block:: json
 
             {
-                "id": "5633b6a2-90a9-4192-83e7-925c90b6a2fd",
-                "status": 200,
-                "result": {
-                    "symbol": "BTCUSDT",
-                    "origClientOrderId": "4d96324ff9d44481926157",
-                    "orderId": 12569099453,
-                    "orderListId": -1,
-                    "clientOrderId": "91fe37ce9e69c90d6358c0",
-                    "price": "23416.10000000",
-                    "origQty": "0.00847000",
-                    "executedQty": "0.00001000",
-                    "cummulativeQuoteQty": "0.23416100",
-                    "status": "CANCELED",
-                    "timeInForce": "GTC",
-                    "type": "LIMIT",
-                    "side": "SELL",
-                    "stopPrice": "0.00000000",
-                    "trailingDelta": 0,
-                    "trailingTime": -1,
-                    "icebergQty": "0.00000000",
-                    "strategyId": 37463720,
-                    "strategyType": 1000000,
-                    "selfTradePreventionMode": "NONE"
-                },
-                "rateLimits": [
-                    {
-                        "rateLimitType": "REQUEST_WEIGHT",
-                        "interval": "MINUTE",
-                        "intervalNum": 1,
-                        "limit": 1200,
-                        "count": 1
-                    }
-                ]
+              "id": "5633b6a2-90a9-4192-83e7-925c90b6a2fd",
+              "status": 200,
+              "result": {
+                "clientOrderId": "myOrder1",
+                "cumQty": "0",
+                "cumQuote": "0",
+                "executedQty": "0",
+                "orderId": 283194212,
+                "origQty": "11",
+                "origType": "TRAILING_STOP_MARKET",
+                "price": "0",
+                "reduceOnly": false,
+                "side": "BUY",
+                "positionSide": "SHORT",
+                "status": "CANCELED",
+                "stopPrice": "9300",                // please ignore when order type is TRAILING_STOP_MARKET
+                "closePosition": false,   // if Close-All
+                "symbol": "BTCUSDT",
+                "timeInForce": "GTC",
+                "type": "TRAILING_STOP_MARKET",
+                "activatePrice": "9020",            // activation price, only return with TRAILING_STOP_MARKET order
+                "priceRate": "0.3",                 // callback rate, only return with TRAILING_STOP_MARKET order
+                "updateTime": 1571110484038,
+                "workingType": "CONTRACT_PRICE",
+                "priceProtect": false,            // if conditional order trigger is protected
+                "priceMatch": "NONE",              //price match mode
+                "selfTradePreventionMode": "NONE", //self trading prevention mode
+                "goodTillDate": 0                  //order pre-set auto cancel time for TIF GTD order
+              },
+              "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 2400,
+                  "count": 1
+                }
+              ]
             }
         """
         if stream_id is None:
@@ -373,7 +176,7 @@ class BinanceWebSocketApiApiFutures(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_order() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiFutures.cancel_order() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -381,10 +184,6 @@ class BinanceWebSocketApiApiFutures(object):
                   "symbol": symbol.upper(),
                   "timestamp": self._manager.get_timestamp()}
 
-        if cancel_restrictions is not None:
-            params['cancelRestrictions'] = cancel_restrictions
-        if new_client_order_id is not None:
-            params['newClientOrderId'] = new_client_order_id
         if order_id is not None:
             params['orderId'] = order_id
         if orig_client_order_id is not None:
@@ -415,46 +214,63 @@ class BinanceWebSocketApiApiFutures(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
         return True
 
-    def create_order(self, iceberg_qty: float = None,
+    def create_order(self,
+                     activation_price: float = None,
+                     callback_rate: float = None,
+                     close_position: bool = None,
+                     good_till_date: int = None,
                      new_client_order_id: str = None,
                      new_order_resp_type: Optional[Literal['ACK', 'RESULT', 'FULL']] = None,
                      order_type: Optional[Literal['LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS', 'STOP_LOSS_LIMIT',
                                                   'TAKE_PROFIT', 'TAKE_PROFIT_LIMIT']] = None,
+                     position_side: Optional[Literal['BOTH', 'LONG', 'SHORT']] = None,
                      price: float = 0.0,
+                     price_match: Optional[Literal['OPPONENT', 'OPPONENT_5', 'OPPONENT_10', 'OPPONENT_20', 'QUEUE',
+                                                   'QUEUE_5', 'QUEUE_10, QUEUE_20']] = None,
+                     price_protect: bool = None,
                      process_response=None,
-                     quantity: float = 0.0,
-                     quote_order_qty: float = None,
+                     quantity: float = None,
                      recv_window: int = None,
+                     reduce_only: bool = None,
                      request_id: str = None,
                      return_response: bool = False,
                      self_trade_prevention_mode: Optional[Literal['EXPIRE_TAKER', 'EXPIRE_MAKER',
                                                                   'EXPIRE_BOTH', 'NONE']] = None,
                      side: Optional[Literal['BUY', 'SELL']] = None,
                      stop_price: float = None,
-                     strategy_id: int = None,
-                     strategy_type: int = None,
-                     stream_id=None,
+                     stream_id: str = None,
                      stream_label: str = None,
                      symbol: str = None,
-                     time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
-                     test: bool = False,
-                     trailing_delta: int = None) -> Union[str, bool]:
+                     time_in_force: Optional[Literal['GTD', 'GTC', 'IOC', 'FOK']] = None,
+                     working_type: Optional[Literal['MARK_PRICE', 'CONTRACT_PRICE']] = None) \
+            -> Union[str, dict, bool, tuple]:
         """
         Create a new order.
 
+        Weight: 0
+
         Official documentation:
 
-            - https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-api.md#place-new-order-trade
+            - https://binance-docs.github.io/apidocs/futures/en/#new-order-trade-2
 
-        :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
-                            `icebergQty`. An order with an `icebergQty` must have `timeInForce` set to `GTC`.
-        :type iceberg_qty: float
+        :param activation_price: Used with TRAILING_STOP_MARKET orders, default as the latest price(supporting
+                                 different workingType)
+        :type activation_price: float
+        :param callback_rate: Used with TRAILING_STOP_MARKET orders, min 0.1, max 5 where 1 for 1%
+        :type callback_rate: float
+        :param close_position: True, False；Close-All，used with STOP_MARKET or TAKE_PROFIT_MARKET.
+        :type close_position: bool
+        :param good_till_date: Order cancel time for timeInForce GTD, mandatory when timeInforce set to GTD; order the
+                               timestamp only retains second-level precision, ms part will be ignored; The goodTillDate
+                               timestamp must be greater than the current time plus 600 seconds and smaller than
+                               253402300799000
+        :type good_till_date: int
         :param new_client_order_id: `newClientOrderId` specifies `clientOrderId` value for the order. A new order with
                                     the same 'clientOrderId' is accepted only when the previous one is filled or
                                     expired.
@@ -468,33 +284,41 @@ class BinanceWebSocketApiApiFutures(object):
 
                            Mandatory parameters per `order_type`:
 
-                             - LIMIT: 'timeInForce', 'price', 'quantity'
+                             - LIMIT: time_in_force, quantity, price
 
-                             - LIMIT_MAKER: 'price', 'quantity'
+                             - MARKET: quantity
 
-                             - MARKET: 'quantity' or 'quoteOrderQty'
+                             - STOP/TAKE_PROFIT: quantity, price, stop_price
 
-                             - STOP_LOSS: 'quantity', 'stopPrice' or 'trailingDelta'
+                             - STOP_MARKET/TAKE_PROFIT_MARKET: stop_price
 
-                             - STOP_LOSS_LIMIT: 'timeInForce', 'price', 'quantity', 'stopPrice' or 'trailingDelta'
+                             - TRAILING_STOP_MARKET: callback_rate
 
-                             - TAKE_PROFIT: 'quantity', 'stopPrice' or 'trailingDelta'
-
-                             - TAKE_PROFIT_LIMIT: 'timeInForce', 'price', 'quantity', 'stopPrice' or 'trailingDelta'
         :type order_type: str
         :param price: Price e.g. 10.223
         :type price: float
+        :param position_side: Default BOTH for One-way Mode; LONG or SHORT for Hedge Mode. It must be sent in Hedge
+                              Mode.
+        :type position_side: str
+        :param price_match: only available for LIMIT/STOP/TAKE_PROFIT order; can be set to OPPONENT/ OPPONENT_5/
+                            OPPONENT_10/ OPPONENT_20: /QUEUE/ QUEUE_5/ QUEUE_10/ QUEUE_20; Can't be passed together
+                            with price
+        :type price_match: str
+        :param price_protect: True, False；default False. Used with STOP/STOP_MARKET or TAKE_PROFIT/TAKE_PROFIT_MARKET
+                              orders.
+        :type price_protect: bool
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
         :type process_response: function
         :param quantity: Amount e.g. 20.5
         :type quantity: float
-        :param quote_order_qty: Amount e.g. 20.5
-        :type quote_order_qty: float
         :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
                             after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
                             The value cannot be greater than 60000.
         :type recv_window: int
+        :param reduce_only: True, False；default False. Cannot be sent in Hedge Mode; cannot be sent with
+                            close_position=True
+        :type reduce_only: bool
         :param request_id: Provide a custom id for the request
         :type request_id: str
         :param return_response: If `True` the response of the API request is waited for and returned directly.
@@ -507,11 +331,6 @@ class BinanceWebSocketApiApiFutures(object):
         :type self_trade_prevention_mode: str
         :param side: `BUY` or `SELL`
         :type side: str
-        :param strategy_id: Arbitrary numeric value identifying the order within an order strategy.
-        :type strategy_id: int
-        :param strategy_type: Arbitrary numeric value identifying the order strategy. Values smaller than 1000000 are
-                              reserved and cannot be used.
-        :type strategy_type: int
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
@@ -524,13 +343,12 @@ class BinanceWebSocketApiApiFutures(object):
         :type stop_price: float
         :param symbol: The symbol you want to trade
         :type symbol: str
-        :param test: Test order placement. Validates new order parameters and verifies your signature but does not
-                     send the order into the matching engine.
-        :type test: bool
         :param time_in_force: Available timeInForce options, setting how long the order should be active before
                               expiration:
 
-                                - GTC: Good 'til Canceled – the order will remain on the book until you cancel it, or
+                                - GTD: Good til Date
+
+                                - GTC: Good til Canceled – the order will remain on the book until you cancel it, or
                                   the order is completely filled.
 
                                 - IOC: Immediate or Cancel – the order will be filled for as much as possible, the
@@ -543,29 +361,29 @@ class BinanceWebSocketApiApiFutures(object):
                               execute a quantity that has notional value as close as possible to requested
                               `quoteOrderQty`.
         :type time_in_force: str
-        :param trailing_delta: For more details on SPOT implementation on trailing stops, please refer to
-                               `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
-        :type trailing_delta: int
+        :param working_type: stopPrice triggered by: "MARK_PRICE", "CONTRACT_PRICE". Default "CONTRACT_PRICE"
+        :type working_type: str
 
-        :return: `False` (bool) or `orig_client_order_id` (str)
+        :return: str (new_client_order_id), bool or tuple (str (new_client_order_id), str/dict (response_value))
 
         Message sent:
 
         .. code-block:: json
 
             {
-                "id": "56374a46-3061-486b-a311-99ee972eb648",
+                "id": "3f7df6e3-2df4-44b9-9919-d2f38f90a99a",
                 "method": "order.place",
                 "params": {
+                    "apiKey": "HMOchcfii9ZRZnhjp2XjGXhsOBd6msAhKz9joQaWwZ7arcJTlD2hGPHQj1lGdTjR",
+                    "positionSide": "BOTH",
+                    "price": "43187.00",
+                    "quantity": 0.1,
+                    "side": "BUY",
                     "symbol": "BTCUSDT",
-                    "side": "SELL",
-                    "type": "LIMIT",
                     "timeInForce": "GTC",
-                    "price": "23416.10000000",
-                    "quantity": "0.00847000",
-                    "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
-                    "signature": "15af09e41c36f3cc61378c2fbe2c33719a03dd5eba8d0f9206fbda44de717c88",
-                    "timestamp": 1660801715431
+                    "timestamp": 1702555533821,
+                    "type": "LIMIT",
+                    "signature": "0f04368b2d22aafd0ggc8809ea34297eff602272917b5f01267db4efbc1c9422"
                 }
             }
 
@@ -574,35 +392,54 @@ class BinanceWebSocketApiApiFutures(object):
         .. code-block:: json
 
             {
-                "id": "56374a46-3061-486b-a311-99ee972eb648",
+                "id": "3f7df6e3-2df4-44b9-9919-d2f38f90a99a",
                 "status": 200,
                 "result": {
+                    "orderId": 325078477,
                     "symbol": "BTCUSDT",
-                    "orderId": 12569099453,
-                    "orderListId": -1,
-                    "clientOrderId": "4d96324ff9d44481926157ec08158a40",
-                    "transactTime": 1660801715639
+                    "status": "NEW",
+                    "clientOrderId": "iCXL1BywlBaf2sesNUrVl3",
+                    "price": "43187.00",
+                    "avgPrice": "0.00",
+                    "origQty": "0.100",
+                    "executedQty": "0.000",
+                    "cumQty": "0.000",
+                    "cumQuote": "0.00000",
+                    "timeInForce": "GTC",
+                    "type": "LIMIT",
+                    "reduceOnly": false,
+                    "closePosition": false,
+                    "side": "BUY",
+                    "positionSide": "BOTH",
+                    "stopPrice": "0.00",
+                    "workingType": "CONTRACT_PRICE",
+                    "priceProtect": false,
+                    "origType": "LIMIT",
+                    "priceMatch": "NONE",
+                    "selfTradePreventionMode": "NONE",
+                    "goodTillDate": 0,
+                    "updateTime": 1702555534435
                 },
                 "rateLimits": [
                     {
                         "rateLimitType": "ORDERS",
                         "interval": "SECOND",
                         "intervalNum": 10,
-                        "limit": 50,
+                        "limit": 300,
                         "count": 1
                     },
                     {
                         "rateLimitType": "ORDERS",
-                        "interval": "DAY",
+                        "interval": "MINUTE",
                         "intervalNum": 1,
-                        "limit": 160000,
+                        "limit": 1200,
                         "count": 1
                     },
                     {
                         "rateLimitType": "REQUEST_WEIGHT",
                         "interval": "MINUTE",
                         "intervalNum": 1,
-                        "limit": 1200,
+                        "limit": 2400,
                         "count": 1
                     }
                 ]
@@ -614,21 +451,26 @@ class BinanceWebSocketApiApiFutures(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.create_order() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiFutures.create_order() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
         new_client_order_id = new_client_order_id if new_client_order_id is not None else str(self._manager.get_request_id())
         params = {"apiKey": self._manager.stream_list[stream_id]['api_key'],
                   "newClientOrderId": new_client_order_id,
-                  "quantity": quantity,
                   "side": side.upper(),
                   "symbol": symbol.upper(),
                   "timestamp": self._manager.get_timestamp(),
                   "type": order_type}
 
-        if iceberg_qty is not None:
-            params['icebergQty'] = str(iceberg_qty)
+        if activation_price is not None:
+            params['activationPrice'] = activation_price
+        if callback_rate is not None:
+            params['callbackRate'] = callback_rate
+        if close_position is not None:
+            params['closePosition'] = "true" if close_position is True else "false"
+        if good_till_date is not None:
+            params['goodTillDate'] = good_till_date
         if new_order_resp_type is not None:
             params['newOrderRespType'] = new_order_resp_type
         if (order_type.upper() == "LIMIT" or
@@ -640,29 +482,26 @@ class BinanceWebSocketApiApiFutures(object):
                 order_type.upper() == "STOP_LOSS_LIMIT" or
                 order_type.upper() == "TAKE_PROFIT_LIMIT"):
             params['timeInForce'] = time_in_force
-        if quote_order_qty is not None:
-            params['quoteOrderQty'] = str(quote_order_qty)
-            if quantity != 0.0:
-                logger.warning(f"BinanceWebSocketApiApi.create_order() - error_msg: By using the parameter "
-                               f"`quoteOrderQty` the use of `quantity` is suppressed!")
-            del params['quantity']
+        if position_side is not None:
+            params['positionSide'] = position_side
+        if price_match is not None:
+            params['priceMatch'] = price_match
+        if price_protect is not None:
+            params['priceProtect'] = "TRUE" if price_protect is True else "FALSE"
+        if quantity is not None:
+            params['quantity'] = str(quantity)
         if recv_window is not None:
             params['recvWindow'] = str(recv_window)
+        if reduce_only is not None:
+            params['reduceOnly'] = "true" if reduce_only is True else "false"
         if self_trade_prevention_mode is not None:
             params['selfTradePreventionMode'] = self_trade_prevention_mode
         if stop_price is not None:
             params['stopPrice'] = str(stop_price)
-            if trailing_delta is not None:
-                logger.warning(f"BinanceWebSocketApiApi.create_order() - error_msg: By using the parameter `stopPrice` "
-                               f"the use of `trailingDelta` is suppressed!")
-        elif trailing_delta is not None:
-            params['trailingDelta'] = str(trailing_delta)
-        if strategy_id is not None:
-            params['strategyId'] = str(strategy_id)
-        if strategy_type is not None:
-            params['strategyType'] = str(strategy_type)
+        if working_type is not None:
+            params['workingType'] = working_type
 
-        method = "order.test" if test is True else "order.place"
+        method = "order.place"
         api_secret = self._manager.stream_list[stream_id]['api_secret']
         request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
         params['signature'] = self._manager.generate_signature(api_secret=api_secret, data=params)
@@ -685,794 +524,21 @@ class BinanceWebSocketApiApiFutures(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
-            return response_value
+            return new_client_order_id, response_value
 
         return new_client_order_id
 
-    def create_test_order(self, iceberg_qty: float = None,
-                          new_client_order_id: str = None,
-                          new_order_resp_type: Optional[Literal['ACK', 'RESULT', 'FULL']] = None,
-                          order_type: Optional[Literal['LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS', 'STOP_LOSS_LIMIT',
-                                                       'TAKE_PROFIT', 'TAKE_PROFIT_LIMIT']] = None,
-                          price: float = 0.0,
-                          process_response=None,
-                          quantity: float = 0.0,
-                          quote_order_qty: float = None,
-                          recv_window: int = None,
-                          request_id: str = None,
-                          return_response: bool = False,
-                          self_trade_prevention_mode: Optional[Literal['EXPIRE_TAKER', 'EXPIRE_MAKER',
-                                                                       'EXPIRE_BOTH', 'NONE']] = None,
-                          side: Optional[Literal['BUY', 'SELL']] = None,
-                          stop_price: float = None,
-                          strategy_id: int = None,
-                          strategy_type: int = None,
-                          stream_id=None,
-                          stream_label: str = None,
-                          symbol: str = None,
-                          time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
-                          trailing_delta: int = None) -> Union[str, bool]:
-        """
-        Test order placement.
-
-        Validates new order parameters and verifies your signature but does not send the order into the matching engine.
-
-        Official documentation:
-
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#test-new-order-trade
-
-        :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
-                            `icebergQty`. An order with an `icebergQty` must have `timeInForce` set to `GTC`.
-        :type iceberg_qty: float
-        :param new_client_order_id: `newClientOrderId` specifies `clientOrderId` value for the order. A new order with
-                                    the same 'clientOrderId' is accepted only when the previous one is filled or
-                                    expired.
-        :type new_client_order_id: str
-        :param new_order_resp_type: Select response format: `ACK`, `RESULT`, `FULL`.
-                                    'MARKET' and 'LIMIT' orders use `FULL` by default, other order types default to
-                                    'ACK'
-        :type new_order_resp_type: str
-        :param order_type: 'LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS', 'STOP_LOSS_LIMIT', 'TAKE_PROFIT',
-                           'TAKE_PROFIT_LIMIT'
-
-                           Mandatory parameters per `order_type`:
-
-                             - LIMIT: 'timeInForce', 'price', 'quantity'
-
-                             - LIMIT_MAKER: 'price', 'quantity'
-
-                             - MARKET: 'quantity' or 'quoteOrderQty'
-
-                             - STOP_LOSS: 'quantity', 'stopPrice' or 'trailingDelta'
-
-                             - STOP_LOSS_LIMIT: 'timeInForce', 'price', 'quantity', 'stopPrice' or 'trailingDelta'
-
-                             - TAKE_PROFIT: 'quantity', 'stopPrice' or 'trailingDelta'
-
-                             - TAKE_PROFIT_LIMIT: 'timeInForce', 'price', 'quantity', 'stopPrice' or 'trailingDelta'
-        :type order_type: str
-        :param price: Price e.g. 10.223
-        :type price: float
-        :param process_response: Provide a function/method to process the received webstream data (callback)
-                                 of this specific request.
-        :type process_response: function
-        :param quantity: Amount e.g. 20.5
-        :type quantity: float
-        :param quote_order_qty: Amount e.g. 20.5
-        :type quote_order_qty: float
-        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
-                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
-                            The value cannot be greater than 60000.
-        :type recv_window: int
-        :param request_id: Provide a custom id for the request
-        :type request_id: str
-        :param return_response: If `True` the response of the API request is waited for and returned directly.
-                                However, this increases the execution time of the function by the duration until the
-                                response is received from the Binance API.
-        :type return_response: bool
-        :param self_trade_prevention_mode: The allowed enums for `selfTradePreventionMode` is dependent on what is
-                                           configured on the symbol. The possible supported values are `EXPIRE_TAKER`,
-                                           `EXPIRE_MAKER`, `EXPIRE_BOTH`, `NONE`.
-        :type self_trade_prevention_mode: str
-        :param side: `BUY` or `SELL`
-        :type side: str
-        :param strategy_id: Arbitrary numeric value identifying the order within an order strategy.
-        :type strategy_id: int
-        :param strategy_type: Arbitrary numeric value identifying the order strategy. Values smaller than 1000000 are
-                              reserved and cannot be used.
-        :type strategy_type: int
-        :param stream_id: ID of a stream to send the request
-        :type stream_id: str
-        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
-        :type stream_label: str
-        :param stop_price: Trigger order price rules for STOP_LOSS/TAKE_PROFIT orders:
-
-                             - `stopPrice` must be above market price: STOP_LOSS BUY, TAKE_PROFIT SELL
-
-                             - stopPrice must be below market price: STOP_LOSS SELL, TAKE_PROFIT BUY
-        :type stop_price: float
-        :param symbol: The symbol you want to trade
-        :type symbol: str
-        :param time_in_force: Available timeInForce options, setting how long the order should be active before
-                              expiration:
-
-                                - GTC: Good 'til Canceled – the order will remain on the book until you cancel it, or
-                                  the order is completely filled.
-
-                                - IOC: Immediate or Cancel – the order will be filled for as much as possible, the
-                                  unfilled quantity immediately expires.
-
-                                - FOK: Fill or Kill – the order will expire unless it cannot be immediately filled for
-                                  the entire quantity.
-
-                              `MARKET` orders using `quoteOrderQty` follow `LOT_SIZE` filter rules. The order will
-                              execute a quantity that has notional value as close as possible to requested
-                              `quoteOrderQty`.
-        :type time_in_force: str
-        :param trailing_delta: For more details on SPOT implementation on trailing stops, please refer to
-                               `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
-        :type trailing_delta: int
-
-        :return: `False` (bool) or `orig_client_order_id` (str)
-
-        Message sent:
-
-        .. code-block:: json
-
-            {
-                "id": "56374a46-3061-486b-a311-99ee972eb648",
-                "method": "order.test",
-                "params": {
-                    "symbol": "BTCUSDT",
-                    "side": "SELL",
-                    "type": "LIMIT",
-                    "timeInForce": "GTC",
-                    "price": "23416.10000000",
-                    "quantity": "0.00847000",
-                    "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
-                    "signature": "15af09e41c36f3cc61378c2fbe2c33719a03dd5eba8d0f9206fbda44de717c88",
-                    "timestamp": 1660801715431
-                }
-            }
-
-        Response
-
-        .. code-block:: json
-
-            {
-                "id": "56374a46-3061-486b-a311-99ee972eb648",
-                "status": 200,
-                "result": {
-                    "symbol": "BTCUSDT",
-                    "orderId": 12569099453,
-                    "orderListId": -1,
-                    "clientOrderId": "4d96324ff9d44481926157ec08158a40",
-                    "transactTime": 1660801715639
-                },
-                "rateLimits": [
-                    {
-                        "rateLimitType": "ORDERS",
-                        "interval": "SECOND",
-                        "intervalNum": 10,
-                        "limit": 50,
-                        "count": 1
-                    },
-                    {
-                        "rateLimitType": "ORDERS",
-                        "interval": "DAY",
-                        "intervalNum": 1,
-                        "limit": 160000,
-                        "count": 1
-                    },
-                    {
-                        "rateLimitType": "REQUEST_WEIGHT",
-                        "interval": "MINUTE",
-                        "intervalNum": 1,
-                        "limit": 1200,
-                        "count": 1
-                    }
-                ]
-            }
-
-        """
-        return self.create_order(iceberg_qty=iceberg_qty, new_client_order_id=new_client_order_id,
-                                 new_order_resp_type=new_order_resp_type, price=price, order_type=order_type,
-                                 process_response=process_response, quantity=quantity, quote_order_qty=quote_order_qty,
-                                 recv_window=recv_window, request_id=request_id, return_response=return_response,
-                                 self_trade_prevention_mode=self_trade_prevention_mode, side=side,
-                                 stop_price=stop_price, strategy_id=strategy_id, strategy_type=strategy_type,
-                                 stream_id=stream_id, stream_label=stream_label, symbol=symbol,
-                                 time_in_force=time_in_force, test=True, trailing_delta=trailing_delta)
-
-    def get_account_status(self, process_response=None, recv_window: int = None, request_id: str = None,
-                           return_response: bool = False, stream_id=None, stream_label: str = None) -> bool:
-        """
-        Get the user account status.
-
-        Official documentation:
-
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#account-information-user_data
-
-        :param process_response: Provide a function/method to process the received webstream data (callback)
-                                 of this specific request.
-        :type process_response: function
-        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
-                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
-                            The value cannot be greater than 60000.
-        :type recv_window: int
-        :param request_id: Provide a custom id for the request
-        :type request_id: str
-        :param return_response: If `True` the response of the API request is waited for and returned directly.
-                                However, this increases the execution time of the function by the duration until the
-                                response is received from the Binance API.
-        :type return_response: bool
-        :param stream_id: ID of a stream to send the request
-        :type stream_id: str
-        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
-        :type stream_label: str
-        :return: bool
-
-        Message sent:
-
-        .. code-block:: json
-
-            {
-                "id": "605a6d20-6588-4cb9-afa0-b0ab087507ba",
-                "method": "account.status",
-                "params": {
-                    "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
-                    "signature": "83303b4a136ac1371795f465808367242685a9e3a42b22edb4d977d0696eb45c",
-                    "timestamp": 1660801839480
-                }
-            }
-
-        Response:
-
-        .. code-block:: json
-
-            {
-                "id": "605a6d20-6588-4cb9-afa0-b0ab087507ba",
-                "status": 200,
-                "result": {
-                    "makerCommission": 15,
-                    "takerCommission": 15,
-                    "buyerCommission": 0,
-                    "sellerCommission": 0,
-                    "canTrade": true,
-                    "canWithdraw": true,
-                    "canDeposit": true,
-                    "commissionRates": {
-                        "maker": "0.00150000",
-                        "taker": "0.00150000",
-                        "buyer": "0.00000000",
-                        "seller":"0.00000000"
-                    },
-                    "brokered": false,
-                    "requireSelfTradePrevention": false,
-                    "updateTime": 1660801833000,
-                    "accountType": "SPOT",
-                    "balances": [
-                        {
-                            "asset": "BNB",
-                            "free": "0.00000000",
-                            "locked": "0.00000000"
-                        },
-                        {
-                            "asset": "BTC",
-                            "free": "1.3447112",
-                            "locked": "0.08600000"
-                        },
-                        {
-                            "asset": "USDT",
-                            "free": "1021.21000000",
-                            "locked": "0.00000000"
-                        }
-                    ],
-                    "permissions": [
-                        "SPOT"
-                    ]
-                },
-                "rateLimits": [
-                    {
-                        "rateLimitType": "REQUEST_WEIGHT",
-                        "interval": "MINUTE",
-                        "intervalNum": 1,
-                        "limit": 1200,
-                        "count": 10
-                    }
-                ]
-            }
-        """
-        if stream_id is None:
-            if stream_label is not None:
-                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
-            else:
-                stream_id = self._manager.get_the_one_active_websocket_api()
-            if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_account_status() - error_msg: No `stream_id` provided or "
-                                f"found!")
-                return False
-
-        params = {"apiKey": self._manager.stream_list[stream_id]['api_key'],
-                  "timestamp": self._manager.get_timestamp()}
-
-        if recv_window is not None:
-            params['recvWindow'] = str(recv_window)
-
-        method = "account.status"
-        api_secret = self._manager.stream_list[stream_id]['api_secret']
-        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
-        params['signature'] = self._manager.generate_signature(api_secret=api_secret, data=params)
-
-        payload = {"id": request_id,
-                   "method": method,
-                   "params": params}
-
-        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
-            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
-
-        if process_response is not None:
-            with self._manager.process_response_lock:
-                entry = {'callback_function': process_response}
-                self._manager.process_response[request_id] = entry
-
-        if return_response is True:
-            with self._manager.return_response_lock:
-                entry = {'event_return_response': threading.Event()}
-                self._manager.return_response[request_id] = entry
-            self._manager.return_response[request_id]['event_return_response'].wait()
-            with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
-                del self._manager.return_response[request_id]
-            return response_value
-
-        return True
-
-    def get_exchange_info(self, permissions: list = None, process_response=None, recv_window: int = None,
-                          request_id: str = None, return_response: bool = False, stream_id=None,
-                          stream_label: str = None, symbol: str = None, symbols: list = None) -> bool:
-        """
-        Get the Exchange Information.
-
-        Only one of `symbol`, `symbols`, `permissions` parameters can be specified.
-
-        Without parameters, `exchangeInfo` displays all symbols with ["SPOT, "MARGIN", "LEVERAGED"] permissions. In
-        order to list all active symbols on the exchange, you need to explicitly request all permissions
-
-        Official documentation:
-
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#exchange-information
-
-        :param permissions: Filter symbols by permissions. `permissions` accepts either a list of permissions, or a
-                            single permission name: "SPOT".
-                            `Available Permissions <https://developers.binance.com/docs/binance-trading-api/websocket_api#permissions>`__
-        :type permissions: list
-        :param process_response: Provide a function/method to process the received webstream data (callback)
-                                 of this specific request.
-        :type process_response: function
-        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
-                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
-                            The value cannot be greater than 60000.
-        :type recv_window: int
-        :param request_id: Provide a custom id for the request
-        :type request_id: str
-        :param return_response: If `True` the response of the API request is waited for and returned directly.
-                                However, this increases the execution time of the function by the duration until the
-                                response is received from the Binance API.
-        :type return_response: bool
-        :param stream_id: ID of a stream to send the request
-        :type stream_id: str
-        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
-        :type stream_label: str
-        :param symbol: Describe a single symbol
-        :type symbol: str
-        :param symbols: Describe multiple symbols.
-        :type symbols: list
-        :return: bool
-
-        Message sent:
-
-        .. code-block:: json
-
-            {
-                "id": "5494febb-d167-46a2-996d-70533eb4d976",
-                "method": "exchangeInfo",
-                "params": {
-                    "symbols": [
-                        "BNBBTC"
-                    ]
-                }
-            }
-
-        Response:
-
-        .. code-block:: json
-
-            {
-                "id": "5494febb-d167-46a2-996d-70533eb4d976",
-                "status": 200,
-                "result": {
-                "timezone": "UTC",
-                "serverTime": 1655969291181,
-                "rateLimits": [{
-                    "rateLimitType": "REQUEST_WEIGHT",
-                    "interval": "MINUTE",
-                    "intervalNum": 1,
-                    "limit": 1200
-                },
-                {
-                    "rateLimitType": "ORDERS",
-                    "interval": "SECOND",
-                    "intervalNum": 10,
-                    "limit": 50
-                },
-                {
-                    "rateLimitType": "ORDERS",
-                    "interval": "DAY",
-                    "intervalNum": 1,
-                    "limit": 160000
-                },
-                {
-                    "rateLimitType": "RAW_REQUESTS",
-                    "interval": "MINUTE",
-                    "intervalNum": 5,
-                    "limit": 6100
-                }],
-                "exchangeFilters": [],
-                "symbols": [{
-                    "symbol": "BNBBTC",
-                    "status": "TRADING",
-                    "baseAsset": "BNB",
-                    "baseAssetPrecision": 8,
-                    "quoteAsset": "BTC",
-                    "quotePrecision": 8,
-                    "quoteAssetPrecision": 8,
-                    "baseCommissionPrecision": 8,
-                    "quoteCommissionPrecision": 8,
-                    "orderTypes": [
-                        "LIMIT",
-                        "LIMIT_MAKER",
-                        "MARKET",
-                        "STOP_LOSS_LIMIT",
-                        "TAKE_PROFIT_LIMIT"
-                    ],
-                    "icebergAllowed": true,
-                    "ocoAllowed": true,
-                    "quoteOrderQtyMarketAllowed": true,
-                    "allowTrailingStop": true,
-                    "cancelReplaceAllowed": true,
-                    "isSpotTradingAllowed": true,
-                    "isMarginTradingAllowed": true,
-                    "filters": [{
-                        "filterType": "PRICE_FILTER",
-                        "minPrice": "0.00000100",
-                        "maxPrice": "100000.00000000",
-                        "tickSize": "0.00000100"
-                    },
-                    {
-                        "filterType": "LOT_SIZE",
-                        "minQty": "0.00100000",
-                        "maxQty": "100000.00000000",
-                        "stepSize": "0.00100000"
-                    }],
-                    "permissions": [
-                        "SPOT",
-                        "MARGIN",
-                        "TRD_GRP_004"
-                    ],
-                    "defaultSelfTradePreventionMode": "NONE",
-                    "allowedSelfTradePreventionModes": [
-                        "NONE"
-                    ]
-                }]},
-                "rateLimits": [{
-                    "rateLimitType": "REQUEST_WEIGHT",
-                    "interval": "MINUTE",
-                    "intervalNum": 1,
-                    "limit": 1200,
-                    "count": 10
-                }]
-            }
-        """
-        if stream_id is None:
-            if stream_label is not None:
-                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
-            else:
-                stream_id = self._manager.get_the_one_active_websocket_api()
-            if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_exchange_info() - error_msg: No `stream_id` provided or "
-                                f"found!")
-                return False
-        params = {}
-        if symbol is not None:
-            params = {"symbol": symbol}
-        if symbols is not None:
-            symbols = [symbol.upper() for symbol in symbols]
-            params = {"symbols": symbols}
-        if permissions is not None:
-            params = {"permissions": permissions}
-        if recv_window is not None:
-            params['recvWindow'] = str(recv_window)
-
-        method = "exchangeInfo"
-        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
-
-        payload = {"id": request_id,
-                   "method": method,
-                   "params": params}
-
-        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
-            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
-
-        if process_response is not None:
-            with self._manager.process_response_lock:
-                entry = {'callback_function': process_response}
-                self._manager.process_response[request_id] = entry
-
-        if return_response is True:
-            with self._manager.return_response_lock:
-                entry = {'event_return_response': threading.Event()}
-                self._manager.return_response[request_id] = entry
-            self._manager.return_response[request_id]['event_return_response'].wait()
-            with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
-                del self._manager.return_response[request_id]
-            return response_value
-
-        return True
-
-    def get_listen_key(self, process_response=None, request_id: str = None, return_response: bool = False,
-                       stream_id=None, stream_label: str = None) -> bool:
-        """
-        Get a listenKey to start a UserDataStream.
-
-        Official documentation:
-
-            - https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-api.md#user-data-stream-requests
-
-        :param process_response: Provide a function/method to process the received webstream data (callback)
-                                 of this specific request.
-        :type process_response: function
-        :param request_id: Provide a custom id for the request
-        :type request_id: str
-        :param return_response: If `True` the response of the API request is waited for and returned directly.
-                                However, this increases the execution time of the function by the duration until the
-                                response is received from the Binance API.
-        :type return_response: bool
-        :param stream_id: ID of a stream to send the request
-        :type stream_id: str
-        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
-        :type stream_label: str
-        :return: bool
-
-        Message sent:
-
-        .. code-block:: json
-
-            {
-              "id": "d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0",
-              "method": "userDataStream.start",
-              "params": {
-                "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A"
-              }
-            }
-
-        Response:
-
-        .. code-block:: json
-
-            {
-              "id": "d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0",
-              "status": 200,
-              "result": {
-                "listenKey": "xs0mRXdAKlIPDRFrlPcw0qI41Eh3ixNntmymGyhrhgqo7L6FuLaWArTD7RLP"
-              },
-              "rateLimits": [
-                {
-                  "rateLimitType": "REQUEST_WEIGHT",
-                  "interval": "MINUTE",
-                  "intervalNum": 1,
-                  "limit": 6000,
-                  "count": 2
-                }
-              ]
-            }
-        """
-        if stream_id is None:
-            if stream_label is not None:
-                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
-            else:
-                stream_id = self._manager.get_the_one_active_websocket_api()
-            if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_listen_key() - error_msg: No `stream_id` provided or "
-                                f"found!")
-                return False
-
-        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
-        method = "userDataStream.start"
-        params = {"apiKey": self._manager.stream_list[stream_id]['api_key']}
-
-        payload = {"id": request_id,
-                   "method": method,
-                   "params": params}
-
-        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
-            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
-
-        if process_response is not None:
-            with self._manager.process_response_lock:
-                entry = {'callback_function': process_response}
-                self._manager.process_response[request_id] = entry
-
-        if return_response is True:
-            with self._manager.return_response_lock:
-                entry = {'event_return_response': threading.Event()}
-                self._manager.return_response[request_id] = entry
-            self._manager.return_response[request_id]['event_return_response'].wait()
-            with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
-                del self._manager.return_response[request_id]
-            return response_value
-
-        return True
-
-    def get_open_orders(self, process_response=None, recv_window: int = None, request_id: str = None,
-                        return_response: bool = False, stream_id=None, stream_label: str = None,
-                        symbol: str = None) -> bool:
-        """
-        Query execution status of all open orders.
-
-        Open orders are always returned as a flat list. If all symbols are requested, use the symbol field to tell
-        which symbol the orders belong to.
-
-        Official documentation:
-
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#current-open-orders-user_data
-
-        If you need to continuously monitor order status updates, please consider using
-        `WebSocket Streams <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>`__
-
-          - `userData`
-
-          - `executionReport` user data stream event
-
-        :param process_response: Provide a function/method to process the received webstream data (callback)
-                                 of this specific request.
-        :type process_response: function
-        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
-                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
-                            The value cannot be greater than 60000.
-        :type recv_window: int
-        :param request_id: Provide a custom id for the request
-        :type request_id: str
-        :param return_response: If `True` the response of the API request is waited for and returned directly.
-                                However, this increases the execution time of the function by the duration until the
-                                response is received from the Binance API.
-        :type return_response: bool
-        :param stream_id: ID of a stream to send the request
-        :type stream_id: str
-        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
-        :type stream_label: str
-        :param symbol: If omitted, open orders for all symbols are returned.
-        :type symbol: str
-        :return: bool
-
-        Message Sent:
-
-        .. code-block:: json
-
-            {
-                "id": "55f07876-4f6f-4c47-87dc-43e5fff3f2e7",
-                "method": "openOrders.status",
-                "params": {
-                    "symbol": "BTCUSDT",
-                    "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
-                    "signature": "d632b3fdb8a81dd44f82c7c901833309dd714fe508772a89b0a35b0ee0c48b89",
-                    "timestamp": 1660813156812
-                }
-            }
-
-        Response:
-
-        .. code-block:: json
-
-            {
-                "id": "55f07876-4f6f-4c47-87dc-43e5fff3f2e7",
-                "status": 200,
-                "result": [
-                    {
-                        "symbol": "BTCUSDT",
-                        "orderId": 12569099453,
-                        "orderListId": -1,
-                        "clientOrderId": "4d96324ff9d44481926157",
-                        "price": "23416.10000000",
-                        "origQty": "0.00847000",
-                        "executedQty": "0.00720000",
-                        "cummulativeQuoteQty": "172.43931000",
-                        "status": "PARTIALLY_FILLED",
-                        "timeInForce": "GTC",
-                        "type": "LIMIT",
-                        "side": "SELL",
-                        "stopPrice": "0.00000000",
-                        "icebergQty": "0.00000000",
-                        "time": 1660801715639,
-                        "updateTime": 1660801717945,
-                        "isWorking": true,
-                        "workingTime": 1660801715639,
-                        "origQuoteOrderQty": "0.00000000",
-                        "selfTradePreventionMode": "NONE"
-                    }
-                ],
-                "rateLimits": [
-                    {
-                        "rateLimitType": "REQUEST_WEIGHT",
-                        "interval": "MINUTE",
-                        "intervalNum": 1,
-                        "limit": 1200,
-                        "count": 3
-                    }
-                ]
-            }
-        """
-        if stream_id is None:
-            if stream_label is not None:
-                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
-            else:
-                stream_id = self._manager.get_the_one_active_websocket_api()
-            if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_open_orders() - error_msg: No `stream_id` provided or "
-                                f"found!")
-                return False
-
-        params = {"apiKey": self._manager.stream_list[stream_id]['api_key'],
-                  "timestamp": self._manager.get_timestamp()}
-
-        if symbol is not None:
-            params['symbol'] = str(symbol.upper())
-
-        if recv_window is not None:
-            params['recvWindow'] = str(recv_window)
-
-        method = "openOrders.status"
-        api_secret = self._manager.stream_list[stream_id]['api_secret']
-        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
-        params['signature'] = self._manager.generate_signature(api_secret=api_secret, data=params)
-
-        payload = {"id": request_id,
-                   "method": method,
-                   "params": params}
-
-        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
-            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
-
-        if process_response is not None:
-            with self._manager.process_response_lock:
-                entry = {'callback_function': process_response}
-                self._manager.process_response[request_id] = entry
-
-        if return_response is True:
-            with self._manager.return_response_lock:
-                entry = {'event_return_response': threading.Event()}
-                self._manager.return_response[request_id] = entry
-            self._manager.return_response[request_id]['event_return_response'].wait()
-            with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
-                del self._manager.return_response[request_id]
-            return response_value
-
-        return True
-
     def get_order(self, order_id: int = None, orig_client_order_id: str = None, process_response=None,
-                  recv_window: int = None, request_id: str = None, return_response: bool = False, stream_id=None,
-                  stream_label: str = None, symbol: str = None) -> bool:
+                  recv_window: int = None, request_id: str = None, return_response: bool = False, stream_id: str = None,
+                  stream_label: str = None, symbol: str = None) -> Union[str, dict, bool]:
         """
         Check execution status of an order.
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#query-order-user_data
+            - https://binance-docs.github.io/apidocs/futures/en/#query-order-user_data-2
 
         If both `orderId` and `origClientOrderId` parameters are specified, only `orderId` is used and
         `origClientOrderId` is ignored.
@@ -1503,21 +569,22 @@ class BinanceWebSocketApiApiFutures(object):
         :type stream_label: str
         :param symbol: The symbol you want to trade
         :type symbol: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
         .. code-block:: json
 
             {
-                "id": "aa62318a-5a97-4f3b-bdc7-640bbe33b291",
+                "id": "0ce5d070-a5e5-4ff2-b57f-1556741a4204",
                 "method": "order.status",
                 "params": {
+                    "apiKey": "HMOchcfii9ZRZnhjp2XjGXhsOBd6msAhKz9joQaWwZ7arcJTlD2hGPHQj1lGdTjR",
+                    "orderId": 328999071,
                     "symbol": "BTCUSDT",
-                    "orderId": 12569099453,
-                    "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
-                    "signature": "2c3aab5a078ee4ea465ecd95523b77289f61476c2f238ec10c55ea6cb11a6f35",
-                    "timestamp": 1660801720951
+                    "timestamp": 1703441060152,
+                    "signature": "ba48184fc38a71d03d2b5435bd67c1206e3191e989fe99bda1bc643a880dfdbf"
                 }
             }
 
@@ -1526,43 +593,41 @@ class BinanceWebSocketApiApiFutures(object):
         .. code-block:: json
 
             {
-                "id": "aa62318a-5a97-4f3b-bdc7-640bbe33b291",
+                "id": "0ce5d070-a5e5-4ff2-b57f-1556741a4204",
                 "status": 200,
                 "result": {
+                    "orderId": 328999071,
                     "symbol": "BTCUSDT",
-                    "orderId": 12569099453,
-                    "orderListId": -1,
-                    "clientOrderId": "4d96324ff9d44481926157",
-                    "price": "23416.10000000",
-                    "origQty": "0.00847000",
-                    "executedQty": "0.00847000",
-                    "cummulativeQuoteQty": "198.33521500",
-                    "status": "FILLED",
+                    "status": "NEW",
+                    "clientOrderId": "bK2CASGXToGAKVsePruSCs",
+                    "price": "43634.50",
+                    "avgPrice": "0.00",
+                    "origQty": "0.010",
+                    "executedQty": "0.000",
+                    "cumQuote": "0.00000",
                     "timeInForce": "GTC",
                     "type": "LIMIT",
-                    "side": "SELL",
-                    "stopPrice": "0.00000000",
-                    "trailingDelta": 10,
-                    "trailingTime": -1,
-                    "icebergQty": "0.00000000",
-                    "time": 1660801715639,
-                    "updateTime": 1660801717945,
-                    "isWorking": true,
-                    "workingTime": 1660801715639,
-                    "origQuoteOrderQty": "0.00000000",
-                    "strategyId": 37463720,
-                    "strategyType": 1000000,
+                    "reduceOnly": false,
+                    "closePosition": false,
+                    "side": "BUY",
+                    "positionSide": "BOTH",
+                    "stopPrice": "0.00",
+                    "workingType": "CONTRACT_PRICE",
+                    "priceProtect": false,
+                    "origType": "LIMIT",
+                    "priceMatch": "NONE",
                     "selfTradePreventionMode": "NONE",
-                    "preventedMatchId": 0,
-                    "preventedQuantity": "1.200000"
+                    "goodTillDate": 0,
+                    "time": 1703441059890,
+                    "updateTime": 1703441059890
                 },
                 "rateLimits": [
                     {
                         "rateLimitType": "REQUEST_WEIGHT",
                         "interval": "MINUTE",
                         "intervalNum": 1,
-                        "limit": 1200,
-                        "count": 2
+                        "limit": 2400,
+                        "count": 6
                     }
                 ]
             }
@@ -1573,7 +638,7 @@ class BinanceWebSocketApiApiFutures(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_order() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiFutures.get_order() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -1611,15 +676,15 @@ class BinanceWebSocketApiApiFutures(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
         return True
 
     def get_order_book(self, process_response=None, limit: int = None, recv_window: int = None, request_id: str = None,
-                       return_response: bool = False, stream_id=None, stream_label: str = None,
-                       symbol: str = None) -> bool:
+                       return_response: bool = False, stream_id: str = None, stream_label: str = None,
+                       symbol: str = None) -> Union[str, dict, bool]:
         """
         Get current order book.
 
@@ -1634,9 +699,9 @@ class BinanceWebSocketApiApiFutures(object):
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#order-book
+            - https://binance-docs.github.io/apidocs/futures/en/#order-book-2
 
-        :param limit: Default 100; max 5000.
+        :param limit: Default 500; Valid limits:[5, 10, 20, 50, 100, 500, 1000]
         :type limit: int
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
@@ -1657,85 +722,54 @@ class BinanceWebSocketApiApiFutures(object):
         :type stream_label: str
         :param symbol: The selected symbol
         :type symbol: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
         .. code-block:: json
 
             {
-                "id": "5494febb-d167-46a2-996d-70533eb4d976",
+                "id": "51e2affb-0aba-4821-ba75-f2625006eb43",
                 "method": "depth",
                 "params": {
-                    "symbol": "BNBBTC",
-                    "limit": 5
+                  "symbol": "BTCUSDT"
                 }
             }
-
 
         Response:
 
         .. code-block:: json
 
             {
-                "id": "5494febb-d167-46a2-996d-70533eb4d976",
-                "status": 200,
-                "result": {
-                    "lastUpdateId": 2731179239,
-                    "bids": [
-                        [
-                            "0.01379900",
-                            "3.43200000"
-                        ],
-                        [
-                            "0.01379800",
-                            "3.24300000"
-                        ],
-                        [
-                            "0.01379700",
-                            "10.45500000"
-                        ],
-                        [
-                            "0.01379600",
-                            "3.82100000"
-                        ],
-                        [
-                            "0.01379500",
-                            "10.26200000"
-                        ]
-                    ],
-                    "asks": [
-                        [
-                            "0.01380000",
-                            "5.91700000"
-                        ],
-                        [
-                            "0.01380100",
-                            "6.01400000"
-                        ],
-                        [
-                            "0.01380200",
-                            "0.26800000"
-                        ],
-                        [
-                            "0.01380300",
-                            "0.33800000"
-                        ],
-                        [
-                            "0.01380400",
-                            "0.26800000"
-                        ]
-                    ]
-                },
-                "rateLimits": [
-                    {
-                        "rateLimitType": "REQUEST_WEIGHT",
-                        "interval": "MINUTE",
-                        "intervalNum": 1,
-                        "limit": 1200,
-                        "count": 1
-                    }
+              "id": "51e2affb-0aba-4821-ba75-f2625006eb43",
+              "status": 200,
+              "result": {
+                "lastUpdateId": 1027024,
+                "E": 1589436922972,   // Message output time
+                "T": 1589436922959,   // Transaction time
+                "bids": [
+                  [
+                    "4.00000000",     // PRICE
+                    "431.00000000"    // QTY
+                  ]
+                ],
+                "asks": [
+                  [
+                    "4.00000200",
+                    "12.00000000"
+                  ]
                 ]
+              },
+              "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 2400,
+                  "count": 5
+                }
+              ]
             }
         """
         if stream_id is None:
@@ -1744,8 +778,8 @@ class BinanceWebSocketApiApiFutures(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_order_book() - error_msg: No `stream_id` provided or "
-                                f"found!")
+                logger.critical(f"BinanceWebSocketApiApiFutures.get_order_book() - error_msg: No `stream_id` provided "
+                                f"or found!")
                 return False
 
         params = {"symbol": symbol.upper()}
@@ -1775,63 +809,155 @@ class BinanceWebSocketApiApiFutures(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
         return True
 
-    def get_server_time(self, process_response=None, request_id: str = None, return_response: bool = False,
-                        stream_id=None, stream_label: str = None) -> bool:
+    def modify_order(self,
+                     order_id: int = None,
+                     orig_client_order_id: str = None,
+                     price: float = 0.0,
+                     price_match: Optional[Literal['OPPONENT', 'OPPONENT_5', 'OPPONENT_10', 'OPPONENT_20', 'QUEUE',
+                                                   'QUEUE_5', 'QUEUE_10, QUEUE_20']] = None,
+                     process_response=None,
+                     quantity: float = None,
+                     recv_window: int = None,
+                     request_id: str = None,
+                     return_response: bool = False,
+                     side: Optional[Literal['BUY', 'SELL']] = None,
+                     stream_id: str = None,
+                     stream_label: str = None,
+                     symbol: str = None) \
+            -> Union[str, dict, bool, tuple]:
         """
-        Test connectivity to the WebSocket API and get the current server time.
+        Order modify function, currently only LIMIT order modification is supported, modified orders will be reordered
+        in the match queue
+
+        Weight: 1 on 10s order rate limit(X-MBX-ORDER-COUNT-10S); 1 on 1min order rate limit(X-MBX-ORDER-COUNT-1M); 1 on
+        IP rate limit(x-mbx-used-weight-1m)
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#check-server-time
+            - https://binance-docs.github.io/apidocs/futures/en/#modify-order-trade-2
 
+        :param order_id: Cancel by `order_id`. If both `orderId` and `origClientOrderId` parameters are specified, only
+                         `orderId` is used and `origClientOrderId` is ignored.
+        :type order_id: str
+        :param orig_client_order_id: Cancel by `origClientOrderId`. If both `orderId` and `origClientOrderId` parameters
+                                     are specified, only `orderId` is used and `origClientOrderId` is ignored.
+        :type orig_client_order_id: str
+        :param price: Price e.g. 10.223
+        :type price: float
+        :param price_match: only available for LIMIT/STOP/TAKE_PROFIT order; can be set to OPPONENT/ OPPONENT_5/
+                            OPPONENT_10/ OPPONENT_20: /QUEUE/ QUEUE_5/ QUEUE_10/ QUEUE_20; Can't be passed together
+                            with price
+        :type price_match: str
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
         :type process_response: function
+        :param quantity: Amount e.g. 20.5
+        :type quantity: float
+        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
+                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
+        :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
         :param return_response: If `True` the response of the API request is waited for and returned directly.
                                 However, this increases the execution time of the function by the duration until the
                                 response is received from the Binance API.
         :type return_response: bool
+        :param side: `BUY` or `SELL`
+        :type side: str
         :param stream_id: ID of a stream to send the request
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
         :type stream_label: str
-        :return: bool
+        :param symbol: The symbol you want to trade
+        :type symbol: str
+
+        :return: str, dict, bool
 
         Message sent:
 
         .. code-block:: json
 
             {
-                "id": "187d3cb2-942d-484c-8271-4e2141bbadb1",
-                "method": "time"
+                "id": "c8c271ba-de70-479e-870c-e64951c753d9",
+                "method": "order.modify",
+                "params": {
+                    "apiKey": "HMOchcfiT9ZRZnhjp2XjGXhsOBd6msAhKz9joQaWwZ7arcJTlD2hGPHQj1lGdTjR",
+                    "orderId": 328971409,
+                    "origType": "LIMIT",
+                    "positionSide": "SHORT",
+                    "price": "43769.1",
+                    "priceMatch": "NONE",
+                    "quantity": "0.11",
+                    "side": "SELL",
+                    "symbol": "BTCUSDT",
+                    "timestamp": 1703426755754,
+                    "signature": "d30c9f0736a307f5a9988d4a40b688662d18324b17367d51421da5484e835923"
+                }
             }
 
-
-        Response:
+        Response
 
         .. code-block:: json
 
             {
-                "id": "187d3cb2-942d-484c-8271-4e2141bbadb1",
+                "id": "c8c271ba-de70-479e-870c-e64951c753d9",
                 "status": 200,
                 "result": {
-                    "serverTime": 1656400526260
+                    "orderId": 328971409,
+                    "symbol": "BTCUSDT",
+                    "status": "NEW",
+                    "clientOrderId": "xGHfltUMExx0TbQstQQfRX",
+                    "price": "43769.10",
+                    "avgPrice": "0.00",
+                    "origQty": "0.110",
+                    "executedQty": "0.000",
+                    "cumQty": "0.000",
+                    "cumQuote": "0.00000",
+                    "timeInForce": "GTC",
+                    "type": "LIMIT",
+                    "reduceOnly": false,
+                    "closePosition": false,
+                    "side": "SELL",
+                    "positionSide": "SHORT",
+                    "stopPrice": "0.00",
+                    "workingType": "CONTRACT_PRICE",
+                    "priceProtect": false,
+                    "origType": "LIMIT",
+                    "priceMatch": "NONE",
+                    "selfTradePreventionMode": "NONE",
+                    "goodTillDate": 0,
+                    "updateTime": 1703426756190
                 },
-                "rateLimits": [{
-                    "rateLimitType": "REQUEST_WEIGHT",
-                    "interval": "MINUTE",
-                    "intervalNum": 1,
-                    "limit": 1200,
-                    "count": 1
-                }]
+                "rateLimits": [
+                    {
+                        "rateLimitType": "ORDERS",
+                        "interval": "SECOND",
+                        "intervalNum": 10,
+                        "limit": 300,
+                        "count": 1
+                    },
+                    {
+                        "rateLimitType": "ORDERS",
+                        "interval": "MINUTE",
+                        "intervalNum": 1,
+                        "limit": 1200,
+                        "count": 1
+                    },
+                    {
+                        "rateLimitType": "REQUEST_WEIGHT",
+                        "interval": "MINUTE",
+                        "intervalNum": 1,
+                        "limit": 2400,
+                        "count": 1
+                    }
+                ]
             }
         """
         if stream_id is None:
@@ -1840,14 +966,34 @@ class BinanceWebSocketApiApiFutures(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_server_time() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiFutures.modify_order() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
+        params = {"apiKey": self._manager.stream_list[stream_id]['api_key'],
+                  "price": str(price),
+                  "quantity": str(quantity),
+                  "side": side.upper(),
+                  "symbol": symbol.upper(),
+                  "timestamp": self._manager.get_timestamp()}
+
+        if order_id is not None:
+            params['orderId'] = order_id
+        if orig_client_order_id is not None:
+            params['origClientOrderId'] = orig_client_order_id
+        if price_match is not None:
+            params['priceMatch'] = price_match
+        if recv_window is not None:
+            params['recvWindow'] = str(recv_window)
+
+        method = "order.modify"
+        api_secret = self._manager.stream_list[stream_id]['api_secret']
         request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
+        params['signature'] = self._manager.generate_signature(api_secret=api_secret, data=params)
 
         payload = {"id": request_id,
-                   "method": "time"}
+                   "method": method,
+                   "params": params}
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -1863,92 +1009,7 @@ class BinanceWebSocketApiApiFutures(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
-                del self._manager.return_response[request_id]
-            return response_value
-
-        return True
-
-    def ping(self, process_response=None, request_id: str = None, return_response: bool = False,
-             stream_id=None, stream_label: str = None) -> bool:
-        """
-        Test connectivity to the WebSocket API.
-
-        Official documentation:
-
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#test-connectivity
-
-        :param process_response: Provide a function/method to process the received webstream data (callback)
-                                 of this specific request.
-        :type process_response: function
-        :param request_id: Provide a custom id for the request
-        :type request_id: str
-        :param return_response: If `True` the response of the API request is waited for and returned directly.
-                                However, this increases the execution time of the function by the duration until the
-                                response is received from the Binance API.
-        :type return_response: bool
-        :param stream_id: ID of a stream to send the request
-        :type stream_id: str
-        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
-        :type stream_label: str
-        :return: bool
-
-        Message sent:
-
-        .. code-block:: json
-
-            {
-                "id": "4e72973031d8-bff9-8481-c95b-c42414df",
-                "method": "ping"
-            }
-
-        Response:
-
-        .. code-block:: json
-
-            {
-                "id": "4e72973031d8-bff9-8481-c95b-c42414df",
-                "status": 200,
-                "result": {},
-                "rateLimits": [{
-                    "rateLimitType": "REQUEST_WEIGHT",
-                    "interval": "MINUTE",
-                    "intervalNum": 1,
-                    "limit": 1200,
-                    "count": 1
-                }]
-            }
-        """
-        if stream_id is None:
-            if stream_label is not None:
-                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
-            else:
-                stream_id = self._manager.get_the_one_active_websocket_api()
-            if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.ping() - error_msg: No `stream_id` provided or "
-                                f"found!")
-                return False
-
-        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
-
-        payload = {"id": request_id,
-                   "method": "ping"}
-
-        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
-            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
-
-        if process_response is not None:
-            with self._manager.process_response_lock:
-                entry = {'callback_function': process_response}
-                self._manager.process_response[request_id] = entry
-
-        if return_response is True:
-            with self._manager.return_response_lock:
-                entry = {'event_return_response': threading.Event()}
-                self._manager.return_response[request_id] = entry
-            self._manager.return_response[request_id]['event_return_response'].wait()
-            with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 

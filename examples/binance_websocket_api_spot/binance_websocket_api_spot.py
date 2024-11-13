@@ -23,7 +23,7 @@ async def binance_api(ubwa):
                                     stream_label="Bobs Spot Websocket API",
                                     process_asyncio_queue=handle_socket_message)
 
-    print(f"Executing API requests:")
+    print(f"Executing API requests on Binance Spot:")
     current_average_price = ubwa.api.spot.get_current_average_price(stream_id=api_stream, symbol=market, return_response=True)
     print(f"current_average_price: {current_average_price}\r\n")
 

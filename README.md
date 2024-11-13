@@ -173,17 +173,22 @@ api_stream = ubwa.create_stream(api=True,
                                 output="UnicornFy",
                                 process_asyncio_queue=process_api_responses)
 
-response = ubwa.api.get_server_time(return_response=True)
+response = ubwa.api.spot.get_server_time(return_response=True)
 print(f"Binance serverTime: {response['result']['serverTime']}")
 
-orig_client_order_id = ubwa.api.create_order(order_type="LIMIT",
-                                             price = 1.1,
-                                             quantity = 15.0,
-                                             side = "SELL",
-                                             symbol = "BUSDUSDT")
+orig_client_order_id = ubwa.api.spot.create_order(order_type="LIMIT",
+                                                  price = 1.1,
+                                                  quantity = 15.0,
+                                                  side = "SELL",
+                                                  symbol = "BUSDUSDT")
 
-ubwa.api.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                   
+ubwa.api.spot.cancel_order(orig_client_order_id=orig_client_order_id, symbol="BUSDUSDT")                                   
 ```
+
+All available methods:
+- [Futures]()
+- [Spot]()
+
 
 [Here](https://medium.lucit.tech/create-and-cancel-orders-via-websocket-on-binance-7f828831404) you can find a complete 
 guide on 

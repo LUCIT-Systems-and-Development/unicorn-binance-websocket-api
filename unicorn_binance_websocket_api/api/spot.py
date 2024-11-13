@@ -71,7 +71,7 @@ class BinanceWebSocketApiApiSpot(object):
 
     Binance.com SPOT websocket API documentation:
 
-        - https://binance-docs.github.io/apidocs/websocket_api/en/
+        - https://binance-docs.github.io/apidocs/websocket_api/en/#trading-requests
 
     :param manager: Provide the initiated UNICORN Binance WebSocket API Manager instance.
     :type manager: BinanceWebsocketApiManager
@@ -109,7 +109,7 @@ class BinanceWebSocketApiApiSpot(object):
                                  stream_id: str = None,
                                  stream_label: str = None,
                                  symbol: str = None,
-                                 time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
+                                 time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = None,
                                  trailing_delta: int = None) -> Union[str, dict, bool, tuple]:
         """
         Cancel an existing order and immediately place a new order instead of the canceled one.
@@ -243,7 +243,7 @@ class BinanceWebSocketApiApiSpot(object):
                                `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
         :type trailing_delta: int
 
-        :return: str, dict, bool or tuple
+        :return: str (new_client_order_id), bool or tuple (str (new_client_order_id), str/dict (response_value))
 
         Message sent:
 
@@ -637,6 +637,8 @@ class BinanceWebSocketApiApiSpot(object):
         """
         Cancel an active order.
 
+        Either order_id or orig_client_order_id must be sent.
+
         If you cancel an order that is a part of an OCO pair, the entire OCO is canceled.
 
         Official documentation:
@@ -798,7 +800,8 @@ class BinanceWebSocketApiApiSpot(object):
 
         return True
 
-    def create_order(self, iceberg_qty: float = None,
+    def create_order(self,
+                     iceberg_qty: float = None,
                      new_client_order_id: str = None,
                      new_order_resp_type: Optional[Literal['ACK', 'RESULT', 'FULL']] = None,
                      order_type: Optional[Literal['LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS', 'STOP_LOSS_LIMIT',
@@ -819,7 +822,7 @@ class BinanceWebSocketApiApiSpot(object):
                      stream_id: str = None,
                      stream_label: str = None,
                      symbol: str = None,
-                     time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
+                     time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = None,
                      test: bool = False,
                      trailing_delta: int = None) -> Union[str, dict, bool, tuple]:
         """
@@ -924,7 +927,7 @@ class BinanceWebSocketApiApiSpot(object):
                                `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
         :type trailing_delta: int
 
-        :return: str, dict, bool or tuple
+        :return: str (new_client_order_id), bool or tuple (str (new_client_order_id), str/dict (response_value))
 
         Message sent:
 
@@ -1090,8 +1093,8 @@ class BinanceWebSocketApiApiSpot(object):
                           stream_id: str = None,
                           stream_label: str = None,
                           symbol: str = None,
-                          time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
-                          trailing_delta: int = None) -> Union[str, dict, bool]:
+                          time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = None,
+                          trailing_delta: int = None) -> Union[str, dict, bool, tuple]:
         """
         Test order placement.
 
@@ -1193,7 +1196,7 @@ class BinanceWebSocketApiApiSpot(object):
                                `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
         :type trailing_delta: int
 
-        :return: str, dict, bool or tuple
+        :return: str (new_client_order_id), bool or tuple (str (new_client_order_id), str/dict (response_value))
 
         Message sent:
 
