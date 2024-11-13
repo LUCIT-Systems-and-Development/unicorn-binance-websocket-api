@@ -24,7 +24,7 @@ from .exceptions import *
 from unicorn_fy.unicorn_fy import UnicornFy
 
 import asyncio
-import ujson as json
+import orjson
 import logging
 
 
@@ -94,7 +94,7 @@ class BinanceWebSocketApiSocket(object):
                             logger.info(f"BinanceWebSocketApiSocket.start_socket({str(self.stream_id)}, "
                                         f"{str(self.channels)}, {str(self.markets)} - Sending payload: {str(payload)}")
                             try:
-                                await self.websocket.send(json.dumps(payload, ensure_ascii=False))
+                                await self.websocket.send(orjson.dumps(payload).decode("utf-8"))
                             except AttributeError as error_msg:
                                 logger.debug(f"BinanceWebSocketApiManager._create_stream_thread() "
                                              f"stream_id={str(self.stream_id)}  - AttributeError `error: 18` - "
@@ -146,9 +146,9 @@ class BinanceWebSocketApiSocket(object):
                                         received_stream_data = received_stream_data_json
                                 else:
                                     # WS API does not need to get unicornfied, just turn it into a dict:
-                                    received_stream_data = json.loads(received_stream_data_json)
+                                    received_stream_data = orjson.loads(received_stream_data_json)
                             elif self.output == "dict":
-                                received_stream_data = json.loads(received_stream_data_json)
+                                received_stream_data = orjson.loads(received_stream_data_json)
                             else:
                                 received_stream_data = received_stream_data_json
                             if self.manager.stream_list[self.stream_id]['api'] is True:

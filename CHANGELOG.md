@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Support for `Websocket API Futures`:
   - `manager.api.futures.get_aggregate_trades()`
 ### Changed
+- ujson has been replaced by orjson
 - Websocket API functions are no longer available under `manager.api` but under `manager.api.spot`. In addition, there 
   is now also `manager.api.futures`.
 

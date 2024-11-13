@@ -14,7 +14,7 @@ psutil
 PySocks
 requests>=2.31.0
 simplejson
-ujson
+orjson
 unicorn-fy>=0.14.2
 unicorn-binance-rest-api>=2.5.1
 websocket-client

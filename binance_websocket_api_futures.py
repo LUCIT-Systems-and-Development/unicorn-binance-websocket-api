@@ -16,6 +16,7 @@ async def binance_api(ubwa):
             data = await ubwa.get_stream_data_from_asyncio_queue(stream_id=stream_id)
             print(f"received data:\r\n{data}\r\n")
 
+    print(f"Starting Stream:")
     api_stream = ubwa.create_stream(api=True,
                                     api_key=os.getenv('BINANCE_API_KEY'),
                                     api_secret=os.getenv('BINANCE_API_SECRET'),
@@ -28,7 +29,7 @@ async def binance_api(ubwa):
     orig_client_order_id = ubwa.api.futures.create_order(stream_id=api_stream, price=1.0, order_type="LIMIT",
                                                         quantity=15.0, side="SELL", symbol=market)
     ubwa.api.futures.ping(stream_id=api_stream)
-    ubwa.api.futures.get_order_book(stream_id=api_stream, symbol=market, limit=2)
+    orderbook = ubwa.api.futures.get_order_book(stream_id=api_stream, symbol=market, limit=2, return_response=True)
     ubwa.api.futures.cancel_order(stream_id=api_stream, symbol=market, orig_client_order_id=orig_client_order_id)
     ubwa.api.futures.get_order(stream_id=api_stream, symbol=market, orig_client_order_id=orig_client_order_id)
 

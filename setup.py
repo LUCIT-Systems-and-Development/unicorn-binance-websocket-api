@@ -67,7 +67,7 @@ setup(
     long_description_content_type="text/markdown",
     license='LSOSL - LUCIT Synergetic Open Source License',
     install_requires=['colorama', 'requests>=2.31.0', 'websocket-client', 'websockets==11.0.3', 'flask_restful',
-                      'cheroot', 'flask', 'lucit-licensing-python>=1.8.2', 'ujson', 'psutil', 'PySocks',
+                      'cheroot', 'flask', 'lucit-licensing-python>=1.8.2', 'orjson', 'psutil', 'PySocks', 'simplejson',
                       'unicorn-fy>=0.14.2', 'unicorn-binance-rest-api>=2.5.1', 'typing_extensions', 'Cython'],
     keywords='binance, asyncio, async, asynchronous, concurrent, websocket-api, webstream-api, '
              'binance-websocket, binance-webstream, webstream, websocket, api, binance-dex, '

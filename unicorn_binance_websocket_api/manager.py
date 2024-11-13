@@ -60,7 +60,7 @@ import threading
 import time
 import traceback
 import uuid
-import ujson as json
+import orjson
 import websockets
 
 
@@ -660,8 +660,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         :return: bool
         """
         if type(payload) is dict:
-            payload = json.dumps(payload,
-                                 ensure_ascii=False)
+            payload = orjson.dumps(payload).decode("utf-8")
         if type(timeout) is int:
             timeout = float(timeout)
 
@@ -3024,7 +3023,7 @@ class BinanceWebSocketApiManager(threading.Thread):
         wait_till_timestamp = time.time() + timeout
         while wait_till_timestamp >= time.time():
             for result in self.ringbuffer_result:
-                result_dict = json.loads(result)
+                result_dict = orjson.loads(result)
                 if result_dict['id'] == request_id:
                     return result
         return None

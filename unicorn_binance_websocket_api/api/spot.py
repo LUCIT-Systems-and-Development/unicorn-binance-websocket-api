@@ -55,7 +55,6 @@ class BinanceWebSocketApiApiSpot(object):
         - https://binance-docs.github.io/apidocs/websocket_api/en/#rolling-window-price-change-statistics
         - https://binance-docs.github.io/apidocs/websocket_api/en/#symbol-price-ticker
         - https://binance-docs.github.io/apidocs/websocket_api/en/#symbol-order-book-ticker
-        - https://binance-docs.github.io/apidocs/websocket_api/en/#cancel-and-replace-order-trade
         - https://binance-docs.github.io/apidocs/websocket_api/en/#place-new-oco-deprecated-trade
         - https://binance-docs.github.io/apidocs/websocket_api/en/#place-new-order-list-oco-trade
         - https://binance-docs.github.io/apidocs/websocket_api/en/#place-new-order-list-oto-trade
@@ -94,7 +93,7 @@ class BinanceWebSocketApiApiSpot(object):
                                  cancel_order_id: int = None,
                                  cancel_orig_client_order_id: str = None,
                                  cancel_new_client_order_id: str = None,
-                                 cancel_replace_mode: Optional[Literal['STOP_ON_FAILURE', 'ALLOW_FAILURE']] = None,
+                                 cancel_replace_mode: Optional[Literal['STOP_ON_FAILURE', 'ALLOW_FAILURE']] = "STOP_ON_FAILURE",
                                  cancel_restrictions: Optional[Literal['ONLY_NEW', 'ONLY_PARTIALLY_FILLED']] = None,
                                  iceberg_qty: float = None,
                                  new_client_order_id: str = None,
@@ -105,7 +104,7 @@ class BinanceWebSocketApiApiSpot(object):
                                                               'TAKE_PROFIT_LIMIT']] = None,
                                  price: float = 0.0,
                                  process_response=None,
-                                 quantity: float = 0.0,
+                                 quantity: float = None,
                                  quote_order_qty: float = None,
                                  recv_window: int = None,
                                  request_id: str = None,
@@ -120,8 +119,7 @@ class BinanceWebSocketApiApiSpot(object):
                                  stream_label: str = None,
                                  symbol: str = None,
                                  time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
-                                 test: bool = False,
-                                 trailing_delta: int = None) -> Union[str, bool]:
+                                 trailing_delta: int = None) -> Union[str, dict, bool]:
         """
         Cancel an existing order and immediately place a new order instead of the canceled one.
 
@@ -135,14 +133,14 @@ class BinanceWebSocketApiApiSpot(object):
         :type cancel_orig_client_order_id: str
         :param cancel_new_client_order_id: New ID for the canceled order. Automatically generated if not sent
         :type cancel_new_client_order_id: str
-        :param cancel_replace_mode: New ID for the canceled order. Automatically generated if not sent.
+        :param cancel_replace_mode: Default is 'STOP_ON_FAILURE'!
 
                                         - STOP_ON_FAILURE – if cancellation request fails, new order placement will not be attempted.
 
                                         - ALLOW_FAILURE – new order placement will be attempted even if the cancel request fails.
 
         :type cancel_replace_mode: str
-        :param cancel_restrictions: Supported values:
+        :param cancel_restrictions: Supported values
 
                                       - ONLY_NEW: Cancel will succeed if the order status is `NEW`.
 
@@ -234,9 +232,6 @@ class BinanceWebSocketApiApiSpot(object):
         :type stop_price: float
         :param symbol: The symbol you want to trade
         :type symbol: str
-        :param test: Test order placement. Validates new order parameters and verifies your signature but does not
-                     send the order into the matching engine.
-        :type test: bool
         :param time_in_force: Available timeInForce options, setting how long the order should be active before
                               expiration:
 
@@ -362,23 +357,34 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.create_order() - error_msg: No `stream_id` provided or "
-                                f"found!")
+                logger.critical(f"BinanceWebSocketApiApiSpot.cancel_and_replace_order() - error_msg: No `stream_id` "
+                                f"provided or found!")
                 return False
 
         new_client_order_id = new_client_order_id if new_client_order_id is not None else str(self._manager.get_request_id())
         params = {"apiKey": self._manager.stream_list[stream_id]['api_key'],
-                  "newClientOrderId": new_client_order_id,
-                  "quantity": quantity,
+                  "cancelReplaceMode": cancel_replace_mode,
                   "side": side.upper(),
                   "symbol": symbol.upper(),
                   "timestamp": self._manager.get_timestamp(),
                   "type": order_type}
 
+        if cancel_order_id is not None:
+            params['cancelOrderId'] = cancel_order_id
+        if cancel_orig_client_order_id is not None:
+            params['cancelOrigClientOrderId'] = cancel_orig_client_order_id
+        if cancel_new_client_order_id is not None:
+            params['cancelNewClientOrderId'] = cancel_new_client_order_id
+        if cancel_restrictions is not None:
+            params['cancelRestrictions'] = cancel_restrictions
         if iceberg_qty is not None:
             params['icebergQty'] = str(iceberg_qty)
+        if new_client_order_id is not None:
+            params['NewClientOrderId'] = new_client_order_id
         if new_order_resp_type is not None:
             params['newOrderRespType'] = new_order_resp_type
+        if order_rate_limit_exceeded_mode is not None:
+            params['orderRateLimitExceededMode'] = order_rate_limit_exceeded_mode
         if (order_type.upper() == "LIMIT" or
                 order_type.upper() == "LIMIT_MAKER" or
                 order_type.upper() == "STOP_LOSS_LIMIT" or
@@ -388,11 +394,13 @@ class BinanceWebSocketApiApiSpot(object):
                 order_type.upper() == "STOP_LOSS_LIMIT" or
                 order_type.upper() == "TAKE_PROFIT_LIMIT"):
             params['timeInForce'] = time_in_force
+        if quantity is not None:
+            params['quantity'] = str(quantity)
         if quote_order_qty is not None:
             params['quoteOrderQty'] = str(quote_order_qty)
-            if quantity != 0.0:
-                logger.warning(f"BinanceWebSocketApiApi.create_order() - error_msg: By using the parameter "
-                               f"`quoteOrderQty` the use of `quantity` is suppressed!")
+            if quantity is not None:
+                logger.warning(f"BinanceWebSocketApiApiSpot.cancel_and_replace_order() - error_msg: By using the "
+                               f"parameter `quoteOrderQty` the use of `quantity` is suppressed!")
             del params['quantity']
         if recv_window is not None:
             params['recvWindow'] = str(recv_window)
@@ -401,8 +409,8 @@ class BinanceWebSocketApiApiSpot(object):
         if stop_price is not None:
             params['stopPrice'] = str(stop_price)
             if trailing_delta is not None:
-                logger.warning(f"BinanceWebSocketApiApi.create_order() - error_msg: By using the parameter `stopPrice` "
-                               f"the use of `trailingDelta` is suppressed!")
+                logger.warning(f"BinanceWebSocketApiApiSpot.cancel_and_replace_order() - error_msg: By using the "
+                               f"parameter `stopPrice` the use of `trailingDelta` is suppressed!")
         elif trailing_delta is not None:
             params['trailingDelta'] = str(trailing_delta)
         if strategy_id is not None:
@@ -410,7 +418,7 @@ class BinanceWebSocketApiApiSpot(object):
         if strategy_type is not None:
             params['strategyType'] = str(strategy_type)
 
-        method = "order.test" if test is True else "order.place"
+        method = "order.cancelReplace"
         api_secret = self._manager.stream_list[stream_id]['api_secret']
         request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
         params['signature'] = self._manager.generate_signature(api_secret=api_secret, data=params)
@@ -441,7 +449,7 @@ class BinanceWebSocketApiApiSpot(object):
 
     def cancel_open_orders(self, process_response=None, return_response: bool = False, symbol: str = None,
                            recv_window: int = None, request_id: str = None, stream_id: str = None,
-                           stream_label: str = None) -> bool:
+                           stream_label: str = None) -> Union[str, dict, bool]:
         """
         Cancel all open orders on a symbol, including OCO orders.
 
@@ -589,8 +597,8 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_open_orders() - error_msg: No `stream_id` provided or "
-                                f"found!")
+                logger.critical(f"BinanceWebSocketApiApiSpot.cancel_open_orders() - error_msg: No `stream_id` provided"
+                                f" or found!")
                 return False
 
         params = {"apiKey": self._manager.stream_list[stream_id]['api_key'],
@@ -633,7 +641,7 @@ class BinanceWebSocketApiApiSpot(object):
                      new_client_order_id: str = None, order_id: int = None, orig_client_order_id: str = None,
                      process_response=None, recv_window: int = None, request_id: str = None,
                      return_response: bool = False, stream_id: str = None, symbol: str = None,
-                     stream_label: str = None) -> bool:
+                     stream_label: str = None) -> Union[str, dict, bool]:
         """
         Cancel an active order.
 
@@ -749,7 +757,7 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.cancel_order() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiSpot.cancel_order() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -804,7 +812,7 @@ class BinanceWebSocketApiApiSpot(object):
                                                   'TAKE_PROFIT', 'TAKE_PROFIT_LIMIT']] = None,
                      price: float = 0.0,
                      process_response=None,
-                     quantity: float = 0.0,
+                     quantity: float = None,
                      quote_order_qty: float = None,
                      recv_window: int = None,
                      request_id: str = None,
@@ -820,7 +828,7 @@ class BinanceWebSocketApiApiSpot(object):
                      symbol: str = None,
                      time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
                      test: bool = False,
-                     trailing_delta: int = None) -> Union[str, bool]:
+                     trailing_delta: int = None) -> Union[str, dict, bool]:
         """
         Create a new order.
 
@@ -990,14 +998,13 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.create_order() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiSpot.create_order() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
         new_client_order_id = new_client_order_id if new_client_order_id is not None else str(self._manager.get_request_id())
         params = {"apiKey": self._manager.stream_list[stream_id]['api_key'],
                   "newClientOrderId": new_client_order_id,
-                  "quantity": quantity,
                   "side": side.upper(),
                   "symbol": symbol.upper(),
                   "timestamp": self._manager.get_timestamp(),
@@ -1016,10 +1023,12 @@ class BinanceWebSocketApiApiSpot(object):
                 order_type.upper() == "STOP_LOSS_LIMIT" or
                 order_type.upper() == "TAKE_PROFIT_LIMIT"):
             params['timeInForce'] = time_in_force
+        if quantity is not None:
+            params['quantity'] = str(quantity)
         if quote_order_qty is not None:
             params['quoteOrderQty'] = str(quote_order_qty)
-            if quantity != 0.0:
-                logger.warning(f"BinanceWebSocketApiApi.create_order() - error_msg: By using the parameter "
+            if quantity is not None:
+                logger.warning(f"BinanceWebSocketApiApiSpot.create_order() - error_msg: By using the parameter "
                                f"`quoteOrderQty` the use of `quantity` is suppressed!")
             del params['quantity']
         if recv_window is not None:
@@ -1029,8 +1038,8 @@ class BinanceWebSocketApiApiSpot(object):
         if stop_price is not None:
             params['stopPrice'] = str(stop_price)
             if trailing_delta is not None:
-                logger.warning(f"BinanceWebSocketApiApi.create_order() - error_msg: By using the parameter `stopPrice` "
-                               f"the use of `trailingDelta` is suppressed!")
+                logger.warning(f"BinanceWebSocketApiApiSpot.create_order() - error_msg: By using the parameter "
+                               f"`stopPrice` the use of `trailingDelta` is suppressed!")
         elif trailing_delta is not None:
             params['trailingDelta'] = str(trailing_delta)
         if strategy_id is not None:
@@ -1074,7 +1083,7 @@ class BinanceWebSocketApiApiSpot(object):
                                                        'TAKE_PROFIT', 'TAKE_PROFIT_LIMIT']] = None,
                           price: float = 0.0,
                           process_response=None,
-                          quantity: float = 0.0,
+                          quantity: float = None,
                           quote_order_qty: float = None,
                           recv_window: int = None,
                           request_id: str = None,
@@ -1089,7 +1098,7 @@ class BinanceWebSocketApiApiSpot(object):
                           stream_label: str = None,
                           symbol: str = None,
                           time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
-                          trailing_delta: int = None) -> Union[str, bool]:
+                          trailing_delta: int = None) -> Union[str, dict, bool]:
         """
         Test order placement.
 
@@ -1262,7 +1271,8 @@ class BinanceWebSocketApiApiSpot(object):
                                  time_in_force=time_in_force, test=True, trailing_delta=trailing_delta)
 
     def get_account_status(self, process_response=None, recv_window: int = None, request_id: str = None,
-                           return_response: bool = False, stream_id: str = None, stream_label: str = None) -> bool:
+                           return_response: bool = False, stream_id: str = None, stream_label: str = None) \
+            -> Union[str, dict, bool]:
         """
         Get the user account status.
 
@@ -1366,8 +1376,8 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_account_status() - error_msg: No `stream_id` provided or "
-                                f"found!")
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_account_status() - error_msg: No `stream_id` provided"
+                                f" or found!")
                 return False
 
         params = {"apiKey": self._manager.stream_list[stream_id]['api_key'],
@@ -1407,7 +1417,8 @@ class BinanceWebSocketApiApiSpot(object):
 
     def get_aggregate_trades(self, process_response=None, end_time: int = None, from_id: int = None, limit: int = None,
                              request_id: str = None, return_response: bool = False, start_time: int = None,
-                             stream_id: str = None, stream_label: str = None, symbol: str = None) -> bool:
+                             stream_id: str = None, stream_label: str = None, symbol: str = None) \
+            -> Union[str, dict, bool]:
         """
         Get aggregate trades.
 
@@ -1483,7 +1494,7 @@ class BinanceWebSocketApiApiSpot(object):
                   "T": 1565877971222,   // Timestamp
                   "m": true,            // Was the buyer the maker?
                   "M": true             // Was the trade the best price match?
-                }
+                 }
               ],
               "rateLimits": [
                 {
@@ -1502,8 +1513,8 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_aggregate_trades() - error_msg: No `stream_id` provided "
-                                f"or found!")
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_aggregate_trades() - error_msg: No `stream_id` "
+                                f"provided or found!")
                 return False
 
         params = {"symbol": symbol.upper()}
@@ -1545,7 +1556,7 @@ class BinanceWebSocketApiApiSpot(object):
 
     def get_exchange_info(self, permissions: list = None, process_response=None, recv_window: int = None,
                           request_id: str = None, return_response: bool = False, stream_id: str = None,
-                          stream_label: str = None, symbol: str = None, symbols: list = None) -> bool:
+                          stream_label: str = None, symbol: str = None, symbols: list = None) -> Union[str, dict, bool]:
         """
         Get the Exchange Information.
 
@@ -1696,8 +1707,8 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_exchange_info() - error_msg: No `stream_id` provided or "
-                                f"found!")
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_exchange_info() - error_msg: No `stream_id` provided"
+                                f" or found!")
                 return False
         params = {}
         if symbol is not None:
@@ -1739,7 +1750,7 @@ class BinanceWebSocketApiApiSpot(object):
 
     def get_historical_trades(self, process_response=None, from_id: int = None, limit: int = None,
                               request_id: str = None, return_response: bool = False, stream_id: str = None,
-                              stream_label: str = None, symbol: str = None) -> bool:
+                              stream_label: str = None, symbol: str = None) -> Union[str, dict, bool]:
         """
         Get historical trades.
 
@@ -1819,8 +1830,8 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_historical_trades() - error_msg: No `stream_id` provided "
-                                f"or found!")
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_historical_trades() - error_msg: No `stream_id` "
+                                f"provided or found!")
                 return False
 
         params = {"symbol": symbol.upper()}
@@ -1867,7 +1878,7 @@ class BinanceWebSocketApiApiSpot(object):
                    stream_id: str = None,
                    stream_label: str = None,
                    symbol: str = None,
-                   time_zone: str = None) -> bool:
+                   time_zone: str = None) -> Union[str, dict, bool]:
         """
         Get klines (candlestick bars).
 
@@ -1975,7 +1986,7 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_klines() - error_msg: No `stream_id` provided "
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_klines() - error_msg: No `stream_id` provided "
                                 f"or found!")
                 return False
 
@@ -2019,7 +2030,7 @@ class BinanceWebSocketApiApiSpot(object):
         return True
 
     def get_listen_key(self, process_response=None, request_id: str = None, return_response: bool = False,
-                       stream_id: str = None, stream_label: str = None) -> bool:
+                       stream_id: str = None, stream_label: str = None) -> Union[str, dict, bool]:
         """
         Get a listenKey to start a UserDataStream.
 
@@ -2081,7 +2092,7 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_listen_key() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_listen_key() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -2115,7 +2126,7 @@ class BinanceWebSocketApiApiSpot(object):
 
     def get_open_orders(self, process_response=None, recv_window: int = None, request_id: str = None,
                         return_response: bool = False, stream_id: str = None, stream_label: str = None,
-                        symbol: str = None) -> bool:
+                        symbol: str = None) -> Union[str, dict, bool]:
         """
         Query execution status of all open orders.
 
@@ -2217,7 +2228,7 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_open_orders() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_open_orders() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -2261,7 +2272,7 @@ class BinanceWebSocketApiApiSpot(object):
 
     def get_order(self, order_id: int = None, orig_client_order_id: str = None, process_response=None,
                   recv_window: int = None, request_id: str = None, return_response: bool = False, stream_id: str = None,
-                  stream_label: str = None, symbol: str = None) -> bool:
+                  stream_label: str = None, symbol: str = None) -> Union[str, dict, bool]:
         """
         Check execution status of an order.
 
@@ -2368,7 +2379,7 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_order() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_order() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -2414,7 +2425,7 @@ class BinanceWebSocketApiApiSpot(object):
 
     def get_order_book(self, process_response=None, limit: int = None, recv_window: int = None, request_id: str = None,
                        return_response: bool = False, stream_id: str = None, stream_label: str = None,
-                       symbol: str = None) -> bool:
+                       symbol: str = None) -> Union[str, dict, bool]:
         """
         Get current order book.
 
@@ -2538,7 +2549,7 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_order_book() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_order_book() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -2577,7 +2588,7 @@ class BinanceWebSocketApiApiSpot(object):
 
     def get_recent_trades(self, process_response=None, limit: int = None,
                           request_id: str = None, return_response: bool = False, stream_id: str = None,
-                          stream_label: str = None, symbol: str = None) -> bool:
+                          stream_label: str = None, symbol: str = None) -> Union[str, dict, bool]:
         """
         Get recent trades.
 
@@ -2657,8 +2668,8 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_recent_trades() - error_msg: No `stream_id` provided or "
-                                f"found!")
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_recent_trades() - error_msg: No `stream_id` provided "
+                                f"or found!")
                 return False
 
         params = {"symbol": symbol.upper()}
@@ -2693,7 +2704,7 @@ class BinanceWebSocketApiApiSpot(object):
         return True
 
     def get_server_time(self, process_response=None, request_id: str = None, return_response: bool = False,
-                        stream_id: str = None, stream_label: str = None) -> bool:
+                        stream_id: str = None, stream_label: str = None) -> Union[str, dict, bool]:
         """
         Test connectivity to the WebSocket API and get the current server time.
 
@@ -2751,7 +2762,7 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_server_time() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_server_time() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -2781,7 +2792,7 @@ class BinanceWebSocketApiApiSpot(object):
         return True
 
     def ping(self, process_response=None, request_id: str = None, return_response: bool = False,
-             stream_id: str = None, stream_label: str = None) -> bool:
+             stream_id: str = None, stream_label: str = None) -> Union[str, dict, bool]:
         """
         Test connectivity to the WebSocket API.
 
@@ -2836,7 +2847,7 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.ping() - error_msg: No `stream_id` provided or "
+                logger.critical(f"BinanceWebSocketApiApiSpot.ping() - error_msg: No `stream_id` provided or "
                                 f"found!")
                 return False
 
@@ -2878,7 +2889,7 @@ class BinanceWebSocketApiApiSpot(object):
                       stream_id: str = None,
                       stream_label: str = None,
                       symbol: str = None,
-                      time_zone: str = None) -> bool:
+                      time_zone: str = None) -> Union[str, dict, bool]:
         """
         Get klines (candlestick bars) optimized for presentation.
 
@@ -2978,7 +2989,7 @@ class BinanceWebSocketApiApiSpot(object):
             else:
                 stream_id = self._manager.get_the_one_active_websocket_api()
             if stream_id is None:
-                logger.critical(f"BinanceWebSocketApiApi.get_ui_klines() - error_msg: No `stream_id` provided "
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_ui_klines() - error_msg: No `stream_id` provided "
                                 f"or found!")
                 return False
 

@@ -15,10 +15,11 @@ dependencies:
   - Cython
   - flask
   - flask-restful
+  - orjson
   - psutil
   - PySocks
   - requests>=2.31.0
-  - ujson
+  - simplejson
   - websocket-client
   - websockets==11.0.3
   - typing_extensions

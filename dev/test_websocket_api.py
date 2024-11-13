@@ -36,7 +36,6 @@ import asyncio
 import logging
 import os
 import time
-import ujson as json
 
 api_key = ""
 api_secret = ""
