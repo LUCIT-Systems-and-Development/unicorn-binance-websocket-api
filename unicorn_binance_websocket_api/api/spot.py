@@ -90,6 +90,355 @@ class BinanceWebSocketApiApiSpot(object):
     def __init__(self, manager=None):
         self._manager = manager
 
+    def cancel_and_replace_order(self,
+                                 cancel_order_id: int = None,
+                                 cancel_orig_client_order_id: str = None,
+                                 cancel_new_client_order_id: str = None,
+                                 cancel_replace_mode: Optional[Literal['STOP_ON_FAILURE', 'ALLOW_FAILURE']] = None,
+                                 cancel_restrictions: Optional[Literal['ONLY_NEW', 'ONLY_PARTIALLY_FILLED']] = None,
+                                 iceberg_qty: float = None,
+                                 new_client_order_id: str = None,
+                                 new_order_resp_type: Optional[Literal['ACK', 'RESULT', 'FULL']] = None,
+                                 order_rate_limit_exceeded_mode: Optional[Literal['DO_NOTHING', 'CANCEL_ONLY']] = None,
+                                 order_type: Optional[Literal['LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS',
+                                                              'STOP_LOSS_LIMIT', 'TAKE_PROFIT',
+                                                              'TAKE_PROFIT_LIMIT']] = None,
+                                 price: float = 0.0,
+                                 process_response=None,
+                                 quantity: float = 0.0,
+                                 quote_order_qty: float = None,
+                                 recv_window: int = None,
+                                 request_id: str = None,
+                                 return_response: bool = False,
+                                 self_trade_prevention_mode: Optional[Literal['EXPIRE_TAKER', 'EXPIRE_MAKER',
+                                                                              'EXPIRE_BOTH', 'NONE']] = None,
+                                 side: Optional[Literal['BUY', 'SELL']] = None,
+                                 stop_price: float = None,
+                                 strategy_id: int = None,
+                                 strategy_type: int = None,
+                                 stream_id: str = None,
+                                 stream_label: str = None,
+                                 symbol: str = None,
+                                 time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
+                                 test: bool = False,
+                                 trailing_delta: int = None) -> Union[str, bool]:
+        """
+        Cancel an existing order and immediately place a new order instead of the canceled one.
+
+        Official documentation:
+
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#cancel-and-replace-order-trade
+
+        :param cancel_order_id: Cancel order by orderId
+        :type cancel_order_id: int
+        :param cancel_orig_client_order_id: Cancel order by clientOrderId
+        :type cancel_orig_client_order_id: str
+        :param cancel_new_client_order_id: New ID for the canceled order. Automatically generated if not sent
+        :type cancel_new_client_order_id: str
+        :param cancel_replace_mode: New ID for the canceled order. Automatically generated if not sent.
+
+                                        - STOP_ON_FAILURE – if cancellation request fails, new order placement will not be attempted.
+
+                                        - ALLOW_FAILURE – new order placement will be attempted even if the cancel request fails.
+
+        :type cancel_replace_mode: str
+        :param cancel_restrictions: Supported values:
+
+                                      - ONLY_NEW: Cancel will succeed if the order status is `NEW`.
+
+                                      - ONLY_PARTIALLY_FILLED: Cancel will succeed if order status is
+                                        `PARTIALLY_FILLED`.
+
+                                    If the cancelRestrictions value is not any of the supported values, the error will
+                                    be: `{"code": -1145,"msg": "Invalid cancelRestrictions"}`
+
+                                    If the order did not pass the conditions for cancelRestrictions, the error will be:
+                                    `{"code": -2011,"msg": "Order was not canceled due to cancel restrictions."}`
+        :type cancel_restrictions: str
+        :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
+                            `icebergQty`. An order with an `icebergQty` must have `timeInForce` set to `GTC`.
+        :type iceberg_qty: float
+        :param new_client_order_id: `newClientOrderId` specifies `clientOrderId` value for the order. A new order with
+                                    the same 'clientOrderId' is accepted only when the previous one is filled or
+                                    expired.
+        :type new_client_order_id: str
+        :param new_order_resp_type: Select response format: `ACK`, `RESULT`, `FULL`.
+                                    'MARKET' and 'LIMIT' orders use `FULL` by default, other order types default to
+                                    'ACK'
+        :type new_order_resp_type: str
+        :param order_rate_limit_exceeded_mode: Supported values
+
+                                                   - DO_NOTHING (default)- will only attempt to cancel the order if
+                                                     account has not exceeded the unfilled order rate limit
+
+                                                   - CANCEL_ONLY - will always cancel the order.
+        :type order_rate_limit_exceeded_mode: str
+        :param order_type: 'LIMIT', 'LIMIT_MAKER', 'MARKET', 'STOP_LOSS', 'STOP_LOSS_LIMIT', 'TAKE_PROFIT',
+                           'TAKE_PROFIT_LIMIT'
+
+                           Mandatory parameters per `order_type`:
+
+                             - LIMIT: 'timeInForce', 'price', 'quantity'
+
+                             - LIMIT_MAKER: 'price', 'quantity'
+
+                             - MARKET: 'quantity' or 'quoteOrderQty'
+
+                             - STOP_LOSS: 'quantity', 'stopPrice' or 'trailingDelta'
+
+                             - STOP_LOSS_LIMIT: 'timeInForce', 'price', 'quantity', 'stopPrice' or 'trailingDelta'
+
+                             - TAKE_PROFIT: 'quantity', 'stopPrice' or 'trailingDelta'
+
+                             - TAKE_PROFIT_LIMIT: 'timeInForce', 'price', 'quantity', 'stopPrice' or 'trailingDelta'
+        :type order_type: str
+        :param price: Price e.g. 10.223
+        :type price: float
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
+        :param quantity: Amount e.g. 20.5
+        :type quantity: float
+        :param quote_order_qty: Amount e.g. 20.5
+        :type quote_order_qty: float
+        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
+                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
+        :type recv_window: int
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
+        :param self_trade_prevention_mode: The allowed enums for `selfTradePreventionMode` is dependent on what is
+                                           configured on the symbol. The possible supported values are `EXPIRE_TAKER`,
+                                           `EXPIRE_MAKER`, `EXPIRE_BOTH`, `NONE`.
+        :type self_trade_prevention_mode: str
+        :param side: `BUY` or `SELL`
+        :type side: str
+        :param strategy_id: Arbitrary numeric value identifying the order within an order strategy.
+        :type strategy_id: int
+        :param strategy_type: Arbitrary numeric value identifying the order strategy. Values smaller than 1000000 are
+                              reserved and cannot be used.
+        :type strategy_type: int
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param stop_price: Trigger order price rules for STOP_LOSS/TAKE_PROFIT orders:
+
+                             - `stopPrice` must be above market price: STOP_LOSS BUY, TAKE_PROFIT SELL
+
+                             - stopPrice must be below market price: STOP_LOSS SELL, TAKE_PROFIT BUY
+        :type stop_price: float
+        :param symbol: The symbol you want to trade
+        :type symbol: str
+        :param test: Test order placement. Validates new order parameters and verifies your signature but does not
+                     send the order into the matching engine.
+        :type test: bool
+        :param time_in_force: Available timeInForce options, setting how long the order should be active before
+                              expiration:
+
+                                - GTC: Good 'til Canceled – the order will remain on the book until you cancel it, or
+                                  the order is completely filled.
+
+                                - IOC: Immediate or Cancel – the order will be filled for as much as possible, the
+                                  unfilled quantity immediately expires.
+
+                                - FOK: Fill or Kill – the order will expire unless it cannot be immediately filled for
+                                  the entire quantity.
+
+                              `MARKET` orders using `quoteOrderQty` follow `LOT_SIZE` filter rules. The order will
+                              execute a quantity that has notional value as close as possible to requested
+                              `quoteOrderQty`.
+        :type time_in_force: str
+        :param trailing_delta: For more details on SPOT implementation on trailing stops, please refer to
+                               `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
+        :type trailing_delta: int
+
+        :return: `False` (bool) or `orig_client_order_id` (str)
+
+        Message sent:
+
+        .. code-block:: json
+
+            {
+              "id": "99de1036-b5e2-4e0f-9b5c-13d751c93a1a",
+              "method": "order.cancelReplace",
+              "params": {
+                "symbol": "BTCUSDT",
+                "cancelReplaceMode": "ALLOW_FAILURE",
+                "cancelOrigClientOrderId": "4d96324ff9d44481926157",
+                "side": "SELL",
+                "type": "LIMIT",
+                "timeInForce": "GTC",
+                "price": "23416.10000000",
+                "quantity": "0.00847000",
+                "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
+                "signature": "7028fdc187868754d25e42c37ccfa5ba2bab1d180ad55d4c3a7e2de643943dc5",
+                "timestamp": 1660813156900
+              }
+            }
+
+        Response
+
+        .. code-block:: json
+
+            {
+              "id": "99de1036-b5e2-4e0f-9b5c-13d751c93a1a",
+              "status": 200,
+              "result": {
+                "cancelResult": "SUCCESS",
+                "newOrderResult": "SUCCESS",
+                // Format is identical to "order.cancel" format.
+                // Some fields are optional and are included only for orders that set them.
+                "cancelResponse": {
+                  "symbol": "BTCUSDT",
+                  "origClientOrderId": "4d96324ff9d44481926157",  // cancelOrigClientOrderId from request
+                  "orderId": 125690984230,
+                  "orderListId": -1,
+                  "clientOrderId": "91fe37ce9e69c90d6358c0",      // cancelNewClientOrderId from request
+                  "transactTime": 1684804350068,
+                  "price": "23450.00000000",
+                  "origQty": "0.00847000",
+                  "executedQty": "0.00001000",
+                  "cummulativeQuoteQty": "0.23450000",
+                  "status": "CANCELED",
+                  "timeInForce": "GTC",
+                  "type": "LIMIT",
+                  "side": "SELL",
+                  "selfTradePreventionMode": "NONE"
+                },
+                // Format is identical to "order.place" format, affected by "newOrderRespType".
+                // Some fields are optional and are included only for orders that set them.
+                "newOrderResponse": {
+                  "symbol": "BTCUSDT",
+                  "orderId": 12569099453,
+                  "orderListId": -1,
+                  "clientOrderId": "bX5wROblo6YeDwa9iTLeyY",      // newClientOrderId from request
+                  "transactTime": 1660813156959,
+                  "price": "23416.10000000",
+                  "origQty": "0.00847000",
+                  "executedQty": "0.00000000",
+                  "cummulativeQuoteQty": "0.00000000",
+                  "status": "NEW",
+                  "timeInForce": "GTC",
+                  "type": "LIMIT",
+                  "side": "SELL",
+                  "workingTime": 1660813156959,
+                  "fills": [],
+                  "selfTradePreventionMode": "NONE"
+                }
+              },
+              "rateLimits": [
+                {
+                  "rateLimitType": "ORDERS",
+                  "interval": "SECOND",
+                  "intervalNum": 10,
+                  "limit": 50,
+                  "count": 1
+                },
+                {
+                  "rateLimitType": "ORDERS",
+                  "interval": "DAY",
+                  "intervalNum": 1,
+                  "limit": 160000,
+                  "count": 1
+                },
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 6000,
+                  "count": 1
+                }
+              ]
+            }
+        """
+        if stream_id is None:
+            if stream_label is not None:
+                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self._manager.get_the_one_active_websocket_api()
+            if stream_id is None:
+                logger.critical(f"BinanceWebSocketApiApi.create_order() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
+
+        new_client_order_id = new_client_order_id if new_client_order_id is not None else str(self._manager.get_request_id())
+        params = {"apiKey": self._manager.stream_list[stream_id]['api_key'],
+                  "newClientOrderId": new_client_order_id,
+                  "quantity": quantity,
+                  "side": side.upper(),
+                  "symbol": symbol.upper(),
+                  "timestamp": self._manager.get_timestamp(),
+                  "type": order_type}
+
+        if iceberg_qty is not None:
+            params['icebergQty'] = str(iceberg_qty)
+        if new_order_resp_type is not None:
+            params['newOrderRespType'] = new_order_resp_type
+        if (order_type.upper() == "LIMIT" or
+                order_type.upper() == "LIMIT_MAKER" or
+                order_type.upper() == "STOP_LOSS_LIMIT" or
+                order_type.upper() == "TAKE_PROFIT_LIMIT"):
+            params['price'] = str(price)
+        if (order_type.upper() == "LIMIT" or
+                order_type.upper() == "STOP_LOSS_LIMIT" or
+                order_type.upper() == "TAKE_PROFIT_LIMIT"):
+            params['timeInForce'] = time_in_force
+        if quote_order_qty is not None:
+            params['quoteOrderQty'] = str(quote_order_qty)
+            if quantity != 0.0:
+                logger.warning(f"BinanceWebSocketApiApi.create_order() - error_msg: By using the parameter "
+                               f"`quoteOrderQty` the use of `quantity` is suppressed!")
+            del params['quantity']
+        if recv_window is not None:
+            params['recvWindow'] = str(recv_window)
+        if self_trade_prevention_mode is not None:
+            params['selfTradePreventionMode'] = self_trade_prevention_mode
+        if stop_price is not None:
+            params['stopPrice'] = str(stop_price)
+            if trailing_delta is not None:
+                logger.warning(f"BinanceWebSocketApiApi.create_order() - error_msg: By using the parameter `stopPrice` "
+                               f"the use of `trailingDelta` is suppressed!")
+        elif trailing_delta is not None:
+            params['trailingDelta'] = str(trailing_delta)
+        if strategy_id is not None:
+            params['strategyId'] = str(strategy_id)
+        if strategy_type is not None:
+            params['strategyType'] = str(strategy_type)
+
+        method = "order.test" if test is True else "order.place"
+        api_secret = self._manager.stream_list[stream_id]['api_secret']
+        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
+        params['signature'] = self._manager.generate_signature(api_secret=api_secret, data=params)
+
+        payload = {"id": request_id,
+                   "method": method,
+                   "params": params}
+
+        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if process_response is not None:
+            with self._manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self._manager.process_response[request_id] = entry
+
+        if return_response is True:
+            with self._manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self._manager.return_response[request_id] = entry
+            self._manager.return_response[request_id]['event_return_response'].wait()
+            with self._manager.return_response_lock:
+                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                del self._manager.return_response[request_id]
+            return response_value
+
+        return new_client_order_id
+
     def cancel_open_orders(self, process_response=None, return_response: bool = False, symbol: str = None,
                            recv_window: int = None, request_id: str = None, stream_id: str = None,
                            stream_label: str = None) -> bool:
@@ -477,7 +826,7 @@ class BinanceWebSocketApiApiSpot(object):
 
         Official documentation:
 
-            - https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-api.md#place-new-order-trade
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#place-new-order-trade
 
         :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
                             `icebergQty`. An order with an `icebergQty` must have `timeInForce` set to `GTC`.
@@ -1506,10 +1855,19 @@ class BinanceWebSocketApiApiSpot(object):
             return response_value
 
         return True
-
-    def get_klines(self, process_response=None, end_time: int = None, interval: str = None, limit: int = None,
-                   request_id: str = None, return_response: bool = False, start_time: int = None, stream_id: str = None,
-                   stream_label: str = None, symbol: str = None, time_zone: str = None) -> bool:
+# 1s, 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
+    def get_klines(self, process_response=None,
+                   end_time: int = None,
+                   interval: Optional[Literal['1s', '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h',
+                                              '1d', '3d', '1w', '1M']] = None,
+                   limit: int = None,
+                   request_id: str = None,
+                   return_response: bool = False,
+                   start_time: int = None,
+                   stream_id: str = None,
+                   stream_label: str = None,
+                   symbol: str = None,
+                   time_zone: str = None) -> bool:
         """
         Get klines (candlestick bars).
 
@@ -2508,9 +2866,19 @@ class BinanceWebSocketApiApiSpot(object):
         return True
 
 
-    def get_ui_klines(self, process_response=None, end_time: int = None, interval: str = None, limit: int = None,
-                   request_id: str = None, return_response: bool = False, start_time: int = None, stream_id: str = None,
-                   stream_label: str = None, symbol: str = None, time_zone: str = None) -> bool:
+    def get_ui_klines(self,
+                      process_response=None,
+                      end_time: int = None,
+                      interval: Optional[Literal['1s', '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h',
+                                                 '12h', '1d', '3d', '1w', '1M']] = None,
+                      limit: int = None,
+                      request_id: str = None,
+                      return_response: bool = False,
+                      start_time: int = None,
+                      stream_id: str = None,
+                      stream_label: str = None,
+                      symbol: str = None,
+                      time_zone: str = None) -> bool:
         """
         Get klines (candlestick bars) optimized for presentation.
 

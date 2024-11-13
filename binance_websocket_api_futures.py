@@ -7,8 +7,8 @@ import asyncio
 import logging
 import os
 
-api_key = "3CJ8NHXgSk6BQxc7bWnHHjkxARxlgwJBZOmUQzmmsA9JV2sdpj52fJuwXAMyMlOX"
-api_secret = "js50rXE3hb7LFQV0dIQlX3s2qrxlvksqlnY3wH6s3rop78EkqmX7EyqMMvwwp6Ty"
+api_key = ""
+api_secret = ""
 market = "BTCUSDC"
 
 async def binance_api(ubwa):

@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.9.0.dev (development stage/unreleased/unstable)
 ### Added
 - New `Websocket API Spot` functions:
+  - `manager.api.spot.cancel_and_replace_order()`
   - `manager.api.spot.get_aggregate_trades()`
   - `manager.api.spot.get_historical_trades()`
   - `manager.api.spot.get_klines()`

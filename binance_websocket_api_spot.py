@@ -7,8 +7,8 @@ import asyncio
 import logging
 import os
 
-api_key = "3CJ8NHXgSk6BQxc7bWnHHjkxARxlgwJBZOmUQzmmsA9JV2sdpj52fJuwXAMyMlOX"
-api_secret = "js50rXE3hb7LFQV0dIQlX3s2qrxlvksqlnY3wH6s3rop78EkqmX7EyqMMvwwp6Ty"
+api_key = ""
+api_secret = ""
 market = "BTCUSDT"
 
 async def binance_api(ubwa):
@@ -33,8 +33,8 @@ async def binance_api(ubwa):
     ubwa.api.spot.get_order_book(stream_id=api_stream, symbol=market, limit=2)
     ubwa.api.spot.get_aggregate_trades(stream_id=api_stream, symbol=market)
     ubwa.api.spot.get_historical_trades(stream_id=api_stream, symbol=market)
-    ubwa.api.spot.get_klines(stream_id=api_stream, symbol=market)
-    ubwa.api.spot.get_ui_klines(stream_id=api_stream, symbol=market)
+    ubwa.api.spot.get_klines(stream_id=api_stream, symbol=market, interval="1m")
+    ubwa.api.spot.get_ui_klines(stream_id=api_stream, symbol=market, interval="1d")
     ubwa.api.spot.get_recent_trades(stream_id=api_stream, symbol=market)
     ubwa.api.spot.cancel_order(stream_id=api_stream, symbol=market, orig_client_order_id=orig_client_order_id)
     ubwa.api.spot.get_open_orders(stream_id=api_stream, symbol=market)
