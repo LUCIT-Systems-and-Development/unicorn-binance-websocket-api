@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   - `manager.api.spot.get_klines()`
   - `manager.api.spot.get_ui_klines()`  
   - `manager.api.spot.get_recent_trades()`
+  - `manager.api.spot.get_unfilled_order_count()`
 - Support for `Websocket API Futures`:
   - `manager.api.futures.get_aggregate_trades()`
 ### Changed

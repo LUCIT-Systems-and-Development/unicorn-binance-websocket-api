@@ -52,6 +52,27 @@ async def binance_api(ubwa):
     print(f"Orderbook, lastUpdateId={order_book['result']['lastUpdateId']}: {order_book['result']['asks']}, "
           f"{order_book['result']['bids']}\r\n")
 
+    klines = ubwa.api.spot.get_klines(stream_id=api_stream, symbol=market, interval="1m", return_response=True)
+    print(f"A few klines: {klines['result'][:5]}\r\n")
+
+    ui_klines = ubwa.api.spot.get_ui_klines(stream_id=api_stream, symbol=market, interval="1d", return_response=True)
+    print(f"A few ui_klines: {ui_klines['result'][:5]}\r\n")
+
+    ubwa.api.spot.get_open_orders(stream_id=api_stream, symbol=market)
+
+    ubwa.api.spot.get_open_orders(stream_id=api_stream)
+
+    replaced_client_order_id = ubwa.api.spot.cancel_and_replace_order(stream_id=api_stream, price=1.1,
+                                                                      order_type="LIMIT",
+                                                                      quantity=15.0, side="SELL", symbol=market,
+                                                                      cancel_orig_client_order_id=orig_client_order_id)
+
+    ubwa.api.spot.cancel_order(stream_id=api_stream, symbol=market, orig_client_order_id=replaced_client_order_id)
+
+    ubwa.api.spot.cancel_open_orders(stream_id=api_stream, symbol=market)
+
+    ubwa.api.spot.get_order(stream_id=api_stream, symbol=market, orig_client_order_id=replaced_client_order_id)
+
     aggregate_trades = ubwa.api.spot.get_aggregate_trades(stream_id=api_stream, symbol=market, return_response=True)
     print(f"aggregate_trades: {aggregate_trades['result'][:5]}\r\n")
 
@@ -61,32 +82,7 @@ async def binance_api(ubwa):
     recent_trades = ubwa.api.spot.get_recent_trades(stream_id=api_stream, symbol=market, return_response=True)
     print(f"recent_trades: {recent_trades['result'][:5]}\r\n")
 
-    klines = ubwa.api.spot.get_klines(stream_id=api_stream, symbol=market, interval="1m", return_response=True)
-    print(f"A few klines: {klines['result'][:5]}\r\n")
-
-    ui_klines = ubwa.api.spot.get_ui_klines(stream_id=api_stream, symbol=market, interval="1d", return_response=True)
-    print(f"A few ui_klines: {ui_klines['result'][:5]}\r\n")
-
-    replaced_client_order_id = ubwa.api.spot.cancel_and_replace_order(stream_id=api_stream, price=1.1,
-                                                                      order_type="LIMIT",
-                                                                      quantity=15.0, side="SELL", symbol=market,
-                                                                      cancel_orig_client_order_id=orig_client_order_id)
-
-    ubwa.api.spot.cancel_order(stream_id=api_stream, symbol=market, orig_client_order_id=replaced_client_order_id)
-
-    ubwa.api.spot.get_open_orders(stream_id=api_stream, symbol=market)
-
-    ubwa.api.spot.get_open_orders(stream_id=api_stream)
-
-    ubwa.api.spot.cancel_open_orders(stream_id=api_stream, symbol=market)
-
-    ubwa.api.spot.get_order(stream_id=api_stream, symbol=market, orig_client_order_id=replaced_client_order_id)
-
-    print(f"Finished! Waiting for responses:")
-    await asyncio.sleep(5)
-
     print(f"Stopping!")
-    ubwa.stop_manager()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG,

@@ -40,7 +40,6 @@ class BinanceWebSocketApiApiSpot(object):
     stream restart, the payload is submitted as soon the stream is online again.
 
     Todo:
-        - https://binance-docs.github.io/apidocs/websocket_api/en/#current-average-price
         - https://binance-docs.github.io/apidocs/websocket_api/en/#24hr-ticker-price-change-statistics
         - https://binance-docs.github.io/apidocs/websocket_api/en/#trading-day-ticker
         - https://binance-docs.github.io/apidocs/websocket_api/en/#rolling-window-price-change-statistics
@@ -62,6 +61,7 @@ class BinanceWebSocketApiApiSpot(object):
         - https://binance-docs.github.io/apidocs/websocket_api/en/#account-prevented-matches-user_data
         - https://binance-docs.github.io/apidocs/websocket_api/en/#account-allocations-user_data
         - https://binance-docs.github.io/apidocs/websocket_api/en/#account-commission-rates-user_data
+        - https://binance-docs.github.io/apidocs/websocket_api/en/#user-data-stream-requests
         - https://binance-docs.github.io/apidocs/websocket_api/en/#ping-user-data-stream-user_stream
         - https://binance-docs.github.io/apidocs/websocket_api/en/#stop-user-data-stream-user_stream
 
@@ -110,7 +110,7 @@ class BinanceWebSocketApiApiSpot(object):
                                  stream_label: str = None,
                                  symbol: str = None,
                                  time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
-                                 trailing_delta: int = None) -> Union[str, dict, bool]:
+                                 trailing_delta: int = None) -> Union[str, dict, bool, tuple]:
         """
         Cancel an existing order and immediately place a new order instead of the canceled one.
 
@@ -243,7 +243,7 @@ class BinanceWebSocketApiApiSpot(object):
                                `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
         :type trailing_delta: int
 
-        :return: `False` (bool) or `orig_client_order_id` (str)
+        :return: str, dict, bool or tuple
 
         Message sent:
 
@@ -434,7 +434,7 @@ class BinanceWebSocketApiApiSpot(object):
             with self._manager.return_response_lock:
                 response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
-            return response_value
+            return new_client_order_id, response_value
 
         return new_client_order_id
 
@@ -467,7 +467,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
         :type stream_label: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message Sent:
 
@@ -684,7 +685,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_label: str
         :param symbol: The symbol of the order you want to cancel
         :type symbol: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -819,7 +821,7 @@ class BinanceWebSocketApiApiSpot(object):
                      symbol: str = None,
                      time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = "GTC",
                      test: bool = False,
-                     trailing_delta: int = None) -> Union[str, dict, bool]:
+                     trailing_delta: int = None) -> Union[str, dict, bool, tuple]:
         """
         Create a new order.
 
@@ -922,7 +924,7 @@ class BinanceWebSocketApiApiSpot(object):
                                `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
         :type trailing_delta: int
 
-        :return: `False` (bool) or `orig_client_order_id` (str)
+        :return: str, dict, bool or tuple
 
         Message sent:
 
@@ -1063,7 +1065,7 @@ class BinanceWebSocketApiApiSpot(object):
             with self._manager.return_response_lock:
                 response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
-            return response_value
+            return new_client_order_id, response_value
 
         return new_client_order_id
 
@@ -1191,7 +1193,7 @@ class BinanceWebSocketApiApiSpot(object):
                                `Trailing Stop FAQ <https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md>`__
         :type trailing_delta: int
 
-        :return: `False` (bool) or `orig_client_order_id` (str)
+        :return: str, dict, bool or tuple
 
         Message sent:
 
@@ -1288,7 +1290,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
         :type stream_label: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -1452,7 +1455,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_label: str
         :param symbol: The selected symbol
         :type symbol: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -1546,7 +1550,7 @@ class BinanceWebSocketApiApiSpot(object):
         return True
 
 
-    def get_current_average_price(self, process_response=None, recv_window: int = None, request_id: str = None,
+    def get_current_average_price(self, process_response=None, request_id: str = None,
                                   return_response: bool = False, stream_id: str = None, stream_label: str = None,
                                   symbol: str = None) -> Union[str, dict, bool]:
         """
@@ -1561,10 +1565,6 @@ class BinanceWebSocketApiApiSpot(object):
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
         :type process_response: function
-        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
-                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
-                            The value cannot be greater than 60000.
-        :type recv_window: int
         :param request_id: Provide a custom id for the request
         :type request_id: str
         :param return_response: If `True` the response of the API request is waited for and returned directly.
@@ -1577,7 +1577,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_label: str
         :param symbol: Specifiy the symbol!
         :type symbol: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message Sent:
 
@@ -1627,13 +1628,9 @@ class BinanceWebSocketApiApiSpot(object):
         params = {}
         if symbol is not None:
             params['symbol'] = str(symbol.upper())
-        if recv_window is not None:
-            params['recvWindow'] = str(recv_window)
 
         method = "avgPrice"
-
         request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
-
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
@@ -1698,7 +1695,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type symbol: str
         :param symbols: Describe multiple symbols.
         :type symbols: list
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -1883,7 +1881,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_label: str
         :param symbol: The selected symbol
         :type symbol: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -1946,7 +1945,6 @@ class BinanceWebSocketApiApiSpot(object):
             params['fromId'] = str(from_id)
 
         request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
-
         payload = {"id": request_id,
                    "method": "trades.historical",
                    "params": params}
@@ -1970,7 +1968,7 @@ class BinanceWebSocketApiApiSpot(object):
             return response_value
 
         return True
-# 1s, 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
+
     def get_klines(self, process_response=None,
                    end_time: int = None,
                    interval: Optional[Literal['1s', '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h',
@@ -2033,7 +2031,8 @@ class BinanceWebSocketApiApiSpot(object):
 
                           Note: start_time and end_time are always interpreted in UTC, regardless of time_zone.
         :type time_zone: int
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -2155,7 +2154,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
         :type stream_label: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -2267,7 +2267,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_label: str
         :param symbol: If omitted, open orders for all symbols are returned.
         :type symbol: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message Sent:
 
@@ -2413,7 +2414,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_label: str
         :param symbol: The symbol you want to trade
         :type symbol: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -2567,7 +2569,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_label: str
         :param symbol: The selected symbol
         :type symbol: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -2722,7 +2725,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_label: str
         :param symbol: The selected symbol
         :type symbol: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -2829,7 +2833,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
         :type stream_label: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -2917,7 +2922,8 @@ class BinanceWebSocketApiApiSpot(object):
         :type stream_id: str
         :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
         :type stream_label: str
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -3036,7 +3042,8 @@ class BinanceWebSocketApiApiSpot(object):
 
                           Note: start_time and end_time are always interpreted in UTC, regardless of time_zone.
         :type time_zone: int
-        :return: bool
+
+        :return: str, dict, bool
 
         Message sent:
 
@@ -3114,6 +3121,119 @@ class BinanceWebSocketApiApiSpot(object):
 
         payload = {"id": request_id,
                    "method": "uiKlines",
+                   "params": params}
+
+        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if process_response is not None:
+            with self._manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self._manager.process_response[request_id] = entry
+
+        if return_response is True:
+            with self._manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self._manager.return_response[request_id] = entry
+            self._manager.return_response[request_id]['event_return_response'].wait()
+            with self._manager.return_response_lock:
+                response_value = self._manager.return_response[request_id]['response_value']
+                del self._manager.return_response[request_id]
+            return response_value
+
+        return True
+
+    def get_unfilled_order_count(self, process_response=None, request_id: str = None, return_response: bool = False,
+                                 stream_id: str = None, stream_label: str = None) -> Union[str, dict, bool]:
+        """
+        Query your current unfilled order count for all intervals.
+
+        Official documentation:
+
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#unfilled-order-count-user_data
+
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+
+        :return: str, dict, bool
+
+        Message sent:
+
+        .. code-block:: json
+
+            {
+              "id": "d3783d8d-f8d1-4d2c-b8a0-b7596af5a664",
+              "method": "account.rateLimits.orders",
+              "params": {
+                "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A",
+                "signature": "76289424d6e288f4dc47d167ac824e859dabf78736f4348abbbac848d719eb94",
+                "timestamp": 1660801839500
+              }
+            }
+
+        Response:
+
+        .. code-block:: json
+
+            {
+              "id": "d3783d8d-f8d1-4d2c-b8a0-b7596af5a664",
+              "status": 200,
+              "result": [
+                {
+                  "rateLimitType": "ORDERS",
+                  "interval": "SECOND",
+                  "intervalNum": 10,
+                  "limit": 50,
+                  "count": 0
+                },
+                {
+                  "rateLimitType": "ORDERS",
+                  "interval": "DAY",
+                  "intervalNum": 1,
+                  "limit": 160000,
+                  "count": 0
+                }
+              ],
+              "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 6000,
+                  "count": 40
+                }
+              ]
+            }
+        """
+        if stream_id is None:
+            if stream_label is not None:
+                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self._manager.get_the_one_active_websocket_api()
+            if stream_id is None:
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_unfilled_order_count() - error_msg: No `stream_id` "
+                                f"provided or found!")
+                return False
+
+        params = {"apiKey": self._manager.stream_list[stream_id]['api_key']}
+        method = "account.rateLimits.orders"
+        api_secret = self._manager.stream_list[stream_id]['api_secret']
+        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
+        params['signature'] = self._manager.generate_signature(api_secret=api_secret, data=params)
+
+        payload = {"id": request_id,
+                   "method": method,
                    "params": params}
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
