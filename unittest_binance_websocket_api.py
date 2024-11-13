@@ -634,19 +634,26 @@ class TestBinanceOrgManager(unittest.TestCase):
                                                                         return_response=True)
         print(f"current_average_price: {current_average_price}\r\n")
         order_book = ubwam.api.spot.get_order_book(stream_id=api_stream, symbol=market, limit=2, return_response=True)
-        print(f"Orderbook: {order_book}\r\n")
+        if type(order_book) is not bool:
+            print(f"Orderbook, lastUpdateId={order_book['result']['lastUpdateId']}: {order_book['result']['asks']}, "
+                  f"{order_book['result']['bids']}\r\n")
         aggregate_trades = ubwam.api.spot.get_aggregate_trades(stream_id=api_stream, symbol=market, return_response=True)
-        print(f"aggregate_trades: {aggregate_trades['result'][:5]}\r\n")
+        if type(aggregate_trades) is not bool:
+            print(f"aggregate_trades: {aggregate_trades['result'][:5]}\r\n")
         historical_trades = ubwam.api.spot.get_historical_trades(stream_id=api_stream, symbol=market,
                                                                  return_response=True)
-        print(f"historical_trades: {historical_trades['result'][:5]}\r\n")
+        if type(historical_trades) is not bool:
+            print(f"historical_trades: {historical_trades['result'][:5]}\r\n")
         recent_trades = ubwam.api.spot.get_recent_trades(stream_id=api_stream, symbol=market, return_response=True)
-        print(f"recent_trades: {recent_trades['result'][:5]}\r\n")
+        if type(recent_trades) is not bool:
+            print(f"recent_trades: {recent_trades['result'][:5]}\r\n")
         klines = ubwam.api.spot.get_klines(stream_id=api_stream, symbol=market, interval="1m", return_response=True)
-        print(f"A few klines: {klines['result'][:5]}\r\n")
+        if type(klines) is not bool:
+            print(f"A few klines: {klines['result'][:5]}\r\n")
         ui_klines = ubwam.api.spot.get_ui_klines(stream_id=api_stream, symbol=market, interval="1d",
                                                  return_response=True)
-        print(f"A few ui_klines: {ui_klines['result'][:5]}\r\n")
+        if type(ui_klines) is not bool:
+            print(f"A few ui_klines: {ui_klines['result'][:5]}\r\n")
         ubwam.api.spot.get_listen_key(stream_id=api_stream)
         ubwam.api.spot.get_server_time(stream_id=api_stream)
         ubwam.api.spot.get_account_status(stream_id=api_stream)
