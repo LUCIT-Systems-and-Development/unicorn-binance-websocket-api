@@ -22,11 +22,9 @@
 from .connection import BinanceWebSocketApiConnection
 from .exceptions import *
 from unicorn_fy.unicorn_fy import UnicornFy
-
 import asyncio
 import orjson
 import logging
-
 
 __logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 

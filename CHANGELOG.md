@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - New `Websocket API Spot` functions:
   - `manager.api.spot.cancel_and_replace_order()`
   - `manager.api.spot.get_aggregate_trades()`
+  - `manager.api.spot.get_current_average_price()`
   - `manager.api.spot.get_historical_trades()`
   - `manager.api.spot.get_klines()`
   - `manager.api.spot.get_ui_klines()`  
@@ -24,6 +25,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - ujson has been replaced by orjson
 - Websocket API functions are no longer available under `manager.api` but under `manager.api.spot`. In addition, there 
   is now also `manager.api.futures`.
+- No more use of deepcopy in ws api (faster!)
 
 ## 2.9.0
 ### Added

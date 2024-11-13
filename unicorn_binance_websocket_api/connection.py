@@ -21,14 +21,12 @@
 
 from .exceptions import *
 from urllib.parse import urlparse
-
 import asyncio
 import copy
 import logging
 import socks  # PySocks https://pypi.org/project/PySocks/
 import sys
 import websockets
-
 
 __logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 

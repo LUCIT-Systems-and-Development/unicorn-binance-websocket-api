@@ -19,18 +19,9 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-from typing import Optional, Union
-try:
-    # Todo remove!
-    # python <=3.7 support
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
-
-import copy
+from typing import Optional, Union, Literal
 import logging
 import threading
-
 
 __logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 
@@ -441,7 +432,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -455,7 +446,7 @@ class BinanceWebSocketApiApiSpot(object):
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#cancel-open-orders-trade
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#cancel-open-orders-trade
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
@@ -631,7 +622,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -649,7 +640,7 @@ class BinanceWebSocketApiApiSpot(object):
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#cancel-order-trade
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#cancel-order-trade
 
         :param cancel_restrictions: Supported values:
 
@@ -799,7 +790,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -1070,7 +1061,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -1106,7 +1097,7 @@ class BinanceWebSocketApiApiSpot(object):
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#test-new-order-trade
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#test-new-order-trade
 
         :param iceberg_qty: Any `LIMIT` or `LIMIT_MAKER` order can be made into an iceberg order by specifying the
                             `icebergQty`. An order with an `icebergQty` must have `timeInForce` set to `GTC`.
@@ -1409,7 +1400,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -1548,7 +1539,120 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
+                del self._manager.return_response[request_id]
+            return response_value
+
+        return True
+
+
+    def get_current_average_price(self, process_response=None, recv_window: int = None, request_id: str = None,
+                                  return_response: bool = False, stream_id: str = None, stream_label: str = None,
+                                  symbol: str = None) -> Union[str, dict, bool]:
+        """
+        Get current average price for a symbol.
+
+        Weight(IP): 2
+
+        Official documentation:
+
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#current-average-price
+
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
+        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
+                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
+        :type recv_window: int
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param symbol: Specifiy the symbol!
+        :type symbol: str
+        :return: bool
+
+        Message Sent:
+
+        .. code-block:: json
+
+            {
+              "id": "ddbfb65f-9ebf-42ec-8240-8f0f91de0867",
+              "method": "avgPrice",
+              "params": {
+                "symbol": "BNBBTC"
+              }
+            }
+
+        Response:
+
+        .. code-block:: json
+
+            {
+              "id": "ddbfb65f-9ebf-42ec-8240-8f0f91de0867",
+              "status": 200,
+              "result": {
+                "mins": 5,                 // Average price interval (in minutes)
+                "price": "0.01378135",     // Average price
+                "closeTime": 1694061154503 // Last trade time
+              },
+              "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 6000,
+                  "count": 2
+                }
+              ]
+            }
+        """
+        if stream_id is None:
+            if stream_label is not None:
+                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self._manager.get_the_one_active_websocket_api()
+            if stream_id is None:
+                logger.critical(f"BinanceWebSocketApiApiSpot.get_current_average_price() - error_msg: No `stream_id` "
+                                f"provided or found!")
+                return False
+
+        params = {}
+        if symbol is not None:
+            params['symbol'] = str(symbol.upper())
+        if recv_window is not None:
+            params['recvWindow'] = str(recv_window)
+
+        method = "avgPrice"
+
+        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
+
+        payload = {"id": request_id,
+                   "method": method,
+                   "params": params}
+
+        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if process_response is not None:
+            with self._manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self._manager.process_response[request_id] = entry
+
+        if return_response is True:
+            with self._manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self._manager.return_response[request_id] = entry
+            self._manager.return_response[request_id]['event_return_response'].wait()
+            with self._manager.return_response_lock:
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -1567,11 +1671,11 @@ class BinanceWebSocketApiApiSpot(object):
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#exchange-information
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#exchange-information
 
         :param permissions: Filter symbols by permissions. `permissions` accepts either a list of permissions, or a
                             single permission name: "SPOT".
-                            `Available Permissions <https://developers.binance.com/docs/binance-trading-api/websocket_api#permissions>`__
+                            `Available Permissions <https://binance-docs.github.io/apidocs/websocket_api/en/#exchange-information>`__
         :type permissions: list
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
@@ -1742,7 +1846,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -1861,7 +1965,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -2023,7 +2127,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -2118,7 +2222,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -2135,7 +2239,7 @@ class BinanceWebSocketApiApiSpot(object):
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#current-open-orders-user_data
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#current-open-orders-user_data
 
         If you need to continuously monitor order status updates, please consider using
         `WebSocket Streams <https://unicorn-binance-websocket-api.docs.lucit.tech/unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.create_stream>`__
@@ -2264,7 +2368,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -2278,7 +2382,7 @@ class BinanceWebSocketApiApiSpot(object):
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#query-order-user_data
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#query-order-user_data
 
         If both `orderId` and `origClientOrderId` parameters are specified, only `orderId` is used and
         `origClientOrderId` is ignored.
@@ -2417,7 +2521,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -2440,7 +2544,7 @@ class BinanceWebSocketApiApiSpot(object):
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#order-book
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#order-book
 
         :param limit: Default 100; max 5000.
         :type limit: int
@@ -2580,7 +2684,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -2697,7 +2801,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -2710,7 +2814,7 @@ class BinanceWebSocketApiApiSpot(object):
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#check-server-time
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#check-server-time
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
@@ -2785,7 +2889,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -2798,7 +2902,7 @@ class BinanceWebSocketApiApiSpot(object):
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#test-connectivity
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#test-connectivity
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
@@ -2870,7 +2974,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 
@@ -3026,7 +3130,7 @@ class BinanceWebSocketApiApiSpot(object):
                 self._manager.return_response[request_id] = entry
             self._manager.return_response[request_id]['event_return_response'].wait()
             with self._manager.return_response_lock:
-                response_value = copy.deepcopy(self._manager.return_response[request_id]['response_value'])
+                response_value = self._manager.return_response[request_id]['response_value']
                 del self._manager.return_response[request_id]
             return response_value
 

@@ -29,7 +29,6 @@ try:
     from .licensing_exceptions import NoValidatedLucitLicense
 except ModuleNotFoundError:
     from unicorn_binance_websocket_api.licensing_exceptions import NoValidatedLucitLicense
-
 import cython
 import hashlib
 import hmac
@@ -40,7 +39,6 @@ import requests
 import threading
 import time
 import uuid
-
 
 __logger__: logging.getLogger = logging.getLogger("lucit_licensing_python")
 

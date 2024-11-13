@@ -34,14 +34,7 @@ from datetime import datetime, timezone
 from flask import Flask, redirect
 from flask_restful import Api
 from operator import itemgetter
-from typing import Optional, Union, Callable, List, Set
-try:
-    # Todo: Remove!
-    # python <=3.7 support
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
-
+from typing import Optional, Union, Callable, List, Set, Literal
 import asyncio
 import colorama
 import copy
@@ -62,7 +55,6 @@ import traceback
 import uuid
 import orjson
 import websockets
-
 
 __app_name__: str = "unicorn-binance-websocket-api"
 __version__: str = "2.8.1.dev"

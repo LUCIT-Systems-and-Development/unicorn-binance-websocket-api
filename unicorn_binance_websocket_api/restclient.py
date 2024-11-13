@@ -21,12 +21,10 @@
 
 from unicorn_binance_rest_api import BinanceRestApiManager
 from typing import Optional, Union, Tuple
-
 import logging
 import requests
 import threading
 import time
-
 
 __logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 

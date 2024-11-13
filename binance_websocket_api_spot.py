@@ -16,13 +16,17 @@ async def binance_api(ubwa):
             data = await ubwa.get_stream_data_from_asyncio_queue(stream_id=stream_id)
             print(f"Received data:\r\n{data}\r\n")
 
-    print(f"Starting Stream:")
+    print(f"Starting the stream:")
     api_stream = ubwa.create_stream(api=True,
                                     api_key=os.getenv('BINANCE_API_KEY'),
                                     api_secret=os.getenv('BINANCE_API_SECRET'),
                                     stream_label="Bobs Spot Websocket API",
                                     process_asyncio_queue=handle_socket_message)
-    print(f"Commands")
+
+    print(f"Executing API requests:")
+    current_average_price = ubwa.api.spot.get_current_average_price(stream_id=api_stream, symbol=market, return_response=True)
+    print(f"current_average_price: {current_average_price}\r\n")
+
     ubwa.api.spot.get_listen_key(stream_id=api_stream)
 
     ubwa.api.spot.get_server_time(stream_id=api_stream)
@@ -76,7 +80,7 @@ async def binance_api(ubwa):
 
     ubwa.api.spot.cancel_open_orders(stream_id=api_stream, symbol=market)
 
-    ubwa.api.spot.get_order(stream_id=api_stream, symbol=market, orig_client_order_id=orig_client_order_id)
+    ubwa.api.spot.get_order(stream_id=api_stream, symbol=market, orig_client_order_id=replaced_client_order_id)
 
     print(f"Finished! Waiting for responses:")
     await asyncio.sleep(5)

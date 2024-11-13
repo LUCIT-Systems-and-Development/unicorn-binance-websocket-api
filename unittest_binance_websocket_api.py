@@ -622,6 +622,7 @@ class TestBinanceOrgManager(unittest.TestCase):
 
     def test_live_api_ws(self):
         print(f"Test Websocket API ...")
+        market = "BUSDUSDT"
         ubwam = BinanceWebSocketApiManager(exchange='binance.com-testnet')
         api_stream = ubwam.create_stream(api=True,
                                          api_key=BINANCE_COM_TESTNET_API_KEY,
@@ -629,6 +630,24 @@ class TestBinanceOrgManager(unittest.TestCase):
                                          stream_label="Bobs Websocket API",
                                          process_stream_data=handle_socket_message)
         time.sleep(5)
+        current_average_price = ubwam.api.spot.get_current_average_price(stream_id=api_stream, symbol=market,
+                                                                        return_response=True)
+        print(f"current_average_price: {current_average_price}\r\n")
+        order_book = ubwam.api.spot.get_order_book(stream_id=api_stream, symbol=market, limit=2, return_response=True)
+        print(f"Orderbook, lastUpdateId={order_book['result']['lastUpdateId']}: {order_book['result']['asks']}, "
+              f"{order_book['result']['bids']}\r\n")
+        aggregate_trades = ubwam.api.spot.get_aggregate_trades(stream_id=api_stream, symbol=market, return_response=True)
+        print(f"aggregate_trades: {aggregate_trades['result'][:5]}\r\n")
+        historical_trades = ubwam.api.spot.get_historical_trades(stream_id=api_stream, symbol=market,
+                                                                 return_response=True)
+        print(f"historical_trades: {historical_trades['result'][:5]}\r\n")
+        recent_trades = ubwam.api.spot.get_recent_trades(stream_id=api_stream, symbol=market, return_response=True)
+        print(f"recent_trades: {recent_trades['result'][:5]}\r\n")
+        klines = ubwam.api.spot.get_klines(stream_id=api_stream, symbol=market, interval="1m", return_response=True)
+        print(f"A few klines: {klines['result'][:5]}\r\n")
+        ui_klines = ubwam.api.spot.get_ui_klines(stream_id=api_stream, symbol=market, interval="1d",
+                                                 return_response=True)
+        print(f"A few ui_klines: {ui_klines['result'][:5]}\r\n")
         ubwam.api.spot.get_listen_key(stream_id=api_stream)
         ubwam.api.spot.get_server_time(stream_id=api_stream)
         ubwam.api.spot.get_account_status(stream_id=api_stream)
@@ -639,11 +658,16 @@ class TestBinanceOrgManager(unittest.TestCase):
         ubwam.api.spot.ping(stream_id=api_stream)
         ubwam.api.spot.get_exchange_info(stream_id=api_stream, symbols=['BUSDUSDT'])
         ubwam.api.spot.get_order_book(stream_id=api_stream, symbol="BUSDUSDT", limit=2)
-        ubwam.api.spot.cancel_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
+        replaced_client_order_id = ubwam.api.spot.cancel_and_replace_order(stream_id=api_stream, price=1.1,
+                                                                          order_type="LIMIT",
+                                                                          quantity=15.0, side="SELL", symbol=market,
+                                                                          cancel_orig_client_order_id=orig_client_order_id)
+        ubwam.api.spot.cancel_order(stream_id=api_stream, symbol="BUSDUSDT",
+                                    orig_client_order_id=replaced_client_order_id)
         ubwam.api.spot.get_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
         ubwam.api.spot.get_open_orders(stream_id=api_stream)
         ubwam.api.spot.cancel_open_orders(stream_id=api_stream, symbol="BUSDUSDT")
-        ubwam.api.spot.get_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=orig_client_order_id)
+        ubwam.api.spot.get_order(stream_id=api_stream, symbol="BUSDUSDT", orig_client_order_id=replaced_client_order_id)
         time.sleep(5)
         ubwam.stop_manager()
 

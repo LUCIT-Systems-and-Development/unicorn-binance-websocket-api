@@ -20,9 +20,7 @@
 # All rights reserved.
 
 from flask_restful import Resource
-
 import logging
-
 
 __logger__: logging.getLogger = logging.getLogger("unicorn_binance_websocket_api")
 
