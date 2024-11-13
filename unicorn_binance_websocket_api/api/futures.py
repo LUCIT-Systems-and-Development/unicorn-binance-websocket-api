@@ -40,11 +40,8 @@ class BinanceWebSocketApiApiFutures(object):
     stream restart, the payload is submitted as soon the stream is online again.
 
     Todo:
-        - https://binance-docs.github.io/apidocs/futures/en/#position-information-v2-user_data-2
-        - https://binance-docs.github.io/apidocs/futures/en/#position-information-user_data
-        - https://binance-docs.github.io/apidocs/futures/en/#symbol-price-ticker-2
-        - https://binance-docs.github.io/apidocs/futures/en/#symbol-order-book-ticker-2
-
+        - https://binance-docs.github.io/apidocs/futures/en/#ping-user-data-stream-user_stream
+        - https://binance-docs.github.io/apidocs/futures/en/#stop-user-data-stream-user_stream
 
     Read these instructions to get started:
 
@@ -66,6 +63,8 @@ class BinanceWebSocketApiApiFutures(object):
                      return_response: bool = False, stream_id: str = None, symbol: str = None,
                      stream_label: str = None) -> Union[str, dict, bool]:
         """
+        Cancel order (TRADE)
+
         Cancel an active order.
 
         Either order_id or orig_client_order_id must be sent.
@@ -247,6 +246,8 @@ class BinanceWebSocketApiApiFutures(object):
                      working_type: Optional[Literal['MARK_PRICE', 'CONTRACT_PRICE']] = None) \
             -> Union[str, dict, bool, tuple]:
         """
+        New Order (TRADE)
+
         Create a new order.
 
         Weight: 0
@@ -526,12 +527,13 @@ class BinanceWebSocketApiApiFutures(object):
 
         return new_client_order_id
 
-
     def get_account_balance(self, process_response=None, recv_window: int = None, request_id: str = None,
                            return_response: bool = False, stream_id: str = None, stream_label: str = None,
                            version: Optional[Literal['v2']] = None) \
             -> Union[str, dict, bool]:
         """
+        Futures Account Balance(USER_DATA)
+
         Get your account balance.
 
         Weight: 5
@@ -657,11 +659,207 @@ class BinanceWebSocketApiApiFutures(object):
 
         return True
 
+    def get_account_position(self, process_response=None, recv_window: int = None, request_id: str = None,
+                             return_response: bool = False, stream_id: str = None, stream_label: str = None,
+                             symbol: str = None, version: Optional[Literal['v2']] = None) -> Union[str, dict, bool]:
+        """
+        Position Information(USER_DATA)
+
+        Please use with user data stream ACCOUNT_UPDATE to meet your timeliness and accuracy needs.
+
+        Weight: 5
+
+        Official documentation:
+
+            - https://binance-docs.github.io/apidocs/futures/en/#position-information-user_data
+            - https://binance-docs.github.io/apidocs/futures/en/#position-information-v2-user_data-2
+
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
+        :param recv_window: An additional parameter, `recvWindow`, may be sent to specify the number of milliseconds
+                            after timestamp the request is valid for. If `recvWindow` is not sent, it defaults to 5000.
+                            The value cannot be greater than 60000.
+        :type recv_window: int
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param symbol: The symbol to use in the query.
+        :type symbol: str
+        :param version: if None (default) method `account.status` is used, if 'v2' then `v2/account.status` is used.
+        :type version: str
+
+        :return: str, dict, bool
+
+        Message sent:
+
+        .. code-block:: json
+
+            {
+                "id": "605a6d20-6588-4cb9-afa0-b0ab087507ba",
+                "method": "account.position",
+                "params": {
+                    "apiKey": "xTaDyrmvA9XT2oBHHjy39zyPzKCvMdtH3b9q4xadkAg2dNSJXQGCxzui26L823W2",
+                    "symbol": "BTCUSDT",
+                    "timestamp": 1702920680303,
+                    "signature": "31ab02a51a3989b66c29d40fcdf78216978a60afc6d8dc1c753ae49fa3164a2a"
+                }
+            }
+
+        Response:
+
+        .. code-block:: json
+
+            {
+              "id": "605a6d20-6588-4cb9-afa0-b0ab087507ba",
+              "status": 200,
+              "result": [
+                {
+                    "entryPrice": "0.00000",
+                    "breakEvenPrice": "0.0",
+                    "marginType": "isolated",
+                    "isAutoAddMargin": "false",
+                    "isolatedMargin": "0.00000000",
+                    "leverage": "10",
+                    "liquidationPrice": "0",
+                    "markPrice": "6679.50671178",
+                    "maxNotionalValue": "20000000",
+                    "positionAmt": "0.000",
+                    "notional": "0",
+                    "isolatedWallet": "0",
+                    "symbol": "BTCUSDT",
+                    "unRealizedProfit": "0.00000000",
+                    "positionSide": "BOTH",
+                    "updateTime": 0
+                }
+            ],
+              "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 2400,
+                  "count": 20
+                }
+              ]
+            }
+
+            For Hedge position mode:
+
+            {
+              "id": "605a6d20-6588-4cb9-afa0-b0ab087507ba",
+              "status": 200,
+              "result": [
+                {
+                    "symbol": "BTCUSDT",
+                    "positionAmt": "0.001",
+                    "entryPrice": "22185.2",
+                    "breakEvenPrice": "0.0",
+                    "markPrice": "21123.05052574",
+                    "unRealizedProfit": "-1.06214947",
+                    "liquidationPrice": "19731.45529116",
+                    "leverage": "4",
+                    "maxNotionalValue": "100000000",
+                    "marginType": "cross",
+                    "isolatedMargin": "0.00000000",
+                    "isAutoAddMargin": "false",
+                    "positionSide": "LONG",
+                    "notional": "21.12305052",
+                    "isolatedWallet": "0",
+                    "updateTime": 1655217461579
+                },
+                {
+                    "symbol": "BTCUSDT",
+                    "positionAmt": "0.000",
+                    "entryPrice": "0.0",
+                    "breakEvenPrice": "0.0",
+                    "markPrice": "21123.05052574",
+                    "unRealizedProfit": "0.00000000",
+                    "liquidationPrice": "0",
+                    "leverage": "4",
+                    "maxNotionalValue": "100000000",
+                    "marginType": "cross",
+                    "isolatedMargin": "0.00000000",
+                    "isAutoAddMargin": "false",
+                    "positionSide": "SHORT",
+                    "notional": "0",
+                    "isolatedWallet": "0",
+                    "updateTime": 0
+                }
+            ],
+              "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 2400,
+                  "count": 20
+                }
+              ]
+            }
+        """
+        if stream_id is None:
+            if stream_label is not None:
+                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self._manager.get_the_one_active_websocket_api()
+            if stream_id is None:
+                logger.critical(f"BinanceWebSocketApiApiFutures.get_account_position() - error_msg: No `stream_id` "
+                                f"provided or found!")
+                return False
+
+        params = {"apiKey": self._manager.stream_list[stream_id]['api_key'],
+                  "timestamp": self._manager.get_timestamp()}
+
+        if recv_window is not None:
+            params['recvWindow'] = str(recv_window)
+        if symbol is not None:
+            params['symbol'] = str(symbol)
+
+        method = "account.position" if version is None else f"{version}/account.position"
+
+        api_secret = self._manager.stream_list[stream_id]['api_secret']
+        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
+        params['signature'] = self._manager.generate_signature(api_secret=api_secret, data=params)
+
+        payload = {"id": request_id,
+                   "method": method,
+                   "params": params}
+
+        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if process_response is not None:
+            with self._manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self._manager.process_response[request_id] = entry
+
+        if return_response is True:
+            with self._manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self._manager.return_response[request_id] = entry
+            self._manager.return_response[request_id]['event_return_response'].wait()
+            with self._manager.return_response_lock:
+                response_value = self._manager.return_response[request_id]['response_value']
+                del self._manager.return_response[request_id]
+            return response_value
+
+        return True
+
     def get_account_status(self, process_response=None, recv_window: int = None, request_id: str = None,
                            return_response: bool = False, stream_id: str = None, stream_label: str = None,
                            version: Optional[Literal['v2']] = None) \
             -> Union[str, dict, bool]:
         """
+        Account information (USER_DATA)
+
         Get current account information. User in single-asset/ multi-assets mode will see different value, see comments
         in response section for detail.
 
@@ -941,10 +1139,110 @@ class BinanceWebSocketApiApiFutures(object):
 
         return True
 
+    def get_listen_key(self, process_response=None, request_id: str = None, return_response: bool = False,
+                       stream_id: str = None, stream_label: str = None) -> Union[str, dict, bool]:
+        """
+        Start user data stream (USER STREAM)
+
+        Get a listenKey to start a UserDataStream.
+
+        Official documentation:
+
+            - https://binance-docs.github.io/apidocs/futures/en/#start-user-data-stream-user-stream
+
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+
+        :return: str, dict, bool
+
+        Message sent:
+
+        .. code-block:: json
+
+            {
+              "id": "d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0",
+              "method": "userDataStream.start",
+              "params": {
+                "apiKey": "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A"
+              }
+            }
+
+        Response:
+
+        .. code-block:: json
+
+            {
+              "id": "d3df8a61-98ea-4fe0-8f4e-0fcea5d418b0",
+              "status": 200,
+              "result": {
+                "listenKey": "xs0mRXdAKlIPDRFrlPcw0qI41Eh3ixNntmymGyhrhgqo7L6FuLaWArTD7RLP"
+              },
+               "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 2400,
+                  "count": 2
+                }
+              ]
+            }
+        """
+        if stream_id is None:
+            if stream_label is not None:
+                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self._manager.get_the_one_active_websocket_api()
+            if stream_id is None:
+                logger.critical(f"BinanceWebSocketApiApiFutures.get_listen_key() - error_msg: No `stream_id` provided "
+                                f"or found!")
+                return False
+
+        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
+        method = "userDataStream.start"
+        params = {"apiKey": self._manager.stream_list[stream_id]['api_key']}
+
+        payload = {"id": request_id,
+                   "method": method,
+                   "params": params}
+
+        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if process_response is not None:
+            with self._manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self._manager.process_response[request_id] = entry
+
+        if return_response is True:
+            with self._manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self._manager.return_response[request_id] = entry
+            self._manager.return_response[request_id]['event_return_response'].wait()
+            with self._manager.return_response_lock:
+                response_value = self._manager.return_response[request_id]['response_value']
+                del self._manager.return_response[request_id]
+            return response_value
+
+        return True
+
     def get_order(self, order_id: int = None, orig_client_order_id: str = None, process_response=None,
                   recv_window: int = None, request_id: str = None, return_response: bool = False, stream_id: str = None,
                   stream_label: str = None, symbol: str = None) -> Union[str, dict, bool]:
         """
+        Query Order (USER_DATA)
+
         Check execution status of an order.
 
         Official documentation:
@@ -1097,6 +1395,8 @@ class BinanceWebSocketApiApiFutures(object):
                        return_response: bool = False, stream_id: str = None, stream_label: str = None,
                        symbol: str = None) -> Union[str, dict, bool]:
         """
+        Order book
+
         Get current order book.
 
         Note that this request returns limited market depth.
@@ -1226,6 +1526,375 @@ class BinanceWebSocketApiApiFutures(object):
 
         return True
 
+
+    def get_server_time(self, process_response=None, request_id: str = None, return_response: bool = False,
+                        stream_id: str = None, stream_label: str = None) -> Union[str, dict, bool]:
+        """
+        Check server time
+
+        Test connectivity to the WebSocket API and get the current server time.
+
+        Official documentation:
+
+            - None
+
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+
+        :return: str, dict, bool
+
+        Message sent:
+
+        .. code-block:: json
+
+            {
+                "id": "187d3cb2-942d-484c-8271-4e2141bbadb1",
+                "method": "time"
+            }
+
+
+        Response:
+
+        .. code-block:: json
+
+            {
+                "id": "187d3cb2-942d-484c-8271-4e2141bbadb1",
+                "status": 200,
+                "result": {
+                    "serverTime": 1656400526260
+                },
+                "rateLimits": [{
+                    "rateLimitType": "REQUEST_WEIGHT",
+                    "interval": "MINUTE",
+                    "intervalNum": 1,
+                    "limit": 1200,
+                    "count": 1
+                }]
+            }
+        """
+        if stream_id is None:
+            if stream_label is not None:
+                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self._manager.get_the_one_active_websocket_api()
+            if stream_id is None:
+                logger.critical(f"BinanceWebSocketApiApiFutures.get_server_time() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
+
+        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
+
+        payload = {"id": request_id,
+                   "method": "time"}
+
+        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if process_response is not None:
+            with self._manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self._manager.process_response[request_id] = entry
+
+        if return_response is True:
+            with self._manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self._manager.return_response[request_id] = entry
+            self._manager.return_response[request_id]['event_return_response'].wait()
+            with self._manager.return_response_lock:
+                response_value = self._manager.return_response[request_id]['response_value']
+                del self._manager.return_response[request_id]
+            return response_value
+
+        return True
+
+    def get_ticker_order_book(self, process_response=None, request_id: str = None, return_response: bool = False,
+                              stream_id: str = None, stream_label: str = None, symbol: str = None) \
+            -> Union[str, dict, bool]:
+        """
+        Symbol Order Book Ticker
+
+        Best price/qty on the order book for a symbol or symbols.
+
+        If the symbol is not sent, bookTickers for all symbols will be returned in an array.
+
+        Weight: 2 for a single symbol; 5 when the symbol parameter is omitted.
+
+        Official documentation:
+
+            - https://binance-docs.github.io/apidocs/futures/en/#symbol-order-book-ticker-2
+
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param symbol: The selected symbol
+        :type symbol: str
+
+        :return: str, dict, bool
+
+        Message sent:
+
+        .. code-block:: json
+
+            {
+                "id": "9d32157c-a556-4d27-9866-66760a174b57",
+                "method": "ticker.book",
+                "params": {
+                    "symbol": "BTCUSDT"
+                }
+            }
+
+        Response:
+
+        .. code-block:: json
+
+            {
+              "id": "9d32157c-a556-4d27-9866-66760a174b57",
+              "status": 200,
+              "result": {
+                "lastUpdateId": 1027024,
+                "symbol": "BTCUSDT",
+                "bidPrice": "4.00000000",
+                "bidQty": "431.00000000",
+                "askPrice": "4.00000200",
+                "askQty": "9.00000000",
+                "time": 1589437530011   // Transaction time
+              },
+              "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 2400,
+                  "count": 2
+                }
+              ]
+            }
+
+        Or:
+
+        .. code-block:: json
+
+            {
+              "id": "9d32157c-a556-4d27-9866-66760a174b57",
+              "status": 200,
+              "result": [
+                {
+                  "lastUpdateId": 1027024,
+                  "symbol": "BTCUSDT",
+                  "bidPrice": "4.00000000",
+                  "bidQty": "431.00000000",
+                  "askPrice": "4.00000200",
+                  "askQty": "9.00000000",
+                  "time": 1589437530011
+                }
+              ],
+              "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 2400,
+                  "count": 2
+                }
+              ]
+            }
+        """
+        if stream_id is None:
+            if stream_label is not None:
+                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self._manager.get_the_one_active_websocket_api()
+            if stream_id is None:
+                logger.critical(f"BinanceWebSocketApiApiFutures.get_ticker_order_book() - error_msg: No `stream_id` "
+                                f"provided or found!")
+                return False
+
+        params = {}
+
+        if symbol is not None:
+            params['symbol'] = symbol.upper()
+
+        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
+
+        payload = {"id": request_id,
+                   "method": "ticker.book",
+                   "params": params}
+
+        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if process_response is not None:
+            with self._manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self._manager.process_response[request_id] = entry
+
+        if return_response is True:
+            with self._manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self._manager.return_response[request_id] = entry
+            self._manager.return_response[request_id]['event_return_response'].wait()
+            with self._manager.return_response_lock:
+                response_value = self._manager.return_response[request_id]['response_value']
+                del self._manager.return_response[request_id]
+            return response_value
+
+        return True
+
+    def get_ticker_price(self, process_response=None, request_id: str = None, return_response: bool = False,
+                         stream_id: str = None, stream_label: str = None, symbol: str = None) \
+            -> Union[str, dict, bool]:
+        """
+        Symbol Price Ticker
+
+        Latest price for a symbol or symbols.
+
+        Weight: * with symbol 1 * no symbol 2
+
+        Official documentation:
+
+            - https://binance-docs.github.io/apidocs/futures/en/#symbol-price-ticker-2
+
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+        :param symbol: The selected symbol
+        :type symbol: str
+
+        :return: str, dict, bool
+
+        Message sent:
+
+        .. code-block:: json
+
+            {
+                "id": "9d32157c-a556-4d27-9866-66760a174b57",
+                "method": "ticker.price",
+                "params": {
+                    "symbol": "BTCUSDT"
+                }
+            }
+
+
+        Response:
+
+        .. code-block:: json
+
+            {
+              "id": "9d32157c-a556-4d27-9866-66760a174b57",
+              "status": 200,
+              "result": {
+                "symbol": "BTCUSDT",
+                "price": "6000.01",
+                "time": 1589437530011   // Transaction time
+              },
+              "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 2400,
+                  "count": 2
+                }
+              ]
+            }
+
+        Or:
+
+        .. code-block:: json
+
+            {
+              "id": "9d32157c-a556-4d27-9866-66760a174b57",
+              "status": 200,
+              "result": [
+                {
+                    "symbol": "BTCUSDT",
+                    "price": "6000.01",
+                    "time": 1589437530011
+                }
+              ],
+              "rateLimits": [
+                {
+                  "rateLimitType": "REQUEST_WEIGHT",
+                  "interval": "MINUTE",
+                  "intervalNum": 1,
+                  "limit": 2400,
+                  "count": 2
+                }
+              ]
+            }
+        """
+        if stream_id is None:
+            if stream_label is not None:
+                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self._manager.get_the_one_active_websocket_api()
+            if stream_id is None:
+                logger.critical(f"BinanceWebSocketApiApiFutures.get_ticker_price() - error_msg: No `stream_id` "
+                                f"provided or found!")
+                return False
+
+        params = {}
+
+        if symbol is not None:
+            params['symbol'] = symbol.upper()
+
+        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
+
+        payload = {"id": request_id,
+                   "method": "ticker.price",
+                   "params": params}
+
+        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if process_response is not None:
+            with self._manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self._manager.process_response[request_id] = entry
+
+        if return_response is True:
+            with self._manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self._manager.return_response[request_id] = entry
+            self._manager.return_response[request_id]['event_return_response'].wait()
+            with self._manager.return_response_lock:
+                response_value = self._manager.return_response[request_id]['response_value']
+                del self._manager.return_response[request_id]
+            return response_value
+
+        return True
+
     def modify_order(self,
                      order_id: int = None,
                      orig_client_order_id: str = None,
@@ -1243,6 +1912,8 @@ class BinanceWebSocketApiApiFutures(object):
                      symbol: str = None) \
             -> Union[str, dict, bool, tuple]:
         """
+        Modify Order (TRADE)
+
         Order modify function, currently only LIMIT order modification is supported, modified orders will be reordered
         in the match queue
 
@@ -1405,6 +2076,94 @@ class BinanceWebSocketApiApiFutures(object):
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
+
+        if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
+            self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
+
+        if process_response is not None:
+            with self._manager.process_response_lock:
+                entry = {'callback_function': process_response}
+                self._manager.process_response[request_id] = entry
+
+        if return_response is True:
+            with self._manager.return_response_lock:
+                entry = {'event_return_response': threading.Event()}
+                self._manager.return_response[request_id] = entry
+            self._manager.return_response[request_id]['event_return_response'].wait()
+            with self._manager.return_response_lock:
+                response_value = self._manager.return_response[request_id]['response_value']
+                del self._manager.return_response[request_id]
+            return response_value
+
+        return True
+
+    def ping(self, process_response=None, request_id: str = None, return_response: bool = False,
+             stream_id: str = None, stream_label: str = None) -> Union[str, dict, bool]:
+        """
+        Test connectivity
+
+        Test connectivity to the WebSocket API.
+
+        Official documentation:
+
+            - None
+
+        :param process_response: Provide a function/method to process the received webstream data (callback)
+                                 of this specific request.
+        :type process_response: function
+        :param request_id: Provide a custom id for the request
+        :type request_id: str
+        :param return_response: If `True` the response of the API request is waited for and returned directly.
+                                However, this increases the execution time of the function by the duration until the
+                                response is received from the Binance API.
+        :type return_response: bool
+        :param stream_id: ID of a stream to send the request
+        :type stream_id: str
+        :param stream_label: Label of a stream to send the request. Only used if `stream_id` is not provided!
+        :type stream_label: str
+
+        :return: str, dict, bool
+
+        Message sent:
+
+        .. code-block:: json
+
+            {
+                "id": "4e72973031d8-bff9-8481-c95b-c42414df",
+                "method": "ping"
+            }
+
+        Response:
+
+        .. code-block:: json
+
+            {
+                "id": "4e72973031d8-bff9-8481-c95b-c42414df",
+                "status": 200,
+                "result": {},
+                "rateLimits": [{
+                    "rateLimitType": "REQUEST_WEIGHT",
+                    "interval": "MINUTE",
+                    "intervalNum": 1,
+                    "limit": 1200,
+                    "count": 1
+                }]
+            }
+        """
+        if stream_id is None:
+            if stream_label is not None:
+                stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
+            else:
+                stream_id = self._manager.get_the_one_active_websocket_api()
+            if stream_id is None:
+                logger.critical(f"BinanceWebSocketApiApiFutures.ping() - error_msg: No `stream_id` provided or "
+                                f"found!")
+                return False
+
+        request_id = self._manager.get_new_uuid_id() if request_id is None else request_id
+
+        payload = {"id": request_id,
+                   "method": "ping"}
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)

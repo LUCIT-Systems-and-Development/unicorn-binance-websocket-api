@@ -61,7 +61,6 @@ class BinanceWebSocketApiApiSpot(object):
         - https://binance-docs.github.io/apidocs/websocket_api/en/#account-prevented-matches-user_data
         - https://binance-docs.github.io/apidocs/websocket_api/en/#account-allocations-user_data
         - https://binance-docs.github.io/apidocs/websocket_api/en/#account-commission-rates-user_data
-        - https://binance-docs.github.io/apidocs/websocket_api/en/#user-data-stream-requests
         - https://binance-docs.github.io/apidocs/websocket_api/en/#ping-user-data-stream-user_stream
         - https://binance-docs.github.io/apidocs/websocket_api/en/#stop-user-data-stream-user_stream
 
@@ -112,6 +111,8 @@ class BinanceWebSocketApiApiSpot(object):
                                  time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = None,
                                  trailing_delta: int = None) -> Union[str, dict, bool, tuple]:
         """
+        Cancel and replace order (TRADE)
+
         Cancel an existing order and immediately place a new order instead of the canceled one.
 
         Official documentation:
@@ -442,6 +443,8 @@ class BinanceWebSocketApiApiSpot(object):
                            recv_window: int = None, request_id: str = None, stream_id: str = None,
                            stream_label: str = None) -> Union[str, dict, bool]:
         """
+        Cancel open orders (TRADE)
+
         Cancel all open orders on a symbol, including OCO orders.
 
         Official documentation:
@@ -635,6 +638,8 @@ class BinanceWebSocketApiApiSpot(object):
                      return_response: bool = False, stream_id: str = None, symbol: str = None,
                      stream_label: str = None) -> Union[str, dict, bool]:
         """
+        Cancel order (TRADE)
+
         Cancel an active order.
 
         Either order_id or orig_client_order_id must be sent.
@@ -826,6 +831,8 @@ class BinanceWebSocketApiApiSpot(object):
                      test: bool = False,
                      trailing_delta: int = None) -> Union[str, dict, bool, tuple]:
         """
+        Place new order (TRADE)
+
         Create a new order.
 
         Official documentation:
@@ -1096,6 +1103,8 @@ class BinanceWebSocketApiApiSpot(object):
                           time_in_force: Optional[Literal['GTC', 'IOC', 'FOK']] = None,
                           trailing_delta: int = None) -> Union[str, dict, bool, tuple]:
         """
+        Test new order (TRADE)
+
         Test order placement.
 
         Validates new order parameters and verifies your signature but does not send the order into the matching engine.
@@ -1270,11 +1279,13 @@ class BinanceWebSocketApiApiSpot(object):
                            return_response: bool = False, stream_id: str = None, stream_label: str = None) \
             -> Union[str, dict, bool]:
         """
-        Get the user account status.
+        Account information (USER_DATA)
+
+        Query information about your account.
 
         Official documentation:
 
-            - https://developers.binance.com/docs/binance-trading-api/websocket_api#account-information-user_data
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#account-information-user_data
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
@@ -1417,6 +1428,8 @@ class BinanceWebSocketApiApiSpot(object):
                              stream_id: str = None, stream_label: str = None, symbol: str = None) \
             -> Union[str, dict, bool]:
         """
+        Aggregate trades
+
         Get aggregate trades.
 
         Use from_id and limit to page through all aggtrades.
@@ -1557,6 +1570,8 @@ class BinanceWebSocketApiApiSpot(object):
                                   return_response: bool = False, stream_id: str = None, stream_label: str = None,
                                   symbol: str = None) -> Union[str, dict, bool]:
         """
+        Current average price
+
         Get current average price for a symbol.
 
         Weight(IP): 2
@@ -1662,6 +1677,8 @@ class BinanceWebSocketApiApiSpot(object):
                           request_id: str = None, return_response: bool = False, stream_id: str = None,
                           stream_label: str = None, symbol: str = None, symbols: list = None) -> Union[str, dict, bool]:
         """
+        Exchange information
+
         Get the Exchange Information.
 
         Only one of `symbol`, `symbols`, `permissions` parameters can be specified.
@@ -1857,6 +1874,8 @@ class BinanceWebSocketApiApiSpot(object):
                               request_id: str = None, return_response: bool = False, stream_id: str = None,
                               stream_label: str = None, symbol: str = None) -> Union[str, dict, bool]:
         """
+        Historical trades
+
         Get historical trades.
 
         Weight(IP): 25
@@ -1985,6 +2004,8 @@ class BinanceWebSocketApiApiSpot(object):
                    symbol: str = None,
                    time_zone: str = None) -> Union[str, dict, bool]:
         """
+        Klines
+
         Get klines (candlestick bars).
 
         Klines are uniquely identified by their open & close time.
@@ -2138,11 +2159,13 @@ class BinanceWebSocketApiApiSpot(object):
     def get_listen_key(self, process_response=None, request_id: str = None, return_response: bool = False,
                        stream_id: str = None, stream_label: str = None) -> Union[str, dict, bool]:
         """
+        Start user data stream (USER_STREAM)
+
         Get a listenKey to start a UserDataStream.
 
         Official documentation:
 
-            - https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-api.md#user-data-stream-requests
+            - https://binance-docs.github.io/apidocs/websocket_api/en/#start-user-data-stream-user_stream
 
         :param process_response: Provide a function/method to process the received webstream data (callback)
                                  of this specific request.
@@ -2235,6 +2258,8 @@ class BinanceWebSocketApiApiSpot(object):
                         return_response: bool = False, stream_id: str = None, stream_label: str = None,
                         symbol: str = None) -> Union[str, dict, bool]:
         """
+        Current open orders (USER_DATA)
+
         Query execution status of all open orders.
 
         Open orders are always returned as a flat list. If all symbols are requested, use the symbol field to tell
@@ -2382,6 +2407,8 @@ class BinanceWebSocketApiApiSpot(object):
                   recv_window: int = None, request_id: str = None, return_response: bool = False, stream_id: str = None,
                   stream_label: str = None, symbol: str = None) -> Union[str, dict, bool]:
         """
+        Query order (USER_DATA)
+
         Check execution status of an order.
 
         Official documentation:
@@ -2536,6 +2563,8 @@ class BinanceWebSocketApiApiSpot(object):
                        return_response: bool = False, stream_id: str = None, stream_label: str = None,
                        symbol: str = None) -> Union[str, dict, bool]:
         """
+        Order book
+
         Get current order book.
 
         Note that this request returns limited market depth.
@@ -2700,6 +2729,8 @@ class BinanceWebSocketApiApiSpot(object):
                           request_id: str = None, return_response: bool = False, stream_id: str = None,
                           stream_label: str = None, symbol: str = None) -> Union[str, dict, bool]:
         """
+        Recent trades
+
         Get recent trades.
 
         If you need access to real-time trading activity, please consider using
@@ -2817,6 +2848,8 @@ class BinanceWebSocketApiApiSpot(object):
     def get_server_time(self, process_response=None, request_id: str = None, return_response: bool = False,
                         stream_id: str = None, stream_label: str = None) -> Union[str, dict, bool]:
         """
+        Check server time
+
         Test connectivity to the WebSocket API and get the current server time.
 
         Official documentation:
@@ -2906,6 +2939,8 @@ class BinanceWebSocketApiApiSpot(object):
     def ping(self, process_response=None, request_id: str = None, return_response: bool = False,
              stream_id: str = None, stream_label: str = None) -> Union[str, dict, bool]:
         """
+        Test connectivity
+
         Test connectivity to the WebSocket API.
 
         Official documentation:
@@ -2989,7 +3024,6 @@ class BinanceWebSocketApiApiSpot(object):
 
         return True
 
-
     def get_ui_klines(self,
                       process_response=None,
                       end_time: int = None,
@@ -3004,6 +3038,8 @@ class BinanceWebSocketApiApiSpot(object):
                       symbol: str = None,
                       time_zone: str = None) -> Union[str, dict, bool]:
         """
+        UI Klines
+
         Get klines (candlestick bars) optimized for presentation.
 
         This request is similar to klines, having the same parameters and response. uiKlines return modified kline data, optimized for presentation of candlestick charts.
@@ -3149,7 +3185,11 @@ class BinanceWebSocketApiApiSpot(object):
     def get_unfilled_order_count(self, process_response=None, request_id: str = None, return_response: bool = False,
                                  stream_id: str = None, stream_label: str = None) -> Union[str, dict, bool]:
         """
+        Unfilled Order Count (USER_DATA)
+
         Query your current unfilled order count for all intervals.
+
+        Weight(IP): 40
 
         Official documentation:
 

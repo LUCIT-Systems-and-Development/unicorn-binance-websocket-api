@@ -81,8 +81,13 @@ async def binance_api(ubwa):
 
     recent_trades = ubwa.api.spot.get_recent_trades(stream_id=api_stream, symbol=market, return_response=True)
     print(f"recent_trades: {recent_trades['result'][:5]}\r\n")
-
     print(f"Stopping!")
+
+def process_stream_signal(signal_type=None, stream_id=None, data_record=None, error_msg=None):
+    # More info about `stream_signals`:
+    # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60
+    print(f"Received stream_signal for stream '{ubwa_manager.get_stream_label(stream_id=stream_id)}': "
+          f"{signal_type} - {stream_id} - {data_record} - {error_msg}")
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG,
@@ -95,7 +100,9 @@ if __name__ == "__main__":
 
     # To use this library you need a valid UNICORN Binance Suite License:
     # https://shop.lucit.services
-    with BinanceWebSocketApiManager(exchange='binance.com', output_default="dict") as ubwa_manager:
+    with BinanceWebSocketApiManager(exchange='binance.com',
+                                    output_default="dict",
+                                    process_stream_signals=process_stream_signal) as ubwa_manager:
         try:
             asyncio.run(binance_api(ubwa_manager))
         except KeyboardInterrupt:
