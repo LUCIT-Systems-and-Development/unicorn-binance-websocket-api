@@ -71,6 +71,8 @@
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures</span></code></a><ul>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.cancel_order"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.cancel_order()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.create_order"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.create_order()</span></code></a></li>
+<li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_account_balance"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.get_account_balance()</span></code></a></li>
+<li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_account_status"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.get_account_status()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_order"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.get_order()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_order_book"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.get_order_book()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.modify_order"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.modify_order()</span></code></a></li>
@@ -412,10 +414,6 @@ one valid websocket api stream, this will fail! It must be clear! The stream is 
 stream restart, the payload is submitted as soon the stream is online again.</p>
 <dl class="simple">
 <dt>Todo:</dt><dd><ul class="simple">
-<li><p><a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#account-information-v2-user_data-2">https://binance-docs.github.io/apidocs/futures/en/#account-information-v2-user_data-2</a></p></li>
-<li><p><a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#account-information-user_data">https://binance-docs.github.io/apidocs/futures/en/#account-information-user_data</a></p></li>
-<li><p><a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#futures-account-balance-v2-user_data-2">https://binance-docs.github.io/apidocs/futures/en/#futures-account-balance-v2-user_data-2</a></p></li>
-<li><p><a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#futures-account-balance-user_data">https://binance-docs.github.io/apidocs/futures/en/#futures-account-balance-user_data</a></p></li>
 <li><p><a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#position-information-v2-user_data-2">https://binance-docs.github.io/apidocs/futures/en/#position-information-v2-user_data-2</a></p></li>
 <li><p><a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#position-information-user_data">https://binance-docs.github.io/apidocs/futures/en/#position-information-user_data</a></p></li>
 <li><p><a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#symbol-price-ticker-2">https://binance-docs.github.io/apidocs/futures/en/#symbol-price-ticker-2</a></p></li>
@@ -706,6 +704,315 @@ execute a quantity that has notional value as close as possible to requested
 <span class="w">            </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_account_balance">
+<span class="sig-name descname"><span class="pre">get_account_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_response</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recv_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'v2'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/unicorn_binance_websocket_api/api/futures.html#BinanceWebSocketApiApiFutures.get_account_balance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_account_balance" title="Link to this definition">¶</a></dt>
+<dd><p>Get your account balance.</p>
+<p>Weight: 5</p>
+<p>Official documentation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#futures-account-balance-user_data">https://binance-docs.github.io/apidocs/futures/en/#futures-account-balance-user_data</a></p></li>
+<li><p><a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#futures-account-balance-v2-user_data-2">https://binance-docs.github.io/apidocs/futures/en/#futures-account-balance-v2-user_data-2</a></p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_response</strong> (<em>function</em>) – Provide a function/method to process the received webstream data (callback)
+of this specific request.</p></li>
+<li><p><strong>recv_window</strong> (<em>int</em>) – An additional parameter, <cite>recvWindow</cite>, may be sent to specify the number of milliseconds
+after timestamp the request is valid for. If <cite>recvWindow</cite> is not sent, it defaults to 5000.
+The value cannot be greater than 60000.</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
+<li><p><strong>return_response</strong> (<em>bool</em>) – If <cite>True</cite> the response of the API request is waited for and returned directly.
+However, this increases the execution time of the function by the duration until the
+response is received from the Binance API.</p></li>
+<li><p><strong>stream_id</strong> (<em>str</em>) – ID of a stream to send the request</p></li>
+<li><p><strong>stream_label</strong> (<em>str</em>) – Label of a stream to send the request. Only used if <cite>stream_id</cite> is not provided!</p></li>
+<li><p><strong>version</strong> (<em>str</em>) – if None (default) method <cite>account.status</cite> is used, if ‘v2’ then <cite>v2/account.status</cite> is used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>str, dict, bool</p>
+</dd>
+</dl>
+<p>Message sent:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;account.balance&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xTaDyrmvA9XT2oBHHjy39zyPzKCvMdtH3b9q4xadkAg2dNSJXQGCxzui26L823W2&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1702561978458</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;208bb94a26f99aa122b1319490ca9cb2798fccc81d9b6449521a26268d53217a&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;accountAlias&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SgsR&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// unique account code</span>
+<span class="w">                </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;USDT&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// asset name</span>
+<span class="w">                </span><span class="nt">&quot;balance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;122607.35137903&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// wallet balance</span>
+<span class="w">                </span><span class="nt">&quot;crossWalletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// crossed wallet balance</span>
+<span class="w">                </span><span class="nt">&quot;crossUnPnl&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;0.00000000&quot;</span><span class="w">  </span><span class="c1">// unrealized profit of crossed positions</span>
+<span class="w">                </span><span class="nt">&quot;availableBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">       </span><span class="c1">// available balance</span>
+<span class="w">                </span><span class="nt">&quot;maxWithdrawAmount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// maximum amount for transfer out</span>
+<span class="w">                </span><span class="nt">&quot;marginAvailable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">    </span><span class="c1">// whether the asset can be used as margin in Multi-Assets mode</span>
+<span class="w">                </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1617939110373</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2400</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_account_status">
+<span class="sig-name descname"><span class="pre">get_account_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_response</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recv_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'v2'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/unicorn_binance_websocket_api/api/futures.html#BinanceWebSocketApiApiFutures.get_account_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_account_status" title="Link to this definition">¶</a></dt>
+<dd><p>Get current account information. User in single-asset/ multi-assets mode will see different value, see comments
+in response section for detail.</p>
+<p>Weight: 5</p>
+<p>Official documentation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#account-information-user_data">https://binance-docs.github.io/apidocs/futures/en/#account-information-user_data</a></p></li>
+<li><p><a class="reference external" href="https://binance-docs.github.io/apidocs/futures/en/#account-information-v2-user_data-2">https://binance-docs.github.io/apidocs/futures/en/#account-information-v2-user_data-2</a></p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_response</strong> (<em>function</em>) – Provide a function/method to process the received webstream data (callback)
+of this specific request.</p></li>
+<li><p><strong>recv_window</strong> (<em>int</em>) – An additional parameter, <cite>recvWindow</cite>, may be sent to specify the number of milliseconds
+after timestamp the request is valid for. If <cite>recvWindow</cite> is not sent, it defaults to 5000.
+The value cannot be greater than 60000.</p></li>
+<li><p><strong>request_id</strong> (<em>str</em>) – Provide a custom id for the request</p></li>
+<li><p><strong>return_response</strong> (<em>bool</em>) – If <cite>True</cite> the response of the API request is waited for and returned directly.
+However, this increases the execution time of the function by the duration until the
+response is received from the Binance API.</p></li>
+<li><p><strong>stream_id</strong> (<em>str</em>) – ID of a stream to send the request</p></li>
+<li><p><strong>stream_label</strong> (<em>str</em>) – Label of a stream to send the request. Only used if <cite>stream_id</cite> is not provided!</p></li>
+<li><p><strong>version</strong> (<em>str</em>) – if None (default) method <cite>account.status</cite> is used, if ‘v2’ then <cite>v2/account.status</cite> is used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>str, dict, bool</p>
+</dd>
+</dl>
+<p>Message sent:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;account.status&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;apiKey&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xTaDyrmvA9XT2oBHHjy39zyPzKCvMdtH3b9q4xadkAg2dNSJXQGCxzui26L823W2&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1702620814781</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;signature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;6bb98ef84170c70ba3d01f44261bfdf50fef374e551e590de22b5c3b729b1d8c&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response Single Asset Mode:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;feeTier&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">       </span><span class="c1">// account commission tier</span>
+<span class="w">    </span><span class="nt">&quot;canTrade&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">   </span><span class="c1">// if can trade</span>
+<span class="w">    </span><span class="nt">&quot;canDeposit&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">     </span><span class="c1">// if can transfer in asset</span>
+<span class="w">    </span><span class="nt">&quot;canWithdraw&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">    </span><span class="c1">// if can transfer out asset</span>
+<span class="w">    </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">        </span><span class="c1">// reserved property, please ignore</span>
+<span class="w">    </span><span class="nt">&quot;multiAssetsMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tradeGroupId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;totalInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// total initial margin required with current mark price (useless with isolated positions), only for USDT asset</span>
+<span class="w">    </span><span class="nt">&quot;totalMaintMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// total maintenance margin required, only for USDT asset</span>
+<span class="w">    </span><span class="nt">&quot;totalWalletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// total wallet balance, only for USDT asset</span>
+<span class="w">    </span><span class="nt">&quot;totalUnrealizedProfit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// total unrealized profit, only for USDT asset</span>
+<span class="w">    </span><span class="nt">&quot;totalMarginBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// total margin balance, only for USDT asset</span>
+<span class="w">    </span><span class="nt">&quot;totalPositionInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// initial margin required for positions with current mark price, only for USDT asset</span>
+<span class="w">    </span><span class="nt">&quot;totalOpenOrderInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// initial margin required for open orders with current mark price, only for USDT asset</span>
+<span class="w">    </span><span class="nt">&quot;totalCrossWalletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// crossed wallet balance, only for USDT asset</span>
+<span class="w">    </span><span class="nt">&quot;totalCrossUnPnl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// unrealized profit of crossed positions, only for USDT asset</span>
+<span class="w">    </span><span class="nt">&quot;availableBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">       </span><span class="c1">// available balance, only for USDT asset</span>
+<span class="w">    </span><span class="nt">&quot;maxWithdrawAmount&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;23.72469206&quot;</span><span class="w">     </span><span class="c1">// maximum amount for transfer out, only for USDT asset</span>
+<span class="w">    </span><span class="nt">&quot;assets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;USDT&quot;</span><span class="p">,</span><span class="w">            </span><span class="c1">// asset name</span>
+<span class="w">            </span><span class="nt">&quot;walletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// wallet balance</span>
+<span class="w">            </span><span class="nt">&quot;unrealizedProfit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// unrealized profit</span>
+<span class="w">            </span><span class="nt">&quot;marginBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// margin balance</span>
+<span class="w">            </span><span class="nt">&quot;maintMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">        </span><span class="c1">// maintenance margin required</span>
+<span class="w">            </span><span class="nt">&quot;initialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// total initial margin required with current mark price</span>
+<span class="w">            </span><span class="nt">&quot;positionInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">//initial margin required for positions with current mark price</span>
+<span class="w">            </span><span class="nt">&quot;openOrderInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// initial margin required for open orders with current mark price</span>
+<span class="w">            </span><span class="nt">&quot;crossWalletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// crossed wallet balance</span>
+<span class="w">            </span><span class="nt">&quot;crossUnPnl&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;0.00000000&quot;</span><span class="w">       </span><span class="c1">// unrealized profit of crossed positions</span>
+<span class="w">            </span><span class="nt">&quot;availableBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">       </span><span class="c1">// available balance</span>
+<span class="w">            </span><span class="nt">&quot;maxWithdrawAmount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// maximum amount for transfer out</span>
+<span class="w">            </span><span class="nt">&quot;marginAvailable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">    </span><span class="c1">// whether the asset can be used as margin in Multi-Assets mode</span>
+<span class="w">            </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1625474304765</span><span class="w"> </span><span class="c1">// last update time</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BUSD&quot;</span><span class="p">,</span><span class="w">            </span><span class="c1">// asset name</span>
+<span class="w">            </span><span class="nt">&quot;walletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;103.12345678&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// wallet balance</span>
+<span class="w">            </span><span class="nt">&quot;unrealizedProfit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// unrealized profit</span>
+<span class="w">            </span><span class="nt">&quot;marginBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;103.12345678&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// margin balance</span>
+<span class="w">            </span><span class="nt">&quot;maintMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">        </span><span class="c1">// maintenance margin required</span>
+<span class="w">            </span><span class="nt">&quot;initialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// total initial margin required with current mark price</span>
+<span class="w">            </span><span class="nt">&quot;positionInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">//initial margin required for positions with current mark price</span>
+<span class="w">            </span><span class="nt">&quot;openOrderInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// initial margin required for open orders with current mark price</span>
+<span class="w">            </span><span class="nt">&quot;crossWalletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;103.12345678&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// crossed wallet balance</span>
+<span class="w">            </span><span class="nt">&quot;crossUnPnl&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;0.00000000&quot;</span><span class="w">       </span><span class="c1">// unrealized profit of crossed positions</span>
+<span class="w">            </span><span class="nt">&quot;availableBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;103.12345678&quot;</span><span class="p">,</span><span class="w">       </span><span class="c1">// available balance</span>
+<span class="w">            </span><span class="nt">&quot;maxWithdrawAmount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;103.12345678&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// maximum amount for transfer out</span>
+<span class="w">            </span><span class="nt">&quot;marginAvailable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">    </span><span class="c1">// whether the asset can be used as margin in Multi-Assets mode</span>
+<span class="w">            </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1625474304765</span><span class="w"> </span><span class="c1">// last update time</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;positions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">  </span><span class="c1">// positions of all symbols in the market are returned</span>
+<span class="w">        </span><span class="c1">// only &quot;BOTH&quot; positions will be returned with One-way mode</span>
+<span class="w">        </span><span class="c1">// only &quot;LONG&quot; and &quot;SHORT&quot; positions will be returned with Hedge mode</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// symbol name</span>
+<span class="w">            </span><span class="nt">&quot;initialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// initial margin required with current mark price</span>
+<span class="w">            </span><span class="nt">&quot;maintMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// maintenance margin required</span>
+<span class="w">            </span><span class="nt">&quot;unrealizedProfit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// unrealized profit</span>
+<span class="w">            </span><span class="nt">&quot;positionInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// initial margin required for positions with current mark price</span>
+<span class="w">            </span><span class="nt">&quot;openOrderInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// initial margin required for open orders with current mark price</span>
+<span class="w">            </span><span class="nt">&quot;leverage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;100&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// current initial leverage</span>
+<span class="w">            </span><span class="nt">&quot;isolated&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">       </span><span class="c1">// if the position is isolated</span>
+<span class="w">            </span><span class="nt">&quot;entryPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// average entry price</span>
+<span class="w">            </span><span class="nt">&quot;maxNotional&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;250000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// maximum available notional with current leverage</span>
+<span class="w">            </span><span class="nt">&quot;bidNotional&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// bids notional, ignore</span>
+<span class="w">            </span><span class="nt">&quot;askNotional&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// ask notional, ignore</span>
+<span class="w">            </span><span class="nt">&quot;positionSide&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BOTH&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// position side</span>
+<span class="w">            </span><span class="nt">&quot;positionAmt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">         </span><span class="c1">// position amount</span>
+<span class="w">            </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">           </span><span class="c1">// last update time</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2400</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Response Multi-Asset Mode:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;605a6d20-6588-4cb9-afa0-b0ab087507ba&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;feeTier&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">       </span><span class="c1">// account commission tier</span>
+<span class="w">      </span><span class="nt">&quot;canTrade&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">   </span><span class="c1">// if can trade</span>
+<span class="w">      </span><span class="nt">&quot;canDeposit&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">     </span><span class="c1">// if can transfer in asset</span>
+<span class="w">      </span><span class="nt">&quot;canWithdraw&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">    </span><span class="c1">// if can transfer out asset</span>
+<span class="w">      </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">        </span><span class="c1">// reserved property, please ignore</span>
+<span class="w">      </span><span class="nt">&quot;multiAssetsMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tradeGroupId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;totalInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// the sum of USD value of all cross positions/open order initial margin</span>
+<span class="w">      </span><span class="nt">&quot;totalMaintMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// the sum of USD value of all cross positions maintenance margin</span>
+<span class="w">      </span><span class="nt">&quot;totalWalletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;126.72469206&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// total wallet balance in USD</span>
+<span class="w">      </span><span class="nt">&quot;totalUnrealizedProfit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// total unrealized profit in USD</span>
+<span class="w">      </span><span class="nt">&quot;totalMarginBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;126.72469206&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// total margin balance in USD</span>
+<span class="w">      </span><span class="nt">&quot;totalPositionInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// the sum of USD value of all cross positions initial margin</span>
+<span class="w">      </span><span class="nt">&quot;totalOpenOrderInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// initial margin required for open orders with current mark price in USD</span>
+<span class="w">      </span><span class="nt">&quot;totalCrossWalletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;126.72469206&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// crossed wallet balance in USD</span>
+<span class="w">      </span><span class="nt">&quot;totalCrossUnPnl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// unrealized profit of crossed positions in USD</span>
+<span class="w">      </span><span class="nt">&quot;availableBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;126.72469206&quot;</span><span class="p">,</span><span class="w">       </span><span class="c1">// available balance in USD</span>
+<span class="w">      </span><span class="nt">&quot;maxWithdrawAmount&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;126.72469206&quot;</span><span class="w">     </span><span class="c1">// maximum virtual amount for transfer out in USD</span>
+<span class="w">      </span><span class="nt">&quot;assets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">              </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;USDT&quot;</span><span class="p">,</span><span class="w">            </span><span class="c1">// asset name</span>
+<span class="w">              </span><span class="nt">&quot;walletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// wallet balance</span>
+<span class="w">              </span><span class="nt">&quot;unrealizedProfit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// unrealized profit</span>
+<span class="w">              </span><span class="nt">&quot;marginBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// margin balance</span>
+<span class="w">              </span><span class="nt">&quot;maintMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">        </span><span class="c1">// maintenance margin required</span>
+<span class="w">              </span><span class="nt">&quot;initialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// total initial margin required with current mark price</span>
+<span class="w">              </span><span class="nt">&quot;positionInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">//initial margin required for positions with current mark price</span>
+<span class="w">              </span><span class="nt">&quot;openOrderInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// initial margin required for open orders with current mark price</span>
+<span class="w">              </span><span class="nt">&quot;crossWalletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// crossed wallet balance</span>
+<span class="w">              </span><span class="nt">&quot;crossUnPnl&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;0.00000000&quot;</span><span class="w">       </span><span class="c1">// unrealized profit of crossed positions</span>
+<span class="w">              </span><span class="nt">&quot;availableBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;126.72469206&quot;</span><span class="p">,</span><span class="w">       </span><span class="c1">// available balance</span>
+<span class="w">              </span><span class="nt">&quot;maxWithdrawAmount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;23.72469206&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// maximum amount for transfer out</span>
+<span class="w">              </span><span class="nt">&quot;marginAvailable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">    </span><span class="c1">// whether the asset can be used as margin in Multi-Assets mode</span>
+<span class="w">              </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1625474304765</span><span class="w"> </span><span class="c1">// last update time</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">              </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BUSD&quot;</span><span class="p">,</span><span class="w">            </span><span class="c1">// asset name</span>
+<span class="w">              </span><span class="nt">&quot;walletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;103.12345678&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// wallet balance</span>
+<span class="w">              </span><span class="nt">&quot;unrealizedProfit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// unrealized profit</span>
+<span class="w">              </span><span class="nt">&quot;marginBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;103.12345678&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// margin balance</span>
+<span class="w">              </span><span class="nt">&quot;maintMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">        </span><span class="c1">// maintenance margin required</span>
+<span class="w">              </span><span class="nt">&quot;initialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// total initial margin required with current mark price</span>
+<span class="w">              </span><span class="nt">&quot;positionInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">//initial margin required for positions with current mark price</span>
+<span class="w">              </span><span class="nt">&quot;openOrderInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// initial margin required for open orders with current mark price</span>
+<span class="w">              </span><span class="nt">&quot;crossWalletBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;103.12345678&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// crossed wallet balance</span>
+<span class="w">              </span><span class="nt">&quot;crossUnPnl&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;0.00000000&quot;</span><span class="w">       </span><span class="c1">// unrealized profit of crossed positions</span>
+<span class="w">              </span><span class="nt">&quot;availableBalance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;126.72469206&quot;</span><span class="p">,</span><span class="w">       </span><span class="c1">// available balance</span>
+<span class="w">              </span><span class="nt">&quot;maxWithdrawAmount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;103.12345678&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// maximum amount for transfer out</span>
+<span class="w">              </span><span class="nt">&quot;marginAvailable&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">    </span><span class="c1">// whether the asset can be used as margin in Multi-Assets mode</span>
+<span class="w">              </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1625474304765</span><span class="w"> </span><span class="c1">// last update time</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;positions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">  </span><span class="c1">// positions of all symbols in the market are returned</span>
+<span class="w">          </span><span class="c1">// only &quot;BOTH&quot; positions will be returned with One-way mode</span>
+<span class="w">          </span><span class="c1">// only &quot;LONG&quot; and &quot;SHORT&quot; positions will be returned with Hedge mode</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">              </span><span class="nt">&quot;symbol&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BTCUSDT&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// symbol name</span>
+<span class="w">              </span><span class="nt">&quot;initialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// initial margin required with current mark price</span>
+<span class="w">              </span><span class="nt">&quot;maintMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// maintenance margin required</span>
+<span class="w">              </span><span class="nt">&quot;unrealizedProfit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000000&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// unrealized profit</span>
+<span class="w">              </span><span class="nt">&quot;positionInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// initial margin required for positions with current mark price</span>
+<span class="w">              </span><span class="nt">&quot;openOrderInitialMargin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// initial margin required for open orders with current mark price</span>
+<span class="w">              </span><span class="nt">&quot;leverage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;100&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">// current initial leverage</span>
+<span class="w">              </span><span class="nt">&quot;isolated&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">       </span><span class="c1">// if the position is isolated</span>
+<span class="w">              </span><span class="nt">&quot;entryPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.00000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// average entry price</span>
+<span class="w">              </span><span class="nt">&quot;breakEvenPrice&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.0&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// average entry price</span>
+<span class="w">              </span><span class="nt">&quot;maxNotional&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;250000&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1">// maximum available notional with current leverage</span>
+<span class="w">              </span><span class="nt">&quot;bidNotional&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// bids notional, ignore</span>
+<span class="w">              </span><span class="nt">&quot;askNotional&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// ask notional, ignore</span>
+<span class="w">              </span><span class="nt">&quot;positionSide&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BOTH&quot;</span><span class="p">,</span><span class="w">     </span><span class="c1">// position side</span>
+<span class="w">              </span><span class="nt">&quot;positionAmt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w">         </span><span class="c1">// position amount</span>
+<span class="w">              </span><span class="nt">&quot;updateTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">           </span><span class="c1">// last update time</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;rateLimits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;rateLimitType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUEST_WEIGHT&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MINUTE&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;intervalNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2400</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -5282,6 +5589,8 @@ time is exceeded and returns False.</p></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures</span></code></a><ul>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.cancel_order"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.cancel_order()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.create_order"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.create_order()</span></code></a></li>
+<li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_account_balance"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.get_account_balance()</span></code></a></li>
+<li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_account_status"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.get_account_status()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_order"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.get_order()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_order_book"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.get_order_book()</span></code></a></li>
 <li><a class="reference internal" href="#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.modify_order"><code class="docutils literal notranslate"><span class="pre">BinanceWebSocketApiApiFutures.modify_order()</span></code></a></li>
@@ -5599,7 +5908,7 @@ time is exceeded and returns False.</p></li>
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Nov 13 2024 at 18:51 (CET).
+    Last updated on Nov 13 2024 at 19:26 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
