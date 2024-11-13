@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 # ¯\_(ツ)_/¯
 
+from dotenv import load_dotenv
 from unicorn_binance_websocket_api import BinanceWebSocketApiManager
 import asyncio
 import logging
 import os
 
-api_key = ""
-api_secret = ""
 market = "BTCUSDC"
 
 async def binance_api(ubwa):
@@ -17,7 +16,9 @@ async def binance_api(ubwa):
             data = await ubwa.get_stream_data_from_asyncio_queue(stream_id=stream_id)
             print(f"received data:\r\n{data}\r\n")
 
-    api_stream = ubwa.create_stream(api=True, api_key=api_key, api_secret=api_secret,
+    api_stream = ubwa.create_stream(api=True,
+                                    api_key=os.getenv('BINANCE_API_KEY'),
+                                    api_secret=os.getenv('BINANCE_API_SECRET'),
                                     stream_label="Bobs Future Websocket API",
                                     process_asyncio_queue=handle_socket_message)
     print(f"Start:")
@@ -42,6 +43,7 @@ if __name__ == "__main__":
                         filename=os.path.basename(__file__) + '.log',
                         format="{asctime} [{levelname:8}] {process} {thread} {module}: {message}",
                         style="{")
+    load_dotenv()
 
     # To use this library you need a valid UNICORN Binance Suite License:
     # https://shop.lucit.services
