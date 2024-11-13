@@ -634,8 +634,7 @@ class TestBinanceOrgManager(unittest.TestCase):
                                                                         return_response=True)
         print(f"current_average_price: {current_average_price}\r\n")
         order_book = ubwam.api.spot.get_order_book(stream_id=api_stream, symbol=market, limit=2, return_response=True)
-        print(f"Orderbook, lastUpdateId={order_book['result']['lastUpdateId']}: {order_book['result']['asks']}, "
-              f"{order_book['result']['bids']}\r\n")
+        print(f"Orderbook: {order_book}\r\n")
         aggregate_trades = ubwam.api.spot.get_aggregate_trades(stream_id=api_stream, symbol=market, return_response=True)
         print(f"aggregate_trades: {aggregate_trades['result'][:5]}\r\n")
         historical_trades = ubwam.api.spot.get_historical_trades(stream_id=api_stream, symbol=market,
