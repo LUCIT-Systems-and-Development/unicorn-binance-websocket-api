@@ -19,8 +19,8 @@
 # Copyright (c) 2019-2024, LUCIT Systems and Development (https://www.lucit.tech)
 # All rights reserved.
 
-from unicorn_binance_websocket_api.api.futures import BinanceWebSocketApiApiFutures
-from unicorn_binance_websocket_api.api.spot import BinanceWebSocketApiApiSpot
+from .futures import BinanceWebSocketApiApiFutures
+from .spot import BinanceWebSocketApiApiSpot
 
 class WsApi():
     def __init__(self, manager):
