@@ -343,6 +343,15 @@ class BinanceWebSocketApiApiSpot(object):
               ]
             }
         """
+        if (cancel_replace_mode is None or
+                quantity is None or
+                side is None or
+                symbol is None or
+                order_type is None or
+                (cancel_order_id is None and cancel_orig_client_order_id is None)):
+            raise ValueError(f"Missing mandatory parameter: cancel_replace_mode, quantity, side, symbol, order_type,"
+                             f"cancel_order_id/cancel_orig_client_order_id")
+
         if stream_id is None:
             if stream_label is not None:
                 stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
@@ -362,11 +371,11 @@ class BinanceWebSocketApiApiSpot(object):
                   "type": order_type}
 
         if cancel_order_id is not None:
-            params['cancelOrderId'] = cancel_order_id
+            params['cancelOrderId'] = int(cancel_order_id)
         if cancel_orig_client_order_id is not None:
-            params['cancelOrigClientOrderId'] = cancel_orig_client_order_id
+            params['cancelOrigClientOrderId'] = str(cancel_orig_client_order_id)
         if cancel_new_client_order_id is not None:
-            params['cancelNewClientOrderId'] = cancel_new_client_order_id
+            params['cancelNewClientOrderId'] = str(cancel_new_client_order_id)
         if cancel_restrictions is not None:
             params['cancelRestrictions'] = cancel_restrictions
         if iceberg_qty is not None:
@@ -588,6 +597,9 @@ class BinanceWebSocketApiApiSpot(object):
                 ]
             }
         """
+        if symbol is None:
+            raise ValueError(f"Missing mandatory parameter: symbol")
+
         if stream_id is None:
             if stream_label is not None:
                 stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
@@ -755,6 +767,9 @@ class BinanceWebSocketApiApiSpot(object):
                 ]
             }
         """
+        if symbol is None or (order_id is None and orig_client_order_id is None):
+            raise ValueError(f"Missing mandatory parameter: symbol, order_id/orig_client_order_id")
+
         if stream_id is None:
             if stream_label is not None:
                 stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
@@ -774,9 +789,9 @@ class BinanceWebSocketApiApiSpot(object):
         if new_client_order_id is not None:
             params['newClientOrderId'] = new_client_order_id
         if order_id is not None:
-            params['orderId'] = order_id
+            params['orderId'] = int(order_id)
         if orig_client_order_id is not None:
-            params['origClientOrderId'] = orig_client_order_id
+            params['origClientOrderId'] = str(orig_client_order_id)
         if recv_window is not None:
             params['recvWindow'] = str(recv_window)
 
@@ -1001,6 +1016,9 @@ class BinanceWebSocketApiApiSpot(object):
                 ]
             }
         """
+        if side is None or symbol is None or order_type is None:
+            raise ValueError(f"Missing mandatory parameter: order_type, side, symbol")
+
         if stream_id is None:
             if stream_label is not None:
                 stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
@@ -1528,6 +1546,9 @@ class BinanceWebSocketApiApiSpot(object):
               ]
             }
         """
+        if symbol is None:
+            raise ValueError(f"Missing mandatory parameter: symbol")
+
         if stream_id is None:
             if stream_label is not None:
                 stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
@@ -1965,6 +1986,9 @@ class BinanceWebSocketApiApiSpot(object):
               ]
             }
         """
+        if symbol is None:
+            raise ValueError(f"Missing mandatory parameter: symbol")
+
         if stream_id is None:
             if stream_label is not None:
                 stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
@@ -2125,6 +2149,9 @@ class BinanceWebSocketApiApiSpot(object):
               ]
             }
         """
+        if symbol is None:
+            raise ValueError(f"Missing mandatory parameter: symbol")
+
         if stream_id is None:
             if stream_label is not None:
                 stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
@@ -2533,6 +2560,9 @@ class BinanceWebSocketApiApiSpot(object):
                 ]
             }
         """
+        if symbol is None or (order_id is None and orig_client_order_id is None):
+            raise ValueError(f"Missing mandatory parameter: symbol, order_id/orig_client_order_id")
+
         if stream_id is None:
             if stream_label is not None:
                 stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
@@ -2708,6 +2738,9 @@ class BinanceWebSocketApiApiSpot(object):
                 ]
             }
         """
+        if symbol is None:
+            raise ValueError(f"Missing mandatory parameter: symbol")
+
         if stream_id is None:
             if stream_label is not None:
                 stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
@@ -2832,6 +2865,9 @@ class BinanceWebSocketApiApiSpot(object):
               ]
             }
         """
+        if symbol is None:
+            raise ValueError(f"Missing mandatory parameter: symbol")
+
         if stream_id is None:
             if stream_label is not None:
                 stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)
@@ -3167,6 +3203,9 @@ class BinanceWebSocketApiApiSpot(object):
               ]
             }
         """
+        if symbol is None:
+            raise ValueError(f"Missing mandatory parameter: symbol")
+
         if stream_id is None:
             if stream_label is not None:
                 stream_id = self._manager.get_stream_id_by_label(stream_label=stream_label)

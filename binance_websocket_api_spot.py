@@ -24,6 +24,7 @@ async def binance_api(ubwa):
                                     process_asyncio_queue=handle_socket_message)
 
     print(f"Executing API requests on Binance Spot:")
+
     current_average_price = ubwa.api.spot.get_current_average_price(stream_id=api_stream, symbol=market, return_response=True)
     print(f"current_average_price: {current_average_price}\r\n")
 
@@ -81,13 +82,13 @@ async def binance_api(ubwa):
 
     recent_trades = ubwa.api.spot.get_recent_trades(stream_id=api_stream, symbol=market, return_response=True)
     print(f"recent_trades: {recent_trades['result'][:5]}\r\n")
-    print(f"Stopping!")
+    print(f"Stopping!\r\n")
 
 def process_stream_signal(signal_type=None, stream_id=None, data_record=None, error_msg=None):
     # More info about `stream_signals`:
     # https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/wiki/%60stream_signals%60
     print(f"Received stream_signal for stream '{ubwa_manager.get_stream_label(stream_id=stream_id)}': "
-          f"{signal_type} - {stream_id} - {data_record} - {error_msg}")
+          f"{signal_type} - {stream_id} - {data_record} - {error_msg}\r\n")
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG,
