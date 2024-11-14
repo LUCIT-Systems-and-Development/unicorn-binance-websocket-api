@@ -22,7 +22,7 @@ To run modules of the *UNICORN Trading Suite* you need a [valid license](https:/
 ## Usage
 ### Running the Script:
 ```bash
-python binance_chain_websocket_best_practice.py
+python binance_websocket_api_futures.py
 ```
 
 ### Graceful Shutdown:
