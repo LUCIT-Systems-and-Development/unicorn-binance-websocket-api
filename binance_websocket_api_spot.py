@@ -48,7 +48,7 @@ async def binance_api(ubwa):
     exchange_info = ubwa.api.spot.get_exchange_info(stream_id=api_stream, symbols=[market, ], return_response=True)
     print(f"Status of exchange_info request: {exchange_info['status']}\r\n")
 
-    order_book = ubwa.api.spot.get_order_book(stream_id=api_stream, symbol=market, limit=2, return_response=True)
+    order_book = ubwa.api.spot.get_order_book(stream_id=api_stream, symbol=market, limit=10, return_response=True)
     print(f"Orderbook, lastUpdateId={order_book['result']['lastUpdateId']}: {order_book['result']['asks']}, "
           f"{order_book['result']['bids']}\r\n")
 

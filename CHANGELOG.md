@@ -39,6 +39,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Websocket API functions are no longer available under `manager.api` but under `manager.api.spot`. In addition, there 
   is now also `manager.api.futures`.
 - No more use of deepcopy in ws api (faster!)
+- Enhanced logging in WS API
 
 ## 2.9.0
 ### Added

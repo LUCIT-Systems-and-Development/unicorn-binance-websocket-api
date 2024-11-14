@@ -195,6 +195,8 @@ class BinanceWebSocketApiApiFutures(object):
                    "method": method,
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiFutures.cancel_order() - Create payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -507,6 +509,8 @@ class BinanceWebSocketApiApiFutures(object):
                    "method": method,
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiFutures.create_order() - Create payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -638,6 +642,8 @@ class BinanceWebSocketApiApiFutures(object):
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiFutures.get_account_balance() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -832,6 +838,8 @@ class BinanceWebSocketApiApiFutures(object):
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiFutures.get_account_position() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -1119,6 +1127,8 @@ class BinanceWebSocketApiApiFutures(object):
                    "method": method,
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiFutures.get_account_status() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -1216,6 +1226,8 @@ class BinanceWebSocketApiApiFutures(object):
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiFutures.get_listen_key() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -1371,6 +1383,8 @@ class BinanceWebSocketApiApiFutures(object):
                    "method": method,
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiFutures.get_order() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -1506,6 +1520,8 @@ class BinanceWebSocketApiApiFutures(object):
                    "method": "depth",
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiFutures.get_order_book() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -1597,6 +1613,8 @@ class BinanceWebSocketApiApiFutures(object):
 
         payload = {"id": request_id,
                    "method": "time"}
+
+        logger.debug(f"BinanceWebSocketApiApiFutures.get_server_time() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -1741,6 +1759,8 @@ class BinanceWebSocketApiApiFutures(object):
                    "method": "ticker.book",
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiFutures.get_ticker_order_book() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -1874,6 +1894,8 @@ class BinanceWebSocketApiApiFutures(object):
         payload = {"id": request_id,
                    "method": "ticker.price",
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiFutures.get_ticker_price() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -2077,6 +2099,8 @@ class BinanceWebSocketApiApiFutures(object):
                    "method": method,
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiFutures.modify_order() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -2164,6 +2188,8 @@ class BinanceWebSocketApiApiFutures(object):
 
         payload = {"id": request_id,
                    "method": "ping"}
+
+        logger.debug(f"BinanceWebSocketApiApiFutures.ping() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)

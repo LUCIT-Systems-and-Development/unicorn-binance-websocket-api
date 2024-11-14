@@ -633,7 +633,7 @@ class TestBinanceOrgManager(unittest.TestCase):
         current_average_price = ubwam.api.spot.get_current_average_price(stream_id=api_stream, symbol=market,
                                                                         return_response=True)
         print(f"current_average_price: {current_average_price}\r\n")
-        order_book = ubwam.api.spot.get_order_book(stream_id=api_stream, symbol=market, limit=2, return_response=True)
+        order_book = ubwam.api.spot.get_order_book(stream_id=api_stream, symbol=market, limit=10, return_response=True)
         if type(order_book) is not bool:
             print(f"Orderbook, lastUpdateId={order_book['result']['lastUpdateId']}: {order_book['result']['asks']}, "
                   f"{order_book['result']['bids']}\r\n")

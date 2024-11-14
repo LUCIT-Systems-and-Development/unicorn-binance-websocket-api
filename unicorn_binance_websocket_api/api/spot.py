@@ -419,6 +419,8 @@ class BinanceWebSocketApiApiSpot(object):
                    "method": method,
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiSpot.cancel_and_replace_order() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -612,6 +614,8 @@ class BinanceWebSocketApiApiSpot(object):
                    "method": method,
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiSpot.cancel_open_orders() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -784,6 +788,8 @@ class BinanceWebSocketApiApiSpot(object):
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiSpot.cancel_order() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -1058,6 +1064,8 @@ class BinanceWebSocketApiApiSpot(object):
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiSpot.create_order() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -1403,6 +1411,8 @@ class BinanceWebSocketApiApiSpot(object):
                    "method": method,
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_account_status() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -1545,6 +1555,8 @@ class BinanceWebSocketApiApiSpot(object):
                    "method": "trades.aggregate",
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_aggregate_trades() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -1652,6 +1664,8 @@ class BinanceWebSocketApiApiSpot(object):
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_current_average_price() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -1850,6 +1864,8 @@ class BinanceWebSocketApiApiSpot(object):
                    "method": method,
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_exchange_info() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -1970,6 +1986,8 @@ class BinanceWebSocketApiApiSpot(object):
         payload = {"id": request_id,
                    "method": "trades.historical",
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_historical_trades() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -2136,6 +2154,8 @@ class BinanceWebSocketApiApiSpot(object):
                    "method": "klines",
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_klines() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -2233,6 +2253,8 @@ class BinanceWebSocketApiApiSpot(object):
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_listen_key() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -2382,6 +2404,8 @@ class BinanceWebSocketApiApiSpot(object):
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_open_orders() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -2538,6 +2562,8 @@ class BinanceWebSocketApiApiSpot(object):
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_order() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -2705,6 +2731,8 @@ class BinanceWebSocketApiApiSpot(object):
                    "method": "depth",
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_order_book() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -2825,6 +2853,8 @@ class BinanceWebSocketApiApiSpot(object):
                    "method": "trades.recent",
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_recent_trades() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -2916,6 +2946,8 @@ class BinanceWebSocketApiApiSpot(object):
         payload = {"id": request_id,
                    "method": "time"}
 
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_server_time() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -3003,6 +3035,8 @@ class BinanceWebSocketApiApiSpot(object):
 
         payload = {"id": request_id,
                    "method": "ping"}
+
+        logger.debug(f"BinanceWebSocketApiApiSpot.ping() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
@@ -3162,6 +3196,8 @@ class BinanceWebSocketApiApiSpot(object):
                    "method": "uiKlines",
                    "params": params}
 
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_ui_klines() - Created payload: {payload}")
+
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
 
@@ -3278,6 +3314,8 @@ class BinanceWebSocketApiApiSpot(object):
         payload = {"id": request_id,
                    "method": method,
                    "params": params}
+
+        logger.debug(f"BinanceWebSocketApiApiSpot.get_unfilled_order_count() - Created payload: {payload}")
 
         if self._manager.send_with_stream(stream_id=stream_id, payload=payload) is False:
             self._manager.add_payload_to_stream(stream_id=stream_id, payload=payload)
