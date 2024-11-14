@@ -621,7 +621,6 @@ class BinanceWebSocketApiApiFutures(object):
                   }
                 ]
             }
-
         """
         if stream_id is None:
             if stream_label is not None:
@@ -763,7 +762,9 @@ class BinanceWebSocketApiApiFutures(object):
               ]
             }
 
-            For Hedge position mode:
+        For Hedge position mode:
+
+        .. code-block:: json
 
             {
               "id": "605a6d20-6588-4cb9-afa0-b0ab087507ba",

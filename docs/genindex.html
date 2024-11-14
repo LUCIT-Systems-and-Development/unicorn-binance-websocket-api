@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; unicorn-binance-websocket-api 2.8.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index &#8212; unicorn-binance-websocket-api 2.10.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=fdf8e9ae" />
@@ -283,6 +283,8 @@
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_account_balance">get_account_balance() (unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures method)</a>
 </li>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_account_position">get_account_position() (unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures method)</a>
+</li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_account_status">get_account_status() (unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures method)</a>
 
       <ul>
@@ -339,9 +341,11 @@
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_limit_of_subscriptions_per_stream">get_limit_of_subscriptions_per_stream() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
 </li>
-      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot.get_listen_key">get_listen_key() (unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot method)</a>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_listen_key">get_listen_key() (unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures method)</a>
 
       <ul>
+        <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot.get_listen_key">(unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot method)</a>
+</li>
         <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.restclient.BinanceWebSocketApiRestclient.get_listen_key">(unicorn_binance_websocket_api.restclient.BinanceWebSocketApiRestclient method)</a>
 </li>
       </ul></li>
@@ -361,10 +365,10 @@
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_number_of_streams_in_stream_list">get_number_of_streams_in_stream_list() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_number_of_subscriptions">get_number_of_subscriptions() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot.get_open_orders">get_open_orders() (unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot method)</a>
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_order">get_order() (unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures method)</a>
@@ -399,8 +403,12 @@
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_ringbuffer_result_max_size">get_ringbuffer_result_max_size() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
 </li>
-      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot.get_server_time">get_server_time() (unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot method)</a>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_server_time">get_server_time() (unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures method)</a>
+
+      <ul>
+        <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot.get_server_time">(unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot method)</a>
 </li>
+      </ul></li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_start_time">get_start_time() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_buffer_byte_size">get_stream_buffer_byte_size() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
@@ -426,6 +434,10 @@
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_stream_subscriptions">get_stream_subscriptions() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_the_one_active_websocket_api">get_the_one_active_websocket_api() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
+</li>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_ticker_order_book">get_ticker_order_book() (unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures method)</a>
+</li>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.get_ticker_price">get_ticker_price() (unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures method)</a>
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.get_timestamp">get_timestamp() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager static method)</a>
 </li>
@@ -548,14 +560,18 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot.ping">ping() (unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot method)</a>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures.ping">ping() (unicorn_binance_websocket_api.api.futures.BinanceWebSocketApiApiFutures method)</a>
+
+      <ul>
+        <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot.ping">(unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot method)</a>
 </li>
+      </ul></li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.pop_stream_data_from_stream_buffer">pop_stream_data_from_stream_buffer() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
-</li>
-      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.pop_stream_signal_from_stream_signal_buffer">pop_stream_signal_from_stream_signal_buffer() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.pop_stream_signal_from_stream_signal_buffer">pop_stream_signal_from_stream_signal_buffer() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
+</li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.print_stream_info">print_stream_info() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
 </li>
       <li><a href="unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager.print_summary">print_summary() (unicorn_binance_websocket_api.manager.BinanceWebSocketApiManager method)</a>
@@ -845,7 +861,7 @@
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Nov 13 2024 at 19:32 (CET).
+    Last updated on Nov 14 2024 at 11:42 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.

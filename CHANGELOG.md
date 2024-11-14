@@ -9,7 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.9.0.dev (development stage/unreleased/unstable)
+## 2.10.0.dev (development stage/unreleased/unstable)
+
+## 2.10.0
 ### Added
 - New `Websocket API Spot` functions:
   - `manager.api.spot.cancel_and_replace_order()`
@@ -35,7 +37,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   - `manager.api.futures.modify_order()`
   - `manager.api.futures.ping()`
 ### Changed
-- ujson has been replaced by orjson
+- ujson has been replaced by orjson (faster!)
 - Websocket API functions are no longer available under `manager.api` but under `manager.api.spot`. In addition, there 
   is now also `manager.api.futures`.
 - No more use of deepcopy in ws api (faster!)

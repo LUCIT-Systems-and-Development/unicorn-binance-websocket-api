@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>unicorn_binance_websocket_api.api.spot &#8212; unicorn-binance-websocket-api 2.8.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unicorn_binance_websocket_api.api.spot &#8212; unicorn-binance-websocket-api 2.10.0 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="../../../_static/pydoctheme.css?v=fdf8e9ae" />
@@ -209,7 +209,6 @@
 <span class="sd">        - https://binance-docs.github.io/apidocs/websocket_api/en/#account-prevented-matches-user_data</span>
 <span class="sd">        - https://binance-docs.github.io/apidocs/websocket_api/en/#account-allocations-user_data</span>
 <span class="sd">        - https://binance-docs.github.io/apidocs/websocket_api/en/#account-commission-rates-user_data</span>
-<span class="sd">        - https://binance-docs.github.io/apidocs/websocket_api/en/#user-data-stream-requests</span>
 <span class="sd">        - https://binance-docs.github.io/apidocs/websocket_api/en/#ping-user-data-stream-user_stream</span>
 <span class="sd">        - https://binance-docs.github.io/apidocs/websocket_api/en/#stop-user-data-stream-user_stream</span>
 
@@ -262,6 +261,8 @@
                                  <span class="n">time_in_force</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;GTC&#39;</span><span class="p">,</span> <span class="s1">&#39;IOC&#39;</span><span class="p">,</span> <span class="s1">&#39;FOK&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                                  <span class="n">trailing_delta</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cancel and replace order (TRADE)</span>
+
 <span class="sd">        Cancel an existing order and immediately place a new order instead of the canceled one.</span>
 
 <span class="sd">        Official documentation:</span>
@@ -492,6 +493,15 @@
 <span class="sd">              ]</span>
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">cancel_replace_mode</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+                <span class="n">quantity</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+                <span class="n">side</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+                <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+                <span class="n">order_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+                <span class="p">(</span><span class="n">cancel_order_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cancel_orig_client_order_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing mandatory parameter: cancel_replace_mode, quantity, side, symbol, order_type,&quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;cancel_order_id/cancel_orig_client_order_id&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
@@ -511,11 +521,11 @@
                   <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">order_type</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="n">cancel_order_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cancelOrderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cancel_order_id</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cancelOrderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cancel_order_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cancel_orig_client_order_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cancelOrigClientOrderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cancel_orig_client_order_id</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cancelOrigClientOrderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cancel_orig_client_order_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cancel_new_client_order_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cancelNewClientOrderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cancel_new_client_order_id</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cancelNewClientOrderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cancel_new_client_order_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cancel_restrictions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;cancelRestrictions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cancel_restrictions</span>
         <span class="k">if</span> <span class="n">iceberg_qty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -568,6 +578,8 @@
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.cancel_and_replace_order() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -595,6 +607,8 @@
                            <span class="n">recv_window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                            <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cancel open orders (TRADE)</span>
+
 <span class="sd">        Cancel all open orders on a symbol, including OCO orders.</span>
 
 <span class="sd">        Official documentation:</span>
@@ -736,6 +750,9 @@
 <span class="sd">                ]</span>
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing mandatory parameter: symbol&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
@@ -761,6 +778,8 @@
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_id</span><span class="p">,</span>
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.cancel_open_orders() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
@@ -791,6 +810,8 @@
                      <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                      <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cancel order (TRADE)</span>
+
 <span class="sd">        Cancel an active order.</span>
 
 <span class="sd">        Either order_id or orig_client_order_id must be sent.</span>
@@ -902,6 +923,9 @@
 <span class="sd">                ]</span>
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="n">order_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">orig_client_order_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing mandatory parameter: symbol, order_id/orig_client_order_id&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
@@ -921,9 +945,9 @@
         <span class="k">if</span> <span class="n">new_client_order_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;newClientOrderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_client_order_id</span>
         <span class="k">if</span> <span class="n">order_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;orderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">order_id</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;orderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">order_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">orig_client_order_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;origClientOrderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">orig_client_order_id</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;origClientOrderId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">orig_client_order_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">recv_window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;recvWindow&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">recv_window</span><span class="p">)</span>
 
@@ -935,6 +959,8 @@
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_id</span><span class="p">,</span>
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.cancel_order() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
@@ -985,6 +1011,8 @@
                      <span class="n">test</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                      <span class="n">trailing_delta</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Place new order (TRADE)</span>
+
 <span class="sd">        Create a new order.</span>
 
 <span class="sd">        Official documentation:</span>
@@ -1147,6 +1175,9 @@
 <span class="sd">                ]</span>
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">side</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">order_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing mandatory parameter: order_type, side, symbol&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
@@ -1211,6 +1242,8 @@
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.create_order() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -1258,6 +1291,8 @@
                           <span class="n">time_in_force</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;GTC&#39;</span><span class="p">,</span> <span class="s1">&#39;IOC&#39;</span><span class="p">,</span> <span class="s1">&#39;FOK&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                           <span class="n">trailing_delta</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test new order (TRADE)</span>
+
 <span class="sd">        Test order placement.</span>
 
 <span class="sd">        Validates new order parameters and verifies your signature but does not send the order into the matching engine.</span>
@@ -1435,11 +1470,13 @@
                            <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
             <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the user account status.</span>
+<span class="sd">        Account information (USER_DATA)</span>
+
+<span class="sd">        Query information about your account.</span>
 
 <span class="sd">        Official documentation:</span>
 
-<span class="sd">            - https://developers.binance.com/docs/binance-trading-api/websocket_api#account-information-user_data</span>
+<span class="sd">            - https://binance-docs.github.io/apidocs/websocket_api/en/#account-information-user_data</span>
 
 <span class="sd">        :param process_response: Provide a function/method to process the received webstream data (callback)</span>
 <span class="sd">                                 of this specific request.</span>
@@ -1557,6 +1594,8 @@
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_account_status() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -1585,6 +1624,8 @@
                              <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
             <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Aggregate trades</span>
+
 <span class="sd">        Get aggregate trades.</span>
 
 <span class="sd">        Use from_id and limit to page through all aggtrades.</span>
@@ -1673,6 +1714,9 @@
 <span class="sd">              ]</span>
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing mandatory parameter: symbol&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
@@ -1699,6 +1743,8 @@
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_id</span><span class="p">,</span>
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;trades.aggregate&quot;</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_aggregate_trades() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
@@ -1728,6 +1774,8 @@
                                   <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                                   <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Current average price</span>
+
 <span class="sd">        Get current average price for a symbol.</span>
 
 <span class="sd">        Weight(IP): 2</span>
@@ -1809,6 +1857,8 @@
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_current_average_price() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -1836,6 +1886,8 @@
                           <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                           <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">symbols</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exchange information</span>
+
 <span class="sd">        Get the Exchange Information.</span>
 
 <span class="sd">        Only one of `symbol`, `symbols`, `permissions` parameters can be specified.</span>
@@ -2007,6 +2059,8 @@
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_exchange_info() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -2034,6 +2088,8 @@
                               <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                               <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Historical trades</span>
+
 <span class="sd">        Get historical trades.</span>
 
 <span class="sd">        Weight(IP): 25</span>
@@ -2107,6 +2163,9 @@
 <span class="sd">              ]</span>
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing mandatory parameter: symbol&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
@@ -2128,6 +2187,8 @@
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_id</span><span class="p">,</span>
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;trades.historical&quot;</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_historical_trades() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
@@ -2165,6 +2226,8 @@
                    <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                    <span class="n">time_zone</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Klines</span>
+
 <span class="sd">        Get klines (candlestick bars).</span>
 
 <span class="sd">        Klines are uniquely identified by their open &amp; close time.</span>
@@ -2266,6 +2329,9 @@
 <span class="sd">              ]</span>
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing mandatory parameter: symbol&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
@@ -2295,6 +2361,8 @@
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;klines&quot;</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_klines() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -2321,11 +2389,13 @@
     <span class="k">def</span> <span class="nf">get_listen_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process_response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                        <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Start user data stream (USER_STREAM)</span>
+
 <span class="sd">        Get a listenKey to start a UserDataStream.</span>
 
 <span class="sd">        Official documentation:</span>
 
-<span class="sd">            - https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-api.md#user-data-stream-requests</span>
+<span class="sd">            - https://binance-docs.github.io/apidocs/websocket_api/en/#start-user-data-stream-user_stream</span>
 
 <span class="sd">        :param process_response: Provide a function/method to process the received webstream data (callback)</span>
 <span class="sd">                                 of this specific request.</span>
@@ -2394,6 +2464,8 @@
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_listen_key() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -2421,6 +2493,8 @@
                         <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                         <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Current open orders (USER_DATA)</span>
+
 <span class="sd">        Query execution status of all open orders.</span>
 
 <span class="sd">        Open orders are always returned as a flat list. If all symbols are requested, use the symbol field to tell</span>
@@ -2544,6 +2618,8 @@
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_open_orders() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -2571,6 +2647,8 @@
                   <span class="n">recv_window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                   <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query order (USER_DATA)</span>
+
 <span class="sd">        Check execution status of an order.</span>
 
 <span class="sd">        Official documentation:</span>
@@ -2671,6 +2749,9 @@
 <span class="sd">                ]</span>
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="n">order_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">orig_client_order_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing mandatory parameter: symbol, order_id/orig_client_order_id&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
@@ -2701,6 +2782,8 @@
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_order() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -2728,6 +2811,8 @@
                        <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                        <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Order book</span>
+
 <span class="sd">        Get current order book.</span>
 
 <span class="sd">        Note that this request returns limited market depth.</span>
@@ -2845,6 +2930,9 @@
 <span class="sd">                ]</span>
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing mandatory parameter: symbol&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
@@ -2867,6 +2955,8 @@
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_id</span><span class="p">,</span>
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;depth&quot;</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_order_book() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
@@ -2895,6 +2985,8 @@
                           <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                           <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recent trades</span>
+
 <span class="sd">        Get recent trades.</span>
 
 <span class="sd">        If you need access to real-time trading activity, please consider using</span>
@@ -2968,6 +3060,9 @@
 <span class="sd">              ]</span>
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing mandatory parameter: symbol&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
@@ -2988,6 +3083,8 @@
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_id</span><span class="p">,</span>
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;trades.recent&quot;</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_recent_trades() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
@@ -3015,6 +3112,8 @@
     <span class="k">def</span> <span class="nf">get_server_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process_response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                         <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check server time</span>
+
 <span class="sd">        Test connectivity to the WebSocket API and get the current server time.</span>
 
 <span class="sd">        Official documentation:</span>
@@ -3081,6 +3180,8 @@
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_id</span><span class="p">,</span>
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;time&quot;</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_server_time() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -3107,6 +3208,8 @@
     <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process_response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
              <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test connectivity</span>
+
 <span class="sd">        Test connectivity to the WebSocket API.</span>
 
 <span class="sd">        Official documentation:</span>
@@ -3170,6 +3273,8 @@
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_id</span><span class="p">,</span>
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;ping&quot;</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.ping() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -3191,7 +3296,6 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
-
 <div class="viewcode-block" id="BinanceWebSocketApiApiSpot.get_ui_klines">
 <a class="viewcode-back" href="../../../unicorn_binance_websocket_api.html#unicorn_binance_websocket_api.api.spot.BinanceWebSocketApiApiSpot.get_ui_klines">[docs]</a>
     <span class="k">def</span> <span class="nf">get_ui_klines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -3208,6 +3312,8 @@
                       <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="n">time_zone</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        UI Klines</span>
+
 <span class="sd">        Get klines (candlestick bars) optimized for presentation.</span>
 
 <span class="sd">        This request is similar to klines, having the same parameters and response. uiKlines return modified kline data, optimized for presentation of candlestick charts.</span>
@@ -3301,6 +3407,9 @@
 <span class="sd">              ]</span>
 <span class="sd">            }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing mandatory parameter: symbol&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">stream_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">get_stream_id_by_label</span><span class="p">(</span><span class="n">stream_label</span><span class="o">=</span><span class="n">stream_label</span><span class="p">)</span>
@@ -3330,6 +3439,8 @@
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;uiKlines&quot;</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_ui_klines() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
 
@@ -3356,7 +3467,11 @@
     <span class="k">def</span> <span class="nf">get_unfilled_order_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process_response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                                  <span class="n">stream_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unfilled Order Count (USER_DATA)</span>
+
 <span class="sd">        Query your current unfilled order count for all intervals.</span>
+
+<span class="sd">        Weight(IP): 40</span>
 
 <span class="sd">        Official documentation:</span>
 
@@ -3445,6 +3560,8 @@
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">request_id</span><span class="p">,</span>
                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
                    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">}</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BinanceWebSocketApiApiSpot.get_unfilled_order_count() - Created payload: </span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">send_with_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">add_payload_to_stream</span><span class="p">(</span><span class="n">stream_id</span><span class="o">=</span><span class="n">stream_id</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
@@ -3572,7 +3689,7 @@
     <a href="https://docs.lucit.tech">Index of all LUCIT Software Documentation</a><br />
     &copy; <a href="/license.html">Copyright</a> 2023-2023, LUCIT Systems and Development. All Rights Reserved..
     See <a href="/license.html">License</a> for more information.<br />
-    Last updated on Nov 13 2024 at 18:51 (CET).
+    Last updated on Nov 14 2024 at 11:32 (CET).
     <a href="https://github.com/LUCIT-Systems-and-Development/unicorn-binance-websocket-api/issues/new/choose">Found a bug</a>?
     <br />
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.

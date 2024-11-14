@@ -9,7 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 [How to upgrade to the latest version!](https://unicorn-binance-websocket-api.docs.lucit.tech/readme.html#installation-and-upgrade)
 
-## 2.9.0.dev (development stage/unreleased/unstable)
+## 2.10.0.dev (development stage/unreleased/unstable)
+
+## 2.10.0
 ### Added
 - New `Websocket API Spot` functions:
   - `manager.api.spot.cancel_and_replace_order()`
@@ -20,21 +22,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
   - `manager.api.spot.get_ui_klines()`  
   - `manager.api.spot.get_recent_trades()`
   - `manager.api.spot.get_unfilled_order_count()`
-- Support for `Websocket API Futures`:
-  - `manager.api.futures.get_account_status()`
+- Full Support for `Websocket API Futures`:
   - `manager.api.futures.cancel_order()`
   - `manager.api.futures.create_order()`
-  - `manager.api.futures.get_account_status()` (v1+v2)
   - `manager.api.futures.get_account_balance()` (v1+v2)
+  - `manager.api.futures.get_account_position()` (v1+v2)
+  - `manager.api.futures.get_account_status()` (v1+v2)
+  - `manager.api.futures.get_listen_key()`
   - `manager.api.futures.get_order()` 
   - `manager.api.futures.get_order_book()`
+  - `manager.api.futures.get_ticker_order_book()`
+  - `manager.api.futures.get_ticker_price()`
+  - `manager.api.futures.get_server_time()`
   - `manager.api.futures.modify_order()`
-  
+  - `manager.api.futures.ping()`
 ### Changed
-- ujson has been replaced by orjson
+- ujson has been replaced by orjson (faster!)
 - Websocket API functions are no longer available under `manager.api` but under `manager.api.spot`. In addition, there 
   is now also `manager.api.futures`.
 - No more use of deepcopy in ws api (faster!)
+- Enhanced logging in WS API
 
 ## 2.9.0
 ### Added
