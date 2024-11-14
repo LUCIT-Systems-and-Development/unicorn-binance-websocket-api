@@ -30,6 +30,7 @@ source_dir = "unicorn_binance_websocket_api"
 stubs_dir = "stubs"
 extensions = [
     Extension("*", [f"{source_dir}/*.py"]),
+    Extension("*", [f"{source_dir}/api/*.py"]),
 ]
 
 # Setup
